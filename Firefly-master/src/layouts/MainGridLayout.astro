@@ -53,6 +53,8 @@ interface Props {
 		updated?: Date;
 		words?: number;
 		minutes?: number;
+		documentPages?: number;
+		documentReadingTime?: { min: number; max: number };
 	};
 }
 
@@ -711,7 +713,12 @@ const hasMultipleImages =
                                     <span>{i18n(I18nKey.updatedAt)} {formatDateToYYYYMMDD(bannerPostMeta.updated)}</span>
                                 </span>
                             )}
-                        {typeof bannerPostMeta.words === "number" && (
+                        {typeof bannerPostMeta.documentPages === "number" ? (
+                            <span class="inline-flex items-center gap-1.5">
+                                <Icon is:inline name="material-symbols:ink-pen-outline-rounded" class="text-[1.05em]" />
+                                <span>{bannerPostMeta.documentPages} 页</span>
+                            </span>
+                        ) : typeof bannerPostMeta.words === "number" && (
                             <span class="inline-flex items-center gap-1.5">
                                 <Icon is:inline name="material-symbols:ink-pen-outline-rounded" class="text-[1.05em]" />
                                 <span>
@@ -719,7 +726,14 @@ const hasMultipleImages =
                                 </span>
                             </span>
                         )}
-                        {typeof bannerPostMeta.minutes === "number" && (
+                        {bannerPostMeta.documentReadingTime ? (
+                            <span class="inline-flex items-center gap-1.5">
+                                <Icon is:inline name="material-symbols:schedule-outline-rounded" class="text-[1.05em]" />
+                                <span>
+                                    {bannerPostMeta.documentReadingTime.min}-{bannerPostMeta.documentReadingTime.max} 分钟 · {i18n(I18nKey.readTime)}
+                                </span>
+                            </span>
+                        ) : typeof bannerPostMeta.minutes === "number" && (
                             <span class="inline-flex items-center gap-1.5">
                                 <Icon is:inline name="material-symbols:schedule-outline-rounded" class="text-[1.05em]" />
                                 <span>

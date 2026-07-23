@@ -86,6 +86,7 @@ const { remarkPluginFrontmatter } = await render(entry);
 const descriptionText = description || remarkPluginFrontmatter.excerpt || "";
 const words = remarkPluginFrontmatter.words;
 const minutes = remarkPluginFrontmatter.minutes;
+const documentPages = entry.data.documentPages;
 ---
 
 <div
@@ -145,6 +146,7 @@ const minutes = remarkPluginFrontmatter.minutes;
       password={password}
       words={words}
       minutes={minutes}
+      documentPages={documentPages}
       showWords={metaShowWords}
       showReadingTime={metaShowReadingTime}
       className="mb-4 post-meta card-header-meta"
@@ -184,6 +186,7 @@ const minutes = remarkPluginFrontmatter.minutes;
         published={published}
         words={words}
         minutes={minutes}
+        documentPages={documentPages}
         showPublished={statsShowPublished}
         showWords={statsShowWords}
         showReadingTime={statsShowReadingTime}

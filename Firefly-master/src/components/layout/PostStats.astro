@@ -8,6 +8,7 @@ export interface Props {
 	published: Date;
 	words?: number;
 	minutes?: number;
+	documentPages?: number;
 	showPublished?: boolean;
 	showWords?: boolean;
 	showReadingTime?: boolean;
@@ -19,6 +20,7 @@ const {
 	published,
 	words,
 	minutes,
+	documentPages,
 	showPublished = true,
 	showWords = true,
 	showReadingTime = true,
@@ -27,8 +29,8 @@ const {
 } = Astro.props;
 
 const hasPublished = showPublished;
-const hasWords = showWords && typeof words === "number";
-const hasMinutes = showReadingTime && typeof minutes === "number";
+const hasWords = showWords && (typeof documentPages === "number" || typeof words === "number");
+const hasMinutes = showReadingTime && (typeof documentPages === "number" || typeof minutes === "number");
 const textClass = "text-xs font-medium";
 const dividerClass = "text-xs font-medium text-black/20 dark:text-white/20";
 const iconWrapperClass =
@@ -60,7 +62,9 @@ const iconClass = "text-sm";
         </div>
       )}
       <span class={textClass}>
-        {words} {i18n(words === 1 ? I18nKey.wordCount : I18nKey.wordsCount)}
+        {typeof documentPages === "number"
+          ? `${documentPages} 页`
+          : `${words} ${i18n(words === 1 ? I18nKey.wordCount : I18nKey.wordsCount)}`}
       </span>
     </div>
   )}
@@ -75,7 +79,9 @@ const iconClass = "text-sm";
         </div>
       )}
       <span class={textClass}>
-        {minutes} {i18n(minutes === 1 ? I18nKey.minuteCount : I18nKey.minutesCount)}
+        {typeof documentPages === "number"
+          ? `${documentPages}-${Math.ceil(documentPages * 1.5)} 分钟`
+          : `${minutes} ${i18n(minutes === 1 ? I18nKey.minuteCount : I18nKey.minutesCount)}`}
       </span>
     </div>
   )}

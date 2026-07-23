@@ -7,6 +7,7 @@ tags:
   - 案例库
   - 项目复盘
 draft: true
+# PDF 资料填写真实页数，例如：documentPages: 24
 ---
 
 > 这是一篇模板文章。正式写作时，可以复制本文件到 `src/content/posts/cases/`，改文件名、标题、摘要、标签和正文。准备发布时，把 `draft: true` 改成 `draft: false`。
@@ -49,7 +50,7 @@ draft: true
 
 示例：
 
-- [项目复盘 PPT](/assets/library/cases/example/review.pptx)
-- [调研 PDF](/assets/library/cases/example/research.pdf)
+- [在线查看项目复盘 PPT](/assets/library/cases/example/review.pptx)
+- [在线查看调研 PDF](/assets/library/cases/example/research.pdf)
 
 ![脑图示例](/assets/library/cases/example/mindmap.png)

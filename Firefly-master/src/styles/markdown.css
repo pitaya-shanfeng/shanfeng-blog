@@ -152,6 +152,17 @@
 
 
 .custom-md {
+  .document-page-stream {
+    margin: 1.5rem 0;
+  }
+
+  .document-page-stream img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0;
+  }
+
   table {
     @apply my-4;
     min-width: 100%;
@@ -213,4 +224,3 @@ body.wallpaper-transparent .custom-md {
     background-color: color-mix(in oklch, var(--btn-plain-bg-active) 68%, transparent);
   }
 }
-

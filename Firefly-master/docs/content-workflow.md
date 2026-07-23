@@ -52,6 +52,16 @@ draft: true
 - `方法库`
 - `案例库`
 
+## PDF 资料统计
+
+正文嵌入 PDF 时，必须在 frontmatter 填写 PDF 的真实页数：
+
+```md
+documentPages: 24
+```
+
+站点会自动显示 `24 页` 和 `24-36 分钟 · 阅读时长`，按每页 1-1.5 分钟计算。没有 `documentPages` 的普通 Markdown 文章继续显示字数与阅读时长。
+
 ## 附件引用
 
 附件放在 `public/assets/library/栏目/文章目录/`。
@@ -59,8 +69,8 @@ draft: true
 文章里引用时，不写 `public`：
 
 ```md
-- [下载 PPT](/assets/library/cases/project-review/review.pptx)
-- [下载 PDF](/assets/library/cases/project-review/research.pdf)
+- [在线查看 PPT](/assets/library/cases/project-review/review.pptx)
+- [在线查看 PDF](/assets/library/cases/project-review/research.pdf)
 
 ![脑图](/assets/library/cases/project-review/mindmap.png)
 ```

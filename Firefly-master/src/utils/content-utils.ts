@@ -36,6 +36,19 @@ export async function getSortedPosts() {
 
 	return sorted;
 }
+
+export async function getHomeSortedPosts() {
+	const posts = await getRawSortedPosts();
+	const jianshanPosts = posts
+		.filter((post) => post.data.category === "见山")
+		.sort((a, b) => a.data.published.getTime() - b.data.published.getTime());
+	const otherPosts = posts
+		.filter((post) => post.data.category !== "见山")
+		.sort((a, b) => b.data.published.getTime() - a.data.published.getTime());
+
+	return [...jianshanPosts, ...otherPosts];
+}
+
 export type PostForList = {
 	id: string;
 	data: CollectionEntry<"posts">["data"];

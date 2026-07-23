@@ -7,6 +7,7 @@ tags:
   - 方法库
   - 产品方法
 draft: true
+# PDF 资料填写真实页数，例如：documentPages: 24
 ---
 
 > 这是一篇模板文章。正式写作时，可以复制本文件到 `src/content/posts/methods/`，改文件名、标题、摘要、标签和正文。准备发布时，把 `draft: true` 改成 `draft: false`。

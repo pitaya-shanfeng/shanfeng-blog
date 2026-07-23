@@ -26,6 +26,7 @@ export interface Props {
 	password?: boolean;
 	words?: number;
 	minutes?: number;
+	documentPages?: number;
 	showWords?: boolean;
 	showReadingTime?: boolean;
 }
@@ -49,6 +50,7 @@ const {
 	pinned,
 	words,
 	minutes,
+	documentPages,
 	showWords = false,
 	showReadingTime = false,
 } = Astro.props;
@@ -250,7 +252,14 @@ const visibleTags =
   }
 
   {
-    showWords && typeof words === "number" && (
+    showWords && typeof documentPages === "number" ? (
+      <div class="flex items-center">
+        <div class="meta-icon">
+          <Icon is:inline name="material-symbols:notes-rounded" class="text-xl" />
+        </div>
+        <span class="text-50 text-sm font-medium">{documentPages} 页</span>
+      </div>
+    ) : showWords && typeof words === "number" && (
       <div class="flex items-center">
         <div class="meta-icon">
           <Icon is:inline name="material-symbols:notes-rounded" class="text-xl" />
@@ -263,7 +272,16 @@ const visibleTags =
   }
 
   {
-    showReadingTime && typeof minutes === "number" && (
+    showReadingTime && typeof documentPages === "number" ? (
+      <div class="flex items-center">
+        <div class="meta-icon">
+          <Icon is:inline name="material-symbols:schedule-outline-rounded" class="text-xl" />
+        </div>
+        <span class="text-50 text-sm font-medium">
+          {documentPages}-{Math.ceil(documentPages * 1.5)} 分钟
+        </span>
+      </div>
+    ) : showReadingTime && typeof minutes === "number" && (
       <div class="flex items-center">
         <div class="meta-icon">
           <Icon is:inline name="material-symbols:schedule-outline-rounded" class="text-xl" />
