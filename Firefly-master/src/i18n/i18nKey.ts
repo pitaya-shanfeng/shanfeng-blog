@@ -398,12 +398,6 @@ enum I18nKey {
 	passwordError = "passwordError",
 	passwordProtectedRss = "passwordProtectedRss",
 
-	// 背景视频播放器
-	videoPlay = "videoPlay",
-	videoPause = "videoPause",
-	videoPrev = "videoPrev",
-	videoNext = "videoNext",
-	videoLoadError = "videoLoadError",
 }
 
 export default I18nKey;

@@ -5,7 +5,8 @@ export const announcementConfig: AnnouncementConfig = {
 	title: "公告",
 
 	// 公告内容
-	content: "欢迎来到我的博客！这是一则示例公告。",
+	content:
+		"欢迎来到我的博客！我将竭力帮助产品人夯实需求拆解、方案设计、项目管控、数据决策的核心专业能力，精准把握行业趋势与技术脉搏，在复杂商业场景中实现产品价值的精准锚定与高效落地，共攀产品专业主义的进阶之巅。",
 
 	// 是否允许用户关闭公告
 	closable: true,

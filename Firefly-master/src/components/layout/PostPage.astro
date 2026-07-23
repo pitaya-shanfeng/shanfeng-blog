@@ -318,6 +318,29 @@ const initialLayoutClass =
     setTimeout(initLayout, 50);
   });
 
+  // SWUP replaces the post-list DOM without firing Astro navigation events.
+  // Re-run layout selection after the replacement so cached list styles cannot
+  // keep a desktop-sized thumbnail layout when returning to the home page.
+  function reflowPostListAfterNavigation() {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        window.scrollTo({ left: 0, behavior: "auto" });
+        initLayout();
+        applyMasonryLayout();
+      });
+    });
+  }
+
+  document.addEventListener("swup:contentReplaced", reflowPostListAfterNavigation);
+
+  if (window.swup?.hooks) {
+    window.swup.hooks.on("page:view", reflowPostListAfterNavigation);
+  } else {
+    document.addEventListener("swup:enable", function () {
+      window.swup?.hooks?.on("page:view", reflowPostListAfterNavigation);
+    }, { once: true });
+  }
+
   // 立即执行一次（处理页面刷新）
   setTimeout(initLayout, 0);
 </script>

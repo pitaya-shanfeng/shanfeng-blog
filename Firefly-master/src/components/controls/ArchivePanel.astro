@@ -1,8 +1,9 @@
 ---
 import { siteConfig } from "@/config";
+import PostCard from "@/components/layout/PostCard.astro";
 import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
-import { getSortedPostsList } from "@/utils/content-utils";
+import { getSortedPosts, getSortedPostsList } from "@/utils/content-utils";
 import { getPostUrlBySlug, url } from "@/utils/url-utils";
 
 interface Props {
@@ -14,6 +15,11 @@ const { initialCategory = "" } = Astro.props;
 // 归档列表：全量按年分组，服务端渲染。筛选（?tag=/?category=/?uncategorized）
 // 与年份折叠由客户端脚本处理——数据本身在构建期已全部就绪。
 const sortedPostsList = await getSortedPostsList();
+const categoryPostCards = initialCategory
+	? (await getSortedPosts())
+			.filter((post) => post.data.category === initialCategory)
+			.sort((a, b) => b.data.published.getTime() - a.data.published.getTime())
+	: [];
 
 // 严格按发布时间倒序（不受置顶影响），镜像原 Svelte 版行为
 const posts = sortedPostsList
@@ -159,6 +165,32 @@ const foldOnFilter = collapseAllButFirst;
       </div>
     );
   })}
+
+  {categoryPostCards.length > 0 && (
+	<section class="archive-card-list list-mode flex flex-col gap-4 md:gap-4 mt-8 pt-8 border-t border-(--line-divider)">
+		<div class="contents">
+        {categoryPostCards.map((post, index) => (
+          <PostCard
+            entry={post}
+            title={post.data.title}
+            tags={post.data.tags}
+            category={post.data.category}
+            published={post.data.published}
+            updated={post.data.updated}
+            url={getPostUrlBySlug(post.id)}
+            image={post.data.image}
+            description={post.data.description}
+            draft={post.data.draft}
+            pinned={post.data.pinned}
+            password={!!post.data.password}
+            loading={index < 2 ? "eager" : "lazy"}
+            class="post-card-item"
+            style=""
+          />
+        ))}
+      </div>
+    </section>
+  )}
 </archive-panel>
 
 <style>
