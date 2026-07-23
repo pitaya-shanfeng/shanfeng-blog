@@ -9,7 +9,7 @@ tags:
   - 用户增长
   - 激励机制
   - 运营策略
-draft: true
+draft: false
 documentPages: 12
 ---
 

@@ -9,7 +9,7 @@ tags:
   - 学习路线
   - AI 产品
   - 产品经理
-draft: true
+draft: false
 ---
 
 ## 1\. 今日主题与一句话结论
