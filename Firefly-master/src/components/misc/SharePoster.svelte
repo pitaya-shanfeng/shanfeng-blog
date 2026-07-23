@@ -111,6 +111,7 @@ async function generatePoster() {
 		const scale = 2;
 		const width = 425 * scale;
 		const padding = 24 * scale;
+		const minPosterHeight = 560 * scale;
 
 		// 1. Prepare resources
 		const qrCodeUrl = await QRCode.toDataURL(url, {
@@ -138,19 +139,19 @@ async function generatePoster() {
 		let currentY = 0;
 
 		// Cover
-		const coverHeight = (coverImage ? 200 : 120) * scale;
+		const coverHeight = (coverImage ? 255 : 160) * scale;
 		currentY += coverHeight;
-		currentY += padding; // Gap after cover
+		currentY += 30 * scale; // Gap after cover
 
 		// Meta (Date on Cover) - No extra height needed
 
 		// Title
 		ctx.font = `700 ${24 * scale}px 'Roboto', sans-serif`;
 		const titleLines = getLines(ctx, title, contentWidth);
-		const titleLineHeight = 30 * scale;
+		const titleLineHeight = 34 * scale;
 		const titleHeight = titleLines.length * titleLineHeight;
 		currentY += titleHeight;
-		currentY += 16 * scale; // Gap
+		currentY += 18 * scale; // Gap
 
 		// Description
 		let descHeight = 0;
@@ -160,23 +161,24 @@ async function generatePoster() {
 			// Limit to 6 lines
 			const maxDescLines = 6;
 			const displayDescLines = descLines.slice(0, maxDescLines);
-			const descLineHeight = 25 * scale; // 1.8 line-height approx
+			const descLineHeight = 28 * scale; // 1.8 line-height approx
 			descHeight = displayDescLines.length * descLineHeight;
 			currentY += descHeight;
-			// currentY += 24 * scale; // Gap to footer (Removed to reduce whitespace)
+			currentY += 8 * scale;
 		} else {
-			currentY += 8 * scale; // Smaller gap if no desc
+			currentY += 16 * scale; // Smaller gap if no desc
 		}
 
 		// Footer (Author + QR)
 		// Footer top border + padding
-		currentY += 24 * scale;
-		const footerHeight = 64 * scale; // Avatar/QR height
+		currentY += 32 * scale;
+		const footerHeight = 72 * scale; // Avatar/QR height
 		currentY += footerHeight;
-		currentY += padding; // Bottom padding
+		currentY += 30 * scale; // Bottom padding
 
 		// 4. Resize Canvas to fit content
-		canvas.height = currentY;
+		canvas.height = Math.max(currentY, minPosterHeight);
+		const extraVerticalSpace = canvas.height - currentY;
 
 		// 5. Draw Content
 		// Fill Background
@@ -294,7 +296,7 @@ async function generatePoster() {
 		}
 
 		// Reset Y for drawing
-		let drawY = coverHeight + padding;
+		let drawY = coverHeight + 30 * scale;
 
 		// Draw Title
 		ctx.textBaseline = "top";
@@ -305,7 +307,7 @@ async function generatePoster() {
 			ctx.fillText(line, padding, drawY);
 			drawY += titleLineHeight;
 		});
-		drawY += 16 * scale - (titleLineHeight - 24 * scale); // Adjust for line-height diff
+		drawY += 18 * scale - (titleLineHeight - 24 * scale); // Adjust for line-height diff
 
 		// Draw Description
 		if (description) {
@@ -330,22 +332,22 @@ async function generatePoster() {
 
 			descLines.slice(0, maxDescLines).forEach((line) => {
 				ctx.fillText(line, padding + 16 * scale, drawY);
-				drawY += 25 * scale; // line height
+				drawY += 28 * scale; // line height
 			});
-			// drawY += 24 * scale; // Removed to reduce whitespace
-		} else {
 			drawY += 8 * scale;
+		} else {
+			drawY += 16 * scale;
 		}
 
 		// Draw Footer Divider
-		drawY += 24 * scale; // Spacing before line
+		drawY += 32 * scale + extraVerticalSpace; // Spacing before line
 		ctx.beginPath();
 		ctx.strokeStyle = "#f3f4f6";
 		ctx.lineWidth = 1 * scale;
 		ctx.moveTo(padding, drawY);
 		ctx.lineTo(width - padding, drawY);
 		ctx.stroke();
-		drawY += 24 * scale; // Spacing after line
+		drawY += 26 * scale; // Spacing after line
 
 		// Draw Footer Content
 		const footerY = drawY;
@@ -444,15 +446,6 @@ async function generatePoster() {
 	}
 }
 
-function downloadPoster() {
-	if (posterImage) {
-		const a = document.createElement("a");
-		a.href = posterImage;
-		a.download = `poster-${title.replace(/\s+/g, "-")}.png`;
-		a.click();
-	}
-}
-
 function closeModal() {
 	showModal = false;
 }
@@ -508,7 +501,7 @@ function portal(node: HTMLElement) {
         {/if}
       </div>
       
-      <div class="p-4 border-t border-gray-100 dark:border-gray-700 grid grid-cols-2 gap-3">
+      <div class="p-4 border-t border-gray-100 dark:border-gray-700">
         <button 
           class="py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-xl font-medium hover:bg-gray-200 dark:hover:bg-gray-600 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
           on:click={copyLink}
@@ -520,15 +513,6 @@ function portal(node: HTMLElement) {
             <Icon icon="material-symbols:link" size="md" />
             <span>{i18n(I18nKey.copyLink)}</span>
           {/if}
-        </button>
-        <button 
-          class="py-3 text-white rounded-xl font-medium active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed hover:brightness-90"
-          style="background-color: {themeColor};"
-          on:click={downloadPoster}
-          disabled={!posterImage}
-        >
-          <Icon icon="material-symbols:download" size="md" />
-          {i18n(I18nKey.savePoster)}
         </button>
       </div>
     </div>
