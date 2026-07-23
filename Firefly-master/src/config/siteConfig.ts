@@ -12,7 +12,7 @@ export const siteConfig: SiteConfig = {
 	subtitle: "做一个靠谱的产品经理",
 
 	// 站点 URL
-	site_url: "https://firefly.cuteleaf.cn",
+	site_url: "https://www.shanfengpm.com",
 
 	// 站点描述
 	description:
