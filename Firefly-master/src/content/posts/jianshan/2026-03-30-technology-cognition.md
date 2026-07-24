@@ -95,4 +95,4 @@ draft: false
 
 产品经理懂技术，最后不是为了显得自己懂技术，你不需要在会议里说很多别人听不懂的词，也不需要和研发争谁更专业。真正好的技术沟通，是你能在一个看起来体验更顺的方案面前，多问一句：这个顺，是不是只是把判断和风险藏到了系统里？如果是，那我们要不要换一种更稳的承诺？这句话问出来，方案可能会多一个状态，多一次确认，多一层兜底，看起来没有那么极致。但很多时候，正是这些不那么漂亮的设计，让产品真正跑得下去，也让团队承担得起自己说出口的承诺。
 
-![img](https://my.feishu.cn/space/api/box/stream/download/asynccode/?code=Mjc0ZDI0MzQyZjYzMWNhMWViMWM2ZjdjZGM1NDllNDBfOTRuOVlxakRJN2xMaHJ6YXNCSUEzczNuQUo1QzE2VW9fVG9rZW46SkY0emI0cUVWb09rMzV4MXVNUmNzSk5GbjZlXzE3ODQ3ODU3NzI6MTc4NDc4OTM3Ml9WNA&add_watermark=true&scene_type=CCM)
+![技术认知方法论](/assets/library/jianshan/technology-cognition/methodology.png)

@@ -115,4 +115,4 @@ draft: false
 
 数据最好的地方，不是让人更强势，而是让人更诚实。它让我们有机会承认：这件事确实有效，但只在这个场景有效；这个指标确实涨了，但代价也被转移了；这个方案没有失败，但我们原来的解释错了；这个项目看起来不够漂亮，但它让我们看清了真实边界。产品经理能不能接受这些答案，决定了数据到底是证据，还是装饰。你不一定每次都能设计出完美指标，也不一定每个项目都有严谨实验，但你至少要在心里保留一个位置，放那些可能证明你错了的数据。这个位置越早留出来，你的判断反而越稳，真正值得信任的产品判断，不是从来没有被质疑过，而是经得起证据的追问。
 
-![img](https://my.feishu.cn/space/api/box/stream/download/asynccode/?code=YTQ3Y2Y0Mjc4YWY3MDMxMjRiM2RjMmQ1Y2NmMzg4ODBfajZ6Nk5udGhkRDNPWll3N0lLdEdmTk93T0Z1Zkt2RzVfVG9rZW46U2l6a2JiSklBb2RjNTZ4bVc0WmNBNlY4bnRnXzE3ODQ3ODUyMjg6MTc4NDc4ODgyOF9WNA&add_watermark=true&scene_type=CCM)
+![数据证据方法论](/assets/library/jianshan/data-evidence/methodology.png)

@@ -129,4 +129,4 @@ draft: false
 
 产品经理做体验，不能仅仅看做一条转化路径，路径当然重要，但用户不是一个从入口流到按钮的流量单位。他是一个鲜活且明确的生命个体，他会算不清、会担心、会犹豫、会怕出错、会怕被问责、会在某个瞬间因为产品替他少想了一点、少担了一点，而愿意继续往前走。**好的设计，不是让产品显得更聪明；好的设计，是让用户不用那么努力。**
 
-![img](https://my.feishu.cn/space/api/box/stream/download/asynccode/?code=MzEzZDI5ZmYxZWNkMDM5N2MxN2I2Y2NlYzkwYmFlZTFfRmsxcWRWeVExUXh4NGxVOVl0eTFCVTliMWU1M01qczVfVG9rZW46UmdEeWJSbm50b1MzSTJ4YjBtWWNhQUhBbk5nXzE3ODQ3ODQzOTk6MTc4NDc4Nzk5OV9WNA&add_watermark=true&scene_type=CCM)
+![体验设计方法论](/assets/library/jianshan/experience-design/methodology.png)
