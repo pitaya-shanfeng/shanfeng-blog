@@ -3,7 +3,7 @@ import { siteConfig } from "@/config";
 import PostCard from "@/components/layout/PostCard.astro";
 import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
-import { getSortedPosts, getSortedPostsList } from "@/utils/content-utils";
+import { getSortedPosts } from "@/utils/content-utils";
 import { getPostUrlBySlug, url } from "@/utils/url-utils";
 
 interface Props {
@@ -14,9 +14,9 @@ const { initialCategory = "" } = Astro.props;
 
 // 归档列表：全量按年分组，服务端渲染。筛选（?tag=/?category=/?uncategorized）
 // 与年份折叠由客户端脚本处理——数据本身在构建期已全部就绪。
-const sortedPostsList = await getSortedPostsList();
+const sortedPostsList = await getSortedPosts();
 const categoryPostCards = initialCategory
-	? (await getSortedPosts())
+	? sortedPostsList
 			.filter((post) => post.data.category === initialCategory)
 			.sort((a, b) => b.data.published.getTime() - a.data.published.getTime())
 	: [];
@@ -51,6 +51,25 @@ function formatTag(tagList: string[]) {
 	return tagList.map((t) => `#${t}`).join(" ");
 }
 
+function countPostWords(body?: string) {
+	if (!body) return 0;
+
+	const text = body
+		.replace(/```[\s\S]*?```/g, "")
+		.replace(/`[^`]*`/g, "")
+		.replace(/!\[[^\]]*\]\([^)]+\)/g, "")
+		.replace(/\[[^\]]+\]\([^)]+\)/g, "")
+		.replace(/<[^>]+>/g, "")
+		.replace(/[>#*_~|`-]/g, "")
+		.replace(/\s+/g, " ")
+		.trim();
+
+	const chineseChars = text.match(/[\u4e00-\u9fa5]/g) || [];
+	const englishWords = text.match(/[a-zA-Z]+/g) || [];
+
+	return chineseChars.length + englishWords.length;
+}
+
 // 传给客户端脚本的 i18n 文案与配置
 const i18nStrings = {
 	categories: i18n(I18nKey.categories),
@@ -78,8 +97,13 @@ const foldOnFilter = collapseAllButFirst;
         <span id="archive-filter-values" class="font-semibold text-(--primary)"></span>
         <span id="archive-filter-secondary" class="ml-2 text-50 hidden"></span>
       </div>
-      <div class="shrink-0 text-xs text-50">
-        <span id="archive-filter-count"></span> <span id="archive-filter-count-label"></span>
+      <div class="shrink-0 text-xs text-50 flex flex-wrap items-center justify-end gap-x-1.5 gap-y-1">
+        <span>
+          <span id="archive-filter-count"></span> <span id="archive-filter-count-label"></span>
+        </span>
+        <span id="archive-filter-words-wrapper" class="hidden">
+          · <span id="archive-filter-words"></span>
+        </span>
       </div>
     </div>
   </div>
@@ -122,6 +146,7 @@ const foldOnFilter = collapseAllButFirst;
               class="archive-post group btn-plain block! h-10 w-full rounded-lg hover:text-[initial]"
               data-tags={JSON.stringify(post.data.tags || [])}
               data-category={post.data.category || ""}
+              data-words={countPostWords(post.body)}
             >
               <div class="flex flex-row justify-start items-center h-full">
                 {/* date */}
@@ -238,6 +263,7 @@ const foldOnFilter = collapseAllButFirst;
       const foldOnFilter = this.dataset.fold === "true";
       const blocks = Array.from(this.querySelectorAll(".archive-year-block"));
       let totalVisible = 0;
+      let totalWords = 0;
       const visibleBlocks = [];
 
       for (const block of blocks) {
@@ -265,7 +291,10 @@ const foldOnFilter = collapseAllButFirst;
           }
 
           row.hidden = !match;
-          if (match) visibleCount++;
+          if (match) {
+            visibleCount++;
+            totalWords += Number(row.dataset.words || 0);
+          }
         }
 
         // 更新每年计数显示
@@ -292,7 +321,7 @@ const foldOnFilter = collapseAllButFirst;
       });
 
       // 填充并显示筛选头部
-      this.renderFilterHeader(tags, categories, uncategorized, totalVisible);
+      this.renderFilterHeader(tags, categories, uncategorized, totalVisible, totalWords);
     }
 
     setBlockCollapsed(block, collapsed) {
@@ -306,7 +335,7 @@ const foldOnFilter = collapseAllButFirst;
       }
     }
 
-    renderFilterHeader(tags, categories, uncategorized, count) {
+    renderFilterHeader(tags, categories, uncategorized, count, words) {
       const header = this.querySelector("#archive-filter-header");
       if (!header) return;
 
@@ -329,6 +358,8 @@ const foldOnFilter = collapseAllButFirst;
       const secondaryEl = header.querySelector("#archive-filter-secondary");
       const countEl = header.querySelector("#archive-filter-count");
       const countLabelEl = header.querySelector("#archive-filter-count-label");
+      const wordsWrapperEl = header.querySelector("#archive-filter-words-wrapper");
+      const wordsEl = header.querySelector("#archive-filter-words");
 
       const fmtValues = (f) => {
         const prefix = f.isTag ? "#" : "";
@@ -356,8 +387,21 @@ const foldOnFilter = collapseAllButFirst;
         countLabelEl.textContent =
           count === 1 ? i18nStrings.postCount : i18nStrings.postsCount;
       }
+      if (wordsWrapperEl && wordsEl) {
+        wordsEl.textContent = this.formatWordCount(words);
+        wordsWrapperEl.classList.toggle("hidden", words <= 0);
+      }
 
       header.classList.remove("hidden");
+    }
+
+    formatWordCount(words) {
+      if (!Number.isFinite(words) || words <= 0) return "";
+      if (words >= 10000) {
+        const value = Math.round((words / 10000) * 10) / 10;
+        return `约 ${Number.isInteger(value) ? value.toFixed(0) : value} 万字`;
+      }
+      return `约 ${words.toLocaleString("zh-CN")} 字`;
     }
 
     updateBannerTitle(tags, categories, uncategorized) {
