@@ -4,9 +4,8 @@ published: 2026-07-23
 description: 屈臣氏调研资料，整理品牌定位、业务模式与市场观察。
 category: 案例库
 tags:
-  - 案例库
-  - 调研分析
-  - 屈臣氏
+  - 案例研究
+  - 商业分析
 draft: false
 comment: false
 documentPages: 38

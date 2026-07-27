@@ -4,11 +4,9 @@ published: 2025-12-01
 description: 大模型认知基础课程资料，涵盖 AI、机器学习、深度学习、大模型、RAG、Agent 与微调。
 category: 笔记
 tags:
-  - AI
-  - 大语言模型
-  - 机器学习
-  - RAG
   - AI 产品
+  - 大模型
+  - RAG
 draft: false
 comment: false
 documentPages: 46

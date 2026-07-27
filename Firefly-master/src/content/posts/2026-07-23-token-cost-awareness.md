@@ -4,11 +4,8 @@ published: 2025-12-15
 description: 从 Token、上下文与模型调用出发，建立 AI 产品可计算、可监控、可优化的成本意识。
 category: 笔记
 tags:
-  - AI
-  - Token
-  - AI 成本
-  - 大语言模型
   - AI 产品
+  - 大模型
 draft: false
 ---
 

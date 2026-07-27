@@ -5,10 +5,7 @@ description: 从执行惯性、经验负债与组织惯性出发，重新审视�
 image: /assets/library/jianshan/cognitive-dilemma/cover.png
 category: 见山
 tags:
-  - 见山
-  - 产品经理
-  - 产品思维
-  - 判断力
+  - 产品认知
 draft: false
 ---
 

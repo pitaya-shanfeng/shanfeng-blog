@@ -4,11 +4,8 @@ published: 2026-01-07
 description: 从产品经理视角理解文本、图像、语音与视频等多模态能力，建立业务落地与风险控制的判断框架。
 category: 笔记
 tags:
-  - AI
-  - 多模态 AI
-  - 视觉理解
   - AI 产品
-  - 产品经理
+  - 大模型
 draft: false
 ---
 

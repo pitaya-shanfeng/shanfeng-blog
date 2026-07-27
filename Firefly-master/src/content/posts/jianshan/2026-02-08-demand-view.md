@@ -5,11 +5,8 @@ description: 从需求线索、用户任务与产品边界出发，重新理解�
 image: /assets/library/jianshan/demand-view/cover.png
 category: 见山
 tags:
-  - 见山
+  - 产品认知
   - 需求管理
-  - 用户需求
-  - 产品价值
-  - 产品经理
 draft: false
 ---
 

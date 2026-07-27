@@ -5,11 +5,7 @@ description: 从用户任务、产品定位与资源代价出发，建立判断�
 image: /assets/library/jianshan/product-view/cover.png
 category: 见山
 tags:
-  - 见山
-  - 产品观
-  - 产品定位
-  - 用户价值
-  - 产品经理
+  - 产品认知
 draft: false
 ---
 

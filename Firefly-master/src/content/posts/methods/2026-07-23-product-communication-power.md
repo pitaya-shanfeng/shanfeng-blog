@@ -2,14 +2,14 @@
 title: 产品传播力
 published: 2026-07-23
 description: 产品传播力调研分析资料，包含产品传播的关键要素与实践参考。
+image: /assets/library/methods/product-communication-power/cover.png
 category: 方法库
 tags:
-  - 方法库
   - 产品传播
-  - 调研分析
+  - 案例研究
 draft: false
 comment: false
-documentPages: 34
+documentPages: 35
 ---
 
 本资料整理了产品传播力的调研分析内容，可直接在线预览。
@@ -49,4 +49,5 @@ documentPages: 34
   <img src="/assets/library/methods/product-communication-power/pages/page-32.jpg" alt="产品传播力在线预览第 32 页" loading="lazy" decoding="async" draggable="false" />
   <img src="/assets/library/methods/product-communication-power/pages/page-33.jpg" alt="产品传播力在线预览第 33 页" loading="lazy" decoding="async" draggable="false" />
   <img src="/assets/library/methods/product-communication-power/pages/page-34.jpg" alt="产品传播力在线预览第 34 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/methods/product-communication-power/pages/page-35.jpg" alt="产品传播力补充思维导图" loading="lazy" decoding="async" draggable="false" />
 </div>

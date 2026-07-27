@@ -5,11 +5,8 @@ description: 从主指标、解释指标、护栏指标与反证指标出发，�
 image: /assets/library/jianshan/data-evidence/cover.png
 category: 见山
 tags:
-  - 见山
+  - 产品认知
   - 数据分析
-  - 数据证据
-  - 指标体系
-  - 产品经理
 draft: false
 ---
 

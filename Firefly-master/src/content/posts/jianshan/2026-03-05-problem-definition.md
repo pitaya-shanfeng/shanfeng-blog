@@ -5,11 +5,8 @@ description: 从异常现象出发，暂停既有方案、还原用户任务并�
 image: /assets/library/jianshan/problem-definition/cover.png
 category: 见山
 tags:
-  - 见山
-  - 问题定义
-  - 用户任务
-  - 产品分析
-  - 产品经理
+  - 产品认知
+  - 需求管理
 draft: false
 ---
 

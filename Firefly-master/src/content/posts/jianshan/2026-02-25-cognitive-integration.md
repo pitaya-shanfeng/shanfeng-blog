@@ -5,11 +5,8 @@ description: 当用户、商业、技术与组织诉求彼此冲突时，产品�
 image: /assets/library/jianshan/cognitive-integration/cover.png
 category: 见山
 tags:
-  - 见山
-  - 产品判断
-  - 决策思维
-  - 产品策略
-  - 产品经理
+  - 产品认知
+  - 决策沟通
 draft: false
 ---
 

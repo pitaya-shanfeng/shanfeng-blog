@@ -5,11 +5,8 @@ description: 决策沟通不是把观点讲得更完整，而是把判断整理�
 image: /assets/library/jianshan/decision-communication/cover.png
 category: 见山
 tags:
-  - 见山
   - 决策沟通
   - 组织协作
-  - 决策分析
-  - 产品经理
 draft: false
 ---
 

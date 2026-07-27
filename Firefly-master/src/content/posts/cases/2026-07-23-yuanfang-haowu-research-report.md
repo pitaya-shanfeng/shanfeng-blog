@@ -4,9 +4,8 @@ published: 2026-07-23
 description: 远方好物调研报告，整理品牌、业务模式与市场观察。
 category: 案例库
 tags:
-  - 案例库
-  - 调研分析
-  - 远方好物
+  - 案例研究
+  - 商业分析
 draft: false
 comment: false
 documentPages: 26

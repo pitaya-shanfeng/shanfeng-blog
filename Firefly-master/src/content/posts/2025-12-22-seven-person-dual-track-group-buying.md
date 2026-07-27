@@ -2,13 +2,12 @@
 title: 七人双轨拼团调研
 published: 2025-12-22
 description: 拆解七人双轨排行拼团的组织结构、激励逻辑与运营组合，评估其拉新、活跃与高毛利爆款承接的适用边界。
+image: /assets/library/cases/seven-person-dual-track-group-buying/cover.png
 category: 案例库
 tags:
-  - 拼团
+  - 案例研究
+  - 增长运营
   - 社交电商
-  - 用户增长
-  - 激励机制
-  - 运营策略
 draft: false
 documentPages: 12
 ---

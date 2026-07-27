@@ -4,11 +4,8 @@ published: 2025-12-23
 description: 用产品经理能理解的方式解释 Transformer、自注意力与上下文关系，并将模型能力边界转化为产品判断。
 category: 笔记
 tags:
-  - AI
-  - Transformer
-  - 大语言模型
-  - 机器学习
   - AI 产品
+  - 大模型
 draft: false
 ---
 
@@ -800,4 +797,3 @@ Transformer 不是按顺序一个字一个字传话，而是让一句话里的�
 1. 《Attention Is All You Need》：Transformer 的经典论文。今天重点只需要理解自注意力和并行训练的思想。
 2. The Illustrated Transformer：适合用图理解 Transformer 的结构。
 4. 可对照体验：用同一个复杂问题分别测试不同模型，观察它们如何处理长上下文、指代、转折和引用。
-

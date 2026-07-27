@@ -5,11 +5,8 @@ description: 产品经理不必成为技术专家，但需要看懂产品承诺�
 image: /assets/library/jianshan/technology-cognition/cover.png
 category: 见山
 tags:
-  - 见山
-  - 技术认知
   - 技术协作
   - 系统设计
-  - 产品经理
 draft: false
 ---
 
