@@ -8,6 +8,7 @@ export async function GET() {
 			id: post.id,
 			title: post.data.title,
 			description: post.data.description,
+			image: post.data.image,
 			published: post.data.published.getTime(),
 			category: post.data.category || "",
 			password: !!post.data.password,
