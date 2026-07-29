@@ -18,7 +18,11 @@ const sortedPostsList = await getSortedPosts();
 const categoryPostCards = initialCategory
 	? sortedPostsList
 			.filter((post) => post.data.category === initialCategory)
-			.sort((a, b) => b.data.published.getTime() - a.data.published.getTime())
+			.sort((a, b) =>
+				initialCategory === "见山"
+					? a.data.published.getTime() - b.data.published.getTime()
+					: b.data.published.getTime() - a.data.published.getTime(),
+			)
 	: [];
 
 // 严格按发布时间倒序（不受置顶影响），镜像原 Svelte 版行为
