@@ -292,11 +292,24 @@ const remoteReferrerPolicy =
 	function initCoverImages() {
 		const containers = document.querySelectorAll('.cover-image-container');
 		containers.forEach((container) => {
-			if (container.hasAttribute('data-initialized')) return;
-			container.setAttribute('data-initialized', 'true');
-
 			const img = container.querySelector('img[data-cover-img]') as HTMLImageElement | null;
 			if (!img) return;
+
+			const hideLoading = () => {
+				container.setAttribute('data-loading', 'false');
+				img.style.opacity = '1';
+				const placeholder = container.querySelector('.lqip-placeholder') as HTMLElement | null;
+				if (placeholder) placeholder.classList.add('loaded');
+			};
+
+			// 已经初始化过的容器，仍然补一次可见性状态，避免 Swup 局部切页后图片保持透明
+			if (container.hasAttribute('data-initialized')) {
+				if (img.complete && img.naturalWidth > 0) {
+					hideLoading();
+				}
+				return;
+			}
+			container.setAttribute('data-initialized', 'true');
 
 			// 解析API URL列表，用于按顺序重试
 			let apiUrls: string[] = [];
@@ -305,13 +318,6 @@ const remoteReferrerPolicy =
 			if (apiUrlsAttr) {
 				try { apiUrls = JSON.parse(apiUrlsAttr); } catch (_e) { /* ignore */ }
 			}
-
-			const hideLoading = () => {
-				container.setAttribute('data-loading', 'false');
-				img.style.opacity = '1';
-				const placeholder = container.querySelector('.lqip-placeholder') as HTMLElement | null;
-				if (placeholder) placeholder.classList.add('loaded');
-			};
 
 			const showError = () => {
 				container.setAttribute('data-loading', 'false');
@@ -350,4 +356,5 @@ const remoteReferrerPolicy =
 
 	initCoverImages();
 	document.addEventListener('astro:page-load', initCoverImages);
+	document.addEventListener('swup:contentReplaced', initCoverImages);
 </script>

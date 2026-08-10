@@ -49,6 +49,30 @@ const { Content, headings } = await render(entry);
 const { remarkPluginFrontmatter } = await render(entry);
 
 const documentPages = entry.data.documentPages;
+const formatDocumentPageId = (page: number) =>
+	`document-page-${String(page).padStart(2, "0")}`;
+
+const documentTocData = (entry.data.documentToc || [])
+	.map((item, index) => {
+		const page = item.page || index + 1;
+		const title = item.title.trim();
+		if (!title) return null;
+		return {
+			id: formatDocumentPageId(page),
+			page,
+			title,
+		};
+	})
+	.filter((item): item is { id: string; page: number; title: string } =>
+		Boolean(item),
+	);
+
+const documentTocHeadings = documentTocData.map((item) => ({
+	depth: 2,
+	slug: item.id,
+	text: item.title,
+}));
+
 const documentReadingTime = documentPages
 	? { min: documentPages, max: Math.ceil(documentPages * 1.5) }
 	: undefined;
@@ -62,6 +86,23 @@ const bannerPostMeta = {
 	documentPages,
 	documentReadingTime,
 };
+
+const normalizeTocTitle = (value: string) =>
+	value.replace(/\s+/g, "").trim();
+
+const markdownHeadingsForToc =
+	entry.data.category === "见山" &&
+	headings.length > 0 &&
+	normalizeTocTitle(headings[0].text).startsWith(
+		normalizeTocTitle(entry.data.title),
+	)
+		? headings.slice(1)
+		: headings;
+
+const headingsForToc =
+	documentTocHeadings.length > 0
+		? documentTocHeadings
+		: markdownHeadingsForToc;
 
 // 处理随机图：如果image为"api"，则从配置的API获取随机图
 const processedImage = processCoverImageSync(entry.data.image, entry.id);
@@ -146,7 +187,7 @@ const relatedPosts = await getRelatedPosts(entry, 5);
   setOGTypeArticle={true}
   postSlug={entry.id}
   postCategory={entry.data.category || undefined}
-  headings={headings}
+  headings={headingsForToc}
   encrypted={!!entry.data.password}
   bannerPostMeta={bannerPostMeta}
 >
@@ -276,6 +317,16 @@ const relatedPosts = await getRelatedPosts(entry, 5);
               apiUrls={apiUrls}
             />
           </div>
+        )
+      }
+
+      {
+        documentTocData.length > 0 && (
+          <script
+            type="application/json"
+            id="document-toc-data"
+            set:html={JSON.stringify(documentTocData)}
+          />
         )
       }
 

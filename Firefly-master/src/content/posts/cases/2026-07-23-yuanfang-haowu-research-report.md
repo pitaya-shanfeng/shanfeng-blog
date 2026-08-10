@@ -2,6 +2,7 @@
 title: 远方好物调研报告
 published: 2026-07-23
 description: 远方好物调研报告，整理品牌、业务模式与市场观察。
+image: /assets/library/cases/yuanfang-haowu-research-report/cover.png
 category: 案例库
 tags:
   - 案例研究
@@ -10,8 +11,6 @@ draft: false
 comment: false
 documentPages: 26
 ---
-
-本报告整理了远方好物的调研分析内容，可直接在线预览。
 
 <div class="document-page-stream" aria-label="远方好物调研报告在线预览">
   <img src="/assets/library/cases/yuanfang-haowu-research-report/pages/page-01.jpg" alt="远方好物调研报告在线预览第 1 页" loading="lazy" decoding="async" draggable="false" />

@@ -12,8 +12,6 @@ comment: false
 documentPages: 19
 ---
 
-本资料整理了竞品分析的常用框架与实操方法，可直接在线预览。
-
 <div class="document-page-stream" aria-label="如何做竞品分析在线预览">
   <img src="/assets/library/methods/how-to-do-competitive-analysis/pages/page-01.jpg" alt="如何做竞品分析在线预览第 1 页" loading="lazy" decoding="async" draggable="false" />
   <img src="/assets/library/methods/how-to-do-competitive-analysis/pages/page-02.jpg" alt="如何做竞品分析在线预览第 2 页" loading="lazy" decoding="async" draggable="false" />

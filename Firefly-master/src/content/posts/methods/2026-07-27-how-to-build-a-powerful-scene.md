@@ -12,8 +12,6 @@ comment: false
 documentPages: 62
 ---
 
-本资料整理了场景构建的方法与实践思路，可直接在线预览。
-
 <div class="document-page-stream" aria-label="如何搭一个牛逼的场在线预览">
   <img src="/assets/library/methods/how-to-build-a-powerful-scene/pages/page-01.jpg" alt="如何搭一个牛逼的场在线预览第 1 页" loading="lazy" decoding="async" draggable="false" />
   <img src="/assets/library/methods/how-to-build-a-powerful-scene/pages/page-02.jpg" alt="如何搭一个牛逼的场在线预览第 2 页" loading="lazy" decoding="async" draggable="false" />

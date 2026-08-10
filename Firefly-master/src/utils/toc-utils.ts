@@ -18,6 +18,20 @@ export interface TOCConfig {
 	scrollOffset?: number;
 }
 
+interface TOCHeadingRef {
+	id: string;
+	depth: number;
+	text: string;
+	element: HTMLElement;
+	frame?: HTMLIFrameElement;
+}
+
+interface DocumentTocEntry {
+	id?: string;
+	page?: number;
+	title?: string;
+}
+
 export class TOCManager {
 	private tocItems: HTMLElement[] = [];
 	private observer: IntersectionObserver | null = null;
@@ -26,6 +40,9 @@ export class TOCManager {
 	private contentId: string;
 	private indicatorId: string;
 	private scrollOffset: number;
+	private scrollTrackingHandler: (() => void) | null = null;
+	private clickTrackingHandler: ((event: Event) => void) | null = null;
+	private iframeRefreshCleanups: Array<() => void> = [];
 
 	constructor(config: TOCConfig) {
 		this.contentId = config.contentId;
@@ -46,9 +63,9 @@ export class TOCManager {
 	}
 
 	/**
-	 * 查找所有标题
+	 * 查找当前文章正文里的 Markdown/MDX 标题
 	 */
-	private getAllHeadings(): HTMLElement[] {
+	private getPageHeadings(): HTMLElement[] {
 		const contentContainer = this.getContentContainer();
 		if (!contentContainer) {
 			return [];
@@ -56,6 +73,222 @@ export class TOCManager {
 		return Array.from(
 			contentContainer.querySelectorAll("h1, h2, h3, h4, h5, h6"),
 		);
+	}
+
+	/**
+	 * 查找 HTML 报告 iframe。报告放在本站 public 目录下时为同源 iframe，
+	 * 可读取内部 DOM，用来补齐外层文章目录。
+	 */
+	private getReportIframes(): HTMLIFrameElement[] {
+		const contentContainer = this.getContentContainer();
+		if (!contentContainer) return [];
+		return Array.from(
+			contentContainer.querySelectorAll<HTMLIFrameElement>(
+				"iframe[data-auto-height]",
+			),
+		);
+	}
+
+	private getCurrentPostCategory(): string {
+		return (
+			document
+				.getElementById("swup-container")
+				?.getAttribute("data-current-post-category") || ""
+		).trim();
+	}
+
+	private getCurrentPostTitle(): string {
+		const titleEl = document.querySelector<HTMLElement>(
+			'[data-pagefind-meta="title"]',
+		);
+		return (titleEl?.textContent || "").trim();
+	}
+
+	private normalizeTitle(value: string): string {
+		return value.replace(/\s+/g, "").trim();
+	}
+
+	private formatDocumentPageId(page: number): string {
+		return `document-page-${String(page).padStart(2, "0")}`;
+	}
+
+	private getDocumentTocData(): DocumentTocEntry[] {
+		const dataEl = document.getElementById("document-toc-data");
+		if (!dataEl?.textContent) return [];
+
+		try {
+			const parsed = JSON.parse(dataEl.textContent);
+			return Array.isArray(parsed) ? parsed : [];
+		} catch {
+			return [];
+		}
+	}
+
+	/**
+	 * PDF/PPT 页流文章没有 Markdown 标题，正文主体是一组页面图片。
+	 * 仅在文章 frontmatter 提供 documentToc 时生成一级目录。
+	 * 不再用“第 N 页”兜底，避免目录被低信息量占位项污染。
+	 */
+	private getDocumentPageHeadingRefs(): TOCHeadingRef[] {
+		const contentContainer = this.getContentContainer();
+		if (!contentContainer) return [];
+
+		const images = Array.from(
+			contentContainer.querySelectorAll<HTMLImageElement>(
+				".document-page-stream img",
+			),
+		);
+		if (images.length === 0) return [];
+
+		const tocData = this.getDocumentTocData();
+		if (tocData.length === 0) return [];
+
+		return tocData.flatMap((item, index) => {
+			const page = item.page || index + 1;
+			const title = item.title?.trim();
+			const image = images[page - 1];
+			if (!image || !title) return [];
+
+			const id = item.id || this.formatDocumentPageId(page);
+			image.id = id;
+			image.setAttribute("data-toc-title", title);
+
+			return [{
+				id,
+				depth: 2,
+				text: title,
+				element: image,
+			}];
+		});
+	}
+
+	private shouldSkipJianshanTitleHeading(heading: TOCHeadingRef): boolean {
+		if (this.getCurrentPostCategory() !== "见山") return false;
+
+		const postTitle = this.normalizeTitle(this.getCurrentPostTitle());
+		const headingText = this.normalizeTitle(heading.text);
+		return !!postTitle && headingText.startsWith(postTitle);
+	}
+
+	/**
+	 * 为没有 id 的 iframe 内标题生成稳定锚点
+	 */
+	private ensureHeadingId(
+		heading: HTMLElement,
+		usedIds: Set<string>,
+		prefix: string,
+		index: number,
+	): string {
+		const existingId = heading.id?.trim();
+		if (existingId && !usedIds.has(existingId)) {
+			usedIds.add(existingId);
+			return existingId;
+		}
+
+		const text = this.getCleanTextContent(heading).trim();
+		const slug = text
+			.toLowerCase()
+			.replace(/[^\p{Letter}\p{Number}]+/gu, "-")
+			.replace(/^-+|-+$/g, "");
+		const base = `${prefix}-${slug || index + 1}`;
+		let id = base;
+		let counter = 2;
+		while (usedIds.has(id)) {
+			id = `${base}-${counter}`;
+			counter++;
+		}
+
+		heading.id = id;
+		usedIds.add(id);
+		return id;
+	}
+
+	/**
+	 * 读取 iframe 内部标题。
+	 * HTML 报告目录只展示一级章节标题，避免右侧目录过长。
+	 * 优先取 h2；如果报告没有 h2，再退回取 h1。
+	 */
+	private getIframeHeadingRefs(): TOCHeadingRef[] {
+		const refs: TOCHeadingRef[] = [];
+		const usedIds = new Set<string>();
+
+		this.getReportIframes().forEach((frame, frameIndex) => {
+			try {
+				const doc = frame.contentDocument || frame.contentWindow?.document;
+				if (!doc) return;
+
+				let headings = Array.from(
+					doc.body?.querySelectorAll<HTMLElement>("h2") || [],
+				);
+
+				// 兼容少数报告只使用 h1 的情况
+				if (headings.length === 0) {
+					headings = Array.from(
+						doc.body?.querySelectorAll<HTMLElement>("h1") || [],
+					);
+				}
+
+				headings.forEach((heading, headingIndex) => {
+					const text = this.getCleanTextContent(heading)
+						.replace(/#+\s*$/, "")
+						.trim();
+					if (!text) return;
+
+					const depth = Number.parseInt(heading.tagName.charAt(1), 10);
+					const id = this.ensureHeadingId(
+						heading,
+						usedIds,
+						`html-report-${frameIndex + 1}`,
+						headingIndex,
+					);
+
+					refs.push({
+						id,
+						depth,
+						text,
+						element: heading,
+						frame,
+					});
+				});
+			} catch {
+				// 跨域 iframe 无法读取内部标题，保持空目录即可。
+			}
+		});
+
+		return refs;
+	}
+
+	/**
+	 * 查找所有可用于目录的标题。
+	 * 普通文章：使用外层 Markdown 标题。
+	 * HTML 报告文章：外层没有标题时，读取 iframe 内部章节标题。
+	 */
+	private getAllHeadingRefs(): TOCHeadingRef[] {
+		const pageHeadings = this.getPageHeadings();
+		if (pageHeadings.length > 0) {
+			const refs = pageHeadings.map((heading) => {
+				const depth = Number.parseInt(heading.tagName.charAt(1), 10);
+				const text = this.getCleanTextContent(heading)
+					.replace(/#+\s*$/, "")
+					.trim();
+				return {
+					id: heading.id,
+					depth,
+					text,
+					element: heading,
+				};
+			});
+			return refs.length > 0 && this.shouldSkipJianshanTitleHeading(refs[0])
+				? refs.slice(1)
+				: refs;
+		}
+
+		const documentPageHeadings = this.getDocumentPageHeadingRefs();
+		if (documentPageHeadings.length > 0) {
+			return documentPageHeadings;
+		}
+
+		return this.getIframeHeadingRefs();
 	}
 
 	/**
@@ -79,16 +312,13 @@ export class TOCManager {
 	/**
 	 * 将 DOM 标题转换为与服务端一致的 TocInput
 	 */
-	private domHeadingsToInputs(headings: HTMLElement[]): TocInput[] {
+	private domHeadingsToInputs(headings: TOCHeadingRef[]): TocInput[] {
 		return headings.map((heading) => {
-			const depth = Number.parseInt(heading.tagName.charAt(1), 10);
-			let text = this.getCleanTextContent(heading)
-				.replace(/#+\s*$/, "")
-				.trim();
+			let text = heading.text;
 
 			// 空文本回退（例如动态副标题）
 			if (!text) {
-				const dataSubtitles = heading.getAttribute("data-subtitles");
+				const dataSubtitles = heading.element.getAttribute("data-subtitles");
 				if (dataSubtitles) {
 					try {
 						const subtitles = JSON.parse(dataSubtitles);
@@ -99,7 +329,7 @@ export class TOCManager {
 				}
 			}
 
-			return { depth, slug: heading.id, text };
+			return { depth: heading.depth, slug: heading.id, text };
 		});
 	}
 
@@ -107,7 +337,7 @@ export class TOCManager {
 	 * 生成TOC HTML（客户端 fallback 路径，与服务端 SSR 输出保持一致）
 	 */
 	public generateTOCHTML(): string {
-		const headings = this.getAllHeadings();
+		const headings = this.getAllHeadingRefs();
 
 		if (headings.length === 0) {
 			return this.getEmptyStateHTML();
@@ -147,13 +377,54 @@ export class TOCManager {
 	/**
 	 * 获取可见的标题ID
 	 */
+	private getHeadingViewportRect(heading: TOCHeadingRef): DOMRect | null {
+		if (!heading.frame) return heading.element.getBoundingClientRect();
+
+		const frameRect = heading.frame.getBoundingClientRect();
+		const headingRect = heading.element.getBoundingClientRect();
+
+		return {
+			top: frameRect.top + headingRect.top,
+			bottom: frameRect.top + headingRect.bottom,
+			left: frameRect.left + headingRect.left,
+			right: frameRect.left + headingRect.right,
+			width: headingRect.width,
+			height: headingRect.height,
+			x: frameRect.left + headingRect.left,
+			y: frameRect.top + headingRect.top,
+			toJSON: () => ({}),
+		} as DOMRect;
+	}
+
+	private findHeadingRefById(id: string): TOCHeadingRef | null {
+		return this.getAllHeadingRefs().find((heading) => heading.id === id) || null;
+	}
+
+	private getHeadingAbsoluteTop(heading: TOCHeadingRef): number {
+		if (!heading.frame) {
+			return heading.element.getBoundingClientRect().top + window.pageYOffset;
+		}
+
+		const frameTop =
+			heading.frame.getBoundingClientRect().top + window.pageYOffset;
+		let headingTopInFrame = 0;
+		let current: HTMLElement | null = heading.element;
+		while (current) {
+			headingTopInFrame += current.offsetTop;
+			current = current.offsetParent as HTMLElement | null;
+		}
+
+		return frameTop + headingTopInFrame;
+	}
+
 	private getVisibleHeadingIds(): string[] {
-		const headings = this.getAllHeadings();
+		const headings = this.getAllHeadingRefs();
 		const visibleHeadingIds: string[] = [];
 
 		headings.forEach((heading) => {
 			if (heading.id) {
-				const rect = heading.getBoundingClientRect();
+				const rect = this.getHeadingViewportRect(heading);
+				if (!rect) return;
 				const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
 
 				if (isVisible) {
@@ -169,7 +440,8 @@ export class TOCManager {
 
 			headings.forEach((heading) => {
 				if (heading.id) {
-					const rect = heading.getBoundingClientRect();
+					const rect = this.getHeadingViewportRect(heading);
+					if (!rect) return;
 					const distance = Math.abs(rect.top);
 
 					if (distance < minDistance) {
@@ -296,12 +568,18 @@ export class TOCManager {
 	/**
 	 * 处理点击事件
 	 */
-	public handleClick(event: Event): void {
+	public handleClick(event: Event, sourceLink?: HTMLAnchorElement): void {
 		event.preventDefault();
-		const target = event.currentTarget as HTMLAnchorElement;
-		const id = decodeURIComponent(
-			target.getAttribute("href")?.substring(1) || "",
-		);
+		event.stopPropagation();
+		if (typeof event.stopImmediatePropagation === "function") {
+			event.stopImmediatePropagation();
+		}
+		const target = sourceLink || (event.currentTarget as HTMLAnchorElement);
+		const rawId =
+			target.dataset.headingId ||
+			target.getAttribute("href")?.substring(1) ||
+			"";
+		const id = decodeURIComponent(rawId);
 		const targetElement = document.getElementById(id);
 
 		if (targetElement) {
@@ -314,6 +592,20 @@ export class TOCManager {
 				top: targetTop,
 				behavior: "smooth",
 			});
+			return;
+		}
+
+		const iframeHeading = this.findHeadingRefById(id);
+		if (iframeHeading) {
+			const targetTop =
+				this.getHeadingAbsoluteTop(iframeHeading) - this.scrollOffset;
+
+			window.tocInternalNavigation = true;
+			window.scrollTo({
+				top: Math.max(0, targetTop),
+				behavior: "smooth",
+			});
+			window.setTimeout(() => this.updateActiveState(), 350);
 		}
 	}
 
@@ -321,11 +613,13 @@ export class TOCManager {
 	 * 设置IntersectionObserver
 	 */
 	public setupObserver(): void {
-		const headings = this.getAllHeadings();
+		const headings = this.getAllHeadingRefs();
 
 		if (this.observer) {
 			this.observer.disconnect();
 		}
+
+		this.setupScrollTracking();
 
 		this.observer = new IntersectionObserver(
 			() => {
@@ -338,9 +632,42 @@ export class TOCManager {
 		);
 
 		headings.forEach((heading) => {
-			if (heading.id) {
-				this.observer?.observe(heading);
+			if (heading.id && !heading.frame) {
+				this.observer?.observe(heading.element);
 			}
+		});
+	}
+
+	private setupScrollTracking(): void {
+		if (!this.scrollTrackingHandler) {
+			this.scrollTrackingHandler = () => {
+				window.requestAnimationFrame(() => this.updateActiveState());
+			};
+			window.addEventListener("scroll", this.scrollTrackingHandler, {
+				passive: true,
+			});
+			window.addEventListener("resize", this.scrollTrackingHandler);
+		}
+	}
+
+	private clearIframeRefreshHandlers(): void {
+		this.iframeRefreshCleanups.forEach((cleanup) => cleanup());
+		this.iframeRefreshCleanups = [];
+	}
+
+	private setupIframeRefresh(): void {
+		this.clearIframeRefreshHandlers();
+
+		this.getReportIframes().forEach((iframe) => {
+			const handler = () => {
+				window.setTimeout(() => {
+					this.render();
+				}, 100);
+			};
+			iframe.addEventListener("load", handler);
+			this.iframeRefreshCleanups.push(() => {
+				iframe.removeEventListener("load", handler);
+			});
 		});
 	}
 
@@ -348,9 +675,22 @@ export class TOCManager {
 	 * 绑定点击事件
 	 */
 	public bindClickEvents(): void {
-		this.tocItems.forEach((item) => {
-			item.addEventListener("click", this.handleClick.bind(this));
-		});
+		const tocContent = document.getElementById(this.contentId);
+		if (!tocContent) return;
+
+		if (this.clickTrackingHandler) {
+			tocContent.removeEventListener("click", this.clickTrackingHandler);
+		}
+
+		this.clickTrackingHandler = (event: Event) => {
+			const target = event.target as Element | null;
+			const link = target?.closest<HTMLAnchorElement>("a.toc-item");
+			if (!link || !tocContent.contains(link)) return;
+
+			this.handleClick(event, link);
+		};
+
+		tocContent.addEventListener("click", this.clickTrackingHandler, true);
 	}
 
 	/**
@@ -361,6 +701,17 @@ export class TOCManager {
 			this.observer.disconnect();
 			this.observer = null;
 		}
+		if (this.scrollTrackingHandler) {
+			window.removeEventListener("scroll", this.scrollTrackingHandler);
+			window.removeEventListener("resize", this.scrollTrackingHandler);
+			this.scrollTrackingHandler = null;
+		}
+		if (this.clickTrackingHandler) {
+			const tocContent = document.getElementById(this.contentId);
+			tocContent?.removeEventListener("click", this.clickTrackingHandler, true);
+			this.clickTrackingHandler = null;
+		}
+		this.clearIframeRefreshHandlers();
 		if (this.scrollTimeout) {
 			clearTimeout(this.scrollTimeout);
 			this.scrollTimeout = null;
@@ -373,6 +724,7 @@ export class TOCManager {
 	 */
 	public render(): void {
 		this.updateTOCContent();
+		this.setupIframeRefresh();
 		this.bindClickEvents();
 		this.setupObserver();
 		this.updateActiveState();
@@ -385,7 +737,7 @@ export class TOCManager {
 	 */
 	private anchorsMatchCurrentContent(anchors: HTMLElement[]): boolean {
 		const expected = computeTocItems(
-			this.domHeadingsToInputs(this.getAllHeadings()),
+			this.domHeadingsToInputs(this.getAllHeadingRefs()),
 			{ maxLevel: this.maxLevel },
 		);
 		if (expected.length !== anchors.length) return false;

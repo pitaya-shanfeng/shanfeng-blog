@@ -12,8 +12,6 @@ draft: false
 documentPages: 12
 ---
 
-本资料整理了七人双轨拼团的调研内容，可在线预览。
-
 <div class="document-page-stream" aria-label="七人双轨拼团调研在线预览">
   <img src="/assets/library/cases/seven-person-dual-track-group-buying/pages/page-01.jpg" alt="七人双轨拼团调研第 1 页" loading="lazy" decoding="async" draggable="false" />
   <img src="/assets/library/cases/seven-person-dual-track-group-buying/pages/page-02.jpg" alt="七人双轨拼团调研第 2 页" loading="lazy" decoding="async" draggable="false" />

@@ -2,6 +2,7 @@
 title: 屈臣氏调研
 published: 2026-07-23
 description: 屈臣氏调研资料，整理品牌定位、业务模式与市场观察。
+image: /assets/library/cases/watsons-research/cover.png
 category: 案例库
 tags:
   - 案例研究
@@ -10,8 +11,6 @@ draft: false
 comment: false
 documentPages: 38
 ---
-
-本资料整理了屈臣氏的调研分析内容，可直接在线预览。
 
 <div class="document-page-stream" aria-label="屈臣氏调研在线预览">
   <img src="/assets/library/cases/watsons-research/pages/page-01.jpg" alt="屈臣氏调研在线预览第 1 页" loading="lazy" decoding="async" draggable="false" />

@@ -13,8 +13,6 @@ comment: false
 documentPages: 46
 ---
 
-本资料整理了大模型认知基础的课程内容，可直接在线预览。
-
 <div class="document-page-stream" aria-label="大模型认知基础在线预览">
   <img src="/assets/library/notes/llm-cognition-basics/pages/page-01.jpg" alt="大模型认知基础第 1 页" loading="lazy" decoding="async" draggable="false" />
   <img src="/assets/library/notes/llm-cognition-basics/pages/page-02.jpg" alt="大模型认知基础第 2 页" loading="lazy" decoding="async" draggable="false" />

@@ -23,6 +23,15 @@ const postsCollection = defineCollection({
 		password: z.string().optional().default(""),
 		passwordHint: z.string().optional().default(""),
 		documentPages: z.number().int().positive().optional(),
+		documentToc: z
+			.array(
+				z.object({
+					page: z.number().int().positive().optional(),
+					title: z.string(),
+				}),
+			)
+			.optional()
+			.default([]),
 
 		/* For internal use */
 		prevTitle: z.string().default(""),

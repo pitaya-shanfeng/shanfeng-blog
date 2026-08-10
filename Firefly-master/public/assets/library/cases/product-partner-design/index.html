@@ -1,0 +1,1910 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Partner — 设计思路与产品架构</title>
+<style>
+/* ===================== Base Reset ===================== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --c-primary: #4F46E5;
+  --c-primary-light: #818CF8;
+  --c-primary-dark: #3730A3;
+  --c-primary-bg: #EEF2FF;
+  --c-accent: #F59E0B;
+  --c-accent-light: #FCD34D;
+  --c-accent-bg: #FFFBEB;
+  --c-success: #10B981;
+  --c-success-bg: #ECFDF5;
+  --c-danger: #EF4444;
+  --c-info: #0EA5E9;
+  --c-info-bg: #F0F9FF;
+  --c-text: #1E293B;
+  --c-text-mid: #475569;
+  --c-text-muted: #94A3B8;
+  --c-bg: #F8FAFC;
+  --c-card: #FFFFFF;
+  --c-border: #E2E8F0;
+  --c-border-light: #F1F5F9;
+  --c-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --c-shadow-lg: 0 10px 30px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-xs: 8px;
+  --max-width: 860px;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "SF Mono", "Fira Code", "JetBrains Mono", Consolas, monospace;
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--c-bg);
+  color: var(--c-text);
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ===================== Typography ===================== */
+h1, h2, h3, h4 { line-height: 1.3; font-weight: 700; color: var(--c-text); }
+
+a { color: var(--c-primary); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--c-primary-dark); }
+
+/* ===================== Layout ===================== */
+.page { max-width: var(--max-width); margin: 0 auto; padding: 0 24px; }
+
+/* ===================== Hero ===================== */
+.hero {
+  position: relative;
+  background: linear-gradient(135deg, #312E81 0%, #4F46E5 45%, #6366F1 100%);
+  padding: 80px 24px 70px;
+  text-align: center;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -120px; right: -80px;
+  width: 360px; height: 360px;
+  background: radial-gradient(circle, rgba(252,211,77,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; left: -60px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(129,140,248,0.25) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.hero-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #C7D2FE;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin-bottom: 24px;
+  position: relative; z-index: 1;
+}
+.hero h1 {
+  font-size: 38px;
+  color: #fff;
+  margin-bottom: 16px;
+  position: relative; z-index: 1;
+  letter-spacing: -0.5px;
+}
+.hero-subtitle {
+  font-size: 17px;
+  color: #C7D2FE;
+  max-width: 560px;
+  margin: 0 auto;
+  position: relative; z-index: 1;
+  line-height: 1.7;
+}
+.hero-tags {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 28px;
+  position: relative; z-index: 1;
+}
+.hero-tag {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #E0E7FF;
+  font-size: 13px;
+  padding: 5px 14px;
+  border-radius: 8px;
+}
+
+/* ===================== Section ===================== */
+.section {
+  padding: 56px 0;
+  border-bottom: 1px solid var(--c-border-light);
+}
+.section:last-child { border-bottom: none; }
+
+.section-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.section-num {
+  flex-shrink: 0;
+  width: 40px; height: 40px;
+  background: linear-gradient(135deg, var(--c-primary), var(--c-primary-light));
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(79,70,229,0.3);
+}
+.section-title-group { flex: 1; }
+.section-eyebrow {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-primary);
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+.section-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--c-text);
+}
+.section-desc {
+  font-size: 15px;
+  color: var(--c-text-mid);
+  margin-top: 6px;
+}
+
+/* ===================== Card ===================== */
+.card {
+  background: var(--c-card);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--c-shadow);
+}
+.card-accent {
+  border-left: 4px solid var(--c-primary);
+}
+
+/* ===================== Big Quote ===================== */
+.big-quote {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--c-text);
+  text-align: center;
+  padding: 12px 0;
+}
+.big-quote .highlight {
+  background: linear-gradient(120deg, transparent 0%, transparent 60%, var(--c-accent-light) 60%, var(--c-accent-light) 100%);
+  padding: 0 4px;
+}
+
+/* ===================== Problem Cards ===================== */
+.problem-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+.problem-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px 20px;
+  background: var(--c-card);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.problem-item:hover {
+  box-shadow: var(--c-shadow-lg);
+  transform: translateY(-1px);
+}
+.problem-icon {
+  flex-shrink: 0;
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.problem-icon.red { background: #FEE2E2; }
+.problem-icon.blue { background: #DBEAFE; }
+.problem-icon.amber { background: #FEF3C7; }
+.problem-icon.green { background: #D1FAE5; }
+.problem-text {
+  font-size: 15px;
+  color: var(--c-text);
+  line-height: 1.6;
+}
+
+/* ===================== Scenario Cards ===================== */
+.scenario-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.scenario-card {
+  text-align: center;
+  padding: 28px 20px;
+  background: var(--c-card);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.scenario-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--c-shadow-lg);
+}
+.scenario-icon {
+  width: 52px; height: 52px;
+  margin: 0 auto 16px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+.scenario-card h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.scenario-card p {
+  font-size: 13px;
+  color: var(--c-text-muted);
+  line-height: 1.5;
+}
+.scenario-card .scenario-user {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--c-primary);
+  font-weight: 600;
+  background: var(--c-primary-bg);
+  padding: 4px 12px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+/* ===================== Design Principles ===================== */
+.principle-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.principle-card {
+  padding: 20px;
+  background: var(--c-card);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+  position: relative;
+  overflow: hidden;
+}
+.principle-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px; height: 100%;
+  background: var(--c-primary);
+}
+.principle-card:nth-child(2)::before { background: var(--c-info); }
+.principle-card:nth-child(3)::before { background: var(--c-success); }
+.principle-card:nth-child(4)::before { background: var(--c-accent); }
+.principle-card:nth-child(5)::before { background: #8B5CF6; }
+.principle-card:nth-child(6)::before { background: #EC4899; }
+.principle-num {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--c-text-muted);
+  letter-spacing: 1px;
+}
+.principle-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--c-text);
+  margin: 4px 0 8px;
+}
+.principle-body {
+  font-size: 13px;
+  color: var(--c-text-mid);
+  line-height: 1.6;
+}
+.principle-body .label {
+  font-weight: 600;
+  color: var(--c-text);
+}
+
+/* ===================== Three Layers ===================== */
+.layer-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.layer-card {
+  padding: 24px 28px;
+  border-radius: var(--radius);
+  position: relative;
+  transition: transform 0.2s;
+}
+.layer-card:hover { transform: scale(1.01); }
+.layer-card.think { background: linear-gradient(135deg, #EEF2FF, #E0E7FF); border: 1px solid #C7D2FE; }
+.layer-card.know { background: linear-gradient(135deg, #F0F9FF, #E0F2FE); border: 1px solid #BAE6FD; }
+.layer-card.do { background: linear-gradient(135deg, #FFFBEB, #FEF3C7); border: 1px solid #FDE68A; }
+
+.layer-arrow {
+  text-align: center;
+  font-size: 24px;
+  color: var(--c-text-muted);
+  padding: 4px 0;
+}
+
+.layer-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.layer-badge {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+.layer-card.think .layer-badge { background: #4F46E5; color: #fff; }
+.layer-card.know .layer-badge { background: #0EA5E9; color: #fff; }
+.layer-card.do .layer-badge { background: #F59E0B; color: #fff; }
+.layer-header h4 { font-size: 16px; }
+.layer-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.layer-item {
+  background: rgba(255,255,255,0.7);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--c-text);
+  border: 1px solid rgba(255,255,255,0.5);
+}
+.layer-item .sub { color: var(--c-text-muted); font-size: 12px; }
+
+/* ===================== Info Table ===================== */
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin: 0;
+}
+.info-table th {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--c-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 12px 16px;
+  background: var(--c-bg);
+  border-bottom: 2px solid var(--c-border);
+}
+.info-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--c-border-light);
+  color: var(--c-text);
+  vertical-align: top;
+}
+.info-table tr:last-child td { border-bottom: none; }
+.info-table tr:hover td { background: var(--c-primary-bg); }
+
+/* ===================== Callout ===================== */
+.callout {
+  padding: 20px 24px;
+  border-radius: var(--radius-sm);
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.callout.info { background: var(--c-info-bg); border-left: 4px solid var(--c-info); color: #075985; }
+.callout.success { background: var(--c-success-bg); border-left: 4px solid var(--c-success); color: #065F46; }
+.callout.accent { background: var(--c-accent-bg); border-left: 4px solid var(--c-accent); color: #92400E; }
+.callout.primary { background: var(--c-primary-bg); border-left: 4px solid var(--c-primary); color: var(--c-primary-dark); }
+
+/* ===================== Architecture Diagram Box ===================== */
+.diagram-box {
+  background: var(--c-card);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: 28px;
+  margin: 0;
+  overflow: hidden;
+}
+.diagram-box svg { width: 100%; height: auto; display: block; }
+.diagram-caption {
+  text-align: center;
+  font-size: 13px;
+  color: var(--c-text-muted);
+  margin-top: 16px;
+}
+
+/* ===================== Progress Bars ===================== */
+.progress-list { display: flex; flex-direction: column; gap: 16px; }
+.progress-item { }
+.progress-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.progress-label { font-size: 14px; font-weight: 600; color: var(--c-text); }
+.progress-status { font-size: 12px; font-weight: 600; padding: 2px 10px; border-radius: 6px; }
+.progress-status.done { background: var(--c-success-bg); color: var(--c-success); }
+.progress-status.basic { background: var(--c-accent-bg); color: var(--c-accent); }
+.progress-status.p0 { background: var(--c-info-bg); color: var(--c-info); }
+.progress-status.direction { background: #F3E8FF; color: #8B5CF6; }
+.progress-status.building { background: #FEF2F2; color: var(--c-danger); }
+.progress-track {
+  height: 8px;
+  background: var(--c-border-light);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.progress-fill.done { background: var(--c-success); width: 100%; }
+.progress-fill.basic { background: var(--c-accent); width: 60%; }
+.progress-fill.p0 { background: var(--c-info); width: 45%; }
+.progress-fill.direction { background: #8B5CF6; width: 30%; }
+.progress-fill.building { background: var(--c-danger); width: 20%; }
+.progress-desc { font-size: 13px; color: var(--c-text-mid); margin-top: 6px; }
+
+/* ===================== Roadmap Timeline ===================== */
+.roadmap {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+.roadmap-step {
+  flex: 1;
+  min-width: 120px;
+  text-align: center;
+  position: relative;
+}
+.roadmap-dot {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  position: relative;
+  z-index: 2;
+}
+.roadmap-step:nth-child(1) .roadmap-dot { background: var(--c-success); }
+.roadmap-step:nth-child(2) .roadmap-dot { background: var(--c-info); }
+.roadmap-step:nth-child(3) .roadmap-dot { background: var(--c-accent); }
+.roadmap-step:nth-child(4) .roadmap-dot { background: #8B5CF6; }
+.roadmap-step:nth-child(5) .roadmap-dot { background: var(--c-primary); }
+.roadmap-step:nth-child(6) .roadmap-dot { background: var(--c-primary-dark); }
+.roadmap-line {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  width: 100%;
+  height: 3px;
+  background: var(--c-border);
+  z-index: 1;
+}
+.roadmap-step:last-child .roadmap-line { display: none; }
+.roadmap-version { font-size: 13px; font-weight: 700; color: var(--c-text); margin-bottom: 2px; }
+.roadmap-label { font-size: 12px; color: var(--c-text-mid); line-height: 1.4; padding: 0 6px; }
+
+/* ===================== Takeaway Cards ===================== */
+.takeaway-grid { display: flex; flex-direction: column; gap: 14px; }
+.takeaway-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 22px 24px;
+  background: var(--c-card);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.takeaway-card:hover { box-shadow: var(--c-shadow-lg); transform: translateY(-2px); }
+.takeaway-num {
+  flex-shrink: 0;
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+}
+.takeaway-card:nth-child(1) .takeaway-num { background: var(--c-primary); }
+.takeaway-card:nth-child(2) .takeaway-num { background: var(--c-info); }
+.takeaway-card:nth-child(3) .takeaway-num { background: var(--c-success); }
+.takeaway-card:nth-child(4) .takeaway-num { background: var(--c-accent); }
+.takeaway-text { font-size: 15px; font-weight: 600; color: var(--c-text); line-height: 1.6; }
+.takeaway-text .strike { text-decoration: line-through; color: var(--c-text-muted); font-weight: 400; }
+
+/* ===================== Key-Value Table ===================== */
+.kv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.kv-card {
+  padding: 18px 20px;
+  background: var(--c-card);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+}
+.kv-label { font-size: 12px; font-weight: 700; color: var(--c-text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.kv-value { font-size: 14px; color: var(--c-text); line-height: 1.6; }
+
+/* ===================== Footer ===================== */
+.footer {
+  text-align: center;
+  padding: 48px 24px;
+  background: linear-gradient(135deg, #1E1B4B, #312E81);
+  color: #A5B4FC;
+}
+.footer h3 { color: #fff; font-size: 20px; margin-bottom: 8px; }
+.footer p { font-size: 14px; }
+
+/* ===================== Section Divider ===================== */
+.divider-dot {
+  text-align: center;
+  padding: 8px 0;
+  color: var(--c-border);
+  letter-spacing: 8px;
+  font-size: 12px;
+}
+
+/* ===================== Responsive ===================== */
+@media (max-width: 768px) {
+  .scenario-grid { grid-template-columns: 1fr; }
+  .principle-grid { grid-template-columns: 1fr; }
+  .kv-grid { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 28px; }
+  .big-quote { font-size: 18px; }
+  .section-title { font-size: 20px; }
+}
+
+/* ===================== Print ===================== */
+@media print {
+  .hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .section { page-break-inside: avoid; }
+  .card, .diagram-box, .problem-item, .principle-card, .scenario-card, .layer-card, .takeaway-card, .kv-card { page-break-inside: avoid; }
+  body { background: #fff; }
+}
+
+/* ===================== Animations ===================== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.section { animation: fadeIn 0.5s ease-out; }
+</style>
+</head>
+<body>
+
+<!-- ========================= HERO ========================= -->
+<div class="hero">
+  <span class="hero-badge">PRODUCT PARTNER · 内部分享</span>
+  <h1>设计思路与产品架构</h1>
+  <p class="hero-subtitle">把一个真实产品人的判断标准、方法论、历史产出和复盘经验，沉淀成一个 24 小时在线的产品专家能力包</p>
+  <div class="hero-tags">
+    <span class="hero-tag">可迁移</span>
+    <span class="hero-tag">可验证</span>
+    <span class="hero-tag">可执行</span>
+    <span class="hero-tag">可持续进化</span>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ========================= 01 概述 ========================= -->
+<div class="section" id="overview">
+  <div class="section-head">
+    <div class="section-num">01</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">OVERVIEW</div>
+      <h2 class="section-title">一句话概括</h2>
+    </div>
+  </div>
+
+  <div class="card" style="border-left: 4px solid var(--c-primary); text-align: center;">
+    <p class="big-quote">
+      Product Partner 是一个<span class="highlight">可移植、可持续更新、可被个人、团队和其他 Agent 调用</span>的产品专家能力包。
+    </p>
+    <p style="font-size: 15px; color: var(--c-text-mid); margin-top: 16px; max-width: 640px; margin-left: auto; margin-right: auto;">
+      它要解决的问题不是「让 AI 写更多产品文档」，而是把一个真实产品人的判断标准、方法论、历史产出、复盘经验、知识资产和可执行工作流，沉淀成一个 24 小时在线的产品专家。
+    </p>
+  </div>
+</div>
+
+<!-- ========================= 02 为什么做 ========================= -->
+<div class="section" id="why">
+  <div class="section-head">
+    <div class="section-num">02</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">WHY</div>
+      <h2 class="section-title">为什么做</h2>
+      <p class="section-desc">产品工作里最稀缺的不是模板，而是稳定的判断</p>
+    </div>
+  </div>
+
+  <p style="font-size: 15px; color: var(--c-text-mid); margin-bottom: 24px;">
+    在真实协作中，很多问题并不是缺少文档，而是缺少以下能力：
+  </p>
+
+  <div class="problem-grid">
+    <div class="problem-item">
+      <div class="problem-icon red">🎯</div>
+      <div class="problem-text">把模糊需求拆成<strong>真实用户场景</strong></div>
+    </div>
+    <div class="problem-item">
+      <div class="problem-icon amber">⚖️</div>
+      <div class="problem-text">判断一个需求<strong>值不值得做</strong>、优先级在哪里</div>
+    </div>
+    <div class="problem-item">
+      <div class="problem-icon blue">🔍</div>
+      <div class="problem-text">识别 PRD、流程、架构和指标里的<strong>关键风险</strong></div>
+    </div>
+    <div class="problem-item">
+      <div class="problem-icon green">🔄</div>
+      <div class="problem-text">把历史项目经验<strong>迁移到新问题</strong>里，而不是机械套案例</div>
+    </div>
+    <div class="problem-item">
+      <div class="problem-icon red">🛡️</div>
+      <div class="problem-text">在团队、平台、公司变化时，<strong>保留个人和团队沉淀</strong>下来的产品能力</div>
+    </div>
+  </div>
+
+  <div style="margin-top: 24px;">
+    <div class="callout primary">
+      <strong>核心目标：</strong>把「人脑里的产品判断」产品化，而不是把资料简单堆进提示词。
+    </div>
+  </div>
+</div>
+
+<!-- ========================= 03 产品定位 ========================= -->
+<div class="section" id="positioning">
+  <div class="section-head">
+    <div class="section-num">03</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">POSITIONING</div>
+      <h2 class="section-title">产品定位</h2>
+      <p class="section-desc">可调用的产品专家 Agent 能力包</p>
+    </div>
+  </div>
+
+  <div class="scenario-grid">
+    <div class="scenario-card">
+      <div class="scenario-icon" style="background: var(--c-primary-bg);">👤</div>
+      <h4>个人使用</h4>
+      <p>作为个人产品能力助手，辅助判断、评审、写作和复盘</p>
+      <span class="scenario-user">用户本人</span>
+    </div>
+    <div class="scenario-card">
+      <div class="scenario-icon" style="background: var(--c-info-bg);">👥</div>
+      <h4>团队使用</h4>
+      <p>作为团队产品专家，帮助 PM、新人和协作团队提高产出质量</p>
+      <span class="scenario-user">产品团队 / 运营 / 设计 / 研发 / 数据</span>
+    </div>
+    <div class="scenario-card">
+      <div class="scenario-icon" style="background: var(--c-accent-bg);">🤖</div>
+      <h4>Agent 调用</h4>
+      <p>作为可安装能力包或 Runtime 能力，被其他平台和 Agent 调用</p>
+      <span class="scenario-user">WorkBuddy / 飞书 Aily / Codex / MCP</span>
+    </div>
+  </div>
+
+  <div style="margin-top: 24px;">
+    <div class="callout info">
+      <strong>当前阶段已具备：</strong>角色、人设、产品底层思想、方法卡、案例卡、调用包、权限模型、回归测试集，以及 Runtime P0 的专家调用基础。它还不是完整的团队 Agent 服务，也不是全面生产化的 MCP Server——项目重心是让专家判断<strong>稳定、可验证、可迁移</strong>，再逐步进入平台化和服务化。
+    </div>
+  </div>
+</div>
+
+<!-- ========================= 04 设计思路 ========================= -->
+<div class="section" id="design">
+  <div class="section-head">
+    <div class="section-num">04</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">DESIGN THINKING</div>
+      <h2 class="section-title">设计思路</h2>
+      <p class="section-desc">从个人经验到团队能力的转化系统</p>
+    </div>
+  </div>
+
+  <div class="diagram-box" style="margin-bottom: 32px;">
+    <svg viewBox="0 0 760 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrow-d" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L8,3 L0,6" fill="none" stroke="#94A3B8" stroke-width="1.5"/>
+        </marker>
+        <linearGradient id="g-node1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#EEF2FF"/>
+          <stop offset="100%" style="stop-color:#E0E7FF"/>
+        </linearGradient>
+        <linearGradient id="g-node2" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#F0F9FF"/>
+          <stop offset="100%" style="stop-color:#E0F2FE"/>
+        </linearGradient>
+        <linearGradient id="g-node3" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#FFFBEB"/>
+          <stop offset="100%" style="stop-color:#FEF3C7"/>
+        </linearGradient>
+        <linearGradient id="g-node4" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#ECFDF5"/>
+          <stop offset="100%" style="stop-color:#D1FAE5"/>
+        </linearGradient>
+        <linearGradient id="g-node5" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#FDF2F8"/>
+          <stop offset="100%" style="stop-color:#FCE7F3"/>
+        </linearGradient>
+      </defs>
+      <!-- Nodes -->
+      <g>
+        <rect x="10" y="65" width="120" height="70" rx="12" fill="url(#g-node1)" stroke="#C7D2FE" stroke-width="1.5"/>
+        <text x="70" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#3730A3">真实产品经验</text>
+        <text x="70" y="110" text-anchor="middle" font-size="10" fill="#6366F1">PRD · 评审 · 复盘</text>
+        <text x="70" y="124" text-anchor="middle" font-size="10" fill="#6366F1">方法论</text>
+      </g>
+      <line x1="130" y1="100" x2="155" y2="100" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrow-d)"/>
+      <g>
+        <rect x="160" y="65" width="100" height="70" rx="12" fill="url(#g-node2)" stroke="#BAE6FD" stroke-width="1.5"/>
+        <text x="210" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#0369A1">蒸馏</text>
+        <text x="210" y="112" text-anchor="middle" font-size="10" fill="#0EA5E9">提炼判断标准</text>
+        <text x="210" y="124" text-anchor="middle" font-size="10" fill="#0EA5E9">方法和边界</text>
+      </g>
+      <line x1="260" y1="100" x2="285" y2="100" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrow-d)"/>
+      <g>
+        <rect x="290" y="65" width="110" height="70" rx="12" fill="url(#g-node3)" stroke="#FDE68A" stroke-width="1.5"/>
+        <text x="345" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#92400E">能力包</text>
+        <text x="345" y="112" text-anchor="middle" font-size="10" fill="#D97706">角色 · 人设</text>
+        <text x="345" y="124" text-anchor="middle" font-size="10" fill="#D97706">Playbook · 模板</text>
+      </g>
+      <line x1="400" y1="100" x2="425" y2="100" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrow-d)"/>
+      <g>
+        <rect x="430" y="65" width="100" height="70" rx="12" fill="url(#g-node4)" stroke="#86EFAC" stroke-width="1.5"/>
+        <text x="480" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#065F46">运行时</text>
+        <text x="480" y="112" text-anchor="middle" font-size="10" fill="#10B981">按任务加载</text>
+        <text x="480" y="124" text-anchor="middle" font-size="10" fill="#10B981">知识和 Skill</text>
+      </g>
+      <line x1="530" y1="100" x2="555" y2="100" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrow-d)"/>
+      <g>
+        <rect x="560" y="65" width="100" height="70" rx="12" fill="url(#g-node5)" stroke="#F9A8D4" stroke-width="1.5"/>
+        <text x="610" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#9D174D">真实使用</text>
+        <text x="610" y="112" text-anchor="middle" font-size="10" fill="#DB2777">个人 / 团队</text>
+        <text x="610" y="124" text-anchor="middle" font-size="10" fill="#DB2777">Agent 调用</text>
+      </g>
+      <!-- Feedback loop -->
+      <path d="M 610 135 Q 610 175 345 175 Q 210 175 210 135" fill="none" stroke="#F59E0B" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrow-d)"/>
+      <rect x="300" y="162" width="120" height="22" rx="6" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1"/>
+      <text x="360" y="177" text-anchor="middle" font-size="11" font-weight="600" fill="#92400E">评估反馈 · 持续修订</text>
+    </svg>
+    <p class="diagram-caption">从经验到能力的转化闭环</p>
+  </div>
+
+  <p style="font-size: 15px; color: var(--c-text-mid); margin-bottom: 20px;">
+    这套设计背后的核心思路有六点：
+  </p>
+
+  <div class="principle-grid">
+    <div class="principle-card">
+      <div class="principle-num">01</div>
+      <div class="principle-title">从经验出发，而不是从模板出发</div>
+      <div class="principle-body">
+        <span class="label">问题：</span>模板只能统一格式，不能保证判断质量<br>
+        <span class="label">体现：</span>先沉淀用户认可的 PRD、评审、复盘和产品观点，再提炼成可复用规则
+      </div>
+    </div>
+    <div class="principle-card">
+      <div class="principle-num">02</div>
+      <div class="principle-title">把判断和资料分开</div>
+      <div class="principle-body">
+        <span class="label">问题：</span>资料会变，判断标准需要稳定迁移<br>
+        <span class="label">体现：</span>核心能力包保存产品观和方法论，企业资料通过权限在运行时接入
+      </div>
+    </div>
+    <div class="principle-card">
+      <div class="principle-num">03</div>
+      <div class="principle-title">统一专家入口，内部按任务分工</div>
+      <div class="principle-body">
+        <span class="label">问题：</span>用户不应该面对一堆零散工具<br>
+        <span class="label">体现：</span>对外只有 Product Partner，对内按需求、数据、架构、复盘等场景加载不同能力
+      </div>
+    </div>
+    <div class="principle-card">
+      <div class="principle-num">04</div>
+      <div class="principle-title">少读、准读、按任务读</div>
+      <div class="principle-body">
+        <span class="label">问题：</span>全量塞上下文会让回答变散、变慢、变不可控<br>
+        <span class="label">体现：</span>Runtime Manifest 定义 L0–L3 加载级别，按任务读取 playbook、方法卡和案例卡
+      </div>
+    </div>
+    <div class="principle-card">
+      <div class="principle-num">05</div>
+      <div class="principle-title">案例只做启发，不做套用</div>
+      <div class="principle-body">
+        <span class="label">问题：</span>历史案例如果不判断前提，很容易误导新业务<br>
+        <span class="label">体现：</span>案例卡必须说明相似点、差异点、可借鉴机制和不可照搬部分
+      </div>
+    </div>
+    <div class="principle-card">
+      <div class="principle-num">06</div>
+      <div class="principle-title">用真实任务持续校准</div>
+      <div class="principle-body">
+        <span class="label">问题：</span>Agent 能力不能只靠设计文档证明<br>
+        <span class="label">体现：</span>通过回归测试、失败样本、真实材料闭环持续修订
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 24px;">
+    <div class="callout accent">
+      <strong>一句话概括：</strong>Product Partner 不是把资料喂给 AI，而是把产品判断拆成<strong>可迁移的核心能力</strong>、<strong>可更新的知识资产</strong>、<strong>可执行的工作流</strong>和<strong>可验证的评估闭环</strong>。
+    </div>
+  </div>
+</div>
+
+<!-- ========================= 05 产品能力地图 ========================= -->
+<div class="section" id="capability">
+  <div class="section-head">
+    <div class="section-num">05</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">CAPABILITY MAP</div>
+      <h2 class="section-title">产品能力地图</h2>
+      <p class="section-desc">先判断问题，再调用知识，最后完成产物</p>
+    </div>
+  </div>
+
+  <div class="layer-stack">
+    <!-- Layer 1: Think -->
+    <div class="layer-card think">
+      <div class="layer-header">
+        <span class="layer-badge">L1</span>
+        <h4>会判断</h4>
+        <span style="font-size: 13px; color: var(--c-text-muted); margin-left: auto;">像一个资深产品一样先问对问题、抓主要矛盾、做取舍</span>
+      </div>
+      <div class="layer-items">
+        <span class="layer-item">🎯 澄清目标 — 这个问题到底要解决什么</span>
+        <span class="layer-item">👥 拆用户场景 — 谁在什么情况下为什么需要</span>
+        <span class="layer-item">⚖️ 做产品取舍 — 值不值得做、先做什么</span>
+        <span class="layer-item">⚠️ 识别风险 — 事实缺口、验证风险、协作风险</span>
+      </div>
+    </div>
+
+    <div class="layer-arrow">↓</div>
+
+    <!-- Layer 2: Know -->
+    <div class="layer-card know">
+      <div class="layer-header">
+        <span class="layer-badge">L2</span>
+        <h4>懂方法和案例</h4>
+        <span style="font-size: 13px; color: var(--c-text-muted); margin-left: auto;">能把方法论、案例和历史经验用到当前问题里</span>
+      </div>
+      <div class="layer-items">
+        <span class="layer-item">🧠 产品底层思想 — 需求观、用户观、数据观、技术观</span>
+        <span class="layer-item">📋 方法卡 — 竞品、场景、沟通、复盘</span>
+        <span class="layer-item">📦 案例卡 — 脱敏案例、历史经验、机制启发</span>
+        <span class="layer-item">📚 知识源 — Blog、方法论、企业知识库</span>
+      </div>
+    </div>
+
+    <div class="layer-arrow">↓</div>
+
+    <!-- Layer 3: Do -->
+    <div class="layer-card do">
+      <div class="layer-header">
+        <span class="layer-badge">L3</span>
+        <h4>能执行工作流</h4>
+        <span style="font-size: 13px; color: var(--c-text-muted); margin-left: auto;">不只停留在建议，还能进入具体产品工作流</span>
+      </div>
+      <div class="layer-items">
+        <span class="layer-item">📝 BRD 前置判断</span>
+        <span class="layer-item">📋 PRD 审查</span>
+        <span class="layer-item">🗺️ 需求场景梳理</span>
+        <span class="layer-item">🔄 项目复盘</span>
+        <span class="layer-item">📊 路线图 / 能力地图</span>
+        <span class="layer-item">📈 埋点 / 指标方案</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 24px;">
+    <div class="callout success">
+      <strong>V0 聚焦三类高频、高价值任务：</strong>
+      <br>1. 梳理需求和用户场景
+      <br>2. 数据分析及项目复盘
+      <br>3. 架构设计及路线规划
+      <br><br>
+      <span style="font-size: 13px;">这三类任务最能检验一个产品专家是否真的具备判断力，而不是只会整理格式。</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========================= 06 产品架构总览 ========================= -->
+<div class="section" id="architecture">
+  <div class="section-head">
+    <div class="section-num">06</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">ARCHITECTURE</div>
+      <h2 class="section-title">产品架构总览</h2>
+      <p class="section-desc">多入口进入 Runtime，统一调用 Core、Knowledge 和 Skill</p>
+    </div>
+  </div>
+
+  <div class="diagram-box">
+    <svg viewBox="0 0 760 560" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arr-arch" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6" fill="none" stroke="#94A3B8" stroke-width="1.5"/>
+        </marker>
+      </defs>
+
+      <!-- User -->
+      <rect x="290" y="10" width="180" height="44" rx="22" fill="#1E293B"/>
+      <text x="380" y="37" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">用户 / 产品团队 / 其他 Agent</text>
+
+      <!-- Arrow to Entry -->
+      <line x1="380" y1="54" x2="380" y2="72" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-arch)"/>
+
+      <!-- Entry Layer -->
+      <rect x="20" y="78" width="720" height="76" rx="10" fill="#EEF2FF" stroke="#C7D2FE" stroke-width="1.5"/>
+      <text x="40" y="98" font-size="11" font-weight="700" fill="#4F46E5" letter-spacing="1">调用入口</text>
+      <g>
+        <rect x="40" y="108" width="160" height="36" rx="8" fill="#fff" stroke="#C7D2FE"/>
+        <text x="120" y="131" text-anchor="middle" font-size="12" font-weight="600" fill="#3730A3">Codex 本地研发</text>
+      </g>
+      <g>
+        <rect x="212" y="108" width="160" height="36" rx="8" fill="#fff" stroke="#C7D2FE"/>
+        <text x="292" y="131" text-anchor="middle" font-size="12" font-weight="600" fill="#3730A3">WorkBuddy 个人入口</text>
+      </g>
+      <g>
+        <rect x="384" y="108" width="160" height="36" rx="8" fill="#fff" stroke="#C7D2FE"/>
+        <text x="464" y="131" text-anchor="middle" font-size="12" font-weight="600" fill="#3730A3">飞书 Aily 团队入口</text>
+      </g>
+      <g>
+        <rect x="556" y="108" width="160" height="36" rx="8" fill="#fff" stroke="#C7D2FE"/>
+        <text x="636" y="131" text-anchor="middle" font-size="12" font-weight="600" fill="#3730A3">MCP Client / Agent</text>
+      </g>
+
+      <!-- Arrow to Runtime -->
+      <line x1="380" y1="154" x2="380" y2="172" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-arch)"/>
+
+      <!-- Runtime Layer -->
+      <rect x="20" y="178" width="720" height="96" rx="10" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.5"/>
+      <text x="40" y="198" font-size="11" font-weight="700" fill="#D97706" letter-spacing="1">PRODUCT PARTNER RUNTIME</text>
+      <g>
+        <rect x="40" y="208" width="165" height="56" rx="8" fill="#fff" stroke="#FDE68A"/>
+        <text x="122" y="231" text-anchor="middle" font-size="12" font-weight="700" fill="#92400E">Agent Orchestrator</text>
+        <text x="122" y="248" text-anchor="middle" font-size="10" fill="#D97706">统一产品判断</text>
+      </g>
+      <g>
+        <rect x="215" y="208" width="165" height="56" rx="8" fill="#fff" stroke="#FDE68A"/>
+        <text x="297" y="231" text-anchor="middle" font-size="12" font-weight="700" fill="#92400E">Knowledge Retrieval</text>
+        <text x="297" y="248" text-anchor="middle" font-size="10" fill="#D97706">知识检索与上下文装配</text>
+      </g>
+      <g>
+        <rect x="390" y="208" width="165" height="56" rx="8" fill="#fff" stroke="#FDE68A"/>
+        <text x="472" y="231" text-anchor="middle" font-size="12" font-weight="700" fill="#92400E">Skill Registry</text>
+        <text x="472" y="248" text-anchor="middle" font-size="10" fill="#D97706">已批准 Skill 与版本</text>
+      </g>
+      <g>
+        <rect x="565" y="208" width="165" height="56" rx="8" fill="#fff" stroke="#FDE68A"/>
+        <text x="647" y="231" text-anchor="middle" font-size="12" font-weight="700" fill="#92400E">Skill Runner</text>
+        <text x="647" y="248" text-anchor="middle" font-size="10" fill="#D97706">隔离执行</text>
+      </g>
+
+      <!-- Arrows to Core & Knowledge -->
+      <line x1="200" y1="274" x2="200" y2="292" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-arch)"/>
+      <line x1="500" y1="274" x2="500" y2="292" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-arch)"/>
+
+      <!-- Core Layer -->
+      <rect x="20" y="298" width="355" height="130" rx="10" fill="#F0F9FF" stroke="#BAE6FD" stroke-width="1.5"/>
+      <text x="40" y="318" font-size="11" font-weight="700" fill="#0369A1" letter-spacing="1">RUNTIME CORE · 专家大脑</text>
+      <g font-size="11" fill="#075985">
+        <text x="40" y="340">• agents/product-expert.md — 核心专家角色</text>
+        <text x="40" y="358">• knowledge/profile.md — 用户产品画像</text>
+        <text x="40" y="376">• knowledge/governance.md — 治理规则</text>
+        <text x="40" y="394">• playbooks/product-thinking/ — 产品底层思想</text>
+        <text x="40" y="412">• templates/ — 标准模板</text>
+      </g>
+
+      <!-- Knowledge Layer -->
+      <rect x="385" y="298" width="355" height="130" rx="10" fill="#ECFDF5" stroke="#86EFAC" stroke-width="1.5"/>
+      <text x="405" y="318" font-size="11" font-weight="700" fill="#065F46" letter-spacing="1">KNOWLEDGE ASSETS · 知识资产</text>
+      <g font-size="11" fill="#065F46">
+        <text x="405" y="340">• knowledge/catalog.md — 知识目录</text>
+        <text x="405" y="358">• knowledge/methods/ — 方法卡</text>
+        <text x="405" y="376">• knowledge/cases/ — 案例卡</text>
+        <text x="405" y="394">• knowledge/sources/ — 外部知识源</text>
+        <text x="405" y="412">• knowledge/lifecycle/ — 动态更新机制</text>
+      </g>
+
+      <!-- Arrow to Ops -->
+      <line x1="200" y1="428" x2="200" y2="446" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-arch)"/>
+      <line x1="500" y1="428" x2="500" y2="446" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-arch)"/>
+
+      <!-- Ops Layer -->
+      <rect x="20" y="452" width="720" height="96" rx="10" fill="#FDF2F8" stroke="#F9A8D4" stroke-width="1.5"/>
+      <text x="40" y="472" font-size="11" font-weight="700" fill="#9D174D" letter-spacing="1">GOVERNANCE & EVALUATION · 治理与评估</text>
+      <g>
+        <rect x="40" y="482" width="160" height="56" rx="8" fill="#fff" stroke="#F9A8D4"/>
+        <text x="120" y="505" text-anchor="middle" font-size="12" font-weight="700" fill="#9D174D">Permission Model</text>
+        <text x="120" y="522" text-anchor="middle" font-size="10" fill="#DB2777">权限模型</text>
+      </g>
+      <g>
+        <rect x="212" y="482" width="160" height="56" rx="8" fill="#fff" stroke="#F9A8D4"/>
+        <text x="292" y="505" text-anchor="middle" font-size="12" font-weight="700" fill="#9D174D">Schema</text>
+        <text x="292" y="522" text-anchor="middle" font-size="10" fill="#DB2777">元数据规范</text>
+      </g>
+      <g>
+        <rect x="384" y="482" width="160" height="56" rx="8" fill="#fff" stroke="#F9A8D4"/>
+        <text x="464" y="505" text-anchor="middle" font-size="12" font-weight="700" fill="#9D174D">Regression</text>
+        <text x="464" y="522" text-anchor="middle" font-size="10" fill="#DB2777">回归测试集</text>
+      </g>
+      <g>
+        <rect x="556" y="482" width="160" height="56" rx="8" fill="#fff" stroke="#F9A8D4"/>
+        <text x="636" y="505" text-anchor="middle" font-size="12" font-weight="700" fill="#9D174D">Inventory</text>
+        <text x="636" y="522" text-anchor="middle" font-size="10" fill="#DB2777">知识盘点</text>
+      </g>
+    </svg>
+    <p class="diagram-caption">Product Partner 完整架构 — 从上到下：调用入口 → Runtime → Core + Knowledge → 治理与评估</p>
+  </div>
+
+  <table class="info-table" style="margin-top: 24px;">
+    <thead>
+      <tr><th>图中区域</th><th>中文解释</th><th>关键价值</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>调用入口</strong></td><td>用户可从 Codex、WorkBuddy、飞书 Aily 或其他 MCP Client 进入</td><td>不绑定单一平台，未来可迁移</td></tr>
+      <tr><td><strong>Runtime</strong></td><td>统一接收问题，判断任务类型，装配上下文，决定是否调用 Skill</td><td>避免每个平台维护一套不同逻辑</td></tr>
+      <tr><td><strong>Runtime Core</strong></td><td>专家大脑：角色、人设、产品观、治理规则和模板</td><td>保证输出口吻、判断标准和质量红线稳定</td></tr>
+      <tr><td><strong>Knowledge Assets</strong></td><td>方法卡、案例卡、知识目录、外部知识源和动态更新机制</td><td>让专家持续学习，但不污染核心能力</td></tr>
+      <tr><td><strong>Skill Runner</strong></td><td>执行 BRD、PRD 审查、复盘、路线图等具体工作流</td><td>让专家从「会分析」走向「能交付」</td></tr>
+      <tr><td><strong>Governance & Evaluation</strong></td><td>权限、元数据、回归测试、知识盘点和失败样本</td><td>保证可审计、可回滚、可持续改进</td></tr>
+    </tbody>
+  </table>
+
+  <div style="margin-top: 20px;">
+    <div class="callout primary">
+      <strong>从用户视角看</strong>，它始终是一个统一的产品专家；<strong>从系统视角看</strong>，它是一套分层能力系统：入口负责接入，Runtime 负责调度，Core 负责判断，Knowledge 负责供给，Skill 负责执行，Ops 负责治理。
+    </div>
+  </div>
+</div>
+
+<!-- ========================= 07 三层核心架构 ========================= -->
+<div class="section" id="three-layers">
+  <div class="section-head">
+    <div class="section-num">07</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">CORE ARCHITECTURE</div>
+      <h2 class="section-title">核心架构：可迁移 + 平台</h2>
+      <p class="section-desc">可迁移层跨平台通用，平台层按权限运行时接入</p>
+    </div>
+  </div>
+
+  <div class="diagram-box" style="margin-bottom: 28px;">
+    <svg viewBox="0 0 760 420" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="g-transfer" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#10B981"/>
+          <stop offset="100%" style="stop-color:#34D399"/>
+        </linearGradient>
+        <linearGradient id="g-platform" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#F59E0B"/>
+          <stop offset="100%" style="stop-color:#FBBF24"/>
+        </linearGradient>
+      </defs>
+
+      <!-- ==================== 可迁移层 ==================== -->
+      <rect x="10" y="10" width="740" height="210" rx="14" fill="#ECFDF5" stroke="#86EFAC" stroke-width="1.5"/>
+      
+      <!-- Header -->
+      <path d="M 10 24 Q 10 10 24 10 L 736 10 Q 750 10 750 24 L 750 42 L 10 42 Z" fill="url(#g-transfer)"/>
+      <text x="30" y="30" font-size="14" font-weight="700" fill="#fff">🚀 可迁移层</text>
+      <text x="160" y="30" font-size="13" fill="#D1FAE5">跨平台通用，不绑定单一平台</text>
+      <text x="730" y="30" text-anchor="end" font-size="12" font-weight="600" fill="#D1FAE5">✅ Transferable</text>
+
+      <!-- Foundation: Personal Knowledge Base -->
+      <rect x="30" y="52" width="700" height="50" rx="10" fill="#fff" stroke="#86EFAC" stroke-width="1.5"/>
+      <text x="50" y="74" font-size="13" font-weight="700" fill="#065F46">📚 个人知识库（底座）</text>
+      <text x="50" y="92" font-size="12" fill="#10B981">知识沉淀 · 方法论 · 案例 ＝ 知识 + 经验</text>
+      <rect x="610" y="60" width="100" height="22" rx="6" fill="#D1FAE5"/>
+      <text x="660" y="75" text-anchor="middle" font-size="10" font-weight="600" fill="#065F46">底座 · Foundation</text>
+
+      <!-- Product Thinking -->
+      <rect x="30" y="112" width="340" height="56" rx="10" fill="#fff" stroke="#86EFAC" stroke-width="1.5"/>
+      <text x="50" y="134" font-size="13" font-weight="700" fill="#065F46">🧠 产品思维</text>
+      <text x="50" y="152" font-size="11" fill="#10B981">需求观 · 用户观 · 数据观 · 技术观</text>
+      <text x="50" y="164" font-size="11" fill="#94A3B8">Playbook · 按场景可加载</text>
+
+      <!-- Product Skills -->
+      <rect x="390" y="112" width="340" height="56" rx="10" fill="#fff" stroke="#86EFAC" stroke-width="1.5"/>
+      <text x="410" y="134" font-size="13" font-weight="700" fill="#065F46">⚙️ 产品落地技能</text>
+      <text x="410" y="152" font-size="11" fill="#10B981">BRD · PRD审查 · 需求梳理 · 复盘 · 路线图</text>
+      <text x="410" y="164" font-size="11" fill="#94A3B8">Skill · 可调用执行</text>
+
+      <!-- Tag -->
+      <text x="380" y="200" text-anchor="middle" font-size="12" font-weight="600" fill="#059669">✅ 以上全部跨平台通用，多场景可复用</text>
+
+      <!-- ==================== Arrow ==================== -->
+      <rect x="270" y="232" width="220" height="28" rx="14" fill="#FEF3C7" stroke="#FDE68A" stroke-width="1"/>
+      <text x="380" y="251" text-anchor="middle" font-size="12" font-weight="600" fill="#92400E">↕ 运行时按权限接入</text>
+
+      <!-- ==================== 平台 / 业务层 ==================== -->
+      <rect x="10" y="270" width="740" height="140" rx="14" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.5"/>
+      
+      <!-- Header -->
+      <path d="M 10 284 Q 10 270 24 270 L 736 270 Q 750 270 750 284 L 750 302 L 10 302 Z" fill="url(#g-platform)"/>
+      <text x="30" y="290" font-size="14" font-weight="700" fill="#fff">🏢 平台 / 业务层</text>
+      <text x="180" y="290" font-size="13" fill="#FEF3C7">按平台权限运行时接入</text>
+      <text x="730" y="290" text-anchor="end" font-size="12" font-weight="600" fill="#FEF3C7">🔒 平台专属</text>
+
+      <!-- Business Knowledge Base -->
+      <rect x="30" y="312" width="340" height="56" rx="10" fill="#fff" stroke="#FDE68A" stroke-width="1.5"/>
+      <text x="50" y="334" font-size="13" font-weight="700" fill="#92400E">📁 业务知识库</text>
+      <text x="50" y="352" font-size="11" fill="#D97706">企业文档 · 内部数据 · 团队项目资料</text>
+      <text x="50" y="364" font-size="11" fill="#94A3B8">运行时按身份和权限检索</text>
+
+      <!-- Requirement Works (Axhub) -->
+      <rect x="390" y="312" width="340" height="56" rx="10" fill="#fff" stroke="#FDE68A" stroke-width="1.5"/>
+      <text x="410" y="334" font-size="13" font-weight="700" fill="#92400E">📐 各类需求作品</text>
+      <text x="410" y="352" font-size="11" fill="#D97706">原型 · 流程图 · 交互稿 (Axhub)</text>
+      <text x="410" y="364" font-size="11" fill="#94A3B8">运行时按需读取</text>
+
+      <!-- Tag -->
+      <text x="380" y="392" text-anchor="middle" font-size="12" font-weight="600" fill="#92400E">🔒 平台专属，按身份和权限运行时按需读取</text>
+    </svg>
+    <p class="diagram-caption">核心架构 — 可迁移层（个人知识库 + 产品思维 + 落地技能）↔ 平台层（业务知识库 + Axhub 需求作品）</p>
+  </div>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>层级</th><th>内容</th><th>通用性</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong style="color: var(--c-success);">可迁移 · 底座</strong></td>
+        <td>个人知识库：知识沉淀、方法论、案例（知识 + 经验）</td>
+        <td><span style="color: var(--c-success); font-weight: 600;">✅ 跨平台通用</span></td>
+      </tr>
+      <tr>
+        <td><strong style="color: var(--c-primary);">可迁移 · 能力</strong></td>
+        <td>产品思维（Playbook）+ 产品落地技能（可调用 Skill）</td>
+        <td><span style="color: var(--c-success); font-weight: 600;">✅ 跨平台通用</span></td>
+      </tr>
+      <tr>
+        <td><strong style="color: var(--c-accent);">平台 / 业务层</strong></td>
+        <td>业务知识库（企业文档 · 内部数据）+ 各类需求作品（Axhub）</td>
+        <td><span style="color: var(--c-danger); font-weight: 600;">🔒 平台专属</span> · 按权限运行时接入</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="margin-top: 20px;">
+    <div class="callout info">
+      <strong>实现对应：</strong>可迁移层的「个人知识库」对应 Knowledge Assets L1–L3；「产品思维」对应 Runtime Core 的 Playbook；「产品落地技能」对应 Skill Layer。平台/业务层的「业务知识库 + Axhub 需求作品」对应 L4，运行时按权限接入，不混入可迁移核心包。
+    </div>
+  </div>
+
+  <div style="margin-top: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+    <div class="card" style="text-align: center; border-top: 3px solid var(--c-success);">
+      <div style="font-size: 28px; margin-bottom: 8px;">🚀</div>
+      <div style="font-size: 14px; font-weight: 700; color: var(--c-success);">可迁移层</div>
+      <div style="font-size: 12px; color: var(--c-text-mid); margin-top: 4px;">个人知识库 + 产品思维 + 产品落地技能<br>跨平台通用</div>
+    </div>
+    <div class="card" style="text-align: center; border-top: 3px solid var(--c-accent);">
+      <div style="font-size: 28px; margin-bottom: 8px;">🏢</div>
+      <div style="font-size: 14px; font-weight: 700; color: var(--c-accent);">平台 / 业务层</div>
+      <div style="font-size: 12px; color: var(--c-text-mid); margin-top: 4px;">业务知识库 + 需求作品(Axhub)<br>按权限运行时接入</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================= 08 Runtime Core ========================= -->
+<div class="section" id="runtime-core">
+  <div class="section-head">
+    <div class="section-num">08</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">RUNTIME CORE</div>
+      <h2 class="section-title">专家大脑</h2>
+      <p class="section-desc">Product Partner 最稳定、最核心的部分</p>
+    </div>
+  </div>
+
+  <div class="kv-grid" style="margin-bottom: 28px;">
+    <div class="kv-card">
+      <div class="kv-label">核心专家角色</div>
+      <div class="kv-value">定义 Product Partner 的身份、语言、行为规则和输出标准</div>
+    </div>
+    <div class="kv-card">
+      <div class="kv-label">用户产品画像</div>
+      <div class="kv-value">沉淀用户的产品哲学、偏好、质量红线和判断习惯</div>
+    </div>
+    <div class="kv-card">
+      <div class="kv-label">产品底层思想</div>
+      <div class="kv-value">把产品视角、需求视角、用户视角、数据证据、技术认知、路线图取舍等拆成可加载 playbook</div>
+    </div>
+    <div class="kv-card">
+      <div class="kv-label">标准模板</div>
+      <div class="kv-value">用于 PRD、BRD、评审、复盘等产物的结构化输出</div>
+    </div>
+  </div>
+
+  <div class="callout info" style="margin-bottom: 28px;">
+    <strong>关键设计 — 按任务加载：</strong>轻量问题只加载最小专家指令；复杂任务再按场景加载相关 playbook、方法卡和案例卡，避免上下文堆料。
+  </div>
+
+  <div class="diagram-box">
+    <svg viewBox="0 0 760 240" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arr-rt" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6" fill="none" stroke="#94A3B8" stroke-width="1.5"/>
+        </marker>
+      </defs>
+
+      <!-- Input -->
+      <rect x="300" y="10" width="160" height="40" rx="20" fill="#4F46E5"/>
+      <text x="380" y="35" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">用户问题</text>
+      <line x1="380" y1="50" x2="380" y2="68" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-rt)"/>
+
+      <!-- Decision -->
+      <rect x="290" y="72" width="180" height="36" rx="8" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.5"/>
+      <text x="380" y="95" text-anchor="middle" font-size="13" font-weight="700" fill="#92400E">判断任务类型</text>
+
+      <!-- Branches -->
+      <line x1="380" y1="108" x2="120" y2="138" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-rt)"/>
+      <line x1="380" y1="108" x2="280" y2="138" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-rt)"/>
+      <line x1="380" y1="108" x2="480" y2="138" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-rt)"/>
+      <line x1="380" y1="108" x2="640" y2="138" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-rt)"/>
+
+      <!-- L0 -->
+      <rect x="30" y="142" width="150" height="76" rx="10" fill="#EEF2FF" stroke="#C7D2FE" stroke-width="1.5"/>
+      <text x="105" y="166" text-anchor="middle" font-size="13" font-weight="700" fill="#3730A3">L0</text>
+      <text x="105" y="184" text-anchor="middle" font-size="11" fill="#6366F1">只加载核心专家</text>
+      <text x="105" y="200" text-anchor="middle" font-size="10" fill="#6366F1">最小指令 · 快速回答</text>
+
+      <!-- L1 -->
+      <rect x="200" y="142" width="150" height="76" rx="10" fill="#F0F9FF" stroke="#BAE6FD" stroke-width="1.5"/>
+      <text x="275" y="166" text-anchor="middle" font-size="13" font-weight="700" fill="#0369A1">L1</text>
+      <text x="275" y="184" text-anchor="middle" font-size="11" fill="#0EA5E9">加载标准场景包</text>
+      <text x="275" y="200" text-anchor="middle" font-size="10" fill="#0EA5E9">playbook + 模板</text>
+
+      <!-- L2 -->
+      <rect x="400" y="142" width="150" height="76" rx="10" fill="#ECFDF5" stroke="#86EFAC" stroke-width="1.5"/>
+      <text x="475" y="166" text-anchor="middle" font-size="13" font-weight="700" fill="#065F46">L2</text>
+      <text x="475" y="184" text-anchor="middle" font-size="11" fill="#10B981">加载方法卡 / 案例卡</text>
+      <text x="475" y="200" text-anchor="middle" font-size="10" fill="#10B981">深度分析场景</text>
+
+      <!-- L3 -->
+      <rect x="580" y="142" width="150" height="76" rx="10" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.5"/>
+      <text x="655" y="166" text-anchor="middle" font-size="13" font-weight="700" fill="#92400E">L3</text>
+      <text x="655" y="184" text-anchor="middle" font-size="11" fill="#D97706">加载治理 / 评估</text>
+      <text x="655" y="200" text-anchor="middle" font-size="10" fill="#D97706">接入企业资料</text>
+
+      <!-- Complexity indicator -->
+      <text x="380" y="232" text-anchor="middle" font-size="11" fill="#94A3B8">← 任务复杂度递增 / 加载内容递增 →</text>
+    </svg>
+    <p class="diagram-caption">Runtime Core 按任务加载机制 — L0 到 L3 逐级加载最小必要上下文</p>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <div class="callout accent">
+      <strong>设计意义：</strong>Product Partner 不会每次把全部文件都读进来，而是根据任务难度和场景，选择<strong>最小必要上下文</strong>。这保证了回答的精准度和速度。
+    </div>
+  </div>
+</div>
+
+<!-- ========================= 09 Knowledge Assets ========================= -->
+<div class="section" id="knowledge">
+  <div class="section-head">
+    <div class="section-num">09</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">KNOWLEDGE ASSETS</div>
+      <h2 class="section-title">持续进化的知识层</h2>
+      <p class="section-desc">让专家越来越接近真实的产品判断，但不把所有资料直接塞进核心提示词</p>
+    </div>
+  </div>
+
+  <table class="info-table" style="margin-bottom: 24px;">
+    <thead>
+      <tr><th>层级</th><th>内容</th><th>是否可复用</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong style="color: var(--c-primary);">L1 核心原则</strong></td>
+        <td>产品哲学、判断标准、写作风格、评审标准</td>
+        <td><span style="color: var(--c-success); font-weight: 600;">✅ 是</span></td>
+      </tr>
+      <tr>
+        <td><strong style="color: var(--c-info);">L2 方法论</strong></td>
+        <td>需求分析、用户研究、竞品分析、路线图、复盘方法</td>
+        <td><span style="color: var(--c-success); font-weight: 600;">✅ 是</span></td>
+      </tr>
+      <tr>
+        <td><strong style="color: var(--c-accent);">L3 案例资产</strong></td>
+        <td>脱敏后的 PRD、评审、架构图、复盘案例</td>
+        <td><span style="color: var(--c-accent); font-weight: 600;">⚠️ 视情况</span></td>
+      </tr>
+      <tr>
+        <td><strong style="color: var(--c-danger);">L4 业务私有知识</strong></td>
+        <td>业务知识库（企业文档 · 内部数据）、各类需求作品（Axhub 原型 / 流程图 / 交互稿）</td>
+        <td><span style="color: var(--c-danger); font-weight: 600;">❌ 否</span> · 按平台权限接入</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="diagram-box" style="margin-bottom: 24px;">
+    <svg viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg">
+      <!-- Pyramid layers -->
+      <polygon points="310,20 450,20 440,55 320,55" fill="#4F46E5" stroke="#3730A3" stroke-width="1"/>
+      <text x="380" y="42" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">L1 核心原则</text>
+
+      <polygon points="320,59 440,59 425,100 335,100" fill="#0EA5E9" stroke="#0369A1" stroke-width="1"/>
+      <text x="380" y="83" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">L2 方法论</text>
+
+      <polygon points="335,104 425,104 405,150 355,150" fill="#F59E0B" stroke="#92400E" stroke-width="1"/>
+      <text x="380" y="130" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">L3 案例资产</text>
+
+      <polygon points="355,154 405,154 395,200 365,200" fill="#EF4444" stroke="#991B1B" stroke-width="1"/>
+      <text x="380" y="180" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">L4 私有</text>
+
+      <!-- Annotations -->
+      <g font-size="11" fill="#475569">
+        <text x="460" y="42">产品哲学 · 判断标准 · 写作风格 · 评审标准</text>
+        <text x="440" y="62" fill="#64748B">✅ 可复用</text>
+
+        <text x="445" y="83">需求分析 · 用户研究 · 竞品 · 路线图 · 复盘</text>
+        <text x="440" y="103" fill="#64748B">✅ 可复用</text>
+
+        <text x="425" y="130">脱敏 PRD · 评审 · 架构图 · 复盘案例</text>
+        <text x="425" y="148" fill="#64748B">⚠️ 视情况</text>
+
+        <text x="415" y="180">业务知识库 · 需求作品(Axhub)</text>
+        <text x="415" y="198" fill="#64748B">❌ 按权限接入</text>
+      </g>
+
+      <!-- Left annotations -->
+      <g font-size="11" fill="#94A3B8" text-anchor="end">
+        <text x="300" y="42">稳定 · 核心层</text>
+        <text x="300" y="83">半稳定 · 方法层</text>
+        <text x="300" y="130">动态 · 案例层</text>
+        <text x="300" y="180">运行时 · 按需</text>
+      </g>
+    </svg>
+    <p class="diagram-caption">知识分层金字塔 — 从稳定核心到运行时按需接入</p>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px;">
+    <div class="callout success">
+      <strong>保证一：</strong>产品能力可沉淀、可复用，从个人经验转化为团队资产
+    </div>
+    <div class="callout primary">
+      <strong>保证二：</strong>企业私有知识不会被混入可迁移核心包
+    </div>
+  </div>
+
+  <div class="callout info">
+    Online Blog、产品方法论、案例卡等公共或可迁移内容，会通过<strong>同步 → 蒸馏 → 打标签 → 审阅 → 发布</strong>进入知识索引版本；企业资料则只在运行时按身份和权限检索。知识层的核心不是「存得多」，而是<strong>可追溯、可授权、可迁移、可更新</strong>。
+  </div>
+</div>
+
+<!-- ========================= 10 Skill Layer ========================= -->
+<div class="section" id="skill">
+  <div class="section-head">
+    <div class="section-num">10</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">SKILL / TOOL LAYER</div>
+      <h2 class="section-title">从会判断到会执行</h2>
+      <p class="section-desc">把产品工作流沉淀成可执行能力</p>
+    </div>
+  </div>
+
+  <p style="font-size: 15px; color: var(--c-text-mid); margin-bottom: 24px;">
+    Product Partner 不只回答「怎么看」，还要逐步具备「怎么做」的工作流能力。Skill 层负责把 BRD、PRD 审查、需求梳理、项目复盘、埋点方案、流程图等产品工作流沉淀成可执行能力。
+  </p>
+
+  <div class="diagram-box" style="margin-bottom: 24px;">
+    <svg viewBox="0 0 760 150" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arr-sk" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6" fill="none" stroke="#94A3B8" stroke-width="1.5"/>
+        </marker>
+      </defs>
+
+      <!-- Step 1 -->
+      <rect x="10" y="30" width="120" height="76" rx="10" fill="#EEF2FF" stroke="#C7D2FE" stroke-width="1.5"/>
+      <text x="70" y="56" text-anchor="middle" font-size="12" font-weight="700" fill="#3730A3">Skill 发布</text>
+      <text x="70" y="74" text-anchor="middle" font-size="10" fill="#6366F1">不可变版本</text>
+      <text x="70" y="92" text-anchor="middle" font-size="18">📦</text>
+
+      <line x1="130" y1="68" x2="145" y2="68" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-sk)"/>
+
+      <!-- Step 2 -->
+      <rect x="150" y="30" width="120" height="76" rx="10" fill="#F0F9FF" stroke="#BAE6FD" stroke-width="1.5"/>
+      <text x="210" y="56" text-anchor="middle" font-size="12" font-weight="700" fill="#0369A1">自动校验</text>
+      <text x="210" y="74" text-anchor="middle" font-size="10" fill="#0EA5E9">测试 / 依赖 / Manifest</text>
+      <text x="210" y="92" text-anchor="middle" font-size="18">🔬</text>
+
+      <line x1="270" y1="68" x2="285" y2="68" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-sk)"/>
+
+      <!-- Step 3 -->
+      <rect x="290" y="30" width="120" height="76" rx="10" fill="#ECFDF5" stroke="#86EFAC" stroke-width="1.5"/>
+      <text x="350" y="56" text-anchor="middle" font-size="12" font-weight="700" fill="#065F46">Skill Registry</text>
+      <text x="350" y="74" text-anchor="middle" font-size="10" fill="#10B981">登记可调用版本</text>
+      <text x="350" y="92" text-anchor="middle" font-size="18">📋</text>
+
+      <line x1="410" y1="68" x2="425" y2="68" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-sk)"/>
+
+      <!-- Step 4 -->
+      <rect x="430" y="30" width="120" height="76" rx="10" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.5"/>
+      <text x="490" y="56" text-anchor="middle" font-size="12" font-weight="700" fill="#92400E">Runtime 路由</text>
+      <text x="490" y="74" text-anchor="middle" font-size="10" fill="#D97706">判断是否调用</text>
+      <text x="490" y="92" text-anchor="middle" font-size="18">🔀</text>
+
+      <line x1="550" y1="68" x2="565" y2="68" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-sk)"/>
+
+      <!-- Step 5 -->
+      <rect x="570" y="30" width="120" height="76" rx="10" fill="#FDF2F8" stroke="#F9A8D4" stroke-width="1.5"/>
+      <text x="630" y="56" text-anchor="middle" font-size="12" font-weight="700" fill="#9D174D">Runner 执行</text>
+      <text x="630" y="74" text-anchor="middle" font-size="10" fill="#DB2777">隔离 · 审计 · 超时</text>
+      <text x="630" y="92" text-anchor="middle" font-size="18">⚙️</text>
+
+      <line x1="690" y1="68" x2="705" y2="68" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-sk)"/>
+
+      <!-- Step 6 -->
+      <rect x="710" y="42" width="40" height="52" rx="8" fill="#1E293B"/>
+      <text x="730" y="68" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">收口</text>
+      <text x="730" y="82" text-anchor="middle" font-size="10">✅</text>
+    </svg>
+    <p class="diagram-caption">Skill 执行链路 — 从发布到收口的完整流程</p>
+  </div>
+
+  <div class="callout success" style="margin-bottom: 20px;">
+    <strong>P0 已具备：</strong>Release 同步、Bundle 校验、原子 Lock 切换、统一 Skill API、Token 身份和审计，以及 <code style="background: rgba(16,185,129,0.15); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono); font-size: 13px;">brd-writing</code> 的本地执行试点。
+  </div>
+
+  <div class="callout primary">
+    <strong>设计好处：</strong>平台不需要临时下载任意 Skill，线上版本可控，权限可审计，出现问题时可以<strong>回滚到上一成功版本</strong>。Skill 像「经过审批的产品工作流」一样被调用，而不是临时把任意脚本交给平台执行。
+  </div>
+</div>
+
+<!-- ========================= 11 平台接入 ========================= -->
+<div class="section" id="platform">
+  <div class="section-head">
+    <div class="section-num">11</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">PLATFORM INTEGRATION</div>
+      <h2 class="section-title">平台接入架构</h2>
+      <p class="section-desc">入口轻、Runtime 重</p>
+    </div>
+  </div>
+
+  <table class="info-table" style="margin-bottom: 28px;">
+    <thead>
+      <tr><th>平台</th><th>职责</th><th>不做什么</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>🛠️ Codex</strong></td>
+        <td>本地研发、测试、验收、发布候选版本</td>
+        <td style="color: var(--c-text-muted);">不作为生产运行环境</td>
+      </tr>
+      <tr>
+        <td><strong>🤖 WorkBuddy</strong></td>
+        <td>个人真实产品工作入口</td>
+        <td style="color: var(--c-text-muted);">不维护另一套专家提示词和知识库</td>
+      </tr>
+      <tr>
+        <td><strong>💬 飞书 Aily</strong></td>
+        <td>团队机器人入口，接入企业身份和知识</td>
+        <td style="color: var(--c-text-muted);">不绕过权限读取企业资料</td>
+      </tr>
+      <tr>
+        <td><strong>🔌 MCP Client</strong></td>
+        <td>调用标准化知识、路由和 Skill 能力</td>
+        <td style="color: var(--c-text-muted);">不复制 Product Partner 的业务逻辑</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="diagram-box">
+    <svg viewBox="0 0 760 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arr-pf" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6" fill="none" stroke="#94A3B8" stroke-width="1.5"/>
+        </marker>
+      </defs>
+
+      <!-- Codex -->
+      <rect x="10" y="20" width="140" height="56" rx="10" fill="#EEF2FF" stroke="#C7D2FE" stroke-width="1.5"/>
+      <text x="80" y="44" text-anchor="middle" font-size="13" font-weight="700" fill="#3730A3">Codex</text>
+      <text x="80" y="62" text-anchor="middle" font-size="10" fill="#6366F1">研发和验证</text>
+
+      <!-- Arrow to Release -->
+      <line x1="150" y1="48" x2="175" y2="48" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-pf)"/>
+
+      <!-- Release -->
+      <rect x="180" y="20" width="150" height="56" rx="10" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.5"/>
+      <text x="255" y="44" text-anchor="middle" font-size="13" font-weight="700" fill="#92400E">版本发布</text>
+      <text x="255" y="62" text-anchor="middle" font-size="10" fill="#D97706">Core / Knowledge / Skill Lock</text>
+
+      <!-- Arrow to Runtime -->
+      <line x1="330" y1="48" x2="355" y2="48" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-pf)"/>
+
+      <!-- Runtime (center) -->
+      <rect x="360" y="10" width="180" height="76" rx="12" fill="#4F46E5" stroke="#3730A3" stroke-width="2"/>
+      <text x="450" y="38" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">Product Partner</text>
+      <text x="450" y="56" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">Runtime</text>
+      <text x="450" y="72" text-anchor="middle" font-size="10" fill="#C7D2FE">生产调用中心</text>
+
+      <!-- WorkBuddy -->
+      <rect x="10" y="120" width="160" height="56" rx="10" fill="#F0F9FF" stroke="#BAE6FD" stroke-width="1.5"/>
+      <text x="90" y="144" text-anchor="middle" font-size="13" font-weight="700" fill="#0369A1">WorkBuddy</text>
+      <text x="90" y="162" text-anchor="middle" font-size="10" fill="#0EA5E9">个人入口</text>
+
+      <!-- Aily -->
+      <rect x="200" y="120" width="160" height="56" rx="10" fill="#ECFDF5" stroke="#86EFAC" stroke-width="1.5"/>
+      <text x="280" y="144" text-anchor="middle" font-size="13" font-weight="700" fill="#065F46">飞书 Aily</text>
+      <text x="280" y="162" text-anchor="middle" font-size="10" fill="#10B981">团队入口</text>
+
+      <!-- MCP -->
+      <rect x="390" y="120" width="160" height="56" rx="10" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.5"/>
+      <text x="470" y="144" text-anchor="middle" font-size="13" font-weight="700" fill="#92400E">MCP Client</text>
+      <text x="470" y="162" text-anchor="middle" font-size="10" fill="#D97706">其他 Agent</text>
+
+      <!-- Arrows to Runtime -->
+      <line x1="90" y1="120" x2="400" y2="86" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-pf)" stroke-dasharray="4,3"/>
+      <line x1="280" y1="120" x2="450" y2="86" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-pf)" stroke-dasharray="4,3"/>
+      <line x1="470" y1="120" x2="490" y2="86" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-pf)" stroke-dasharray="4,3"/>
+    </svg>
+    <p class="diagram-caption">平台接入关系 — Codex 负责打磨，Runtime 负责运行，入口负责带到真实场景</p>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <div class="callout info">
+      <strong>设计原则：</strong>WorkBuddy 和飞书 Aily 不直接读取本地项目，也不临时安装任意 Skill。它们把用户问题、身份和业务上下文传给生产 Runtime，由 Runtime 统一完成路由、检索、Skill 调用和最终收口。
+    </div>
+  </div>
+</div>
+
+<!-- ========================= 12 版本发布回滚 ========================= -->
+<div class="section" id="version">
+  <div class="section-head">
+    <div class="section-num">12</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">VERSION & ROLLBACK</div>
+      <h2 class="section-title">版本、发布与回滚</h2>
+      <p class="section-desc">生产请求由三个版本共同决定，可分层独立回滚</p>
+    </div>
+  </div>
+
+  <div class="diagram-box" style="margin-bottom: 28px;">
+    <svg viewBox="0 0 760 260" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arr-vr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6" fill="none" stroke="#94A3B8" stroke-width="1.5"/>
+        </marker>
+      </defs>
+
+      <!-- Request -->
+      <rect x="290" y="10" width="180" height="40" rx="20" fill="#1E293B"/>
+      <text x="380" y="35" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">一次生产请求</text>
+
+      <!-- Branch lines -->
+      <line x1="380" y1="50" x2="140" y2="80" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-vr)"/>
+      <line x1="380" y1="50" x2="380" y2="80" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-vr)"/>
+      <line x1="380" y1="50" x2="620" y2="80" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-vr)"/>
+
+      <!-- Core Version -->
+      <rect x="30" y="84" width="220" height="86" rx="10" fill="#EEF2FF" stroke="#C7D2FE" stroke-width="1.5"/>
+      <text x="140" y="108" text-anchor="middle" font-size="13" font-weight="700" fill="#3730A3">core_version</text>
+      <text x="140" y="126" text-anchor="middle" font-size="11" fill="#6366F1">专家人设 · 判断标准</text>
+      <text x="140" y="142" text-anchor="middle" font-size="11" fill="#6366F1">路由规则</text>
+      <rect x="60" y="150" width="160" height="16" rx="4" fill="#4F46E5"/>
+      <text x="140" y="162" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">判断质量出问题 → 回滚 Core</text>
+
+      <!-- Knowledge Version -->
+      <rect x="270" y="84" width="220" height="86" rx="10" fill="#F0F9FF" stroke="#BAE6FD" stroke-width="1.5"/>
+      <text x="380" y="108" text-anchor="middle" font-size="13" font-weight="700" fill="#0369A1">knowledge_version</text>
+      <text x="380" y="126" text-anchor="middle" font-size="11" fill="#0EA5E9">可检索知识</text>
+      <text x="380" y="142" text-anchor="middle" font-size="11" fill="#0EA5E9">已内化方法</text>
+      <rect x="300" y="150" width="160" height="16" rx="4" fill="#0EA5E9"/>
+      <text x="380" y="162" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">知识污染过期 → 回滚 Knowledge</text>
+
+      <!-- Skill Lock Version -->
+      <rect x="510" y="84" width="220" height="86" rx="10" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.5"/>
+      <text x="620" y="108" text-anchor="middle" font-size="13" font-weight="700" fill="#92400E">skill_lock_version</text>
+      <text x="620" y="126" text-anchor="middle" font-size="11" fill="#D97706">可执行 Skill 清单</text>
+      <text x="620" y="142" text-anchor="middle" font-size="11" fill="#D97706">执行版本</text>
+      <rect x="540" y="150" width="160" height="16" rx="4" fill="#F59E0B"/>
+      <text x="620" y="162" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">兼容性出问题 → 回滚 Skill</text>
+
+      <!-- Arrows to Answer -->
+      <line x1="140" y1="170" x2="330" y2="200" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-vr)"/>
+      <line x1="380" y1="170" x2="380" y2="200" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-vr)"/>
+      <line x1="620" y1="170" x2="430" y2="200" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-vr)"/>
+
+      <!-- Answer -->
+      <rect x="310" y="204" width="140" height="40" rx="20" fill="#10B981"/>
+      <text x="380" y="229" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">最终回答</text>
+
+      <!-- Independent rollback labels -->
+      <text x="140" y="252" text-anchor="middle" font-size="11" fill="#64748B">✅ 可单独回滚</text>
+      <text x="380" y="252" text-anchor="middle" font-size="11" fill="#64748B">✅ 可单独回滚</text>
+      <text x="620" y="252" text-anchor="middle" font-size="11" fill="#64748B">✅ 可单独回滚</text>
+    </svg>
+    <p class="diagram-caption">三版本独立管理 — 判断、知识、工具可分层回滚</p>
+  </div>
+
+  <div class="callout primary">
+    <strong>设计意义：</strong>线上质量问题可以定位到「判断、知识、工具」中的某一层，而不是只能整体回退。这比把 Prompt、知识和工具混在一起更适合长期运营。
+  </div>
+</div>
+
+<!-- ========================= 13 当前进展 ========================= -->
+<div class="section" id="progress">
+  <div class="section-head">
+    <div class="section-num">13</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">CURRENT STATUS</div>
+      <h2 class="section-title">当前阶段进展</h2>
+      <p class="section-desc">从「概念」到「可调用能力包 + Runtime P0」的关键跨越</p>
+    </div>
+  </div>
+
+  <div class="progress-list">
+    <div class="progress-item">
+      <div class="progress-head">
+        <span class="progress-label">产品定位与蓝图</span>
+        <span class="progress-status done">已具备</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill done"></div></div>
+      <div class="progress-desc">已明确 Product Partner 是可迁移产品专家能力包</div>
+    </div>
+
+    <div class="progress-item">
+      <div class="progress-head">
+        <span class="progress-label">核心专家能力</span>
+        <span class="progress-status done">已具备</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill done"></div></div>
+      <div class="progress-desc">已有专家角色、产品画像、输出规则和产品底层思想</div>
+    </div>
+
+    <div class="progress-item">
+      <div class="progress-head">
+        <span class="progress-label">知识资产</span>
+        <span class="progress-status basic">已具备基础</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill basic"></div></div>
+      <div class="progress-desc">已有知识目录、方法卡、案例卡和 Blog 学习机制</div>
+    </div>
+
+    <div class="progress-item">
+      <div class="progress-head">
+        <span class="progress-label">评估体系</span>
+        <span class="progress-status basic">已具备基础</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill basic"></div></div>
+      <div class="progress-desc">已有 V0 场景、回归测试和失败样本机制</div>
+    </div>
+
+    <div class="progress-item">
+      <div class="progress-head">
+        <span class="progress-label">Skill 执行</span>
+        <span class="progress-status p0">P0 可用</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill p0"></div></div>
+      <div class="progress-desc">已支持 Skill 同步、Lock、统一接口和 brd-writing 试点</div>
+    </div>
+
+    <div class="progress-item">
+      <div class="progress-head">
+        <span class="progress-label">平台适配</span>
+        <span class="progress-status direction">方向明确</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill direction"></div></div>
+      <div class="progress-desc">已规划 Codex、WorkBuddy、飞书 Aily 和 MCP 接入方式</div>
+    </div>
+
+    <div class="progress-item">
+      <div class="progress-head">
+        <span class="progress-label">生产服务化</span>
+        <span class="progress-status building">建设中</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill building"></div></div>
+      <div class="progress-desc">还需要完整模型编排、租户权限、企业知识连接器和异步队列</div>
+    </div>
+  </div>
+
+  <div style="margin-top: 28px;">
+    <div class="callout accent">
+      <strong>当前阶段关键词：</strong>可调用、可验证、可发布基线，但仍在从能力包走向生产服务。
+    </div>
+  </div>
+</div>
+
+<!-- ========================= 14 演进路线 ========================= -->
+<div class="section" id="roadmap">
+  <div class="section-head">
+    <div class="section-num">14</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">ROADMAP</div>
+      <h2 class="section-title">演进路线</h2>
+      <p class="section-desc">围绕真实任务形成闭环，而非继续堆框架</p>
+    </div>
+  </div>
+
+  <div class="diagram-box" style="margin-bottom: 28px;">
+    <div class="roadmap">
+      <div class="roadmap-step">
+        <div class="roadmap-dot"></div>
+        <div class="roadmap-line"></div>
+        <div class="roadmap-version">V0.2</div>
+        <div class="roadmap-label">可调用<br>能力包</div>
+      </div>
+      <div class="roadmap-step">
+        <div class="roadmap-dot"></div>
+        <div class="roadmap-line"></div>
+        <div class="roadmap-version">V0.3</div>
+        <div class="roadmap-label">稳定<br>复用</div>
+      </div>
+      <div class="roadmap-step">
+        <div class="roadmap-dot"></div>
+        <div class="roadmap-line"></div>
+        <div class="roadmap-version">V0.4</div>
+        <div class="roadmap-label">能力<br>补充</div>
+      </div>
+      <div class="roadmap-step">
+        <div class="roadmap-dot"></div>
+        <div class="roadmap-line"></div>
+        <div class="roadmap-version">V1</div>
+        <div class="roadmap-label">团队<br>试点</div>
+      </div>
+      <div class="roadmap-step">
+        <div class="roadmap-dot"></div>
+        <div class="roadmap-line"></div>
+        <div class="roadmap-version">V1.5</div>
+        <div class="roadmap-label">MCP /<br>平台接入</div>
+      </div>
+      <div class="roadmap-step">
+        <div class="roadmap-dot"></div>
+        <div class="roadmap-version">V2</div>
+        <div class="roadmap-label">独立<br>专家服务</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-bottom: 24px;">
+    <p style="font-size: 15px; color: var(--c-text-mid); margin-bottom: 16px;">
+      近期重点不是继续堆框架，而是围绕真实任务形成闭环：
+    </p>
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <div style="display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: var(--c-text);">
+        <span style="color: var(--c-primary); font-weight: 700; flex-shrink: 0;">1.</span>
+        用真实或脱敏材料验证 V0 三类场景
+      </div>
+      <div style="display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: var(--c-text);">
+        <span style="color: var(--c-primary); font-weight: 700; flex-shrink: 0;">2.</span>
+        把认可的输出沉淀为知识卡、Skill 卡和评估样本
+      </div>
+      <div style="display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: var(--c-text);">
+        <span style="color: var(--c-primary); font-weight: 700; flex-shrink: 0;">3.</span>
+        把「不像用户」的输出记录为失败样本
+      </div>
+      <div style="display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: var(--c-text);">
+        <span style="color: var(--c-primary); font-weight: 700; flex-shrink: 0;">4.</span>
+        优先建设高频、低风险、易评估的 P0 Skill
+      </div>
+      <div style="display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: var(--c-text);">
+        <span style="color: var(--c-primary); font-weight: 700; flex-shrink: 0;">5.</span>
+        在 WorkBuddy 个人入口试点后，再进入飞书 Aily 团队试点
+      </div>
+    </div>
+  </div>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>阶段</th><th>汇报表达</th><th>关键动作</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong style="color: var(--c-success);;">现在</strong></td>
+        <td>先把专家能力做稳</td>
+        <td>用真实材料验证判断质量，沉淀失败样本</td>
+      </tr>
+      <tr>
+        <td><strong style="color: var(--c-info);">近期</strong></td>
+        <td>再把高频工作流做深</td>
+        <td>BRD、PRD 审查、需求梳理、复盘等 P0 Skill</td>
+      </tr>
+      <tr>
+        <td><strong style="color: var(--c-accent);">后续</strong></td>
+        <td>最后接入真实组织场景</td>
+        <td>WorkBuddy 个人试点，飞书 Aily 团队试点，MCP 扩展</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ========================= 15 核心判断 ========================= -->
+<div class="section" id="takeaway">
+  <div class="section-head">
+    <div class="section-num">15</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">KEY TAKEAWAYS</div>
+      <h2 class="section-title">核心判断</h2>
+      <p class="section-desc">Product Partner 的关键创新不在于「用了 Agent」</p>
+    </div>
+  </div>
+
+  <div class="callout accent" style="margin-bottom: 28px; font-size: 16px;">
+    Product Partner 的关键创新在于把产品能力拆成了<strong>可迁移、可治理、可执行、可评估</strong>的系统。
+  </div>
+
+  <div class="takeaway-grid">
+    <div class="takeaway-card">
+      <div class="takeaway-num">1</div>
+      <div class="takeaway-text">
+        <span class="strike">不是一个提示词</span> → 而是一个<strong>产品专家能力包</strong>
+      </div>
+    </div>
+    <div class="takeaway-card">
+      <div class="takeaway-num">2</div>
+      <div class="takeaway-text">
+        <span class="strike">不是资料库</span> → 而是把知识转化为<strong>可复用判断</strong>
+      </div>
+    </div>
+    <div class="takeaway-card">
+      <div class="takeaway-num">3</div>
+      <div class="takeaway-text">
+        <span class="strike">不是平台绑定机器人</span> → 而是通过 Runtime 被<strong>多个入口调用</strong>
+      </div>
+    </div>
+    <div class="takeaway-card">
+      <div class="takeaway-num">4</div>
+      <div class="takeaway-text">
+        <span class="strike">不是一次性产物</span> → 而是通过真实任务、失败样本、版本发布和回归测试<strong>持续进化</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /.page -->
+
+<!-- ========================= Footer ========================= -->
+<div class="footer">
+  <h3>Product Partner</h3>
+  <p>可迁移 · 可验证 · 可执行 · 可持续进化的产品专家能力包</p>
+</div>
+
+</body>
+</html>
