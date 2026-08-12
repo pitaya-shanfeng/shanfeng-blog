@@ -1,6 +1,6 @@
 ---
 title: 第 7 章 · 体验设计
-published: 2026-03-13
+published: 2026-02-05
 description: 从用户任务与任务成本出发，理解体验设计的本质：不是美化页面，而是把复杂放在更合适的位置。
 image: /assets/library/jianshan/experience-design/cover.png
 category: 见山

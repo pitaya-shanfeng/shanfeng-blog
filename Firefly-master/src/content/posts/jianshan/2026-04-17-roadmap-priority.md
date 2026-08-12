@@ -1,6 +1,6 @@
 ---
 title: 第 11 章 · 路线图与优先级
-published: 2026-04-17
+published: 2026-04-22
 description: 当方向已经确定，路线图要做的不是堆满功能排期，而是把选择转化为持续行动、资源取舍与阶段验证。
 category: 见山
 image: /assets/library/jianshan/roadmap-priority/cover.png

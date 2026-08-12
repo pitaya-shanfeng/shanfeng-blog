@@ -1,6 +1,6 @@
 ---
 title: 第 10 章 · 决策沟通
-published: 2026-04-08
+published: 2026-04-04
 description: 决策沟通不是把观点讲得更完整，而是把判断整理为组织可以比较、投入、暂停与验证的选择材料。
 image: /assets/library/jianshan/decision-communication/cover.png
 category: 见山

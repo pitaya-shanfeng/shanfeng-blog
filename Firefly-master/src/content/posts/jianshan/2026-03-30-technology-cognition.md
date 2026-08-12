@@ -1,6 +1,6 @@
 ---
 title: 第 9 章 · 技术认知
-published: 2026-03-30
+published: 2026-03-15
 description: 产品经理不必成为技术专家，但需要看懂产品承诺背后的系统代价、风险边界与可控取舍。
 image: /assets/library/jianshan/technology-cognition/cover.png
 category: 见山

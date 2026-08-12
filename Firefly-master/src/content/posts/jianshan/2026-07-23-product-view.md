@@ -1,6 +1,6 @@
 ---
 title: 第 2 章 · 产品观
-published: 2026-01-30
+published: 2025-11-07
 description: 从用户任务、产品定位与资源代价出发，建立判断产品是否值得存在的底层框架，并学会为不做承担后果。
 image: /assets/library/jianshan/product-view/cover.png
 category: 见山
