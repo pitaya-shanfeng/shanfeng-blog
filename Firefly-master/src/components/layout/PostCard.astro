@@ -103,7 +103,7 @@ const documentPages = entry.data.documentPages;
   <div
     class:list={[
       "post-card-content",
-      "pl-4 md:pl-9 pr-4 md:pr-2 pt-4 md:pt-7 pb-4 md:pb-7 relative flex flex-col h-full",
+      "pl-4 md:pl-9 pr-4 md:pr-2 pt-4 md:pt-7 pb-4 md:pb-7 relative flex flex-col",
       {
         "w-full md:w-[calc(100%-52px-12px)]": !hasCover,
         "w-full md:w-[calc(100%-var(--coverWidth)-1.5rem)]": hasCover,
@@ -265,6 +265,13 @@ const documentPages = entry.data.documentPages;
   /* 移动端列表模式：封面在右侧，内容缩小 */
   :global(.list-mode) .post-card-wrapper {
     flex-direction: row !important;
+    height: auto !important;
+    align-items: stretch !important;
+  }
+
+  :global(.list-mode) .post-card-content {
+    height: auto !important;
+    min-height: 0 !important;
   }
 
   :global(.list-mode) .has-cover .post-card-content {

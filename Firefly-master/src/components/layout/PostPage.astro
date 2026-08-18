@@ -130,10 +130,9 @@ const initialLayoutClass =
 
     // Helper to apply layout classes (Pure logic, no animation)
     const applyClasses = () => {
-        postListContainer.classList.remove("list-mode", "grid-mode", "post-grid-auto");
+        postListContainer.classList.remove("list-mode", "grid-mode", "post-grid-auto", "flex", "flex-col", "gap-4", "md:gap-4");
         if (layout === "grid") {
             postListContainer.classList.add("grid-mode");
-            postListContainer.classList.remove("flex", "flex-col");
             if (masonryEnabled) {
                 postListContainer.classList.remove("post-grid-auto");
                 applyMasonryLayout();
@@ -157,6 +156,7 @@ const initialLayoutClass =
 
     // Case 2: Same layout (e.g. Resize) - No animation, just refresh masonry
     if (currentLayout === layout) {
+        applyClasses();
         if (layout === "grid" && masonryEnabled) {
             applyMasonryLayout();
         }
@@ -350,6 +350,17 @@ const initialLayoutClass =
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(var(--post-card-min-width, 320px), 1fr));
     gap: 1rem;
+  }
+
+  #post-list-container.list-mode {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  #post-list-container.list-mode .post-card-wrapper,
+  #post-list-container.list-mode .post-card-content {
+    height: auto !important;
   }
 
   /* 移动端列表模式下缩小元数据 */

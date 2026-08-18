@@ -88,10 +88,11 @@ const foldOnFilter = collapseAllButFirst;
 ---
 
 <archive-panel
-  class="card-base px-8 py-6"
+  class={initialCategory ? "" : "card-base px-8 py-6"}
   data-fold={foldOnFilter ? "true" : "false"}
   data-initial-category={initialCategory}
 >
+  <div class={initialCategory ? "card-base px-8 py-6" : ""}>
   {/* 筛选头部：默认隐藏，客户端在有筛选时填充并显示 */}
   <div id="archive-filter-header" class="mb-5 hidden">
     <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
@@ -194,30 +195,29 @@ const foldOnFilter = collapseAllButFirst;
       </div>
     );
   })}
+  </div>
 
   {categoryPostCards.length > 0 && (
-	<section class="archive-card-list list-mode flex flex-col gap-4 md:gap-4 mt-8 pt-8 border-t border-(--line-divider)">
-		<div class="contents">
-        {categoryPostCards.map((post, index) => (
-          <PostCard
-            entry={post}
-            title={post.data.title}
-            tags={post.data.tags}
-            category={post.data.category}
-            published={post.data.published}
-            updated={post.data.updated}
-            url={getPostUrlBySlug(post.id)}
-            image={post.data.image}
-            description={post.data.description}
-            draft={post.data.draft}
-            pinned={post.data.pinned}
-            password={!!post.data.password}
-            loading={index < 2 ? "eager" : "lazy"}
-            class="post-card-item"
-            style=""
-          />
-        ))}
-      </div>
+	<section class="archive-card-list list-mode flex flex-col gap-4 md:gap-4 mt-4">
+      {categoryPostCards.map((post, index) => (
+        <PostCard
+          entry={post}
+          title={post.data.title}
+          tags={post.data.tags}
+          category={post.data.category}
+          published={post.data.published}
+          updated={post.data.updated}
+          url={getPostUrlBySlug(post.id)}
+          image={post.data.image}
+          description={post.data.description}
+          draft={post.data.draft}
+          pinned={post.data.pinned}
+          password={!!post.data.password}
+          loading={index < 2 ? "eager" : "lazy"}
+          class="post-card-item"
+          style=""
+        />
+      ))}
     </section>
   )}
 </archive-panel>
@@ -228,6 +228,15 @@ const foldOnFilter = collapseAllButFirst;
   }
   .archive-arrow {
     display: inline-flex;
+  }
+  .archive-card-list.list-mode {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .archive-card-list.list-mode :global(.post-card-wrapper),
+  .archive-card-list.list-mode :global(.post-card-content) {
+    height: auto !important;
   }
 </style>
 

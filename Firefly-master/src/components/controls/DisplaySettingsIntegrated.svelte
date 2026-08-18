@@ -356,11 +356,11 @@ function refreshAllRangeProgress() {
 	});
 }
 
-function switchLayout() {
-	if (!mounted || isSwitching) return;
+function setLayout(layout: "list" | "grid") {
+	if (!mounted || isSwitching || currentLayout === layout) return;
 
 	isSwitching = true;
-	currentLayout = currentLayout === "list" ? "grid" : "list";
+	currentLayout = layout;
 	localStorage.setItem("postListLayout", currentLayout);
 
 	// 触发自定义事件，通知页面布局已改变
@@ -373,6 +373,10 @@ function switchLayout() {
 	setTimeout(() => {
 		isSwitching = false;
 	}, 500);
+}
+
+function switchLayout() {
+	setLayout(currentLayout === "list" ? "grid" : "list");
 }
 
 onMount(() => {
@@ -768,7 +772,7 @@ $effect(() => {
                     class:opacity-60={currentLayout !== 'list'}
                     class:bg-(--btn-regular-bg-hover)={currentLayout === 'list'}
                     disabled={isSwitching}
-                    onclick={switchLayout}
+                    onclick={() => setLayout('list')}
                     title={i18n(I18nKey.postListLayoutList)}
                 >
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -782,7 +786,7 @@ $effect(() => {
                     class:opacity-60={currentLayout !== 'grid'}
                     class:bg-(--btn-regular-bg-hover)={currentLayout === 'grid'}
                     disabled={isSwitching}
-                    onclick={switchLayout}
+                    onclick={() => setLayout('grid')}
                     title={i18n(I18nKey.postListLayoutGrid)}
                 >
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
