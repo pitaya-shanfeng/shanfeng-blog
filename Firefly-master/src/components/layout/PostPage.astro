@@ -257,10 +257,51 @@ const initialLayoutClass =
     container.style.height = `${Math.max(...colHeights)}px`;
   }
 
+  function ensurePostListVisible() {
+    const container = document.getElementById("post-list-container");
+    if (!container) return;
+
+    // 页面切换/返回首页时，个别情况下过渡类会停留在透明态。
+    // 首页文章是服务端已渲染内容，这里只做可见性兜底，不改变列表数据。
+    container.classList.remove("layout-switching");
+
+    const contentWrapper = document.getElementById("content-wrapper");
+    contentWrapper?.classList.remove("transition-leaving");
+    if (contentWrapper) {
+      contentWrapper.style.opacity = "1";
+      contentWrapper.style.transform = "none";
+    }
+
+    const swupContainer = document.getElementById("swup-container");
+    if (swupContainer) {
+      swupContainer.style.opacity = "1";
+      swupContainer.style.transform = "none";
+    }
+
+    window.setTimeout(() => {
+      const containerOpacity = window.getComputedStyle(container).opacity;
+      if (containerOpacity === "0") {
+        container.style.opacity = "1";
+        container.style.transform = "none";
+      }
+
+      container.querySelectorAll(".post-card-item").forEach((item) => {
+        const itemOpacity = window.getComputedStyle(item).opacity;
+        if (itemOpacity === "0") {
+          // @ts-ignore
+          item.style.opacity = "1";
+          // @ts-ignore
+          item.style.transform = "none";
+        }
+      });
+    }, 700);
+  }
+
   // 页面加载时初始化布局
   document.addEventListener("DOMContentLoaded", function () {
     // 延迟一点确保DOM完全加载
     setTimeout(initLayout, 50);
+    setTimeout(ensurePostListVisible, 800);
 
     // 监听图片加载以重新计算布局
     const imgs = document.querySelectorAll('#post-list-container img');
@@ -302,6 +343,7 @@ const initialLayoutClass =
   // 监听页面导航事件（Astro的客户端路由）
   document.addEventListener("astro:page-load", function () {
     setTimeout(initLayout, 50);
+    setTimeout(ensurePostListVisible, 800);
 
     // 监听图片加载
     const imgs = document.querySelectorAll('#post-list-container img');
@@ -316,6 +358,7 @@ const initialLayoutClass =
 
   document.addEventListener("astro:after-swap", function () {
     setTimeout(initLayout, 50);
+    setTimeout(ensurePostListVisible, 800);
   });
 
   // SWUP replaces the post-list DOM without firing Astro navigation events.
@@ -327,6 +370,7 @@ const initialLayoutClass =
         window.scrollTo({ left: 0, behavior: "auto" });
         initLayout();
         applyMasonryLayout();
+        ensurePostListVisible();
       });
     });
   }
@@ -343,6 +387,7 @@ const initialLayoutClass =
 
   // 立即执行一次（处理页面刷新）
   setTimeout(initLayout, 0);
+  setTimeout(ensurePostListVisible, 800);
 </script>
 
 <style is:global>
@@ -406,6 +451,19 @@ const initialLayoutClass =
   #post-list-container.layout-switching {
     opacity: 0;
     transform: translateY(10px);
+  }
+
+  /* 首页文章列表是服务端渲染内容：即使全局进入/离开动画异常残留，也不能让列表空白。 */
+  #content-wrapper:has(#post-list-container),
+  #swup-container:has(#post-list-container),
+  #post-list-container,
+  #post-list-container .post-card-item {
+    opacity: 1;
+  }
+
+  #content-wrapper:has(#post-list-container),
+  #swup-container:has(#post-list-container) {
+    transform: none;
   }
 
   /* Grid Mode Customization */

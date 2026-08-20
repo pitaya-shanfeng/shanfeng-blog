@@ -2,7 +2,7 @@
 title: 手机租赁行业市场分析
 published: 2026-08-06
 description: 中国手机 3C 信用租赁行业市场分析报告，梳理行业盘面、机会窗口与 MVP 验证路径。
-image: /assets/library/cases/phone-3c-credit-rental-market-report/cover.png
+image: /assets/library/cases/phone-3c-credit-rental-market-report/cover.webp
 category: 案例库
 tags:
   - 案例研究

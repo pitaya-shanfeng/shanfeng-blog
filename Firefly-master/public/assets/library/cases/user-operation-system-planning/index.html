@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>用户运营体系建设规划</title>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --c-primary: #4F46E5;
+  --c-primary-light: #818CF8;
+  --c-primary-dark: #3730A3;
+  --c-primary-bg: #EEF2FF;
+  --c-accent: #F59E0B;
+  --c-accent-light: #FCD34D;
+  --c-accent-bg: #FFFBEB;
+  --c-success: #10B981;
+  --c-success-bg: #ECFDF5;
+  --c-danger: #EF4444;
+  --c-danger-bg: #FEE2E2;
+  --c-info: #0EA5E9;
+  --c-info-bg: #F0F9FF;
+  --c-purple: #8B5CF6;
+  --c-purple-bg: #F5F3FF;
+  --c-text: #1E293B;
+  --c-text-mid: #475569;
+  --c-text-muted: #94A3B8;
+  --c-bg: #F8FAFC;
+  --c-card: #FFFFFF;
+  --c-border: #E2E8F0;
+  --c-border-light: #F1F5F9;
+  --c-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --c-shadow-lg: 0 10px 30px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-xs: 8px;
+  --max-width: 1200px;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "SF Mono", "Fira Code", "JetBrains Mono", Consolas, monospace;
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+body { font-family: var(--font-sans); background: var(--c-bg); color: var(--c-text); line-height: 1.8; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+h1, h2, h3, h4 { line-height: 1.3; font-weight: 700; color: var(--c-text); }
+a { color: var(--c-primary); text-decoration: none; transition: color 0.2s; }
+
+.page { max-width: var(--max-width); margin: 0 auto; padding: 0 32px; }
+
+/* Hero */
+.hero { position: relative; background: linear-gradient(135deg, #312E81 0%, #4F46E5 45%, #6366F1 100%); padding: 96px 24px 80px; text-align: center; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: -100px; right: -60px; width: 320px; height: 320px; background: radial-gradient(circle, rgba(252,211,77,0.15) 0%, transparent 70%); border-radius: 50%; }
+.hero::after { content: ''; position: absolute; bottom: -60px; left: -40px; width: 260px; height: 260px; background: radial-gradient(circle, rgba(129,140,248,0.25) 0%, transparent 70%); border-radius: 50%; }
+.hero-badge { display: inline-block; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.25); color: #C7D2FE; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; padding: 6px 16px; border-radius: 20px; margin-bottom: 20px; position: relative; z-index: 1; }
+.hero h1 { font-size: 40px; color: #fff; margin-bottom: 16px; position: relative; z-index: 1; letter-spacing: -0.5px; }
+.hero-subtitle { font-size: 17px; color: #C7D2FE; max-width: 720px; margin: 0 auto; position: relative; z-index: 1; line-height: 1.7; }
+.hero-tags { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 24px; position: relative; z-index: 1; }
+.hero-tag { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #E0E7FF; font-size: 13px; padding: 5px 14px; border-radius: 8px; }
+
+/* Section */
+.section { padding: 64px 0; border-bottom: 1px solid var(--c-border-light); animation: fadeIn 0.5s ease-out; }
+.section:last-child { border-bottom: none; }
+.section-head { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 32px; }
+.section-num { flex-shrink: 0; width: 48px; height: 48px; background: linear-gradient(135deg, var(--c-primary), var(--c-primary-light)); color: #fff; font-size: 18px; font-weight: 700; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(79,70,229,0.3); }
+.section-title-group { flex: 1; }
+.section-eyebrow { font-size: 14px; font-weight: 600; color: var(--c-primary); letter-spacing: 0.5px; margin-bottom: 4px; }
+.section-title { font-size: 26px; font-weight: 700; }
+.section-desc { font-size: 15px; color: var(--c-text-mid); margin-top: 6px; }
+
+/* Card */
+.card { background: var(--c-card); border: 1px solid var(--c-border); border-radius: var(--radius); padding: 28px; box-shadow: var(--c-shadow); }
+.card-accent { border-left: 4px solid var(--c-primary); }
+
+/* Phase Header */
+.phase-header { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
+.phase-badge { font-size: 13px; font-weight: 700; padding: 5px 14px; border-radius: 8px; color: #fff; }
+.phase-badge.p1 { background: var(--c-success); }
+.phase-badge.p2 { background: var(--c-info); }
+.phase-badge.p3 { background: var(--c-accent); }
+.phase-badge.p4 { background: var(--c-purple); }
+.phase-title { font-size: 18px; font-weight: 700; }
+.phase-metric { font-size: 14px; font-weight: 600; color: var(--c-primary); background: var(--c-primary-bg); padding: 4px 12px; border-radius: 6px; display: inline-block; margin-bottom: 16px; }
+
+/* Judgment Box */
+.judgment-box { background: linear-gradient(135deg, #FFFBEB, #FEF3C7); border: 1px solid #FDE68A; border-radius: var(--radius-sm); padding: 18px 22px; margin-bottom: 16px; }
+.judgment-label { font-size: 12px; font-weight: 700; color: #92400E; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.judgment-text { font-size: 15px; font-weight: 600; color: var(--c-text); }
+.judgment-skip { background: linear-gradient(135deg, #FEE2E2, #FECACA); border: 1px solid #FCA5A5; border-radius: var(--radius-sm); padding: 14px 20px; margin-bottom: 20px; font-size: 14px; color: #991B1B; }
+
+/* Callout */
+.callout { padding: 16px 20px; border-radius: var(--radius-sm); margin: 16px 0; font-size: 14px; line-height: 1.7; }
+.callout.info { background: var(--c-info-bg); border-left: 4px solid var(--c-info); color: #075985; }
+.callout.success { background: var(--c-success-bg); border-left: 4px solid var(--c-success); color: #065F46; }
+.callout.accent { background: var(--c-accent-bg); border-left: 4px solid var(--c-accent); color: #92400E; }
+.callout.primary { background: var(--c-primary-bg); border-left: 4px solid var(--c-primary); color: var(--c-primary-dark); }
+
+/* Info Table */
+.info-table { width: 100%; border-collapse: collapse; font-size: 15px; margin: 16px 0; }
+.info-table th { text-align: left; font-size: 13px; font-weight: 700; color: var(--c-text-muted); text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 16px; background: var(--c-bg); border-bottom: 2px solid var(--c-border); }
+.info-table td { padding: 14px 16px; border-bottom: 1px solid var(--c-border-light); vertical-align: top; }
+.info-table tr:last-child td { border-bottom: none; }
+.info-table tr:hover td { background: var(--c-primary-bg); }
+
+/* Diagram */
+.diagram-box { background: var(--c-card); border: 1px solid var(--c-border); border-radius: var(--radius); padding: 32px; margin: 20px 0; overflow: hidden; }
+.diagram-box svg { width: 100%; height: auto; display: block; }
+.diagram-caption { text-align: center; font-size: 13px; color: var(--c-text-muted); margin-top: 12px; }
+
+/* Layer Stack */
+.layer-stack { display: flex; flex-direction: column; gap: 0; }
+.layer-card { padding: 20px 24px; border-radius: var(--radius); position: relative; transition: transform 0.2s; }
+.layer-card:hover { transform: scale(1.01); }
+.layer-card.strategy { background: linear-gradient(135deg, #F5F3FF, #EDE9FE); border: 1px solid #DDD6FE; }
+.layer-card.channel { background: linear-gradient(135deg, #F0F9FF, #E0F2FE); border: 1px solid #BAE6FD; }
+.layer-card.midtier { background: linear-gradient(135deg, #FFFBEB, #FEF3C7); border: 1px solid #FDE68A; }
+.layer-card.data { background: linear-gradient(135deg, #ECFDF5, #D1FAE5); border: 1px solid #86EFAC; }
+.layer-arrow { text-align: center; font-size: 22px; color: var(--c-text-muted); padding: 4px 0; }
+.layer-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.layer-badge { font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 6px; color: #fff; }
+.layer-card.strategy .layer-badge { background: var(--c-purple); }
+.layer-card.channel .layer-badge { background: var(--c-info); }
+.layer-card.midtier .layer-badge { background: var(--c-accent); }
+.layer-card.data .layer-badge { background: var(--c-success); }
+.layer-items { display: flex; flex-wrap: wrap; gap: 8px; }
+.layer-item { background: rgba(255,255,255,0.7); padding: 6px 12px; border-radius: 8px; font-size: 13px; border: 1px solid rgba(255,255,255,0.5); }
+
+/* Roadmap */
+.roadmap { display: flex; align-items: flex-start; gap: 0; overflow-x: auto; padding-bottom: 8px; }
+.roadmap-step { flex: 1; min-width: 140px; text-align: center; position: relative; }
+.roadmap-dot { width: 16px; height: 16px; border-radius: 50%; margin: 0 auto 10px; position: relative; z-index: 2; }
+.roadmap-step:nth-child(1) .roadmap-dot { background: var(--c-success); }
+.roadmap-step:nth-child(2) .roadmap-dot { background: var(--c-info); }
+.roadmap-step:nth-child(3) .roadmap-dot { background: var(--c-accent); }
+.roadmap-step:nth-child(4) .roadmap-dot { background: var(--c-purple); }
+.roadmap-line { position: absolute; top: 8px; left: 50%; width: 100%; height: 3px; background: var(--c-border); z-index: 1; }
+.roadmap-step:last-child .roadmap-line { display: none; }
+.roadmap-label { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.roadmap-desc { font-size: 12px; color: var(--c-text-mid); line-height: 1.4; padding: 0 6px; }
+
+/* Principle Grid */
+.principle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.principle-card { padding: 18px 20px; background: var(--c-card); border: 1px solid var(--c-border); border-radius: var(--radius-sm); position: relative; overflow: hidden; }
+.principle-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--c-primary); }
+.principle-card:nth-child(2)::before { background: var(--c-info); }
+.principle-card:nth-child(3)::before { background: var(--c-success); }
+.principle-card:nth-child(4)::before { background: var(--c-accent); }
+.principle-card:nth-child(5)::before { background: var(--c-purple); }
+.principle-num { font-size: 12px; font-weight: 700; color: var(--c-text-muted); letter-spacing: 1px; }
+.principle-title { font-size: 15px; font-weight: 700; margin: 4px 0 6px; }
+.principle-body { font-size: 13px; color: var(--c-text-mid); line-height: 1.6; }
+
+/* Condition Table */
+.condition-table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 12px 0; }
+.condition-table th { text-align: left; font-size: 12px; font-weight: 700; color: #92400E; text-transform: uppercase; letter-spacing: 0.5px; padding: 10px 14px; background: var(--c-accent-bg); border-bottom: 2px solid #FDE68A; }
+.condition-table td { padding: 12px 14px; border-bottom: 1px solid var(--c-border-light); }
+.condition-table tr:last-child td { border-bottom: none; }
+
+/* Deliverable */
+.deliverable-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.deliverable-card { padding: 16px 18px; border-radius: var(--radius-sm); }
+.deliverable-card.ops { background: var(--c-primary-bg); border: 1px solid #C7D2FE; }
+.deliverable-card.prod { background: var(--c-info-bg); border: 1px solid #BAE6FD; }
+.deliverable-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.deliverable-card.ops .deliverable-label { color: var(--c-primary); }
+.deliverable-card.prod .deliverable-label { color: var(--c-info); }
+.deliverable-list { font-size: 13px; color: var(--c-text); line-height: 1.8; }
+.deliverable-list li { list-style: none; padding-left: 16px; position: relative; }
+.deliverable-list li::before { content: '▸'; position: absolute; left: 0; color: var(--c-text-muted); }
+
+/* Footer */
+.footer { text-align: center; padding: 40px 24px; background: linear-gradient(135deg, #1E1B4B, #312E81); color: #A5B4FC; }
+.footer p { font-size: 14px; }
+
+/* Divider */
+.divider-dot { text-align: center; padding: 8px 0; color: var(--c-border); letter-spacing: 8px; font-size: 12px; }
+
+/* Subsection */
+.subsection { margin-top: 28px; }
+.subsection-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--c-text); }
+
+/* Problem Grid */
+.problem-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.problem-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px 18px; background: var(--c-card); border: 1px solid var(--c-border); border-radius: var(--radius-sm); transition: box-shadow 0.2s, transform 0.2s; }
+.problem-item:hover { box-shadow: var(--c-shadow-lg); transform: translateY(-1px); }
+.problem-icon { flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.problem-icon.red { background: #FEE2E2; }
+.problem-icon.blue { background: #DBEAFE; }
+.problem-icon.amber { background: #FEF3C7; }
+.problem-icon.green { background: #D1FAE5; }
+.problem-text { font-size: 14px; color: var(--c-text); line-height: 1.6; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 768px) {
+  .principle-grid { grid-template-columns: 1fr; }
+  .deliverable-grid { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 26px; }
+  .section-title { font-size: 19px; }
+}
+
+@media print {
+  .hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .section { page-break-inside: avoid; }
+  body { background: #fff; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="hero-badge">青年优品 · 产品团队</span>
+  <h1>用户运营体系建设规划</h1>
+  <p class="hero-subtitle">运营定义目标和策略方向，产品建系统能力实现落地。两者交替驱动：运营跑出数据验证方向，产品建能力放大效果。</p>
+  <div class="hero-tags">
+    <span class="hero-tag">短租 · 长租 · 赊销 · 零售（四种销售模式）</span>
+    <span class="hero-tag">四阶段演进</span>
+    <span class="hero-tag">运营+产品双线驱动</span>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- 01 业务全景 -->
+<div class="section" id="background">
+  <div class="section-head">
+    <div class="section-num">01</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">OVERVIEW</div>
+      <h2 class="section-title">业务全景</h2>
+      <p class="section-desc">四种销售模式的用户旅程、运营现状、目标策略</p>
+    </div>
+  </div>
+
+  <!-- 四种销售模式用户旅程 -->
+  <div class="diagram-box">
+    <svg viewBox="0 0 800 360" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="g-short" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#ECFDF5"/><stop offset="100%" style="stop-color:#D1FAE5"/></linearGradient>
+        <linearGradient id="g-long" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#F0F9FF"/><stop offset="100%" style="stop-color:#E0F2FE"/></linearGradient>
+        <linearGradient id="g-credit" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#FFFBEB"/><stop offset="100%" style="stop-color:#FEF3C7"/></linearGradient>
+        <linearGradient id="g-retail" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#F5F3FF"/><stop offset="100%" style="stop-color:#EDE9FE"/></linearGradient>
+      </defs>
+
+      <!-- 短租 -->
+      <rect x="10" y="15" width="185" height="330" rx="12" fill="url(#g-short)" stroke="#86EFAC" stroke-width="1.5"/>
+      <text x="102" y="40" text-anchor="middle" font-size="15" font-weight="700" fill="#065F46">短租</text>
+      <text x="102" y="58" text-anchor="middle" font-size="11" fill="#10B981">短周期租赁</text>
+      <line x1="25" y1="68" x2="180" y2="68" stroke="#86EFAC" stroke-width="1" stroke-dasharray="3,3"/>
+      <!-- 旅程 -->
+      <circle cx="50" cy="95" r="10" fill="#10B981"/>
+      <text x="50" y="99" text-anchor="middle" font-size="9" fill="white" font-weight="600">下单</text>
+      <circle cx="102" cy="95" r="10" fill="#10B981"/>
+      <text x="102" y="99" text-anchor="middle" font-size="9" fill="white" font-weight="600">使用</text>
+      <circle cx="154" cy="95" r="10" fill="#10B981"/>
+      <text x="154" y="99" text-anchor="middle" font-size="9" fill="white" font-weight="600">归还</text>
+      <line x1="60" y1="95" x2="92" y2="95" stroke="#10B981" stroke-width="1.5"/>
+      <line x1="112" y1="95" x2="144" y2="95" stroke="#10B981" stroke-width="1.5"/>
+      <text x="102" y="125" text-anchor="middle" font-size="11" fill="#065F46">到期前驱动续租/复购</text>
+      <!-- 触达方式 -->
+      <rect x="25" y="140" width="155" height="28" rx="6" fill="white" opacity="0.7"/>
+      <text x="102" y="159" text-anchor="middle" font-size="11" fill="#10B981" font-weight="600">1V1触达：到期提醒·续租推荐</text>
+      <rect x="25" y="175" width="155" height="28" rx="6" fill="white" opacity="0.7"/>
+      <text x="102" y="194" text-anchor="middle" font-size="11" fill="#F59E0B" font-weight="600">群运营：待验证</text>
+      <text x="102" y="213" text-anchor="middle" font-size="10" fill="#92400E">私域0转化为现象</text>
+      <!-- 运营节点 -->
+      <rect x="25" y="225" width="155" height="105" rx="6" fill="white" opacity="0.5"/>
+      <text x="30" y="245" font-size="10" fill="#065F46" font-weight="600">运营节奏：</text>
+      <text x="30" y="262" font-size="9" fill="#475569">· 次日：设备使用引导</text>
+      <text x="30" y="278" font-size="9" fill="#475569">· 第7天：满意度回访</text>
+      <text x="30" y="294" font-size="9" fill="#475569">· 到期前30/15/7天：续租推荐</text>
+      <text x="30" y="310" font-size="9" fill="#475569">· 归还后7天：召回券</text>
+      <text x="30" y="326" font-size="9" fill="#10B981" font-weight="600">阶段一启动 · 短信先行 · 3天高频基线</text>
+
+      <!-- 长租 -->
+      <rect x="210" y="15" width="185" height="330" rx="12" fill="url(#g-long)" stroke="#BAE6FD" stroke-width="1.5"/>
+      <text x="302" y="40" text-anchor="middle" font-size="15" font-weight="700" fill="#0369A1">长租</text>
+      <text x="302" y="58" text-anchor="middle" font-size="11" fill="#0EA5E9">长周期租赁</text>
+      <line x1="225" y1="68" x2="380" y2="68" stroke="#BAE6FD" stroke-width="1" stroke-dasharray="3,3"/>
+      <circle cx="250" cy="95" r="10" fill="#0EA5E9"/>
+      <text x="250" y="99" text-anchor="middle" font-size="9" fill="white" font-weight="600">下单</text>
+      <circle cx="302" cy="95" r="10" fill="#0EA5E9"/>
+      <text x="302" y="99" text-anchor="middle" font-size="9" fill="white" font-weight="600">使用</text>
+      <circle cx="354" cy="95" r="10" fill="#0EA5E9"/>
+      <text x="354" y="99" text-anchor="middle" font-size="9" fill="white" font-weight="600">续/买</text>
+      <line x1="260" y1="95" x2="292" y2="95" stroke="#0EA5E9" stroke-width="1.5"/>
+      <line x1="312" y1="95" x2="344" y2="95" stroke="#0EA5E9" stroke-width="1.5"/>
+      <text x="302" y="125" text-anchor="middle" font-size="11" fill="#0369A1">到期前驱动续约/买断</text>
+      <rect x="225" y="140" width="155" height="28" rx="6" fill="white" opacity="0.7"/>
+      <text x="302" y="159" text-anchor="middle" font-size="11" fill="#0EA5E9" font-weight="600">1V1触达：到期提醒·续约推荐</text>
+      <rect x="225" y="175" width="155" height="40" rx="6" fill="#FEE2E2" opacity="0.5"/>
+      <text x="302" y="192" text-anchor="middle" font-size="11" fill="#EF4444" font-weight="600">群运营：不建议</text>
+      <text x="302" y="208" text-anchor="middle" font-size="9" fill="#991B1B">长周期易产生纠纷·中介广告乱象</text>
+      <rect x="225" y="225" width="155" height="105" rx="6" fill="white" opacity="0.5"/>
+      <text x="230" y="245" font-size="10" fill="#0369A1" font-weight="600">运营节奏：</text>
+      <text x="230" y="262" font-size="9" fill="#475569">· 履约期：设备状态关怀</text>
+      <text x="230" y="278" font-size="9" fill="#475569">· 到期前60天：续约推荐</text>
+      <text x="230" y="294" font-size="9" fill="#475569">· 到期前30天：买断/续约优惠</text>
+      <text x="230" y="310" font-size="9" fill="#475569">· 到期后：跨品类推荐</text>
+      <text x="230" y="326" font-size="9" fill="#0EA5E9" font-weight="600">阶段一起跑SMS · 阶段三承接标签圈选</text>
+
+      <!-- 赊销 -->
+      <rect x="410" y="15" width="185" height="330" rx="12" fill="url(#g-credit)" stroke="#FDE68A" stroke-width="1.5"/>
+      <text x="502" y="40" text-anchor="middle" font-size="15" font-weight="700" fill="#92400E">赊销</text>
+      <text x="502" y="58" text-anchor="middle" font-size="11" fill="#F59E0B">分期付款购买</text>
+      <line x1="425" y1="68" x2="580" y2="68" stroke="#FDE68A" stroke-width="1" stroke-dasharray="3,3"/>
+      <circle cx="445" cy="95" r="10" fill="#F59E0B"/>
+      <text x="445" y="99" text-anchor="middle" font-size="9" fill="white" font-weight="600">下单</text>
+      <circle cx="490" cy="95" r="10" fill="#F59E0B"/>
+      <text x="490" y="99" text-anchor="middle" font-size="8" fill="white" font-weight="600">50%</text>
+      <circle cx="535" cy="95" r="10" fill="#F59E0B"/>
+      <text x="535" y="99" text-anchor="middle" font-size="8" fill="white" font-weight="600">完单</text>
+      <circle cx="580" cy="95" r="10" fill="#F59E0B"/>
+      <text x="580" y="99" text-anchor="middle" font-size="8" fill="white" font-weight="600">复购</text>
+      <line x1="455" y1="95" x2="480" y2="95" stroke="#F59E0B" stroke-width="1.5"/>
+      <line x1="500" y1="95" x2="525" y2="95" stroke="#F59E0B" stroke-width="1.5"/>
+      <line x1="545" y1="95" x2="570" y2="95" stroke="#F59E0B" stroke-width="1.5"/>
+      <text x="502" y="125" text-anchor="middle" font-size="11" fill="#92400E">完单后驱动复购</text>
+      <rect x="425" y="140" width="155" height="28" rx="6" fill="white" opacity="0.7"/>
+      <text x="502" y="159" text-anchor="middle" font-size="11" fill="#F59E0B" font-weight="600">1V1触达：还款提醒·复购推荐</text>
+      <rect x="425" y="175" width="155" height="40" rx="6" fill="#FEE2E2" opacity="0.5"/>
+      <text x="502" y="192" text-anchor="middle" font-size="11" fill="#EF4444" font-weight="600">群运营：不建议</text>
+      <text x="502" y="208" text-anchor="middle" font-size="9" fill="#991B1B">逾期/费用争议易在群内扩大</text>
+      <rect x="425" y="225" width="155" height="105" rx="6" fill="white" opacity="0.5"/>
+      <text x="430" y="245" font-size="10" fill="#92400E" font-weight="600">运营节奏：</text>
+      <text x="430" y="262" font-size="9" fill="#475569">· 还款过半：进度通知</text>
+      <text x="430" y="278" font-size="9" fill="#475569">· 完单后：复购券</text>
+      <text x="430" y="294" font-size="9" fill="#475569">· 完成后第7天：跨品类推荐</text>
+      <text x="430" y="310" font-size="9" fill="#475569">· 完成后第30天：召回触达</text>
+      <text x="430" y="326" font-size="9" fill="#F59E0B" font-weight="600">阶段二启动 · 纯赊销路径优先</text>
+
+      <!-- 零售 -->
+      <rect x="610" y="15" width="180" height="330" rx="12" fill="url(#g-retail)" stroke="#DDD6FE" stroke-width="1.5"/>
+      <text x="700" y="40" text-anchor="middle" font-size="15" font-weight="700" fill="#6D28D9">零售</text>
+      <text x="700" y="58" text-anchor="middle" font-size="11" fill="#8B5CF6">直接购买</text>
+      <line x1="625" y1="68" x2="775" y2="68" stroke="#DDD6FE" stroke-width="1" stroke-dasharray="3,3"/>
+      <circle cx="650" cy="95" r="10" fill="#8B5CF6"/>
+      <text x="650" y="99" text-anchor="middle" font-size="9" fill="white" font-weight="600">下单</text>
+      <circle cx="700" cy="95" r="10" fill="#8B5CF6"/>
+      <text x="700" y="99" text-anchor="middle" font-size="9" fill="white" font-weight="600">使用</text>
+      <circle cx="750" cy="95" r="10" fill="#8B5CF6"/>
+      <text x="750" y="99" text-anchor="middle" font-size="9" fill="white" font-weight="600">跨品</text>
+      <line x1="660" y1="95" x2="690" y2="95" stroke="#8B5CF6" stroke-width="1.5"/>
+      <line x1="710" y1="95" x2="740" y2="95" stroke="#8B5CF6" stroke-width="1.5"/>
+      <text x="700" y="125" text-anchor="middle" font-size="11" fill="#6D28D9">跨品类引导入口</text>
+      <rect x="625" y="140" width="155" height="28" rx="6" fill="white" opacity="0.7"/>
+      <text x="700" y="159" text-anchor="middle" font-size="11" fill="#8B5CF6" font-weight="600">1V1触达：跨品类推荐</text>
+      <rect x="625" y="175" width="155" height="40" rx="6" fill="#FEF3C7" opacity="0.5"/>
+      <text x="700" y="192" text-anchor="middle" font-size="11" fill="#F59E0B" font-weight="600">群运营：待验证</text>
+      <text x="700" y="208" text-anchor="middle" font-size="9" fill="#92400E">建议1-2个群小范围试点</text>
+      <rect x="625" y="225" width="155" height="105" rx="6" fill="white" opacity="0.5"/>
+      <text x="630" y="245" font-size="10" fill="#6D28D9" font-weight="600">运营节奏：</text>
+      <text x="630" y="262" font-size="9" fill="#475569">· 购买后7天：使用关怀</text>
+      <text x="630" y="278" font-size="9" fill="#475569">· 购买后30天：配件推荐</text>
+      <text x="630" y="294" font-size="9" fill="#475569">· 购买后90天：短租体验推荐</text>
+      <text x="630" y="310" font-size="9" fill="#475569">· 购买后180天：以旧换新</text>
+      <text x="630" y="326" font-size="9" fill="#8B5CF6" font-weight="600">阶段三启动</text>
+    </svg>
+    <p class="diagram-caption">四种销售模式用户旅程与运营动作全景 · 企微是触达通道之一，群运营只是表现之一，1V1触达是核心</p>
+  </div>
+
+  <div class="callout info">
+    <strong>关于群运营的判断：</strong>用户运营涵盖私域运营，不仅是群运营，还包括1V1触达、转化等。企微只是一个加粉、触达通道，群只是一种表现。长租和赊销不建议群运营——长租长周期易产生纠纷、中介广告乱象；赊销涉及还款、逾期和费用争议，群内容易扩大影响。群活跃本身也是一件相对困难的事情。短租和零售可小范围试点群运营。
+  </div>
+
+  <!-- 运营维度 -->
+  <div class="subsection">
+    <div class="subsection-title">运营维度：新人转化 vs 老客复购</div>
+    <table class="info-table">
+      <thead><tr><th>维度</th><th>短租</th><th>长租</th><th>赊销</th><th>零售</th></tr></thead>
+      <tbody>
+        <tr><td><strong>新人转化</strong><br>注册→首单→激活</td><td>到期前续租推荐<br>归还后召回券</td><td>到期前续约推荐<br>买断优惠</td><td>还款进度通知<br>完单后复购券</td><td>使用关怀<br>配件推荐</td></tr>
+        <tr><td><strong>老客复购</strong><br>使用中→到期→到期后</td><td>跨品类引导（→长租/零售）<br>复购券+1V1跟进</td><td>跨品类引导（→短租/零售）<br>以旧换新</td><td>跨品类引导（→短租/长租）<br>完成后7天/30天召回</td><td>跨品类引导（→短租/赊销）<br>以旧换新</td></tr>
+              </tbody>
+    </table>
+  </div>
+
+  <!-- 运营现状 -->
+  <div class="subsection">
+    <div class="subsection-title">运营现状</div>
+    <div class="problem-grid" style="margin-bottom: 20px;">
+      <div class="problem-item">
+        <div class="problem-icon blue">📱</div>
+        <div class="problem-text"><strong>短信名单运营：</strong>4类客群名单→短信触达→落地页转化。单批2万用户→400人下单，单均成本10-17元。问题：成交大量归属租物端，私域转化贡献极低。</div>
+      </div>
+      <div class="problem-item">
+        <div class="problem-icon amber">💬</div>
+        <div class="problem-text"><strong>企微私域运营：</strong>加微/入群/群发/朋友圈/1V1私信。私域GMV占比2-6%。<strong>8.12实测现象：</strong>对短租人群进行长租/赊销转化目前为0（覆盖1.5万人/98访问），这是现状现象而非最终结论——群运营有效性待持续验证。企微价值聚焦1V1+加微通道，群运营作为辅助手段保留探索。</div>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px;">
+      <div style="flex:1; min-width: 200px; background: var(--c-primary-bg); border-radius: var(--radius-sm); padding: 16px 20px; border: 1px solid #C7D2FE;">
+        <div style="font-size: 12px; font-weight: 700; color: var(--c-primary); margin-bottom: 6px;">运营目标</div>
+        <div style="font-size: 14px; font-weight: 600;">短租复购率 3%→高于平台2pp<br>短租加粉率 39%→45%<br>短租私域GMV占比 5.8%→10%<br>全品类系统化自动运营</div>
+      </div>
+      <div style="flex:1; min-width: 200px; background: var(--c-accent-bg); border-radius: var(--radius-sm); padding: 16px 20px; border: 1px solid #FDE68A;">
+        <div style="font-size: 12px; font-weight: 700; color: #92400E; margin-bottom: 6px;">运营策略</div>
+        <div style="font-size: 14px; font-weight: 600;">短租先行·短信为核<br>长租白名单3天高频作为基线<br>赊销纯路径优先（不强行引导长租）<br>按业务性质差异化运营</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 02 产品全景 -->
+<div class="section" id="architecture">
+  <div class="section-head">
+    <div class="section-num">02</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">PRODUCT PANORAMA</div>
+      <h2 class="section-title">产品全景</h2>
+      <p class="section-desc">与业务全景对齐的产品全景图，自下而上四层，每层为上层提供服务</p>
+    </div>
+  </div>
+
+  <div class="layer-stack">
+    <!-- 运营策略层 -->
+    <div class="layer-card strategy">
+      <div class="layer-header">
+        <span class="layer-badge">L4</span>
+        <h4 style="font-size: 16px;">运营策略层</h4>
+        <span style="font-size: 13px; color: var(--c-text-muted); margin-left: auto;">思路指导，中台需支撑配置和执行</span>
+      </div>
+      <div class="layer-items">
+        <span class="layer-item">生命周期管理（新人转化→老客复购→流失召回）</span>
+        <span class="layer-item">用户分层</span>
+        <span class="layer-item">SOP体系</span>
+        <span class="layer-item">内容策略</span>
+        <span class="layer-item">频率控制</span>
+      </div>
+      <div style="margin-top: 8px; font-size: 13px; color: var(--c-purple); font-style: italic;">"对谁、什么时候、做什么、用什么内容"</div>
+    </div>
+    <div class="layer-arrow">↓</div>
+
+    <!-- 渠道执行层 -->
+    <div class="layer-card channel">
+      <div class="layer-header">
+        <span class="layer-badge">L3</span>
+        <h4 style="font-size: 16px;">渠道执行层</h4>
+      </div>
+      <div class="layer-items" style="margin-bottom: 10px;">
+        <span class="layer-item">企微/有机云（1V1触达+群运营）</span>
+        <span class="layer-item">短信</span>
+        <span class="layer-item">订阅消息</span>
+        <span class="layer-item">APP push</span>
+      </div>
+      <div style="font-size: 13px; color: var(--c-text-mid); line-height: 1.7;">
+        <strong>渠道能力盘点：</strong>企微1V1—高价值服务、续约跟进（全品类适用）· 企微群—促销通知、设备交流（仅短租/零售试点） · 短信—到期提醒、还款提醒、召回 · 订阅消息—订单状态、还款提醒 · APP push—交易提醒、个性化推荐（阶段三后） · 支付宝群—逐步放弃<br>
+        <span style="color: var(--c-info);">各渠道对短租/长租/赊销的适用性需通过AB测试验证，不做预设定论。</span>
+      </div>
+    </div>
+    <div class="layer-arrow">↓</div>
+
+    <!-- 能力中台层 -->
+    <div class="layer-card midtier">
+      <div class="layer-header">
+        <span class="layer-badge">L2</span>
+        <h4 style="font-size: 16px;">能力中台层</h4>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+        <div style="background: rgba(255,255,255,0.7); border-radius: 8px; padding: 14px; border: 1px solid rgba(255,255,255,0.5);">
+          <div style="font-size: 14px; font-weight: 700; color: #92400E; margin-bottom: 8px;">用户中心</div>
+          <div style="font-size: 12px; color: var(--c-text-mid); line-height: 1.6;">
+            <strong>基础信息</strong>：用户属性、注册认证<br>
+            <strong>用户档案</strong>：订单记录、设备信息、服务记录<br>
+            <strong>查询筛选导出</strong>
+          </div>
+        </div>
+        <div style="background: rgba(255,255,255,0.7); border-radius: 8px; padding: 14px; border: 1px solid rgba(255,255,255,0.5);">
+          <div style="font-size: 14px; font-weight: 700; color: #92400E; margin-bottom: 8px;">标签体系</div>
+          <div style="font-size: 12px; color: var(--c-text-mid); line-height: 1.6;">
+            <strong>打标能力</strong>：用户/商品/订单/商户<br>
+            <strong>圈选匹配</strong>：人群圈选、商品匹配<br>
+            <strong>数据来源</strong>：数仓原子标签
+          </div>
+        </div>
+        <div style="background: rgba(255,255,255,0.7); border-radius: 8px; padding: 14px; border: 1px solid rgba(255,255,255,0.5);">
+          <div style="font-size: 14px; font-weight: 700; color: #92400E; margin-bottom: 8px;">营销中心</div>
+          <div style="font-size: 12px; color: var(--c-text-mid); line-height: 1.6;">
+            <strong>触达通道</strong>：短信、订阅消息、券/活动<br>
+            <strong>营销画布</strong>：SOP编排、事件/时间/状态触发、频次控制<br>
+            <strong>数据回流</strong>：触达记录、转化追踪
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="layer-arrow">↓</div>
+
+    <!-- 数据基础层 -->
+    <div class="layer-card data">
+      <div class="layer-header">
+        <span class="layer-badge">L1</span>
+        <h4 style="font-size: 16px;">数据基础层</h4>
+      </div>
+      <div class="layer-items">
+        <span class="layer-item">用户中心·OneID（租赁+赊销+零售userid统一映射）</span>
+        <span class="layer-item">数仓（离线T+1→准实时）</span>
+        <span class="layer-item">数据源（埋点/交易/风控/客服）</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout info" style="margin-top: 20px;">
+    <strong>核心数据流：</strong>用户中心（含OneID统一身份）→ 标签体系（打标→圈选）→ 营销中心（营销画布编排）→ 渠道执行层（自动触达）。用户中心从标签体系读取展示。数据基础层为整个中台提供原料。
+  </div>
+</div>
+
+<div class="divider-dot">· · ·</div>
+
+<!-- 03 系统演进与建设方案 -->
+<div class="section" id="system-plan">
+  <div class="section-head">
+    <div class="section-num">03</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">SYSTEM EVOLUTION</div>
+      <h2 class="section-title">系统演进与建设方案</h2>
+      <p class="section-desc">五个系统的四阶段演进路径，每阶段明确建设内容和交付目标</p>
+    </div>
+  </div>
+
+  <!-- 演进路线图 -->
+  <div class="roadmap" style="margin-bottom: 24px;">
+    <div class="roadmap-step">
+      <div class="roadmap-dot"></div>
+      <div class="roadmap-line"></div>
+      <div class="roadmap-label" style="color: var(--c-success);">阶段一 · 启动期</div>
+      <div class="roadmap-desc">需求定稿 + OneID上线 + 私域系统过渡<br>有机云对接方案 + 运营人工跑SOP</div>
+    </div>
+    <div class="roadmap-step">
+      <div class="roadmap-dot"></div>
+      <div class="roadmap-line"></div>
+      <div class="roadmap-label" style="color: var(--c-info);">阶段二 · 基础能力期</div>
+      <div class="roadmap-desc">用户中心（基础档案+可视化）+ 标签体系上线<br>有机云单向打通，私域系统部分能力被替换</div>
+    </div>
+    <div class="roadmap-step">
+      <div class="roadmap-dot"></div>
+      <div class="roadmap-line"></div>
+      <div class="roadmap-label" style="color: var(--c-accent);">阶段三 · 系统能力期</div>
+      <div class="roadmap-desc">营销画布上线 SOP系统化<br>有机云双向闭环，私域系统迁移停用</div>
+    </div>
+    <div class="roadmap-step">
+      <div class="roadmap-dot"></div>
+      <div class="roadmap-label" style="color: var(--c-purple);">阶段四 · 体系跑通期</div>
+      <div class="roadmap-desc">私域系统下线 全品类自动化<br>有机云任务类型扩展</div>
+    </div>
+  </div>
+
+  <div class="diagram-box">
+    <svg viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arr-rm" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#94A3B8" stroke-width="1.5"/></marker>
+      </defs>
+      <!-- Phase columns -->
+      <text x="180" y="15" text-anchor="middle" font-size="13" font-weight="700" fill="#10B981">阶段一·启动期</text>
+      <text x="360" y="15" text-anchor="middle" font-size="13" font-weight="700" fill="#0EA5E9">阶段二·基础能力期</text>
+      <text x="550" y="15" text-anchor="middle" font-size="13" font-weight="700" fill="#F59E0B">阶段三·系统能力期</text>
+      <text x="730" y="15" text-anchor="middle" font-size="13" font-weight="700" fill="#8B5CF6">阶段四·体系跑通期</text>
+
+      <!-- 用户中心 row（含OneID） -->
+      <text x="10" y="55" font-size="12" font-weight="700" fill="#92400E">用户中心</text>
+      <rect x="110" y="30" width="140" height="55" rx="8" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1"/>
+      <text x="180" y="50" text-anchor="middle" font-size="11" fill="#92400E">OneID上线</text>
+      <text x="180" y="68" text-anchor="middle" font-size="11" fill="#92400E">用户中心PRD</text>
+      <rect x="290" y="30" width="140" height="55" rx="8" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1"/>
+      <text x="360" y="50" text-anchor="middle" font-size="11" fill="#92400E">用户中心上线</text>
+      <text x="360" y="68" text-anchor="middle" font-size="11" fill="#92400E">基础信息+档案</text>
+      <rect x="480" y="30" width="140" height="55" rx="8" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1"/>
+      <text x="550" y="50" text-anchor="middle" font-size="11" fill="#92400E">360视图+标签集成</text>
+      <text x="550" y="68" text-anchor="middle" font-size="11" fill="#92400E">数据准确率&gt;95%</text>
+      <rect x="660" y="30" width="140" height="55" rx="8" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1"/>
+      <text x="730" y="50" text-anchor="middle" font-size="11" fill="#92400E">RFM评分+预警模型</text>
+      <text x="730" y="68" text-anchor="middle" font-size="11" fill="#92400E">AI辅助分析</text>
+
+      <!-- 标签体系 row -->
+      <text x="10" y="110" font-size="12" font-weight="700" fill="#0369A1">标签体系</text>
+      <rect x="110" y="90" width="140" height="50" rx="8" fill="#F0F9FF" stroke="#BAE6FD" stroke-width="1"/>
+      <text x="180" y="110" text-anchor="middle" font-size="11" fill="#0369A1">方案定稿</text>
+      <text x="180" y="128" text-anchor="middle" font-size="11" fill="#0369A1">10-15个核心标签</text>
+      <rect x="290" y="90" width="140" height="50" rx="8" fill="#F0F9FF" stroke="#BAE6FD" stroke-width="1"/>
+      <text x="360" y="110" text-anchor="middle" font-size="11" fill="#0369A1">上线</text>
+      <text x="360" y="128" text-anchor="middle" font-size="11" fill="#0369A1">核心标签+圈选匹配</text>
+      <rect x="480" y="90" width="140" height="50" rx="8" fill="#F0F9FF" stroke="#BAE6FD" stroke-width="1"/>
+      <text x="550" y="110" text-anchor="middle" font-size="11" fill="#0369A1">全量打标+商品匹配</text>
+      <text x="550" y="128" text-anchor="middle" font-size="11" fill="#0369A1">标签→画布全链路</text>
+      <rect x="660" y="90" width="140" height="50" rx="8" fill="#F0F9FF" stroke="#BAE6FD" stroke-width="1"/>
+      <text x="730" y="110" text-anchor="middle" font-size="11" fill="#0369A1">AI辅助圈选</text>
+      <text x="730" y="128" text-anchor="middle" font-size="11" fill="#0369A1">全量标签+预测</text>
+
+      <!-- 营销中心 row -->
+      <text x="10" y="165" font-size="12" font-weight="700" fill="#6D28D9">营销中心</text>
+      <rect x="110" y="145" width="140" height="50" rx="8" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1"/>
+      <text x="180" y="165" text-anchor="middle" font-size="11" fill="#6D28D9">有机云对接PRD</text>
+      <text x="180" y="183" text-anchor="middle" font-size="11" fill="#6D28D9">画布规则定义</text>
+      <rect x="290" y="145" width="140" height="50" rx="8" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1"/>
+      <text x="360" y="165" text-anchor="middle" font-size="11" fill="#6D28D9">企微触达打通</text>
+      <text x="360" y="183" text-anchor="middle" font-size="11" fill="#6D28D9">标签人群接入</text>
+      <rect x="480" y="145" width="140" height="50" rx="8" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1"/>
+      <text x="550" y="165" text-anchor="middle" font-size="11" fill="#6D28D9">营销画布上线</text>
+      <text x="550" y="183" text-anchor="middle" font-size="11" fill="#6D28D9">双向闭环+数据回流</text>
+      <rect x="660" y="145" width="140" height="50" rx="8" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1"/>
+      <text x="730" y="165" text-anchor="middle" font-size="11" fill="#6D28D9">AB测试+频次控制</text>
+      <text x="730" y="183" text-anchor="middle" font-size="11" fill="#6D28D9">效果归因+APP push</text>
+
+      <!-- 有机云 row -->
+      <text x="10" y="220" font-size="12" font-weight="700" fill="#991B1B">有机云</text>
+      <rect x="110" y="200" width="140" height="50" rx="8" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="1"/>
+      <text x="180" y="220" text-anchor="middle" font-size="11" fill="#991B1B">能力盘点</text>
+      <text x="180" y="238" text-anchor="middle" font-size="11" fill="#991B1B">对接方案定稿</text>
+      <rect x="290" y="200" width="140" height="50" rx="8" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="1"/>
+      <text x="360" y="220" text-anchor="middle" font-size="11" fill="#991B1B">触达指令下行跑通</text>
+      <text x="360" y="238" text-anchor="middle" font-size="11" fill="#991B1B">替换私域部分能力</text>
+      <rect x="480" y="200" width="140" height="50" rx="8" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="1"/>
+      <text x="550" y="220" text-anchor="middle" font-size="11" fill="#991B1B">执行结果回流</text>
+      <text x="550" y="238" text-anchor="middle" font-size="11" fill="#991B1B">用户状态同步</text>
+      <rect x="660" y="200" width="140" height="50" rx="8" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="1"/>
+      <text x="730" y="220" text-anchor="middle" font-size="11" fill="#991B1B">加粉任务下发</text>
+      <text x="730" y="238" text-anchor="middle" font-size="11" fill="#991B1B">群运营策略下发</text>
+
+      <!-- 私域系统 row -->
+      <text x="10" y="275" font-size="12" font-weight="700" fill="#6B7280">私域系统</text>
+      <rect x="110" y="255" width="140" height="50" rx="8" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="180" y="275" text-anchor="middle" font-size="11" fill="#6B7280">接入订单数据</text>
+      <text x="180" y="293" text-anchor="middle" font-size="11" fill="#6B7280">降级为触达通道</text>
+      <rect x="290" y="255" width="140" height="50" rx="8" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="360" y="275" text-anchor="middle" font-size="11" fill="#6B7280">部分能力被替换</text>
+      <text x="360" y="293" text-anchor="middle" font-size="11" fill="#6B7280">群发/加粉/好友管理</text>
+      <rect x="480" y="255" width="140" height="50" rx="8" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="550" y="275" text-anchor="middle" font-size="11" fill="#6B7280">迁移期</text>
+      <text x="550" y="293" text-anchor="middle" font-size="11" fill="#6B7280">功能逐步停用</text>
+      <rect x="660" y="255" width="140" height="50" rx="8" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="1"/>
+      <text x="730" y="275" text-anchor="middle" font-size="11" fill="#991B1B">正式下线</text>
+      <text x="730" y="293" text-anchor="middle" font-size="11" fill="#991B1B">数据归档</text>
+    </svg>
+    <p class="diagram-caption">系统演进路线图：五系统×四阶段，明确每阶段建设内容</p>
+  </div>
+
+  <!-- 3.1 私域管理系统处置 -->
+  <div class="card card-accent" style="margin-top: 28px; margin-bottom: 28px;">
+    <h3 style="font-size: 18px; margin-bottom: 6px; color: var(--c-primary);">3.1 私域管理系统处置方案</h3>
+    <p style="font-size: 14px; color: var(--c-text-mid); margin-bottom: 12px;">现状：私域管理系统未与大平台任何系统打通，只有群发能力，无用户视图/标签/营销画布。已明确不迭代，计划逐步废弃，由有机云替代。</p>
+
+    <table class="info-table" style="margin-bottom: 16px;">
+      <thead><tr><th>私域系统现有能力</th><th>有机云是否覆盖</th><th>迁移去向</th></tr></thead>
+      <tbody>
+        <tr><td>群发/私发</td><td>是（超级群发+极速群发+SOP群发）</td><td>营销中心编排+有机云执行</td></tr>
+        <tr><td>企微好友管理</td><td>是（客户管理+聚合客服）</td><td>有机云</td></tr>
+        <tr><td>活码/渠道码</td><td>是（渠道活码+群活码+自动分流）</td><td>有机云</td></tr>
+        <tr><td><strong>主动加粉</strong></td><td><strong>是（手机号/订单/接口/群聊拓客）</strong></td><td><strong>营销中心编排+有机云执行</strong></td></tr>
+        <tr><td>群管理</td><td>是（建群/欢迎语/关键词/群标签）</td><td>有机云</td></tr>
+        <tr><td>客户标签</td><td>是（自动打标+人群包）</td><td>标签体系（计算）+有机云（展示）</td></tr>
+        <tr><td>素材库</td><td>部分</td><td>营销中心CMS</td></tr>
+      </tbody>
+    </table>
+
+    <div class="diagram-box" style="padding: 20px;">
+      <svg viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arr-scrm" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#94A3B8" stroke-width="1.5"/></marker>
+        </defs>
+        <!-- 阶段一~二 -->
+        <rect x="20" y="15" width="230" height="190" rx="12" fill="#ECFDF5" stroke="#86EFAC" stroke-width="1.5"/>
+        <text x="135" y="38" text-anchor="middle" font-size="13" font-weight="700" fill="#065F46">阶段一~二：过渡期</text>
+        <line x1="40" y1="48" x2="230" y2="48" stroke="#86EFAC" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="30" y="68" font-size="11" fill="#065F46" font-weight="600">阶段一：</text>
+        <text x="30" y="85" font-size="11" fill="#065F46">· 接入大平台订单数据（唯一改造）</text>
+        <text x="30" y="102" font-size="11" fill="#065F46">· 降级为"触达执行通道"</text>
+        <text x="30" y="119" font-size="11" fill="#065F46">· 不做任何新功能开发</text>
+        <text x="30" y="139" font-size="11" fill="#065F46" font-weight="600">阶段二中期：</text>
+        <text x="30" y="156" font-size="11" fill="#065F46">· 有机云单向打通后</text>
+        <text x="30" y="173" font-size="11" font-weight="700" fill="#065F46">  独立替换私域系统：</text>
+        <text x="30" y="190" font-size="10" fill="#475569">  群发/私发→有机云SOP群发</text>
+        <text x="30" y="205" font-size="10" fill="#475569">  加粉→有机云加粉 好友管理→有机云</text>
+
+        <line x1="250" y1="110" x2="290" y2="110" stroke="#94A3B8" stroke-width="2" marker-end="url(#arr-scrm)"/>
+
+        <rect x="290" y="15" width="230" height="190" rx="12" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.5"/>
+        <text x="405" y="38" text-anchor="middle" font-size="13" font-weight="700" fill="#92400E">阶段三：迁移期</text>
+        <line x1="310" y1="48" x2="500" y2="48" stroke="#FDE68A" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="300" y="68" font-size="11" fill="#92400E">· 营销中心营销画布上线</text>
+        <text x="300" y="88" font-size="11" fill="#92400E">· 有机云接管群管理/活码/话术</text>
+        <text x="300" y="108" font-size="11" fill="#92400E">· 营销中心+有机云替代群发</text>
+        <text x="300" y="128" font-size="11" fill="#92400E">· 用户标签迁移到标签体系</text>
+        <text x="300" y="148" font-size="11" fill="#92400E">· 素材库迁移到营销中心CMS</text>
+        <text x="300" y="168" font-size="11" fill="#92400E">· 私域系统功能逐步停用</text>
+        <text x="300" y="188" font-size="11" fill="#92400E">· 统计数据人工梳理后归档</text>
+
+        <line x1="520" y1="110" x2="560" y2="110" stroke="#94A3B8" stroke-width="2" marker-end="url(#arr-scrm)"/>
+
+        <rect x="560" y="15" width="230" height="190" rx="12" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="1.5"/>
+        <text x="675" y="38" text-anchor="middle" font-size="13" font-weight="700" fill="#991B1B">阶段四：下线</text>
+        <line x1="580" y1="48" x2="770" y2="48" stroke="#FCA5A5" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="570" y="68" font-size="11" fill="#991B1B">· 数据迁移完成</text>
+        <text x="570" y="88" font-size="11" fill="#991B1B">· 功能全部被替代</text>
+        <text x="570" y="108" font-size="11" fill="#991B1B">· 私域系统正式下线</text>
+        <text x="570" y="128" font-size="11" fill="#991B1B">· 历史数据归档</text>
+        <text x="570" y="148" font-size="11" fill="#991B1B">· 营销中心→有机云全链路</text>
+        <text x="570" y="168" font-size="11" fill="#991B1B">  跑通</text>
+      </svg>
+      <p class="diagram-caption">私域管理系统处置路径：过渡→部分替换→迁移→下线（不等营销画布，有机云打通后即可独立替换部分能力）</p>
+    </div>
+
+    <div class="callout accent" style="margin-top: 16px;">
+      <strong>关键调整：</strong>私域系统处置不等阶段三。阶段二有机云单向打通后，加粉、群发/私发、好友管理即可被有机云独立替换——这些能力不依赖营销画布。营销画布上线后（阶段三），群管理、活码、标签等剩余能力继续迁移，私域系统逐步停用。
+    </div>
+
+    <div class="callout info" style="margin-top: 12px;">
+      <strong>迁移数据清单：</strong>好友关系→有机云 · 用户标签→标签体系 · 群管理→有机云 · 群发/私发→营销中心+有机云 · 活码/话术→有机云 · 素材库→营销中心CMS · 加微名单→营销中心营销画布 · 统计数据→数据看板（人工梳理后导入，不自动同步）
+    </div>
+  </div>
+
+  <!-- 3.2 有机云接入方案 -->
+  <div class="card card-accent" style="margin-bottom: 28px;">
+    <h3 style="font-size: 18px; margin-bottom: 6px; color: var(--c-primary);">3.2 有机云接入方案</h3>
+    <p style="font-size: 14px; color: var(--c-text-mid); margin-bottom: 16px;"><strong>现状：</strong>有机云是计划对接的SCRM系统，已具备完整的企微SCRM执行能力（加粉、群发、群管理、活码、话术、人群包、聚合客服等）。AI外呼已作废。</p>
+
+    <div class="callout info" style="margin-bottom: 16px;">
+      <strong>定位：</strong>有机云是企微渠道的执行端。所有编排型动作（加粉、SOP群发、群管理、人群触达）由营销中心编排，通过API推送用户名单和任务给有机云自动执行——<strong>不是业务同学在有机云后台手动操作</strong>。有机云自身保留的工具能力（活码、话术、聚合客服、素材库等）属于被动响应型，无需任务驱动。
+    </div>
+
+    <!-- 能力分类表 -->
+    <table class="info-table" style="margin-bottom: 16px;">
+      <thead><tr><th>类型</th><th>功能模块</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr style="background: var(--c-info-bg);"><td><strong>编排型</strong><br>（营销中心→有机云执行）</td><td>主动加粉、SOP群发、朋友圈群发、群管理（建群/欢迎语/群标签）、人群包触达</td><td>营销中心推送名单和任务，有机云自动执行</td></tr>
+        <tr style="background: var(--c-success-bg);"><td><strong>工具型</strong><br>（有机云自身保留）</td><td>活码、话术管理、聚合客服、素材库、数据统计、安全风控</td><td>被动响应，无需任务驱动</td></tr>
+        <tr style="background: #FEF3C7;"><td><strong>回流型</strong><br>（有机云→营销中心）</td><td>触达结果回传、用户状态同步（加微/退群）、对话记录回流</td><td>回传至营销中心做效果归因</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 对接架构（模块化横版） -->
+    <div style="background: #F0F9FF; border-radius: 10px; padding: 18px; border: 1px solid #BAE6FD; margin-bottom: 4px;">
+      <div style="font-size: 14px; font-weight: 700; color: #0369A1; margin-bottom: 8px;">营销中心 ↔ 有机云：对接架构</div>
+      <p style="font-size: 12px; color: #475569; margin-bottom: 14px;">有机云是企微侧执行端，本身具备完整SCRM执行能力（加粉、SOP群发、群管理、活码、话术、聚合客服等）。接入依赖用户中心（含OneID，统一身份）、标签体系（提供人群）、营销中心（编排任务）三层上游基础能力，对应3.3-3.5各系统的上线节点。</p>
+
+      <!-- 营销中心 + 有机云 双卡片 -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+        <div style="background: #EEF2FF; border: 1.5px solid #C7D2FE; border-radius: 10px; padding: 14px;">
+          <div style="font-size: 13px; font-weight: 700; color: #3730A3; margin-bottom: 8px;">营销中心（跨渠道统一编排）</div>
+          <div style="font-size: 12px; color: #3730A3; line-height: 1.8;">
+            · 营销画布（事件/时间/状态）<br>
+            · 跨渠道编排（短信/订阅/企微/APP）<br>
+            · 全局频次控制<br>
+            · 效果归因 / AB实验<br>
+            · CMS内容 / RMS活动 / 券<br>
+            <span style="color:#6366F1; font-weight:600;">↓ 下发触达指令 · ↓ 拉取人群包 · ↑ 回传触达结果/用户状态</span>
+          </div>
+        </div>
+        <div style="background: #FEE2E2; border: 1.5px solid #FCA5A5; border-radius: 10px; padding: 14px;">
+          <div style="font-size: 13px; font-weight: 700; color: #991B1B; margin-bottom: 8px;">有机云（企微侧执行）</div>
+          <div style="font-size: 12px; color: #991B1B; line-height: 1.8;">
+            · 加粉执行（接收名单+任务）<br>
+            · SOP群发 / 朋友圈（接收指令）<br>
+            · 群管理 / 欢迎语（接收策略）<br>
+            · 活码 / 话术 / 聚合客服（工具）<br>
+            · 素材库 / 数据统计 / 安全风控<br>
+            <span style="color:#7F1D1D; font-weight:600;">↑ 上报执行结果/用户状态 · ↑ 上传企微人群/对话 · ↑ 回传加粉/群发执行状态</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SOP群发/朋友圈全链路 -->
+      <div style="background: #FFFFFF; border: 1px solid #BAE6FD; border-radius: 8px; padding: 12px 14px; margin-bottom: 10px;">
+        <div style="font-size: 12px; font-weight: 700; color: #0369A1; margin-bottom: 6px;">SOP群发 / 朋友圈全链路执行</div>
+        <div style="font-size: 12px; color: #334155; line-height: 1.7;">
+          营销画布拉取人群包（来自标签体系）→ 跨渠道编排派发触达指令 → 全局频次控制过滤 → 触达指令下行至有机云 → 有机云执行SOP群发 / 朋友圈 / 加粉 / 群管理 / 活码话术 → 触达回传通道回传执行结果 → 用户状态 / 对话记录回流至营销中心 → 效果归因看板可读、有机云人群可推送至标签体系 → 任务类型扩展（加粉任务 / 群运营策略下发）
+        </div>
+      </div>
+
+      <!-- 四条对接通道 -->
+      <div style="text-align: center; font-size: 12px; color: #64748B; padding: 6px 0 0;">
+        营销中心 ↔ 有机云：<strong style="color: #0369A1;">四条对接通道</strong>（指令下行 / 触达回流 / 数据回流 / 能力互调）
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 3.3 用户中心建设 -->
+  <div class="card card-accent" style="margin-bottom: 28px;">
+    <h3 style="font-size: 18px; margin-bottom: 6px; color: var(--c-primary);">3.3 用户中心建设方案</h3>
+    <p style="font-size: 14px; color: var(--c-text-mid); margin-bottom: 16px;"><strong>核心问题：</strong>①用户身份未统一——租赁、赊销各自独立userid，一个用户既是租赁用户又是赊销用户时系统认为是两个人，APP/小程序无法同时承载两个业务；②无可视化后台——业务连查用户都不能做，运营无法自助看数据。已沉淀登录、二要素、人脸、OCR、联系人等基础数据。</p>
+    <div class="callout info" style="margin-bottom: 16px;">
+      <strong>OneID（用户中心的子模块）：</strong>通过手机号+设备指纹+业务线标识，将各业务线userid映射到一个统一用户ID上。解决"一个人被识别为多人"的问题，是用户中心最底层的能力，阶段一上线即开放ID查询服务，阶段三稳定运行后开放ID写入。
+    </div>
+
+    <div class="diagram-box" style="padding: 20px;">
+      <svg viewBox="0 0 1000 280" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arr-uc" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#94A3B8" stroke-width="1.5"/></marker>
+        </defs>
+        <!-- 阶段一 -->
+        <rect x="5" y="15" width="225" height="250" rx="12" fill="#ECFDF5" stroke="#86EFAC" stroke-width="1.5"/>
+        <text x="117" y="40" text-anchor="middle" font-size="13" font-weight="700" fill="#065F46">阶段一：OneID上线+方案定稿</text>
+        <text x="117" y="58" text-anchor="middle" font-size="11" fill="#10B981">上线+PRD</text>
+        <line x1="25" y1="68" x2="210" y2="68" stroke="#86EFAC" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="15" y="88" font-size="11" fill="#065F46">· OneID映射上线（租赁+赊销+零售统一）</text>
+        <text x="15" y="108" font-size="11" fill="#065F46">· 用户中心PRD定稿</text>
+        <text x="15" y="128" font-size="11" fill="#065F46">· 技术排期确认</text>
+        <text x="15" y="148" font-size="11" fill="#065F46">· 现有数据盘点</text>
+        <text x="35" y="165" font-size="10" fill="#475569">- 登录/二要素/人脸/OCR</text>
+        <text x="35" y="182" font-size="10" fill="#475569">- 联系人/订单/设备</text>
+        <text x="15" y="202" font-size="11" fill="#065F46">· 可视化原型设计</text>
+        <text x="15" y="222" font-size="11" fill="#065F46">· 神策迁移方案</text>
+        <text x="15" y="248" font-size="11" fill="#065F46">· OneID开发上线，其余方案定稿</text>
+
+        <line x1="230" y1="140" x2="255" y2="140" stroke="#94A3B8" stroke-width="2" marker-end="url(#arr-uc)"/>
+
+        <!-- 阶段二 -->
+        <rect x="255" y="15" width="225" height="250" rx="12" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.5"/>
+        <text x="367" y="40" text-anchor="middle" font-size="13" font-weight="700" fill="#92400E">阶段二：基础档案+可视化</text>
+        <text x="367" y="58" text-anchor="middle" font-size="11" fill="#F59E0B">上线</text>
+        <line x1="275" y1="68" x2="460" y2="68" stroke="#FDE68A" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="265" y="88" font-size="11" fill="#92400E">· 用户列表（全量注册用户）</text>
+        <text x="265" y="108" font-size="11" fill="#92400E">· 筛选/查询/导出</text>
+        <text x="265" y="128" font-size="11" fill="#92400E">· 用户详情页</text>
+        <text x="285" y="145" font-size="10" fill="#475569">- 注册信息（手机号/渠道/时间）</text>
+        <text x="285" y="162" font-size="10" fill="#475569">- 认证信息（人脸/OCR/联系人）</text>
+        <text x="285" y="179" font-size="10" fill="#475569">- 订单记录（租赁/赊销/零售）</text>
+        <text x="285" y="196" font-size="10" fill="#475569">- 设备信息（租用机型/状态）</text>
+        <text x="265" y="216" font-size="11" fill="#92400E">· 服务记录（客服/售后）</text>
+        <text x="265" y="234" font-size="11" fill="#92400E">· 不做标签/圈选（标签独立板块）</text>
+
+        <line x1="480" y1="140" x2="505" y2="140" stroke="#94A3B8" stroke-width="2" marker-end="url(#arr-uc)"/>
+
+        <!-- 阶段三 -->
+        <rect x="505" y="15" width="225" height="250" rx="12" fill="#F0F9FF" stroke="#BAE6FD" stroke-width="1.5"/>
+        <text x="617" y="40" text-anchor="middle" font-size="13" font-weight="700" fill="#0369A1">阶段三：标签集成+人群圈选</text>
+        <text x="617" y="58" text-anchor="middle" font-size="11" fill="#0EA5E9">稳定运行</text>
+        <line x1="525" y1="68" x2="710" y2="68" stroke="#BAE6FD" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="515" y="88" font-size="11" fill="#0369A1">· OneID稳定运行（准确率>95%）</text>
+        <text x="515" y="108" font-size="11" fill="#0369A1">· 集成标签体系（读取展示）</text>
+        <text x="515" y="128" font-size="11" fill="#0369A1">· 用户360视图（基础+标签+订单）</text>
+        <text x="515" y="148" font-size="11" fill="#0369A1">· 人群圈选（从标签体系获取）</text>
+        <text x="515" y="168" font-size="11" fill="#0369A1">· 人群导出/推送至营销中心</text>
+        <text x="515" y="188" font-size="11" fill="#0369A1">· 用户行为时间线</text>
+        <text x="515" y="208" font-size="11" fill="#0369A1">· 统一用户关联视图</text>
+        <text x="515" y="228" font-size="11" fill="#0369A1">· 神策用户群迁移完成</text>
+        <text x="515" y="248" font-size="11" fill="#0369A1">· 运营自助圈人/导人</text>
+
+        <line x1="730" y1="140" x2="755" y2="140" stroke="#94A3B8" stroke-width="2" marker-end="url(#arr-uc)"/>
+
+        <!-- 阶段四 -->
+        <rect x="755" y="15" width="235" height="250" rx="12" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+        <text x="872" y="40" text-anchor="middle" font-size="13" font-weight="700" fill="#6D28D9">阶段四：360视图+RFM</text>
+        <text x="872" y="58" text-anchor="middle" font-size="11" fill="#8B5CF6">上线</text>
+        <line x1="775" y1="68" x2="970" y2="68" stroke="#DDD6FE" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="765" y="88" font-size="11" fill="#6D28D9">· RFM价值评分模型</text>
+        <text x="765" y="108" font-size="11" fill="#6D28D9">· 用户360完整视图</text>
+        <text x="765" y="128" font-size="11" fill="#6D28D9">· 生命周期阶段自动识别</text>
+        <text x="765" y="148" font-size="11" fill="#6D28D9">· 流失预警模型</text>
+        <text x="765" y="168" font-size="11" fill="#6D28D9">· 多业务线迁移路径追踪</text>
+        <text x="765" y="188" font-size="11" fill="#6D28D9">· 用户画像完整版</text>
+        <text x="765" y="208" font-size="11" fill="#6D28D9">· 运营看板嵌入</text>
+        <text x="765" y="228" font-size="11" fill="#6D28D9">· AI辅助分析</text>
+        <text x="765" y="248" font-size="11" fill="#6D28D9">· 数据API对外开放</text>
+      </svg>
+      <p class="diagram-caption">用户中心四阶段演进路径（含OneID子模块），与系统演进路线图对齐</p>
+    </div>
+
+    <div class="callout primary" style="margin-top: 16px;">
+      <strong>边界：</strong>用户中心只管"用户是谁"（OneID唯一身份 + 基础信息+档案）和"用户怎样"（展示标签体系产出的标签）。打标和圈选的计算逻辑不在用户中心，由标签体系独立承担。
+    </div>
+  </div>
+
+  <!-- 3.4 标签体系建设 -->
+  <div class="card card-accent" style="margin-bottom: 28px;">
+    <h3 style="font-size: 18px; margin-bottom: 6px; color: var(--c-primary);">3.4 标签体系建设方案</h3>
+    <p style="font-size: 14px; color: var(--c-text-mid); margin-bottom: 16px;">现状：老标签工厂已废弃，神策未打通。空白。方向：独立板块，全量打标能力（用户/商品/订单/商户）+ 人群/商品圈选匹配。</p>
+
+    <div class="diagram-box" style="padding: 20px;">
+      <svg viewBox="0 0 800 340" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arr-tag" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#94A3B8" stroke-width="1.5"/></marker>
+        </defs>
+        <rect x="10" y="10" width="780" height="55" rx="10" fill="#ECFDF5" stroke="#86EFAC" stroke-width="1.5"/>
+        <text x="400" y="32" text-anchor="middle" font-size="13" font-weight="700" fill="#065F46">数据来源层</text>
+        <text x="130" y="52" text-anchor="middle" font-size="11" fill="#475569">数仓基表</text>
+        <text x="300" y="52" text-anchor="middle" font-size="11" fill="#475569">业务交易数据</text>
+        <text x="470" y="52" text-anchor="middle" font-size="11" fill="#475569">埋点行为数据</text>
+        <text x="640" y="52" text-anchor="middle" font-size="11" fill="#475569">风控/客服/贷后</text>
+
+        <line x1="400" y1="65" x2="400" y2="85" stroke="#94A3B8" stroke-width="2" marker-end="url(#arr-tag)"/>
+
+        <rect x="10" y="85" width="780" height="75" rx="10" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.5"/>
+        <text x="400" y="107" text-anchor="middle" font-size="13" font-weight="700" fill="#92400E">原子标签层（数仓产出）</text>
+        <text x="120" y="130" text-anchor="middle" font-size="10" fill="#92400E">最近一次访问时间</text>
+        <text x="280" y="130" text-anchor="middle" font-size="10" fill="#92400E">注册时间</text>
+        <text x="440" y="130" text-anchor="middle" font-size="10" fill="#92400E">手机号绑定状态</text>
+        <text x="600" y="130" text-anchor="middle" font-size="10" fill="#92400E">逾期天数</text>
+        <text x="730" y="130" text-anchor="middle" font-size="10" fill="#92400E">客单价区间</text>
+        <text x="400" y="150" text-anchor="middle" font-size="10" fill="#92400E" font-style="italic">基础事实型标签，由数仓跑批产出，不可再拆分</text>
+
+        <line x1="400" y1="160" x2="400" y2="180" stroke="#94A3B8" stroke-width="2" marker-end="url(#arr-tag)"/>
+
+        <rect x="10" y="180" width="780" height="75" rx="10" fill="#F0F9FF" stroke="#BAE6FD" stroke-width="1.5"/>
+        <text x="400" y="202" text-anchor="middle" font-size="13" font-weight="700" fill="#0369A1">非原子标签层（标签体系定义）</text>
+        <text x="120" y="225" text-anchor="middle" font-size="10" fill="#0369A1">高价值复购用户 ★</text>
+        <text x="280" y="225" text-anchor="middle" font-size="10" fill="#0369A1">流失预警用户 ★</text>
+        <text x="440" y="225" text-anchor="middle" font-size="10" fill="#0369A1">短租到期续租意向 ★</text>
+        <text x="600" y="225" text-anchor="middle" font-size="10" fill="#0369A1">套现属性客群（促回款/买断）</text>
+        <text x="730" y="225" text-anchor="middle" font-size="10" fill="#0369A1">跨品类高潜用户</text>
+        <text x="400" y="245" text-anchor="middle" font-size="10" fill="#0369A1" font-style="italic">基于原子标签组合定义，如"高价值" = 历史订单数≥2 + 客单价≥X + 最近一次访问时间距今≤30天</text>
+
+        <line x1="400" y1="255" x2="400" y2="275" stroke="#94A3B8" stroke-width="2" marker-end="url(#arr-tag)"/>
+
+        <rect x="10" y="275" width="780" height="55" rx="10" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+        <text x="400" y="297" text-anchor="middle" font-size="13" font-weight="700" fill="#6D28D9">圈选匹配层</text>
+        <text x="200" y="318" text-anchor="middle" font-size="11" fill="#6D28D9">人群圈选（且/或/非/括号组合）→ 推送营销中心</text>
+        <text x="550" y="318" text-anchor="middle" font-size="11" fill="#6D28D9">商品匹配（标签→商品推荐）→ 推送营销中心</text>
+      </svg>
+      <p class="diagram-caption">标签体系四层架构：数据来源→原子标签→非原子标签→圈选匹配</p>
+    </div>
+
+    <table class="info-table" style="margin-top: 16px;">
+      <thead><tr><th>标签分类</th><th>打标对象</th><th>示例</th><th>上线阶段</th></tr></thead>
+      <tbody>
+        <tr><td><strong>用户标签</strong></td><td>用户</td><td>高价值复购、流失预警、意愿度分层、套现属性（促回款/买断场景使用）</td><td>阶段二 / 阶段三</td></tr>
+        <tr><td><strong>商品标签</strong></td><td>商品</td><td>热租机型、新品、滞销品、高利润品</td><td>阶段三</td></tr>
+        <tr><td><strong>订单标签</strong></td><td>订单</td><td>首单/复购、正常/逾期、租期状态</td><td>阶段二</td></tr>
+        <tr><td><strong>商户标签</strong></td><td>商户</td><td>白名单商户、高通过率、高频合作</td><td>阶段三</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout success" style="margin-top: 16px;">
+      <strong>阶段一定稿、阶段二上线：</strong>阶段一定义10-15个核心用户标签 + 5个订单标签（覆盖：复购意向、租期状态、品类偏好、活跃度、意愿度分层），阶段二标签体系上线、核心标签+圈选匹配可用，直接支撑阶段二的分层运营SOP。阶段三全量打标+商品匹配+标签→画布全链路，阶段四AI辅助圈选+全量标签+预测。
+    </div>
+  </div>
+
+  <!-- 3.5 营销中心建设 -->
+  <div class="card card-accent" style="margin-bottom: 28px;">
+    <h3 style="font-size: 18px; margin-bottom: 6px; color: var(--c-primary);">3.5 营销中心建设方案</h3>
+    <p style="font-size: 14px; color: var(--c-text-mid); margin-bottom: 16px;">现状：已有短信、订阅消息2条通道 + CMS/RMS内容搭建 + 优惠券 + 搜索榜单 + 千人千面接口（需外部输入人群）。<strong>核心缺口：各通道目前独立建任务、各自驱动，缺少一个统一的编排板块来衔接</strong>——即"营销画布"。</p>
+
+    <div class="callout info" style="margin-bottom: 16px;">
+      <strong>营销画布是什么：</strong>一个可视化的用户运营编排工具。运营在画布上配置：针对某类用户 → 在什么节点 → 用什么方式触达 → 触达后等待/判断 → 执行下一个任务节点。把短信、订阅消息、企微/有机云、APP push等通道串联起来，实现自动化、多节点、多通道的协同触达。
+    </div>
+
+    <p style="font-size: 13px; color: var(--c-text-mid); margin-bottom: 10px;"><strong>画布节点类型：</strong>事件触发（设备归还→召回券）· 时间触发（到期前30天→续租推荐）· 状态触发（还款50%→进度通知）· 动作节点（发短信/推订阅/下发有机云/发券）· 判断节点（是否已读/下单→分支）· 等待节点（等待N天→下一节点）</p>
+
+    <div class="diagram-box" style="padding: 20px;">
+      <svg viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arr-mc" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#94A3B8" stroke-width="1.5"/></marker>
+        </defs>
+        <rect x="10" y="10" width="780" height="80" rx="10" fill="#EEF2FF" stroke="#C7D2FE" stroke-width="1.5"/>
+        <text x="400" y="32" text-anchor="middle" font-size="13" font-weight="700" fill="#3730A3">营销画布（运营可视化编排）</text>
+        <rect x="30" y="42" width="140" height="38" rx="8" fill="#fff" stroke="#C7D2FE"/>
+        <text x="100" y="66" text-anchor="middle" font-size="11" fill="#3730A3">事件触发</text>
+        <rect x="190" y="42" width="140" height="38" rx="8" fill="#fff" stroke="#C7D2FE"/>
+        <text x="260" y="66" text-anchor="middle" font-size="11" fill="#3730A3">时间触发</text>
+        <rect x="350" y="42" width="140" height="38" rx="8" fill="#fff" stroke="#C7D2FE"/>
+        <text x="420" y="66" text-anchor="middle" font-size="11" fill="#3730A3">状态触发</text>
+        <rect x="510" y="42" width="140" height="38" rx="8" fill="#fff" stroke="#C7D2FE"/>
+        <text x="580" y="66" text-anchor="middle" font-size="11" fill="#3730A3">频率控制</text>
+        <rect x="670" y="42" width="100" height="38" rx="8" fill="#fff" stroke="#C7D2FE"/>
+        <text x="720" y="66" text-anchor="middle" font-size="11" fill="#3730A3">AB测试</text>
+
+        <line x1="400" y1="90" x2="400" y2="110" stroke="#94A3B8" stroke-width="2" marker-end="url(#arr-mc)"/>
+
+        <rect x="10" y="110" width="780" height="100" rx="10" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.5"/>
+        <text x="400" y="132" text-anchor="middle" font-size="13" font-weight="700" fill="#92400E">执行层（匹配人群→选择渠道→发送）</text>
+        <rect x="30" y="145" width="120" height="50" rx="8" fill="#fff" stroke="#FDE68A"/>
+        <text x="90" y="167" text-anchor="middle" font-size="11" fill="#92400E">匹配人群</text>
+        <text x="90" y="183" text-anchor="middle" font-size="9" fill="#92400E">从标签体系获取</text>
+        <rect x="165" y="145" width="120" height="50" rx="8" fill="#fff" stroke="#FDE68A"/>
+        <text x="225" y="167" text-anchor="middle" font-size="11" fill="#92400E">短信通道</text>
+        <text x="225" y="183" text-anchor="middle" font-size="9" fill="#92400E">已有</text>
+        <rect x="300" y="145" width="120" height="50" rx="8" fill="#fff" stroke="#FDE68A"/>
+        <text x="360" y="167" text-anchor="middle" font-size="11" fill="#92400E">订阅消息</text>
+        <text x="360" y="183" text-anchor="middle" font-size="9" fill="#92400E">已有</text>
+        <rect x="435" y="145" width="120" height="50" rx="8" fill="#fff" stroke="#FDE68A"/>
+        <text x="495" y="167" text-anchor="middle" font-size="11" fill="#92400E">企微/有机云</text>
+        <text x="495" y="183" text-anchor="middle" font-size="9" fill="#92400E">阶段三打通</text>
+        <rect x="570" y="145" width="120" height="50" rx="8" fill="#fff" stroke="#FDE68A"/>
+        <text x="630" y="167" text-anchor="middle" font-size="11" fill="#92400E">APP push</text>
+        <text x="630" y="183" text-anchor="middle" font-size="9" fill="#92400E">阶段四</text>
+        <rect x="705" y="145" width="75" height="50" rx="8" fill="#fff" stroke="#FDE68A"/>
+        <text x="742" y="167" text-anchor="middle" font-size="11" fill="#92400E">券/活动</text>
+        <text x="742" y="183" text-anchor="middle" font-size="9" fill="#92400E">已有</text>
+
+        <line x1="400" y1="210" x2="400" y2="230" stroke="#94A3B8" stroke-width="2" marker-end="url(#arr-mc)"/>
+
+        <rect x="10" y="230" width="780" height="60" rx="10" fill="#ECFDF5" stroke="#86EFAC" stroke-width="1.5"/>
+        <text x="400" y="252" text-anchor="middle" font-size="13" font-weight="700" fill="#065F46">数据回流层</text>
+        <text x="160" y="275" text-anchor="middle" font-size="11" fill="#065F46">触达记录</text>
+        <text x="320" y="275" text-anchor="middle" font-size="11" fill="#065F46">转化追踪</text>
+        <text x="480" y="275" text-anchor="middle" font-size="11" fill="#065F46">效果归因</text>
+        <text x="640" y="275" text-anchor="middle" font-size="11" fill="#065F46">AB实验对比</text>
+
+        <line x1="400" y1="290" x2="400" y2="310" stroke="#94A3B8" stroke-width="2" marker-end="url(#arr-mc)"/>
+
+        <rect x="10" y="310" width="780" height="60" rx="10" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+        <text x="400" y="332" text-anchor="middle" font-size="13" font-weight="700" fill="#6D28D9">已有能力（保留复用）</text>
+        <text x="150" y="355" text-anchor="middle" font-size="11" fill="#6D28D9">CMS内容搭建</text>
+        <text x="300" y="355" text-anchor="middle" font-size="11" fill="#6D28D9">RMS活动页</text>
+        <text x="450" y="355" text-anchor="middle" font-size="11" fill="#6D28D9">优惠券</text>
+        <text x="580" y="355" text-anchor="middle" font-size="11" fill="#6D28D9">搜索/榜单</text>
+        <text x="720" y="355" text-anchor="middle" font-size="11" fill="#6D28D9">千人千面接口</text>
+      </svg>
+      <p class="diagram-caption">营销中心四层架构：规则配置→执行→数据回流→已有能力复用</p>
+    </div>
+
+    <table class="info-table" style="margin-top: 16px;">
+      <thead><tr><th>能力</th><th>现状</th><th>阶段一</th><th>阶段二</th><th>阶段三</th><th>阶段四</th></tr></thead>
+      <tbody>
+        <tr><td><strong>触达通道</strong></td><td>短信+订阅（各自独立建任务）</td><td>有机云对接方案</td><td>+企微/有机云单向打通</td><td>+双向闭环+营销画布</td><td>+APP push</td></tr>
+        <tr><td><strong>营销画布</strong></td><td>无</td><td>画布规则定义（文档）</td><td>—</td><td>上线（事件/时间/状态+多节点编排）</td><td>升级（AB+频次+归因）</td></tr>
+        <tr><td><strong>人群接入</strong></td><td>千人千面接口空跑</td><td>有机云对接准备</td><td>标签产出人群</td><td>标签→画布全链路</td><td>AI推荐人群</td></tr>
+        <tr><td><strong>数据回流</strong></td><td>不明</td><td>有机云对接字段清单</td><td>—</td><td>触达记录+转化追踪</td><td>效果归因+AB对比</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout accent" style="margin-top: 16px;">
+      <strong>营销画布是核心缺口。</strong>没有画布，各通道只能独立人工操作。阶段一先定义画布规则（文档），阶段三建设画布（事件/时间/状态三类触发+多节点编排），阶段四升级（AB测试+频次控制+效果归因）。自研还是外采需在阶段二结束前决策。
+    </div>
+  </div>
+</div>
+
+<div class="divider-dot">· · ·</div>
+
+<!-- 04 阶段一 -->
+<div class="section" id="phase1">
+  <div class="section-head">
+    <div class="section-num">04</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">PHASE 1</div>
+      <h2 class="section-title">阶段一：启动期</h2>
+      <p class="section-desc">运营人工跑起来 + 产品地基开工</p>
+    </div>
+  </div>
+
+  <div class="card card-accent">
+
+  <div class="phase-header">
+    <span class="phase-badge p1">阶段一</span>
+    <span class="phase-title">启动期</span>
+  </div>
+  <div class="phase-metric">核心指标：短租复购率 3%→4%，短租私域GMV占比 5.8%→7%</div>
+
+  <div class="judgment-box">
+    <div class="judgment-label">要证明的判断</div>
+    <div class="judgment-text">到期前触达能否提升短租复购率（从3% baseline验证增量）；同步验证3%根因（链路/人货场匹配/触达时机）。长租短信节奏以8.12验证的"3天高频"作为基线策略直接复用。</div>
+  </div>
+  <div class="judgment-skip">
+    <strong>暂不做什么：</strong>赊销SOP暂不启动、长租SOP暂不启动、跨品类引导暂不系统化、营销画布暂不建设、短租群运营有效性待持续验证
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">运营策略与动作</div>
+    <p style="font-size: 14px; color: var(--c-text-mid); margin-bottom: 16px;">
+      <strong>目标：</strong>用现有工具把短租复购SOP人工跑通，验证"到期前触达能否提升复购率"。<br>
+      <strong>策略：</strong>运营端短租先行→人工SOP验证→数据驱动升级；产品端需求定稿→技术排期→地基动工。两端并行。
+    </p>
+
+    <div class="callout primary">
+      <strong>当前运营基线（已在执行）：</strong>4类客群名单运营（自营白名单/商户白名单/沉默客群/赊销贷中客群），短信频次提升、意愿度分层触达、AB测试、转化场域搭建、漏损治理、交叉营销测试均在推进中。其中白名单短信已切换全局3天高频基线策略（B/A成交=2x，已8.12验证），赊销按纯路径优先（创单=引导长租2x）。本规划不是另起炉灶，而是把短信名单运营纳入统一SOP框架、用企微私域补上转化短板、用标签+营销画布升级为系统化分层触达。
+    </div>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 800 100" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="arr-sop1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#94A3B8" stroke-width="1.5"/></marker></defs>
+        <rect x="10" y="30" width="90" height="40" rx="10" fill="#EEF2FF" stroke="#C7D2FE" stroke-width="1.5"/>
+        <text x="55" y="54" text-anchor="middle" font-size="12" font-weight="600" fill="#3730A3">下单</text>
+        <line x1="100" y1="50" x2="120" y2="50" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-sop1)"/>
+        <rect x="125" y="30" width="90" height="40" rx="10" fill="#F0F9FF" stroke="#BAE6FD" stroke-width="1.5"/>
+        <text x="170" y="48" text-anchor="middle" font-size="10" font-weight="600" fill="#0369A1">次日</text>
+        <text x="170" y="62" text-anchor="middle" font-size="10" fill="#0EA5E9">设备引导</text>
+        <line x1="215" y1="50" x2="235" y2="50" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-sop1)"/>
+        <rect x="240" y="30" width="90" height="40" rx="10" fill="#F0F9FF" stroke="#BAE6FD" stroke-width="1.5"/>
+        <text x="285" y="48" text-anchor="middle" font-size="10" font-weight="600" fill="#0369A1">第7天</text>
+        <text x="285" y="62" text-anchor="middle" font-size="10" fill="#0EA5E9">满意度回访</text>
+        <line x1="330" y1="50" x2="350" y2="50" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-sop1)"/>
+        <rect x="355" y="30" width="100" height="40" rx="10" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.5"/>
+        <text x="405" y="48" text-anchor="middle" font-size="9" font-weight="600" fill="#92400E">到期前30天</text>
+        <text x="405" y="62" text-anchor="middle" font-size="10" fill="#F59E0B">续租推荐</text>
+        <line x1="455" y1="50" x2="475" y2="50" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-sop1)"/>
+        <rect x="480" y="30" width="90" height="40" rx="10" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.5"/>
+        <text x="525" y="48" text-anchor="middle" font-size="9" font-weight="600" fill="#92400E">到期前15天</text>
+        <text x="525" y="62" text-anchor="middle" font-size="10" fill="#F59E0B">复购券</text>
+        <line x1="570" y1="50" x2="590" y2="50" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-sop1)"/>
+        <rect x="595" y="30" width="80" height="40" rx="10" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.5"/>
+        <text x="635" y="48" text-anchor="middle" font-size="9" font-weight="600" fill="#92400E">到期前7天</text>
+        <text x="635" y="62" text-anchor="middle" font-size="10" fill="#F59E0B">1V1跟进</text>
+        <line x1="675" y1="50" x2="695" y2="50" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-sop1)"/>
+        <rect x="700" y="30" width="90" height="40" rx="10" fill="#ECFDF5" stroke="#86EFAC" stroke-width="1.5"/>
+        <text x="745" y="48" text-anchor="middle" font-size="9" font-weight="600" fill="#065F46">归还后7天</text>
+        <text x="745" y="62" text-anchor="middle" font-size="10" fill="#10B981">召回</text>
+      </svg>
+      <p class="diagram-caption">短租复购SOP V1（人工版）用户旅程</p>
+    </div>
+
+    <table class="info-table">
+      <thead><tr><th>节点</th><th>触发条件</th><th>动作</th><th>内容方向</th><th>效果假设</th><th>验证方式</th></tr></thead>
+      <tbody>
+        <tr><td><strong>收到设备次日</strong></td><td>签收设备第1天</td><td>设备使用引导</td><td>使用教程+常见问题</td><td>退货率降2pp</td><td>AB对照</td></tr>
+        <tr><td><strong>履约第7天</strong></td><td>履约满7天</td><td>满意度回访</td><td>关怀+问题收集</td><td>拦截负面口碑</td><td>投诉率对比</td></tr>
+        <tr><td><strong>到期前30天</strong></td><td>距到期30天</td><td>续租推荐</td><td>新品推荐+续租优惠</td><td>续租转化率15%+</td><td>覆盖组vs对照组</td></tr>
+        <tr><td><strong>到期前15天</strong></td><td>距到期15天</td><td>复购券</td><td>限时优惠券</td><td>券核销率8%+</td><td>核销率追踪</td></tr>
+        <tr><td><strong>到期前7天</strong></td><td>距到期7天</td><td>客服1V1跟进</td><td>个性化推荐</td><td>1V1转化率25%+</td><td>转化率追踪</td></tr>
+        <tr><td><strong>归还后7天</strong></td><td>设备归还后7天</td><td>召回券</td><td>召回专属优惠</td><td>召回率5%+</td><td>召回率追踪</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout accent">
+      <strong>内容策略：</strong>先盘点现有素材，按"设备引导/满意度/续租推荐/复购券/召回"5个场景整理。素材来源：历史朋友圈内容+客服话术+新品物料。不新建素材库系统，用共享文档管理。
+    </div>
+
+    <div class="callout info">
+      <strong>企微群精简方案：</strong>18个群→3-5个短租群。长租群停止拉新后自然消亡、赊销群先评估合规边界再定去留、短租群按价值合并。<br><br>
+      <strong>支付宝群降级路径：</strong>停止拉新入群→停止AI排内容→低活跃群自然消亡→仅保留支付后订阅消息触达。
+    </div>
+
+    <div class="callout success">
+      <strong>运营验证机制：</strong>每个SOP节点设AB对照组，2轮无效即调整方向。周例会30分钟，月度复盘1小时。
+    </div>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">产品建设</div>
+    <p style="font-size: 14px; color: var(--c-text-mid); margin-bottom: 16px;">
+      <strong>目标：</strong>所有需求定稿 + OneID映射上线 + 私域系统过渡方案上线，为阶段二做好全部准备。
+    </p>
+
+    <p style="font-size: 14px; color: var(--c-text-mid);"><strong>私域系统过渡方案：</strong>大平台订单数据→私域系统接入，私域系统不做任何改造，只接入订单数据让运营SOP可用，<strong>阶段一同步启动有机云对接（能力盘点+对接方案定稿）</strong>，阶段二跑通单向触达指令下发后逐步替代私域系统。</p>
+
+    <table class="info-table" style="margin-top: 16px;">
+      <thead><tr><th>优先级</th><th>建设项</th><th>阻塞了什么</th><th>目标阶段</th></tr></thead>
+      <tbody>
+        <tr><td><strong>1</strong></td><td>OneID映射上线（租赁+赊销+零售统一用户身份）</td><td>统一用户ID、支撑一个APP承载多业务线</td><td><strong>阶段一上线</strong></td></tr>
+        <tr><td><strong>2</strong></td><td>用户中心（基础信息+档案+可视化）</td><td>运营自助查看用户数据</td><td>阶段二</td></tr>
+        <tr><td><strong>3</strong></td><td>标签体系（核心标签+圈选）</td><td>人群圈选、分层运营</td><td>阶段二</td></tr>
+        <tr><td><strong>4</strong></td><td>有机云对接方案（能力盘点+对接设计）</td><td>阶段二跑通营销中心→有机云触达指令</td><td><strong>阶段一对接</strong></td></tr>
+        <tr><td>5</td><td>私域系统接入订单数据（过渡）</td><td>私域有订单数据可用</td><td>阶段一</td></tr>
+        <tr><td>6</td><td>营销中心画布规则定义（文档）</td><td>阶段三营销画布建设的前置方案</td><td>阶段一定义</td></tr>
+        <tr><td>7</td><td>营销中心营销画布</td><td>SOP系统化、自动触达</td><td>阶段三</td></tr>
+        <tr><td><em>附</em></td><td><em>短信出口兜底拦截（注销用户过滤 + 全局黑名单）</em></td><td><em>8.12已发生5单客诉，短信通道出口层紧急补位</em></td><td><em>阶段一嵌入</em></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">进入阶段二的条件</div>
+    <table class="condition-table">
+      <thead><tr><th>条件</th><th>验证方式</th></tr></thead>
+      <tbody>
+        <tr><td>短租复购SOP跑完至少2轮完整周期</td><td>SOP执行记录+效果数据</td></tr>
+        <tr><td>OneID映射已上线且数据校验通过</td><td>数据校验报告</td></tr>
+        <tr><td>用户中心PRD定稿且技术排期确认</td><td>PRD文档+排期表</td></tr>
+        <tr><td>标签体系方案定稿（含10-15个核心标签）</td><td>方案文档</td></tr>
+        <tr><td>私域系统订单数据接入上线</td><td>运营可在私域系统看到订单数据</td></tr>
+        <tr><td><strong>有机云对接方案定稿、字段清单与责任人确认</strong></td><td>对接PRD+字段表+有机云侧联系人确认</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">交付清单</div>
+    <div class="deliverable-grid">
+      <div class="deliverable-card ops">
+        <div class="deliverable-label">运营</div>
+        <ul class="deliverable-list">
+          <li>短租复购SOP文档（含效果假设和止损标准）</li>
+          <li>短租用户分层（手动6层）</li>
+          <li>复购率根因调研报告</li>
+          <li>内容素材盘点报告</li>
+          <li>企微群精简+支付宝群降级+美团晒单下线</li>
+        </ul>
+      </div>
+      <div class="deliverable-card prod">
+        <div class="deliverable-label">产品</div>
+        <ul class="deliverable-list">
+          <li><strong>OneID映射上线（租赁+赊销+零售统一用户身份）</strong></li>
+          <li>用户中心PRD定稿（基础信息+档案+可视化）</li>
+          <li>标签体系方案定稿</li>
+          <li>有机云对接PRD定稿（能力盘点+对接设计）</strong></li>
+          <li>营销中心画布规则定义（文档）</li>
+          <li>私域系统订单数据接入</li>
+          <li>神策迁移方案</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+
+<!-- 05 阶段二 -->
+<div class="section" id="phase2">
+  <div class="section-head">
+    <div class="section-num">05</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">PHASE 2</div>
+      <h2 class="section-title">阶段二：基础能力期</h2>
+      <p class="section-desc">产品地基上线 + SOP半自动</p>
+    </div>
+  </div>
+
+  <div class="card card-accent">
+
+  <div class="phase-header">
+    <span class="phase-badge p2">阶段二</span>
+    <span class="phase-title">基础能力期</span>
+  </div>
+  <div class="phase-metric">核心指标：短租复购率 4%→5%，短租私域GMV占比 7%→8%，赊销私域GMV占比 2.1%→3%</div>
+
+  <div class="judgment-box">
+    <div class="judgment-label">要证明的判断</div>
+    <div class="judgment-text">标签分层触达是否比全量触达效果更好（验证精细化运营的增量价值）</div>
+  </div>
+  <div class="judgment-skip">
+    <strong>暂不做什么：</strong>营销画布暂不建设、长租SOP暂不启动、跨品类引导暂不系统化、APP push暂不上线
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">运营策略与动作</div>
+    <p style="font-size: 14px; color: var(--c-text-mid); margin-bottom: 16px;">
+      <strong>目标：</strong>短租SOP从纯人工升级为数据驱动，赊销SOP启动。
+    </p>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 800 100" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="arr-sop2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#94A3B8" stroke-width="1.5"/></marker></defs>
+        <rect x="10" y="30" width="95" height="40" rx="10" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.5"/>
+        <text x="57" y="48" text-anchor="middle" font-size="11" font-weight="600" fill="#92400E">赊销下单</text>
+        <text x="57" y="62" text-anchor="middle" font-size="10" fill="#F59E0B">还款中</text>
+        <line x1="105" y1="50" x2="125" y2="50" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-sop2)"/>
+        <rect x="130" y="30" width="100" height="40" rx="10" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.5"/>
+        <text x="180" y="48" text-anchor="middle" font-size="10" font-weight="600" fill="#92400E">还款过半</text>
+        <text x="180" y="62" text-anchor="middle" font-size="10" fill="#F59E0B">进度通知</text>
+        <line x1="230" y1="50" x2="250" y2="50" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-sop2)"/>
+        <rect x="255" y="30" width="100" height="40" rx="10" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.5"/>
+        <text x="305" y="48" text-anchor="middle" font-size="10" font-weight="600" fill="#92400E">还款完成</text>
+        <text x="305" y="62" text-anchor="middle" font-size="10" fill="#F59E0B">复购券</text>
+        <line x1="355" y1="50" x2="375" y2="50" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-sop2)"/>
+        <rect x="380" y="30" width="100" height="40" rx="10" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5"/>
+        <text x="430" y="48" text-anchor="middle" font-size="9" font-weight="600" fill="#6D28D9">完成后第7天</text>
+        <text x="430" y="62" text-anchor="middle" font-size="10" fill="#8B5CF6">跨品类推荐</text>
+        <line x1="480" y1="50" x2="500" y2="50" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-sop2)"/>
+        <rect x="505" y="30" width="100" height="40" rx="10" fill="#ECFDF5" stroke="#86EFAC" stroke-width="1.5"/>
+        <text x="555" y="48" text-anchor="middle" font-size="9" font-weight="600" fill="#065F46">完成后第30天</text>
+        <text x="555" y="62" text-anchor="middle" font-size="10" fill="#10B981">召回触达</text>
+      </svg>
+      <p class="diagram-caption">赊销复购SOP（人工版）用户旅程</p>
+    </div>
+
+    <div class="callout accent">
+      <strong>短租SOP演进：</strong>人工导名单→用户中心筛选 · Excel排计划→看板监控 · 人工记录→数据回流看板 · 全量触达→分层差异化触达
+    </div>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">产品建设</div>
+
+    <div class="callout info" style="margin-bottom: 16px;">
+      <strong>用户中心（含OneID）：</strong>底层由OneID解决"一个人被识别为多人"的根本问题，上层提供用户列表/详情/筛选/导出等业务功能，是整个用户运营体系的查看入口。OneID映射在阶段一已上线，阶段二建设基础档案+可视化，阶段三稳定运行、数据准确率&gt;95%后向上游标签体系/营销中心正式开放。
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0;">
+      <div class="card" style="border-left: 4px solid var(--c-accent);">
+        <h4 style="font-size: 15px; margin-bottom: 10px;">用户中心上线</h4>
+        <div style="font-size: 13px; color: var(--c-text-mid); line-height: 1.7;">
+          <strong>功能层：</strong>用户列表（分页/搜索/批量操作）· 用户详情（基础信息/订单/标签/设备）· 筛选（品类/到期/风控/复购）· 导出<br>
+          <strong>数据层：</strong>OneID统一关联 基础信息(自有) + 订单数据(数仓) + 标签数据(标签体系)
+        </div>
+      </div>
+      <div class="card" style="border-left: 4px solid var(--c-purple);">
+        <h4 style="font-size: 15px; margin-bottom: 10px;">标签体系上线</h4>
+        <div style="font-size: 13px; color: var(--c-text-mid); line-height: 1.7;">
+          <strong>打标：</strong>用户标签（生命周期/复购/风控/意愿度/活跃度）· 商品标签 · 订单标签<br>
+          <strong>圈选匹配：</strong>人群圈选→人群包 · 商品匹配→推荐商品包<br>
+          <strong>数据来源：</strong>数仓→原子标签计算→标签写入
+        </div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0;">
+      <div class="card" style="border-left: 4px solid var(--c-danger);">
+        <h4 style="font-size: 15px; margin-bottom: 10px;">有机云单向打通</h4>
+        <div style="font-size: 13px; color: var(--c-text-mid); line-height: 1.7;">
+          <strong>触达指令下行：</strong>营销中心→有机云SOP群发/加粉/朋友圈<br>
+          <strong>替换私域能力：</strong>群发/私发、加粉、好友管理由有机云接管<br>
+          <strong>不依赖营销画布：</strong>阶段二即可独立替换部分私域能力
+        </div>
+      </div>
+      <div class="card" style="border-left: 4px solid var(--c-info);">
+        <h4 style="font-size: 15px; margin-bottom: 10px;">营销中心企微触达打通</h4>
+        <div style="font-size: 13px; color: var(--c-text-mid); line-height: 1.7;">
+          <strong>通道扩展：</strong>短信+订阅→+企微/有机云<br>
+          <strong>人群接入：</strong>标签体系产出人群包→营销中心<br>
+          <strong>画布不建设：</strong>阶段二只打通通道，画布阶段三上线
+        </div>
+      </div>
+    </div>
+
+    <div class="callout accent">
+      <strong>关键决策点：营销画布自研 vs 外采</strong><br>
+      方案A（自研）：完全自主可控、贴合业务、开发周期长<br>
+      方案B（外采）：快速上线、开源MA工具、需适配改造<br>
+      <strong>决策时间：本阶段结束前。建议先评估开源MA工具，成本/周期对比后决策。</strong>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">进入阶段三的条件</div>
+    <table class="condition-table">
+      <thead><tr><th>条件</th><th>验证方式</th></tr></thead>
+      <tbody>
+        <tr><td>短租SOP效果优于阶段一（复购率或转化率有显著差异）</td><td>AB对比数据</td></tr>
+        <tr><td>赊销SOP跑完至少2轮完整周期</td><td>SOP执行记录+效果数据</td></tr>
+        <tr><td>用户中心（基础档案+可视化）上线</td><td>数据校验报告</td></tr>
+        <tr><td>用户中心基础档案+可视化已运营使用</td><td>运营使用记录</td></tr>
+        <tr><td>标签体系上线且至少10个标签可用</td><td>标签产出记录</td></tr>
+        <tr><td>营销画布自研/外采决策完成</td><td>决策文档</td></tr>
+        <tr><td><strong>有机云单向打通跑通，私域系统部分能力已被替换</strong></td><td>端到端测试+替换记录</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+  </div>
+
+<!-- 06 阶段三 -->
+<div class="section" id="phase3">
+  <div class="section-head">
+    <div class="section-num">06</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">PHASE 3</div>
+      <h2 class="section-title">阶段三：系统能力期</h2>
+      <p class="section-desc">营销画布上线 + SOP系统化</p>
+    </div>
+  </div>
+
+  <div class="card card-accent">
+
+  <div class="phase-header">
+    <span class="phase-badge p3">阶段三</span>
+    <span class="phase-title">系统能力期</span>
+  </div>
+  <div class="phase-metric">核心指标：短租复购率 5%→7%，短租私域GMV占比 8%→9%，赊销私域GMV占比 3%→4%</div>
+
+  <div class="judgment-box">
+    <div class="judgment-label">要证明的判断</div>
+    <div class="judgment-text">系统自动触发是否比人工执行效果不差且效率显著提升（验证系统化的ROI）</div>
+  </div>
+  <div class="judgment-skip">
+    <strong>暂不做什么：</strong>私域系统暂不下线（降级为执行通道）、用户中心RFM暂不建设、数仓实时化暂不推进
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">运营策略与动作</div>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 800 160" xmlns="http://www.w3.org/2000/svg">
+        <text x="150" y="15" text-anchor="middle" font-size="12" font-weight="700" fill="#10B981">阶段一</text>
+        <text x="350" y="15" text-anchor="middle" font-size="12" font-weight="700" fill="#0EA5E9">阶段二</text>
+        <text x="570" y="15" text-anchor="middle" font-size="12" font-weight="700" fill="#F59E0B">阶段三</text>
+        <rect x="60" y="25" width="180" height="30" rx="8" fill="#ECFDF5" stroke="#86EFAC"/>
+        <text x="150" y="45" text-anchor="middle" font-size="11" font-weight="600" fill="#065F46">短租 人工</text>
+        <line x1="240" y1="40" x2="260" y2="40" stroke="#94A3B8" stroke-width="1.5"/>
+        <rect x="260" y="25" width="180" height="30" rx="8" fill="#ECFDF5" stroke="#86EFAC"/>
+        <text x="350" y="45" text-anchor="middle" font-size="11" font-weight="600" fill="#065F46">短租 数据驱动</text>
+        <line x1="440" y1="40" x2="460" y2="40" stroke="#94A3B8" stroke-width="1.5"/>
+        <rect x="460" y="25" width="200" height="30" rx="8" fill="#ECFDF5" stroke="#86EFAC"/>
+        <text x="560" y="45" text-anchor="middle" font-size="11" font-weight="600" fill="#065F46">短租 系统触发</text>
+        <rect x="260" y="65" width="180" height="30" rx="8" fill="#FFFBEB" stroke="#FDE68A"/>
+        <text x="350" y="85" text-anchor="middle" font-size="11" font-weight="600" fill="#92400E">赊销 人工</text>
+        <line x1="440" y1="80" x2="460" y2="80" stroke="#94A3B8" stroke-width="1.5"/>
+        <rect x="460" y="65" width="200" height="30" rx="8" fill="#FFFBEB" stroke="#FDE68A"/>
+        <text x="560" y="85" text-anchor="middle" font-size="11" font-weight="600" fill="#92400E">赊销 数据驱动</text>
+        <rect x="460" y="105" width="200" height="30" rx="8" fill="#F5F3FF" stroke="#DDD6FE"/>
+        <text x="560" y="125" text-anchor="middle" font-size="11" font-weight="600" fill="#6D28D9">长租 人工</text>
+        <text x="20" y="45" font-size="12" font-weight="700" fill="#10B981">短租SOP</text>
+        <text x="20" y="85" font-size="12" font-weight="700" fill="#F59E0B">赊销SOP</text>
+        <text x="20" y="125" font-size="12" font-weight="700" fill="#8B5CF6">长租SOP</text>
+      </svg>
+      <p class="diagram-caption">SOP演进路径：三阶段×三品类</p>
+    </div>
+
+    <div class="callout info">
+      <strong>触发规则示例：</strong><br>
+      事件驱动：用户归还设备 → 自动触发召回券<br>
+      时间驱动：到期前30天 → 自动触发续租推荐<br>
+      状态驱动：还款达50% → 自动触发进度通知
+    </div>
+
+    <table class="info-table">
+      <thead><tr><th>引导方向</th><th>场景</th><th>状态</th></tr></thead>
+      <tbody>
+        <tr><td>零售 → 短租</td><td>购买用户推短租体验</td><td>待启动</td></tr>
+        <tr><td>短租 → 长租</td><td>短租用户推长租续约</td><td><span style="color: var(--c-accent); font-weight: 600;">测试中</span></td></tr>
+        <tr><td>赊销 → 短租</td><td>赊销还款完成推短租</td><td><span style="color: var(--c-accent); font-weight: 600;">测试中</span></td></tr>
+        <tr><td>赊销 → 长租</td><td>赊销还款完成推长租</td><td>待启动</td></tr>
+        <tr><td>零售 → 赊销</td><td>购买用户推赊销分期</td><td>待启动</td></tr>
+        <tr><td>短租 → 赊销</td><td>短租用户推赊销购物</td><td>待启动</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">产品建设</div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0;">
+      <div class="card" style="border-left: 4px solid var(--c-accent);">
+        <h4 style="font-size: 15px; margin-bottom: 10px;">用户中心：360视图+标签集成</h4>
+        <div style="font-size: 13px; color: var(--c-text-mid); line-height: 1.7;">
+          OneID稳定运行（数据准确率&gt;95%）· 用户360视图（基础+标签+订单）· 人群圈选（从标签体系获取）· 神策用户群迁移完成 · 运营自助圈人/导人
+        </div>
+      </div>
+      <div class="card" style="border-left: 4px solid var(--c-purple);">
+        <h4 style="font-size: 15px; margin-bottom: 10px;">标签体系：全量打标+画布全链路</h4>
+        <div style="font-size: 13px; color: var(--c-text-mid); line-height: 1.7;">
+          全量打标+商品匹配 · 标签→画布全链路打通 · 人群包推送至营销中心
+        </div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0;">
+      <div class="card" style="border-left: 4px solid var(--c-danger);">
+        <h4 style="font-size: 15px; margin-bottom: 10px;">有机云双向闭环</h4>
+        <div style="font-size: 13px; color: var(--c-text-mid); line-height: 1.7;">
+          执行结果回流至营销中心 · 用户状态同步（加微/退群）· 对话记录回流 · 人群可推送至标签体系
+        </div>
+      </div>
+      <div class="card" style="border-left: 4px solid var(--c-info);">
+        <h4 style="font-size: 15px; margin-bottom: 10px;">营销中心：营销画布上线</h4>
+        <div style="font-size: 13px; color: var(--c-text-mid); line-height: 1.7;">
+          事件/时间/状态三类触发+多节点编排 · 双向闭环+数据回流 · 运营在画布上配置SOP，系统自动匹配人群、选择渠道、执行触达
+        </div>
+      </div>
+    </div>
+
+    <div class="callout accent" style="margin-bottom: 16px;">
+      <strong>私域系统迁移期：</strong>群管理、活码、标签等剩余能力继续迁移至有机云/标签体系，功能逐步停用。统计数据人工梳理后归档。
+    </div>
+
+    <table class="info-table">
+      <thead><tr><th>运营SOP</th><th>触发规则</th><th>产品能力支撑</th></tr></thead>
+      <tbody>
+        <tr><td>短租·续租推荐</td><td>到期前30天</td><td>时间触发+标签圈选到期用户</td></tr>
+        <tr><td>短租·召回</td><td>设备归还事件</td><td>事件触发+短信通道</td></tr>
+        <tr><td>赊销·进度通知</td><td>还款达50%</td><td>状态触发+数仓进度数据</td></tr>
+        <tr><td>长租续约提醒</td><td>到期前60天</td><td>时间触发+企微1V1</td></tr>
+        <tr><td>流失召回</td><td>90天无交易</td><td>状态触发+标签打标流失</td></tr>
+        <tr><td>新客培育</td><td>注册/加微事件</td><td>事件触发+时间序列（第1天至第14天）</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">进入阶段四的条件</div>
+    <table class="condition-table">
+      <thead><tr><th>条件</th><th>验证方式</th></tr></thead>
+      <tbody>
+        <tr><td>短租SOP系统触发效果不差于人工执行</td><td>AB对比数据</td></tr>
+        <tr><td>赊销SOP跑完至少1轮完整周期</td><td>SOP执行记录+效果数据</td></tr>
+        <tr><td>营销画布稳定运行（无重大故障）</td><td>运行日志</td></tr>
+        <tr><td><strong>有机云双向闭环跑通（触达回传+状态回流，人群互通）</strong></td><td><strong>端到端测试+回流看板数据</strong></td></tr>
+        <tr><td>标签→营销中心→渠道全链路打通</td><td>端到端测试</td></tr>
+        <tr><td>运营团队已熟练使用营销画布配置SOP</td><td>操作记录</td></tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+</div>
+
+<!-- 07 阶段四 -->
+<div class="section" id="phase4">
+  <div class="section-head">
+    <div class="section-num">07</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">PHASE 4</div>
+      <h2 class="section-title">阶段四：体系跑通期</h2>
+      <p class="section-desc">私域系统废弃 + 全品类自动化</p>
+    </div>
+  </div>
+
+  <div class="card card-accent">
+
+  <div class="phase-header">
+    <span class="phase-badge p4">阶段四</span>
+    <span class="phase-title">体系跑通期</span>
+  </div>
+  <div class="phase-metric">核心指标：短租复购率 7%→8%+，短租私域GMV占比 9%→10%+，赊销私域GMV占比 4%→5%+</div>
+
+  <div class="judgment-box">
+    <div class="judgment-label">要证明的判断</div>
+    <div class="judgment-text">全品类自动化运营是否ROI为正（系统化运营的增量收入是否覆盖系统建设和运营成本）</div>
+  </div>
+  <div class="judgment-skip">
+    <strong>暂不做什么：</strong>不新增渠道、不新增品类（聚焦现有短租/长租/赊销/零售的自动化闭环）
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">运营策略与动作</div>
+    <div style="font-size: 14px; color: var(--c-text-mid); line-height: 1.8;">
+      <strong>目标：</strong>全品类SOP系统化，私域管理系统正式废弃，实现全品类自动化运营。<br><br>
+      <strong>策略：</strong><br>
+      · 全品类SOP系统化（短租/赊销/长租/零售全部系统触发）<br>
+      · 衰退预警SOP（活跃度下降自动触发激活）<br>
+      · 跨品类转化SOP（系统自动识别跨品类机会并触发）<br>
+      · 精品群运营（3-5个高价值群）<br>
+      · AI客服上线
+    </div>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">产品建设</div>
+
+    <div class="layer-stack">
+      <div class="layer-card data">
+        <div class="layer-header">
+          <span class="layer-badge">L1</span>
+          <h4 style="font-size: 15px;">数据基础层</h4>
+        </div>
+        <div class="layer-items">
+          <span class="layer-item">用户中心（含OneID稳定运行）</span>
+          <span class="layer-item">数仓实时化</span>
+          <span class="layer-item">全量数据源接入</span>
+        </div>
+      </div>
+      <div class="layer-arrow">↓</div>
+      <div class="layer-card midtier">
+        <div class="layer-header">
+          <span class="layer-badge">L2</span>
+          <h4 style="font-size: 15px;">能力中台层</h4>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+          <div style="background: rgba(255,255,255,0.7); border-radius: 8px; padding: 12px; border: 1px solid rgba(255,255,255,0.5);">
+            <div style="font-size: 13px; font-weight: 700; color: #92400E;">用户中心</div>
+            <div style="font-size: 11px; color: var(--c-text-mid);">RFM评分 · 360视图 · 智能推荐</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.7); border-radius: 8px; padding: 12px; border: 1px solid rgba(255,255,255,0.5);">
+            <div style="font-size: 13px; font-weight: 700; color: #92400E;">标签体系(全量)</div>
+            <div style="font-size: 11px; color: var(--c-text-mid);">全量打标 · 人群圈选 · 商品匹配</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.7); border-radius: 8px; padding: 12px; border: 1px solid rgba(255,255,255,0.5);">
+            <div style="font-size: 13px; font-weight: 700; color: #92400E;">营销中心</div>
+            <div style="font-size: 11px; color: var(--c-text-mid);">AB测试 · 频次控制 · 效果归因</div>
+          </div>
+        </div>
+        <div style="margin-top: 8px; font-size: 12px; color: var(--c-danger); font-weight: 600;">私域系统已下线，营销中心编排→有机云执行全链路跑通</div>
+      </div>
+      <div class="layer-arrow">↓</div>
+      <div class="layer-card channel">
+        <div class="layer-header">
+          <span class="layer-badge">L3</span>
+          <h4 style="font-size: 15px;">渠道执行层</h4>
+        </div>
+        <div class="layer-items">
+          <span class="layer-item">全渠道统一编排（企微/短信/订阅消息/APP push）</span>
+          <span class="layer-item">有机云：加粉任务下发 + 群运营策略下发</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout success" style="margin-top: 16px;">
+      <strong>营销画布升级：</strong>AB测试（对照组/实验组/随机分组/效果对比）· 频次控制（全局上限/跨渠道去重/自动降频）· 效果归因（触达→转化归因/SOP效果对比/ROI计算/迭代建议）
+    </div>
+
+    <div class="callout info" style="margin-top: 12px;">
+      <strong>有机云任务类型扩展：</strong>加粉任务由营销中心推送名单、有机云自动执行 · 群运营策略由营销中心下发、有机云自动执行 · 私域系统正式下线、数据归档
+    </div>
+  </div>
+  </div>
+</div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>运营和产品交替驱动——运营跑出数据验证方向，产品建能力放大效果，运营用新能力设计新SOP，产品根据运营需求迭代能力。每一步确保"能落地、可度量、可迭代"。</p>
+</div>
+
+</body>
+</html>

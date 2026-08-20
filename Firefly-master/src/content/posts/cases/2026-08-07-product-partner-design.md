@@ -2,7 +2,7 @@
 title: product partner 思路与架构
 published: 2026-08-07
 description: Product Partner 的设计思路、产品定位与整体架构说明。
-image: /assets/library/cases/product-partner-design/cover.png
+image: /assets/library/cases/product-partner-design/cover.webp
 category: 案例库
 tags:
   - 案例研究

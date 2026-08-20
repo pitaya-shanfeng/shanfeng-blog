@@ -2,7 +2,7 @@
 title: 第 3 章 · 需求观
 published: 2025-11-28
 description: 从需求线索、用户任务与产品边界出发，重新理解需求管理的本质：不是响应方案，而是定义值得解决的价值。
-image: /assets/library/jianshan/demand-view/cover.png
+image: /assets/library/jianshan/demand-view/cover.webp
 category: 见山
 tags:
   - 产品认知

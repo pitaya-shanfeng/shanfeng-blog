@@ -2,7 +2,7 @@
 title: 第 5 章 · 认知融合
 published: 2025-12-30
 description: 当用户、商业、技术与组织诉求彼此冲突时，产品经理如何识别不可逆损失、安排决策顺序，并做出可复盘的判断。
-image: /assets/library/jianshan/cognitive-integration/cover.png
+image: /assets/library/jianshan/cognitive-integration/cover.webp
 category: 见山
 tags:
   - 产品认知

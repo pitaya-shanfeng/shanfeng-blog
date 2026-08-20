@@ -3,7 +3,7 @@ title: 第 13 章 · 能力抽象
 published: 2026-05-31
 description: 能力抽象不是把相似功能合在一起，而是在重复业务动作里判断哪些已经足够稳定，值得沉淀成长期维护的公共能力。
 category: 见山
-image: /assets/library/jianshan/capability-abstraction/cover.png
+image: /assets/library/jianshan/capability-abstraction/cover.webp
 tags:
   - 产品思维
   - 见山
@@ -82,4 +82,4 @@ draft: false
 
 所以后来面对这种“顺手再多做一点”的冲动，我会比以前更谨慎一些。产品经理当然应该想得比眼前的需求更远，但想得到和现在就要做，是两回事。一个暂时没有进入系统的东西，以后真的需要时还有机会再判断；一个过早放进公共层的设计，却可能很快被业务依赖，后面再想拿掉，成本反而更高。**很多时候，知道一个东西可以怎么继续做并不难，真正难的是判断它现在有没有必要继续往前做。**能力抽象做到最后，考验的不只是我们能不能把复杂的东西整理清楚，也包括能不能接受系统暂时没有那么完整。**好的抽象不需要证明自己提前想到了多少未来，它更重要的是知道，哪些事情到了今天已经应该做，哪些事情还可以留给明天。**
 
-![能力抽象方法论](/assets/library/jianshan/capability-abstraction/methodology.png)
+![能力抽象方法论](/assets/library/jianshan/capability-abstraction/methodology.webp)

@@ -3,7 +3,7 @@ title: 第 11 章 · 路线图与优先级
 published: 2026-04-22
 description: 当方向已经确定，路线图要做的不是堆满功能排期，而是把选择转化为持续行动、资源取舍与阶段验证。
 category: 见山
-image: /assets/library/jianshan/roadmap-priority/cover.png
+image: /assets/library/jianshan/roadmap-priority/cover.webp
 tags:
   - 产品思维
   - 见山
@@ -129,4 +129,4 @@ draft: false
 
 以前我觉得，好的路线图应该尽可能提前想清楚未来。现在我更愿意接受，未来本来就不可能完全想清楚。产品经理能够做的，不是把所有不确定性提前填成功能，而是把一次选择放进时间里，让团队知道接下来需要观察什么、证明什么，以及事实发生变化以后，应该怎样重新选择。**真正考验产品经理的，不是拍板时把判断讲得多漂亮，而是三个月、六个月以后，资源是否还在服务那个选择。能管理好这件事，产品经理管理的就不只是功能，而是选择之后的责任。**
 
-![路线图与优先级方法论](/assets/library/jianshan/roadmap-priority/methodology.png)
+![路线图与优先级方法论](/assets/library/jianshan/roadmap-priority/methodology.webp)

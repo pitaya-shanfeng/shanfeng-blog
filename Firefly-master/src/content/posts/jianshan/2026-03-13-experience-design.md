@@ -2,7 +2,7 @@
 title: 第 7 章 · 体验设计
 published: 2026-02-05
 description: 从用户任务与任务成本出发，理解体验设计的本质：不是美化页面，而是把复杂放在更合适的位置。
-image: /assets/library/jianshan/experience-design/cover.png
+image: /assets/library/jianshan/experience-design/cover.webp
 category: 见山
 tags:
   - 体验设计
@@ -112,4 +112,4 @@ draft: false
 
 产品经理做体验，不能仅仅看做一条转化路径，路径当然重要，但用户不是流量单位，他会算不清、会担心、会犹豫、会怕出错、会怕被问责、会在某个瞬间因为产品替他少想了一点、少担了一点，而愿意继续往前走。 **好的设计，不是让产品显得更聪明；好的设计，是让用户不用那么努力。**
 
-![体验设计方法论](/assets/library/jianshan/experience-design/methodology.png)
+![体验设计方法论](/assets/library/jianshan/experience-design/methodology.webp)

@@ -18,10 +18,10 @@ export const expressiveCodeConfig: ExpressiveCodeConfig = {
 
 	// 代码块折叠插件配置
 	pluginCollapsible: {
-		enable: true, // 启用折叠功能
-		lineThreshold: 15, // 当代码行数超过15行时显示折叠按钮
+		enable: true, // 保留代码块原始样式与复制按钮
+		lineThreshold: 9999, // 让大多数代码块都不会出现“展开”按钮
 		previewLines: 8, // 折叠时显示前8行
-		defaultCollapsed: true, // 默认折叠长代码块
+		defaultCollapsed: false, // 保持默认展开
 	},
 
 	// 语言徽章插件配置

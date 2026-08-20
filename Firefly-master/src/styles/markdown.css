@@ -92,6 +92,14 @@
     @apply my-4;
   }
 
+  .image-caption {
+    @apply text-center text-sm;
+    color: var(--tw-prose-captions);
+    margin-top: -0.5rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+  }
+
   ul,
   ol {
     li::marker {

@@ -117,28 +117,28 @@ $$
 ## 原论文在线预览
 
 <div class="document-page-stream" aria-label="Self-Consistency 原论文在线预览">
-  <img src="/assets/library/notes/self-consistency/pages/page-01.jpg" alt="Self-Consistency 原论文第 1 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/self-consistency/pages/page-02.jpg" alt="Self-Consistency 原论文第 2 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/self-consistency/pages/page-03.jpg" alt="Self-Consistency 原论文第 3 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/self-consistency/pages/page-04.jpg" alt="Self-Consistency 原论文第 4 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/self-consistency/pages/page-05.jpg" alt="Self-Consistency 原论文第 5 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/self-consistency/pages/page-06.jpg" alt="Self-Consistency 原论文第 6 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/self-consistency/pages/page-07.jpg" alt="Self-Consistency 原论文第 7 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/self-consistency/pages/page-08.jpg" alt="Self-Consistency 原论文第 8 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/self-consistency/pages/page-09.jpg" alt="Self-Consistency 原论文第 9 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/self-consistency/pages/page-10.jpg" alt="Self-Consistency 原论文第 10 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/self-consistency/pages/page-11.jpg" alt="Self-Consistency 原论文第 11 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/self-consistency/pages/page-12.jpg" alt="Self-Consistency 原论文第 12 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/self-consistency/pages/page-13.jpg" alt="Self-Consistency 原论文第 13 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/self-consistency/pages/page-14.jpg" alt="Self-Consistency 原论文第 14 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/self-consistency/pages/page-15.jpg" alt="Self-Consistency 原论文第 15 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/self-consistency/pages/page-16.jpg" alt="Self-Consistency 原论文第 16 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/self-consistency/pages/page-17.jpg" alt="Self-Consistency 原论文第 17 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/self-consistency/pages/page-18.jpg" alt="Self-Consistency 原论文第 18 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/self-consistency/pages/page-19.jpg" alt="Self-Consistency 原论文第 19 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/self-consistency/pages/page-20.jpg" alt="Self-Consistency 原论文第 20 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/self-consistency/pages/page-21.jpg" alt="Self-Consistency 原论文第 21 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/self-consistency/pages/page-22.jpg" alt="Self-Consistency 原论文第 22 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/self-consistency/pages/page-23.jpg" alt="Self-Consistency 原论文第 23 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/self-consistency/pages/page-24.jpg" alt="Self-Consistency 原论文第 24 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/self-consistency/pages/page-01.webp" alt="Self-Consistency 原论文第 1 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/self-consistency/pages/page-02.webp" alt="Self-Consistency 原论文第 2 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/self-consistency/pages/page-03.webp" alt="Self-Consistency 原论文第 3 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/self-consistency/pages/page-04.webp" alt="Self-Consistency 原论文第 4 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/self-consistency/pages/page-05.webp" alt="Self-Consistency 原论文第 5 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/self-consistency/pages/page-06.webp" alt="Self-Consistency 原论文第 6 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/self-consistency/pages/page-07.webp" alt="Self-Consistency 原论文第 7 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/self-consistency/pages/page-08.webp" alt="Self-Consistency 原论文第 8 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/self-consistency/pages/page-09.webp" alt="Self-Consistency 原论文第 9 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/self-consistency/pages/page-10.webp" alt="Self-Consistency 原论文第 10 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/self-consistency/pages/page-11.webp" alt="Self-Consistency 原论文第 11 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/self-consistency/pages/page-12.webp" alt="Self-Consistency 原论文第 12 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/self-consistency/pages/page-13.webp" alt="Self-Consistency 原论文第 13 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/self-consistency/pages/page-14.webp" alt="Self-Consistency 原论文第 14 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/self-consistency/pages/page-15.webp" alt="Self-Consistency 原论文第 15 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/self-consistency/pages/page-16.webp" alt="Self-Consistency 原论文第 16 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/self-consistency/pages/page-17.webp" alt="Self-Consistency 原论文第 17 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/self-consistency/pages/page-18.webp" alt="Self-Consistency 原论文第 18 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/self-consistency/pages/page-19.webp" alt="Self-Consistency 原论文第 19 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/self-consistency/pages/page-20.webp" alt="Self-Consistency 原论文第 20 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/self-consistency/pages/page-21.webp" alt="Self-Consistency 原论文第 21 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/self-consistency/pages/page-22.webp" alt="Self-Consistency 原论文第 22 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/self-consistency/pages/page-23.webp" alt="Self-Consistency 原论文第 23 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/self-consistency/pages/page-24.webp" alt="Self-Consistency 原论文第 24 页" loading="lazy" decoding="async" draggable="false" />
 </div>

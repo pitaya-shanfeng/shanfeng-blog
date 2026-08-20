@@ -2,7 +2,7 @@
 title: 第 8 章 · 数据证据
 published: 2026-02-26
 description: 从主指标、解释指标、护栏指标与反证指标出发，为产品判断建立可验证、可推翻的证据体系。
-image: /assets/library/jianshan/data-evidence/cover.png
+image: /assets/library/jianshan/data-evidence/cover.webp
 category: 见山
 tags:
   - 产品认知
@@ -116,4 +116,4 @@ draft: false
 
 数据最好的地方，不是让人更强势，而是让人更诚实。它让我们有机会承认：这件事确实有效，但只在这个场景有效；这个指标确实涨了，但代价也被转移了；这个方案没有失败，但我们原来的解释错了；这个项目看起来不够漂亮，但它让我们看清了真实边界。产品经理能不能接受这些答案，决定了数据到底是证据，还是装饰。你不一定每次都能设计出完美指标，也不一定每个项目都有严谨实验，但你至少要在心里保留一个位置，放那些可能证明你错了的数据。这个位置越早留出来，你的判断反而越稳。真正值得信任的产品判断，不是从来没有被质疑过，而是经得起证据的追问。
 
-![数据证据方法论](/assets/library/jianshan/data-evidence/methodology.png)
+![数据证据方法论](/assets/library/jianshan/data-evidence/methodology.webp)

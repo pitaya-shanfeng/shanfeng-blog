@@ -2,7 +2,7 @@
 title: 第 6 章 · 问题定义
 published: 2026-01-18
 description: 从异常现象出发，暂停既有方案、还原用户任务并定义真实代价，让产品团队先解决正确的问题。
-image: /assets/library/jianshan/problem-definition/cover.png
+image: /assets/library/jianshan/problem-definition/cover.webp
 category: 见山
 tags:
   - 产品认知
@@ -123,4 +123,4 @@ draft: false
 
 承认问题没定义清楚，不是一件体面的事。它意味着你要承认自己现在还不知道，承认前面的方案可能要推翻，承认团队已经投入的一部分讨论可能要作废。对于一个资深产品经理来说，最难的不是不会给答案，而是明明给得出答案，却知道自己不该这么快给。我现在反而很珍惜那种不舒服的停顿，因为它至少说明，有人愿意把项目从“怎么做”里拽出来，重新看一眼“为什么做”。不是每一次停顿都会带来更好的方案，也不是每一次重新定义问题都能跑出漂亮数据，但它会让团队少一点惯性，多一点诚实。 **产品经理的成熟，不是永远比别人更快想到方案，而是在方案已经很顺的时候，还能多问一句：这个问题，真的被定义清楚了吗？** 这句话问出口，可能会让会议慢十分钟，但有时候，它能替团队省掉三个月。
 
-![问题定义方法论](/assets/library/jianshan/problem-definition/methodology.png)
+![问题定义方法论](/assets/library/jianshan/problem-definition/methodology.webp)

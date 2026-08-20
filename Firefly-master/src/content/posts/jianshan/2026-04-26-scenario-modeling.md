@@ -3,7 +3,7 @@ title: 第 12 章 · 场景建模
 published: 2026-05-13
 description: 场景建模不是先画架构图，而是回到业务现场，看见角色、动作、交接物、异常变化与稳定对象。
 category: 见山
-image: /assets/library/jianshan/scenario-modeling/cover.png
+image: /assets/library/jianshan/scenario-modeling/cover.webp
 tags:
   - 产品思维
   - 见山
@@ -114,4 +114,4 @@ draft: false
 
 **真正好的架构，不是让系统显得庞大，而是让业务变得更容易理解。** 它让一场活动不再只是代码里的几个页面，让一批用户不再只是离线表里的ID，让一个首页弹窗不再只是前端里的一个入口，也让一次分流不再只是研发临时写下的一段判断逻辑。这些东西被看见、被说清楚以后，架构才开始有意义。因为产品经理真正要做的，从来不是给系统取几个漂亮的名字，而是让那些原本散落在业务现场里的东西，逐渐变得可理解、可管理，也能够继续生长。
 
-![场景建模方法论](/assets/library/jianshan/scenario-modeling/methodology.png)
+![场景建模方法论](/assets/library/jianshan/scenario-modeling/methodology.webp)

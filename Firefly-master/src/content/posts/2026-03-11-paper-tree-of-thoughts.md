@@ -82,18 +82,18 @@ IO 单词准确率 14%，CoT 15.6%， **ToT 60%**，解出 4/20 个完整游戏�
 ## 原论文在线预览
 
 <div class="document-page-stream" aria-label="ToT 原论文在线预览">
-  <img src="/assets/library/notes/tree-of-thoughts/pages/page-01.jpg" alt="ToT 原论文第 1 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/tree-of-thoughts/pages/page-02.jpg" alt="ToT 原论文第 2 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/tree-of-thoughts/pages/page-03.jpg" alt="ToT 原论文第 3 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/tree-of-thoughts/pages/page-04.jpg" alt="ToT 原论文第 4 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/tree-of-thoughts/pages/page-05.jpg" alt="ToT 原论文第 5 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/tree-of-thoughts/pages/page-06.jpg" alt="ToT 原论文第 6 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/tree-of-thoughts/pages/page-07.jpg" alt="ToT 原论文第 7 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/tree-of-thoughts/pages/page-08.jpg" alt="ToT 原论文第 8 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/tree-of-thoughts/pages/page-09.jpg" alt="ToT 原论文第 9 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/tree-of-thoughts/pages/page-10.jpg" alt="ToT 原论文第 10 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/tree-of-thoughts/pages/page-11.jpg" alt="ToT 原论文第 11 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/tree-of-thoughts/pages/page-12.jpg" alt="ToT 原论文第 12 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/tree-of-thoughts/pages/page-13.jpg" alt="ToT 原论文第 13 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/tree-of-thoughts/pages/page-14.jpg" alt="ToT 原论文第 14 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/tree-of-thoughts/pages/page-01.webp" alt="ToT 原论文第 1 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/tree-of-thoughts/pages/page-02.webp" alt="ToT 原论文第 2 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/tree-of-thoughts/pages/page-03.webp" alt="ToT 原论文第 3 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/tree-of-thoughts/pages/page-04.webp" alt="ToT 原论文第 4 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/tree-of-thoughts/pages/page-05.webp" alt="ToT 原论文第 5 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/tree-of-thoughts/pages/page-06.webp" alt="ToT 原论文第 6 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/tree-of-thoughts/pages/page-07.webp" alt="ToT 原论文第 7 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/tree-of-thoughts/pages/page-08.webp" alt="ToT 原论文第 8 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/tree-of-thoughts/pages/page-09.webp" alt="ToT 原论文第 9 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/tree-of-thoughts/pages/page-10.webp" alt="ToT 原论文第 10 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/tree-of-thoughts/pages/page-11.webp" alt="ToT 原论文第 11 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/tree-of-thoughts/pages/page-12.webp" alt="ToT 原论文第 12 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/tree-of-thoughts/pages/page-13.webp" alt="ToT 原论文第 13 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/tree-of-thoughts/pages/page-14.webp" alt="ToT 原论文第 14 页" loading="lazy" decoding="async" draggable="false" />
 </div>

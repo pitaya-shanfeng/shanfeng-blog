@@ -5,6 +5,7 @@ import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import { getSortedPosts } from "@/utils/content-utils";
 import { getPostUrlBySlug, url } from "@/utils/url-utils";
+import { countMarkdownWords } from "@/utils/word-count";
 
 interface Props {
 	initialCategory?: string;
@@ -23,7 +24,9 @@ const categoryPostCards = initialCategory
 					? a.data.published.getTime() - b.data.published.getTime()
 					: b.data.published.getTime() - a.data.published.getTime(),
 			)
-	: [];
+	: sortedPostsList
+			.slice()
+			.sort((a, b) => b.data.published.getTime() - a.data.published.getTime());
 
 // 严格按发布时间倒序（不受置顶影响），镜像原 Svelte 版行为
 const posts = sortedPostsList
@@ -55,25 +58,6 @@ function formatTag(tagList: string[]) {
 	return tagList.map((t) => `#${t}`).join(" ");
 }
 
-function countPostWords(body?: string) {
-	if (!body) return 0;
-
-	const text = body
-		.replace(/```[\s\S]*?```/g, "")
-		.replace(/`[^`]*`/g, "")
-		.replace(/!\[[^\]]*\]\([^)]+\)/g, "")
-		.replace(/\[[^\]]+\]\([^)]+\)/g, "")
-		.replace(/<[^>]+>/g, "")
-		.replace(/[>#*_~|`-]/g, "")
-		.replace(/\s+/g, " ")
-		.trim();
-
-	const chineseChars = text.match(/[\u4e00-\u9fa5]/g) || [];
-	const englishWords = text.match(/[a-zA-Z]+/g) || [];
-
-	return chineseChars.length + englishWords.length;
-}
-
 // 传给客户端脚本的 i18n 文案与配置
 const i18nStrings = {
 	categories: i18n(I18nKey.categories),
@@ -88,11 +72,11 @@ const foldOnFilter = collapseAllButFirst;
 ---
 
 <archive-panel
-  class={initialCategory ? "" : "card-base px-8 py-6"}
+  class=""
   data-fold={foldOnFilter ? "true" : "false"}
   data-initial-category={initialCategory}
 >
-  <div class={initialCategory ? "card-base px-8 py-6" : ""}>
+  <div class="card-base px-8 py-6">
   {/* 筛选头部：默认隐藏，客户端在有筛选时填充并显示 */}
   <div id="archive-filter-header" class="mb-5 hidden">
     <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
@@ -151,7 +135,7 @@ const foldOnFilter = collapseAllButFirst;
               class="archive-post group btn-plain block! h-10 w-full rounded-lg hover:text-[initial]"
               data-tags={JSON.stringify(post.data.tags || [])}
               data-category={post.data.category || ""}
-              data-words={countPostWords(post.body)}
+              data-words={countMarkdownWords(post.body)}
             >
               <div class="flex flex-row justify-start items-center h-full">
                 {/* date */}
@@ -198,25 +182,31 @@ const foldOnFilter = collapseAllButFirst;
   </div>
 
   {categoryPostCards.length > 0 && (
-	<section class="archive-card-list list-mode flex flex-col gap-4 md:gap-4 mt-4">
+	<section class:list={["archive-card-list list-mode flex flex-col gap-4 md:gap-4 mt-4", !initialCategory && "hidden"]}>
       {categoryPostCards.map((post, index) => (
-        <PostCard
-          entry={post}
-          title={post.data.title}
-          tags={post.data.tags}
-          category={post.data.category}
-          published={post.data.published}
-          updated={post.data.updated}
-          url={getPostUrlBySlug(post.id)}
-          image={post.data.image}
-          description={post.data.description}
-          draft={post.data.draft}
-          pinned={post.data.pinned}
-          password={!!post.data.password}
-          loading={index < 2 ? "eager" : "lazy"}
-          class="post-card-item"
-          style=""
-        />
+        <div
+          class="archive-card-entry"
+          data-tags={JSON.stringify(post.data.tags || [])}
+          data-category={post.data.category || ""}
+        >
+          <PostCard
+            entry={post}
+            title={post.data.title}
+            tags={post.data.tags}
+            category={post.data.category}
+            published={post.data.published}
+            updated={post.data.updated}
+            url={getPostUrlBySlug(post.id)}
+            image={post.data.image}
+            description={post.data.description}
+            draft={post.data.draft}
+            pinned={post.data.pinned}
+            password={!!post.data.password}
+            loading={index < 2 ? "eager" : "lazy"}
+            class="post-card-item"
+            style=""
+          />
+        </div>
       ))}
     </section>
   )}
@@ -229,10 +219,19 @@ const foldOnFilter = collapseAllButFirst;
   .archive-arrow {
     display: inline-flex;
   }
-  .archive-card-list.list-mode {
+  .archive-card-list.list-mode:not(.hidden) {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+  }
+  .archive-card-list.hidden {
+    display: none !important;
+  }
+  .archive-card-entry {
+    display: block;
+  }
+  .archive-card-entry[hidden] {
+    display: none !important;
   }
   .archive-card-list.list-mode :global(.post-card-wrapper),
   .archive-card-list.list-mode :global(.post-card-content) {
@@ -273,7 +272,6 @@ const foldOnFilter = collapseAllButFirst;
 
     // 按筛选条件隐藏不匹配的文章行，重算每年计数，隐藏空年份，重新折叠
     applyFilter(tags, categories, uncategorized) {
-      const foldOnFilter = this.dataset.fold === "true";
       const blocks = Array.from(this.querySelectorAll(".archive-year-block"));
       let totalVisible = 0;
       let totalWords = 0;
@@ -327,14 +325,48 @@ const foldOnFilter = collapseAllButFirst;
         }
       }
 
-      // 重新应用折叠：首个可见年份展开，其余折叠
-      visibleBlocks.forEach((block, index) => {
-        const shouldCollapse = foldOnFilter && index > 0;
-        this.setBlockCollapsed(block, shouldCollapse);
+      // 筛选页默认全部展开，避免从文章详情点击分类/标签进入后误以为没有匹配文章。
+      visibleBlocks.forEach((block) => {
+        this.setBlockCollapsed(block, false);
       });
 
       // 填充并显示筛选头部
       this.renderFilterHeader(tags, categories, uncategorized, totalVisible, totalWords);
+      this.applyCardFilter(tags, categories, uncategorized);
+    }
+
+    applyCardFilter(tags, categories, uncategorized) {
+      const cardList = this.querySelector(".archive-card-list");
+      if (!cardList) return;
+
+      const cards = Array.from(cardList.querySelectorAll(".archive-card-entry"));
+      let visibleCount = 0;
+
+      for (const card of cards) {
+        let cardTags = [];
+        try {
+          cardTags = JSON.parse(card.dataset.tags || "[]");
+        } catch {
+          cardTags = [];
+        }
+        const cardCategory = card.dataset.category || "";
+
+        let match = true;
+        if (tags.length > 0) {
+          match = match && cardTags.some((t) => tags.includes(t));
+        }
+        if (categories.length > 0) {
+          match = match && !!cardCategory && categories.includes(cardCategory);
+        }
+        if (uncategorized) {
+          match = match && !cardCategory;
+        }
+
+        card.hidden = !match;
+        if (match) visibleCount++;
+      }
+
+      cardList.classList.toggle("hidden", visibleCount === 0);
     }
 
     setBlockCollapsed(block, collapsed) {

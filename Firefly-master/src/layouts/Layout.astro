@@ -583,16 +583,56 @@ const siteLang = lang.replace("_", "-");
     <!-- Fancybox Manager -->
     <FancyboxManager />
 
-    <script>
-      document.addEventListener("contextmenu", (event) => {
-        event.preventDefault();
-      });
+    <script is:inline define:vars={{ enableContentProtection: import.meta.env.PROD }}>
+      (() => {
+        if (!enableContentProtection) return;
 
-      document.addEventListener("dragstart", (event) => {
-        if (event.target instanceof HTMLImageElement) {
+        const isEditableTarget = (target) => {
+          if (!(target instanceof HTMLElement)) return false;
+
+          return Boolean(
+            target.closest(
+              'input, textarea, select, [contenteditable="true"], [contenteditable=""]',
+            ),
+          );
+        };
+
+        const preventContentAction = (event) => {
+          if (isEditableTarget(event.target)) return;
           event.preventDefault();
-        }
-      });
+        };
+
+        document.addEventListener("contextmenu", preventContentAction);
+        document.addEventListener("copy", preventContentAction);
+        document.addEventListener("cut", preventContentAction);
+        document.addEventListener("dragstart", preventContentAction);
+
+        document.addEventListener("keydown", (event) => {
+          if (isEditableTarget(event.target)) return;
+
+          const key = event.key.toLowerCase();
+          const commandOrCtrl = event.metaKey || event.ctrlKey;
+          const blockedCommandKeys = ["c", "s", "p", "u"];
+
+          if (commandOrCtrl && blockedCommandKeys.includes(key)) {
+            event.preventDefault();
+            return;
+          }
+
+          if (event.key === "F12") {
+            event.preventDefault();
+            return;
+          }
+
+          if (
+            commandOrCtrl &&
+            event.shiftKey &&
+            ["i", "j", "c"].includes(key)
+          ) {
+            event.preventDefault();
+          }
+        });
+      })();
     </script>
   </body>
 </html>
