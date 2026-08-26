@@ -4,8 +4,7 @@ published: 2021-01-17
 description: 从 Python 历史、基础语法、数据容器、常用库到数据分析案例，系统整理 Python 在数据分析中的入门与实战要点。
 category: 方法库
 tags:
-  - 方法沉淀
-  - Python
+  - 方法论
   - 数据分析
 draft: false
 comment: false

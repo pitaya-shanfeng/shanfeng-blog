@@ -6,7 +6,7 @@ image: /assets/library/cases/duoduo-farm-research/cover.webp
 category: 案例库
 tags:
   - 案例研究
-  - 增长玩法
+  - 增长运营
 draft: false
 comment: false
 documentPages: 14

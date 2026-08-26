@@ -6,7 +6,7 @@ image: /assets/library/cases/yunji-community-system/cover.webp
 category: 案例库
 tags:
   - 案例研究
-  - 社群运营
+  - 增长运营
 draft: false
 comment: false
 documentPages: 17

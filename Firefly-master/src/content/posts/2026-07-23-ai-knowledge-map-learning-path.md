@@ -6,7 +6,6 @@ category: 笔记
 tags:
   - AI 产品
   - 大模型
-  - 学习笔记
 draft: false
 ---
 

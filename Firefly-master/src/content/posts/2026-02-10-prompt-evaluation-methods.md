@@ -6,7 +6,6 @@ category: 笔记
 tags:
   - AI 产品
   - Prompt
-  - 质量管理
 draft: false
 ---
 

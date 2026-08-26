@@ -5,9 +5,8 @@ description: PRD 书写规范分享资料，围绕产品专业性、需求表达
 image: /assets/library/methods/prd-writing-standard/cover.webp
 category: 方法库
 tags:
-  - 方法沉淀
-  - PRD
-  - 产品文档
+  - 方法论
+  - 需求管理
 draft: false
 comment: false
 documentPages: 18

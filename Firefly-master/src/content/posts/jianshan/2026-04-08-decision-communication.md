@@ -6,7 +6,6 @@ image: /assets/library/jianshan/decision-communication/cover.webp
 category: 见山
 tags:
   - 决策沟通
-  - 组织协作
 draft: false
 ---
 

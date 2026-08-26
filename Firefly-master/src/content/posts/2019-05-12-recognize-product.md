@@ -6,7 +6,6 @@ description: 从产品概念、生命周期、产品价值、产品分类到盈�
 category: 随笔
 tags:
   - 产品认知
-  - 产品经理
 draft: false
 ---
 

@@ -5,8 +5,8 @@ description: 当方向已经确定，路线图要做的不是堆满功能排期�
 category: 见山
 image: /assets/library/jianshan/roadmap-priority/cover.webp
 tags:
-  - 产品思维
-  - 见山
+  - 产品认知
+  - 决策沟通
 draft: false
 ---
 

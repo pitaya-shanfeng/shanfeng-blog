@@ -6,7 +6,6 @@ description: 认识产品经理岗位的历史演变、职责边界、能力要�
 category: 随笔
 tags:
   - 产品认知
-  - 产品经理
 draft: false
 ---
 

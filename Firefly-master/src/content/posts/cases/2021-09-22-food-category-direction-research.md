@@ -6,7 +6,7 @@ image: /assets/library/cases/food-category-direction-research/cover.webp
 category: 案例库
 tags:
   - 案例研究
-  - 品类调研
+  - 商业分析
 draft: false
 comment: false
 documentPages: 46

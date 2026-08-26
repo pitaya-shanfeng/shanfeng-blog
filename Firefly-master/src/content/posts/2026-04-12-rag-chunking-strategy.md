@@ -6,7 +6,6 @@ category: 笔记
 tags:
   - AI 产品
   - RAG
-  - 知识库
 draft: false
 ---
 

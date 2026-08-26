@@ -5,7 +5,7 @@ description: 产品传播力调研分析资料，包含产品传播的关键要�
 image: /assets/library/methods/product-communication-power/cover.webp
 category: 方法库
 tags:
-  - 产品传播
+  - 内容生态
   - 案例研究
 draft: false
 comment: false

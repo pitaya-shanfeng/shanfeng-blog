@@ -6,7 +6,7 @@ image: /assets/library/methods/seeding-power-research/cover.webp
 category: 方法库
 tags:
   - 方法论
-  - 内容种草
+  - 内容生态
 draft: false
 comment: false
 documentPages: 100

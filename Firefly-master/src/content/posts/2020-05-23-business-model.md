@@ -5,7 +5,7 @@ image: /assets/library/essays/business-model/cover.webp
 description: 从商业模式画布、常见商业模式类型到设计方法与流程，梳理商业模式分析与设计的核心框架。
 category: 随笔
 tags:
-  - 商业模式
+  - 商业分析
   - 产品认知
 draft: false
 ---

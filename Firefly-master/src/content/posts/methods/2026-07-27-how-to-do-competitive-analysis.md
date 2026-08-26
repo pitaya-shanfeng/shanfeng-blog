@@ -5,7 +5,6 @@ description: 竞品分析方法资料，涵盖分析目标、竞品选择、研�
 image: /assets/library/methods/how-to-do-competitive-analysis/cover.webp
 category: 方法库
 tags:
-  - 竞品分析
   - 商业分析
 draft: false
 comment: false

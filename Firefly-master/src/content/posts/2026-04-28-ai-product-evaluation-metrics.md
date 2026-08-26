@@ -6,7 +6,7 @@ category: 笔记
 tags:
   - AI 产品
   - 大模型
-  - 指标体系
+  - 数据分析
 draft: false
 ---
 

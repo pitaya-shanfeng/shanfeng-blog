@@ -5,7 +5,7 @@ description: 用户运营体系建设规划，围绕用户分层、生命周期�
 category: 案例库
 tags:
   - 案例研究
-  - 用户运营
+  - 增长运营
 draft: false
 ---
 

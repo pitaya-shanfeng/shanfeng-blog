@@ -7,7 +7,6 @@ category: 案例库
 tags:
   - 案例研究
   - 增长运营
-  - 社交电商
 draft: false
 documentPages: 12
 ---

@@ -5,8 +5,8 @@ description: 场景构建方法资料，涵盖场的定位、角色需求、行�
 image: /assets/library/methods/how-to-build-a-powerful-scene/cover.webp
 category: 方法库
 tags:
-  - 场景设计
   - 用户研究
+  - 方法论
 draft: false
 comment: false
 documentPages: 62

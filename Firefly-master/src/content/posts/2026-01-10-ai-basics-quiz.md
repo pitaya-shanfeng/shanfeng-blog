@@ -5,7 +5,7 @@ description: 复盘 AI、Token、Transformer、幻觉、Embedding 与多模态�
 category: 笔记
 tags:
   - AI 产品
-  - 学习复盘
+  - 大模型
 draft: false
 ---
 

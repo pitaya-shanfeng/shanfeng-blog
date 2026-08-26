@@ -5,7 +5,6 @@ description: 用产品经理视角理解 Embedding、向量检索与 RAG 链路�
 category: 笔记
 tags:
   - AI 产品
-  - 语义检索
   - RAG
 draft: false
 ---

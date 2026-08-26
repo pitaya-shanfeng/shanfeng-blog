@@ -5,8 +5,8 @@ description: 从用户任务与任务成本出发，理解体验设计的本质�
 image: /assets/library/jianshan/experience-design/cover.webp
 category: 见山
 tags:
-  - 体验设计
   - 用户研究
+  - 产品认知
 draft: false
 ---
 

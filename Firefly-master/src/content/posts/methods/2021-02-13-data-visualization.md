@@ -4,9 +4,8 @@ published: 2021-02-13
 description: 数据可视化方法整理，涵盖可视化工具、常见图形、Excel 与 Tableau 案例，以及复杂图形应用。
 category: 方法库
 tags:
-  - 方法沉淀
+  - 方法论
   - 数据分析
-  - 数据可视化
 draft: false
 comment: false
 ---
