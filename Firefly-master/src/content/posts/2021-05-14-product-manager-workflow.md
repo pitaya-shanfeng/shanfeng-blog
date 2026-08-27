@@ -2,7 +2,7 @@
 title: 产品经理工作流
 published: 2021-05-14
 description: 一张从市场调研、需求分析到上线复盘的产品经理工作流程图。
-category: 随笔
+category: 方法库
 tags:
   - 产品认知
   - 需求管理

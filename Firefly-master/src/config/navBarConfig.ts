@@ -14,7 +14,6 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		LinkPresets.Home,
 		LinkPresets.JianShan,
 		LinkPresets.Notes,
-		LinkPresets.Essays,
 		LinkPresets.Methods,
 		LinkPresets.Cases,
 		LinkPresets.About,
@@ -47,11 +46,6 @@ export const LinkPresets: Record<string, NavBarLink> = {
 		name: "笔记",
 		url: "/notes/",
 		icon: "material-symbols:edit-note",
-	},
-	Essays: {
-		name: "随笔",
-		url: "/essays/",
-		icon: "material-symbols:stylus-note",
 	},
 	Methods: {
 		name: "方法库",

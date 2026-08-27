@@ -3,7 +3,7 @@ title: 认识产品
 published: 2019-05-12
 image: /assets/library/essays/recognize-product/cover.webp
 description: 从产品概念、生命周期、产品价值、产品分类到盈利方式，系统认识产品。
-category: 随笔
+category: 方法库
 tags:
   - 产品认知
 draft: false

@@ -3,7 +3,7 @@ title: 认识需求
 published: 2019-06-02
 image: /assets/library/essays/recognize-demand/cover.webp
 description: 从需求概念、需求辨别、需求分类到需求来源，系统认识产品工作中的需求。
-category: 随笔
+category: 方法库
 tags:
   - 产品认知
   - 需求管理

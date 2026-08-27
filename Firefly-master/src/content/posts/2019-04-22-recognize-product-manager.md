@@ -3,7 +3,7 @@ title: 认识产品经理
 published: 2019-04-22
 image: /assets/library/essays/recognize-product-manager/cover.webp
 description: 认识产品经理岗位的历史演变、职责边界、能力要求与成长路径。
-category: 随笔
+category: 方法库
 tags:
   - 产品认知
 draft: false
