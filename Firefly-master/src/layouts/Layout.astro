@@ -597,8 +597,26 @@ const siteLang = lang.replace("_", "-");
           );
         };
 
+        const isProtectedTarget = (target) => {
+          if (!(target instanceof HTMLElement)) return false;
+
+          if (
+            target.closest(
+              'button, a, input, textarea, select, summary, [role="button"], [contenteditable="true"], [contenteditable=""]',
+            )
+          ) {
+            return false;
+          }
+
+          return Boolean(
+            target.closest(
+              ".markdown-content, .custom-md, .document-page-stream",
+            ),
+          );
+        };
+
         const preventContentAction = (event) => {
-          if (isEditableTarget(event.target)) return;
+          if (!isProtectedTarget(event.target)) return;
           event.preventDefault();
         };
 
@@ -609,6 +627,7 @@ const siteLang = lang.replace("_", "-");
 
         document.addEventListener("keydown", (event) => {
           if (isEditableTarget(event.target)) return;
+          if (!isProtectedTarget(document.activeElement || event.target)) return;
 
           const key = event.key.toLowerCase();
           const commandOrCtrl = event.metaKey || event.ctrlKey;
