@@ -3,6 +3,9 @@ title: 增长黑客之“法”——增长问题如何拆解
 published: 2021-04-07
 description: 从用户增长链路、AARRR/RARRA、核心转化路径与增长模型拆解增长问题。
 category: 方法库
+series: 增长黑客
+seriesOrder: 8
+seriesGroup: 增长黑客之“法”
 tags:
   - 增长运营
   - 产品方法

@@ -1,5 +1,5 @@
 ---
-title: 【论文】自我一致性
+title: 自我一致性
 published: 2026-02-17
 description: 提炼 Self-Consistency 自我一致性方法的核心问题、采样投票机制、实验结果与适用边界，并附原论文在线预览。
 category: 笔记

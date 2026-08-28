@@ -3,6 +3,9 @@ title: 增长黑客之“道”——增长的前提
 published: 2021-03-19
 description: 讨论增长之前需要确认的前提：用户价值、PMF、商业模式和承接能力是否值得被放大。
 category: 方法库
+series: 增长黑客
+seriesOrder: 4
+seriesGroup: 增长黑客之“道”
 tags:
   - 增长运营
   - 产品认知

@@ -3,6 +3,9 @@ title: 增长黑客之“法”——增长发力点如何找到
 published: 2021-04-11
 description: 从整体数据、用户分群、漏斗留存与路径分析中找到增长发力点。
 category: 方法库
+series: 增长黑客
+seriesOrder: 9
+seriesGroup: 增长黑客之“法”
 tags:
   - 增长运营
   - 产品方法

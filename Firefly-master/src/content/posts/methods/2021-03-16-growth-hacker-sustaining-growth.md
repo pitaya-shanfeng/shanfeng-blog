@@ -3,6 +3,9 @@ title: 增长黑客之“道”——增长如何持续
 published: 2021-03-16
 description: 讨论增长如何从一次性结果变成可持续过程，重点在于积累、飞轮与增长边界。
 category: 方法库
+series: 增长黑客
+seriesOrder: 3
+seriesGroup: 增长黑客之“道”
 tags:
   - 增长运营
   - 产品认知

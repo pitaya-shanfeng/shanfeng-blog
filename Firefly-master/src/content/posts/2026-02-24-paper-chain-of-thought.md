@@ -1,5 +1,5 @@
 ---
-title: 【论文】CoT思维链
+title: CoT思维链
 published: 2026-02-24
 description: 提炼 Chain-of-Thought 思维链提示的核心问题、方法机制、实验结果与适用边界，并附原论文在线预览。
 category: 笔记

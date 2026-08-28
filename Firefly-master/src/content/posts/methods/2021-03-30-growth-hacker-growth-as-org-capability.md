@@ -3,6 +3,9 @@ title: 增长黑客之“道”——增长如何成为组织能力
 published: 2021-03-30
 description: 讨论增长如何从个人能力沉淀为组织能力，以及跨职能协作、文化与边界。
 category: 方法库
+series: 增长黑客
+seriesOrder: 6
+seriesGroup: 增长黑客之“道”
 tags:
   - 增长运营
   - 产品认知

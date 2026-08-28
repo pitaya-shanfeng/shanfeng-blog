@@ -4,6 +4,8 @@ import PostCard from "@/components/layout/PostCard.astro";
 import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import { getSortedPosts } from "@/utils/content-utils";
+import { getCategoryDisplayName } from "@/utils/category-display";
+import { getSeriesUrl } from "@/config/seriesConfig";
 import { getPostUrlBySlug, url } from "@/utils/url-utils";
 import { countMarkdownWords } from "@/utils/word-count";
 
@@ -55,7 +57,8 @@ function formatDate(date: Date) {
 }
 
 function formatTag(tagList: string[]) {
-	return tagList.map((t) => `#${t}`).join(" ");
+	const primaryTag = tagList[0];
+	return primaryTag ? `#${primaryTag}` : "";
 }
 
 // 传给客户端脚本的 i18n 文案与配置
@@ -68,6 +71,7 @@ const i18nStrings = {
 };
 const tagsBaseUrl = url("/tags/");
 const categoriesBaseUrl = url("/categories/");
+const hideCategoryBadgeInTimeline = !!initialCategory;
 const foldOnFilter = collapseAllButFirst;
 ---
 
@@ -135,6 +139,7 @@ const foldOnFilter = collapseAllButFirst;
               class="archive-post group btn-plain block! h-10 w-full rounded-lg hover:text-[initial]"
               data-tags={JSON.stringify(post.data.tags || [])}
               data-category={post.data.category || ""}
+              data-series={post.data.series || ""}
               data-words={countMarkdownWords(post.body)}
             >
               <div class="flex flex-row justify-start items-center h-full">
@@ -156,15 +161,28 @@ const foldOnFilter = collapseAllButFirst;
                 <div class="w-[70%] md:max-w-[65%] md:w-[65%] text-left font-bold
                             group-hover:translate-x-1 transition-all group-hover:text-(--primary)
                             text-75 pr-8 whitespace-nowrap text-ellipsis overflow-hidden flex items-center gap-2">
-                  {post.data.category && (
+                  {post.data.category && !hideCategoryBadgeInTimeline && (
                     <span class="shrink-0 inline-block text-xs font-medium px-1.5 py-0.5 rounded-sm
+                                 archive-category-badge
                                  bg-[oklch(0.95_0.025_var(--hue))] dark:bg-[oklch(0.25_0.025_var(--hue))]
                                  text-(--primary) group-hover:bg-(--primary) group-hover:text-white!
                                  transition-colors">
-                      {post.data.category}
+                      {getCategoryDisplayName(post.data.category)}
                     </span>
                   )}
                   <span class="truncate">{post.data.title}</span>
+                  {post.data.series && (
+                    <span
+                      data-series-url={getSeriesUrl(post.data.series)}
+                      class="shrink-0 inline-block text-xs font-medium px-1.5 py-0.5 rounded-sm
+                             bg-[oklch(0.95_0.025_var(--hue))] dark:bg-[oklch(0.25_0.025_var(--hue))]
+                             text-(--primary) group-hover:bg-(--primary) group-hover:text-white!
+                             transition-colors cursor-pointer"
+                      title={`合集：${post.data.series}`}
+                    >
+                      {post.data.series}
+                    </span>
+                  )}
                 </div>
 
                 {/* tag list */}
@@ -188,12 +206,15 @@ const foldOnFilter = collapseAllButFirst;
           class="archive-card-entry"
           data-tags={JSON.stringify(post.data.tags || [])}
           data-category={post.data.category || ""}
+          data-series={post.data.series || ""}
         >
           <PostCard
             entry={post}
             title={post.data.title}
             tags={post.data.tags}
             category={post.data.category}
+            series={post.data.series}
+            seriesGroup={post.data.seriesGroup}
             published={post.data.published}
             updated={post.data.updated}
             url={getPostUrlBySlug(post.id)}
@@ -239,7 +260,10 @@ const foldOnFilter = collapseAllButFirst;
   }
 </style>
 
-<script is:inline define:vars={{ i18nStrings, tagsBaseUrl, categoriesBaseUrl }}>
+<script
+  is:inline
+  define:vars={{ i18nStrings, tagsBaseUrl, categoriesBaseUrl, categoryDisplayMap: { "见山": "写作" } }}
+>
   class ArchivePanel extends HTMLElement {
     constructor() {
       super();
@@ -261,6 +285,7 @@ const foldOnFilter = collapseAllButFirst;
       const uncategorized = params.get("uncategorized");
 
       const hasFilter = tags.length > 0 || categories.length > 0 || !!uncategorized;
+      this.toggleCategoryBadges(categories.length > 0);
 
       if (hasFilter) {
         this.applyFilter(tags, categories, !!uncategorized);
@@ -268,10 +293,13 @@ const foldOnFilter = collapseAllButFirst;
       }
 
       this.bindYearToggles();
+      this.bindSeriesLinks();
     }
 
     // 按筛选条件隐藏不匹配的文章行，重算每年计数，隐藏空年份，重新折叠
     applyFilter(tags, categories, uncategorized) {
+      this.toggleCategoryBadges(categories.length > 0);
+      const isTagDetailPage = tags.length > 0;
       const blocks = Array.from(this.querySelectorAll(".archive-year-block"));
       let totalVisible = 0;
       let totalWords = 0;
@@ -317,8 +345,8 @@ const foldOnFilter = collapseAllButFirst;
             visibleCount === 1 ? i18nStrings.postCount : i18nStrings.postsCount;
         }
 
-        // 隐藏没有可见文章的年份块
-        block.hidden = visibleCount === 0;
+        // 标签详情页使用卡片列表，不再展示时间轴；分类详情页仍保留时间轴。
+        block.hidden = isTagDetailPage || visibleCount === 0;
         if (visibleCount > 0) {
           visibleBlocks.push(block);
           totalVisible += visibleCount;
@@ -408,7 +436,12 @@ const foldOnFilter = collapseAllButFirst;
 
       const fmtValues = (f) => {
         const prefix = f.isTag ? "#" : "";
-        return f.values.map((v) => `${prefix}${v}`).join(" / ");
+        return f.values
+          .map((v) => {
+            const display = f.isTag ? v : (categoryDisplayMap[v] || v);
+            return `${prefix}${display}`;
+          })
+          .join(" / ");
       };
 
       if (linkEl) {
@@ -536,6 +569,26 @@ const foldOnFilter = collapseAllButFirst;
             });
           }
         });
+      }
+    }
+
+    bindSeriesLinks() {
+      const badges = Array.from(this.querySelectorAll("[data-series-url]"));
+      for (const badge of badges) {
+        badge.addEventListener("click", (event) => {
+          const seriesUrl = badge.getAttribute("data-series-url");
+          if (!seriesUrl) return;
+          event.preventDefault();
+          event.stopPropagation();
+          window.location.href = seriesUrl;
+        });
+      }
+    }
+
+    toggleCategoryBadges(shouldHide) {
+      const badges = Array.from(this.querySelectorAll(".archive-category-badge"));
+      for (const badge of badges) {
+        badge.hidden = shouldHide;
       }
     }
   }

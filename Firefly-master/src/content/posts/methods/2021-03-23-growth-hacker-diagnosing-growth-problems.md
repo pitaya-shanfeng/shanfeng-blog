@@ -3,6 +3,9 @@ title: 增长黑客之“道”——如何判断增长问题
 published: 2021-03-23
 description: 从现象、变量、杠杆和假设验证四个层次判断增长问题。
 category: 方法库
+series: 增长黑客
+seriesOrder: 5
+seriesGroup: 增长黑客之“道”
 tags:
   - 增长运营
   - 产品认知

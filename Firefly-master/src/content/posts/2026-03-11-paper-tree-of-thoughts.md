@@ -1,5 +1,5 @@
 ---
-title: 【论文】TOT思维树
+title: TOT思维树
 published: 2026-03-11
 description: 提炼 Tree of Thoughts 思维树的搜索机制、实验结果与适用边界，并附原论文在线预览。
 category: 笔记

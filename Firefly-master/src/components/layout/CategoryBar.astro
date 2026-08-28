@@ -2,6 +2,7 @@
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import { Icon } from "astro-icon/components";
+import { getCategoryDisplayName } from "@/utils/category-display";
 import { getCategoryList, getSortedPostsList } from "@/utils/content-utils";
 import { url } from "@/utils/url-utils";
 
@@ -74,7 +75,7 @@ function initialActive(categoryName: string): {
               data-active={active.active ? "" : undefined}
               data-soft-active={active.soft ? "" : undefined}
             >
-              {cat.name}
+              {getCategoryDisplayName(cat.name)}
               <span class="pill-count">{cat.count}</span>
             </a>
             );

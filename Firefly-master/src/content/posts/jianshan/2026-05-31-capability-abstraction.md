@@ -4,6 +4,8 @@ published: 2026-05-31
 description: 能力抽象不是把相似功能合在一起，而是在重复业务动作里判断哪些已经足够稳定，值得沉淀成长期维护的公共能力。
 category: 见山
 image: /assets/library/jianshan/capability-abstraction/cover.webp
+series: 见山
+seriesOrder: 13
 tags:
   - 产品认知
   - 系统设计

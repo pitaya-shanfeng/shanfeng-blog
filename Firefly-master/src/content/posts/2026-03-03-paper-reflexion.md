@@ -1,5 +1,5 @@
 ---
-title: 【论文】反思机制
+title: 反思机制
 published: 2026-03-03
 description: 提炼 Reflexion 言语强化学习的核心方法、实验结果与适用边界，并附原论文在线预览。
 category: 笔记

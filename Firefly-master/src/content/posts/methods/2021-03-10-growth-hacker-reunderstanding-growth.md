@@ -3,6 +3,9 @@ title: 增长黑客之“道”——重新理解增长
 published: 2021-03-10
 description: 重新理解增长的本质，区分增长手段、指标结果与产品价值传播之间的关系。
 category: 方法库
+series: 增长黑客
+seriesOrder: 1
+seriesGroup: 增长黑客之“道”
 tags:
   - 增长运营
   - 产品认知

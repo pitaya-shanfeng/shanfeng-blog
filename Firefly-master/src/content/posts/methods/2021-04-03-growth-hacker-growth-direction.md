@@ -3,6 +3,9 @@ title: 增长黑客之“法”——增长方向如何确定
 published: 2021-04-03
 description: 从 PMF、阶段重点、长期价值指标与阶段目标出发，确定增长工作的方向边界。
 category: 方法库
+series: 增长黑客
+seriesOrder: 7
+seriesGroup: 增长黑客之“法”
 tags:
   - 增长运营
   - 产品方法

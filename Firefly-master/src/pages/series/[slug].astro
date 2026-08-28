@@ -1,0 +1,128 @@
+---
+import { getCollection } from "astro:content";
+import { Icon } from "astro-icon/components";
+import PostCard from "@/components/layout/PostCard.astro";
+import { getSeriesBySlug, seriesConfig } from "@/config/seriesConfig";
+import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import { sortPostsBySeriesOrder } from "@/utils/series-utils";
+import { getPostUrlBySlug, url } from "@/utils/url-utils";
+
+export async function getStaticPaths() {
+	return seriesConfig.map((series) => ({
+		params: { slug: series.slug },
+		props: { series },
+	}));
+}
+
+const { slug } = Astro.params;
+const series = getSeriesBySlug(slug || "");
+
+if (!series) {
+	return Astro.redirect(url("/series/"));
+}
+
+const allPosts = await getCollection("posts", ({ data }) => {
+	return import.meta.env.PROD ? data.draft !== true : true;
+});
+
+const posts = sortPostsBySeriesOrder(
+	allPosts.filter((post) => post.data.series === series.name),
+);
+
+const groupedPosts = (series.groups || []).map((group) => ({
+	group,
+	posts: posts.filter((post) => post.data.seriesGroup === group),
+}));
+
+const ungroupedPosts = posts.filter(
+	(post) => !post.data.seriesGroup || !(series.groups || []).includes(post.data.seriesGroup),
+);
+---
+
+<MainGridLayout title={`${series.name}合集`} description={series.description}>
+	<div class="card-base px-8 py-7 mb-4">
+		<a href={url("/series/")} class="inline-flex items-center text-sm text-50 hover:text-(--primary) transition-colors mb-4">
+			<Icon is:inline name="material-symbols:arrow-back-rounded" class="text-xl mr-1" />
+			全部合集
+		</a>
+		<div class="flex items-start gap-4">
+			<div class="shrink-0 w-14 h-14 rounded-full bg-(--primary)/10 flex items-center justify-center">
+				<Icon is:inline name="material-symbols:library-books-outline-rounded" class="text-3xl text-(--primary)" />
+			</div>
+			<div>
+				<h1 class="text-3xl font-bold text-90 mb-3">{series.name}</h1>
+				<p class="text-50 leading-7">{series.description}</p>
+				<p class="text-sm text-30 mt-3">{posts.length} 篇文章</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="space-y-6 mb-4">
+		{
+			groupedPosts.map(({ group, posts: groupPosts }) =>
+				groupPosts.length > 0 && (
+					<section>
+						<div class="flex items-center gap-3 mb-3 px-1">
+							<div class="h-5 w-1 rounded-full bg-(--primary)" />
+							<h2 class="text-xl font-bold text-90">{group}</h2>
+							<span class="text-sm text-30">{groupPosts.length} 篇</span>
+						</div>
+						<div class="flex flex-col gap-4">
+							{groupPosts.map((entry, index) => (
+								<PostCard
+									entry={entry}
+									title={entry.data.title}
+									tags={entry.data.tags}
+									category={entry.data.category}
+									series={entry.data.series}
+									seriesGroup={entry.data.seriesGroup}
+									published={entry.data.published}
+									updated={entry.data.updated}
+									url={getPostUrlBySlug(entry.id)}
+									image={entry.data.image}
+									description={entry.data.description}
+									draft={entry.data.draft}
+									pinned={entry.data.pinned}
+									password={!!entry.data.password}
+									loading={index < 2 ? "eager" : "lazy"}
+									class:list="onload-animation post-card-item"
+									style={`animation-delay: calc(var(--content-delay) + ${index * 50}ms);`}
+								/>
+							))}
+						</div>
+					</section>
+				)
+			)
+		}
+
+		{
+			ungroupedPosts.length > 0 && (
+				<section>
+					<div class="flex flex-col gap-4">
+						{ungroupedPosts.map((entry, index) => (
+							<PostCard
+								entry={entry}
+								title={entry.data.title}
+								tags={entry.data.tags}
+								category={entry.data.category}
+								series={entry.data.series}
+								seriesGroup={entry.data.seriesGroup}
+								published={entry.data.published}
+								updated={entry.data.updated}
+								url={getPostUrlBySlug(entry.id)}
+								image={entry.data.image}
+								description={entry.data.description}
+								draft={entry.data.draft}
+								pinned={entry.data.pinned}
+								password={!!entry.data.password}
+								loading="lazy"
+								class:list="onload-animation post-card-item"
+								style={`animation-delay: calc(var(--content-delay) + ${index * 50}ms);`}
+							/>
+						))}
+					</div>
+				</section>
+			)
+		}
+	</div>
+</MainGridLayout>

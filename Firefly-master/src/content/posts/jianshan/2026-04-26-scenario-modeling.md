@@ -4,6 +4,8 @@ published: 2026-05-13
 description: 场景建模不是先画架构图，而是回到业务现场，看见角色、动作、交接物、异常变化与稳定对象。
 category: 见山
 image: /assets/library/jianshan/scenario-modeling/cover.webp
+series: 见山
+seriesOrder: 12
 tags:
   - 产品认知
   - 系统设计

@@ -715,4 +715,3 @@ SQL = "select * from staff" 
 res = get_mysql_data(DB,SQL) 
 display(res)
 ```
-

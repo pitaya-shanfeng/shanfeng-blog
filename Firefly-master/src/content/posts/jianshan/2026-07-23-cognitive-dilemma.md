@@ -4,6 +4,8 @@ published: 2025-10-21
 description: 从执行惯性、经验负债与组织惯性出发，重新审视产品经理最核心的能力：在有限资源下判断什么问题值得解决。
 image: /assets/library/jianshan/cognitive-dilemma/cover.webp
 category: 见山
+series: 见山
+seriesOrder: 1
 tags:
   - 产品认知
 draft: false

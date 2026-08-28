@@ -4,12 +4,16 @@ import { commentConfig } from "@/config";
 import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import { formatDateToYYYYMMDD } from "@/utils/date-utils";
+import { getCategoryDisplayName } from "@/utils/category-display";
+import { getSeriesUrl } from "@/config/seriesConfig";
 import { getCategoryUrl, getTagUrl } from "@/utils/url-utils";
 
 export interface Props {
 	published: Date;
 	updated?: Date;
 	category?: string;
+	series?: string;
+	seriesGroup?: string;
 	tags?: string[];
 	hideUpdateDate?: boolean;
 	hideTagsForMobile?: boolean;
@@ -35,6 +39,8 @@ const {
 	published,
 	updated,
 	category,
+	series,
+	seriesGroup,
 	tags,
 	hideUpdateDate,
 	hideTagsForMobile,
@@ -58,6 +64,7 @@ const {
 const path = customPath || (id ? `/posts/${id}` : "");
 const visibleTags =
 	typeof maxTags === "number" ? tags?.slice(0, maxTags) : tags;
+const categoryDisplayName = getCategoryDisplayName(category);
 ---
 
 <div
@@ -121,11 +128,32 @@ const visibleTags =
         <div class="flex flex-row flex-nowrap items-center">
           <a
             href={getCategoryUrl(category || "")}
-            aria-label={`View all posts in the ${category} category`}
+            aria-label={`View all posts in the ${categoryDisplayName} category`}
             class="link-lg transition text-50 text-sm font-medium
               hover:text-(--primary) dark:hover:text-(--primary) whitespace-nowrap"
           >
-            {category || i18n(I18nKey.uncategorized)}
+            {categoryDisplayName || i18n(I18nKey.uncategorized)}
+          </a>
+        </div>
+      </div>
+    )
+  }
+
+  {
+    series && (
+      <div class="flex items-center">
+        <div class="meta-icon">
+          <Icon is:inline name="material-symbols:library-books-outline-rounded" class="text-xl" />
+        </div>
+        <div class="flex flex-row flex-nowrap items-center">
+          <a
+            href={getSeriesUrl(series)}
+            aria-label={`View all posts in the ${series} series`}
+            class="link-lg transition text-50 text-sm font-medium
+              hover:text-(--primary) dark:hover:text-(--primary) whitespace-nowrap"
+            title={seriesGroup ? `${series} / ${seriesGroup}` : series}
+          >
+            {series}
           </a>
         </div>
       </div>

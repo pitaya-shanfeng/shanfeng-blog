@@ -4,6 +4,8 @@ published: 2026-04-22
 description: 当方向已经确定，路线图要做的不是堆满功能排期，而是把选择转化为持续行动、资源取舍与阶段验证。
 category: 见山
 image: /assets/library/jianshan/roadmap-priority/cover.webp
+series: 见山
+seriesOrder: 11
 tags:
   - 产品认知
   - 决策沟通

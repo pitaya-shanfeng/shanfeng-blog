@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import { Icon } from "astro-icon/components";
 import WidgetLayout from "@/components/common/WidgetLayout.astro";
 import { siteConfig } from "@/config";
+import { seriesConfig } from "@/config/seriesConfig";
 import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import type { WidgetComponentConfig } from "@/types/config";
@@ -65,6 +66,7 @@ const stats = [
 		icon: "material-symbols:article-outline",
 		label: i18n(I18nKey.siteStatsPostCount),
 		value: posts.length,
+		href: "/",
 	},
 	...(siteConfig.pages.dynamic
 		? [
@@ -79,11 +81,19 @@ const stats = [
 		icon: "material-symbols:folder-outline",
 		label: i18n(I18nKey.siteStatsCategoryCount),
 		value: categories.length,
+		href: "/categories/",
 	},
 	{
 		icon: "material-symbols:label-outline",
 		label: i18n(I18nKey.siteStatsTagCount),
 		value: tags.length,
+		href: "/tags/",
+	},
+	{
+		icon: "material-symbols:library-books-outline-rounded",
+		label: "合集",
+		value: seriesConfig.length,
+		href: "/series/",
 	},
 	{
 		icon: "material-symbols:text-ad-outline-rounded",
@@ -112,8 +122,13 @@ const stats = [
 
 <WidgetLayout name={i18n(I18nKey.siteStats)} showTitle={showTitle} id="site-stats" class={className} style={style}>
   <div class="flex flex-col gap-2">
-    {stats.map((stat) => (
-      <div class="flex items-center justify-between px-3 py-1.5">
+    {stats.map((stat) => {
+      const ContentTag = stat.href ? "a" : "div";
+      return (
+      <ContentTag href={stat.href} class:list={[
+        "flex items-center justify-between px-3 py-1.5 rounded-lg transition-colors",
+        stat.href && "hover:bg-(--btn-plain-bg-hover) active:bg-(--btn-plain-bg-active)"
+      ]}>
         <div class="flex items-center gap-2.5">
           <div class="text-(--primary) text-xl">
             <Icon is:inline name={stat.icon} />
@@ -135,8 +150,8 @@ const stats = [
             </span>
           )}
         </div>
-      </div>
-    ))}
+      </ContentTag>
+    )})}
   </div>
 </WidgetLayout>
 

@@ -3,6 +3,9 @@ title: 增长黑客之“道”——用户为什么行动
 published: 2021-03-12
 description: 从动力、阻力和决策机制理解用户为什么会行动，以及增长为什么本质上是在改变行为条件。
 category: 方法库
+series: 增长黑客
+seriesOrder: 2
+seriesGroup: 增长黑客之“道”
 tags:
   - 增长运营
   - 用户研究

@@ -4,6 +4,8 @@ published: 2026-04-04
 description: 决策沟通不是把观点讲得更完整，而是把判断整理为组织可以比较、投入、暂停与验证的选择材料。
 image: /assets/library/jianshan/decision-communication/cover.webp
 category: 见山
+series: 见山
+seriesOrder: 10
 tags:
   - 决策沟通
 draft: false

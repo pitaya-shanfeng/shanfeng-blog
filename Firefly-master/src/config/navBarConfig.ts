@@ -38,7 +38,7 @@ export const LinkPresets: Record<string, NavBarLink> = {
 		icon: "material-symbols:home",
 	},
 	JianShan: {
-		name: "见山",
+		name: "写作",
 		url: "/jianshan/",
 		icon: "material-symbols:menu-book",
 	},

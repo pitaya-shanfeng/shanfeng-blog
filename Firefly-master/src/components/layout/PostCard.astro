@@ -18,6 +18,8 @@ interface Props {
 	updated?: Date;
 	tags: string[];
 	category: string | null;
+	series?: string;
+	seriesGroup?: string;
 	image: string;
 	description: string;
 	draft: boolean;
@@ -33,6 +35,8 @@ const {
 	published,
 	tags,
 	category,
+	series,
+	seriesGroup,
 	image,
 	description,
 	pinned,
@@ -142,6 +146,8 @@ const documentPages = entry.data.documentPages;
       showNoTags={true}
       hideUpdateDate={true}
       category={category || undefined}
+      series={series}
+      seriesGroup={seriesGroup}
       pinned={pinned}
       password={password}
       words={words}

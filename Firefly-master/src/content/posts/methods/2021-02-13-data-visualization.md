@@ -778,4 +778,3 @@ Tableau Desktop中主要有三种可视化产物，分别为工作表、仪表�
 
 <p class="image-caption" align="center">各省销量分布（组合图：柱状图+气泡图）</p>
 
-

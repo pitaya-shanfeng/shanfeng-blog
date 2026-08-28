@@ -4,6 +4,8 @@ published: 2025-11-07
 description: 从用户任务、产品定位与资源代价出发，建立判断产品是否值得存在的底层框架，并学会为不做承担后果。
 image: /assets/library/jianshan/product-view/cover.webp
 category: 见山
+series: 见山
+seriesOrder: 2
 tags:
   - 产品认知
 draft: false

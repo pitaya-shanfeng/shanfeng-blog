@@ -4,6 +4,8 @@ published: 2026-02-05
 description: 从用户任务与任务成本出发，理解体验设计的本质：不是美化页面，而是把复杂放在更合适的位置。
 image: /assets/library/jianshan/experience-design/cover.webp
 category: 见山
+series: 见山
+seriesOrder: 7
 tags:
   - 用户研究
   - 产品认知
