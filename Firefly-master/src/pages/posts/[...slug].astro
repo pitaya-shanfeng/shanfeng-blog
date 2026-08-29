@@ -23,7 +23,6 @@ import SharePoster from "@/components/misc/SharePoster.astro";
 import { coverImageConfig } from "@/config/coverImageConfig";
 import { licenseConfig } from "@/config/licenseConfig";
 import { profileConfig } from "@/config/profileConfig";
-import { getSeriesUrl } from "@/config/seriesConfig";
 import { siteConfig } from "@/config/siteConfig";
 import { sponsorConfig } from "@/config/sponsorConfig";
 import { formatDateToYYYYMMDD } from "@/utils/date-utils";
@@ -307,20 +306,10 @@ const recommendationBadge = entry.data.series || entry.data.tags?.[0] || "";
           hideUpdateDate={true}
           tags={entry.data.tags}
           category={entry.data.category || undefined}
+          series={entry.data.series || undefined}
+          seriesGroup={entry.data.seriesGroup || undefined}
           id={entry.id}
         />
-        {
-          entry.data.series && (
-            <a
-              href={getSeriesUrl(entry.data.series)}
-              class="inline-flex items-center gap-2 mb-5 rounded-full px-3 py-1.5 text-sm font-medium bg-(--primary)/10 text-(--primary) hover:bg-(--primary)/15 transition-colors"
-            >
-              <Icon is:inline name="material-symbols:library-books-outline-rounded" class="text-lg" />
-              <span>合集：{entry.data.series}</span>
-              {entry.data.seriesGroup && <span class="text-(--primary)/60">/ {entry.data.seriesGroup}</span>}
-            </a>
-          )
-        }
         {
           !processedImage && (
             <div class="border-(--line-divider) border-dashed border-b mt-3 mb-5" />

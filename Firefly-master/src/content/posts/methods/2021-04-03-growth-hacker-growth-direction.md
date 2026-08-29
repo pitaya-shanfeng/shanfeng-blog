@@ -1,15 +1,14 @@
 ---
 title: 增长黑客之“法”——增长方向如何确定
 published: 2021-04-03
-description: 从 PMF、阶段重点、长期价值指标与阶段目标出发，确定增长工作的方向边界。
+description: 增长工作开始之前，团队往往已经有很多目标：收入、GMV、新增、活跃、留存、复购、利润率，各自都重要，却不意味着它们在当前阶段拥有同样的优先级。方向没有收敛时，最常见的结果不是没有事情可做，而是每个团队都能从自己的指标出发
 category: 方法库
 series: 增长黑客
 seriesOrder: 7
 seriesGroup: 增长黑客之“法”
 tags:
-  - 增长运营
+  - 增长
   - 产品方法
-  - 商业分析
 draft: false
 ---
 
@@ -19,7 +18,7 @@ draft: false
 
 
 
-确定增长方向，需要把几个层次依次理清：**产品与市场的匹配是否已经形成足够稳定的证据，当前阶段更值得关注哪一类增长问题，用什么指标代表长期价值方向，以及这一次增长工作最终要承担什么具体结果。**前面的判断越清楚，后面的变量拆解、策略设计和实验验证才越有明确的边界。
+确定增长方向，需要把几个层次依次理清：**产品与市场的匹配是否已经形成足够稳定的证据，当前阶段更值得关注哪一类增长问题，用什么指标代表长期价值方向，以及这一次增长工作最终要承担什么具体结果。**这些判断越清楚，后续分析和决策的边界就越明确。
 
 
 
@@ -31,17 +30,17 @@ PMF 的完整判断不能依赖某一个指标，更适合看成一轮持续收�
 
 1. **确认问题和目标用户**：访谈时需要弄清楚用户面对的具体场景、问题发生的频率和严重程度、现有替代方案，以及用户已经为解决这个问题付出了什么成本。需要注意的是确认问题≠确认功能，相比直接询问“你需不需要这个功能”，这些问题更容易区分真实需求和礼貌性的兴趣。如果用户几乎没有为这个问题采取过行动，或者现有方案已经足够满足需求，那么即使对新方案表达积极态度，也不足以支持进一步放大。
 
-2. **用最小可行方案进入真实场景**：这里的 MVP 只承担一个任务——用尽可能低的成本，让用户做出真实选择。它不需要完整，但必须能够让关键假设接受验证。用户是否愿意开始使用，能否完成核心行为，在什么位置退出，是否愿意再次回来，都比单纯的口头意愿更接近真实需求。
+2. **用最小可行方案进入真实场景：**让用户在真实或足够接近真实的场景中做出选择，再观察他们是否愿意开始使用、能否完成核心行为、会在哪里退出，以及是否愿意再次回来。这些真实行为，比单纯的口头意愿更能说明问题和方案之间是否已经形成匹配。
 
 3. **结合用户行为与反馈调整判断**：每一轮验证最好明确一个最主要的不确定性，例如目标用户是否准确、核心场景是否足够高频、产品是否已经让用户体验到预期价值。验证结束后，不是简单决定“继续做还是不做”，而是判断原来的假设哪些得到支持、哪些需要修改，然后进入下一轮。
 
-![Image](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=OTQ0YWZhNTVkZGI2ZDZkZTgyYzRkNzVjODBmYjQ2YjFfZDA4NmZmNDAzYjUyYjA2OThlNTg3NzYwMjk1MTIwNjZfSUQ6NzY3ODk3MTUyODAwNDUyMDg4OF8xNzg3OTA4NjAyOjE3ODc5OTUwMDJfVjM)
+![PMF 验证闭环](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=Mzc1OGViMzhlMjVmMzAxZTA5ZmQ4ZTE2NDgwYzlkMzlfZWJhZjMxYzEwMDVjODE0OWFhZDlmNzkzMThhZTk0ZDdfSUQ6NzY3ODk3MTUyODAwNDUyMDg4OF8xNzg3OTg3Mzc1OjE3ODgwNzM3NzVfVjM)
 
 
 
 当产品已经进入真实使用阶段，PMF 的判断可以进一步分成**定性与定量**两类证据。定性信息主要用来理解用户为什么留下、为什么离开、产品替代了什么，以及失去产品之后用户会采用什么方案；定量信息则观察这些价值是否真正反映在持续行为中。两者不能互相替代，比较有效的方式是让数据先暴露差异，再用访谈和观察解释差异。留存是其中最重要的行为证据之一，但分析留存时，重点不是寻找一条适用于所有产品的及格线，而是观察同一批用户随着时间变化后的稳定程度。
 
-![Image](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=NjcwMTA1ZmJiMTA2ZTZkNDRhZjJlMTdkZDdhZGFkMWJfZjZjZjQ1YjEzNzVlZjk0NDZmMWUzODU0YmZkMDMyNjJfSUQ6NzY3ODk3MTgxNTMzODc1NzA5OF8xNzg3OTA4NjAyOjE3ODc5OTUwMDJfVjM)
+![留存曲线](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=MDM3OGViN2RjN2RkMTQ1MDQxZDFkMzRmNTM0MTlkNzVfOTY5OGQzNjM5Y2M0MWFhMjMzMTVmNjI5MjhjNzNiNmFfSUQ6NzY3ODk3MTgxNTMzODc1NzA5OF8xNzg3OTg3Mzc1OjE3ODgwNzM3NzVfVjM)
 
 
 
@@ -92,7 +91,7 @@ PMF 处于模糊阶段时，不必急着做出非黑即白的判断。更实用�
 
 增长重点会随阶段变化，团队还需要一个相对稳定的指标来校准长期方向。北极星指标的制定可以分成三个步骤：**明确用户价值与商业目标的交集，列出候选指标，再用一组标准筛选并确认。**
 
-![Image](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=NmY0ZjcwZDAzMjRkMzk4ZjM2MzNjMzdmMTI3ZmU2NTVfN2YyMWU5ZGZkYWEyOTEyZTA5OGVlZjlkODgzNjU1MDlfSUQ6NzY3ODk4MDQxNTE5NzI2ODk0OV8xNzg3OTA4NjAyOjE3ODc5OTUwMDJfVjM)
+![北极星指标筛选](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=Zjk1ZDAwMjVlZGViODA0OTU3NjAwODhmYmUxNzYyZjdfNTIzZGE4NzM4OWRjY2FjZWNiMjBmM2Q5ZmRlNzVhMTJfSUQ6NzY3ODk4MDQxNTE5NzI2ODk0OV8xNzg3OTg3Mzc1OjE3ODgwNzM3NzVfVjM)
 
 1. **明确价值交集**：把用户核心价值和长期商业结果分别写清楚。用户真正完成什么行为时，可以认为核心价值已经发生；这种价值持续发生以后，为什么能够支持长期经营。两者的交集才是候选指标最值得寻找的位置。如果一个指标只对企业有意义，却无法反映用户是否获得价值，它容易把团队引向短期经营；如果只反映某种用户行为，却和长期商业结果缺少稳定关系，也难以承担全局方向。
 
@@ -156,5 +155,3 @@ PMF 处于模糊阶段时，不必急着做出非黑即白的判断。更实用�
 
 
 **PMF 验证确认价值匹配的稳定程度，市场、产品阶段和商业条件决定当前资源更应该投向哪里，北极星指标提供长期校准，阶段目标再把方向收敛到当前周期需要改变的具体结果。**到了这一步，增长目标已经有了明确的对象、结果和边界，但它仍然只是一个结果。要知道应该从哪里入手，还需要继续拆开这个结果，找到真正影响它的关键变量。
-
-

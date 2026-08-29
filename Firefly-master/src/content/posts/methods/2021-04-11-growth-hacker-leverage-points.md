@@ -1,15 +1,14 @@
 ---
 title: 增长黑客之“法”——增长发力点如何找到
 published: 2021-04-11
-description: 从整体数据、用户分群、漏斗留存与路径分析中找到增长发力点。
+description: 增长模型把最终结果拆成了一组变量，但真正进入分析以后，问题通常不会因此减少。流量、点击、转化、留存、频次、渠道质量以及不同用户群的行为都可能同时发生变化，数据越丰富，能够发现的异常越多。如果只是把这些异常逐一列出来，很容
 category: 方法库
 series: 增长黑客
 seriesOrder: 9
 seriesGroup: 增长黑客之“法”
 tags:
-  - 增长运营
+  - 增长
   - 产品方法
-  - 数据分析
 draft: false
 ---
 
@@ -21,7 +20,7 @@ draft: false
 
 
 
-找到增长发力点，需要把这些变量重新放回业务结果中判断。**第一步先从整体数据确认变化主要发生在哪里，再进入用户层寻找差异；接着用漏斗、留存和路径分析进一步缩小范围，把异常和优势转成几个值得继续研究的候选方向；最后再比较这些变量对最终结果的影响、改善空间、可控性和证据强度。**前面的分析负责发现机会，真正的优先级判断放在最后完成。
+找到增长发力点，需要把这些变量重新放回业务结果中判断。**第一步先从整体数据确认变化主要发生在哪里，再进入用户层寻找差异；接着用漏斗、留存和路径分析进一步缩小范围，把异常和优势转成几个值得继续研究的候选方向；最后再比较这些变量对最终结果的影响、改善空间、可控性和证据强度。**这些分析先形成候选机会，优先级只在候选机会形成以后判断。
 
 
 
@@ -39,7 +38,7 @@ draft: false
 
 趋势确认以后，再看结构变化。总量稳定，并不意味着内部结构稳定。新增用户没有下降，可能是一个高质量渠道正在萎缩，另一个低质量渠道刚好补上了数量；GMV 继续增长，也可能主要来自客单价提高，而实际购买用户数已经开始下降。总盘数据经常会把这些方向相反的变化平均掉，因此还需要继续拆渠道、业务线、品类以及增长模型中的一级变量，确认最终结果到底由哪些部分推动，哪些部分正在拖累。
 
-![Image](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=MDRhN2VjNzc0NDcwODEwZGEzOTY3N2QxOTZmZjQzNjlfODU5Nzg0ZGFlY2JmNTA0ODE1NzVlY2NhNjZiNmIyOTVfSUQ6NzY3OTAwNjMzNzIwNDQyMzY1OF8xNzg3OTA4NjM4OjE3ODc5OTUwMzhfVjM)
+![从整体业务数据到用户数据](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=OGVkMWNlZjk4ODRjMmIxZmZiNjQzMGE1OTE0ODMwMTNfOWU3YjlmZTgwZTMxYjIxYTlmMWM5MDVmZmE3MzY0YjJfSUQ6NzY3OTAwNjMzNzIwNDQyMzY1OF8xNzg3OTg3MzkxOjE3ODgwNzM3OTFfVjM)
 
 
 
@@ -118,7 +117,7 @@ draft: false
 
 - 修补漏洞：从损失入手，关键步骤转化异常、支付失败、某类用户持续流失、渠道带来的用户无法完成激活，都属于值得检查的漏洞。这里要区分正常流失和可避免流失。并不是所有退出都应该被挽回，价格不匹配、需求不适合或者本身不属于目标用户的人退出，可能只是业务正常筛选；如果为了提高数字不断降低门槛，反而可能带来退款、投诉和低质量用户。
 
-![Image](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=OWVkNWMyOWYxYjUzZTJhZDhkM2Q2ZjMzNmM5YzAzZGZfYmJkOTMzZmEzY2RiNzU1YjE3ODQ4NDkwODY3NGE3MGNfSUQ6NzY3OTAwNzU5Nzg1NjI5NjEzOV8xNzg3OTA4NjM4OjE3ODc5OTUwMzhfVjM)
+![火上浇油与修补漏洞](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=OGFkZGY3MGU1ZmI0ZGI5YjcxMzdkZDlkZjVhMDYwYmVfMDYwZDg2MzdjYjlkOWU1YTc2NmNhYzAwNTMxYTQ1MDRfSUQ6NzY3OTAwNzU5Nzg1NjI5NjEzOV8xNzg3OTg3MzkxOjE3ODgwNzM3OTFfVjM)
 
 
 
@@ -156,6 +155,6 @@ draft: false
 
 在前面的零售业务里，继续扩大流量原本是最直观的选择，但新增流量的边际成本已经明显上升，现有流量的交易转化却存在较大的内部差异。把流量、点击、转化和频次重新放回订单模型比较后，阶段性的分析重点转向了下单转化。这个判断并不意味着转化率天然比流量更重要，只说明在当时的业务条件下，它同时具备更直接的结果影响、较明显的改善空间和现实的业务可控性。
 
-![Image](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=NjJhOGNhYjI3NDBmNDQ2OTYxN2I3MjMzMDdiMjFjNDNfNmE0YTIzY2Y2MTczM2Y1Mzc4MGFkOTZjMWQ1YTA1ZjRfSUQ6NzY3OTAwODQwNjcxMTc0OTgxMF8xNzg3OTA4NjM4OjE3ODc5OTUwMzhfVjM)
+![增长杠杆判断](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=Y2FmNTY5ZTU4ZDRmNTQ5ODNjMDU4Yjg2MTUzZDVhM2VfZDY3YjcwZDEzNzRhZjFhYjVmMWEyNTU2MjA4MDEyMTNfSUQ6NzY3OTAwODQwNjcxMTc0OTgxMF8xNzg3OTg3MzkxOjE3ODgwNzM3OTFfVjM)
 
-增长杠杆也不会永久固定。一个变量得到改善以后，原来的瓶颈可能转移；渠道成本、用户结构和产品阶段发生变化，也会重新改变变量之间的优先级。因此，找到发力点不是给业务确定一个长期不变的答案，而是在当前证据和约束下，找到最值得优先验证和推动的变量。当这个变量已经足够清楚，后面的重点就不再是继续寻找更多异常，而是理解它为什么会形成现在的结果，以及哪些机制真正有可能改变它。
+核心变量是当前证据和约束下的优先判断，而不是一个永久不变的答案。当这个变量已经足够清楚，重点就不再是继续寻找更多异常，而是理解它为什么会形成现在的结果，以及哪些机制真正有可能改变它。
