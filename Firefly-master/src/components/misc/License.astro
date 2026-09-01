@@ -1,10 +1,11 @@
 ---
-import { Icon } from "astro-icon/components";
 import { licenseConfig } from "@/config/licenseConfig";
 import { profileConfig } from "@/config/profileConfig";
+import { siteConfig } from "@/config/siteConfig";
 import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import { formatDateToYYYYMMDD } from "@/utils/date-utils";
+import watermarkLogo from "@/assets/images/firefly.png";
 
 interface Props {
 	title: string;
@@ -23,29 +24,6 @@ const className = Astro.props.class;
 const profileConf = profileConfig;
 const licenseConf = licenseConfig;
 const postUrl = sourceLink || decodeURIComponent(Astro.url.toString());
-
-// 根据许可证名称匹配对应图标
-function getLicenseIcon(name: string): string {
-	const n = name.toLowerCase();
-	if (/cc0|creative commons zero/.test(n)) {
-		return "fa7-brands:creative-commons-zero";
-	}
-	if (/public domain|公共领域/.test(n)) {
-		return "fa7-brands:creative-commons-pd";
-	}
-	if (/^cc($|[\s-])|creative commons|知识共享/.test(n)) {
-		return "fa7-brands:creative-commons";
-	}
-	if (/\b(mit|apache|bsd|isc|mulan|unlicense)\b|gpl|mpl\b/.test(n)) {
-		return "fa7-brands:osi";
-	}
-	return "fa7-regular:copyright";
-}
-
-// 文章单独指定的许可证按名称自动匹配；站点默认许可证优先使用配置中的自定义图标
-const licenseIcon = licenseName
-	? getLicenseIcon(licenseName)
-	: licenseConf.icon || getLicenseIcon(licenseConf.name);
 ---
 
 <div
@@ -86,8 +64,16 @@ const licenseIcon = licenseName
       >
     </div>
   </div>
-  <Icon is:inline
-    name={licenseIcon}
-    class="transition text-[15rem] absolute pointer-events-none right-6 top-1/2 -translate-y-1/2 text-black/5 dark:text-white/5"
+  <div class="mt-4 pt-4 border-t border-black/5 dark:border-white/10 text-xs leading-6 text-black/40 dark:text-white/40">
+    本文首发于「{siteConfig.title}」，作者：山风（余涛）。
+    <span class="font-medium text-black/60 dark:text-white/60">欢迎转发、分享本文链接</span>，
+    但
+    <span class="font-medium text-black/60 dark:text-white/60">禁止任何形式的未授权转载、摘编、改写或商业使用</span>。
+  </div>
+  <img
+    src={watermarkLogo.src}
+    alt=""
+    aria-hidden="true"
+    class="absolute pointer-events-none right-8 top-6 h-[9rem] w-[9rem] object-contain opacity-[0.14] grayscale contrast-0 brightness-125 dark:opacity-[0.1]"
   />
 </div>
