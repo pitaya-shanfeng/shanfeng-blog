@@ -1,14 +1,15 @@
 ---
 title: 增长黑客之“法”——增长如何持续优化
-published: 2021-04-23
-description: 实验结束以后，最重要的工作并不是给结果贴上“成功”或“失败”的标签，而是重新判断接下来应该做什么。核心指标上涨，可能说明原来的策略有效，也可能只是一次随机波动；指标没有达到统计显著，可能意味着假设不成立，也可能只是样本不
+published: 2021-10-22
+description: 用实验结果更新模型、优先级和策略库，让增长进入持续迭代闭环。
 category: 方法库
+image: /assets/library/methods/growth-hacker-continuous-optimization/cover.webp
 series: 增长黑客
 seriesOrder: 12
 seriesGroup: 增长黑客之“法”
 tags:
-  - 增长
-  - 产品方法
+  - 增长实验
+  - 增长方法
 draft: false
 ---
 
@@ -47,7 +48,7 @@ draft: false
 |核心指标正向，护栏指标明显恶化|局部收益是否以更大的长期损失换来|暂不扩大，重新调整策略|
 |不同人群持续表现出明显差异|原来的作用对象是否定义得过宽|收窄人群，形成新的判断|
 
-![实验结果判断](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=MDU3ODljYjllMTkyNTJkMTczYjE5YTlhMDUxOWYyNThfMjQyNDMyMzY1YWQ2YmM4ZjhkYTEyYjNiYWQwMzE3NjJfSUQ6NzY3OTMzMTAwNjYwMzcwOTQxOV8xNzg3OTg3NDEwOjE3ODgwNzM4MTBfVjM)
+![实验结果判断](/assets/library/methods/growth-hacker-continuous-optimization/img-01.png)
 
 
 
@@ -92,7 +93,7 @@ draft: false
 
 增长模型描述的不是业务永远不变的结构，而是当前阶段对业务关系的最好理解。只要实验产生了新的可靠证据，这种理解就应该允许被修正。一个变量得到明显改善以后，它剩余的增长空间会变小；一个机制连续得到不同证据支持以后，对它的信心会提高；原来认为影响全量用户的问题，也可能逐渐发现只集中在某一类人群；一个看起来成本很低的方案，实际实施以后还可能暴露出新的运营负担和风险。所有这些变化，都会影响资源下一步放在哪里。
 
-![模型与优先级更新](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=ZGUxY2M4NGMyMzRlMTE0N2JlZTFkZjBmNjE3ZGE5MTJfZDg4MmVlMTU2MjhiOTVhNDI2NzQ2ZDgzOGFkOTg0ZjlfSUQ6NzY3OTMzMjk0MjgwNzg2MjIwMV8xNzg3OTg3NDEwOjE3ODgwNzM4MTBfVjM)
+![模型与优先级更新](/assets/library/methods/growth-hacker-continuous-optimization/img-02.png)
 
 比如某个阶段已经确认详情到加购是影响订单的关键变量，几轮优化以后，这个环节的转化已经得到明显改善。继续在这里做细微调整，可能仍然能够获得一些收益，但它的改善空间已经和最初不同。此时支付、复购、渠道质量或者其他环节，可能已经成为新的限制条件。如果因为这个方向过去连续成功，就继续把资源留在这里，很容易把已经验证过的优势变成路径依赖。
 
@@ -130,7 +131,7 @@ draft: false
 |结果解释|哪些判断得到支持，哪些被削弱，哪些仍然无法判断|
 |后续决策|扩大、调整、继续验证、降低优先级还是停止|
 
-![实验记录到实验库](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=YTZhOTFmZmE1NjM2YmYwZTAwZTFiYzAyMWQwOTJiYjlfNWVlYzY0NzIxNzE1ZWI2Y2NjMDE4N2ZlZjY3MmE1MDhfSUQ6NzY3OTMzMzYwNTUwODA5MTA5MV8xNzg3OTg3NDEwOjE3ODgwNzM4MTBfVjM)
+![实验记录到实验库](/assets/library/methods/growth-hacker-continuous-optimization/img-03.png)
 
 其中最容易被省略、却最有价值的，是结果解释。“实验组上涨了 12%”只能说明发生了什么；“目标用户在获得更清晰的商品场景和购买理由以后，加购明显改善，而单纯强化价格表达没有得到同样支持”，才开始说明这次实验为业务留下了什么。
 

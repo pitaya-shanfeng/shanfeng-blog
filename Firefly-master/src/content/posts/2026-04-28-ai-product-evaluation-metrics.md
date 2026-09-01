@@ -4,9 +4,8 @@ published: 2026-04-28
 description: 从模型质量、用户体验、业务结果、安全风险、成本效率和运营闭环出发，建立 AI 产品评估指标体系。
 category: 笔记
 tags:
-  - AI 产品
-  - 大模型
-  - 数据分析
+  - AI产品
+  - 评估方法
 draft: false
 ---
 

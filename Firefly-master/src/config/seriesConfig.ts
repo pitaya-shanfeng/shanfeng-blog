@@ -9,9 +9,8 @@ export const seriesConfig: SeriesConfigItem[] = [
 	{
 		slug: "growth-hacking",
 		name: "增长黑客",
-		description:
-			"围绕增长认知与增长方法，整理一条从理解增长、判断问题到拆解路径和找到发力点的系统阅读路径。",
-		groups: ["增长黑客之“道”", "增长黑客之“法”"],
+		description: "从增长认知到方法拆解，再到电商实战，整理一条增长黑客的完整阅读路径。",
+		groups: ["增长黑客之“道”", "增长黑客之“法”", "增长黑客之“术”"],
 	},
 	{
 		slug: "jianshan",

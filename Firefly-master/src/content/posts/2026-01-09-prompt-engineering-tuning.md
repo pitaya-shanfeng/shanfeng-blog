@@ -5,9 +5,8 @@ description: 提炼提示工程与 Prompt 调优技巧的核心方法，并附�
 image: /assets/library/notes/prompt-engineering-tuning/cover.webp
 category: 笔记
 tags:
-  - AI 产品
-  - Prompt
-  - 大模型
+  - Prompt工程
+  - AI产品
 draft: false
 ---
 

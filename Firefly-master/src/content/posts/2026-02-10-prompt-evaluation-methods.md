@@ -4,8 +4,8 @@ published: 2026-02-10
 description: 用测试集、指标体系、失败样本和回归测试，把 Prompt 管理成可验证、可迭代的 AI 产品资产。
 category: 笔记
 tags:
-  - AI 产品
-  - Prompt
+  - Prompt工程
+  - 评估方法
 draft: false
 ---
 

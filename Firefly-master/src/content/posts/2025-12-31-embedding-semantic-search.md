@@ -4,8 +4,8 @@ published: 2025-12-31
 description: 用产品经理视角理解 Embedding、向量检索与 RAG 链路，并掌握语义检索的设计要点与风险边界。
 category: 笔记
 tags:
-  - AI 产品
   - RAG
+  - 向量检索
 draft: false
 ---
 

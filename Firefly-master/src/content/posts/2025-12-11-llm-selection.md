@@ -4,8 +4,8 @@ published: 2025-12-11
 description: 从业务任务、质量要求、成本边界、延迟、合规与工程可用性出发，建立大模型选型的判断框架。
 category: 笔记
 tags:
-  - AI 产品
-  - 大模型
+  - AI产品
+  - 模型选型
 draft: false
 ---
 

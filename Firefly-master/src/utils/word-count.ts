@@ -5,12 +5,11 @@ export function countMarkdownWords(body?: string) {
 		.replace(/!\[[^\]]*\]\([^)]+\)/g, "")
 		.replace(/\[[^\]]+\]\([^)]+\)/g, "")
 		.replace(/<[^>]+>/g, "")
-		.replace(/[>#*_~|]/g, "")
-		.replace(/\s+/g, " ")
-		.trim();
+		.replace(/[>#*_~|`]/g, "");
 
-	const chineseChars = text.match(/[\u4e00-\u9fa5]/g) || [];
-	const englishChars = text.match(/[a-zA-Z]/g) || [];
+	const chineseChars = text.match(/[\u4e00-\u9fff]/g) || [];
+	const englishWords = text.match(/[A-Za-z]+(?:'[A-Za-z]+)?/g) || [];
+	const punctuationChars = text.match(/[.,!?;:，。！？；：、~～…\-—（）()【】\[\]{}<>《》“”"']/g) || [];
 
-	return chineseChars.length + englishChars.length;
+	return chineseChars.length + englishWords.length + punctuationChars.length;
 }

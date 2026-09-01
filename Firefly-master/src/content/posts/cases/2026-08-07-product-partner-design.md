@@ -6,7 +6,7 @@ image: /assets/library/cases/product-partner-design/cover.webp
 category: 案例库
 tags:
   - 案例研究
-  - 系统设计
+  - 产品认知
 draft: false
 ---
 

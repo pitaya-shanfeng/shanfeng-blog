@@ -4,8 +4,8 @@ published: 2026-02-02
 description: 从 Few-shot、分步任务到结构化输出、引用约束与自检，提升复杂 AI 任务的稳定性与可评估性。
 category: 笔记
 tags:
-  - AI 产品
-  - Prompt
+  - Prompt工程
+  - AI产品
 draft: false
 ---
 

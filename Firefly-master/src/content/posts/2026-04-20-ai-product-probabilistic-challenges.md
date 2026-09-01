@@ -4,8 +4,8 @@ published: 2026-04-20
 description: 从错误分级、用户预期、业务损失、拦截策略、人工接管和复盘机制出发，梳理 AI 产品概率性能力的治理方法。
 category: 笔记
 tags:
-  - AI 产品
-  - 大模型
+  - AI产品
+  - 风险治理
 draft: false
 ---
 

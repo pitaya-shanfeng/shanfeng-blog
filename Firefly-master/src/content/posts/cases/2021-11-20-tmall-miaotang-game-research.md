@@ -6,7 +6,7 @@ image: /assets/library/cases/tmall-miaotang-game-research/cover.webp
 category: 案例库
 tags:
   - 案例研究
-  - 增长运营
+  - 用户研究
 draft: false
 comment: false
 documentPages: 10

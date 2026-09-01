@@ -5,9 +5,8 @@ description: 大模型认知基础课程资料，涵盖 AI、机器学习、深�
 image: /assets/library/notes/llm-cognition-basics/cover.webp
 category: 笔记
 tags:
-  - AI 产品
   - 大模型
-  - RAG
+  - AI产品
 draft: false
 comment: false
 documentPages: 46

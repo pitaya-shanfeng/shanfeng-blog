@@ -7,8 +7,8 @@ image: /assets/library/jianshan/platform-architecture/cover.webp
 series: 见山
 seriesOrder: 14
 tags:
-  - 产品认知
   - 系统设计
+  - 产品认知
 draft: false
 ---
 

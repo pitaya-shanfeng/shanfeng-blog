@@ -4,8 +4,8 @@ published: 2025-12-08
 description: 面向产品经理的 AI 能力分层与学习路线，帮助判断规则、机器学习、大模型、RAG 与 Agent 分别适合解决什么问题。
 category: 笔记
 tags:
-  - AI 产品
-  - 大模型
+  - AI产品
+  - 学习路径
 draft: false
 ---
 

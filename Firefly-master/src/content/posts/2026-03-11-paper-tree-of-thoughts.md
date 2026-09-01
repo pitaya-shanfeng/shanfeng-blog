@@ -4,9 +4,8 @@ published: 2026-03-11
 description: 提炼 Tree of Thoughts 思维树的搜索机制、实验结果与适用边界，并附原论文在线预览。
 category: 笔记
 tags:
-  - AI 产品
   - 论文阅读
-  - Agent
+  - 大模型
 draft: false
 ---
 

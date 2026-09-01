@@ -4,8 +4,8 @@ published: 2025-12-23
 description: 用产品经理能理解的方式解释 Transformer、自注意力与上下文关系，并将模型能力边界转化为产品判断。
 category: 笔记
 tags:
-  - AI 产品
   - 大模型
+  - Transformer
 draft: false
 ---
 

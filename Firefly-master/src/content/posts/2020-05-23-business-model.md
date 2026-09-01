@@ -6,7 +6,6 @@ description: 从商业模式画布、常见商业模式类型到设计方法与�
 category: 方法库
 tags:
   - 商业分析
-  - 产品认知
 draft: false
 ---
 

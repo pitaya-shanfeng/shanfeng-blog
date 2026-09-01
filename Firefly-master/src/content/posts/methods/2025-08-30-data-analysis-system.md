@@ -5,8 +5,8 @@ description: 数据分析体系方法资料，围绕指标建模、数据采集�
 image: /assets/library/methods/data-analysis-system/cover.webp
 category: 方法库
 tags:
-  - 方法论
   - 数据分析
+  - 指标体系
 draft: false
 comment: false
 documentPages: 30

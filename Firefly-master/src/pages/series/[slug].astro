@@ -45,19 +45,25 @@ const ungroupedPosts = posts.filter(
 			<Icon is:inline name="material-symbols:arrow-back-rounded" class="text-xl mr-1" />
 			全部合集
 		</a>
-		<div class="flex items-start gap-4">
-			<div class="shrink-0 w-14 h-14 rounded-full bg-(--primary)/10 flex items-center justify-center">
-				<Icon is:inline name="material-symbols:library-books-outline-rounded" class="text-3xl text-(--primary)" />
-			</div>
-			<div>
-				<h1 class="text-3xl font-bold text-90 mb-3">{series.name}</h1>
-				<p class="text-50 leading-7">{series.description}</p>
-				<p class="text-sm text-30 mt-3">{posts.length} 篇文章</p>
-			</div>
+		<div class="min-w-0">
+			<h1 class="text-3xl font-bold text-90 mb-3">{series.name}</h1>
+			<p class="text-50 leading-7">{series.description}</p>
+			<p class="text-sm text-30 mt-3">{posts.length} 篇文章</p>
+			{series.slug === "growth-hacking" && (
+				<div class="mt-5 overflow-hidden rounded-2xl border border-(--primary)/10 bg-white/60 shadow-sm">
+					<img
+						src="/assets/library/methods/growth-hacker-overview/growth-panorama.png"
+						alt="增长黑客全景图"
+						class="block w-full h-auto"
+						loading="lazy"
+						decoding="async"
+					/>
+				</div>
+			)}
 		</div>
 	</div>
 
-	<div class="space-y-6 mb-4">
+	<div class="space-y-6 mb-4 list-mode">
 		{
 			groupedPosts.map(({ group, posts: groupPosts }) =>
 				groupPosts.length > 0 && (

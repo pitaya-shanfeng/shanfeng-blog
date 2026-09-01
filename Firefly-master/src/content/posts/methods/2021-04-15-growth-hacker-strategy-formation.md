@@ -1,14 +1,14 @@
 ---
 title: 增长黑客之“法”——增长策略如何形成
-published: 2021-04-15
-description: 找到核心变量以后，增长问题已经收窄了很多，但最容易犯的错误也往往发生在这个时候：团队终于知道该关注哪里，于是马上开始讨论做什么。假设当前最值得改善的是商品详情到加购的转化，会议上很快就能出现一串方案：重做详情页、增加优惠
+published: 2021-09-10
+description: 把核心变量转成增长洞察，再通过影响、信心和成本筛选真正值得执行的策略。
 category: 方法库
+image: /assets/library/methods/growth-hacker-strategy-formation/cover.webp
 series: 增长黑客
 seriesOrder: 10
 seriesGroup: 增长黑客之“法”
 tags:
-  - 增长
-  - 产品方法
+  - 增长方法
 draft: false
 ---
 
@@ -18,7 +18,7 @@ draft: false
 
 找到核心变量以后，增长问题已经收窄了很多，但最容易犯的错误也往往发生在这个时候：团队终于知道该关注哪里，于是马上开始讨论做什么。假设当前最值得改善的是商品详情到加购的转化，会议上很快就能出现一串方案：重做详情页、增加优惠、强化评价、调整价格展示、增加商品对比、换按钮、做内容。每个方案听上去都有道理，可它们针对的其实不是同一个问题。用户没有加购，可能是没看懂商品价值，可能是不确定是否适合自己，也可能是价格超出预期、信任不足，甚至只是入口带来的用户本身就不匹配。原因不同，值得采取的策略自然不同。因此，在核心变量和具体动作之间，还需要补上一层判断：**这个变量为什么会形成现在的结果，改变什么最可能推动它发生变化。**
 
-![从核心变量到增长策略](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=ZTQ2NGZjMjEyYzQ1MTI0YTkxNmI3MWE0MDg2NjA1MDBfNDYyNzMxNTBjNTlmY2YzNGUzYmMzN2M1NWNlZTMyZmFfSUQ6NzY3OTMwNjkzMTk3ODM3NDEzMl8xNzg3OTg3Mzk4OjE3ODgwNzM3OThfVjM)
+![从核心变量到增长策略](/assets/library/methods/growth-hacker-strategy-formation/img-01.png)
 
 ## 4\.1 增长洞察
 
@@ -38,7 +38,7 @@ draft: false
 
 如果数据已经显示某类用户反复查看商品规格和评价，访谈中又不断出现“看不出区别”、“不知道适不适合自己”之类的问题，那么“缺少足够的购买判断依据”就比“用户根本没有兴趣”获得了更多支持。反过来，如果访谈发现用户很清楚商品价值，只是普遍认为价格超过了可接受范围，继续强化内容表达可能就不是最值得投入的方向。这种判断通常不是一次完成的。第一次分析提出可能性，新的数据继续区分人群，用户反馈帮助解释行为，再回到数据检查这种解释是否真的覆盖了主要问题。几轮之后，原本宽泛的“转化低”才逐渐变成更有行动价值的判断。
 
-![增长洞察的证据结构](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=NDQwZjc0OWQwMDU0ZDY0YjgzOGVlNmJlYTExODMyZmVfMzE5ZjhhY2QzYjMxMTA5Y2YzYjQzOTZhMjgyYThlOGFfSUQ6NzY3OTMwNzgyMjYwNTAyODMyN18xNzg3OTg3Mzk4OjE3ODgwNzM3OThfVjM)
+![增长洞察的证据结构](/assets/library/methods/growth-hacker-strategy-formation/img-02.png)
 
 外部产品也可以在这个阶段提供帮助，但值得借鉴的不是页面上出现了什么模块，而是它在解决什么决策障碍。用户评价可能是在降低质量的不确定性，商品对比可能是在降低选择成本，场景内容可能是在帮助用户理解价值。只有把表面的做法还原到背后的问题，才有可能判断它和自己的业务是否真的相关。团队经验和脑暴同样可以产生好想法。区别只在于，经验更适合提出“会不会是这个原因”，而不是直接宣布“原因就是这个”。增长工作需要经验，但经验最有价值的时候，往往是帮助分析提出更好的问题，而不是替代分析给出答案。
 
@@ -129,7 +129,7 @@ draft: false
 |Confidence|当前证据对这个判断支持到什么程度|
 |Ease|验证和实施需要多少资源、时间与协同成本|
 
-![ICE 排序与决策约束](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=NzNmZjg2MzllYmIyNjMyNmI1YmUyYmY0YTk3OTY4NGZfZGE3NDUyMDkyZDYyYmZkY2EzNzg1OGNlMjYzYzQzMGNfSUQ6NzY3OTMxMjI5OTc0Nzc0MDYzM18xNzg3OTg3Mzk4OjE3ODgwNzM3OThfVjM)
+![ICE 排序与决策约束](/assets/library/methods/growth-hacker-strategy-formation/img-03.png)
 
 
 

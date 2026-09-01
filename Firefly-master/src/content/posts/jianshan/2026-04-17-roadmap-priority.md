@@ -7,8 +7,8 @@ image: /assets/library/jianshan/roadmap-priority/cover.webp
 series: 见山
 seriesOrder: 11
 tags:
-  - 产品认知
   - 决策沟通
+  - 产品认知
 draft: false
 ---
 

@@ -151,10 +151,9 @@ const categoryDisplayName = getCategoryDisplayName(category);
             aria-label={`View all posts in the ${series} series`}
             class="link-lg transition text-50 text-sm font-medium
               hover:text-(--primary) dark:hover:text-(--primary) whitespace-nowrap"
-            title={seriesGroup ? `${series} / ${seriesGroup}` : series}
+            title={series}
           >
-            合集：{series}
-            {seriesGroup && <span class="text-30"> / {seriesGroup}</span>}
+            {series}
           </a>
         </div>
       </div>

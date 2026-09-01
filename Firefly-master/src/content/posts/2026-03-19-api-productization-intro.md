@@ -4,9 +4,8 @@ published: 2026-03-19
 description: 从 AI 编排层、鉴权限流、日志监控、错误处理、计费与治理出发，理解如何把大模型能力封装成可上线的 API 产品能力。
 category: 笔记
 tags:
-  - AI 产品
-  - 大模型
-  - API
+  - API产品
+  - AI产品
 draft: false
 ---
 

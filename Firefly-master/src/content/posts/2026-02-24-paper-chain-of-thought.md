@@ -4,9 +4,8 @@ published: 2026-02-24
 description: 提炼 Chain-of-Thought 思维链提示的核心问题、方法机制、实验结果与适用边界，并附原论文在线预览。
 category: 笔记
 tags:
-  - AI 产品
-  - Prompt
   - 论文阅读
+  - 大模型
 draft: false
 ---
 

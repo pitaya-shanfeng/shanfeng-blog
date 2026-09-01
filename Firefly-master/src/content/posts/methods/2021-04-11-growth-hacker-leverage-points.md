@@ -1,14 +1,15 @@
 ---
 title: 增长黑客之“法”——增长发力点如何找到
-published: 2021-04-11
-description: 增长模型把最终结果拆成了一组变量，但真正进入分析以后，问题通常不会因此减少。流量、点击、转化、留存、频次、渠道质量以及不同用户群的行为都可能同时发生变化，数据越丰富，能够发现的异常越多。如果只是把这些异常逐一列出来，很容
+published: 2021-08-19
+description: 从整体数据、用户分群和漏斗路径中定位异常，找到最能撬动结果的增长杠杆。
 category: 方法库
+image: /assets/library/methods/growth-hacker-leverage-points/cover.webp
 series: 增长黑客
 seriesOrder: 9
 seriesGroup: 增长黑客之“法”
 tags:
-  - 增长
-  - 产品方法
+  - 增长方法
+  - 数据分析
 draft: false
 ---
 
@@ -38,7 +39,7 @@ draft: false
 
 趋势确认以后，再看结构变化。总量稳定，并不意味着内部结构稳定。新增用户没有下降，可能是一个高质量渠道正在萎缩，另一个低质量渠道刚好补上了数量；GMV 继续增长，也可能主要来自客单价提高，而实际购买用户数已经开始下降。总盘数据经常会把这些方向相反的变化平均掉，因此还需要继续拆渠道、业务线、品类以及增长模型中的一级变量，确认最终结果到底由哪些部分推动，哪些部分正在拖累。
 
-![从整体业务数据到用户数据](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=OGVkMWNlZjk4ODRjMmIxZmZiNjQzMGE1OTE0ODMwMTNfOWU3YjlmZTgwZTMxYjIxYTlmMWM5MDVmZmE3MzY0YjJfSUQ6NzY3OTAwNjMzNzIwNDQyMzY1OF8xNzg3OTg3MzkxOjE3ODgwNzM3OTFfVjM)
+![从整体业务数据到用户数据](/assets/library/methods/growth-hacker-leverage-points/img-01.png)
 
 
 
@@ -117,7 +118,7 @@ draft: false
 
 - 修补漏洞：从损失入手，关键步骤转化异常、支付失败、某类用户持续流失、渠道带来的用户无法完成激活，都属于值得检查的漏洞。这里要区分正常流失和可避免流失。并不是所有退出都应该被挽回，价格不匹配、需求不适合或者本身不属于目标用户的人退出，可能只是业务正常筛选；如果为了提高数字不断降低门槛，反而可能带来退款、投诉和低质量用户。
 
-![火上浇油与修补漏洞](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=OGFkZGY3MGU1ZmI0ZGI5YjcxMzdkZDlkZjVhMDYwYmVfMDYwZDg2MzdjYjlkOWU1YTc2NmNhYzAwNTMxYTQ1MDRfSUQ6NzY3OTAwNzU5Nzg1NjI5NjEzOV8xNzg3OTg3MzkxOjE3ODgwNzM3OTFfVjM)
+![火上浇油与修补漏洞](/assets/library/methods/growth-hacker-leverage-points/img-02.png)
 
 
 
@@ -155,6 +156,6 @@ draft: false
 
 在前面的零售业务里，继续扩大流量原本是最直观的选择，但新增流量的边际成本已经明显上升，现有流量的交易转化却存在较大的内部差异。把流量、点击、转化和频次重新放回订单模型比较后，阶段性的分析重点转向了下单转化。这个判断并不意味着转化率天然比流量更重要，只说明在当时的业务条件下，它同时具备更直接的结果影响、较明显的改善空间和现实的业务可控性。
 
-![增长杠杆判断](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=Y2FmNTY5ZTU4ZDRmNTQ5ODNjMDU4Yjg2MTUzZDVhM2VfZDY3YjcwZDEzNzRhZjFhYjVmMWEyNTU2MjA4MDEyMTNfSUQ6NzY3OTAwODQwNjcxMTc0OTgxMF8xNzg3OTg3MzkxOjE3ODgwNzM3OTFfVjM)
+![增长杠杆判断](/assets/library/methods/growth-hacker-leverage-points/img-03.png)
 
 核心变量是当前证据和约束下的优先判断，而不是一个永久不变的答案。当这个变量已经足够清楚，重点就不再是继续寻找更多异常，而是理解它为什么会形成现在的结果，以及哪些机制真正有可能改变它。

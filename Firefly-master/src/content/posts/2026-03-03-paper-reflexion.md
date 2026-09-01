@@ -4,7 +4,6 @@ published: 2026-03-03
 description: 提炼 Reflexion 言语强化学习的核心方法、实验结果与适用边界，并附原论文在线预览。
 category: 笔记
 tags:
-  - AI 产品
   - 论文阅读
   - Agent
 draft: false

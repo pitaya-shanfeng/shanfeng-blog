@@ -5,8 +5,8 @@ description: 埋点体系方法资料，围绕埋点体系建设、事件规范�
 image: /assets/library/methods/event-tracking-system/cover.webp
 category: 方法库
 tags:
-  - 方法论
   - 数据分析
+  - 埋点体系
 draft: false
 comment: false
 documentPages: 11

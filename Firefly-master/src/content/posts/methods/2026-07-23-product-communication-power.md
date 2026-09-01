@@ -6,7 +6,6 @@ image: /assets/library/methods/product-communication-power/cover.webp
 category: 方法库
 tags:
   - 内容生态
-  - 案例研究
 draft: false
 comment: false
 documentPages: 35

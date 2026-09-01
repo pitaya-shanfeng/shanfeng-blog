@@ -4,8 +4,8 @@ published: 2026-04-12
 description: 从语义边界、重叠策略、元数据、结构化文档与评估方法出发，系统梳理 RAG 知识库分块的设计原则。
 category: 笔记
 tags:
-  - AI 产品
   - RAG
+  - AI产品
 draft: false
 ---
 

@@ -6,7 +6,7 @@ image: /assets/library/cases/watsons-research/cover.webp
 category: 案例库
 tags:
   - 案例研究
-  - 商业分析
+  - 用户研究
 draft: false
 comment: false
 documentPages: 38

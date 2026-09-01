@@ -3,30 +3,31 @@ import { musicPlayerConfig } from "@/config/musicConfig";
 import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import { url } from "@/utils/url-utils";
+import type { MusicPlayerConfig } from "@/types/musicConfig";
 
 const config = musicPlayerConfig;
+type LocalSong = NonNullable<NonNullable<MusicPlayerConfig["local"]>["playlist"]>[number];
+
+const isFullUrl = (path: string) => /^https?:\/\//.test(path);
+const normalizeLocalPlaylist = (playlist: LocalSong[]) =>
+	playlist.map((song) => ({
+		name: song.name,
+		artist: song.artist,
+		url: isFullUrl(song.url) ? song.url : url(song.url),
+		pic: song.cover
+			? isFullUrl(song.cover)
+				? song.cover
+				: url(song.cover)
+			: undefined,
+		lrc: song.lrc
+			? isFullUrl(song.lrc)
+				? song.lrc
+				: url(song.lrc)
+			: undefined,
+	}));
 
 const localPlaylist =
-	config.mode === "local" && config.local?.playlist
-		? config.local.playlist.map((song) => {
-				const isFullUrl = (path: string) => /^https?:\/\//.test(path);
-				return {
-					name: song.name,
-					artist: song.artist,
-					url: isFullUrl(song.url) ? song.url : url(song.url),
-					pic: song.cover
-						? isFullUrl(song.cover)
-							? song.cover
-							: url(song.cover)
-						: undefined,
-					lrc: song.lrc
-						? isFullUrl(song.lrc)
-							? song.lrc
-							: url(song.lrc)
-						: undefined,
-				};
-			})
-		: [];
+	config.local?.playlist?.length ? normalizeLocalPlaylist(config.local.playlist) : [];
 
 const managerConfigStr = JSON.stringify({
 	mode: config.mode,
@@ -150,22 +151,28 @@ const managerConfigStr = JSON.stringify({
                 var data = await res.json();
 
                 if (Array.isArray(data) && data.length > 0) {
-                    state.playlist = data.map(function (item) {
+                    var playlist = data.map(function (item) {
                         return {
                             name: item.title || item.name || 'Unknown',
                             artist: item.author || item.artist || 'Unknown',
-                            url: item.url,
+                            url: item.url || '',
                             pic: item.pic || item.cover || '',
                             lrc: item.lrc
                         };
+                    }).filter(function (item) {
+                        return typeof item.url === 'string' && item.url.trim().length > 0;
                     });
-                    return;
+
+                    if (playlist.length > 0) {
+                        state.playlist = playlist;
+                        return;
+                    }
                 }
             } catch (e) {
                 console.warn('Meting API failed for ' + baseApi, e);
             }
         }
-        throw new Error('All Meting APIs failed');
+        throw new Error('All Meting APIs failed or returned no playable tracks');
     }
 
     // ── Lyrics ───────────────────────────────────────────────
@@ -371,6 +378,7 @@ const managerConfigStr = JSON.stringify({
                 }
 
                 state.initialized = true;
+                state.error = null;
 
                 emit('fm:init', {
                     playlist: state.playlist,

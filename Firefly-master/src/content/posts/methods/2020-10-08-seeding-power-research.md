@@ -5,8 +5,8 @@ description: 种草力研究资料，围绕内容种草、平台机制、传播�
 image: /assets/library/methods/seeding-power-research/cover.webp
 category: 方法库
 tags:
-  - 方法论
   - 内容生态
+  - 用户研究
 draft: false
 comment: false
 documentPages: 100

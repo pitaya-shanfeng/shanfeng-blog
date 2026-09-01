@@ -6,7 +6,7 @@ image: /assets/library/cases/red-packet-split-review/cover.webp
 category: 案例库
 tags:
   - 案例研究
-  - 增长运营
+  - 电商增长
 draft: false
 comment: false
 documentPages: 15

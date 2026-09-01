@@ -4,8 +4,8 @@ published: 2026-01-10
 description: 复盘 AI、Token、Transformer、幻觉、Embedding 与多模态能力，检验 AI 产品判断的基础框架。
 category: 笔记
 tags:
-  - AI 产品
   - 大模型
+  - 学习路径
 draft: false
 ---
 

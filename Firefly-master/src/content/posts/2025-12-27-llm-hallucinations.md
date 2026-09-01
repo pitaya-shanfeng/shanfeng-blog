@@ -4,8 +4,8 @@ published: 2025-12-27
 description: 从概率生成、训练数据、上下文与产品机制理解大模型幻觉，并设计引用、拒答、校验和人工兜底。
 category: 笔记
 tags:
-  - AI 产品
   - 大模型
+  - 风险治理
 draft: false
 ---
 

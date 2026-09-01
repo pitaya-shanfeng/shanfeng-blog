@@ -4,8 +4,8 @@ published: 2026-01-25
 description: 汇集通用 Prompt、知识问答、Agent 工具调用与任务执行等可复用提示词模板和示例。
 category: 笔记
 tags:
-  - AI 产品
-  - Prompt
+  - Prompt工程
+  - 模板
 draft: false
 ---
 

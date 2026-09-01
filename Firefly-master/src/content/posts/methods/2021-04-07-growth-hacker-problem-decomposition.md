@@ -1,14 +1,14 @@
 ---
 title: 增长黑客之“法”——增长问题如何拆解
-published: 2021-04-07
-description: 阶段目标确定以后，摆在团队面前的仍然只是一个结果。比如提高首购用户的复购率、改善新用户留存、增加有效订单，这些目标已经比“提升增长”具体得多，但还不足以直接指导行动。一个结果通常由多条用户路径和多个业务变量共同作用，如果
+published: 2021-07-28
+description: 从用户链路、AARRR/RARRA 和增长模型入手，把目标拆成可分析的关键变量。
 category: 方法库
+image: /assets/library/methods/growth-hacker-problem-decomposition/cover.webp
 series: 增长黑客
 seriesOrder: 8
 seriesGroup: 增长黑客之“法”
 tags:
-  - 增长
-  - 产品方法
+  - 增长方法
 draft: false
 ---
 
@@ -30,7 +30,7 @@ draft: false
 
 增长链路要解决的第一个问题，是把阶段目标重新放回真实业务过程。假设目标是提高首购用户的二次购买率，只看“二次购买率”这个数字，很难知道问题发生在哪里。用户在完成第一次交易以后，可能经历收货、使用、再次产生需求、重新进入产品、发现合适商品、形成购买意愿并再次下单，其中任何一段发生变化，都可能影响最后的复购结果。如果链路没有先还原清楚，后续看到的每一个指标都只是孤立的数字。
 
-![用户增长链路](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=ODg2NDI1NDk0Zjc0NzcwNGVkNDk5OGRkOTkxMWFlZjJfYzRhMjhlZjU0YjE0YTQyMjNlNDcyODcxNjQ4NWJmOTlfSUQ6NzY3ODk4NDQ5NjQ2MDk0MjYxMF8xNzg3OTg3Mzg1OjE3ODgwNzM3ODVfVjM)
+![用户增长链路](/assets/library/methods/growth-hacker-problem-decomposition/img-01.png)
 
 
 
@@ -68,7 +68,7 @@ draft: false
 
 - **Revenue，变现**：用户价值是否形成可持续的商业交换。 
 
-![AARRR 与 RARRA](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=NjgzNGVlMzk1ZmZiNTMwNTU2NTA5YjY1MGJhMjA2Y2ZfMzQ5NzgzZGEyZTBiZmI1MWJjYTY4YzQ2MmE3ZjM0ZDhfSUQ6NzY3ODk4NjI0NTI4NDAzOTY0M18xNzg3OTg3Mzg1OjE3ODgwNzM3ODVfVjM)
+![AARRR与RARRA](/assets/library/methods/growth-hacker-problem-decomposition/img-02.png)
 
 RARRA 使用的是相同的几个增长环节，只是把 Retention 放到更靠前的位置：它强调的是另一种优先级判断：产品还没有证明用户能够持续留下时，过早放大 Acquisition，可能只是把更多用户送进一个持续流失的系统。对于仍处在价值验证和早期增长阶段的产品，先检查 Retention 和 Activation，通常更容易暴露真正的约束。两套框架可以这样使用：
 
@@ -115,7 +115,7 @@ AARRR 和 RARRA 的作用到这里就够了。它们负责把一个大问题先�
 
 核心转化路径回答“用户经过什么”，增长模型进一步回答“最终结果由什么共同决定”。增长模型的基本做法，是把阶段目标或北极星指标作为结果端，再把影响结果的关键指标和变量按照业务关系连接起来。构建时可以沿着三步完成：
 
-![增长模型构建](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=OGE3ZmJjYzViMTNiMDQ2NDgxZjVmMmFkNGFlYzcwNjFfZTFhMWQxMWRmMjkzZWM5Y2IzYTY3NGRkODJmNzJjZGFfSUQ6NzY3ODk4ODkyNzk5MDMzNjQ5OV8xNzg3OTg3Mzg1OjE3ODgwNzM3ODVfVjM)
+![增长模型构建](/assets/library/methods/growth-hacker-problem-decomposition/img-03.png)
 
 1. **定义结果指标：**模型必须围绕一个明确结果展开。可以是长期北极星指标，也可以是当前阶段目标。结果如果同时混入 GMV、利润、留存、新增等多个目标，模型很快会变成一张无法判断主次的业务全景图。
 

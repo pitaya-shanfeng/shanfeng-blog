@@ -4,9 +4,8 @@ published: 2026-04-04
 description: 从 Prompt、模型选型、API 编排、评估、成本性能、灰度、日志和降级出发，复盘一个 AI Demo 走向可上线能力的完整路径。
 category: 笔记
 tags:
-  - AI 产品
-  - Prompt
-  - API
+  - Prompt工程
+  - API产品
 draft: false
 ---
 

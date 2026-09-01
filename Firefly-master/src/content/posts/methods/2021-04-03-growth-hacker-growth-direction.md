@@ -1,14 +1,15 @@
 ---
 title: 增长黑客之“法”——增长方向如何确定
-published: 2021-04-03
-description: 增长工作开始之前，团队往往已经有很多目标：收入、GMV、新增、活跃、留存、复购、利润率，各自都重要，却不意味着它们在当前阶段拥有同样的优先级。方向没有收敛时，最常见的结果不是没有事情可做，而是每个团队都能从自己的指标出发
+published: 2021-07-09
+description: 用 PMF、阶段目标和北极星指标收敛增长方向，让资源投向最值得的问题。
 category: 方法库
+image: /assets/library/methods/growth-hacker-growth-direction/cover.webp
 series: 增长黑客
 seriesOrder: 7
 seriesGroup: 增长黑客之“法”
 tags:
-  - 增长
-  - 产品方法
+  - 增长认知
+  - 增长方法
 draft: false
 ---
 
@@ -34,13 +35,13 @@ PMF 的完整判断不能依赖某一个指标，更适合看成一轮持续收�
 
 3. **结合用户行为与反馈调整判断**：每一轮验证最好明确一个最主要的不确定性，例如目标用户是否准确、核心场景是否足够高频、产品是否已经让用户体验到预期价值。验证结束后，不是简单决定“继续做还是不做”，而是判断原来的假设哪些得到支持、哪些需要修改，然后进入下一轮。
 
-![PMF 验证闭环](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=Mzc1OGViMzhlMjVmMzAxZTA5ZmQ4ZTE2NDgwYzlkMzlfZWJhZjMxYzEwMDVjODE0OWFhZDlmNzkzMThhZTk0ZDdfSUQ6NzY3ODk3MTUyODAwNDUyMDg4OF8xNzg3OTg3Mzc1OjE3ODgwNzM3NzVfVjM)
+![PMF 验证闭环](/assets/library/methods/growth-hacker-growth-direction/img-01.png)
 
 
 
 当产品已经进入真实使用阶段，PMF 的判断可以进一步分成**定性与定量**两类证据。定性信息主要用来理解用户为什么留下、为什么离开、产品替代了什么，以及失去产品之后用户会采用什么方案；定量信息则观察这些价值是否真正反映在持续行为中。两者不能互相替代，比较有效的方式是让数据先暴露差异，再用访谈和观察解释差异。留存是其中最重要的行为证据之一，但分析留存时，重点不是寻找一条适用于所有产品的及格线，而是观察同一批用户随着时间变化后的稳定程度。
 
-![留存曲线](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=MDM3OGViN2RjN2RkMTQ1MDQxZDFkMzRmNTM0MTlkNzVfOTY5OGQzNjM5Y2M0MWFhMjMzMTVmNjI5MjhjNzNiNmFfSUQ6NzY3ODk3MTgxNTMzODc1NzA5OF8xNzg3OTg3Mzc1OjE3ODgwNzM3NzVfVjM)
+![留存曲线](/assets/library/methods/growth-hacker-growth-direction/img-02.png)
 
 
 
@@ -91,7 +92,7 @@ PMF 处于模糊阶段时，不必急着做出非黑即白的判断。更实用�
 
 增长重点会随阶段变化，团队还需要一个相对稳定的指标来校准长期方向。北极星指标的制定可以分成三个步骤：**明确用户价值与商业目标的交集，列出候选指标，再用一组标准筛选并确认。**
 
-![北极星指标筛选](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=Zjk1ZDAwMjVlZGViODA0OTU3NjAwODhmYmUxNzYyZjdfNTIzZGE4NzM4OWRjY2FjZWNiMjBmM2Q5ZmRlNzVhMTJfSUQ6NzY3ODk4MDQxNTE5NzI2ODk0OV8xNzg3OTg3Mzc1OjE3ODgwNzM3NzVfVjM)
+![北极星指标筛选](/assets/library/methods/growth-hacker-growth-direction/img-03.png)
 
 1. **明确价值交集**：把用户核心价值和长期商业结果分别写清楚。用户真正完成什么行为时，可以认为核心价值已经发生；这种价值持续发生以后，为什么能够支持长期经营。两者的交集才是候选指标最值得寻找的位置。如果一个指标只对企业有意义，却无法反映用户是否获得价值，它容易把团队引向短期经营；如果只反映某种用户行为，却和长期商业结果缺少稳定关系，也难以承担全局方向。
 

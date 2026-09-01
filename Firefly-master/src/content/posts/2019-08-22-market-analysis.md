@@ -5,8 +5,8 @@ image: /assets/library/essays/market-analysis/cover.webp
 description: 从市场分析的意义、常见方法、分析模型到具体执行流程，系统梳理产品工作中的市场分析框架。
 category: 方法库
 tags:
+  - 市场分析
   - 商业分析
-  - 产品认知
 draft: false
 ---
 

@@ -1,14 +1,15 @@
 ---
 title: 增长黑客之“法”——增长实验如何设计
-published: 2021-04-19
-description: 一条策略值得优先验证，并不意味着应该马上把它完整做出来。增长工作里很常见的一种浪费，是团队花了几周甚至几个月把方案做到接近正式上线，最后才发现最基础的判断根本没有成立。另一种浪费刚好相反：为了追求“数据驱动”，什么问题都
+published: 2021-10-01
+description: 围绕关键假设设计实验，明确变量、指标、样本和分流，让判断变成证据。
 category: 方法库
+image: /assets/library/methods/growth-hacker-experiment-design/cover.webp
 series: 增长黑客
 seriesOrder: 11
 seriesGroup: 增长黑客之“法”
 tags:
-  - 增长
-  - 产品方法
+  - 增长实验
+  - 增长方法
 draft: false
 ---
 
@@ -22,7 +23,7 @@ draft: false
 
 实验设计真正要解决的，不是哪种方法更高级，而是：**面对当前最关键的不确定性，用什么方式、投入多少成本，才能得到足以支持下一次决策的证据。**有些问题需要先理解用户为什么没有行动，有些需要确认一个机制在真实场景里能不能成立，还有一些已经具体到两个版本之间的效果差异。验证方式不同，但底层要求是一致的：实验要围绕已经形成的假设展开，指标能够反映假设，受众和版本与问题匹配，样本和分流足以支撑比较。实验设计的完整结构，最终都落在这几个条件上。
 
-![增长实验设计结构](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=MTk1NjVmMzZlYWEwMzIzNmM0MmFmOWEwMmE5NjA4MjBfY2IzNzE3ODY2NzYyZDNiODIxYjAxNDc1YWZhYzdmNDRfSUQ6NzY3OTMyMTMyNTc4OTU0Nzc4Nl8xNzg3OTg3NDA0OjE3ODgwNzM4MDRfVjM)
+![增长实验设计结构](/assets/library/methods/growth-hacker-experiment-design/img-01.png)
 
 ## 5\.1 验证方式
 
@@ -37,7 +38,7 @@ draft: false
 |一个明确变化是否带来指标差异|A/B 测试|更可靠的版本比较|
 |无法同时设置对照，或样本条件有限|小范围试点、前后对比|方向性证据，但需要警惕其他因素|
 
-![验证方式选择](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=OTA1YzZmZjhmODczNGQ5N2QyZGEzZGFhM2IxMTgzZThfYWRkNWJlNWIzMjJkNDlhNTI2NTEwZGEwMDZjYzU5OGVfSUQ6NzY3OTMyMTk3NjE1NDAxNjczNl8xNzg3OTg3NDA0OjE3ODgwNzM4MDRfVjM)
+![验证方式选择](/assets/library/methods/growth-hacker-experiment-design/img-02.png)
 
 
 
@@ -152,7 +153,7 @@ A/B 测试也不是越多越好。它比较适合满足几个条件的场景：�
 
 样本进入实验以后，分流要尽可能保持随机、稳定和隔离。同一类目标用户应当有相近概率进入不同版本，同一个用户在实验周期内保持固定版本，避免今天看到 A、明天又进入 B；如果多个实验同时运行，还要检查它们是否会修改同一条用户路径，否则两个实验可能互相影响。“随机”也不意味着两组数据在每一个维度上必须完全一样。样本本来就会存在自然波动，真正需要的是分组方式没有系统性偏向。实验组如果恰好全部来自高价值渠道，对照组主要来自低质量渠道，即使最后转化明显不同，也很难再把这种差异归因到实验版本。
 
-![样本、分流与显著性](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=NzA5N2ZmMzRkZGQwNTYzODBlMDI3MmNkZDY4MjBmMjdfMWU1NTMxOTQyZGU4MWQ5YjQ0ZjdhYjIwNzcyMWQ4NjFfSUQ6NzY3OTMyNTI2MDQ4Njk3MDU4OF8xNzg3OTg3NDA0OjE3ODgwNzM4MDRfVjM)
+![样本、分流与显著性](/assets/library/methods/growth-hacker-experiment-design/img-03.png)
 
 
 

@@ -6,7 +6,7 @@ image: /assets/library/cases/yuanfang-haowu-research-report/cover.webp
 category: 案例库
 tags:
   - 案例研究
-  - 商业分析
+  - 电商增长
 draft: false
 comment: false
 documentPages: 26

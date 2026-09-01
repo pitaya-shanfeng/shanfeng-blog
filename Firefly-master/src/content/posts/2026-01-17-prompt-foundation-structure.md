@@ -4,8 +4,8 @@ published: 2026-01-17
 description: 从角色、背景、任务到约束与异常处理，建立可复用、可评估的产品化 Prompt 基础结构。
 category: 笔记
 tags:
-  - AI 产品
-  - Prompt
+  - Prompt工程
+  - AI产品
 draft: false
 ---
 

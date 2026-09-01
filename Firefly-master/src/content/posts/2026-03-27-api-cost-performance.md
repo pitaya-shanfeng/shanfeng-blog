@@ -4,9 +4,8 @@ published: 2026-03-27
 description: 从延迟、并发、Token、重试、缓存、模型路由与降级策略出发，建立 AI API 成本和性能的产品化管理框架。
 category: 笔记
 tags:
-  - AI 产品
-  - 大模型
-  - API
+  - API产品
+  - 成本性能
 draft: false
 ---
 

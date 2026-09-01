@@ -4,8 +4,8 @@ published: 2021-02-07
 description: MySQL 数据分析入门资料，系统整理数据库认知、Navicat 工具、数据类型、SQL 查询、SQL 操作与 Python 连接数据库。
 category: 方法库
 tags:
-  - 方法论
   - 数据分析
+  - MySQL
 draft: false
 comment: false
 ---
