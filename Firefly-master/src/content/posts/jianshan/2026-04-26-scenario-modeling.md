@@ -1,6 +1,6 @@
 ---
 title: 第 12 章 · 场景建模
-published: 2026-05-13
+published: 2025-09-30
 description: 场景建模不是先画架构图，而是回到业务现场，看见角色、动作、交接物、异常变化与稳定对象。
 category: 见山
 image: /assets/library/jianshan/scenario-modeling/cover.webp

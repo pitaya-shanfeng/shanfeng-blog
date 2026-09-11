@@ -1,6 +1,6 @@
 ---
 title: 第 6 章 · 问题定义
-published: 2026-01-18
+published: 2025-03-31
 description: 从异常现象出发，暂停既有方案、还原用户任务并定义真实代价，让产品团队先解决正确的问题。
 image: /assets/library/jianshan/problem-definition/cover.webp
 category: 见山

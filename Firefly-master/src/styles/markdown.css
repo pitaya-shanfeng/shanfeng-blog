@@ -179,8 +179,8 @@
 
   table {
     @apply my-4;
-    min-width: 100%;
-    width: max-content;
+    width: 100%;
+    max-width: 100%;
     border-collapse: separate;
     border-spacing: 0;
     border-radius: calc(var(--radius-large) - 0.5rem);
@@ -201,6 +201,7 @@
     @apply px-3 py-2 text-left;
     min-width: 120px;
     border: none;
+    overflow-wrap: anywhere;
     word-break: break-word;
 
     &:not(:last-child) {

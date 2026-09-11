@@ -1,6 +1,6 @@
 ---
 title: 第 15 章 · 商业思维
-published: 2026-07-06
+published: 2025-12-31
 description: 商业思维不是把盈利公式接在产品之后，而是在一次次真实交易、服务和协作里，判断产品创造的价值能否持续回收、组织能否长期承担。
 category: 见山
 image: /assets/library/jianshan/business-thinking/cover.webp

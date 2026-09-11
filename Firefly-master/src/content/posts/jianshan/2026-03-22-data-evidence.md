@@ -1,6 +1,6 @@
 ---
 title: 第 8 章 · 数据证据
-published: 2026-02-26
+published: 2025-05-31
 description: 从主指标、解释指标、护栏指标与反证指标出发，为产品判断建立可验证、可推翻的证据体系。
 image: /assets/library/jianshan/data-evidence/cover.webp
 category: 见山

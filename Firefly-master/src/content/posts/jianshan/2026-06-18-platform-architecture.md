@@ -1,6 +1,6 @@
 ---
 title: 第 14 章 · 平台架构
-published: 2026-06-18
+published: 2025-11-30
 description: 平台架构不是把后台做大，而是在前台业务不断变化时，让商品、库存、订单、履约等稳定能力以清晰边界支撑新的业务连接。
 category: 见山
 image: /assets/library/jianshan/platform-architecture/cover.webp

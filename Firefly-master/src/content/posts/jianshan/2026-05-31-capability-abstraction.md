@@ -1,6 +1,6 @@
 ---
 title: 第 13 章 · 能力抽象
-published: 2026-05-31
+published: 2025-10-31
 description: 能力抽象不是把相似功能合在一起，而是在重复业务动作里判断哪些已经足够稳定，值得沉淀成长期维护的公共能力。
 category: 见山
 image: /assets/library/jianshan/capability-abstraction/cover.webp
