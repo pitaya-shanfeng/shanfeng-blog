@@ -3,7 +3,7 @@ title: 第 16 章 · 市场分析
 published: 2026-01-16
 description: 从市场边界、供需变化、用户缺口、竞品条件与组织能力出发，判断一个方向是否值得进入。
 category: 见山
-image: /assets/library/jianshan/market-analysis/cover.png
+image: /assets/library/jianshan/market-analysis/cover.webp
 series: 见山
 seriesOrder: 16
 tags:

@@ -17,40 +17,40 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 	 *
 	 * 如果只使用一张图片或者使用随机图API，推荐直接使用字符串格式：
 	 * desktop: "https://t.alcy.cc/pc",   // 随机图API
-	 * desktop: "assets/images/DesktopWallpaper/product-1.png", // 单张图片
+	 * desktop: "assets/images/DesktopWallpaper/product-1.webp", // 单张图片
 	 *
 	 * mobile: "https://t.alcy.cc/mp", // 随机图API
-	 * mobile: "assets/images/MobileWallpaper/product-mobile-1.png", // 单张图片
+	 * mobile: "assets/images/MobileWallpaper/product-mobile-1.webp", // 单张图片
 	 *
 	 * 支持配置多张图片（数组），每次刷新页面随机显示一张：
 	 * desktop: [
-	 * "assets/images/DesktopWallpaper/product-1.png",
-	 * "assets/images/DesktopWallpaper/product-2.png",
+	 * "assets/images/DesktopWallpaper/product-1.webp",
+	 * "assets/images/DesktopWallpaper/product-2.webp",
 	 * ],
 	 *
 	 * mobile:[
-	 *   "assets/images/MobileWallpaper/product-mobile-1.png",
-	 *   "assets/images/MobileWallpaper/product-mobile-2.png",
+	 *   "assets/images/MobileWallpaper/product-mobile-1.webp",
+	 *   "assets/images/MobileWallpaper/product-mobile-2.webp",
 	 * ],
 	 */
 	src: {
 		// 桌面背景图片（支持单张或多张随机）
-		// desktop: "assets/images/DesktopWallpaper/product-1.png",
+		// desktop: "assets/images/DesktopWallpaper/product-1.webp",
 		desktop: [
-			"assets/images/DesktopWallpaper/product-1.png",
-			"assets/images/DesktopWallpaper/product-2.png",
-			"assets/images/DesktopWallpaper/product-3.png",
-			"assets/images/DesktopWallpaper/product-4.png",
-			"assets/images/DesktopWallpaper/product-5.png",
+			"assets/images/DesktopWallpaper/product-1.webp",
+			"assets/images/DesktopWallpaper/product-2.webp",
+			"assets/images/DesktopWallpaper/product-3.webp",
+			"assets/images/DesktopWallpaper/product-4.webp",
+			"assets/images/DesktopWallpaper/product-5.webp",
 		],
 		// 移动背景图片（支持单张或多张随机）
-		// mobile: "assets/images/MobileWallpaper/product-mobile-1.png",
+		// mobile: "assets/images/MobileWallpaper/product-mobile-1.webp",
 		mobile: [
-			"assets/images/MobileWallpaper/product-mobile-1.png",
-			"assets/images/MobileWallpaper/product-mobile-2.png",
-			"assets/images/MobileWallpaper/product-mobile-3.png",
-			"assets/images/MobileWallpaper/product-mobile-4.png",
-			"assets/images/MobileWallpaper/product-mobile-5.png",
+			"assets/images/MobileWallpaper/product-mobile-1.webp",
+			"assets/images/MobileWallpaper/product-mobile-2.webp",
+			"assets/images/MobileWallpaper/product-mobile-3.webp",
+			"assets/images/MobileWallpaper/product-mobile-4.webp",
+			"assets/images/MobileWallpaper/product-mobile-5.webp",
 		],
 	},
 	// 横幅壁纸和全屏壁纸共享配置
