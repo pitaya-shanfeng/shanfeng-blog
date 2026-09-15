@@ -18,7 +18,7 @@ draft: false
 
 前台流量可以在几天内放大，库存位置、仓内处理、配送运力和客服能力却很难同步扩张。进入高峰以后，增长动作未必还是继续加速。先确认还能卖多少、能不能按承诺送到、异常出现以后是否处理得过来，再决定放多少量，比把所有订单先接下来更重要。
 
-![库存、履约与服务](/assets/library/methods/growth-hacker-inventory-fulfillment-service/img-01.png)
+![](/assets/library/methods/growth-hacker-inventory-fulfillment-service/img-01.png)
 
 ## 3.1 库存：流量起来以后，货到底接不接得住
 
@@ -44,7 +44,7 @@ draft: false
 
 这时候，放量范围最好跟着承接能力走。库存、仓内、配送和服务都有余量，可以正常扩大；能力还没有验证，就先限区域、限门店、限 SKU、限时段；缺货和延迟已经开始上升，则需要限购、预约、预售，甚至暂时收缩活动。灰度并不只适合产品发布，在经营侧同样有用——先让新增订单进入一个可控范围，看系统是否稳定，再继续打开。
 
-![放量](/assets/library/methods/growth-hacker-inventory-fulfillment-service/img-02.png)
+![](/assets/library/methods/growth-hacker-inventory-fulfillment-service/img-02.png)
 
 |**当前状态**|**更合适的做法**|**常见动作**|
 |---|---|---|
@@ -73,7 +73,7 @@ draft: false
 
 履约异常一旦发生，服务不能只是最后接住投诉：缺货退款突然增加，问题很可能在库存；某个区域催单大量出现，应该回到运力和预计时效；同一商品退货异常，则要继续检查商品质量、包装甚至前面的内容有没有说清楚。如果服务团队只能不停处理前面制造出来的问题，订单越多，团队越被动。
 
-![服务](/assets/library/methods/growth-hacker-inventory-fulfillment-service/img-03.png)
+![](/assets/library/methods/growth-hacker-inventory-fulfillment-service/img-03.png)
 
 |**异常表现**|**更应该先查什么**|**服务侧可以做什么**|
 |---|---|---|

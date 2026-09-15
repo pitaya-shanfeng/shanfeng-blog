@@ -18,7 +18,7 @@ draft: false
 
 没有第二次购买，并不意味着召回一定出了问题。有些商品还没到下一次使用时间，有些用户第一次体验已经出了问题；也有人确实还有需求，只是下一次去了别的渠道。还有一些业务天然低频，让用户三个月再买一张床、半年再装修一次，本来就不现实。复购真正值得先判断的是：下一次需求会不会发生、什么时候发生，以及用户为什么还会回来找你。
 
-![复购、会员与私域](/assets/library/methods/growth-hacker-repurchase-membership-private-domain/img-01.png)
+![](/assets/library/methods/growth-hacker-repurchase-membership-private-domain/img-01.png)
 
 ## 4.1 复购：先判断用户为什么没有第二次
 
@@ -40,7 +40,7 @@ draft: false
 
 更自然的触发点来自需求本身。消耗品接近用完，可以提醒补货；有稳定使用周期的服务，可以在下一周期前联系。一笔购买已经自然带来下一件商品需求，可以做关联推荐；季节、生日、出行、搬家、开学这些事件，也可能重新激活某类需求。
 
-![召回](/assets/library/methods/growth-hacker-repurchase-membership-private-domain/img-02.png)
+![](/assets/library/methods/growth-hacker-repurchase-membership-private-domain/img-02.png)
 
 |**已经知道的信号**|**可以采取的动作**|**更应该注意什么**|
 |---|---|---|
@@ -69,7 +69,7 @@ draft: false
 
 会员把长期权益和身份留了下来，企业还会面对另一个问题：什么情况下值得和用户持续保持联系。完成交易以后，把用户加进企业微信、社群或者品牌自己的小程序，像是在把一次交易变成长期关系。但“以后还能找到这个用户”，并不意味着关系已经成立。用户进群以后每天收到三条促销，企业微信每周固定群发，私域很快只是把短信和 Push 搬到了另一个渠道。判断私域值不值得做，一个很现实的问题是：**下一次联系时，除了优惠还能提供什么**？
 
-![私域](/assets/library/methods/growth-hacker-repurchase-membership-private-domain/img-03.png)
+![](/assets/library/methods/growth-hacker-repurchase-membership-private-domain/img-03.png)
 
 |**业务特征**|**私域更可能有价值**|**适合的关系方式**|
 |---|---|---|

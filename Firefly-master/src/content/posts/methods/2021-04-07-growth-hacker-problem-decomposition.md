@@ -22,7 +22,7 @@ draft: false
 
 增长链路要解决的第一个问题，是把阶段目标重新放回真实业务过程。假设目标是提高首购用户的二次购买率，只看“二次购买率”这个数字，很难知道问题发生在哪里。用户完成第一次交易以后，要经历收货、使用、再次产生需求、重新进入产品，还要发现合适商品、形成购买意愿才能再次下单。其中任何一段发生变化，都可能影响最后的复购结果。链路没有先还原清楚，后续看到的每一个指标都只是孤立的数字。
 
-![用户增长链路](/assets/library/methods/growth-hacker-problem-decomposition/img-01.png)
+![](/assets/library/methods/growth-hacker-problem-decomposition/img-01.png)
 
 一条完整的增长链路，可以从用户第一次接触产品开始，一直画到持续获得价值，以及后续可能发生的付费、复购和推荐。画这条链路时，不需要一开始就判断哪个节点最重要，先保证业务过程没有明显缺失。实际操作可以分成三个层次。
 
@@ -50,7 +50,7 @@ draft: false
 
 - Revenue，变现：用户价值是否形成可持续的商业交换。
 
-![AARRR 与 RARRA](/assets/library/methods/growth-hacker-problem-decomposition/img-02.png)
+![](/assets/library/methods/growth-hacker-problem-decomposition/img-02.png)
 
 RARRA 使用的是相同的几个增长环节，只是把 Retention 放到更靠前的位置。它强调的是另一种优先级判断：产品还没有证明用户能够持续留下时，过早放大 Acquisition，可能只是把更多用户送进一个持续流失的系统。对于仍处在价值验证和早期增长阶段的产品，先检查 Retention 和 Activation，通常更容易暴露真正的约束。两套框架可以这样使用：
 
@@ -85,7 +85,7 @@ AARRR 和 RARRA 的作用到这里就够了。它们负责把一个大问题先�
 
 核心转化路径回答“用户经过什么”，增长模型进一步回答“最终结果由什么共同决定”。增长模型的基本做法，是把阶段目标或北极星指标作为结果端，再把影响结果的关键指标和变量按照业务关系连接起来。构建时可以沿着三步完成：
 
-![增长模型](/assets/library/methods/growth-hacker-problem-decomposition/img-03.png)
+![](/assets/library/methods/growth-hacker-problem-decomposition/img-03.png)
 
 1. 定义结果指标：模型必须围绕一个明确结果展开。可以是长期北极星指标，也可以是当前阶段目标。结果如果同时混入 GMV、利润、留存、新增等多个目标，模型很快会变成一张无法判断主次的业务全景图。
 
