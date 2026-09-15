@@ -19,14 +19,6 @@ draft: false
   ></iframe>
 </div>
 
-<p class="html-report-link">
-  如果页面显示不完整，也可以
-  <a href="/assets/library/cases/user-operation-system-planning/index.html" target="_blank" rel="noreferrer">
-    在新窗口打开完整报告
-  </a>
-  。
-</p>
-
 <style>
   .html-report-frame {
     width: 100%;
@@ -44,17 +36,6 @@ draft: false
     min-height: 1px;
     border: 0;
     background: #fff;
-  }
-
-  .html-report-link {
-    margin-top: 0.9rem;
-    font-size: 0.92rem;
-    color: var(--text-50);
-  }
-
-  .html-report-link a {
-    color: var(--primary);
-    font-weight: 700;
   }
 
   @media (max-width: 768px) {

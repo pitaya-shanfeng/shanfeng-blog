@@ -134,16 +134,16 @@ export async function getCategoryList(): Promise<Category[]> {
 }
 
 /**
- * 对标题进行分词，支持中英文混合
- * 使用 Intl.Segmenter 对中文分词，英文按空格分词
- * 过滤标点和空白，英文统一小写
+ * 对文章文本分词，支持中英文混合。
+ * 用于标题、摘要和正文的主题相似度计算。
  */
-function tokenizeTitle(title: string): Set<string> {
+function tokenizeText(text: string): Set<string> {
 	const tokens = new Set<string>();
 	const segmenter = new Intl.Segmenter("zh", { granularity: "word" });
-	for (const { segment, isWordLike } of segmenter.segment(title)) {
+	for (const { segment, isWordLike } of segmenter.segment(text)) {
 		if (!isWordLike) continue;
-		tokens.add(segment.toLowerCase());
+		const normalized = segment.toLowerCase().trim();
+		if (normalized.length > 1) tokens.add(normalized);
 	}
 	return tokens;
 }
@@ -162,12 +162,8 @@ function jaccardSimilarity(a: Set<string>, b: Set<string>): number {
 }
 
 /**
- * 获取相关文章推荐
- * 评分公式: totalScore = tagMatchScore + titleSimilarityScore + timeFreshnessScore + categoryBonus
- * - tagMatchScore (0-100): 标签 Jaccard 相似度 × 100
- * - titleSimilarityScore (0-100): 标题分词 Jaccard 相似度 × 100
- * - timeFreshnessScore (0-30): 6 个月半衰期指数衰减
- * - categoryBonus (0 or 10): 同分类加 10 分
+ * 获取相关文章推荐（合集文章由详情页单独处理）。
+ * 推荐优先考虑主题相关性，再用栏目、置顶和新鲜度做辅助排序。
  */
 export async function getRelatedPosts(
 	currentPost: CollectionEntry<"posts">,
@@ -183,73 +179,94 @@ export async function getRelatedPosts(
 	);
 
 	const currentTags = new Set(currentPost.data.tags || []);
-	const currentTokens = tokenizeTitle(currentPost.data.title);
+	const currentTitleTokens = tokenizeText(currentPost.data.title);
+	const currentContextTokens = tokenizeText(
+		`${currentPost.data.title} ${currentPost.data.description || ""} ${(currentPost.body || "").slice(0, 8000)}`,
+	);
 	const currentCategory = currentPost.data.category || "";
 	const now = Date.now();
+	const genericTags = new Set(["案例研究", "产品", "运营", "互联网", "方法论"]);
+	const growthTopicWords = [
+		"增长",
+		"转化",
+		"留存",
+		"拉新",
+		"用户",
+		"实验",
+		"裂变",
+		"复购",
+		"流量",
+		"推荐",
+		"运营",
+		"成交",
+	];
+	const currentTopicText =
+		`${currentPost.data.title} ${currentPost.data.description || ""} ${(currentPost.body || "").slice(0, 12000)}`.toLowerCase();
+	const currentGrowthTopicScore = growthTopicWords.reduce(
+		(score, word) => score + (currentTopicText.includes(word) ? 1 : 0),
+		0,
+	);
 
 	const scored = candidates.map((post) => {
 		const postTags = new Set(post.data.tags || []);
+		const sharedTags = [...currentTags].filter((tag) => postTags.has(tag));
+		const tagMatchScore = sharedTags.reduce(
+			(score, tag) => score + (genericTags.has(tag) ? 4 : 14),
+			0,
+		);
 
-		// tagMatchScore (0-100)
-		const tagMatchScore = jaccardSimilarity(currentTags, postTags) * 100;
-
-		// titleSimilarityScore (0-100)
-		const postTokens = tokenizeTitle(post.data.title);
+		const postTitleTokens = tokenizeText(post.data.title);
+		const postContextTokens = tokenizeText(
+			`${post.data.title} ${post.data.description || ""} ${(post.body || "").slice(0, 8000)}`,
+		);
 		const titleSimilarityScore =
-			jaccardSimilarity(currentTokens, postTokens) * 100;
+			jaccardSimilarity(currentTitleTokens, postTitleTokens) * 20;
+		const contextSimilarityScore =
+			jaccardSimilarity(currentContextTokens, postContextTokens) * 15;
 
-		// timeFreshnessScore (0-30): 6 个月半衰期
 		const daysSincePublished =
 			(now - new Date(post.data.published).getTime()) / (1000 * 60 * 60 * 24);
-		const timeFreshnessScore =
-			30 * Math.exp((-Math.LN2 * daysSincePublished) / 180);
+		const timeFreshnessScore = 5 * Math.exp((-Math.LN2 * daysSincePublished) / 365);
 
-		// categoryBonus (0 or 10)
 		const postCategory = post.data.category || "";
-		const categoryBonus =
-			currentCategory && postCategory && currentCategory === postCategory
-				? 10
+		const categoryBonus = currentCategory && postCategory === currentCategory ? 3 : 0;
+		const pinnedBonus = post.data.pinned ? 10 : 0;
+		const postTopicText =
+			`${post.data.title} ${post.data.description || ""} ${(post.body || "").slice(0, 12000)} ${post.data.series || ""}`.toLowerCase();
+		const postGrowthTopicScore = growthTopicWords.reduce(
+			(score, word) => score + (postTopicText.includes(word) ? 1 : 0),
+			0,
+		);
+		const growthSeriesBonus =
+			currentGrowthTopicScore >= 2 &&
+			(post.data.series === "增长黑客" || postGrowthTopicScore >= 2)
+				? post.data.series === "增长黑客"
+					? 60
+					: 25
 				: 0;
 
 		const totalScore =
-			tagMatchScore + titleSimilarityScore + timeFreshnessScore + categoryBonus;
+			tagMatchScore +
+			titleSimilarityScore +
+			contextSimilarityScore +
+			categoryBonus +
+			timeFreshnessScore +
+			pinnedBonus +
+			growthSeriesBonus;
 
 		return {
 			post,
 			totalScore,
 			tagMatchScore,
+			contextSimilarityScore,
 			timeFreshnessScore,
 			categoryBonus,
 		};
 	});
 
-	// 按总分降序排列
 	scored.sort((a, b) => b.totalScore - a.totalScore);
-
-	// 优先取有标签匹配的
-	const withTagMatch = scored.filter((s) => s.tagMatchScore > 0);
-	const withoutTagMatch = scored.filter((s) => s.tagMatchScore === 0);
-
-	const result: PostForList[] = [];
-
-	for (const s of withTagMatch) {
-		if (result.length >= maxCount) break;
-		result.push({ id: s.post.id, data: s.post.data });
-	}
-
-	// 不足时从剩余候选中按 timeFreshnessScore + categoryBonus 降序补充
-	if (result.length < maxCount) {
-		withoutTagMatch.sort(
-			(a, b) =>
-				b.timeFreshnessScore +
-				b.categoryBonus -
-				(a.timeFreshnessScore + a.categoryBonus),
-		);
-		for (const s of withoutTagMatch) {
-			if (result.length >= maxCount) break;
-			result.push({ id: s.post.id, data: s.post.data });
-		}
-	}
-
-	return result;
+	return scored.slice(0, maxCount).map(({ post }) => ({
+		id: post.id,
+		data: post.data,
+	}));
 }

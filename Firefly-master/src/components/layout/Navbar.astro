@@ -137,13 +137,18 @@ if (isLocalSrcLogo) {
                     {navbarTitle}
                 </div>
             </a>
+            {links[0] && (
+                <div class="hidden lg:flex items-center shrink-0 ml-8 xl:ml-12 whitespace-nowrap">
+                    <DropdownMenu link={links[0]} />
+                </div>
+            )}
             <div class:list={[
-                "hidden lg:flex items-center gap-4 xl:gap-6 absolute left-[41%] -translate-x-1/2 px-4 whitespace-nowrap",
+                "hidden lg:flex items-center flex-1 min-w-0 ml-8 xl:ml-12 mr-6 xl:mr-10 px-2 pr-8 whitespace-nowrap",
                 isNavbarMenuCentered
-                    ? "justify-center"
-                    : "justify-start pl-2"
+                    ? "justify-between"
+                    : "justify-start gap-4 xl:gap-6 pl-2"
             ]}>
-                {links.map((l) => {
+                {links.slice(1).map((l) => {
                     return <DropdownMenu link={l} />;
                 })}
             </div>

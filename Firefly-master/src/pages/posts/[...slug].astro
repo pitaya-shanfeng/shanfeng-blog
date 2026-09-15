@@ -9,7 +9,7 @@ import License from "@components/misc/License.astro";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
-import { getSortedPosts } from "@utils/content-utils";
+import { getRelatedPosts, getSortedPosts } from "@utils/content-utils";
 import {
 	getFileDirFromPath,
 	removeFileExtension,
@@ -173,7 +173,6 @@ const jsonLd = {
 };
 
 const allPostsForRecommendation = await getSortedPosts();
-const currentTags = new Set(entry.data.tags || []);
 const sameSeriesPosts = entry.data.series
 	? allPostsForRecommendation.filter(
 			(post) => post.id !== entry.id && post.data.series === entry.data.series,
@@ -181,11 +180,7 @@ const sameSeriesPosts = entry.data.series
 	: [];
 const recommendedPosts = entry.data.series
 	? sortPostsBySeriesOrder(sameSeriesPosts)
-	: allPostsForRecommendation.filter(
-			(post) =>
-				post.id !== entry.id &&
-				(post.data.tags || []).some((tag) => currentTags.has(tag)),
-		);
+	: await getRelatedPosts(entry, 5);
 const recommendationTitle = entry.data.series ? "同合集文章" : "推荐文章";
 const recommendationBadge = entry.data.series || entry.data.tags?.[0] || "";
 ---

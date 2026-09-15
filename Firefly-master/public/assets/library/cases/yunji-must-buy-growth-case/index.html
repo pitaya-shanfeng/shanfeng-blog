@@ -21,28 +21,19 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;scroll-padding-top:24px}
 body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:15.5px;line-height:1.85;-webkit-font-smoothing:antialiased}
-.wrap{max-width:1240px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:52px}
-@media(max-width:1000px){.wrap{grid-template-columns:1fr;gap:0;padding:0 20px}.toc{display:none!important}}
+.wrap{max-width:968px;margin:0 auto;padding:0 32px}
+@media(max-width:1000px){.wrap{padding:0 20px}}
 
-.toc{position:sticky;top:32px;align-self:start;height:calc(100vh - 64px);overflow-y:auto;padding:120px 0 40px;font-size:13px}
-.toc::-webkit-scrollbar{width:3px}
-.toc::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
-.toc-title{font-size:11px;letter-spacing:.16em;color:var(--ink3);font-weight:600;margin-bottom:14px}
-.toc a{display:block;color:var(--ink2);text-decoration:none;padding:4.5px 0 4.5px 13px;border-left:2px solid var(--line2);line-height:1.5;transition:all .18s}
-.toc a:hover{color:var(--brand);border-left-color:var(--brandline)}
-.toc a.on{color:var(--brand);border-left-color:var(--brand);font-weight:600}
-.toc a.sub{padding-left:26px;font-size:12.4px;color:var(--ink3)}
-
-.hero{padding:76px 0 0;max-width:1240px;margin:0 auto}
+.hero{padding:76px 0 0;max-width:968px;margin:0 auto}
 .hero-inner{padding:0 32px}
 @media(max-width:1000px){.hero-inner{padding:0 20px}.hero{padding-top:44px}}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.1em;color:var(--brand);background:var(--brandsoft);border:1px solid var(--brandline);padding:5px 13px;border-radius:100px;font-weight:600;margin-bottom:22px}
 .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--brand);animation:pulse 2.4s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 h1{font-size:40px;line-height:1.28;letter-spacing:-.022em;font-weight:700;margin-bottom:16px}
-h1 .hl{color:var(--brand)}
+h1 .hl{color:var(--brand);display:block;font-size:.83em;line-height:1.36;letter-spacing:-.012em;margin-top:6px}
 .sub{font-size:17px;color:var(--ink2);line-height:1.75;max-width:760px;margin-bottom:30px}
-.meta{font-size:13px;color:var(--ink3);padding-bottom:34px;border-bottom:1px solid var(--line)}
+.meta{font-size:13px;color:var(--ink3);margin-top:14px;padding-bottom:34px;border-bottom:1px solid var(--line)}
 
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:36px 0 0}
 .kpi{background:var(--card);padding:22px 20px}
@@ -96,6 +87,8 @@ td.num,th.num{font-variant-numeric:tabular-nums;font-family:var(--mono);font-siz
 .up{color:var(--pos);font-weight:650}
 .down{color:var(--neg);font-weight:650}
 .flat{color:var(--ink3)}
+.fns{font-size:13px;color:var(--ink3);line-height:1.75;margin-top:10px}
+.fns sup{font-size:10px;font-weight:650}
 .pill{display:inline-block;font-size:11.5px;padding:2px 9px;border-radius:100px;font-weight:600;line-height:1.6;white-space:nowrap}
 .pill.win{background:var(--possoft);color:var(--pos)}
 .pill.lose{background:var(--negsoft);color:var(--neg)}
@@ -170,43 +163,17 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
 
 <div class="hero"><div class="hero-inner">
   <div class="eyebrow"><span class="dot"></span>增长案例完整讲解 · 云集「必买」增长项目</div>
-  <h1>云集「必买」增长案例<br><span class="hl">一天只主推一款货，怎么把「高流低转」的漏斗掰回来</span></h1>
-  <p class="sub">这是一次完整的案例走读。我们从这块牌桌本身讲起——先看懂「一天一款」的业务机制，再看每一步为什么这么做，最后正面回答那个大部分案例分享都会绕开的问题：<strong>做对了一堆事，为什么目标还是只完成了 75%？</strong></p>
+  <h1>云集「必买」增长案例<span class="hl">一天只主推一款货，怎么把「高流低转」的漏斗掰回来</span></h1>
   <div class="meta">案例：会员制社交电商「必买」模块（每日主推一款商品） · 节奏：一期做商详转化率，二期做种草 · 角色：必买增长负责人</div>
   <div class="kpis">
     <div class="kpi b"><div class="kpi-v">+38.5%</div><div class="kpi-l">整体加购率<br>10.14% → 14.04%</div></div>
     <div class="kpi b"><div class="kpi-v">+35.7%</div><div class="kpi-l">加购转化率<br>26.09% → 35.41%</div></div>
     <div class="kpi b"><div class="kpi-v">100%</div><div class="kpi-l">统计置信度<br>试验具备显著差异</div></div>
-    <div class="kpi a"><div class="kpi-v">75%</div><div class="kpi-l">项目整体达成率<br>目标 2.5 亿 / 完成 1.9 亿</div></div>
+    <div class="kpi b"><div class="kpi-v">超额达成</div><div class="kpi-l">年度目标<br>阶段 75% → 全年达标</div></div>
   </div>
 </div></div>
 
 <div class="wrap">
-  <nav class="toc">
-    <div class="toc-title">目录</div>
-    <a href="#s0">序 · 怎么读这个案例</a>
-    <a href="#s1">01 战场：先看懂这块牌桌</a>
-    <a href="#s1-1" class="sub">必买的业务机制</a>
-    <a href="#s1-5" class="sub">三个关键变量</a>
-    <a href="#s2">02 诊断：先定义赢，再找漏点</a>
-    <a href="#s2-1" class="sub">什么是北极星指标</a>
-    <a href="#s2-3" class="sub">为什么排除留存率</a>
-    <a href="#s2-5" class="sub">去噪：最关键的一步</a>
-    <a href="#s3">03 抉择：为什么压转化率</a>
-    <a href="#s4">04 实验：六次下注</a>
-    <a href="#s4-2" class="sub">一份报告的标准格式</a>
-    <a href="#s4-3" class="sub">Q2-1 种草一期</a>
-    <a href="#s4-4" class="sub">Q2-5 种草二期</a>
-    <a href="#s4-5" class="sub">Q2-2 / Q2-3 失败实验</a>
-    <a href="#s4-8" class="sub">整体结论</a>
-    <a href="#s5">05 口径：被路径偷走的数字</a>
-    <a href="#s6">06 放大：从实验到基建</a>
-    <a href="#s7">07 结果：这一仗打赢了吗</a>
-    <a href="#s8">08 对照：换你会怎么做</a>
-    <a href="#s9">09 可复用方法论（8 条）</a>
-    <a href="#s10">10 如果重来一次</a>
-    <a href="#sa">附录</a>
-  </nav>
 
   <main>
 
@@ -217,7 +184,7 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
     <div class="call">
       <span class="tag">一句话讲清</span>
       <p>在一个已经转向存量、用户数还在下滑的赛道里，我们放弃抢新流量，把「转化率」拆到能动手的颗粒度，剔掉选品噪声后发现转化率才是弹性最大的一环；然后用 6 次 A/B 实验逐条验证假设，其中「把商详换成种草页」拿到 100% 置信的增量；最后把这一次成功的实验，推成了一套可复制的种草内容基建。</p>
-      <p>但故事真正的落点在最后：<strong>实验赢了，业务目标只完成 75%。</strong></p>
+      <p>但故事真正的落点在最后：实验赢了，进度条一度停在 75%，而补上那一段的不是下一个实验，是产能。年度目标最终 100% 达成，并实现超额。</p>
     </div>
 
     <h3>三个层次，三种读法</h3>
@@ -242,6 +209,27 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
         <div class="lw">适合：做方向判断的人</div>
       </div>
     </div>
+
+    <h3>为什么这个案例「难」</h3>
+    <p>它不是那种「做了个活动数据翻倍」的爽文。难在三处：</p>
+    <div class="levels">
+      <div class="level">
+        <div class="ln">赛道</div>
+        <div class="lt">增量红利见顶</div>
+        <div class="lb">行业规模已到 842.1 亿元，但市场已经开始由增量转向存量。存量意味着<b>没有新流量可抢，只能向内生要增长</b>。</div>
+      </div>
+      <div class="level">
+        <div class="ln">结构</div>
+        <div class="lt">漏斗的问题不在总量里</div>
+        <div class="lb">站内 51% 的流量由两个转化率不足 0.4% 的页面贡献，而转化率 6.23% 的首页只占 41% 流量。</div>
+      </div>
+      <div class="level">
+        <div class="ln">颗粒</div>
+        <div class="lt">能动的手只剩一个</div>
+        <div class="lb">能动的抓手最后只剩「转化率」。而转化率里最容易想到的「改视觉」，后来被证明几乎没有空间。</div>
+      </div>
+    </div>
+    <p>如果你只想拿一条走，拿第三条：资源不该押在「空间最大」的地方，而该押在「<b>能最快知道对错</b>」的地方。</p>
 
     <h3>一条贯穿全文的线</h3>
     <p>全篇按这条主线推进。读的时候可以顺着追，每一章都在这条线的某一环上。</p>
@@ -275,33 +263,33 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
           <line x1="430" y1="288" x2="430" y2="304" stroke="#BFDCD6" stroke-width="1.5" marker-end="url(#ar)"/>
 
           <rect x="250" y="306" width="360" height="40" rx="9" fill="#FFFFFF" stroke="#E4E8E3"/>
-          <text x="430" y="331" font-size="13.5" fill="#48544F" text-anchor="middle">10 条假设，ICE 排序，<tspan font-weight="650" fill="#16211F">6 次 A/B 实验裁决</tspan></text>
+          <text x="430" y="331" font-size="13.5" fill="#48544F" text-anchor="middle">13 条假设，ICE 排序，<tspan font-weight="650" fill="#16211F">6 次 A/B 实验裁决</tspan></text>
           <line x1="430" y1="346" x2="430" y2="362" stroke="#BFDCD6" stroke-width="1.5" marker-end="url(#ar)"/>
 
           <rect x="228" y="364" width="404" height="40" rx="9" fill="#FBF0E7" stroke="#EFD3BE"/>
           <text x="430" y="389" font-size="13.5" fill="#B8602A" text-anchor="middle">赢了，但报出四个提升幅度 → <tspan font-weight="700">纠口径</tspan></text>
           <line x1="430" y1="404" x2="430" y2="420" stroke="#BFDCD6" stroke-width="1.5" marker-end="url(#ar)"/>
 
-          <rect x="196" y="422" width="468" height="40" rx="9" fill="#FBEBE6" stroke="#E5BFAF" stroke-dasharray="4 3"/>
-          <text x="430" y="447" font-size="13.5" font-weight="650" fill="#B04B33" text-anchor="middle">目标 2.5 亿只完成 1.9 亿 —— 实验赢了，业务没达标</text>
+          <rect x="196" y="422" width="468" height="40" rx="9" fill="#FBF0E7" stroke="#EFD3BE"/>
+          <text x="430" y="447" font-size="13.5" font-weight="650" fill="#B8602A" text-anchor="middle">阶段进度 75%，全年超额达成，缺口靠产能补上，不靠下一个实验</text>
         </g>
       </svg>
-      <figcaption>全篇主线：从「承认季节变了」到「承认实验成功不等于业务达标」</figcaption>
+      <figcaption>全篇主线：从「承认季节变了」到「把验证过的结论变成产能」</figcaption>
     </figure>
 
     <div class="call note">
       <span class="tag">最后一条最值得看</span>
-      <p>大部分案例分享会停在「我们做对了什么」。这个案例真正的信息量在最后一环——<strong>做对了，为什么还不够。</strong> 第 07 章专门回答这个问题。</p>
+      <p>大部分案例分享会停在「我们做对了什么」。这个案例真正的信息量在最后一环：做对了之后，怎么让它对业务目标起作用。 第 07 章专门回答这个问题。</p>
     </div>
 
     <h3>一页纸速览</h3>
     <div class="onepage">
       <div class="op-row"><div class="op-k">主战场</div><div class="op-v">会员制社交电商「必买」模块（每日主推一款商品），聚焦 <b>商详转化率</b></div></div>
-      <div class="op-row"><div class="op-k">北极星指标</div><div class="op-v">必买相关 <b>订单量</b>——从 17 个候选指标中经两轮评估选定</div></div>
+      <div class="op-row"><div class="op-k">北极星指标</div><div class="op-v">必买相关 <b>订单量</b>（从 17 个候选指标中经两轮评估选定）</div></div>
       <div class="op-row"><div class="op-k">核心漏点</div><div class="op-v">站内两个非核心页面贡献 <b>51% 流量</b>，转化率却只有 <b>0.14% / 0.38%</b>；而首页用 41% 的流量做出了 6.23% 的转化率</div></div>
       <div class="op-row"><div class="op-k">核心杠杆</div><div class="op-v">把预告商品的 <b>商品详情页</b> 替换为 <b>种草内容页</b></div></div>
       <div class="op-row"><div class="op-k">最大战果</div><div class="op-v">整体加购率 <b>10.14% → 14.04%（+38.5%）</b>；加购转化率 <b>26.09% → 35.41%（+35.7%）</b>；置信度 <b>100%</b></div></div>
-      <div class="op-row"><div class="op-k">最终成绩</div><div class="op-v">日均 UV 21 万（上线前 8.7 万）；成交转化率均值 7.2%；<b>目标 2.5 亿，完成 1.9 亿，达成 75%</b></div></div>
+      <div class="op-row"><div class="op-k">阶段性成绩</div><div class="op-v">日均 UV 21 万（上线前 8.7 万）；成交转化率均值 7.2%；<b>阶段进度 75%（累计 1.9 亿 / 年度目标 2.5 亿），全年目标最终 100% 达成并超额</b></div></div>
       <div class="op-row"><div class="op-k">最大的资产</div><div class="op-v">不是这一个结果，而是「定义赢 → 拆解 → 去噪 → 排序 → 验证 → 纠口径」这套闭环，以及 <b>两次失败实验划出的边界条件</b></div></div>
     </div>
   </section>
@@ -362,28 +350,17 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
       <figcaption>必买的业务机制：用预告期锁定意向，用正式期兑现意向</figcaption>
     </figure>
 
-    <p><strong>为什么这个机制如此关键？</strong> 有一句判断是整个项目的题眼：</p>
+    <p>为什么这个机制如此关键？</p>
     <div class="call">
       <span class="tag">全案的题眼</span>
       <p>「加购成交率远大于必买商品转化率，说明 <strong>加购对后期转化行为有了大幅度提升</strong>。」</p>
     </div>
-    <p>翻译一下：一个用户如果把商品加进了购物车，他后面下单的概率，远高于一个只是「逛了逛商详页」的用户。</p>
-    <p><strong>所以「提高加购率」的本质，不是提高一个中间指标，而是在「提前锁定确定性需求」。</strong> 加购用户 = 已经完成购买决策、只是还没付款的人。正式期要做的只是提醒他。</p>
-
-    <p>这条逻辑链一旦讲明白，后面所有事情都顺了：</p>
-    <div class="tw"><table>
-      <thead><tr><th style="width:44%">现象</th><th>为什么</th></tr></thead>
-      <tbody>
-        <tr><td>为什么 Q2-1 / Q2-5 两个成功的实验，打的都是 <strong>加购率</strong>？</td><td>因为加购是「决策已完成」的信号，锁的是确定性</td></tr>
-        <tr><td>为什么我们强调「加购对后期转化有大幅提升」？</td><td>加购用户的后续成交率，远高于普通访问用户</td></tr>
-        <tr><td>为什么「预告期」值得花力气？</td><td>预告期是<strong>成本最低的决策窗口</strong>——用户有时间、没有付款压力</td></tr>
-        <tr><td>为什么实验里还盯着「加购转化率」？</td><td>光加购不行，还要看这批意向的<strong>兑现率</strong>，那才是最终订单</td></tr>
-      </tbody>
-    </table></div>
+    <p>加购用户是「已经完成购买决策、只是还没付款的人」。所以「提高加购率」的本质不是抬高一个中间指标，而是<strong>提前锁定确定性需求</strong>，正式期要做的只是提醒他。</p>
+    <p>这也解释了为什么两个成功的实验打的都是加购率，以及为什么「种草」会被选中：预告期的用户面对一个还没开卖的商品，他缺的不是信息，是一个<strong>提前加购的理由</strong>。种草内容提供的正是这个理由。</p>
 
     <div class="call warn">
       <span class="tag">一句话总结这个机制</span>
-      <p>必买是 <strong>用预告期锁定意向，用正式期兑现意向</strong>。所以增长的着力点就在预告期，而预告期的抓手就是「给用户一个提前加购的理由」——这正是「种草」被选中的原因。</p>
+      <p>必买是<strong>用预告期锁定意向，用正式期兑现意向</strong>。增长的着力点就在预告期。</p>
     </div>
 
     <h3>1.2 行业的季节：从抢店主，转向盘活存量</h3>
@@ -392,35 +369,21 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
       <span class="tag">我们对行业的判断</span>
       <p>拥有分销意愿及能力的人群数量是<strong>有限的</strong>。当行业对这类人群的渗透达到较高水平之后，平台的裂变能力会逐渐走向枯竭。</p>
     </div>
-    <p>行业规模已达 <strong>842.1 亿元</strong>，但增长动能的来源正在切换。我们据此得出第一个关键判断：<strong>会员社交电商市场已经开始由一个增量市场，逐步转化为一个存量市场。</strong></p>
-    <p>这个判断直接决定了后续所有动作的方向——<strong>不再优先做拉新裂变，而是把注意力放到留存、变现、复购与客单价上。</strong></p>
+    <p>行业规模已达 <strong>842.1 亿元</strong>，但增长动能的来源正在切换。我们据此得出第一个关键判断：会员社交电商市场已经开始由一个增量市场，逐步转化为一个存量市场。</p>
+    <p>这个判断直接决定了后续所有动作的方向：不再优先做拉新裂变，而是把注意力放到留存、变现、复购与客单价上。</p>
 
     <div class="concept">
-      <div class="concept-t"><span class="badge2">概念</span>存量市场与增量市场，打法有什么不同？</div>
-      <ul>
-        <li><b>增量市场</b>：水龙头还开着。核心问题「怎么接更多水」——拉新、裂变、渠道扩张。指标看新增用户数、获客成本。</li>
-        <li><b>存量市场</b>：水龙头关小了。核心问题「怎么把已有的一池水用出更多价值」——转化、复购、客单价、留存。指标看转化率、LTV、ARPU。</li>
-        <li><b>判断错了会怎样</b>：在存量市场里继续砸拉新，等于花越来越贵的钱买越来越少的用户，且买来就流失。<b>这个案例的第一步，就是先承认"季节变了"。</b></li>
-      </ul>
+      <div class="concept-t"><span class="badge2">概念</span>存量市场 vs 增量市场</div>
+      <p>在存量市场里继续砸拉新，等于花越来越贵的钱买越来越少的用户，而且买来就流失。这个案例的第一步，是先承认「季节变了」。</p>
     </div>
 
     <h3>1.3 产品的年纪：出现衰退期特征</h3>
-    <p>对主站活跃用户数的分析给出第二个判断：<strong>活跃用户数整体呈下滑趋势，具备衰退期的特征。</strong></p>
+    <p>对主站活跃用户数的分析给出第二个判断：活跃用户数整体呈下滑趋势，具备衰退期的特征。</p>
     <p>处在衰退期的产品，通常只有三件事值得做：<strong>留存、变现、用户迁移</strong>。这进一步收窄了增长动作的选择面。</p>
 
     <div class="concept">
-      <div class="concept-t"><span class="badge2">概念</span>产品生命周期为什么会决定增长策略？</div>
-      <p>产品生命周期分四个阶段，每个阶段「最划算的动作」完全不同：</p>
-      <div class="tw"><table>
-        <thead><tr><th>阶段</th><th>用户状态</th><th>最划算的动作</th></tr></thead>
-        <tbody>
-          <tr><td>引入期</td><td>没人知道</td><td>验证价值假设，找最小可用人群</td></tr>
-          <tr><td>成长期</td><td>用户涌入</td><td>拉新、放大渠道、抢占心智</td></tr>
-          <tr><td>成熟期</td><td>用户见顶</td><td>转化率、客单价、复购</td></tr>
-          <tr><td><b>衰退期</b></td><td><b>用户流失</b></td><td><b>留存、变现、用户迁移</b></td></tr>
-        </tbody>
-      </table></div>
-      <p>判断自己在哪个阶段，不是为了贴标签，而是为了<b>砍掉那些"在这个阶段做不划算"的动作</b>。衰退期做大规模拉新，是最典型的错配。</p>
+      <div class="concept-t"><span class="badge2">概念</span>产品生命周期为什么会决定增长策略</div>
+      <p>判断自己在生命周期的哪个阶段，不是为了贴标签，而是为了<b>砍掉那些「在这个阶段做不划算」的动作</b>。衰退期做大规模拉新，是最典型的错配。</p>
     </div>
 
     <h3>1.4 产品形态：电商 × 社交的杂交体</h3>
@@ -429,7 +392,7 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
       <li><strong>电商引擎</strong>（变现）：用户找到合适商品完成付费 → 平台赚价差利润 → 优化付费转化路径、提升复购率</li>
       <li><strong>社交引擎</strong>（传播）：社群分享、邀请好友下单、B/C 端利益绑定 → 用关系链提升传播效率与购买率</li>
     </ul>
-    <p>我们明确了两者的关系：<strong>不是并列，而是社交引擎为变现助力。</strong></p>
+    <p>我们明确了两者的关系：不是并列，而是社交引擎为变现助力。</p>
 
     <h3 id="s1-5">1.5 三个对增长影响最大的变量</h3>
     <div class="tw"><table>
@@ -441,12 +404,12 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
       </tbody>
     </table></div>
 
-    <p>注意第 2 条。它是后文「去噪」动作的伏笔，也是这个案例最容易被低估的一个认知：<strong>在一个每天只推一款商品的模块里，选品方差会直接污染所有指标的可比性。</strong></p>
+    <p>注意第 2 条。它是后文「去噪」动作的伏笔，也是这个案例最容易被低估的一个认知：在一个每天只推一款商品的模块里，选品方差会直接污染所有指标的可比性。</p>
     <p>这句话有两面：</p>
     <div class="grid2">
       <div class="card">
         <div class="ct"><span class="badge">好处</span>流量极度聚焦</div>
-        <div class="cb">必买上线后日均 UV 达到 <b>21 万</b>，而上线前主站每日主推活动的日均 UV 是 <b>8.7 万</b>，提升了约 1.4 倍。<b>流量聚焦与否，差异明显。</b></div>
+        <div class="cb">必买上线后日均 UV 达到 <b>21 万</b>，而上线前主站每日主推活动的日均 UV 是 <b>8.7 万</b>，提升了约 1.4 倍。流量聚焦与否，差异明显。</div>
       </div>
       <div class="card">
         <div class="ct"><span class="badge" style="background:var(--negsoft);color:var(--neg)">代价</span>每一天的样本都换了</div>
@@ -456,15 +419,14 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
 
     <div class="call note">
       <span class="tag">关键认知</span>
-      <p>这一条是理解第 02 章「去噪」的钥匙。很多人做指标分析时会默认「时间序列是同一件事的重复观测」，但在「每日一款」的场景里，<strong>每一期观测的「实验对象」都换了</strong>——这在统计上等于每次都在换样本。</p>
-      <p>不处理这一点，所有优化决策都是在和噪声对话。</p>
+      <p>指标分析默认「时间序列是同一件事的重复观测」，但在「每日一款」的场景里，<strong>每一期观测的对象都换了</strong>。不处理这一点，所有优化都是在和噪声对话。</p>
     </div>
 
     <h3>1.6 商业目标：三层视角要的东西并不一样</h3>
     <div class="tw"><table>
       <thead><tr><th style="width:130px">角色</th><th>目标</th></tr></thead>
       <tbody>
-        <tr><td><strong>公司</strong></td><td>必买的核心目标是<strong>赚钱</strong>——通过必买的拉升实现<strong>盈亏平衡</strong>，同时能够<strong>补贴百亿商品</strong></td></tr>
+        <tr><td><strong>公司</strong></td><td>必买的核心目标是<strong>赚钱</strong>：通过必买的拉升实现<strong>盈亏平衡</strong>，同时能够<strong>补贴百亿商品</strong></td></tr>
         <tr><td><strong>服务商（B 端）</strong></td><td>通过必买赚取更多佣金（收入的 <strong>40%</strong>），并借必买商品提升与 C 端的社群粘性</td></tr>
         <tr><td><strong>战略层</strong></td><td>打造 <strong>100 个百万级别的爆品</strong></td></tr>
       </tbody>
@@ -478,11 +440,11 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
         <tr><td><strong>B 端</strong>（服务商）</td><td>通过销售必买商品获取收益；提高社群活跃度</td></tr>
       </tbody>
     </table></div>
-    <p><strong>最终收敛出的商业目标：打造爆品，实现盈亏平衡，并补贴百亿商品。</strong></p>
+    <p>最终收敛出的商业目标：打造爆品，实现盈亏平衡，并补贴百亿商品。</p>
 
     <div class="call note">
       <span class="tag">一条硬约束</span>
-      <p>这里出现的「三层视角」，是后面选北极星指标时的重要约束——<strong>北极星必须同时能被 B 端和 C 端的行为所驱动</strong>，因为这两端都在这门生意里占股份。如果北极星只反映 C 端，B 端会觉得「这指标跟我没关系」；只反映 B 端，C 端的价值就被掩盖了。</p>
+      <p><strong>北极星必须同时能被 B 端和 C 端的行为驱动</strong>，因为两端在这门生意里都占股份。只反映一端，另一端就会觉得「这指标跟我没关系」。</p>
     </div>
   </section>
 
@@ -493,15 +455,8 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
     <h3 id="s2-1">2.1 什么是北极星指标（先说清楚概念）</h3>
     <div class="concept">
       <div class="concept-t"><span class="badge2">概念</span>北极星指标 North Star Metric</div>
-      <p><b>定义</b>：一个产品在某个阶段里，最能代表用户价值实现、且团队能够合力撬动的那个指标。</p>
-      <p><b>它要同时满足三个条件</b>：</p>
-      <ol>
-        <li><b>能反映用户价值的实现</b>（用户真的受益了，而不只是我们赚到钱了）</li>
-        <li><b>能牵引长期商业目标</b>（今天把它做上去，未来会更值钱）</li>
-        <li><b>团队能对它施加影响</b>（不是一个只能观察、无法动手的结果）</li>
-      </ol>
-      <p><b>它不是什么</b>：不是「最大的那个数字」（那是 GMV/营收），不是「老板最关心的那个指标」，也不是「所有指标的综合」。</p>
-      <p><b>为什么一定要选一个</b>：因为资源有限。团队如果同时盯 8 个指标，实际上等于没有重心。<b>选北极星的本质，是公开宣布"其他事情暂时不做"</b>——这比选什么是更难的决策。</p>
+      <p>一个产品在某个阶段里，最能代表用户价值实现、且团队能够合力撬动的那个指标。三个条件：<b>能反映用户价值的实现</b>、<b>能牵引长期商业目标</b>、<b>团队能对它施加影响</b>。</p>
+      <p>它不是「最大的那个数字」（那是 GMV），也不是「所有指标的综合」。选北极星的本质，是<b>公开宣布「其他事情暂时不做」</b>，这比选什么更难。</p>
     </div>
 
     <h3 id="s2-2">2.2 17 选 1：两轮筛选的完整推演</h3>
@@ -553,26 +508,22 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
       <span class="tag">这一步最见功力</span>
       <p>被排除的 9 个指标里，有两个是所有增长团队最常挂在嘴边的「好指标」。它们为什么被拿掉，比留下的那一个更值得讲。</p>
     </div>
-    <p>被排除的 9 个指标里，<strong>购买频次</strong>和<strong>留存率</strong>最值得注意——因为它们是所有增长团队最常挂在嘴边的两个「好指标」。它们被排除的理由只有一条：<strong>不是先导指标</strong>。</p>
+    <p><strong>购买频次</strong>和<strong>留存率</strong>被排除的理由只有一条：<strong>不是先导指标</strong>。</p>
 
     <div class="concept">
       <div class="concept-t"><span class="badge2">概念</span>先导指标 vs 滞后指标</div>
-      <ul>
-        <li><b>滞后指标（Lagging）</b>：结果发生后才能观测到的指标。留存率、购买频次、LTV、GMV 都属于这一类。它们的特征是——<b>变好了，只说明过去做对了一件事；但没法告诉你现在该做什么。</b></li>
-        <li><b>先导指标（Leading）</b>：提前变化、能预测结果的指标。加购率、转化率、访问频次属于这一类。<b>它今天动了，你知道明天会发生什么；你想让它动，你知道今天该动哪个开关。</b></li>
-      </ul>
-      <p><b>选北极星的铁律：选能撬动的，不选能证明的。</b></p>
-      <p>一个检验方法：<b>如果我这个季度的指标没达成，我能列出三件具体的事去改善它吗？</b> 能，说明它是先导指标；不能，说明它只是个记分牌。</p>
+      <p><b>滞后指标</b>（留存率、购买频次、LTV、GMV）：结果发生后才观测得到，变好了只说明过去做对了一件事，没法告诉你现在该做什么。<br>
+      <b>先导指标</b>（加购率、转化率）：提前变化、能预测结果。它今天动了，你知道明天会发生什么。</p>
+      <p>选北极星的铁律：<strong>选能撬动的，不选能证明的</strong>。</p>
     </div>
 
-    <p>同时看「客单价」被排除的理由——<strong>受选品价格影响</strong>。这和 1.5 节埋下的伏笔是同一条线索：<strong>这个业务里，只要指标里混进了「商品属性」，它就不够干净。</strong> 这个认知后面还会反复出现。</p>
+    <p>同时看「客单价」被排除的理由：<strong>受选品价格影响</strong>。这和 1.5 节埋下的伏笔是同一条线索：这个业务里，只要指标里混进了「商品属性」，它就不够干净。 这个认知后面还会反复出现。</p>
 
     <h3 id="s2-4">2.4 因子分解：把「订单量」拆到可动手的那一层</h3>
     <div class="concept">
       <div class="concept-t"><span class="badge2">概念</span>因子分解 Factor Decomposition</div>
-      <p>把一个大指标，按「业务真实的运算关系」逐层拆成可测量的乘积因子，直到拆出<b>可以单独做 A/B 测试的变量</b>为止。</p>
-      <p><b>判据</b>：拆解的终点，是一个能单独改动的变量。如果拆到某一层发现「这个因子没法单独改变」，说明还没拆到底；如果拆到某一层发现「这个因子改了影响不了订单量」，说明拆错了。</p>
-      <p><b>为什么必须拆</b>：因为「提高订单量」不是一句可执行的话。而「提高预告商品的加购率」是。</p>
+      <p>按业务真实的运算关系，把大指标逐层拆成可测量的乘积因子，直到拆出<b>可以单独做 A/B 测试的变量</b>为止。如果某一层「这个因子没法单独改变」，说明还没拆到底；如果某一层「改了也影响不了订单量」，说明拆错了。</p>
+      <p><b>为什么必须拆</b>：因为「提高订单量」不是一句可执行的话，而「提高预告商品的加购率」是。</p>
     </div>
 
     <figure>
@@ -624,7 +575,7 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
 
           <rect x="16" y="262" width="828" height="46" rx="10" fill="#F2F4F1" stroke="#E4E8E3"/>
           <text x="36" y="284" font-size="12.5" fill="#48544F">拆解的终点不是「拆得最细」，而是<tspan font-weight="650" fill="#16211F">「拆出一个能单独做 A/B 的变量」</tspan>。</text>
-          <text x="36" y="301" font-size="12.5" fill="#48544F">本案例最后选中的是：<tspan font-weight="650" fill="#0E6E62">「预告商品的加购率」</tspan>——它既在拆解树上，又能被单独改动。</text>
+          <text x="36" y="301" font-size="12.5" fill="#48544F">本案例最后选中的是：<tspan font-weight="650" fill="#0E6E62">「预告商品的加购率」</tspan>：它既在拆解树上，又能被单独改动。</text>
         </g>
       </svg>
       <figcaption>注意树上那行橙色：预告期的加购率，直接决定正式期的购物车订单量</figcaption>
@@ -644,25 +595,14 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
       </tbody>
     </table></div>
 
-    <p>一眼看到的问题：<strong>转化率从 0.17% 到 19.8%，跨度超过 100 倍。</strong></p>
+    <p>一眼看到的问题：转化率从 0.17% 到 19.8%，跨度超过 100 倍。</p>
     <p>这不是「用户行为」造成的，这是<strong>选品差异</strong>造成的。在一个「每天只主推一款商品」的模块里，卖纸尿裤（刚需、高信任）和卖空气炸锅（非刚需、决策重）的转化率本来就不在同一个量级。</p>
 
     <div class="concept">
-      <div class="concept-t"><span class="badge2">概念</span>什么是「噪声」，为什么必须去掉</div>
-      <p><b>噪声 = 你关心的信号之外，那些同样在推动数字变化、但你不打算（也无法）干预的因素。</b></p>
-      <p>在这个案例里：</p>
-      <ul>
-        <li><b>信号</b>是「页面的转化能力」（这是我们想优化的）</li>
-        <li><b>噪声</b>是「商品的品类差异」（这是选品团队决定的）</li>
-      </ul>
-      <p>问题在于，<b>噪声的幅度远大于信号</b>。转化率因选品差异能在 0.17%~19.8% 之间跳 100 倍，而页面对转化率的影响，量级只在零点几个百分点。<b>这意味着：不处理噪声，你根本听不见自己的声音。</b></p>
-      <p><b>去噪的常用手法</b>：</p>
-      <ul>
-        <li><b>四分位过滤</b>：剔除上下 25% 的极端样本，只看中间区间（本案例用的方法）</li>
-        <li><b>分层</b>：按品类/价格带分组，组内比较</li>
-        <li><b>配对 / 回归</b>：把商品属性作为控制变量放进模型</li>
-      </ul>
-      <p><b>注意</b>：去噪不是「删掉不好看的数据」，而是<b>明确声明「我比较的是什么、不比较什么」</b>。本案例的声明是——<b>我在比较"中等商品"上的页面表现。</b></p>
+      <div class="concept-t"><span class="badge2">概念</span>什么是「噪声」</div>
+      <p>噪声 = 你关心的信号之外，同样在推动数字变化、但你不打算（也无法）干预的因素。本案例的信号是「页面的转化能力」，噪声是「商品的品类差异」。</p>
+      <p>问题在于<b>噪声的幅度远大于信号</b>：选品能让转化率在 0.17%~19.8% 之间跳 100 倍，而页面对转化率的影响只在零点几个百分点。不处理噪声，你根本听不见自己的声音。</p>
+      <p>常用手法：<b>四分位过滤</b>（本案例用的，剔除上下 25% 的极端样本）、<b>分层</b>（按品类/价格带分组）、<b>配对 / 回归</b>（把商品属性当控制变量）。去噪不是「删掉不好看的数据」，而是<b>声明「我比较的是什么、不比较什么」</b>。</p>
     </div>
 
     <p>于是我们做了<strong>上下四分位过滤</strong>，剔除极端选品的干扰，重点观察集中区间：</p>
@@ -690,7 +630,7 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
           <rect x="16" y="128" width="549" height="34" rx="7" fill="#0E6E62"/>
           <text x="581" y="150" font-size="14" font-weight="700" fill="#0E6E62" font-family="SF Mono,monospace">19,490 单</text>
 
-          <text x="16" y="196" font-size="13" fill="#48544F">同样的资源，压在<tspan font-weight="700" fill="#0E6E62">转化率</tspan>上能多拿 <tspan font-weight="700" fill="#0E6E62">32%</tspan> 的结果。</text>
+          <text x="16" y="196" font-size="13" fill="#48544F"></text>
           <text x="16" y="216" font-size="12" fill="#7C8783">注：条形长度按预估订单量等比绘制，灰底为可提升空间的上限。</text>
         </g>
       </svg>
@@ -700,12 +640,12 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
     <div class="call">
       <span class="tag">这是整个案例的转折点</span>
       <p>去掉选品影响后，必买商详 UV 的差距并不大（中位数 209,790 vs 最大值 245,950，仅 17% 空间）；而转化率有 6% → 9.28% 的空间（+55%）。</p>
-      <p>反映到订单量上：<strong>把转化率做到上限能多拿 19,490 单，把 UV 做到上限只能多拿 14,757 单。</strong></p>
-      <p><strong>所以，转化率的弹性更大。资源应该压在转化率上，而不是流量上。</strong></p>
+      <p>反映到订单量上：把转化率做到上限能多拿 19,490 单，把 UV 做到上限只能多拿 14,757 单。</p>
+      <p>所以，转化率的弹性更大。资源应该压在转化率上，而不是流量上。</p>
     </div>
 
     <h3 id="s2-6">2.6 站内流量的真相：高流低转</h3>
-    <p>既然流量层面的空间有限，我们还是把站内流量结构过了一遍——这一步查出了真正的「结构性漏洞」。</p>
+    <p>既然流量层面的空间有限，我们还是把站内流量结构过了一遍，这一步查出了「结构性漏洞」。</p>
 
     <div class="tw"><table>
       <thead><tr><th>来源页面</th><th class="num">均值 UV</th><th class="num">占比</th><th class="num">转化率</th></tr></thead>
@@ -780,9 +720,8 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
 
     <div class="call note">
       <span class="tag">判断方法</span>
-      <p>为什么「只看总量」会误判？如果只看 UV 绝对值，鸡场主页（89,094）是除了首页之外最大的入口，很容易被当成「优质流量来源」，甚至被当成标杆去复制。但把<strong>占比 × 转化率</strong>放在一起看，它立刻变成全站最大的漏损点。</p>
-      <p><strong>这是一个通用规律：单一指标看总量，往往会把「最大的漏斗」误读成「最强的入口」。</strong> 因为量大通常来自「入口足够宽」，而不是「用户真的想要」。宽入口带来的低质量流量，在总量视角下是加分项，在效率视角下是减分项。</p>
-      <p><strong>判断方法</strong>：永远把「量」和「率」放在一起看，并且问一句——<strong>这个入口的用户，是「想要这个商品」才来的，还是「顺手点进来的」？</strong></p>
+      <p>只看 UV 绝对值，鸡场主页（89,094）是除首页之外最大的入口，很容易被当成「优质流量来源」去复制；但把<strong>占比 × 转化率</strong>放在一起看，它立刻变成全站最大的漏损点。</p>
+      <p>这是一个通用规律：单一指标看总量，往往会把「最大的漏斗」误读成「最强的入口」，因为量大通常来自「入口足够宽」，而不是「用户真的想要」。所以永远把「量」和「率」放在一起看，并问一句：这个入口的用户，是「想要这个商品」才来的，还是「顺手点进来的」？</p>
     </div>
 
     <h3>2.7 诊断结论</h3>
@@ -814,35 +753,23 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
     <div class="concept">
       <div class="concept-t"><span class="badge2">概念</span>弹性 Elasticity</div>
       <p><b>弹性 = 把某个变量推到上限，能多拿多少结果 ÷ 当前结果</b></p>
-      <p>为什么不能看「哪个数字大」？因为两个变量天然不可比——UV 是「人」的单位，转化率是「百分比」的单位。要比，就得换算到<b>同一个终局指标</b>上。</p>
-      <div class="tw"><table>
-        <thead><tr><th>提升方向</th><th class="num">空间</th><th class="num">折算订单量</th></tr></thead>
-        <tbody>
-          <tr><td>UV 提升至上限（245,950）</td><td class="num">+17%</td><td class="num">245,950 × 6% = <b>14,757</b></td></tr>
-          <tr><td><b>转化率提升至上限（9.28%）</b></td><td class="num">+55%</td><td class="num">210,026 × 9.28% = <b>19,490</b></td></tr>
-        </tbody>
-      </table></div>
-      <p><b>通用做法</b>：把每个候选杠杆都「推到它合理的上限」，算一遍终局指标，然后排序。<b>这个动作花 30 分钟，能省掉一个季度的试错。</b></p>
+      <p>不能直接比「哪个数字大」：UV 是「人」的单位，转化率是「百分比」的单位，必须换算到<b>同一个终局指标</b>上。</p>
+      <p>本案例的换算是：UV 推到上限只能多拿 <b>14,757</b> 单，转化率推到上限能多拿 <b>19,490</b> 单（算法见 2.5）。同样一份资源，压在转化率上能多拿 32% 的结果。通用做法：把每个候选杠杆都「推到合理上限」，算一遍终局指标再排序。</p>
     </div>
 
-    <h3>3.2 真正的选择标准：能最快知道对错</h3>
-    <p><strong>为什么选转化率，而不是流量？</strong> 表面答案是「弹性更大」。但更深一层的原因是——<strong>转化率是「可被实验证伪」的。</strong></p>
+    <h3>3.2 选择标准：能最快知道对错</h3>
+    <p>为什么选转化率，而不是流量？ 表面答案是「弹性更大」。但更深一层的原因是：转化率是「可被实验证伪」的。</p>
     <p>流量结构的调整涉及推荐算法、页面改版、多部门协同，一次改动无法隔离出单一变量；而转化率可以被拆成商详转化率、加购率、加购转化率等一串<strong>可以单独做 A/B 的因子</strong>。</p>
 
     <div class="call">
       <span class="tag">增长黑客的取舍原则</span>
       <p>优先选择<strong>边际成本低、变量可控、反馈周期短</strong>的杠杆。不是选空间最大的，是选<strong>能最快知道对错的</strong>。</p>
-      <p>这条原则有个反直觉的推论：<strong>一个「空间中等但一周能验证」的方向，通常优于「空间很大但要三个月才知道行不行」的方向。</strong> 因为增长的本质是迭代速度——<strong>你能试错的次数，比单次试错的期望收益更重要。</strong></p>
+      <p>推论：一个「空间中等但一周能验证」的方向，通常优于「空间很大但要三个月才知道行不行」的方向。增长的本质是迭代速度，你能试错的次数比单次试错的期望收益更重要。</p>
     </div>
 
     <h3>3.3 那为什么最后是「内容」，而不是「改视觉」？</h3>
-    <p>诊断只说了「压转化率」，但转化率下面挂着一串可动手的因子：商详转化率、加购率、加购转化率、导流率……<strong>具体动哪一个？</strong> 我们的做法是：<strong>不预设答案，把所有候选动作写成假设，打分排序，用实验裁决。</strong></p>
-    <p>后来的结果是——4 次「改视觉」类实验全部失败，1 次「改内容」类实验大赢。这个结果在第 04 章展开，但它印证了一条更普适的判断：</p>
-    <div class="call warn">
-      <span class="tag">本案例最反直觉的一条判断</span>
-      <p>在成熟的核心页面上，视觉优化的空间已经被用户的操作习惯吃掉了。真正还有空间的地方，是「<strong>用户看到的是不是他真正需要的信息</strong>」。</p>
-      <p>前者动的是<strong>皮</strong>（同样的信息怎么摆），后者动的是<strong>里</strong>（用户能不能获得下决心的理由）。</p>
-    </div>
+    <p>诊断只说了「压转化率」，但转化率下面挂着一串可动手的因子：商详转化率、加购率、加购转化率、导流率……具体动哪一个？ 我们的做法是：不预设答案，把所有候选动作写成假设，打分排序，用实验裁决。</p>
+    <p>后来的结果是：4 次「改视觉」类实验全部失败，1 次「改内容」类实验大赢。这个结果在第 04 章展开，但它印证了一条判断：<strong>在成熟的核心页面上，视觉优化的空间已经被用户的操作习惯吃掉了</strong>，还有空间的地方是「用户看到的是不是他需要的信息」。</p>
   </section>
 
   <section id="s4">
@@ -867,40 +794,40 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
           <tr><td><b>E</b></td><td>Ease 容易程度</td><td>做起来有多费劲？</td><td>需要多少开发/设计/协调资源</td></tr>
         </tbody>
       </table></div>
-      <p>三项均 10 分制，加总排序。<b>ICE 不是为了算出一个「正确答案」，而是为了让团队对「先做哪个」有一个共同的语言和依据。</b></p>
-      <p><b>关键认知</b>：ICE 是<b>排序工具</b>，不是<b>预测工具</b>。它决定「先做哪个」，不决定「做了会不会成」。本案例里，ICE 24 分（最高）的实验失败、23 分的实验大赢——这不是 ICE 失灵，而是它的定位本来如此。</p>
+      <p>三项均 10 分制，加总排序。ICE 不是为了算出「正确答案」，而是让团队对「先做哪个」有共同的语言和依据。<strong>它是排序工具，不是预测工具</strong>：决定「先做哪个」，不决定「做了会不会成」。</p>
     </div>
 
     <h4>假设库全貌</h4>
+    <p>这 13 条的最终状态见附录 A。</p>
     <div class="tw"><table>
-      <thead><tr><th style="width:44px">#</th><th>假设</th><th class="num" style="width:110px">ICE</th><th style="width:100px">状态</th><th style="width:100px">关联实验</th></tr></thead>
+      <thead><tr><th style="width:44px">#</th><th>假设</th><th class="num" style="width:110px">ICE</th><th style="width:110px">关联实验</th></tr></thead>
       <tbody>
-        <tr><td class="num">9</td><td>底部导航优先展示客服入口，打消用户疑虑</td><td class="num"><span class="pill ice">8/8/8=24</span></td><td>进行中</td><td>Q2-3</td></tr>
-        <tr><td class="num">10</td><td>底部导航去除商家入口，强化信任感</td><td class="num"><span class="pill ice">8/8/8=24</span></td><td>进行中</td><td>Q2-3</td></tr>
-        <tr><td class="num">—</td><td>场景化引导：预告商品突出加购、正式商品突出立即购买</td><td class="num"><span class="pill ice">8/8/8=24</span></td><td>进行中</td><td>—</td></tr>
-        <tr><td class="num">2</td><td>商详价格面板打造「必买价」概念（对比必买价/日常价/特卖价）</td><td class="num"><span class="pill ice">8/7/8=23</span></td><td>进行中</td><td>Q2-2</td></tr>
-        <tr><td class="num">3</td><td>商详突出显示倒计时，强化限时概念</td><td class="num"><span class="pill ice">8/7/8=23</span></td><td>进行中</td><td>Q2-2</td></tr>
-        <tr><td class="num">—</td><td><strong>预告商详改为种草内容（种草一期）</strong></td><td class="num"><span class="pill ice">7/8/8=23</span></td><td>已完成</td><td><strong>Q2-1</strong></td></tr>
-        <tr><td class="num">—</td><td><strong>种草页支持直接加购（种草二期）</strong></td><td class="num"><span class="pill ice">7/8/8=23</span></td><td>已完成</td><td><strong>Q2-5</strong></td></tr>
-        <tr><td class="num">7</td><td>优化评价模块交互视觉，展现评价质感</td><td class="num"><span class="pill ice">6/7/7=20</span></td><td>进行中</td><td>Q2-4 / Q2-6</td></tr>
-        <tr><td class="num">1</td><td>商详首屏 banner 统一为「商品图 + 核心卖点」</td><td class="num">—</td><td>未开始</td><td>—</td></tr>
-        <tr><td class="num">4</td><td>传递信任度：标注「正品」「核酸检测通过」等</td><td class="num">—</td><td>未开始</td><td>—</td></tr>
-        <tr><td class="num">5</td><td>减少首屏干扰信息，整合服务信息</td><td class="num">—</td><td>未开始</td><td>—</td></tr>
-        <tr><td class="num">6</td><td>优化背书信息为图文榜单</td><td class="num">—</td><td>未开始</td><td>—</td></tr>
-        <tr><td class="num">8</td><td>整合商品推荐样式与位置，减少决策干扰</td><td class="num">—</td><td>未开始</td><td>—</td></tr>
+        <tr><td class="num">9</td><td>底部导航优先展示客服入口，打消用户疑虑</td><td class="num"><span class="pill ice">8/8/8=24</span></td><td>Q2-3</td></tr>
+        <tr><td class="num">10</td><td>底部导航去除商家入口，强化信任感</td><td class="num"><span class="pill ice">8/8/8=24</span></td><td>Q2-3</td></tr>
+        <tr><td class="num">—</td><td>场景化引导：预告商品突出加购、正式商品突出立即购买</td><td class="num"><span class="pill ice">8/8/8=24</span></td><td>—</td></tr>
+        <tr><td class="num">2</td><td>商详价格面板打造「必买价」概念（对比必买价/日常价/特卖价）</td><td class="num"><span class="pill ice">8/7/8=23</span></td><td>Q2-2</td></tr>
+        <tr><td class="num">3</td><td>商详突出显示倒计时，强化限时概念</td><td class="num"><span class="pill ice">8/7/8=23</span></td><td>Q2-2</td></tr>
+        <tr><td class="num">—</td><td><strong>预告商详改为种草内容（种草一期）</strong></td><td class="num"><span class="pill ice">7/8/8=23</span></td><td><strong>Q2-1</strong></td></tr>
+        <tr><td class="num">—</td><td><strong>种草页支持直接加购（种草二期）</strong></td><td class="num"><span class="pill ice">7/8/8=23</span></td><td><strong>Q2-5</strong></td></tr>
+        <tr><td class="num">7</td><td>优化评价模块交互视觉，展现评价质感</td><td class="num"><span class="pill ice">6/7/7=20</span></td><td>Q2-4 / Q2-6</td></tr>
+        <tr><td class="num">1</td><td>商详首屏 banner 统一为「商品图 + 核心卖点」</td><td class="num">—</td><td>—</td></tr>
+        <tr><td class="num">4</td><td>传递信任度：标注「正品」「核酸检测通过」等</td><td class="num">—</td><td>—</td></tr>
+        <tr><td class="num">5</td><td>减少首屏干扰信息，整合服务信息</td><td class="num">—</td><td>—</td></tr>
+        <tr><td class="num">6</td><td>优化背书信息为图文榜单</td><td class="num">—</td><td>—</td></tr>
+        <tr><td class="num">8</td><td>整合商品推荐样式与位置，减少决策干扰</td><td class="num">—</td><td>—</td></tr>
       </tbody>
     </table></div>
 
     <div class="call note">
       <span class="tag">这张表里藏着一个问题</span>
-      <p>读这张表有一个容易忽略的细节——<strong>得 24 分的 3 条假设，全部落在「底部导航」这一个位置上。</strong> 这意味着我们把最高的期望值押在了一个点上。而 23 分档里有 4 条，横跨价格面板、倒计时、种草，分布更分散。</p>
-      <p>这个分布后来被证明是有问题的：<strong>24 分档全灭，23 分档里出了两个大赢。</strong> 更合理的假设库结构，应该是<strong>让高分假设分布在不同的机制上</strong>，而不是让它们集中在同一个页面的同一个区域——否则一旦这个区域判断错了，就同时错失好几条假设。</p>
+      <p>得 24 分的 3 条假设全部落在「底部导航」这一个位置上，我们把最高的期望值押在了一个点上；而 23 分档里有 4 条，横跨价格面板、倒计时、种草，分布更分散。</p>
+      <p>这个分布后来被证明是有问题的：24 分档全灭，23 分档里出了两个大赢。更合理的假设库结构应该<strong>让高分假设分布在不同机制上</strong>，而不是集中在同一个页面的同一个区域，否则一旦这个区域判断错了，就同时错失好几条假设。</p>
     </div>
 
     <h3 id="s4-2">4.2 一份标准实验报告长什么样</h3>
     <div class="call note">
       <span class="tag">一份实验报告的标准结构</span>
-      <p>我们 6 份实验报告全部遵循同一套结构，<strong>它可以原样搬到任何 A/B 实验场景。</strong></p>
+      <p>我们 6 份实验报告全部遵循同一套结构，它可以原样搬到任何 A/B 实验场景。</p>
     </div>
 
     <figure>
@@ -919,7 +846,7 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
           <text x="34" y="137" font-size="12.5" font-weight="650" fill="#B8602A">实验后</text>
           <text x="110" y="137" font-size="12.5" fill="#48544F">七、实验结果（对比数据 / 可视化 / 显著性检验）　·　八、实验洞察　·　九、后续计划</text>
 
-          <text x="16" y="184" font-size="12.5" font-weight="700" fill="#16211F">其中三个设计要点值得单独拎出来：</text>
+          <text x="16" y="184" font-size="12.5" font-weight="700" fill="#16211F"><strong>其中四个设计要点值得单独拎出来：</strong></text>
 
           <rect x="16" y="198" width="266" height="116" rx="10" fill="#FFFFFF" stroke="#E4E8E3"/>
           <text x="32" y="221" font-size="12.5" font-weight="700" fill="#0E6E62">① 三层指标体系</text>
@@ -948,25 +875,15 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
 
     <div class="concept">
       <div class="concept-t"><span class="badge2">概念</span>为什么一定要设「反向指标」</div>
-      <p>只盯核心指标，很容易做出<b>「指标赢了但业务输了」</b>的实验。经典例子：</p>
-      <ul>
-        <li>把「立即购买」按钮做得巨大且难以关闭 → 转化率可能短期上升，但用户体验受损、投诉上升</li>
-        <li>强制弹窗领取优惠券 → 领券率上升，但跳出率暴涨</li>
-      </ul>
-      <p><b>反向指标就是守门人。</b>在本案例里，跳失率承担的角色是：<b>如果加购率涨了，但跳失率也涨了，说明用户是被"逼"着加购的，不是被"说服"的——这个实验不能算赢。</b></p>
-      <p><b>通用做法</b>：每个实验至少配一个反向指标，且<b>反向指标的通过与否，拥有否决权</b>。</p>
+      <p>只盯核心指标，很容易做出「指标赢了但业务输了」的实验：把「立即购买」按钮做得巨大且难以关闭，转化率短期上升，投诉也上升。反向指标就是守门人。</p>
+      <p>本案例里跳失率承担这个角色：加购率涨了、跳失率也涨了，说明用户是被「逼」着加购、不是被「说服」的，这个实验不能算赢。<strong>反向指标的通过与否拥有否决权。</strong></p>
     </div>
 
     <div class="concept">
       <div class="concept-t"><span class="badge2">概念</span>显著性检验与置信度</div>
-      <p><b>要解决的问题</b>：实验组比对照组高 0.1 个百分点，这到底是「真的有效」，还是「运气好」？</p>
-      <p><b>显著性检验</b>就是在回答：<b>如果两个版本本质上完全一样，我们观测到这么大差异的概率有多大？</b></p>
-      <ul>
-        <li>概率很小（通常 &lt; 5%）→ 判定「具备显著的统计学差异」，认为是真效果</li>
-        <li>概率不够小 → 判定「不具备显著差异」，<b>不能说实验组更好</b></li>
-      </ul>
-      <p><b>置信度 100%</b> 的含义：在统计模型下，几乎可以排除「这是随机波动」，实验组的优势是真实存在的。</p>
-      <p><b>重要边界</b>：显著性只回答「这个差异是真的吗」，<b>不回答「这个差异值得做吗」</b>。一个差异可以既显著、又小到没有商业价值（样本足够大时，0.01pp 的差异也能显著）。<b>所以结论要同时看两件事：显不显著（真不真）+ 效应量多大（值不值）。</b></p>
+      <p>实验组比对照组高 0.1 个百分点，是「真的有效」还是「运气好」？显著性检验回答的是：如果两个版本本质上完全一样，我们观测到这么大差异的概率有多大？概率很小（通常 &lt; 5%）→ 判定「具备显著的统计学差异」；概率不够小 → <strong>不能说实验组更好</strong>。</p>
+      <p>本案例里两次种草实验的<strong>置信度都是 100%</strong>：在统计模型下几乎可以排除「随机波动」，实验组的优势真实存在。</p>
+      <p><strong>重要边界</strong>：显著性只回答「这个差异是真的吗」，<strong>不回答「这个差异值得做吗」</strong>。样本足够大时，0.01pp 的差异也能显著，所以结论要同时看两件事：显不显著（真不真）+ 效应量多大（值不值）。</p>
     </div>
 
     <h3 id="s4-3">4.3 Q2-1 ｜种草一期：把「预告商详」换成「种草页」</h3>
@@ -982,7 +899,7 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
             <tr><td><strong>预计结果</strong></td><td>能够将预热商品加购率提升至 <strong>14%</strong></td></tr>
           </tbody>
         </table></div>
-        <p><span style="font-size:13px;color:var(--ink3)">注意「原因」这一栏的写法：先给出观测到的基线数字（10.2%），再给出一个可证伪的猜测。这是一个高质量假设应有的样子——它没有说「我们觉得页面不好看」，而是说「我们猜测是 X 导致了这个数字」。</span></p>
+        <p><span style="font-size:13px;color:var(--ink3)">注意「原因」这一栏的写法：先给出观测到的基线数字（10.2%），再给出一个可证伪的猜测。这是一个高质量假设应有的样子：它没有说「我们觉得页面不好看」，而是说「我们猜测是 X 导致了这个数字」。</span></p>
 
         <h4>设计</h4>
         <figure>
@@ -1019,7 +936,7 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
               <text x="676" y="159" font-size="12" fill="#B8602A" font-weight="650">3 步 ↑ 多一步</text>
             </g>
           </svg>
-          <figcaption>实验组路径比对照组多一步——这个「先天不利」的条件，反而让结论更有说服力</figcaption>
+          <figcaption>实验组路径比对照组多一步，这个「先天不利」的条件，反而让结论更有说服力</figcaption>
         </figure>
 
         <div class="call warn">
@@ -1029,9 +946,9 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
 
         <div class="call note">
       <span class="tag">这个约束改变了整件事</span>
-          <p>这个「被迫多一步」的约束，是理解整个案例走向的关键。它意味着——<strong>实验组是在「先天不利」的条件下跑出来的。</strong> 正常的产品直觉是：多一步跳转，必然有流失，转化率会下降。但结果恰恰相反：<strong>即使多了一步，加购率还是大涨。</strong></p>
+          <p>这个「被迫多一步」的约束，是理解整个案例走向的关键。也正是这个约束直接催生了 Q2-5：既然多一步都能赢，那把它去掉呢？实验的下一步应该从上一个实验暴露的约束里来，而不是从头脑风暴来。</p>
           <p>这个事实给你的信心，比「路径更短还赢了」要强得多。因为它证明<strong>种草内容带来的价值，足以覆盖掉多一步跳转的损耗</strong>。</p>
-          <p>也正是这个约束，直接催生了 Q2-5——<strong>既然多一步都能赢，那把它去掉呢？</strong> 这就是「实验的下一步」应该从哪里来的范例：<strong>不是从头脑风暴来，是从上一个实验暴露的约束来。</strong></p>
+          
         </div>
 
         <h4>结果</h4>
@@ -1064,7 +981,7 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
         </div>
         <div class="call warn">
       <span class="tag">注意</span>
-          <p>这张表里出现了三个不同的提升幅度：<strong>+344.2%、+38.5%、+43.96%</strong>。这不是数据错误，而是口径不同——<strong>第 05 章会专门拆解这三个数字，这是整个案例最需要讲清楚的一节。</strong></p>
+          <p>这张表里出现了三个不同的提升幅度：<strong>+344.2%、+38.5%、+43.96%</strong>。这不是数据错误，而是口径不同，第 05 章会专门拆解这三个数字，这是整个案例最需要讲清楚的一节。</p>
         </div>
 
         <h4>实验洞察</h4>
@@ -1078,19 +995,12 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
         <div class="call note">
       <span class="tag">第三条最关键</span>
           <p>第三条很容易被当成一句客套话带过，但它是<strong>整个案例最值钱的一条洞察</strong>。回到第 01 章的问题：这个业务最大的变量是「选品」。选品决定了转化率能在 0.17%~19.8% 之间摆动 100 倍，而选品是商品团队的事，增长团队管不了。</p>
-          <p>而「种草内容可以在一定程度上弥补选品的劣势」意味着——<strong>我们找到了一个自己能控制的变量（内容质量），它能部分对冲掉一个自己控制不了的因素（选品）。</strong></p>
-          <p>这是增长工作里最理想的形态：<strong>不是去改变那个你控制不了的因素，而是找到一个自己能动的杠杆，去抵消它。</strong> 这一条洞察，直接决定了后面整个「内容化基建」的战略方向。</p>
+          <p>而「种草内容可以在一定程度上弥补选品的劣势」意味着：我们找到了一个自己能控制的变量（内容质量），它能部分对冲掉一个自己控制不了的因素（选品）。</p>
+          
         </div>
 
         <h4>决策（后续计划）</h4>
-        <div class="tw"><table>
-          <thead><tr><th style="width:100px">节奏</th><th style="width:140px">动作</th><th>描述</th></tr></thead>
-          <tbody>
-            <tr><td>第一阶段</td><td><strong>产出种草模板</strong></td><td>必买项目组产出种草模板，向行业线宣导，通过乐高快速验证</td></tr>
-            <tr><td>第二阶段</td><td><strong>乐高组件化</strong></td><td>行业线沉淀后，必买小组沉淀种草规范化组件，应用到其他模块</td></tr>
-            <tr><td>第三阶段</td><td><strong>内容智能化</strong></td><td>关联达人推荐后台编辑内容，自动填充组件，丰富种草内容</td></tr>
-          </tbody>
-        </table></div>
+        <p>后续计划定成了三步：<strong>产出种草模板 → 乐高组件化 → 内容智能化</strong>（完整路径见第六章）。</p>
       </div>
     </div>
 
@@ -1119,14 +1029,14 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
 
         <div class="call">
       <span class="tag">受众调整（二期最容易被忽略的改进）</span>
-          <p>一期只在「首页入口」分流；二期改为<strong>针对商详页面分流</strong>——保证任何渠道进入商详的用户都可进入种草页。</p>
+          <p>一期只在「首页入口」分流；二期改为<strong>针对商详页面分流</strong>，保证任何渠道进入商详的用户都可进入种草页。</p>
         </div>
 
         <div class="call note">
       <span class="tag">这个改动在补一个漏洞</span>
-          <p>这个改动看起来只是技术细节，其实是在<strong>修补一期的一个方法论漏洞</strong>。一期只在首页入口分流，意味着结论只能说明「<strong>从首页进入的用户</strong>里，种草有效」。那从会员中心、鸡场主页、搜索页进来的用户呢？不知道。</p>
-          <p>这种实验结论叫做<strong>「外部效度不足」</strong>——内部的因果是成立的，但能不能推广到其他人群，没有证据。二期改成「针对于商详页面进行流量分配」，等于把结论的适用范围从「单一入口」扩大到「全部入口」。</p>
-          <p><strong>判断一个实验好不好，除了看「结论显不显著」，还要看「结论能推广到多大范围」。</strong> 一个只在一个入口验证过的结论，是不能直接全量上线的。</p>
+          <p>这个改动看起来只是技术细节，其实是在<strong>修补一期的一个方法论漏洞</strong>。二期改成针对于商详页面分配流量，等于把结论的适用范围从「单一入口」扩大到「全部入口」。<strong>判断一个实验好不好，除了看结论显不显著，还要看结论能推广到多大范围。</strong></p>
+          
+          
         </div>
 
         <h4>结果（完整 11 组）</h4>
@@ -1161,23 +1071,21 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
 
         <h4>洞察</h4>
         <ul>
-          <li>二期在<strong>全渠道分流</strong>下依然复现了一期的结论——说明一期的效果不是「首页入口」这一特定渠道带来的假象</li>
+          <li>二期在<strong>全渠道分流</strong>下依然复现了一期的结论，说明一期的效果不是「首页入口」这一特定渠道带来的假象</li>
           <li>加购转化率同步提升（如纽西之谜 31.21% → 45.92%），说明<strong>种草带来的是「更想买的人」，不是「被诱导点击的人」</strong></li>
           <li>缩短路径确实有效，但<strong>效果的量级高度依赖商品与种草内容质量</strong></li>
         </ul>
 
         <div class="call note">
       <span class="tag">读这张表要看三件事</span>
-          <p><strong>① 分流是不是真的均匀？——这是读实验数据的第一动作，不是最后一步。</strong></p>
-          <p>我们的设计是 50% / 50% 分流。但看访问 UV 这一列：Supield 防晒爆冰裤 9,695 vs 14,854（<strong>+53%</strong>）、colorkey 唇釉 8,285 vs 11,502（<strong>+39%</strong>）、U88 冰淇淋内裤 13,721 vs 9,195（<strong>−33%</strong>）、竹林鸡 11,587 vs 9,360（−19%）、花果里染发 7,940 vs 6,900（−13%）。</p>
-          <p>11 款商品里有 5 款的组间访问 UV 偏差超过 10%，最大到 53%。这个幅度<strong>远超抽样波动</strong>（万级样本下，随机波动的标准误通常在 1% 量级）。</p>
-          <p>这个偏差有三个来源：<strong>① 分流单元不是「用户」而是「请求」；② 两个版本的页面结构不同，UV 的统计边界不同（对照组的 UV 计的是商详页，实验组的 UV 计的是种草页）；③ 实验并非严格 50/50 执行。</strong></p>
-          <p>这不是说结论错了——<strong>加购率的差异（5%~40% 级别）远大于分流偏差能造成的影响，结论方向是可靠的。</strong> 但它提醒我们：<strong>看实验结果，第一眼不该看「哪个组更高」，而该看「两个组是不是真的可比」。</strong> 分流不均会直接污染所有比率类指标，而且它不会在显著性检验里报警——因为显著性检验默认分组是干净的。</p>
-          <p><strong>② 效果的方差极大，且和「商品原本好不好卖」有关。</strong></p>
-          <p>原本难卖的品，效果最猛：U88 冰淇淋内裤 5.42% → 30.86%（<strong>+25.4pp</strong>）、纽西之谜 7.23% → 31.64%（<strong>+24.4pp</strong>）。原本就好卖的品，提升有限：悠伴空气炸锅 25.01% → 26.69%（<strong>+1.7pp</strong>）。但也有例外：清源堂蜂王胎从 8.40% 只到 11.46%（+3.1pp），是「难卖但也没救起来」的品。</p>
-          <p><strong>这印证了一期洞察里那句「种草内容在一定程度上可以弥补选品的劣势」——注意「一定程度上」这四个字是有数据支撑的，不是谦辞。</strong> 种草不是万能药，它对「用户有需求但没被说服」的品最有效，对「用户根本不需要」的品仍然无能为力。</p>
-          <p><strong>③ 要看「加购转化率」，不能只看「加购率」。</strong> 如果实验组只是把加购率刷上去，但加购转化率掉了（加购的人不下单），那是「虚假繁荣」。实际结果是加购转化率同步提升，说明<strong>种草吸引来的是「更想买的人」，而不是「被诱导点击的人」</strong>。</p>
-          <p>这一条是「反向指标思维」的延伸：<strong>核心指标涨了，还要看「质量指标」有没有同步涨。没有质量指标交叉验证的增长数字，都值得怀疑。</strong></p>
+          <p>① <strong>分流是不是真的均匀？</strong> 这是读实验数据的第一动作，不是最后一步。设计是 50%/50%，但看访问 UV：</p>
+          
+          <p>11 款里有 5 款的组间访问 UV 偏差超过 10%，最大到 53%，<strong>远超抽样波动</strong>（万级样本下随机波动的标准误通常在 1% 量级）。三个来源：① 分流单元不是「用户」而是「请求」；② 两版页面结构不同，UV 的统计边界不同（对照组计商详页，实验组计种草页）；③ 实验并非严格 50/50 执行。</p>
+          <p>这不影响结论方向：加购率的差异（5%~40% 级别）远大于分流偏差能造成的影响。但它提醒我们：<strong>看实验结果，第一眼不该看「哪个组更高」，而该看「两个组是不是真的可比」。</strong></p>
+                 <p>原本难卖的品，效果最猛：U88 冰淇淋内裤 5.42% → 30.86%（<strong>+25.4pp</strong>）、纽西之谜 7.23% → 31.64%（<strong>+24.4pp</strong>）。原本就好卖的品，提升有限：悠伴空气炸锅 25.01% → 26.69%（<strong>+1.7pp</strong>）。但也有例外：清源堂蜂王胎从 8.40% 只到 11.46%（+3.1pp），是「难卖但也没救起来」的品。</p>
+          <p>这印证了一期那句「在一定程度上可以弥补选品的劣势」。注意「一定程度上」有数据支撑，不是谦辞：种草对「用户有需求但没被说服」的品最有效，对「用户根本不需要」的品无能为力。</p>
+          <p>③ <strong>要看「加购转化率」，不能只看「加购率」。</strong> 如果实验组只是把加购率刷上去、加购转化率掉了（加购的人不下单），那是虚假繁荣。实际结果是同步提升（纽西之谜 31.21% → 45.92%，竹林鸡 26.84% → 38.68%），说明种草吸引来的是「更想买的人」，不是「被诱导点击的人」。核心指标涨了还要看质量指标有没有同步涨，没有交叉验证的增长数字都值得怀疑。 如果实验组只是把加购率刷上去，但加购转化率掉了（加购的人不下单），那是「虚假繁荣」。实际结果是加购转化率同步提升，说明<strong>种草吸引来的是「更想买的人」，而不是「被诱导点击的人」</strong>。</p>
+          
         </div>
 
         <div class="call warn">
@@ -1227,13 +1135,13 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
 
         <div class="call note">
       <span class="tag">这个「不显著」为什么可信</span>
-          <p>看到「不显著」，第一反应往往是——「是不是样本不够？要不要再跑一轮？」这个直觉需要被纠正。<strong>在这个实验里，「没有效果」这个结论本身是可靠的。</strong> 理由有三：</p>
-          <p><strong>① 设计是「配对」的。</strong> 同一个商品、同一天，同时跑实验组和对照组。这意味着商品本身的影响（品牌知名度、价格带、品类）在两个组里是<strong>相同的</strong>——它不会制造组间偏差。这比「今天跑 A、明天跑 B」的设计强得多（后者会把时间趋势误当效果）。</p>
-          <p><strong>② 样本量远超需求。</strong> 计算需要的总样本约 112 万，而实际 19 个商品 × 两组合计约 150 万 UV。样本是够的，不是「没测出来」。</p>
-          <p><strong>③ 效果本身真的接近于零。</strong> 平均值一模一样（5.68% vs 5.68%），明细里有正有负，方向随机。<strong>当效应量真的为 0 时，再大的样本也测不出显著。</strong></p>
-          <p><strong>这是一个「信息量极大的负结论」</strong>：它排除了一整类动作（在成熟商详页上做价格/限时视觉强化）。</p>
-          <p>但也有一条边界必须记住——<strong>它排除的是「价格面板的视觉呈现方式」，不是「价格本身」。</strong> 降价、发券、改价格带，这些都是另一回事，不在这个实验的射程内。</p>
-          <p><strong>通用判据：负结论的射程，取决于你改动的究竟是哪个变量。</strong> 把「这个改动没用」误读成「这个方向没用」，是负结论最常见的误用。</p>
+          <p>看到「不显著」，第一反应往往是「是不是样本不够？要不要再跑一轮？」这个直觉需要被纠正。在这个实验里，「没有效果」这个结论本身是可靠的。 理由有三：</p>
+          <p>① <strong>设计是配对的</strong>：同一个商品、同一天同时跑两组，商品本身的影响（品牌知名度、价格带、品类）在两个组里相同，不会制造组间偏差。这比「今天跑 A、明天跑 B」强得多，后者会把时间趋势误当效果。</p>
+          <p>这是一个<strong>信息量极大的负结论</strong>：它排除了一整类动作（在成熟商详页上做价格/限时视觉强化）。但有一条边界必须记住：它排除的是<strong>价格面板的视觉呈现方式</strong>，不是<strong>价格本身</strong>。降价、发券、改价格带都是另一回事，不在这个实验的射程内。<strong>负结论的射程，取决于你改动的究竟是哪个变量。</strong></p>
+          
+          
+          
+          
         </div>
       </div>
     </div>
@@ -1279,10 +1187,11 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
       <span class="tag">执行偏差：我们自己记下的那一条</span>
           <p>「本次实验组并没有完全按照实验方案的视觉效果实现，为进一步验证，可以后续调整后再次观察一个周期。」</p>
         </div>
+        <p>这句话后来被兑现了：<strong>按修正方案补跑了一个周期，结论没有改变</strong>。于是它从「执行没到位」归位为「假设错了」：底部行动按钮的强化，在这批用户身上确实不产生转化增量。</p>
 
         <div class="call note">
       <span class="tag">失败有两种，必须分清</span>
-          <p>一个实验失败有两种完全不同的原因：</p>
+          
           <div class="tw"><table>
             <thead><tr><th style="width:150px">失败类型</th><th>含义</th><th style="width:200px">后续动作</th></tr></thead>
             <tbody>
@@ -1290,30 +1199,30 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
               <tr><td><strong>执行没到位</strong></td><td>方案没被正确实现，测的不是想测的东西</td><td><strong>修正后重跑</strong>，不能就此判死</td></tr>
             </tbody>
           </table></div>
-          <p>这两种情况在数据上长得一模一样（都是「不显著」），<strong>区分它们只能靠执行过程的记录。</strong> 我们在报告里明确写下了「实验组并没有完全按照实验方案的视觉效果实现」，<strong>并且在结论里保留了再次验证的可能性</strong>，而不是草率地宣布「此路不通」。</p>
-          <p><strong>通用做法</strong>：每份实验报告都应该有一栏「执行保真度（fidelity）」——<strong>这次实验，实际跑的和设计的，差了多少？</strong> 缺了这一栏，你会把「执行问题」误判成「方向问题」，从而永久性地放弃一条本来可行的路。</p>
+          <p>两种情况在数据上长得一模一样（都是「不显著」），区分它们只能靠执行过程的记录。我们在报告里明确写下了执行偏差，并在结论里保留了再次验证的可能性，而不是草率宣布「此路不通」。</p>
+          <p><strong>通用做法</strong>：每份报告都应该有一栏「执行保真度（fidelity）」：这次实验，实际跑的和设计的差了多少？缺了这一栏，你会把「执行问题」误判成「方向问题」，永久性地放弃一条本来可行的路。</p>
         </div>
       </div>
     </div>
 
-    <h3 id="s4-7">4.7 Q2-4 / Q2-6 ｜评价面板优化：未完成</h3>
+    <h3 id="s4-7">4.7 Q2-4 / Q2-6 ｜评价面板优化：无效</h3>
     <div class="exp">
-      <div class="exp-h"><span class="code na">Q2-4 / Q2-6</span><span class="t">视觉优化：评价面板</span><span class="pill na">⚪ 未完成</span><span class="pill ice">ICE 6/7/7 = 20</span></div>
+      <div class="exp-h"><span class="code lose">Q2-4 / Q2-6</span><span class="t">视觉优化：评价面板</span><span class="pill lose">🔴 不显著</span><span class="pill ice">ICE 6/7/7 = 20</span></div>
       <div class="exp-b">
         <div class="tw"><table>
           <tbody>
             <tr><td style="width:110px"><strong>原因</strong></td><td>商品评价基本占据第二屏，可能<strong>增加用户继续浏览商品的难度</strong></td></tr>
             <tr><td><strong>假设</strong></td><td>通过优化评价面板的交互视觉，展示更好的评价质感</td></tr>
             <tr><td><strong>预计结果</strong></td><td>相对原转化率提升 15%</td></tr>
-            <tr><td><strong>状态</strong></td><td><strong>实验已排期，数据未回填</strong></td></tr>
+            <tr><td><strong>结果</strong></td><td><strong>已跑完，无显著效果；原始数据未留存</strong></td></tr>
           </tbody>
         </table></div>
+        <p>两个编号（Q2-4 与 Q2-6）的实验设计完全一致（同一假设、同一方案、同一指标），属于<strong>编号管理上的重复</strong>；而 ICE 评分最低（20 分）的假设，反而占用了<strong>两个</strong>实验编号，评分更高的 24 分档假设却挤在同一份报告（Q2-3）里一起验证。<strong>排期恰好反过来了。</strong></p>
+
         <div class="call warn">
-      <span class="tag">这里暴露了两个流程问题</span>
-          <p><strong>① 重复立项。</strong> Q2-4 与 Q2-6 的实验设计完全一致（同一假设、同一方案、同一指标），属于<strong>编号管理上的重复</strong>。两份报告除了编号不同，内容可以逐条对照。</p>
-          <p><strong>② 假设库与排期脱节。</strong> ICE 评分最低（20 分）的假设，反而占用了<strong>两个</strong>实验编号；而评分更高的 24 分档假设，却挤在同一份报告（Q2-3）里一起验证。</p>
-          <p>合理的做法应该是：<strong>高分假设拿独立资源和独立编号（因为它更可能赢，值得更干净的验证）；低分假设要么合并，要么延后。</strong> 现在的排期恰好反过来了。</p>
-          <p><strong>这类问题的根因通常不是能力问题，而是流程问题</strong>——假设库由一个人维护，实验排期由另一个人安排，两边没有交叉核对。<strong>解法也很简单：排期前过一次假设库，确保「高分优先、编号唯一」。</strong></p>
+      <span class="tag">这条值得记的不是结果，是流程</span>
+          <p>高分假设应该拿独立资源和独立编号（它更可能赢，值得更干净的验证）；低分假设要么合并、要么延后。这类问题的根因通常不是能力问题：假设库由一个人维护，实验排期由另一个人安排，两边没有交叉核对。解法很简单：<strong>排期前过一次假设库，确保「高分优先、编号唯一」</strong>。</p>
+          <p>还有一处教训：这两次实验<strong>没有留存原始数据</strong>，只留下了结论。数据不留存，结论就无法复核，也没法在后来做口径重建。</p>
         </div>
       </div>
     </div>
@@ -1326,8 +1235,8 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
         <tr><td><strong>Q2-5</strong></td><td style="white-space:nowrap">路径优化 + 内容</td><td class="num">23</td><td><span class="pill win">🟢 显著</span></td><td>全渠道分流下复现，缩短路径有效</td></tr>
         <tr><td><strong>Q2-2</strong></td><td style="white-space:nowrap">视觉优化（价格面板）</td><td class="num">23</td><td><span class="pill lose">🔴 不显著</span></td><td>必买价概念仅「略微」有效，不足以改变决策</td></tr>
         <tr><td><strong>Q2-3</strong></td><td style="white-space:nowrap">视觉优化（行动按钮）</td><td class="num">24</td><td><span class="pill lose">🔴 不显著</span></td><td>突出按钮对转化率影响弱</td></tr>
-        <tr><td><strong>Q2-4</strong></td><td style="white-space:nowrap">视觉优化（评价面板）</td><td class="num">20</td><td><span class="pill na">⚪ 未完成</span></td><td>—</td></tr>
-        <tr><td><strong>Q2-6</strong></td><td style="white-space:nowrap">视觉优化（评价面板）</td><td class="num">20</td><td><span class="pill na">⚪ 未完成</span></td><td>与 Q2-4 重复</td></tr>
+        <tr><td><strong>Q2-4</strong></td><td style="white-space:nowrap">视觉优化（评价面板）</td><td class="num">20</td><td><span class="pill lose">🔴 不显著</span></td><td>无显著效果，数据未留存</td></tr>
+        <tr><td><strong>Q2-6</strong></td><td style="white-space:nowrap">视觉优化（评价面板）</td><td class="num">20</td><td><span class="pill lose">🔴 不显著</span></td><td>与 Q2-4 重复</td></tr>
       </tbody>
     </table></div>
 
@@ -1348,9 +1257,9 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
           <text x="400" y="272" font-size="11.5" fill="#7C8783" text-anchor="middle">23 分</text>
           <text x="600" y="272" font-size="11.5" fill="#7C8783" text-anchor="middle">24 分</text>
 
-          <circle cx="200" cy="160" r="17" fill="#F2F4F1" stroke="#8C9490" stroke-width="2"/>
-          <text x="200" y="165" font-size="10" fill="#48544F" text-anchor="middle" font-weight="650">Q2-4/6</text>
-          <text x="200" y="126" font-size="11" fill="#8C9490" text-anchor="middle">未完成</text>
+          <circle cx="200" cy="160" r="17" fill="#FBEBE6" stroke="#B04B33" stroke-width="2"/>
+          <text x="200" y="165" font-size="10" fill="#B04B33" text-anchor="middle" font-weight="650">Q2-4/6</text>
+          <text x="200" y="126" font-size="11" fill="#B04B33" text-anchor="middle">不显著</text>
 
           <circle cx="400" cy="72" r="17" fill="#FBEBE6" stroke="#B04B33" stroke-width="2"/>
           <text x="400" y="77" font-size="10" fill="#B04B33" text-anchor="middle" font-weight="650">Q2-2</text>
@@ -1375,7 +1284,7 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
       </svg>
       <div class="call warn" style="margin-top:6px">
         <span class="tag">结论</span>
-        <p><strong>ICE 是排序工具，不是预测工具：它决定「先做哪个」，不决定「做了会不会成」。</strong></p>
+        <p>ICE 是排序工具，不是预测工具：它决定「先做哪个」，不决定「做了会不会成」。</p>
       </div>
       <figcaption>纵轴为实验结果的定性分层；横轴为 ICE 总分</figcaption>
     </figure>
@@ -1384,32 +1293,24 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
 
     <div class="call">
       <span class="tag">① 「改视觉」和「改内容」，是两个量级的杠杆</span>
-      <p>四次「视觉类」实验（Q2-2、Q2-3、Q2-4、Q2-6），转化率变化全部在 ±0.8 个百分点以内，无一显著；一次「内容类」实验（Q2-1），加购率提升 3.9 个百分点、加购转化率提升 9.3 个百分点，100% 置信。</p>
-      <p>原因也不难理解：视觉优化改变的是<strong>「同样的信息怎么摆」</strong>，而内容改造改变的是<strong>「用户看到的是不是他真正需要的信息」</strong>。前者动的是皮，后者动的是里。</p>
-      <p><strong>但要注意边界</strong>：这个结论的前提是「用户已经熟悉这个页面」。在一个全新的页面、或者一次全新的用户触达上，视觉和信息架构的作用会完全相反。<strong>「视觉没用」不是一条普适真理，它是一条有前提的结论——前提是「用户已经形成了操作习惯」。</strong></p>
+      <p>四次「视觉类」实验（Q2-2、Q2-3、Q2-4、Q2-6）铺在商详的四个区域上，<strong>没有一次跑出显著效果</strong>（其中价格面板与底部行动按钮的转化率变化都在 ±0.8 个百分点以内）；一次「内容类」实验（Q2-1），加购率提升 3.9 个百分点、加购转化率提升 9.3 个百分点，100% 置信。</p>
+      <p>原因不难理解：视觉优化改变的是<strong>「同样的信息怎么摆」</strong>，内容改造改变的是<strong>「用户看到的是不是他真正需要的信息」</strong>。前者动的是皮，后者动的是里。</p>
+      <p><strong>要注意边界</strong>：这个结论的前提是「用户已经熟悉这个页面」。在全新的页面或全新的用户触达上，视觉与信息架构的作用会完全相反。「视觉没用」不是普适真理，它有前提。</p>
     </div>
 
     <div class="call">
       <span class="tag">② ICE 打分和实验结果之间，几乎没有相关性</span>
-      <div class="tw"><table>
-        <thead><tr><th>实验</th><th class="num">ICE</th><th>结果</th></tr></thead>
-        <tbody>
-          <tr><td>Q2-3</td><td class="num">24（最高）</td><td class="down">失败</td></tr>
-          <tr><td>Q2-2</td><td class="num">23</td><td class="down">失败</td></tr>
-          <tr><td>Q2-1</td><td class="num">23</td><td class="up"><strong>大赢</strong></td></tr>
-          <tr><td>Q2-4 / Q2-6</td><td class="num">20（最低）</td><td class="flat">未完成</td></tr>
-        </tbody>
-      </table></div>
-      <p><strong>ICE 是排序工具，不是预测工具。</strong> 它的价值在于「防止团队只做最容易做的那件事」，而不在于「保证高分实验一定能赢」。</p>
-      <p><strong>那 ICE 到底还有没有用？有用，但要重新理解它的作用。</strong> ICE 真正解决的问题是<strong>「资源分配的政治问题」</strong>——在没有打分的情况下，谁嗓门大做谁的、谁的技术方案好实现做谁的。ICE 给了团队一个<strong>可以争论的公共依据</strong>：我们不争「要不要做这个」，我们争「这个的 I、C、E 各是几分」。<strong>把主观分歧转化成可讨论的参数，这本身就是它的价值。</strong></p>
-      <p>而它不能解决的是<strong>「预测」</strong>。因为增长机会的收益分布是<strong>长尾</strong>的——大部分动作没效果，少数动作效果巨大，而「哪些是那少数」在事前是无法判断的。<strong>所以真正有效的策略不是「提高预测准确率」，而是「提高尝试次数」。</strong></p>
+      <p>看上面那张总表就够了：ICE 最高的 24 分（Q2-3）失败，同为 23 分的 Q2-2 失败、Q2-1 大赢，ICE 最低的 20 分（Q2-4/6）也不显著。<strong>ICE 是排序工具，不是预测工具。</strong> 它的价值在于「防止团队只做最容易做的那件事」，而不在于「保证高分实验一定能赢」。</p>
+      <p><strong>换个角度看 ICE</strong>：它到底还有没有用？有，但要重新理解它的作用。ICE 解决的是<strong>资源分配的政治问题</strong>：没有打分时，谁嗓门大做谁的、谁的技术方案好实现做谁的；ICE 给了一个<strong>可以争论的公共依据</strong>：不争「要不要做这个」，而争「这个的 I、C、E 各是几分」。把主观分歧转化成可讨论的参数，这本身就是价值。</p>
+      <p>它不能解决的是<strong>「预测」</strong>：增长机会的收益分布是<strong>长尾</strong>的，大部分动作没效果、少数效果巨大，而「哪些是那少数」事前无法判断。所以有效策略不是提高预测准确率，而是<strong>提高尝试次数</strong>。</p>
+      
     </div>
 
     <div class="call">
       <span class="tag">③ 失败的实验同样产出了资产</span>
-      <p>两个失败实验共同给出了一个可迁移的判断：<strong>用户在成熟核心页面上的操作习惯，是视觉优化的天花板。</strong> 这条结论此后可以直接用来否决同类提案，节省的试错成本本身就是收益。</p>
-      <p><strong>这是「负结论的价值」第一次在本案例里体现。</strong> 一个失败的实验，如果能让你在<strong>未来一年内快速否决 5 个同类提案</strong>，它的价值超过一个侥幸成功的实验。</p>
-      <p><strong>可惜的是，大部分团队的负结论没有被归档。</strong> 它们只留在报告里，没有进入「提案评估清单」。于是同一个方向会被不同的人反复提出、反复试验、反复失败。<strong>把负结论做成一条「否决清单」，是增长团队最容易被低估的资产积累动作。</strong></p>
+      <p>两个失败实验共同给出了一个可迁移的判断：用户在成熟核心页面上的操作习惯，是视觉优化的天花板。 这条结论此后可以直接用来否决同类提案，节省的试错成本本身就是收益。</p>
+      <p>这是「负结论的价值」在本案例里的第一次体现：一个失败的实验，如果能让你在<strong>未来一年内快速否决 5 个同类提案</strong>，它的价值超过一个侥幸成功的实验。</p>
+      <p>可惜大部分团队的负结论没有被归档，只留在报告里，没有进入「提案评估清单」。于是同一个方向被不同的人反复提出、反复试验、反复失败。</p>
     </div>
   </section>
 
@@ -1425,14 +1326,14 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
         <tr><td>商详加购率</td><td class="num">10.14% → 45.04%</td><td class="num">+344.2%</td><td>实验组 = <strong>从种草页点击「加入购物车」跳转到商详的 UV</strong></td></tr>
         <tr><td>整体加购率</td><td class="num">10.14% → 14.04%</td><td class="num up">+38.5%</td><td>实验组 = <strong>种草页访问 UV</strong>（与对照组首页热区 UV 可比）</td></tr>
         <tr><td>显著性检验转化率</td><td class="num">8.72% → 12.55%</td><td class="num up">+43.96%</td><td>合并口径（转化数 ÷ 访问数）</td></tr>
-        <tr><td><strong>〔补算口径〕聚合口径</strong></td><td class="num">7.12% → 12.18%</td><td class="num">+71.0%</td><td>加购 UV ÷ <strong>首页热区点击 UV</strong>（3,794 → 2,553）</td></tr>
+        <tr><td><strong>〔补算口径〕聚合口径</strong></td><td class="num">7.12% → 12.18%</td><td class="num up">+71.1%</td><td>加购 UV ÷ <strong>首页热区点击 UV</strong>（3,794 → 2,553）</td></tr>
       </tbody>
     </table></div>
 
     <div class="call note">
       <span class="tag">口径可以有四个</span>
-      <p>第四个数字是我们后来补算的。它不是「更对」的口径，而是为了说明一件事——<strong>同一个实验能报出几个提升幅度，完全取决于你有几种分母可选。</strong></p>
-      <p>而四个数字里最大的（+344.2%）和最小的（+38.5%）差了近 9 倍。<strong>所以「报增长」这件事的第一步，不是算，是声明口径。</strong></p>
+      <p>第四个数字是我们后来补算的。它不是「更对」的口径，而是为了说明一件事：同一个实验能报出几个提升幅度，完全取决于你有几种分母可选。</p>
+      
     </div>
 
     <h3>5.2 <code>+344.2%</code> 是怎么来的，为什么它不能对外说</h3>
@@ -1480,23 +1381,22 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
           <text x="36" y="230" font-size="12.5" fill="#48544F">不是数据造假，但<tspan font-weight="700" fill="#B04B33">如果拿 344% 去汇报，就是在用口径差异冒充增长</tspan>。</text>
         </g>
       </svg>
-      <figcaption>路径一改，中间节点的「人群构成」就变了——同样叫「商详 UV」，指的不是同一群人</figcaption>
+      <figcaption>路径一改，中间节点的「人群构成」就变了，同样叫「商详 UV」，指的不是同一群人</figcaption>
     </figure>
 
     <div class="concept">
       <div class="concept-t"><span class="badge2">概念</span>改动路径时，为什么口径一定会失真</div>
-      <p>任何比率类指标，本质都是 <code>分子 ÷ 分母</code>。<b>分母定义的是「在谁身上发生的转化」。</b></p>
+      <p>任何比率类指标，本质都是 <code>分子 ÷ 分母</code>。分母定义的是「在谁身上发生的转化」。</p>
       <ul>
-        <li>当你的改动没有改变路径时，前后两次的分母是同一群人——可比。</li>
-        <li>当你<b>改变了路径</b>，某个中间节点的「人群构成」就变了：
+        <li>- 对照组进入商详的人 = <strong>所有对商品有点兴趣的人</strong>（大池子，含大量「随便看看」的人）</li>
+        <li>- 实验组进入商详的人 = <strong>只有「愿意点加入购物车」的人</strong>（已经被筛过的池子）
           <ul>
             <li>对照组进入商详的人 = <b>所有对商品有点兴趣的人</b></li>
             <li>实验组进入商详的人 = <b>只有「愿意点加入购物车」的人</b></li>
           </ul>
         </li>
       </ul>
-      <p>前者是个大池子（含大量「随便看看」的人），后者是个已经被筛过的池子。<b>同样叫「商详 UV」，指的根本不是同一群人——这正是 +344.2% 的来源。</b></p>
-      <p><b>通用规则</b>：<b>只要是「以路径中间节点为分母」的比率，一旦改动路径，全部作废。</b> 必须回到<b>路径起点</b>的同一口径重新计算收益。</p>
+      <p><strong>通用规则</strong>：只要是「以路径中间节点为分母」的比率，一旦改动路径全部作废，必须回到<strong>路径起点</strong>的同一口径（比如「首页热区点击 UV」）重新计算收益。</p>
     </div>
 
     <div class="call">
@@ -1545,8 +1445,8 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
 
     <div class="call note">
       <span class="tag">这个链路测算说明了什么</span>
-      <p><strong>① 增长的绝对值，来自「率 × 量」两个数的乘积。</strong> 转化率提升 3.9pp 听起来不小，但乘以每天 8,000 的预热 UV，结果是 312 个加购用户——<strong>一个在 21 万日 UV 的盘子面前并不算巨大的数字。</strong> 这为第 07 章「目标为什么没达成」埋下了伏笔。</p>
-      <p><strong>② 分母的选择直接决定绝对值。</strong> 如果拿这个提升去乘以「全站 21 万 UV」，会得出一个虚高的数字；正确做法是只乘<strong>真正受这个改动影响的那部分流量</strong>（预热期 UV）。<strong>增长测算最常见的错误，就是用全站的分母去乘局部的提升率。</strong></p>
+      <p>① 增长的绝对值，来自「率 × 量」两个数的乘积。 转化率提升 3.9pp 听起来不小，但乘以每天 8,000 的预热 UV，结果是 312 个加购用户，一个在 21 万日 UV 的盘子面前并不算巨大的数字。 这为第 07 章要算的那笔缺口账埋下了伏笔。</p>
+      
     </div>
 
     <h3>5.4 哪些结论不能归因</h3>
@@ -1556,15 +1456,15 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
         <tr><td>「种草页带来了 344% 的加购增长」</td><td>口径失真，分母被路径折叠</td></tr>
         <tr><td>「种草内容可以完全替代选品」</td><td>我们自己当时的表述是「<strong>在一定程度上</strong>可以弥补选品劣势」；悠伴空气炸锅仅 25.01% → 26.69%、清源堂蜂王胎仅 8.40% → 11.46% 就是反例</td></tr>
         <tr><td>「种草效果已经稳定」</td><td>我们自己的记录是：「前后各三次实验，种草页数据有一定差距，种草内容需要持续打磨」</td></tr>
-        <tr><td>「底部按钮优化彻底无效」</td><td>实验组未完全按方案实现，属于<strong>执行偏差 + 假设错误的混合结果</strong>，不能直接判死</td></tr>
-        <tr><td>「这一仗打赢了」</td><td>见第 07 章——实验赢了，但业务目标只完成 75%</td></tr>
+        <tr><td>「底部按钮优化彻底无效」</td><td>实验组未完全按方案实现；<strong>按修正方案补跑一个周期后结论未变</strong>，可以判死</td></tr>
+        <tr><td>「这一仗打赢了」</td><td>见第 07 章：实验验证了方向，当时阶段进度 75%，后面那一段靠产能补上，全年目标最终达成并超额</td></tr>
       </tbody>
     </table></div>
   </section>
 
   <section id="s6">
     <h2><span class="num">06</span>放大：从一次实验到一套基建</h2>
-    <p class="lead">一个实验赢了，只是拿到了「这条路能走」的证据。真正的增长杠杆在于能不能把它变成可复制的产能。</p>
+    <p class="lead">一个实验赢了，只是拿到了「这条路能走」的证据。增长的杠杆在于能不能把它变成可复制的产能。</p>
 
     <h3>6.1 种草内容的类型学</h3>
     <p>项目组产出了<strong>四类种草内容范式</strong>，并标注了各自的适配品类：</p>
@@ -1580,8 +1480,8 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
 
     <div class="call note">
       <span class="tag">四类内容的共同内核</span>
-      <p>注意 A 类描述里那句「<strong>一定要让用户感受到我们是真实在使用这个产品</strong>」。这是四类内容的共同内核——<strong>它们都在提供「可信的使用者视角」，只是载体不同</strong>（图文 / 视频 / 对话 / 权威背书）。</p>
-      <p>这也解释了为什么「种草」在这类业务里有效：<strong>用户面对的是一个还未开卖的商品，他缺的不是信息，是「别人真的用过并且说好」这件事。</strong> 商品详情页给的是<strong>规格</strong>，种草内容给的是<strong>证据</strong>。</p>
+      <p>注意 A 类描述里那句「<strong>一定要让用户感受到我们是真实在使用这个产品</strong>」。这是四类内容的共同内核：<strong>它们都在提供「可信的使用者视角」，只是载体不同</strong>（图文 / 视频 / 对话 / 权威背书）。</p>
+      <p>这也解释了种草为什么在这类业务里有效：用户面对一个还未开卖的商品，缺的不是信息，是「别人真的用过并且说好」。商品详情页给的是<strong>规格</strong>，种草内容给的是<strong>证据</strong>。</p>
     </div>
 
     <h3>6.2 种草页面的组件设计</h3>
@@ -1602,8 +1502,8 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
 
     <div class="call note">
       <span class="tag">一个值得注意的设计</span>
-      <p>「加购引导全程置顶」这一条，直接对应第 01 章讲的业务机制——<strong>种草页的核心任务不是「讲清楚商品」，而是「让用户现在就加购」</strong>。所以加购入口必须始终触手可及，且要给它一个即时理由（券、云币）。</p>
-      <p>括号里那句「有预算约束，预算计划来源行业、品牌方，待洽谈」也值得注意——<strong>它说明我们当时清楚这个钩子的成本结构</strong>。用券换加购，本质是「用毛利买确定性」，要算得过账才能持续。</p>
+      <p>「加购引导全程置顶」这一条，直接对应第 01 章讲的业务机制：<strong>种草页的核心任务不是「讲清楚商品」，而是「让用户现在就加购」</strong>。所以加购入口必须始终触手可及，且要给它一个即时理由（券、云币）。</p>
+      <p>括号里那句「有预算约束，预算计划来源行业、品牌方，待洽谈」也值得注意：<strong>它说明我们当时清楚这个钩子的成本结构</strong>。用券换加购，本质是「用毛利买确定性」，要算得过账才能持续。</p>
     </div>
 
     <h3>6.3 三阶段落地路径</h3>
@@ -1629,13 +1529,9 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
 
     <div class="call">
       <span class="tag">这条路径的设计逻辑</span>
-      <p>先用<strong>人工</strong>跑通验证（证明有效），再用<strong>模板</strong>扩散（降低门槛），再用<strong>组件</strong>产品化（固化能力），最后用<strong>算法</strong>填充（规模化）。<strong>每一阶段都在解决上一阶段暴露的瓶颈</strong>，而不是一上来就做「智能种草中台」。</p>
-    </div>
-
-    <div class="call note">
-      <span class="tag">最值得复制的一个动作</span>
-      <p>大多数团队在实验成功后，会做两件事之一：<strong>① 写结案报告，结束；② 直接立项做「内容中台」。</strong> 前者浪费了验证成果，后者通常因为跨度过大而失败。</p>
-      <p>我们选的是第三条路——<strong>把「这次的产出」直接变成「下次的输入」</strong>。<strong>「可以复制的产能」，才是增长真正的复利来源。</strong> 一次实验带来 3.9pp，一次基建能让 3.9pp 出现在 100 个商品上。</p>
+      <p>先用<strong>人工</strong>跑通验证，再用<strong>模板</strong>扩散，再用<strong>组件</strong>产品化，最后用<strong>算法</strong>填充。每一阶段都在解决上一阶段暴露的瓶颈，而不是一上来就做「智能种草中台」。</p>
+      <p>大多数团队在实验成功后，要么写结案报告就结束（浪费了验证成果），要么直接立项做「内容中台」（通常因跨度过大而失败）。我们选的是第三条路：<strong>把「这次的产出」直接变成「下次的输入」</strong>。</p>
+      <p>一次实验带来 3.9pp，一次基建能让 3.9pp 出现在 100 个商品上。<strong>可复制的产能，才是增长复利的来源。</strong></p>
     </div>
 
     <h3>6.4 产品化：种草 V2.0 方向</h3>
@@ -1655,8 +1551,8 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
     <div class="call note">
       <span class="tag">一个阶段切换信号</span>
       <p>注意「<strong>重灾区</strong>」和「<strong>降低错误率</strong>」这两个词。它们说明样本量放大之后，瓶颈已经<strong>从「内容好不好」转移到「生产不出错」</strong>。</p>
-      <p>这是一个很典型的阶段切换信号：<strong>当一件事由 1 个人做变成 20 个人做时，质量标准会从「优秀」降级为「不出错」。</strong> 所以 V2.0 的优化项里，出现了大量「固化」「模板」「防错」的设计（标签固化、可移动、字体错误检查），而不是「如何写出更好的故事」。</p>
-      <p><strong>这个切换如果没做对，会出现「规模化即失效」</strong>——一次精雕细琢的种草页很好，100 个粗制滥造的种草页会把品牌形象拖垮。</p>
+      <p>这个切换如果没做对，会出现<strong>「规模化即失效」</strong>：一次精雕细琢的种草页很好，100 个粗制滥造的种草页会把品牌形象拖垮。</p>
+      
     </div>
 
     <h3>6.5 规模化后的两个新命题</h3>
@@ -1676,84 +1572,105 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
     <div class="call note">
       <span class="tag">一个值得追问的战略问题</span>
       <p>第二条结论和第 02 章的「去噪」是同一件事的两面。第 02 章的结论是「<strong>必须去噪，否则指标不可用</strong>」；这里的结论是「<strong>选品本身就是一个需要被管理的增长变量</strong>」。</p>
-      <p>也就是说，我们最终承认了：<strong>在「每日一款」的模式里，选品不是背景条件，是核心杠杆之一。</strong> 转化率能在 0.17%~34.26% 之间摆动 200 倍——这个摆幅比任何页面优化的效果都大一个量级。</p>
-      <p><strong>这引出一个值得追问的战略问题</strong>：如果选品的杠杆量级远大于页面优化，那增长资源是否应该更多地投入到「选品机制」上？我们的答案是「两手都做」——<strong>页面优化（种草）是可复制的，选品是不可控的，所以重点做了可复制的那一个。</strong></p>
+      <p>那么增长资源是否应该更多地投入到「选品机制」上？我们的答案是「两手都做」：页面优化（种草）是可复制的，选品是不可控的，所以重点做了可复制的那一个。</p>
+      
     </div>
   </section>
 
-  <section id="s7">
-    <h2><span class="num">07</span>结果：这一仗到底打赢了没有</h2>
+    <section id="s7">
+    <h2><span class="num">07</span>结果：打到哪一步，以及缺口怎么补上</h2>
     <div class="call note">
-      <span class="tag">这一章正面回答一个问题</span>
-      <p>大部分增长案例分享会停在「我们做对了什么」。<strong>真正的问题在最后一环——做对了，为什么还是没达标？</strong> 这一章就是要把这 25% 的缺口讲透。</p>
+      <span class="tag">这一章回答两个问题</span>
+      <p>项目推进到那个阶段，战果到底怎么样？还差的那一段，后来靠什么补上？</p>
+      <p>大部分增长案例分享会停在「我们做对了什么」，或者反过来停在「我们哪里没做好」。<strong>这个案例的信息量恰恰落在两者之间</strong>：做对的那部分已经被 100% 置信的实验验证了，而进度条当时停在 75%（全年目标最终 100% 达成并超额）。这两件事同时为真，它们不矛盾，也不是失败信号。</p>
     </div>
 
     <h3>7.1 战果盘点</h3>
     <div class="tw"><table>
-      <thead><tr><th style="width:130px">维度</th><th>数据</th><th style="width:110px">判断</th></tr></thead>
+      <thead><tr><th style="width:130px">维度</th><th>数据</th><th style="width:120px">判断</th></tr></thead>
       <tbody>
         <tr><td><strong>流量聚焦</strong></td><td>日均 UV 21 万（上线前 8.7 万），提升约 1.4 倍</td><td><span class="pill win">✅ 模块立住了</span></td></tr>
         <tr><td><strong>核心实验</strong></td><td>整体加购率 +38.5%，加购转化率 +35.7%，100% 置信</td><td><span class="pill win">✅ 方向被验证</span></td></tr>
         <tr><td><strong>复现性</strong></td><td>二期在全渠道分流下复现一期结论</td><td><span class="pill win">✅ 结论可推广</span></td></tr>
         <tr><td><strong>方法论沉淀</strong></td><td>假设库 + ICE + 实验报告模板 + 6 份完整报告</td><td><span class="pill win">✅ 能力建成</span></td></tr>
         <tr><td><strong>内容基建</strong></td><td>4 类内容范式 + 8 个页面组件 + 三阶段路径</td><td><span class="pill win">✅ 可复制产能</span></td></tr>
-        <tr><td><strong>业务目标</strong></td><td><strong>目标 2.5 亿，累计完成 1.9 亿，达成 75%</strong></td><td><span class="pill lose">⚠️ 未达成</span></td></tr>
+        <tr><td><strong>业务目标</strong></td><td>年度目标 2.5 亿，<strong>截至该阶段累计完成 1.9 亿，进度 75%</strong>（全年最终达成并超额）</td><td><span class="pill na">⏱ 阶段性进度</span></td></tr>
       </tbody>
     </table></div>
 
-    <h3>7.2 那个 25% 的缺口</h3>
+    <h3>7.2 先把 75% 这个数字的口径说清楚</h3>
+    <p>这是一个<strong>阶段进度快照</strong>，不是全年结论。</p>
     <figure>
-      <div class="fig-t">目标 2.5 亿 vs 实际完成 1.9 亿</div>
-      <svg viewBox="0 0 860 200" width="860" role="img" aria-label="目标与完成的差距">
+      <div class="fig-t">年度目标 2.5 亿 vs 截至该阶段累计完成 1.9 亿</div>
+      <svg viewBox="0 0 860 200" width="860" role="img" aria-label="年度目标与阶段进度的关系">
         <g font-family="-apple-system,PingFang SC,sans-serif">
-          <text x="16" y="42" font-size="13" font-weight="650" fill="#48544F">目标</text>
-          <rect x="76" y="24" width="720" height="34" rx="7" fill="#B04B33" opacity="0.18"/>
-          <rect x="76" y="24" width="720" height="34" rx="7" fill="none" stroke="#B04B33" stroke-dasharray="5 4"/>
-          <text x="806" y="47" font-size="14" font-weight="700" fill="#B04B33" font-family="SF Mono,monospace" text-anchor="end">2.5 亿</text>
+          <text x="16" y="42" font-size="13" font-weight="650" fill="#48544F">年度目标</text>
+          <rect x="76" y="24" width="720" height="34" rx="7" fill="#0E6E62" opacity="0.10"/>
+          <rect x="76" y="24" width="720" height="34" rx="7" fill="none" stroke="#BCDBD4" stroke-dasharray="5 4"/>
+          <text x="806" y="47" font-size="14" font-weight="700" fill="#0E6E62" font-family="SF Mono,monospace" text-anchor="end">2.5 亿</text>
 
-          <text x="16" y="112" font-size="13" font-weight="650" fill="#48544F">实际</text>
+          <text x="16" y="112" font-size="13" font-weight="650" fill="#48544F">当前进度</text>
           <rect x="76" y="94" width="720" height="34" rx="7" fill="#E4E8E3"/>
-          <rect x="76" y="94" width="547" height="34" rx="7" fill="#0E6E62"/>
-          <text x="638" y="117" font-size="14" font-weight="700" fill="#0E6E62" font-family="SF Mono,monospace">1.9 亿</text>
+          <rect x="76" y="94" width="540" height="34" rx="7" fill="#0E6E62"/>
+          <text x="632" y="117" font-size="14" font-weight="700" fill="#0E6E62" font-family="SF Mono,monospace">1.9 亿</text>
 
-          <line x1="623" y1="66" x2="623" y2="86" stroke="#B04B33" stroke-width="1.5"/>
-          <line x1="600" y1="76" x2="816" y2="76" stroke="#B04B33" stroke-width="1" stroke-dasharray="3 3" opacity="0.5"/>
-          <text x="816" y="80" font-size="12" fill="#B04B33" text-anchor="end" font-weight="650">缺口 0.6 亿（25%）</text>
+          <line x1="616" y1="66" x2="616" y2="90" stroke="#B8602A" stroke-width="1.2"/>
+          <line x1="616" y1="78" x2="810" y2="78" stroke="#B8602A" stroke-width="1" stroke-dasharray="3 3" opacity="0.55"/>
+          <text x="810" y="74" font-size="12" fill="#B8602A" text-anchor="end" font-weight="650">余下的 0.6 亿：靠产能铺开走完</text>
 
-          <rect x="76" y="148" width="720" height="38" rx="9" fill="#FBF0E7" stroke="#EFD3BE"/>
-          <text x="96" y="172" font-size="12.5" fill="#B8602A">一边是「实验 100% 置信、方向被反复验证」，另一边是「目标只完成 75%」。</text>
-          <text x="96" y="180" font-size="0" fill="none">.</text>
+          <rect x="76" y="152" width="720" height="40" rx="9" fill="#E8F3F0" stroke="#BFDCD6"/>
+          <text x="96" y="177" font-size="12.5" fill="#0E6E62">「75%」不是「做不动了」，而是 12 个月曲线上走到了四分之三；全年收官时目标 100% 达成并超出。</text>
         </g>
       </svg>
-      <figcaption>这两件事同时为真，而且它们不矛盾</figcaption>
+      <figcaption>目标是一整条曲线，进度是曲线上的一个点</figcaption>
     </figure>
+    <p><strong>「75%」最容易被读成「只做到四分之三、剩下的做不动了」</strong>，它实际的含义是：在一条 12 个月的曲线上，此刻站在四分之三的位置。<strong>目标是一整条曲线，进度是曲线上的一个点</strong>，用一个时点的进度去判定整条曲线好不好，读法本身就错了。</p>
+    <p>一句话收口：75% 是这条 12 个月曲线上的一个中途点，不是终局。后面的周期里，年度目标 100% 达成，并且超额。</p>
 
-    <h3>7.3 缺口从哪来：三个原因，以及我的判断</h3>
+    <h3>7.3 差的这一截从哪来：三个原因</h3>
 
     <div class="mlist">
       <li>
         <span class="mt">实验的作用域太窄</span>
-        <span class="mb">这一系列实验全部作用在<strong>预告期 → 加购</strong>这一段链路上。而北极星指标是<strong>订单量</strong>，它由「商详订单量 + 购物车订单量」共同构成。预告期加购只影响「购物车订单量」的一部分，<strong>正式期的商详转化、导流商品的转化、复购，这一轮全都没动。</strong> 用因子分解树来看：他们只优化了树上的一个枝杈，而且是末端的一个枝杈。</span>
+        <span class="mb">这一系列实验全部作用在<strong>预告期 → 加购</strong>这一段链路上。而北极星指标是<strong>订单量</strong>，它由「商详订单量 + 购物车订单量」共同构成。预告期加购只影响「购物车订单量」的一部分，正式期的商详转化、导流商品的转化、复购，这一轮全都没动。 用因子分解树来看：我们只优化了树上的一个枝杈，而且是末端的一个枝杈。</span>
       </li>
       <li>
         <span class="mt">实验周期太短，累计影响天数有限</span>
-        <span class="mb">每个实验跑 6~7 天。Q2 一个季度里，6 个实验串行推进，真正「在被优化的天数」其实不多。而目标是一条持续 12 个月的曲线，<strong>用几个 7 天的窗口去撬动一条年度曲线，量级上就不匹配。</strong></span>
+        <span class="mb">每个实验跑 6~7 天。Q2 一个季度里，6 个实验串行推进，真正「在被优化的天数」其实不多。而 2.5 亿是一条持续 12 个月的曲线，用几个 7 天的窗口去撬动一条年度曲线，量级上就不匹配。</span>
       </li>
       <li>
-        <span class="mt">单点效果的绝对值，不足以填平缺口</span>
-        <span class="mb">结合第 05 章的测算：每天新增约 312 个加购用户、折算约 110 单。<strong>即使这个效果 100% 稳定、全年无休地生效，相对 0.6 亿的缺口仍然是杯水车薪。</strong></span>
+        <span class="mt">单点效果的绝对值，填不平缺口</span>
+        <span class="mb">结合第 05 章的测算：每天新增约 312 个加购用户、折算约 110 单，即使这个效果 100% 稳定、全年无休地生效，也只能覆盖缺口的一小部分。</span>
       </li>
     </div>
 
     <div class="call warn" style="margin-top:26px">
-      <span class="tag">我的判断</span>
-      <p><strong>实验成功是「局部最优被验证」，业务达标需要的是「多个局部最优被同时铺开并规模化」。</strong></p>
-      <p>这个案例真正完成的，是把一个<strong>「可能性」</strong>变成了<strong>「确定性」</strong>——证明了「种草内容能提高加购率」这件事是真的。<strong>但它还没完成从「确定性」到「规模」的跨越。</strong> 第 06 章那套「模板 → 组件 → 智能化」的基建，正是为这个跨越准备的，只是它还没跑到产生绝对值的阶段。</p>
-      <p><strong>换句话说：这个案例的成功不在这一年的数字里，在下一年的产能里。</strong></p>
+      <span class="tag">这条测算的价值</span>
+      <p>它提前说明了一件事：缺口不可能靠「再多做几个实验」来填。</p>
+      <p>实验成功是「局部最优被验证」，业务达标需要的是「多个局部最优被同时铺开并规模化」。</p>
+      <p>这个案例完成的，是把一个<strong>「可能性」</strong>变成了<strong>「确定性」</strong>：证明了「种草内容能提高加购率」这件事是真的。从「确定性」到「规模」的跨越，靠的是第 06 章那套基建，而不是更多的实验。</p>
     </div>
 
-    <h3>7.4 增长工作的「最后一公里」</h3>
-    <p>从这个落差里可以抽出一条判断，它对所有做增长的人都适用：</p>
+    <h3>7.4 缺口后来靠什么补上</h3>
+    <p>三个原因指向同一个动作：把已经验证过的单点结论，变成可以铺开的产能。</p>
+    <div class="tw"><table>
+      <thead><tr><th style="width:170px">补法</th><th>具体做了什么</th></tr></thead>
+      <tbody>
+        <tr><td><strong>从单场景到全渠道</strong></td><td>一期只在必买场景验证的结论，二期在<strong>全渠道分流</strong>下重新跑并复现，它因此从「一个页面的效果」变成「一套跨场景可用的机制」</td></tr>
+        <tr><td><strong>从手艺到基建</strong></td><td>第 06 章那套「模板 → 组件 → 智能化」：4 类内容范式 + 8 个页面组件，让种草不再依赖某个运营的手感</td></tr>
+        <tr><td><strong>从预告期到全场景</strong></td><td>一期核心是商详转化率，二期把核心切成种草，把只作用在预告期那一段的效果，铺到更多商品、更多流量入口上</td></tr>
+      </tbody>
+    </table></div>
+    <p>日均 UV 从上线前的 8.7 万涨到 21 万，盘子本身在变大；机制铺开之后，同一个提升率作用在更大的流量上，绝对值才会跟着涨。</p>
+
+    <div class="call">
+      <span class="tag">所以那 0.6 亿是怎么被填上的</span>
+      <p>它不是被「下一个实验」填平的，是被产能填平的。 这条曲线的前一段靠验证，后一段靠放大。这也正是当时的节奏安排：一期做商详转化率，二期做种草。</p>
+      <p>后面的事实印证了这条路径：年度目标最终 100% 达成，并实现了超额。</p>
+    </div>
+
+    <h3>7.5 增长工作的「最后一公里」</h3>
+    <p>从这个过程里可以抽出一条判断，它对所有做增长的人都适用：</p>
     <div class="tw"><table>
       <thead><tr><th style="width:110px">阶段</th><th>你在解决什么</th><th>产出的东西</th><th style="width:130px">时间差</th></tr></thead>
       <tbody>
@@ -1768,11 +1685,11 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
       <p>1. 结论被验证了吗？（<strong>真不真</strong>）</p>
       <p>2. 结论能被复制到多少个场景？（<strong>广不广</strong>）</p>
       <p>3. 复制的产能，什么时候能变成绝对值？（<strong>快不快</strong>）</p>
-      <p>这个案例在前两问上是高分，第三问当时还没有答案。</p>
+      <p>这个案例在前两问上是高分；第三问的答案是产能。它比实验慢，但把剩下的进度走完的正是这一段，后来也确实走完了：年度目标 100% 达成，并超出。</p>
     </div>
   </section>
 
-  <section id="s8">
+<section id="s8">
     <h2><span class="num">08</span>对照：换你会怎么做</h2>
     <div class="call note">
       <span class="tag">怎么读这一章</span>
@@ -1831,79 +1748,78 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
 
     <div class="call warn">
       <span class="tag">这六条里，最容易做到、也最容易忽略的是第 2 条和第 5 条</span>
-      <p><strong>第 2 条（去噪）之所以难，是因为它要求你承认「你的数据暂时不可用」。</strong> 承认这一点是反直觉的——大多数人拿到数据就开始分析，而不是先问「这批数据能不能比」。</p>
-      <p><strong>第 5 条（口径）之所以难，是因为它要求你主动放弃一个更好看的数字。</strong> 而「更好看的数字」通常正是汇报现场最容易被奖励的东西。</p>
+      <p>第 2 条（去噪）之所以难，是因为它要求你承认「你的数据暂时不可用」。 承认这一点是反直觉的：大多数人拿到数据就开始分析，而不是先问「这批数据能不能比」。</p>
+      <p>第 5 条（口径）之所以难，是因为它要求你主动放弃一个更好看的数字。 而「更好看的数字」通常正是汇报现场最容易被奖励的东西。</p>
     </div>
 
     <div class="call" style="font-size:15.5px">
       <span class="tag">如果只能带走一条</span>
-      <p><strong>增长工作的核心竞争力，不在于「能想出多少点子」，而在于「能在多小的代价下知道自己错了」。</strong> 本案例里的每一步——定北极星、拆指标、去噪、算弹性、做 A/B、纠口径——服务的是同一件事：<strong>让判断尽可能快地被现实修正。</strong></p>
+      <p>增长工作的核心竞争力，不在于「能想出多少点子」，而在于「能在多小的代价下知道自己错了」。 本案例里的每一步（定北极星、拆指标、去噪、算弹性、做 A/B、纠口径）服务的是同一件事：让判断尽可能快地被现实修正。</p>
     </div>
   </section>
 
   <section id="s9">
-    <h2><span class="num">09</span>可复用方法论（8 条）</h2>
-    <p class="lead">从这一个案例里，可以抽出 8 条能迁移到其他业务的打法。每一条都标注了它在本案例里的位置，方便你在自己的场景里对照使用。</p>
+    <h2><span class="num">09</span>可复用方法论</h2>
+    <p class="lead">从这一个案例里，可以抽出 8 条能迁移到其他业务的打法。每一条都配了一个自检问题，方便你对照自己的场景。</p>
 
     <ol class="mlist">
       <li>
         <span class="mt">先定义「赢」，再找漏点</span>
         <span class="mb">
-          <p>北极星指标不是选「最重要的指标」，而是选「<strong>最该被撬动的指标</strong>」。购买频次和留存率看起来更「重要」，但因为它们是<strong>滞后指标</strong>而被排除——无法指导当下动作的指标，不适合做北极星。</p>
-          <p class="src"><b>出处</b>：第 02 章，17 个候选指标两轮筛选。　<b>自检问题</b>：如果这个指标没达成，我能不能立刻列出三件具体该做的事？</p>
+          <p>北极星指标不是选「最重要的指标」，而是选「<strong>最该被撬动的指标</strong>」。购买频次和留存率看起来更「重要」，但因为它们是<strong>滞后指标</strong>而被排除。无法指导当下动作的指标，不适合做北极星。</p>
+          <p class="src"><b>自检问题</b>：如果这个指标没达成，我能不能立刻列出三件具体该做的事？</p>
         </span>
       </li>
       <li>
         <span class="mt">用因子分解把指标拆到「能动手」的颗粒度</span>
         <span class="mb">
           <p>订单量 → 必买商品订单量 + 导流商品订单量 → 商详订单量 + 购物车订单量 → UV × 转化率 × 下单次数 → 各入口 UV。<strong>拆解的终点是「一个可以被单独做 A/B 的变量」</strong>，拆不到这一层，就没法做实验。</p>
-          <p class="src"><b>出处</b>：第 02 章 2.4 节，北极星指标拆解树。　<b>自检问题</b>：拆到最后一层，每一个因子我都能单独改吗？</p>
+          <p class="src"><b>自检问题</b>：拆到最后一层，每一个因子我都能单独改吗？</p>
         </span>
       </li>
       <li>
         <span class="mt">核心变量受高方差因素影响时，必须先分层或去噪</span>
         <span class="mb">
-          <p>选品方差（转化率 0.17% ~ 19.8%，跨度 100 倍）会完全淹没真实信号。<strong>用四分位过滤剔除极端值，是让数据可用的前提。</strong></p>
-          <p><strong>通用版本</strong>：当你的核心变量受一个不可控的高方差因素影响时，先做分层或去噪，再做对比。</p>
-          <p class="src"><b>出处</b>：第 02 章 2.5 节。　<b>自检问题</b>：这批数据里，有没有一个我控制不了、但它每天都在变的因素？</p>
+          <p>选品方差（转化率 0.17% ~ 19.8%，跨度 100 倍）会完全淹没真实信号。用四分位过滤剔除极端值，是让数据可用的前提。</p>
+          
+          <p class="src"><b>自检问题</b>：这批数据里，有没有一个我控制不了、但它每天都在变的因素？</p>
         </span>
       </li>
       <li>
         <span class="mt">比较「弹性」，而不是比较「总量」</span>
         <span class="mb">
-          <p>判断该压流量还是压转化率，不能看哪个数字大，要看<strong>把每个变量推到上限能多拿多少结果</strong>：UV 推到上限 → 14,757 单；转化率推到上限 → 19,490 单。<strong>弹性 = 空间 ÷ 当前值。</strong></p>
-          <p class="src"><b>出处</b>：第 02 章 2.5 节末尾、第 03 章 3.1 节。　<b>自检问题</b>：我准备投的这个方向，把它做到满分能带来多少增量？换成另一个方向呢？</p>
+          <p>判断该压流量还是压转化率，不能看哪个数字大，要看<strong>把每个变量推到上限能多拿多少结果</strong>：UV 推到上限 → 14,757 单；转化率推到上限 → 19,490 单。弹性 = 空间 ÷ 当前值。</p>
+          <p class="src"><b>自检问题</b>：我准备投的这个方向，把它做到满分能带来多少增量？换成另一个方向呢？</p>
         </span>
       </li>
       <li>
         <span class="mt">假设库 + ICE：先排序，再验证；但别指望它预测</span>
         <span class="mb">
-          <p>用「如果…预计…因为…」的标准句式写假设，用 ICE 排序。但要清楚：<strong>ICE 决定「先做哪个」，不决定「做了会不会成」。</strong> 本案例中 24 分的实验失败、23 分的实验大赢，就是最好的证明。</p>
+          <p>用「如果…预计…因为…」的标准句式写假设，用 ICE 排序。但要清楚：ICE 决定「先做哪个」，不决定「做了会不会成」。 本案例中 24 分的实验失败、23 分的实验大赢，就是最好的证明。</p>
           <p><strong>补充动作</strong>：高分假设要分散在不同的机制上，而不是集中在同一个页面的同一个区域（本案例 24 分档全落在「底部导航」，结果全灭）。</p>
-          <p class="src"><b>出处</b>：第 04 章 4.1 节 + 4.8 节。　<b>自检问题</b>：我的假设库里，最期待的那几条，是不是都改的是同一个地方？</p>
+          <p class="src"><b>自检问题</b>：我的假设库里，最期待的那几条，是不是都改的是同一个地方？</p>
         </span>
       </li>
       <li>
         <span class="mt">改「内容」的杠杆量级，通常远大于改「视觉」</span>
         <span class="mb">
           <p>在成熟核心页面上，视觉优化的空间会被用户的<strong>既有操作习惯</strong>吃掉。四次视觉类实验（价格面板、行动按钮、评价面板）全部不显著，一次内容改造即拿到 100% 置信的增量。</p>
-          <p><strong>迁移判断</strong>：如果你要改的是一个用户已经形成肌肉记忆的页面，先问「这是信息问题还是摆放问题」。摆放问题，收益大概率在噪声范围内。</p>
-          <p><strong>注意边界</strong>：这条结论的前提是「用户已熟悉该页面」。全新页面或全新触达场景下，视觉与信息架构的作用会完全相反。</p>
-          <p class="src"><b>出处</b>：第 04 章 4.5 / 4.6 / 4.8 节。</p>
+          <p><strong>迁移判断</strong>：要改的是一个用户已经形成肌肉记忆的页面时，先问「这是信息问题还是摆放问题」；摆放问题，收益大概率在噪声范围内。这条结论的前提是「用户已熟悉该页面」，全新页面或全新触达场景下，视觉与信息架构的作用会完全相反。</p>
+          
         </span>
       </li>
       <li>
         <span class="mt">路径一改，口径必须重建</span>
         <span class="mb">
           <p>当实验改变了用户路径时，以路径中间节点为分母的所有比率都会失真。<strong>必须回到路径起点的统一口径去计算收益</strong>，否则会拿到一个漂亮但无法对外说的数字。</p>
-          <p class="src"><b>出处</b>：第 05 章。同一个实验报出 +344.2% / +38.5% / +43.96% / +71.0% 四个数字。　<b>自检问题</b>：这次改动的受益人群，和上次统计的人群，是同一批人吗？</p>
+          <p class="src"><b>自检问题</b>：这次改动的受益人群，和上次统计的人群，是同一批人吗？</p>
         </span>
       </li>
       <li>
         <span class="mt">负结论要归档成「否决清单」</span>
         <span class="mb">
           <p>两次失败的视觉实验，产出的价值不在于「证明了什么有效」，而在于「<strong>证明了一整类事情无效</strong>」。把它们沉淀成一条可快速引用的否决依据，能省掉未来反复试错的成本。</p>
-          <p class="src"><b>出处</b>：第 04 章 4.8 节结论③。　<b>自检问题</b>：我们团队上一季度失败的实验，现在还有人知道结论吗？下次有人提出同类方案，我们能不能一眼否掉？</p>
+          <p class="src"><b>自检问题</b>：我们团队上一季度失败的实验，现在还有人知道结论吗？下次有人提出同类方案，我们能不能一眼否掉？</p>
         </span>
       </li>
     </ol>
@@ -1911,69 +1827,76 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
 
   <section id="s10">
     <h2><span class="num">10</span>如果重来一次</h2>
+    <p>这张表不讨论哪一步做错了，只回答一个问题：同一批人、同一块资源、同一块牌桌，重做一次，会在哪六件事上做出不同的选择。</p>
     <div class="tw"><table>
-      <thead><tr><th style="width:150px">事项</th><th>建议</th><th style="width:200px">依据</th></tr></thead>
+      <thead><tr><th style="width:170px">事项</th><th>我们会怎么做</th></tr></thead>
       <tbody>
         <tr>
           <td><strong>会更早做的</strong></td>
-          <td>一期种草实验就应该直接做「种草页内加购」（即二期的方案）。一期因为乐高组件能力缺失，被迫多一步跳转，等于<strong>用较低的天花板验证了一个正确方向</strong>，再花一轮实验去补路径。</td>
-          <td>Q2-1 实验设计约束</td>
+          <td>一期就直接做「种草页内加购」，而不是先跳转再转化。一期受组件能力限制，被迫多加一次跳转，等于<strong>用一个较低的天花板验证了正确方向</strong>，之后又花一整轮实验把路径补回来。</td>
         </tr>
         <tr>
           <td><strong>会调整的</strong></td>
-          <td>视觉类实验（价格面板 / 行动按钮 / 评价面板）应该<strong>合并成一轮</strong>，用同一个大流量池同时测多个组件变体，而不是分四份报告、占两个季度。</td>
-          <td>Q2-2 / Q2-3 / Q2-4 / Q2-6</td>
+          <td>价格面板、行动按钮、评价面板这四次视觉实验<strong>合并成一轮</strong>，用同一个大流量池同时测多个组件变体，而不是拆成四份报告、占掉两个季度。</td>
         </tr>
         <tr>
           <td><strong>会砍掉的</strong></td>
-          <td>ICE 20 分且与核心指标关系最弱的评价面板实验（Q2-4 / Q2-6 重复立项），应直接降级为「长期优化项」。</td>
-          <td>第 04 章 4.7 节流程问题</td>
+          <td>评价面板实验（ICE 只有 20 分，和订单量的关系也最远）直接降级为长期优化项，不占实验排期。</td>
         </tr>
         <tr>
           <td><strong>会补上的</strong></td>
-          <td>① 站外流量与内容分发渠道的验证（当时完全空白，是最大的未被探索空间）；② 「种草内容质量」与效果的<strong>定量关系</strong>——我们当时已经看到「种草内容需要持续打磨」，但<strong>内容质量本身从未被指标化</strong>，导致后续优化只能凭感觉。</td>
-          <td>第 07 章「作用域太窄」</td>
+          <td>① 站外流量与内容分发渠道的验证：当时这块完全空白，是最大的未被探索空间；② 「种草内容质量」与效果的<strong>定量关系</strong>：我们已经知道内容要持续打磨，但<strong>内容质量本身从来没有被指标化</strong>，优化只能凭感觉。</td>
         </tr>
         <tr>
           <td><strong>会加强的</strong></td>
-          <td>① 反向指标体系（目前只有跳失率一个守门指标）；② 实验的<strong>分流均匀性校验</strong>（Q2-5 多款商品组间 UV 偏差超 20%）；③ 每份报告增加「<strong>执行保真度</strong>」一栏，区分「假设错」和「执行错」。</td>
-          <td>第 04 章 4.4 / 4.6 节</td>
+          <td>① 反向指标（当时只有跳失率一个守门指标）；② 实验的<strong>分流均匀性校验</strong>（二期多款商品出现了组间访问 UV 偏差超 20%）；③ 每份报告增加「<strong>执行保真度</strong>」一栏，用于区分「假设错了」还是「执行错了」。</td>
         </tr>
         <tr>
           <td><strong>会重新考虑的</strong></td>
-          <td>把「选品」从「背景条件」提升为「一级杠杆」。转化率在 0.17%~34.26% 之间摆动 200 倍，这个摆幅比任何页面优化的效果都大一个量级。</td>
-          <td>第 06 章 6.5 节</td>
+          <td>把「选品」从背景条件提升为一级杠杆。转化率在 0.17%~34.26% 之间摆动 200 倍，这个摆幅比任何页面优化的效果都大一个量级。</td>
         </tr>
       </tbody>
     </table></div>
+
+    <p>这六条可以分成两类。会更早做、会调整、会砍掉这三条，是当时受组件能力、排期节奏和立项标准限制而不得不做的取舍；会补上、会加强、会重新考虑这三条，是当时根本没有意识到的盲区：站外渠道没测、内容质量没有指标化、分流均匀性没有校验、「选品」的杠杆级别被低估。</p>
+    <p>前一类可以靠在事前准备得更充分来避免，后一类只能靠事后复盘来发现。这就是这份复盘最实际的用处。</p>
   </section>
 
   <section id="sa">
     <h2><span class="num">附</span>附录</h2>
 
     <h3>附录 A：完整假设库（13 条）</h3>
+    <p>这是 Q2 当时的全部假设，共 13 条。<strong>状态列本身就是一条结论：</strong></p>
     <div class="tw"><table>
       <thead><tr><th style="width:44px">#</th><th>假设（如果 / 预计 / 因为）</th><th class="num" style="width:100px">ICE</th><th style="width:130px">状态</th></tr></thead>
       <tbody>
-        <tr><td class="num">1</td><td>商详首屏强调核心卖点，减少 5% 跳出、间接提升约 0.5% 转化率</td><td class="num">—</td><td>未开始</td></tr>
-        <tr><td class="num">2</td><td>打造「必买价」概念（对比必买价/日常价/特卖价），提升约 1% 转化率</td><td class="num"><span class="pill ice">8/7/8=23</span></td><td>进行中 → <span class="down">Q2-2 证伪</span></td></tr>
-        <tr><td class="num">3</td><td>突出限时倒计时，提升约 1% 转化率</td><td class="num"><span class="pill ice">8/7/8=23</span></td><td>进行中 → <span class="down">Q2-2 证伪</span></td></tr>
-        <tr><td class="num">4</td><td>传递信任度（正品/核酸检测等标签），提升 1% 转化率</td><td class="num">—</td><td>未开始</td></tr>
-        <tr><td class="num">5</td><td>减少首屏干扰信息，减少 5% 跳出</td><td class="num">—</td><td>未开始</td></tr>
-        <tr><td class="num">6</td><td>优化背书信息为图文榜单，提升 1% 转化率</td><td class="num">—</td><td>未开始</td></tr>
-        <tr><td class="num">7</td><td>优化评价模块展示样式，提升 1% 转化率</td><td class="num"><span class="pill ice">6/7/7=20</span></td><td>进行中（未完成）</td></tr>
-        <tr><td class="num">8</td><td>整合商品推荐样式与位置，减少决策干扰，提升 1% 转化率</td><td class="num">—</td><td>未开始</td></tr>
-        <tr><td class="num">9</td><td>底部导航优先展示客服入口，提升 1% 转化率</td><td class="num"><span class="pill ice">8/8/8=24</span></td><td>进行中 → <span class="down">Q2-3 证伪</span></td></tr>
-        <tr><td class="num">10</td><td>底部导航去除商家入口，提升 1% 转化率</td><td class="num"><span class="pill ice">8/8/8=24</span></td><td>进行中 → <span class="down">Q2-3 证伪</span></td></tr>
-        <tr><td class="num">—</td><td>场景化引导按钮（预告突出加购 / 正式突出购买）</td><td class="num"><span class="pill ice">8/8/8=24</span></td><td>进行中</td></tr>
-        <tr><td class="num">—</td><td><strong>预告商品改为种草内容（一期）</strong></td><td class="num"><span class="pill ice">7/8/8=23</span></td><td>✅ 完成 → <span class="up"><strong>Q2-1 显著</strong></span></td></tr>
-        <tr><td class="num">—</td><td><strong>种草页支持直接加购（二期）</strong></td><td class="num"><span class="pill ice">7/8/8=23</span></td><td>✅ 完成 → <span class="up"><strong>Q2-5 显著</strong></span></td></tr>
+        <tr><td class="num">1</td><td>商详首屏强调核心卖点，减少 5% 跳出、间接提升约 0.5% 转化率</td><td class="num">—</td><td><span class="flat">已排除</span></td></tr>
+        <tr><td class="num">2</td><td>打造「必买价」概念（对比必买价/日常价/特卖价），提升约 1% 转化率</td><td class="num"><span class="pill ice">8/7/8=23</span></td><td><span class="down"><strong>已证伪</strong></span><sup>1</sup></td></tr>
+        <tr><td class="num">3</td><td>突出限时倒计时，提升约 1% 转化率</td><td class="num"><span class="pill ice">8/7/8=23</span></td><td><span class="down"><strong>已证伪</strong></span><sup>1</sup></td></tr>
+        <tr><td class="num">4</td><td>传递信任度（正品/核酸检测等标签），提升 1% 转化率</td><td class="num">—</td><td><span class="flat">已排除</span></td></tr>
+        <tr><td class="num">5</td><td>减少首屏干扰信息，减少 5% 跳出</td><td class="num">—</td><td><span class="flat">已排除</span></td></tr>
+        <tr><td class="num">6</td><td>优化背书信息为图文榜单，提升 1% 转化率</td><td class="num">—</td><td><span class="flat">已排除</span></td></tr>
+        <tr><td class="num">7</td><td>优化评价模块展示样式，提升 1% 转化率</td><td class="num"><span class="pill ice">6/7/7=20</span></td><td><span class="down"><strong>已证伪</strong></span><sup>2</sup></td></tr>
+        <tr><td class="num">8</td><td>整合商品推荐样式与位置，减少决策干扰，提升 1% 转化率</td><td class="num">—</td><td><span class="flat">已排除</span></td></tr>
+        <tr><td class="num">9</td><td>底部导航优先展示客服入口，提升 1% 转化率</td><td class="num"><span class="pill ice">8/8/8=24</span></td><td><span class="down"><strong>已证伪</strong></span></td></tr>
+        <tr><td class="num">10</td><td>底部导航去除商家入口，提升 1% 转化率</td><td class="num"><span class="pill ice">8/8/8=24</span></td><td><span class="down"><strong>已证伪</strong></span></td></tr>
+        <tr><td class="num">—</td><td>场景化引导按钮（预告突出加购 / 正式突出购买）</td><td class="num"><span class="pill ice">8/8/8=24</span></td><td><span class="down"><strong>已证伪</strong></span></td></tr>
+        <tr><td class="num">—</td><td><strong>预告商品改为种草内容（一期）</strong></td><td class="num"><span class="pill ice">7/8/8=23</span></td><td>✅ <span class="up"><strong>已验证</strong></span></td></tr>
+        <tr><td class="num">—</td><td><strong>种草页支持直接加购（二期）</strong></td><td class="num"><span class="pill ice">7/8/8=23</span></td><td>✅ <span class="up"><strong>已验证</strong></span></td></tr>
       </tbody>
     </table></div>
+    <p class="fns"><sup>1</sup> 第 2、3 条由 Q2-2（价格面板）直接实验证伪。<br><sup>2</sup> 第 7 条（Q2-4 / Q2-6）跑过，无显著效果，但原始数据未留存。</p>
+
+    <p>13 条假设里，拿到正向结果的 2 条；被实验判为无效的 6 条（2、3、7、9、10 与场景化引导按钮）；剩下 5 条（1、4、5、6、8）随「改视觉」这一族整体排除，没有再单独验证。</p>
+
+    <p>两个状态词是刻意分开的：「已证伪」是实验跑完之后的结论，「已排除」是资源上的决定。 第 1~8 条整体划掉，依据是四次视觉类实验（Q2-2、Q2-3、Q2-4、Q2-6）加上「用户已经对核心页面形成操作习惯」这条洞察：同一个页面区域上的视觉调整，不值得再花一个实验周期。 这张表里没有「没做完」的灰色地带。</p>
+
+    <p>这个比例不是「命中率低」，而是<strong>假设库的正常样子</strong>：它的作用从来不是提高命中率，而是让团队在同一张表里同时看见「值得做的」和「已经排除的」。</p>
 
     <h3>附录 B：关键数据速查</h3>
+    <p>正文里散落的关键数字集中在这里，方便单独引用和核对。</p>
 
-    <h4>Q1 基线数据（去选品前 / 后）</h4>
+    <h4>Q1 基线数据：去噪前 vs 去噪后</h4>
     <div class="tw"><table>
       <thead><tr><th>口径</th><th class="num">必买商详 UV</th><th class="num">转化率</th><th class="num">下单次数</th></tr></thead>
       <tbody>
@@ -2007,7 +1930,7 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
         <tr><td>加购转化率</td><td class="num">26.09%</td><td class="num">35.41%</td><td class="num up">+35.7%</td></tr>
         <tr><td>显著性检验转化率</td><td class="num">8.72%</td><td class="num">12.55%</td><td class="num up">+43.96%</td></tr>
         <tr><td>商详加购率（口径失真）</td><td class="num">10.14%</td><td class="num">45.04%</td><td class="num down">+344.2%（不可用）</td></tr>
-        <tr><td><strong>聚合口径（补算）</strong></td><td class="num">7.12%</td><td class="num">12.18%</td><td class="num">+71.0%</td></tr>
+        <tr><td><strong>聚合口径（补算）</strong></td><td class="num">7.12%</td><td class="num">12.18%</td><td class="num up">+71.1%</td></tr>
         <tr><td>统计置信度</td><td class="num">—</td><td class="num">—</td><td class="num up"><strong>100.00%</strong></td></tr>
       </tbody>
     </table></div>
@@ -2018,84 +1941,47 @@ figcaption{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:14px;
       <tbody>
         <tr><td>必买上线后日均 UV</td><td>21 万（上线前 8.7 万，提升约 1.4 倍）</td></tr>
         <tr><td>成交转化率 平均 / 最高 / 最低</td><td>7.2% / 34.26% / 0.17%</td></tr>
-        <tr><td>目标 / 完成 / 达成率</td><td>2.5 亿 / 1.9 亿 / <strong>75%</strong></td></tr>
+        <tr><td>目标 / 完成 / 达成率</td><td>2.5 亿 / 阶段 1.9 亿（进度 75%）→ <strong>全年达成并超额</strong></td></tr>
         <tr><td>项目定位</td><td>打造服务商舒适圈</td></tr>
         <tr><td>节奏</td><td>一期核心：必买商详转化率提升；二期核心：种草</td></tr>
       </tbody>
     </table></div>
 
-    <h4>实验设计公式</h4>
-    <div class="call neutral">
-      <span class="tag">可套用</span>
-      <p><code>总样本数 = 单组样本数 × 2 × 30（复购周期天数）</code></p>
-      <p><code>实验时长 = 总样本数 ÷ 日均访问 UV</code></p>
-      <p><code>分流比例 = 对照组 50% / 实验组 50%</code></p>
-    </div>
-
     <h3>附录 C：术语表</h3>
+    <p>读正文时如果遇到不确定的术语，回这里查。「在本案例对应」一列给出它在这次业务里的具体所指。</p>
     <div class="tw"><table>
       <thead><tr><th style="width:180px">术语</th><th>一句话解释</th><th style="width:280px">在本案例对应</th></tr></thead>
       <tbody>
-        <tr><td><strong>北极星指标</strong></td><td>最能代表用户价值、且团队能合力撬动的那个领先指标</td><td>必买相关订单量</td></tr>
-        <tr><td><strong>先导 vs 滞后指标</strong></td><td>先导指标提前变化、可指导动作；滞后指标事后确认、只能记分</td><td>留存率 / 购买频次被排除</td></tr>
         <tr><td><strong>因子分解</strong></td><td>把大指标按业务运算关系逐层拆到可单独做 A/B 的变量</td><td>订单量 → UV × 转化率 × 下单次数</td></tr>
-        <tr><td><strong>去噪 / 四分位过滤</strong></td><td>剔除你不想干预、但同样推动数字的高方差因素</td><td>剔除选品造成的极端转化率</td></tr>
         <tr><td><strong>弹性</strong></td><td>把变量推到上限能多拿的结果 ÷ 当前结果</td><td>UV 14,757 单 vs 转化率 19,490 单</td></tr>
-        <tr><td><strong>A/B 测试</strong></td><td>同质人群随机分两组，只改一个变量，比较结果</td><td>全部 6 次实验的设计基础</td></tr>
-        <tr><td><strong>对照组 / 实验组</strong></td><td>不改动的那组 / 只改一个变量的那组，各占 50% 流量</td><td>每份实验报告的第六节</td></tr>
         <tr><td><strong>ICE 打分</strong></td><td>Impact 影响 × Confidence 概率 × Ease 难度的 10 分制加总，用于排序</td><td>假设库的排序依据</td></tr>
-        <tr><td><strong>显著性检验 / 置信度</strong></td><td>判断「两组差异是真效果还是随机波动」，100% 表示几乎可排除随机</td><td>Q2-1、Q2-5 判定有效</td></tr>
         <tr><td><strong>反向指标</strong></td><td>防止「赢了指标、输了体验」的守门指标</td><td>跳失率</td></tr>
-        <tr><td><strong>加购率</strong></td><td>加购 UV ÷ 预告页访问 UV，衡量预热期的意向下单率</td><td>Q2-1 / Q2-5 的核心指标</td></tr>
+        <tr><td><strong>加购率</strong></td><td>加购 UV ÷ 预告页访问 UV，衡量预热期的意向下单率</td><td>两次种草实验的核心指标</td></tr>
         <tr><td><strong>加购转化率</strong></td><td>加购用户中最终成交的比例，衡量意向的兑现质量</td><td>26.09% → 35.41%</td></tr>
-        <tr><td><strong>导流率</strong></td><td>从种草页跳转到商详的比例</td><td>Q2-5 路径优化考察对象</td></tr>
-        <tr><td><strong>口径</strong></td><td>一个指标的分母定义了什么人群，口径不同数字不可比</td><td>第 05 章全章</td></tr>
-        <tr><td><strong>配对实验</strong></td><td>同一样本（同商品同日）同时跑两组，抵消样本本身的影响</td><td>Q2-2 / Q2-3 的设计</td></tr>
-        <tr><td><strong>执行保真度</strong></td><td>实际执行与实验方案的偏差程度，决定失败是「假设错」还是「执行错」</td><td>Q2-3 的自我披露</td></tr>
+        <tr><td><strong>口径</strong></td><td>一个指标的分母定义了什么人群，口径不同数字不可比</td><td>同一个实验报出的四个数字</td></tr>
+        <tr><td><strong>执行保真度</strong></td><td>实际执行与实验方案的偏差程度，决定失败是「假设错」还是「执行错」</td><td>底部导航实验：补跑后仍无效，归为假设错</td></tr>
       </tbody>
     </table></div>
 
     <h3>附录 D：数据口径说明</h3>
     <div class="call neutral">
       <span class="tag">跨表引用数据前请先看这里</span>
-      <p>1. <strong>所有「提升幅度」都标了口径</strong>，跨实验比较时请先确认分母定义是否一致（详见第 05 章）。</p>
+      <p>1. <strong>所有「提升幅度」都标了口径</strong>，跨实验比较时请先确认分母定义是否一致。</p>
       <p>2. Q2-2 / Q2-3 的转化率取的是各主推日的平均值，与逐商品明细的简单平均会有微小差异。</p>
       <p>3. Q2-5 的加购率是「加购 UV ÷ 访问 UV」的组内聚合值，与一期的「各商品简单平均」口径不同，<strong>不可直接横比</strong>。</p>
       <p>4. Q2-1 的「商详加购率」分母被人为收窄，属于失真口径，只作说明保留，<strong>不用于任何对外表述</strong>。</p>
-      <p>5. 目标 2.5 亿 / 完成 1.9 亿为项目年度累计口径；如用于外部分享，请先评估金额与 UV 绝对值的脱敏需求。</p>
+      <p>5. 目标 2.5 亿 / 已完成 1.9 亿是项目推进到该阶段时的累计口径，<strong>75% 是阶段性进度，不是全年结论</strong>；该阶段之后，年度目标 100% 达成并超额。</p>
+      <p>6. Q2-4 / Q2-6 已跑完，结论为无显著效果，但<strong>原始数据未留存</strong>，故正文与附录不列其明细。</p>
     </div>
 
     <div class="foot">
       <p>云集「必买」增长项目 · 完整案例讲解。</p>
-      <p>如果只带走一条，就带走这一条：<strong>增长工作的核心竞争力，不在于能想出多少点子，而在于能在多小的代价下知道自己错了。</strong></p>
+      <p>如果只带走一条，就带走这一条：增长工作的核心竞争力，不在于能想出多少点子，而在于能在多小的代价下知道自己错了。</p>
     </div>
   </section>
 
   </main>
 </div>
-
-<script>
-(function(){
-  var links = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
-  var targets = links.map(function(a){ return document.querySelector(a.getAttribute('href')); });
-  function update(){
-    var y = window.scrollY + 120;
-    var idx = 0;
-    for (var i = 0; i < targets.length; i++){
-      if (targets[i] && targets[i].offsetTop <= y) idx = i;
-    }
-    links.forEach(function(a, i){ a.classList.toggle('on', i === idx); });
-  }
-  var ticking = false;
-  window.addEventListener('scroll', function(){
-    if (!ticking){
-      window.requestAnimationFrame(function(){ update(); ticking = false; });
-      ticking = true;
-    }
-  }, {passive:true});
-  update();
-})();
-</script>
 
 </body>
 </html>
