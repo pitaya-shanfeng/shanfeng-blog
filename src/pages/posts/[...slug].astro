@@ -16,6 +16,7 @@ import {
 } from "@utils/content-utils";
 import { extractPostQuote } from "@utils/post-quote-utils";
 import { getBannerVisibilityState } from "@utils/banner-visibility-utils";
+import { HTML_POST_CONTENT_CLASS } from "@utils/html-post-utils";
 import {
 	getCategoryUrl,
 	getFileDirFromPath,
@@ -72,17 +73,30 @@ const { Content, headings } = await render(entry);
 
 const { remarkPluginFrontmatter } = await render(entry);
 
+// HTML 文章（.html）与 md 文章共用本页；区别只有一处：
+// HTML 文章要把正文容器加上作用域类，给 loader 里做好的自带样式做锚点
+const isHtmlPost = entry.data.format === "html";
+const markdownClass = `mb-6 markdown-content onload-animation${
+	isHtmlPost ? ` ${HTML_POST_CONTENT_CLASS}` : ""
+}`;
+
 // banner 金句：优先从正文第一个引用块自动提取，没有引用块则回退到 frontmatter 的 description。
 // 注意：SEO / 分享卡片仍使用 entry.data.description，不受此处影响。
 const bannerQuote = extractPostQuote(entry.body) || entry.data.description;
+
+// 字数 / 阅读时长：md 文章来自 remark 插件，HTML 文章由 loader 直接写进 data。
+// ⚠️ `rendered.metadata` 不会变成 `remarkPluginFrontmatter`，所以 HTML 文章必须读 data ——
+// 本页有两处要用（banner 与移动端正文顶部），统一在这里取好，别再各写各的。
+const postWords = entry.data.words ?? remarkPluginFrontmatter.words;
+const postMinutes = entry.data.minutes ?? remarkPluginFrontmatter.minutes;
 
 const bannerPostMeta = {
 	title: entry.data.title,
 	description: bannerQuote,
 	published: entry.data.published,
 	updated: entry.data.updated,
-	words: remarkPluginFrontmatter.words,
-	minutes: remarkPluginFrontmatter.minutes,
+	words: postWords,
+	minutes: postMinutes,
 	category: entry.data.category || undefined,
 	tags: entry.data.tags,
 };
@@ -196,8 +210,8 @@ const jsonLd = {
 				: {}), // 优化：有封面才输出，避免 image:null
 			datePublished: entry.data.published.toISOString(),
 			...(entry.data.category ? { articleSection: entry.data.category } : {}),
-			...(remarkPluginFrontmatter.words
-				? { wordCount: remarkPluginFrontmatter.words }
+			...(postWords
+				? { wordCount: postWords }
 				: {}),
 			...(entry.data.updated
 				? { dateModified: entry.data.updated.toISOString() }
@@ -293,15 +307,15 @@ const seriesData = await getSeriesPosts(entry);
               <div class="flex items-center gap-1 whitespace-nowrap">
                 <Icon name="material-symbols:notes-rounded" class="text-base" />
                 <span>
-                  {remarkPluginFrontmatter.words}
-                  {" " + i18n(remarkPluginFrontmatter.words === 1 ? I18nKey.wordCount : I18nKey.wordsCount)}
+                  {postWords}
+                  {" " + i18n(postWords === 1 ? I18nKey.wordCount : I18nKey.wordsCount)}
                 </span>
               </div>
               <div class="flex items-center gap-1 whitespace-nowrap">
                 <Icon name="material-symbols:schedule-outline-rounded" class="text-base" />
                 <span>
-                  {remarkPluginFrontmatter.minutes}
-                  {" " + i18n(remarkPluginFrontmatter.minutes === 1 ? I18nKey.minuteCount : I18nKey.minutesCount)}
+                  {postMinutes}
+                  {" " + i18n(postMinutes === 1 ? I18nKey.minuteCount : I18nKey.minutesCount)}
                 </span>
               </div>
               {entry.data.password && (
@@ -350,7 +364,7 @@ const seriesData = await getSeriesPosts(entry);
                 <Icon name="material-symbols:notes-rounded" />
               </div>
               <div class="text-sm">
-                {remarkPluginFrontmatter.words}
+                {postWords}
                 {" " + i18n(I18nKey.wordsCount)}
               </div>
             </div>
@@ -361,11 +375,11 @@ const seriesData = await getSeriesPosts(entry);
                 <Icon name="material-symbols:schedule-outline-rounded" />
               </div>
               <div class="text-sm">
-                {remarkPluginFrontmatter.minutes}
+                {postMinutes}
                 {
                   " " +
                     i18n(
-                      remarkPluginFrontmatter.minutes === 1
+                      postMinutes === 1
                         ? I18nKey.minuteCount
                         : I18nKey.minutesCount
                     )
@@ -458,7 +472,7 @@ const seriesData = await getSeriesPosts(entry);
 
       {entry.data.password ? (
         <EncryptedPost password={entry.data.password} slug={entry.id} hint={entry.data.passwordHint}>
-          <Markdown class="mb-6 markdown-content onload-animation">
+          <Markdown class={markdownClass}>
             <Content />
           </Markdown>
 
@@ -538,7 +552,7 @@ const seriesData = await getSeriesPosts(entry);
         </EncryptedPost>
       ) : (
         <>
-          <Markdown class="mb-6 markdown-content onload-animation">
+          <Markdown class={markdownClass}>
             <Content />
           </Markdown>
 

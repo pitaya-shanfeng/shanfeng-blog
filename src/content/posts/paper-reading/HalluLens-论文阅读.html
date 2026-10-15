@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html data-page-node-id="gI3c3pickLa5bXLwz05J7Y" lang="zh-CN"><head data-page-node-id="TxAGyAVPiMDuhhqdA1Sryw">
+<script data-page-node-id="TccWtejgkBmEFDAShcJqHN" src="/page/page_comm/inject.js"></script>
+<meta data-page-node-id="lZ9RI54vlnJduvYowntLe3" charset="UTF-8">
+<meta data-page-node-id="n9YtUoXzMhUGeeforI8GbW" content="width=device-width,initial-scale=1" name="viewport">
+<title data-page-node-id="MWbBxAxJSi8QGkGgqkZXTo" data-pnid-children="QVlmRAMitIYEysxPPUdq0Q">HalluLens · 论文阅读</title>
+<style data-page-node-id="yRr8IFjbjXQjSgZIynIZkp" data-pnid-children="ZKx9eq1vUszelZSvwDeDbN">
+:root{
+  --page:#eef0f3; --card:#ffffff; --sunken:#f6f7f9; --sunken-2:#edf0f3;
+  --ink:#12141a; --ink-2:#48505a; --ink-3:#8b929c; --line:#e2e5ea;
+  --accent:#1f5fd0; --todo:#c02626; --ok:#15803d; --warn:#b45309;
+  --accent-bg:#eaf1fd; --todo-bg:#fdeeee; --ok-bg:#ebf7ef; --warn-bg:#fdf4e7;
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --mono:"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.75;padding:40px 24px 80px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto}
+.block{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:34px 40px 38px;margin:0 0 20px;box-shadow:0 1px 2px rgba(16,24,40,.045)}
+.tag{display:inline-block;background:var(--accent-bg);color:var(--accent);font-size:14px;font-weight:600;padding:4px 12px;border-radius:6px;margin-bottom:18px;align-self:flex-start}
+.claim{font-size:32px;line-height:1.45;font-weight:700;margin-bottom:22px;letter-spacing:-.01em}
+p{margin:0 0 16px;color:var(--ink-2)}
+p.lead{color:var(--ink);font-size:17px}
+strong{color:var(--ink);font-weight:600}
+em{font-style:normal;background:linear-gradient(transparent 62%,#ffe9a8 62%);padding:0 2px}
+.fig{margin:24px 0 8px;background:var(--sunken);border:1px solid var(--line);border-radius:12px;padding:28px 24px 20px}
+.fig svg{width:100%;height:auto;display:block}
+.fig-c{font-size:13px;line-height:1.7;color:var(--ink-3);margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:15px;background:var(--sunken);border-radius:10px;overflow:hidden}
+th{background:var(--sunken-2);color:var(--ink);font-weight:600;text-align:left;padding:12px 16px;font-size:14px;border-bottom:1px solid var(--line)}
+td{padding:12px 16px;color:var(--ink-2);border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.bnd{border-left:3px solid var(--warn);background:var(--warn-bg);border-radius:0 8px 8px 0;padding:16px 20px;margin:20px 0}
+.bnd-t{font-size:13px;font-weight:600;color:var(--warn);letter-spacing:.06em;margin-bottom:8px}
+.bnd p{margin:0;color:var(--ink-2)}
+.age{border-left:3px solid var(--line);padding:14px 20px;margin:18px 0}
+.age-t{font-size:13px;font-weight:600;color:var(--ink-3);letter-spacing:.06em;margin-bottom:8px}
+.age p{margin:0;color:var(--ink-3);font-size:15px}
+.quote{border-left:3px solid var(--accent);background:var(--accent-bg);padding:16px 20px;border-radius:0 8px 8px 0;margin:18px 0;color:var(--ink);font-size:15px;line-height:1.7}
+.meta{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:34px 40px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(16,24,40,.045)}
+.meta-t{font-size:40px;line-height:1.2;font-weight:700;margin-bottom:10px;letter-spacing:-.02em}
+.meta-sub{font-size:20px;color:var(--ink-2);margin-bottom:14px;font-weight:500}
+.meta-a{font-size:15px;color:var(--ink-2);margin-bottom:18px;line-height:1.6}
+.guide{border-top:1px solid var(--line);margin-top:24px;padding-top:20px;display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.guide-i{min-width:0}
+.guide-l{font-size:13px;font-weight:600;color:var(--ink-3);letter-spacing:.06em;margin-bottom:8px}
+.guide-v{font-size:15px;color:var(--ink-2);line-height:1.7}
+.guide-v em{font-weight:600}
+.idbar{border-top:1px solid var(--line);margin-top:26px;padding-top:18px;font-size:14px;color:var(--ink-3);font-weight:600;letter-spacing:.02em}
+.gap{margin:0 0 26px}
+.gap:last-child{margin-bottom:0}
+.gap-h{font-size:19px;line-height:1.5;font-weight:600;color:var(--ink);margin-bottom:10px}
+.gap p{margin-bottom:12px}
+.bar{position:sticky;top:0;z-index:20;background:var(--page);border-bottom:1px solid var(--line);padding:10px 0;margin:-40px -24px 24px;padding-left:24px;padding-right:24px;display:flex;justify-content:flex-end;gap:12px;align-items:center}
+.toggle{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 8px;display:flex;gap:2px}
+.tg{border:0;background:transparent;font-family:inherit;font-size:13px;color:var(--ink-2);padding:6px 14px;border-radius:6px;cursor:pointer;transition:.12s}
+.tg.on{background:var(--accent);color:#fff;font-weight:600}
+.hint{font-size:12px;color:var(--ink-3)}
+details>summary{cursor:pointer;font-size:14px;color:var(--ink-2);padding:12px 0;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary:before{content:"＋";color:var(--accent);font-weight:600;width:16px;flex-shrink:0}
+details[open]>summary:before{content:"－"}
+body.present .wrap{max-width:1280px}
+body.present .claim{font-size:44px;line-height:1.3;margin-bottom:30px}
+body.present p{font-size:19px;line-height:1.8}
+body.present .meta-t{font-size:56px}
+body.present .meta-sub{font-size:26px}
+body.present .guide-v{font-size:18px}
+body.present .guide-l{font-size:15px}
+body.present .guide{grid-template-columns:1fr;gap:26px}
+body.present .block,body.present .meta{padding:48px 56px 52px;margin-bottom:32px}
+body.present .fig{padding:40px 40px 30px}
+body.present .fig-c{font-size:16px}
+body.present .bnd p{font-size:18px}
+body.present .age p{font-size:17px}
+body.present .bnd-t,body.present .age-t{font-size:15px}
+body.present table{font-size:17px}
+body.present th{font-size:16px;padding:16px 20px}
+body.present td{padding:16px 20px}
+body.present .gap-h{font-size:22px}
+body.present .gap p{font-size:18px;line-height:1.8}
+@media print{body{background:#fff;padding:0}.bar{display:none}details{open:true}}
+@media (max-width:760px){.meta-t{font-size:28px}.claim{font-size:22px}.guide{grid-template-columns:1fr}.block,.meta{padding:24px 22px}.tag{align-self:flex-start}}
+
+  /* 英文标题指向原始论文（arXiv） */
+  .meta-sub a{color:inherit;text-decoration:none;border-bottom:1px solid color-mix(in srgb,currentColor 35%,transparent);transition:color .15s,border-color .15s}
+  .meta-sub a::after{content:" \2197";font-size:.72em;opacity:.55;margin-left:2px}
+  .meta-sub a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+</style>
+<style data-page-node-id="sddnwuB36l318F1HrgREaJ" data-pnid-children="qwetu92PePoPFDW0aRWBpD" id="__dm_no_drag_style__">* { -webkit-user-drag: none !important; }</style><style data-page-node-id="IvyouSJvDG3Y8VpemEw5Mx" data-pnid-children="clyGJHCnpqtZM8vRfT8kIY" id="__dm_bindable_badge_style__">[data-sp-bindable="database"]{outline:1px dashed #0088ff;outline-offset:2px;border-radius:4px;}[data-sp-bindable="database"] *{pointer-events:none !important;transition:none !important;animation:none !important;}[data-sp-bindable="database"]{transition:none !important;animation:none !important;}</style><meta name="slug" content="paper-hallulens">
+<meta name="category" content="论文阅读">
+<meta name="keywords" content="幻觉,评测基准,HalluLens">
+<meta name="date" content="2026-10-15T17:34">
+<meta name="description" content="大模型的幻觉缺一个统一的评测框架，根子在于「幻觉」和「事实性」被混着用。拆开之后才谈得上建基准：三个新任务专测训练数据外幻觉，测试集动态生成以防泄漏。">
+<meta name="blog-remove" content="bar">
+<meta name="blog-heading" content="claim">
+</head>
+<body data-page-node-id="ZAjYw99QdnAF9kqEnVtoXY">
+<div data-page-node-id="5sJU7KiNYk9u8xB4IWXT68" class="bar"><span data-page-node-id="57YgJmRA8DlTuWwL4tOB23" class="hint" id="hint"><!--pnid:sP0GvDZkyGOTv3Pz6CzLyW-->阅读态：表格与细节完整展开</span><div data-page-node-id="XZrIMEn5SmTLMDHxrfJY9x" class="toggle"><button data-page-node-id="Kfz87WKO7knspPtW59XyPp" class="tg on" id="bRead" onclick="setM('read')"><!--pnid:9FTk5QGv0lK1uiYsb1PFx3-->阅读</button><button data-page-node-id="qdyD58rL6DWqTUDvlIuD54" class="tg" id="bPres" onclick="setM('pres')"><!--pnid:4pfUOrUAhcrLhYft82cL9o-->投屏</button></div></div>
+<div data-page-node-id="I6ian5BvUAnV2ME6Q4Gh9u" class="wrap">
+
+<div data-page-node-id="PZLF2C0Ol5OLTgp8a2InLe" class="meta">
+  <div data-page-node-id="wyQr5o6ZUHMIdmRIeZMyiP" class="meta-t"><!--pnid:HuOAMUA6OHpYkXH7XRzDO7-->幻觉透镜 HalluLens</div>
+  <div data-page-node-id="iakNHSVnBe9XKmnMKkCFQS" class="meta-sub"><a href="https://arxiv.org/abs/2504.17550" target="_blank" rel="noopener noreferrer" title="打开原始论文"><!--pnid:Z1KD0BQEbafLd4Em0MfTNL-->LLM 幻觉评测基准</a></div>
+  <div data-page-node-id="KQQ8kosz52MWlymbmnOzhi" class="meta-a"><!--pnid:rkQrqpSVRcQviLeNwBp2QE-->Yejin Bang、Ziwei Ji 等　·　FAIR at Meta、GenAI at Meta、HKUST　·　arXiv 2504.17550v1　·　2025 年 4 月 24 日</div>
+  <div data-page-node-id="dZF2Vgy0S7Cgu425YuM41h" class="guide">
+    <div data-page-node-id="vLjBUsfdbdsLdIe3hunR5g" class="guide-i"><div data-page-node-id="xWV4WxFVOPdwP3dzCXYGyj" class="guide-l"><!--pnid:9g9zPdjgqx9ZzhZBDbHJrG-->主线</div><div data-page-node-id="AAjNxMyRo49goDpAIUZteY" class="guide-v"><!--pnid:xv8gb4PWQRYDIiCexVsb4D-->大模型的幻觉缺一个统一的评测框架，根子在于「幻觉」和「事实性」被混着用。拆开之后才谈得上建基准：<em data-page-node-id="ee4IFvZPRUwSvmt7RyLe99"><!--pnid:O6PrA5isk5ubsi46aDYQ3b-->三个新任务专测训练数据外幻觉，测试集动态生成以防泄漏</em><!--pnid:6lVvbfW8FbLaxFD7zLVyT2-->。</div></div>
+    <div data-page-node-id="gqcyEv9eWgabvNpd5klyu6" class="guide-i"><div data-page-node-id="zV1S5hnyU7jBHsPh1tcOyH" class="guide-l"><!--pnid:se1HK7KAgN4Qnskjv6B5T8-->内核</div><div data-page-node-id="pmom6CT0wH2YZ0ovJhJPH4" class="guide-v"><!--pnid:yQF3Css9oXInrk7qFCbdGZ-->给「幻觉」下一个能被检验的定义：真值可能散布在训练数据的任何地方，所以<em data-page-node-id="y1UdqyZEWW7BRi1cndGMaf"><!--pnid:vbItYMHeIjU8rBYRem798s-->无法被轻易验证</em><!--pnid:YKvbsrSQShxwciHK7l5gQN-->。这个「不易验证」不是缺陷描述，而是分类依据。</div></div>
+  </div>
+</div>
+
+
+
+<div data-page-node-id="Yjy0GJuCoVlmWdvt64oein" class="block">
+  <div data-page-node-id="hhsE7cOl5tYSoK4N3U36WB" class="tag"><!--pnid:kLQOc2u3xeL0fIkMPa4hVJ-->论证链</div>
+  <div data-page-node-id="ANhpbeKmMCVLSTYCPWuFh3" class="claim"><!--pnid:C0yhLDeMztIIcDV3b1rYvw-->分类 → 任务 → 重估</div>
+  <p data-page-node-id="sesgFuoX7d5SC59OZC6DdD" class="lead"><!--pnid:9pVi9zJXftUSQlEJI1wQtq-->作者先指出问题：评测幻觉缺一个统一框架；再给出解法：把幻觉拆成三类；然后实现解法：造三个评测任务；跑完实验之后回头检验，这个解法真的必要吗，于是重估了一批已有基准。</p>
+  <p data-page-node-id="zfEKV7bBG1pj2faEoDS4I9"><!--pnid:FeAcEuufRFXQutqS19xP6Z-->这四步不是并列的清单，是<strong data-page-node-id="JomrhTa75NeJlnIVKBY9bH"><!--pnid:OZ7YcwDMli3atNo6DNrY8i-->前后咬合的链条</strong><!--pnid:XHh5AktaKqM6cdmnqcuTnu-->。没有那套分类，三个任务没法解释「为什么是这三个」，只能变成「我又造了三个基准」；没有后面那场重估，这三个任务就没有存在理由。<strong data-page-node-id="ZoEjGDJnbE2oD17LQVFT9b"><!--pnid:X5zuhfpIVNVApqRriqKJ4h-->这个顺序不能重排</strong><!--pnid:O0aWkBYHtK2lPaqXBUNLSz-->。重排之后，最后那场批评就没有对象了，变成对着空气挑刺。</p>
+  <div data-page-node-id="OP5HgLEpgwWBxorlL602aw" class="fig">
+  <svg data-page-node-id="vOiyP7ho1bgt84F9mrFmNM" aria-label="论文四节论证依赖关系图" role="img" viewBox="0 0 1000 270">
+    <defs data-page-node-id="Jzf0hxQNnptmY7pk8TU6TD"><marker data-page-node-id="2rqsNnOcCRqvLjEySSfWWg" id="ah" markerHeight="7" markerWidth="7" orient="auto" refX="9" refY="5" viewBox="0 0 10 10"><path data-page-node-id="kkPwVMDxWxA3dcyUZJJVsN" d="M1 1L9 5L1 9" fill="none" stroke="#185FA5" stroke-linecap="round" stroke-width="1.6"></path></marker></defs>
+    <rect data-page-node-id="JCkSn08qLuPSohrcBJjA5N" fill="#e6f1fb" height="76" rx="10" stroke="#185FA5" stroke-width="0.8" width="170" x="24" y="96"></rect>
+    <text data-page-node-id="NVLWsunvnkKwOCIUebrUtk" fill="#042c53" font-family="-apple-system,sans-serif" font-size="17" font-weight="600" text-anchor="middle" x="109" y="124"><!--pnid:Qum5wNc8UyDaX338Leo3Ci-->提出问题</text>
+    <text data-page-node-id="Xd0tx3nXKm7RX37lPsNyyJ" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="109" y="148"><!--pnid:xG7m2OCJvgsf7EQFzHPMEg-->缺少统一框架</text>
+    <path data-page-node-id="m6MV2vC60bUWnTJKpypqXP" d="M199 134 L279 134" fill="none" marker-end="url(#ah)" stroke="#185FA5" stroke-width="1.6"></path>
+    <rect data-page-node-id="r5UbE5kIbBERzWP3Rx4frU" fill="#b5d4f4" height="76" rx="10" stroke="#185FA5" stroke-width="1.2" width="180" x="284" y="96"></rect>
+    <text data-page-node-id="6OX0jplck6JwWaKniX595a" fill="#042c53" font-family="-apple-system,sans-serif" font-size="17" font-weight="600" text-anchor="middle" x="374" y="122"><!--pnid:pCCBFYhHjUgUaIsikVIoRp-->给出分类</text>
+    <text data-page-node-id="ZQ36BbQs8JgGpos9PzebbO" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="374" y="146"><!--pnid:cnYvwqInT7SNNSWVaSKGtD-->内在、外延、事实性</text>
+    <path data-page-node-id="j2clsKHx1Heo3aB2xgGcbt" d="M469 134 L549 134" fill="none" marker-end="url(#ah)" stroke="#185FA5" stroke-width="1.6"></path>
+    <rect data-page-node-id="txhL3w891apeA4JwSveUzo" fill="#b5d4f4" height="76" rx="10" stroke="#185FA5" stroke-width="1.2" width="180" x="554" y="96"></rect>
+    <text data-page-node-id="aAtgmiHgURWwiU47lEDjpu" fill="#042c53" font-family="-apple-system,sans-serif" font-size="17" font-weight="600" text-anchor="middle" x="644" y="122"><!--pnid:09KdfKLuv6PmPqdCbAE5PL-->实现任务</text>
+    <text data-page-node-id="mu5RK3lMqenyz4lZYVWGRI" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="644" y="146"><!--pnid:lma6XPUWDh2a6WTC2fL8kh-->三个新基准</text>
+    <path data-page-node-id="ZOqiujXPa4xfiuNRicPWLN" d="M644 176 L644 216" fill="none" marker-end="url(#ah)" stroke="#185FA5" stroke-width="1.6"></path>
+    <text data-page-node-id="S3qIGf6rNich3SJnBfRe0T" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="13" x="658" y="202"><!--pnid:2l0R4jqXd5VjGTFHuLDQJB-->这一步追问：真的有必要吗</text>
+    <rect data-page-node-id="r5ddOniJVoMOISCiOf4V0k" fill="#e6f1fb" height="36" rx="10" stroke="#185FA5" stroke-width="0.8" width="208" x="540" y="221"></rect>
+    <text data-page-node-id="h30Y0VCx1RIyUMmCwiX8W8" fill="#042c53" font-family="-apple-system,sans-serif" font-size="17" font-weight="600" text-anchor="middle" x="644" y="245"><!--pnid:jWHTGgHvgRFoDbN6AbKRqP-->重估现有基准</text>
+    <path data-page-node-id="Yhxc4UnrvT84JqNmC9We9d" d="M474 108 L512 74" fill="none" stroke="#8b929c" stroke-dasharray="4 3" stroke-width="1.2"></path>
+    <text data-page-node-id="PqFTvXBWvtQFzi0FvxjoaI" fill="#8b929c" font-family="-apple-system,sans-serif" font-size="12" x="518" y="68"><!--pnid:BNwZ0NUUbBymf2FS8yWDKW-->实验</text>
+    <rect data-page-node-id="LkKfPbqZsbBr5Qf1wyxY4E" fill="#fdeeee" height="76" rx="10" stroke="#c02626" stroke-width="0.8" width="180" x="796" y="96"></rect>
+    <text data-page-node-id="NxGKtL1JBOKPdZpYDmJ9aI" fill="#501313" font-family="-apple-system,sans-serif" font-size="17" font-weight="600" text-anchor="middle" x="886" y="124"><!--pnid:T5UsRqnwhbVAG2qPWT0uBi-->把顺序打掉</text>
+    <text data-page-node-id="popcQ8MlhHT6WBm4OSGRGe" fill="#c02626" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="886" y="148"><!--pnid:XXYAST48bm4KAZO48OvxoG-->重估变成无对象的挑刺</text>
+    <path data-page-node-id="IMf9ys02SHuqdm9oX4jcin" d="M752 214 L806 178" fill="none" stroke="#c02626" stroke-dasharray="4 3" stroke-width="1.2"></path>
+    <text data-page-node-id="iJ6M3bHBNZfCkwvGhQPn3q" fill="#8b929c" font-family="-apple-system,sans-serif" font-size="13" x="24" y="252"><!--pnid:cqy7jkSdDaVpOkunfkRjnD-->重排之后，最后那场重估就失去了被重估的对象</text>
+  </svg>
+  <div data-page-node-id="IGo8OvQ5vCsKnWWTz4i7Bm" class="fig-c"><!--pnid:VVIF2kl18HsWkx0GuER736-->论证依赖链。论文的骨架既不是并列铺开，也不是抽象层递升：四步前后咬合，重排会破坏它。</div>
+  </div>
+</div>
+
+<div data-page-node-id="6c4adrJDYC8yDkBVv6StIG" class="block">
+  <div data-page-node-id="RKasfx5R2iOCb6cW0syXbX" class="tag"><!--pnid:SSlBgLSx1ULQkRo1w3QHuW-->分类</div>
+  <div data-page-node-id="cMndfNr0Yab33ghAjHWjhy" class="claim"><!--pnid:ar2iljGKgML9Yj9GAkBDVZ-->把幻觉和事实性拆开</div>
+  <p data-page-node-id="qrufo2g0K20p73qcMdlukT" class="lead"><!--pnid:wHKtsrm5y71XckcZmRbBax-->论文的整个贡献建立在一次概念切割上。</p>
+  <p data-page-node-id="lha8YjWfchTIqNtTwrrzeO"><!--pnid:sWqqTNj5uefIUijKeNfB5b-->这次切割之所以必要，是因为「大模型的幻觉」这个说法在 2023 到 2024 年间被用于指称好几种不同的问题。机器翻译翻错了、摘要加上了源文没有的句子，这两种有源文本可对照，测起来不难。但今天多数生成任务不一样：<strong data-page-node-id="5vCyA0eg8wWh7KwTW5Vsb3"><!--pnid:3pX2OsQgvuU1nhBQPFzlj4-->用户只给一句任务指令，不给上下文材料</strong><!--pnid:b685m87lruZW7mejnACkww-->，模型只能靠训练期间学到的内部知识来补。这时候出了问题，你去对照什么？没有源文本。而作为判定基准的「真值」可能散布在训练数据的任何地方，<em data-page-node-id="QaVtxOxEVZUH0FDOe7H6ms"><!--pnid:8E3SaOcJAng0S3g0WuAdwa-->你没法验证</em><!--pnid:gzOPHdg7TzncPWxkbvuH3n-->。</p>
+  <p data-page-node-id="51NDVp3VmSV3StIt7YOYaQ"><!--pnid:ADJk1Trz9XlNwmna38Terh-->论文把这个「没法验证」当成分类依据，而不是当成缺陷描述。这是关键的一步：<strong data-page-node-id="tyexIoN6MzbkNG39s02jiY"><!--pnid:QG6xr8ZrgB1sbsHeJvM7Ek-->不能验证的那一类</strong><!--pnid:4U0OUjSQvmvCsKQyVb3orn-->，才是需要专门造基准去测的那一类。内在幻觉的评测早就有了，对比源文本即可；外延幻觉没有，因为它需要一个此前不存在的方法，不是拿现成数据集跑一遍，是要为了「不可验证」这个特性重新设计任务。</p>
+  <div data-page-node-id="G0kJT1yp0iBD6hGEfJxgKp" class="fig">
+  <svg data-page-node-id="iXncBkA819Uauf6kQLNi6b" aria-label="内在幻觉、外延幻觉与事实性的分类树，按参照系分叉" role="img" viewBox="0 0 1000 330">
+    <rect data-page-node-id="TWA9Y5xMwImj7dPzOpX1A1" fill="#e6f1fb" height="54" rx="10" stroke="#185FA5" stroke-width="0.8" width="320" x="340" y="14"></rect>
+    <text data-page-node-id="9Ssa788wraSnmxJa024psd" fill="#042c53" font-family="-apple-system,sans-serif" font-size="17" font-weight="600" text-anchor="middle" x="500" y="36"><!--pnid:wnPWnu9VL7UPFastuvzwWy-->生成内容与什么不一致？</text>
+    <text data-page-node-id="JXRMUP2LdrWQoWMyw79eY2" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="500" y="56"><!--pnid:IOa3Fh7egx9wFEacOSg7zW-->分歧点在「参照系」上</text>
+    <path data-page-node-id="2wjva8Uyk7MMAWgw9x8JBS" d="M430 70 L280 108" fill="none" stroke="#15803d" stroke-width="1.6"></path>
+    <path data-page-node-id="Co5NScXl2LwJpTMdnLZyyV" d="M470 70 L410 108" fill="none" stroke="#b45309" stroke-width="1.6"></path>
+    <path data-page-node-id="iG6BOQjdmGnLynVAcExJ61" d="M570 70 L720 108" fill="none" stroke="#888780" stroke-width="1.6"></path>
+    <text data-page-node-id="jshbye9A0K217iHYtebP12" fill="#15803d" font-family="-apple-system,sans-serif" font-size="12" x="252" y="94"><!--pnid:cM6vxrC65V8kaxd3CV0ERU-->与源查询矛盾</text>
+    <text data-page-node-id="GbDT4Nwl8vJe4mbMEOskm5" fill="#b45309" font-family="-apple-system,sans-serif" font-size="12" x="470" y="94"><!--pnid:y2c2BmYWtxtvdDV0cxWPNB-->与训练数据不一致</text>
+    <text data-page-node-id="PVfr4mbRZQBM2bcrRknjZC" fill="#5f5e5a" font-family="-apple-system,sans-serif" font-size="12" x="700" y="94"><!--pnid:6VEoyl6R2ZQVQKM82UrHzT-->与训练数据无关</text>
+    <rect data-page-node-id="fdmVrfF3yilYGXlC91FlGl" fill="#ebf7ef" height="88" rx="10" stroke="#15803d" stroke-width="1" width="200" x="110" y="114"></rect>
+    <text data-page-node-id="UCgdnsA7fAqbVgLYxX0VGY" fill="#173404" font-family="-apple-system,sans-serif" font-size="17" font-weight="600" text-anchor="middle" x="210" y="140"><!--pnid:2LekbHNPn82cURByrf9qxY-->内在幻觉</text>
+    <text data-page-node-id="7v1kk0N0noE32cxzkkv1wR" fill="#15803d" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="210" y="164"><!--pnid:9tDKRi6kKbZL4GisUtNoze-->有源文本可对照</text>
+    <text data-page-node-id="QfkTXMQWzXxcKttmQv4VoA" fill="#15803d" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="210" y="186"><!--pnid:JGxTY3eIAA4V6UiZ6PmbHE-->翻译、摘要</text>
+    <rect data-page-node-id="fbdxx6O5A6hvNcDY6dDsoS" fill="#fdf4e7" height="88" rx="10" stroke="#b45309" stroke-width="1.2" width="200" x="330" y="114"></rect>
+    <text data-page-node-id="eImxpU3ftfyiqfVQ93H25m" fill="#412402" font-family="-apple-system,sans-serif" font-size="17" font-weight="600" text-anchor="middle" x="430" y="140"><!--pnid:SPWBsCEf5d464sjw0RpDps-->外延幻觉</text>
+    <text data-page-node-id="2vuq7WOzuUdhB3cuTIzpbs" fill="#b45309" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="430" y="164"><!--pnid:YOE83fqgSaiCbb38CfBkRb-->真值散布各处</text>
+    <text data-page-node-id="F3OQ8PKGOqDea5HI83jtx4" fill="#b45309" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="430" y="186"><!--pnid:vxFyTpy4ZwQhefcGQvDDnS-->难以验证</text>
+    <rect data-page-node-id="2PBQdvXax7s2fOruB1LiHE" fill="#f1efe8" height="88" rx="10" stroke="#888780" stroke-width="1" width="200" x="620" y="114"></rect>
+    <text data-page-node-id="JimyMTj6iFhTOrK52VUt3y" fill="#2c2c2a" font-family="-apple-system,sans-serif" font-size="17" font-weight="600" text-anchor="middle" x="720" y="140"><!--pnid:pmy3oo1wibnZA6Z8MBfNEc-->事实性</text>
+    <text data-page-node-id="t1mF3j4x7Xwwskc2AIDXp5" fill="#5f5e5a" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="720" y="164"><!--pnid:eULpSiXaAlKFewEUh7XBqR-->依据外部知识源</text>
+    <text data-page-node-id="fyH1czCbZQ9Wb7jtR7z3p6" fill="#5f5e5a" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="720" y="186"><!--pnid:ynzNkz0vrGgR4F0KUizwjE-->判答案对错</text>
+    <path data-page-node-id="5Hp15umNpN4vLfH2LaDLoP" d="M430 206 L430 218" fill="none" stroke="#b45309" stroke-width="1.6"></path>
+    <rect data-page-node-id="d5DQTMztkgkSzkQTKyDNoL" fill="#fff4d6" height="44" rx="10" stroke="#b45309" stroke-width="1.4" width="260" x="300" y="222"></rect>
+    <text data-page-node-id="zkTq6BVMOohsn8dBjzty2Y" fill="#412402" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="430" y="249"><!--pnid:oUdXi0HA1MAbUxX7FDWogv-->需要专门造基准去测的那一类</text>
+    <rect data-page-node-id="ZAuLpfSnZ0KLLdOfjU0532" fill="#fdeeee" height="34" rx="8" stroke="#c02626" stroke-width="0.8" width="800" x="20" y="286"></rect>
+    <text data-page-node-id="OkVw23XNsYG72KATvaIXix" fill="#501313" font-family="-apple-system,sans-serif" font-size="14" text-anchor="middle" x="420" y="308"><!--pnid:aDRi3wtgX1qdEr2PP7pQwL-->三者此前被混着叫「幻觉」，导致文献里大量基准其实是事实性基准，只是名字叫错了</text>
+  </svg>
+  <div data-page-node-id="pAkYPLR4o2VXCuXV0MEd0M" class="fig-c"><!--pnid:CecTji72KJUSvK2yBZXCED-->三分图。分类的依据是「参照系」：与源查询比、与训练数据比、与外部知识源比。论文把「难以验证」这一属性当作外延幻觉的定义性特征，它正是需要专门造基准的理由。</div>
+  </div>
+  <p data-page-node-id="aR61YDF2IFgPm2EfOUvGmQ"><!--pnid:RM9MgiNR18Ky3hU0FCzGlL-->作者顺手把第三个概念也切开了：<strong data-page-node-id="vZ9ZRyFn78FM2pFcfYxF6a"><!--pnid:T3ZgjZPbNF9UC1IuyH40Sc-->事实性</strong><!--pnid:VOuPxZvo8EBwampC5qTDeq-->（factuality）问的是答案对不对，依据是外部既定知识源，完全不问训练数据。这三者此前被混着叫「幻觉」，导致文献里大量基准其实是事实性基准，只是名字叫错了。论文的原话是「这些基准被称为『幻觉』基准，但它们处理的主要是事实性」，而这个判断只在它们不涉及训练数据时成立。最后那场针对现有基准的重估，就建立在这个区分上。</p>
+  <div data-page-node-id="Rvq526mi02nVaJUrvpNcL4" class="bnd"><div data-page-node-id="PK6JoN9J6bT7VEbmDCcQYc" class="bnd-t"><!--pnid:Hc5XFT8eql91azwK1EZJuG-->前提与边界</div><p data-page-node-id="l0OW4RKiNhfwEJoXj1m32h"><!--pnid:2K5lo6yRPPScjwNu7e4of7-->这个划分成立的前提是「训练数据」作为一个<strong data-page-node-id="1u7Ni23vz2yCBrpXCfInTN"><!--pnid:AkuI2XVPxru8s3GfA9GsP0-->可指认的对象</strong><!--pnid:4o7KlojICsl8OdBreNHudw-->存在。一旦模型用检索增强把外部文档放进上下文，「与训练数据不一致」这个判据就失效了，因为此时可比对的参照系变成了上下文文档。论文没有处理 RAG 场景。这是 2025 年 4 月的工作，而检索增强当时已经是主流部署形态。</p></div>
+  <div data-page-node-id="2AeQjAF9L3so3WzrrDdscp" class="bnd"><div data-page-node-id="SzFAIXwcm3gf7V9afGFnuH" class="bnd-t"><!--pnid:WIeXzXvjVtjlmzw3sdFlF9-->书里怎么用的</div><p data-page-node-id="S6Dyqxv7xCt6gjxKWqWUS1"><!--pnid:alEykFqTDg4DuVtptycK7U-->论文对「事实性基准能否当幻觉基准用」给了一条很实用的转换条件：<strong data-page-node-id="NC97or5M8aPes1M8J53XdX"><!--pnid:ogGzepjtHYPioYzrAJkLN4-->加了拒答率的测量，且数据集可论证地限定在训练数据范围内</strong><!--pnid:ISJ7CV6YTOrOdCeiip23KY-->，这条基准就能当外延幻觉基准用。SimpleQA 和 PopQA 可以改造后使用；但那些「用超出训练数据截止日期的更新知识」来评的基准不行，它们测的是事实性，不是幻觉。</p></div>
+  <div data-page-node-id="J4yXVq7f5Ql1PBvpg2furO" class="age"><div data-page-node-id="t5T2c4V1xO5btSwKLnVkIB" class="age-t"><!--pnid:xH2J5YCuuLjCJif1UuX9ZR-->时代限定</div><p data-page-node-id="21qhBkb81Cnn3quXk2dFvR"><!--pnid:hcTLiuFKXYjXJf9nI4haEf-->论文的判据依赖「模型有固定训练数据截止日」这个前提。当模型持续在线更新、或把检索结果混进训练时，「内容是否与训练数据一致」这个判据会失去可操作性，因为没人能指认当前的训练数据是什么。论文发布时这个问题还不突出。</p></div>
+</div>
+
+<div data-page-node-id="hOtxeny9fIC3BlUMjXmfzH" class="block">
+  <div data-page-node-id="dXzmZmli6UMDvTfFb56Xna" class="tag"><!--pnid:1V4DGz3NzT4STpdhMnukkw-->任务</div>
+  <div data-page-node-id="Y6EuX1tlKH3faPIgXvSJht" class="claim"><!--pnid:HL52Z3t9zPylOC3aW1pqJc-->三个新任务，两类来源</div>
+  <p data-page-node-id="92JkAG8cKi3nD3sDnQWNLj" class="lead"><!--pnid:XpDhp5cEpbKRr3X9DMTCqn-->论文把外延幻觉按<strong data-page-node-id="JfrTz5mh6k1pH3vE4DCcJg"><!--pnid:ltQvx4MSryrWAowsj4lKXA-->来源</strong><!--pnid:VHpM4FMyNDXPLkn60IJSl8-->分成两类，各配任务。</p>
+  <p data-page-node-id="LGO4uCVlyCk2E0p3Zv0zQ7"><!--pnid:9iTii9TeC2RQzRxxFxoCUS-->分类的依据是「幻觉从哪来」。第一种是<strong data-page-node-id="ItEDz0PyzA5rtAmqsfFa0X"><!--pnid:mxu7cXb8NcKsTVikqb4hbQ-->建模错误</strong><!--pnid:eIklFdFzM4BHr8JZM5Fdtx-->：模型知道答案，但生成时错了，这跟它见过的训练数据本身无关，是生成环节的失误。第二种是<strong data-page-node-id="v7U6Kw9BWkwcTsxqHxW4tZ"><!--pnid:LCIA3ILopOLWCwjQrXxHo5-->知识缺口</strong><!--pnid:rebB6xu46KmRQQ5lGfHuDw-->：训练数据里压根就没有这部分内容，模型不知道，于是要么乱编，要么应该拒答。这两种来源需要的防护动作完全不同：前者要测「能不能答对」，后者要测「知不知道自己不知道」，<em data-page-node-id="3QMJ6IbMnelGKWObzfE0Ba"><!--pnid:DMLOZVmfVCiziWoRuguZHs-->而后者只能通过拒答率来测</em><!--pnid:NSje8i9YZr5vLS2wdRgPjz-->。</p>
+  <div data-page-node-id="BvF1ve5pDgAGCWcxUixPDg" class="fig">
+  <svg data-page-node-id="6hGdS6HDmGztcRzcYny93U" aria-label="两类幻觉来源与三个评测任务的映射结构" role="img" viewBox="0 0 1000 380">
+    <rect data-page-node-id="8avb9SBXNXYjASQ8niVKVx" fill="#e6f1fb" height="46" rx="10" stroke="#185FA5" stroke-width="0.8" width="280" x="360" y="14"></rect>
+    <text data-page-node-id="BNIpDRCmcji9NuZimY1pEo" fill="#042c53" font-family="-apple-system,sans-serif" font-size="17" font-weight="600" text-anchor="middle" x="500" y="43"><!--pnid:VNaCVPYXWhxlzikzKiGQrP-->外延幻觉从哪来？</text>
+    <path data-page-node-id="d4mer2j3uTX9i54e0cL0oP" d="M420 62 L300 98" fill="none" stroke="#185FA5" stroke-width="1.6"></path>
+    <path data-page-node-id="RwczAktcciFtwei4Smbvqt" d="M580 62 L700 98" fill="none" stroke="#b45309" stroke-width="1.6"></path>
+    <rect data-page-node-id="TRF6FSftX6grXPmsVkvTri" fill="#e6f1fb" height="72" rx="10" stroke="#185FA5" stroke-width="1" width="280" x="140" y="102"></rect>
+    <text data-page-node-id="jSZgxGFLwpxDmIIIjHzPsP" fill="#042c53" font-family="-apple-system,sans-serif" font-size="17" font-weight="600" text-anchor="middle" x="280" y="128"><!--pnid:yDG61RPJGdzqa7l7uJWnzg-->建模错误</text>
+    <text data-page-node-id="aClznwirVrS6HY8Cvh077R" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="280" y="152"><!--pnid:x1IiAL0N7yXztqybnID15u-->知道答案，生成时错了</text>
+    <rect data-page-node-id="niU9mVBeN52WA5F0bygwZj" fill="#fdf4e7" height="72" rx="10" stroke="#b45309" stroke-width="1.2" width="280" x="580" y="102"></rect>
+    <text data-page-node-id="bC5HLzDT9ab528ez0YQmtv" fill="#412402" font-family="-apple-system,sans-serif" font-size="17" font-weight="600" text-anchor="middle" x="720" y="128"><!--pnid:q6ypPscosHYnsZB4Xu4Dxf-->知识缺口</text>
+    <text data-page-node-id="CAIpGUk6P0frOUjLRtBDm6" fill="#b45309" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="720" y="152"><!--pnid:FmlWZTqwCWKzw4CPaAOZVQ-->训练数据里压根没有</text>
+    <path data-page-node-id="3WXU6CWxKLR5Dv8m1oeTLu" d="M215 176 L200 214" fill="none" stroke="#185FA5" stroke-width="1.6"></path>
+    <path data-page-node-id="TGZP83AwP9t0Jo07TakQ6g" d="M345 176 L365 214" fill="none" stroke="#185FA5" stroke-width="1.6"></path>
+    <path data-page-node-id="4cHb6ONsdgSZLALeOe1pMD" d="M720 176 L720 214" fill="none" stroke="#b45309" stroke-width="1.6"></path>
+    <rect data-page-node-id="62yWP5nvlEmUrtkFpO58Qn" fill="#e6f1fb" height="88" rx="10" stroke="#185FA5" stroke-width="0.8" width="220" x="90" y="218"></rect>
+    <text data-page-node-id="ELNU6uhlddsNI3ddmlmnM5" fill="#042c53" font-family="-apple-system,sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="200" y="238"><!--pnid:G0ncFEhTji6E9SYCuVpcYj-->精确问答</text>
+      <text data-page-node-id="kUaRN5i17M2K8p7bCoLJWS" fill="#5b7a99" font-family="-apple-system,sans-serif" font-size="10.5" text-anchor="middle" x="200" y="256"><!--pnid:Rc5ygqG2vMfLRAAkJsZNvd-->PreciseWikiQA</text>
+    <text data-page-node-id="F3TNKLPxOrywnqBXUWmvh6" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="200" y="279"><!--pnid:PbDNHYTXMBze76j9OixPKn-->短答案 · 事实型查询</text>
+    <text data-page-node-id="V96ySk5y47Q4ssYGyWp2Wh" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="200" y="298"><!--pnid:Sen9VuJwtwdRbESNj65NkJ-->维基动态生成 5000 题</text>
+    <rect data-page-node-id="Lz9zNXlLEW0BqZfSdQOJ9d" fill="#e6f1fb" height="88" rx="10" stroke="#185FA5" stroke-width="0.8" width="220" x="330" y="218"></rect>
+    <text data-page-node-id="rKnukgh6xGnyuVkOcljNUX" fill="#042c53" font-family="-apple-system,sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="440" y="238"><!--pnid:zv8wM1h2FcZbgEuTp28igi-->长文本一致性</text>
+      <text data-page-node-id="j1PAHSPOypGAzRd29VtJmd" fill="#5b7a99" font-family="-apple-system,sans-serif" font-size="10.5" text-anchor="middle" x="440" y="256"><!--pnid:ni3jZKKN3YoDtSnXz8Rloc-->LongWiki</text>
+    <text data-page-node-id="Kh5UKYSSoJbvoFVMBWtrOD" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="440" y="279"><!--pnid:rAdlRKqCvYwWMAxDLZsgV8-->长文本生成一致性</text>
+    <text data-page-node-id="9FBZqVronBXfvMEbMtlIP2" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="440" y="298"><!--pnid:eP8spXbkXN1gMNVFDNDgq5-->需至少一段才触发</text>
+    <rect data-page-node-id="t6bYxCuvnmtNeX6IRNu2M4" fill="#fdf4e7" height="88" rx="10" stroke="#b45309" stroke-width="1.2" width="260" x="600" y="218"></rect>
+    <text data-page-node-id="qkM32I7zf2LdIgpsorHNrY" fill="#412402" font-family="-apple-system,sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="730" y="238"><!--pnid:st005gJ5uV1bes9CeAk4Ac-->不存在实体拒答</text>
+      <text data-page-node-id="TisvwC9B5KKBofdrvGW9NL" fill="#a06a2c" font-family="-apple-system,sans-serif" font-size="10.5" text-anchor="middle" x="730" y="256"><!--pnid:GgdUx7XnrGiYWE9vGMh1Ah-->NonExistentRefusal</text>
+    <text data-page-node-id="1vXoXb659NfRasPv0HRtzr" fill="#b45309" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="730" y="279"><!--pnid:kffwViflvdSDmZptcrtbr4-->造不存在的实体</text>
+    <text data-page-node-id="X78LMjUGY6jHqHzxItD3zO" fill="#b45309" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="730" y="298"><!--pnid:3OYzPCeDBaQbyorsGyMiGL-->度量改为误接受率</text>
+    <rect data-page-node-id="wWBfQ1jgH5Uk5rNB1EoFHI" fill="#eef0f3" height="42" rx="8" stroke="#e2e5ea" stroke-width="0.8" width="470" x="60" y="324"></rect>
+    <text data-page-node-id="SOfMQHmh0xmUVLCPv4lWrY" fill="#48505a" font-family="-apple-system,sans-serif" font-size="14" text-anchor="middle" x="295" y="350"><!--pnid:p75RRem9YE30XHHiMPQLzw-->测「能不能答对」：维基大概在训练数据里，理想模型不该拒答</text>
+    <rect data-page-node-id="HJD9TNkzQLuZePXsWJbkiV" fill="#fff4d6" height="42" rx="8" stroke="#b45309" stroke-width="1" width="260" x="600" y="324"></rect>
+    <text data-page-node-id="R7p02NlQvB7MALE6xxGcCY" fill="#412402" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="730" y="350"><!--pnid:VTQoKebMqDBbSf9E2RlpFf-->测「知不知道自己不知道」</text>
+  </svg>
+  <div data-page-node-id="bHq1APttiBct6C8gPI2Ky0" class="fig-c"><!--pnid:IOloEEo7cwkHoFeMGxDEa3-->来源到任务的映射。右支的度量从「幻觉率」翻转成「误接受率」，这道题不再问模型会怎么答，而问它有没有上当。</div>
+  </div>
+  <p data-page-node-id="EwqkYDj3zG1bWEh6Aeu0cg"><!--pnid:4OpoyGHj3H2jhy9o4ph8CT-->三个任务的设计都围绕<strong data-page-node-id="gwtXTgGghoc7WY5bEnlPTp"><!--pnid:GSZvJFkbz6bxLNiULRtEKG-->训练数据边界</strong><!--pnid:WfHpPlz331k0bhHqJvo6mT-->这一个点。精确问答（PreciseWikiQA）和长文本一致性（LongWiki）用维基百科构题，逻辑是「维基大概在大部分先进模型的训练数据里，所以理想模型应该能准确回答而不该拒答」。不存在实体拒答（NonExistentRefusal）反过来，<strong data-page-node-id="bhAejQ9FPQklzIEFWoWVNg"><!--pnid:PLsL1xlWJEZqd4xr1YVS3W-->故意造出训练数据里绝对没有的东西，看模型会不会识破</strong><!--pnid:xRu3YCPJqXpzWbYsyho3C9-->。</p>
+  <p data-page-node-id="mJ03RKJjQ3GjrqMRXCqO7K"><strong data-page-node-id="gpUhhGxFOLijof1P0KIRUj"><!--pnid:IucJwyvwDkoBINkVKQ6MA8-->任务设计是这套基准真正的重心</strong><!--pnid:IU0B9FAmqgHlHOIsKHZRnB-->，它要解决的核心难题是：模型什么都学过，怎么还能造出一套它真没见过的题。三个任务各给了一套管道，解法各不相同。</p>
+  <p data-page-node-id="mgVk2ZEXHXpSckpxInn0UE"><strong data-page-node-id="Kzt3CJfOz8RzbcXw7uZCd1"><!--pnid:eZFQXtdSOWL3iUiE81f8SG-->精确问答：控制难度分桶 + 两步生成 + 硬性过滤</strong></p>
+  <table data-page-node-id="3AFVSn3yT0dC29NtO54o5J"><thead data-page-node-id="sxjRapy18gZRW0ycnbEvYy"><tr data-page-node-id="WYrMcVc2OuVpG8cH2y7Rtn"><th data-page-node-id="eVatqNENKVOyCxTFe19tgT" style="width:14%"><!--pnid:xnl1ZvimCPOgJniHr3TdgH-->步骤</th><th data-page-node-id="VhjvSwEa9vkVCKfQIvigGr" style="width:48%"><!--pnid:H9SAHhueXi9MyIgYDIrWzu-->做法</th><th data-page-node-id="wPen22Eon64n31Zbkz9JbN"><!--pnid:6GxwpNLCN5D9rassomsnDF-->解决什么</th></tr></thead><tbody data-page-node-id="KxmdI7gZ0JW4A3f7xEMLnh">
+    <tr data-page-node-id="zZOE4lmXa8rFw7EpBF1m9M"><td data-page-node-id="Pz0Yu6Dhspzg2lLgbTfk2y"><!--pnid:EkoXbZXy3QCMZeQf9fT8ak-->选源</td><td data-page-node-id="dy7ldL3b9nGLqAU2ZfCJfZ"><!--pnid:zDDtAoRcp3rJStx0Z2ZNho-->取「优质维基」数据集，44,754 个被标为高质量的页面</td><td data-page-node-id="U9T3i3CU5Tlv5e33JZy3hh"><!--pnid:xajIvmPlr95VehtefOMfoW-->保证题源本身不烂</td></tr>
+    <tr data-page-node-id="mawcumxbnHYHIMQTAaxMTF"><td data-page-node-id="KtbFnhDiW4HESL6KKm3Jsj"><!--pnid:XosqaBnJK0vEgQjagZxUM0-->估难度</td><td data-page-node-id="3ZiFnZ156RVYsFWU6H1P04"><!--pnid:xSaM9NtrvjHUWarTgNsRDN-->用维基排名里的调和中心性估每个页面「在训练数据里出现的频繁程度」，分 10 档（0 最难到 9 最易）</td><td data-page-node-id="krIyKFV3johaYQ300uDeRx"><!--pnid:U2bDHM63gcgwjcctH2IKXH-->长尾知识更难得分，不控制难度就没有可比性</td></tr>
+    <tr data-page-node-id="dskUdiUSK5hD8Z2YARMFVC"><td data-page-node-id="bGSL5dk9QZVWe28sAit9R0"><!--pnid:PncXmpoB2pLBVR4E4K2Tcl-->抽样源池</td><td data-page-node-id="NhmvVyFGSf5hwowj3jZlWa"><!--pnid:2AQ7kCCmd2dyleU0Ranc0F-->每档随机取 500 个页面，共 5000 个</td><td data-page-node-id="f34TvQ28slRVzShpAozi0m"><!--pnid:RWmMfXuAlqngHU0N6dgeTH-->难度分布均匀</td></tr>
+    <tr data-page-node-id="38abJ8CzfinTx4XiW5dbu9"><td data-page-node-id="8M8eFIsWPUMccWl3nxFsON"><!--pnid:W1oSSFNalhInccdD7R8iZE-->切段</td><td data-page-node-id="CQd16bYMUk4EhBZXDpjAWU"><!--pnid:wXqvQpmu4BnxXL7yq9qnly-->页面切成小节，随机取其中一节作为出题素材</td><td data-page-node-id="qUfMJl9pVt6KqFpZ2J6XQw"><!--pnid:SiDJ54JmDvim7BajKJpVVX-->短事实题不需要整页</td></tr>
+    <tr data-page-node-id="4jtkqUSoKt97vxEJtoeRFv"><td data-page-node-id="u9UtxxuXhJhnHiJXJ3Sm8q"><!--pnid:ZO6dW1Vy0ECOjD0f2DJtiN-->出题 + 答题</td><td data-page-node-id="s5lD35BNtJ1oLLPUAgDUJZ"><strong data-page-node-id="I092zqAs9WRDddbYsjThyq"><!--pnid:r2kWYXvgDpLA0TWnJZHIXv-->两步分开</strong><!--pnid:6o6DA3k6DUlREMFQUb09v2-->：先看着选定的那一节出一道题，再看着参考素材生成答案</td><td data-page-node-id="Uh7MgzBSDlgsSifIutPg1Z"><!--pnid:9w03t3qHATWZGbdv3cE7Ly-->分开是为了保证题的质量：题必须只凭参考素材就能答，且是客观题</td></tr>
+    <tr data-page-node-id="IIzl8MzoZC9oPGwovf97Sm"><td data-page-node-id="aPT5NVjqG46LZDsHj4e7P4"><!--pnid:rcIrttHmy9MzRkHA0VST6v-->过滤</td><td data-page-node-id="fnkG42yJWuu1wUY1YQE7NN"><!--pnid:C66V7RtyJKYQ62Ns9k0MDl-->答案超过 10 个词就丢弃；题目答不出来就重新出题</td><td data-page-node-id="34o7nExmy5WmWDGK5bMGAN"><!--pnid:CzqhXLo1vDfzzWG0Cq2vWp-->把「需要上下文才能答」和「开放题」挡在门外</td></tr>
+  </tbody></table>
+  <p data-page-node-id="5K3ZLu16tpHkdts83FqcPY"><!--pnid:2Yl0JpNfqfrv0P2YdllJlZ-->产出质量作者自己查过：在子集上人工分析，自动生成的「金标准」答案有 <strong data-page-node-id="Gw8xfv3q8jHnzLXhUSBUMD"><!--pnid:2HfGYsu9n4kkl6ln0YHEED-->97.2% 是正确的</strong><!--pnid:elrgrFbsD2jINTAZONvPvO-->。剩下 2.8% 的噪声会不会影响模型之间的排序，正文没交代。</p>
+  <p data-page-node-id="ASHKl4NJXzNrUI77dTDfbZ"><!--pnid:JqSY53rPqgru58RduOeEAu-->评分也全靠模型做：先判断模型有没有拒答，没拒答再判答案对不对，答案分成「正确、错误、无法核实」三类，<strong data-page-node-id="UtH4RPRca20a3n92GaVz7E"><!--pnid:q8qR7rvPQZomIxmNcLRwRU-->后两类都算幻觉</strong><!--pnid:2PjXCxo1QcNJjGfi0NF9bl-->（题本该有答案）。评委是 Llama-3.1-70B，作者测了它自己的准确率，判拒答 96.67%、判对错 95.56%。这个数字自己交代出来了，但同时意味着<strong data-page-node-id="PZ8Nr85uq7cUznrvaBIQ6C"><!--pnid:5E7a3AX4tLXszihHzbfEqh-->全部分数继承了这个评委的误差</strong><!--pnid:u5osI9xFh5UISeLrATPQvM-->。</p>
+  <p data-page-node-id="DGYBISHOzpD9qzQpWj8AMH"><strong data-page-node-id="oPnxOKuCmnXEpr2ptYphdu"><!--pnid:i0ngbvImyTXn3TfgXQjJL0-->长文本一致性：同一套题源，换成两个新要求</strong></p>
+  <p data-page-node-id="Xjwkk9OwGfUkWjbWZN2gFm"><!--pnid:O0eBLSdBG5pNMy3DAVhwpl-->跟精确问答同源，额外加两条：题目必须<strong data-page-node-id="XIRHggrjfAjXN4YBbjLy5j"><!--pnid:LoEuoeNhCWLdbs7lqlYMsC-->落在参考素材内</strong><!--pnid:A3I4NG97v1wLLnTTQnb8v7-->，且<strong data-page-node-id="9Xpt4r52QaScidBzHx4VOE"><!--pnid:pt1lIsahKVVcZ09n8osfiu-->必须需要至少一段话才能触发长文本生成</strong><!--pnid:YCzyLcu6DftVQvncuiEHeW-->。判断方法一样：把生成的答案拆成一条条声明，逐条对照维基页面看有没有支撑。</p>
+  <p data-page-node-id="QeIyXT1trGDgT5PNWUGoIs"><!--pnid:5LaAaBtI0Oo5neeldPF4DP-->这里有个刻意的取舍：<strong data-page-node-id="amfhhgUpHxHPRDfqOZEtzM"><!--pnid:dLQddWHhi1TygcA7VgptD0-->论文明确不做联网检索取证</strong><!--pnid:Uj2QaJgR8aqlzkUfBVIj9F-->。理由是用搜索结果当参考更适合事实性基准，因为能对上最新知识；但<strong data-page-node-id="vAc4V9HIxP3cffjxWmNoiJ"><!--pnid:8mVTw1nnwEpomXHlrxFM50-->它没法验证生成内容与训练数据是否一致</strong><!--pnid:RMxaMQvUsBCK3sXZDyu7yJ-->。宁可少测一点，也不能换掉判据的参照系。</p>
+  <p data-page-node-id="g4YRKSHLuf7BmX8XLKY8Q5"><strong data-page-node-id="s0s7wk4rUtSDHJ6Kl18q6K"><!--pnid:jwflquT9Wz1SypzLH4lUjG-->不存在实体拒答：用「查无此物」把开放题变成判别题</strong></p>
+  <table data-page-node-id="aAmSehFoFrULUpY61S6Aol"><thead data-page-node-id="VkbJcKcdUVp0JDN5Lt38m4"><tr data-page-node-id="xHGNzuK7cvNnEzjEp5t0cI"><th data-page-node-id="gj7pMZmcdM5ZGJwKtyGsPb" style="width:18%"><!--pnid:tIKbm6LG6Xt1PPxSVBmu1i-->子任务</th><th data-page-node-id="TQKfqAOnD7Q7RorkD9Li0U"><!--pnid:g73wR9e5hExqiBfhoEsYgQ-->怎么造</th><th data-page-node-id="FINY3CE58Z8Yw3LsdRWZYi" style="width:16%"><!--pnid:LvMAZnQwF7GA1a5vIo78fO-->规模</th></tr></thead><tbody data-page-node-id="EGjYMUMmr7He0kVCHQcMOV">
+    <tr data-page-node-id="Yv3Os3J8BsNOLUWeIHgtjM"><td data-page-node-id="2oTYvaIK96pqEqWY3iusgO"><strong data-page-node-id="fByv32P2ms7IopCYRLxnrN"><!--pnid:2Lwe5Kwp8evRXTrDMQeulq-->混合实体</strong><br data-page-node-id="aW7Kh3m2wKbSEHJ2cqvkAB"><span data-page-node-id="7Y3GyFn4adDe0USN5yKvud" style="color:var(--ink-3); font-size:13px"><!--pnid:X5mDVxQVmX15h83Pq8jcZO-->MixedEntities</span></td><td data-page-node-id="JaGcNMmeXO1rze7ndQNiOt"><!--pnid:qqK8BBYjnrNMIRWKH2rjuP-->在动物、植物、细菌、药品四个领域里，把已有名称的词混合或对调，造出四不像的名字，再逐个查库确认它确实不存在</td><td data-page-node-id="ofAMP7ABtPWH2lCfEDZ8V0"><!--pnid:ImZmoXu4eHr5MePGy3m6Qs-->每领域 2000 条，共 8000 条</td></tr>
+    <tr data-page-node-id="tGwaGYbpxfupyXoIkKDbfm"><td data-page-node-id="OSEmWEbkUh36nSKocEm8fe"><strong data-page-node-id="IwRAF45GU6xNJp7l7bTnWa"><!--pnid:NsZkd3p76iSVTTYuXIsmmi-->模型编造实体</strong><br data-page-node-id="5jfuwlUC8lU1C6lnoY2zE0"><span data-page-node-id="4CR4QHnJdX3Ycm5egYOQWf" style="color:var(--ink-3); font-size:13px"><!--pnid:yJxMwfer2rekGlc56yFd5C-->GeneratedEntities</span></td><td data-page-node-id="QHh8wSO5qkuNsD8WMqoAMG"><!--pnid:jQxQWi4WdYkLWhq7MwmYjJ-->直接让大模型想商业、活动、产品品牌的虚构名</td><td data-page-node-id="gbcrreuruuvFqoOTDbihRh"><!--pnid:uTbulDlxhmRau0BiltGydH-->—</td></tr>
+  </tbody></table>
+  <p data-page-node-id="qDXFpgTHvCZ2kr2ZOPr6iB"><!--pnid:S7xZIwR5fkHkLGn5WjD5bh-->这条路走得比想象中扎实：动物植物用的是整合分类学信息系统数据库（14.5 万条分类记录），药品用的是覆盖 25 万种全球药品的清单。<strong data-page-node-id="QnbizrKMEf5XsCdmWhG35o"><!--pnid:78nZ741PWawXCKHAdnXeeA-->逐个查库确认不存在</strong><!--pnid:qJSIm7WJE9Dlg1e2F4qbMA-->这一步不能省，否则「不存在的实体」本身可能真的存在，整个任务就塌了。而且对照数据库是固定的，不需要联网，现场就能核。</p>
+  <p data-page-node-id="vq2NpjZaAETUtXW4cDFclc"><!--pnid:AEtgJmLue3mkeokl4zErj3-->度量指标也因此翻转：既然实体不存在，<strong data-page-node-id="vattOxVkxpRp4aY7tGK195"><!--pnid:qhKMR2yhhpFJYUQbEd36Ji-->模型给的任何信息都是幻觉</strong><!--pnid:0fpDrDHwUGvBSyCORXjp51-->，所以测的不是幻觉率而是<strong data-page-node-id="pQe0VeO8xN8vfRBULdMPYF"><!--pnid:wbkBfEmu95MRyVPYDlHxME-->误接受率</strong><!--pnid:WYCGBKFqNAcTfMikW9snsf-->（模型有没有上当）。这把一道「模型会怎么答」的开放题，变成了一道「模型有没有识破」的判别题。开放题没法判分，判别题可以。</p>
+  <div data-page-node-id="OUrhfR6adgZnoWzVx62Is2" class="bnd"><div data-page-node-id="d9lGftP2xW4L6Wyh6l9KfY" class="bnd-t"><!--pnid:nU1An2j6lCOGP6InyHqelA-->前提与边界</div><p data-page-node-id="FNjSf67qVEqwP6YysFZIJ8"><!--pnid:uEKj1zAW4uvuWB0vhLliDO-->三个任务全部压在同一句假设上：<strong data-page-node-id="7NXEXQBeiovjRdJRsvSsMa"><!--pnid:D8gcXMqZqKNT6ryIom4KLu-->维基百科已被纳入大多数先进模型的训练数据</strong><!--pnid:mxRiuGQ5SBAEHoGCOMA5gZ-->。论文把它明写出来了，但没给验证机制。精确问答和长文本一致性一旦离开这条假设就全部失效：如果某个模型的训练数据里没有维基百科，或者只收录了某个时间点之前的快照，题目就不是「模型该知道但答错了」，而是「模型压根不知道」。两个任务用了同一个源池做对照，<strong data-page-node-id="U8n1Ad5U3Jx0uKXeMwEQzG"><!--pnid:GIBCaO9AeCefpFsNmCAa0P-->这个假设一旦不准，无法从结果里分辨</strong><!--pnid:8ValPN2KbZ35siZmfmGD12-->。
+  </p><p data-page-node-id="uLVNzJfAJ7KyYPpF5PyTTK"><!--pnid:4JzS3MZwPCYR0wauqWCABd-->另外，三个任务的指标全部由模型评委给出。评委准确率作者报了（拒答判定 96.67%、正确性判定 95.56%），但<strong data-page-node-id="HRzcJneGIYQ0bZvzRZn93e"><!--pnid:lIgNTnZYUHpkabPpI7V3Qu-->这三项分数本身的不确定区间没有讨论</strong><!--pnid:1ojL76mPgpSklwbCbnKEch-->：13 个模型之间的差距里，有多少是真实能力差、有多少是评委的判定抖动，论文没有回答。</p></div>
+  <div data-page-node-id="G7XPHbQxe5zjNJAao08bmj" class="age"><div data-page-node-id="nbZ6fSp2ZMpWpOsID7TeQQ" class="age-t"><!--pnid:0XQlEyKsgHC0eYK77oj5r1-->时代限定</div><p data-page-node-id="5TcSZDjRkHy1kxS8EmL5IY"><!--pnid:YCRCxvkK3JbaO5MAmXg9AD-->「按主题热度控制题目难度」只是缓解，<strong data-page-node-id="iaISxGPyfkxZvLZBlNFUWS"><!--pnid:YNLxtZ5h6P9Yu7wAlqPFdg-->没有解决不同模型的维基快照不同</strong><!--pnid:WQGnb3FWXafZGMdCxhYPyF-->这个问题。2025 年之后模型持续更新，同一个页面在不同模型那里可能已经不是同一份内容。</p></div>
+</div>
+
+<div data-page-node-id="nWm7ujYkjoJxenX2PD4EsI" class="block">
+  <div data-page-node-id="OdGR0oJmUY8ezn5lYtIBjv" class="tag"><!--pnid:CVb0DJioeB1DpVRqO2jL9N-->防泄漏</div>
+  <div data-page-node-id="gLTuCS45gmZYvkdKY3K56Z" class="claim"><!--pnid:AnVWdysJzQ7hPLyv2DBFgg-->动态生成对抗数据泄漏</div>
+  <p data-page-node-id="wzkhA01uLYXxuUS4YCNbnG" class="lead"><!--pnid:pxs7SjgxWcpzasKAWnHH8M-->现有基准失效的主因是数据泄漏：题目已经进了训练数据，模型「见过」。作者的判断是，静态测试集必然会饱和。</p>
+  <p data-page-node-id="PkTSAi6vSFWum6V2vHOZQs"><!--pnid:L6QAHJlBNSUl0vtDHsBNY1-->作者点名了 MMLU、TruthfulQA 这类广泛使用的基准已被报告存在污染。解法是评测时即时出新题，不留固定题库。</p>
+  <table data-page-node-id="jHwMaqVKwZvnwnSDDeoBAG"><thead data-page-node-id="ttOc3scDU2lBIuyJbn87SL"><tr data-page-node-id="rfqR7652kgQsjmbT7GB8DM"><th data-page-node-id="M2ePtJ8wgILIgEPnWrzHLt" style="width:20%"><!--pnid:bBuKItAZnLdpYO7cLPmivr-->设计</th><th data-page-node-id="9tRGhZen8vww7ShpPz461Q" style="width:40%"><!--pnid:2vO1v7XTYdsp8GGNvbIm2g-->做法</th><th data-page-node-id="4DBhiQensu2UeRkZ7Ytbk8"><!--pnid:C7qJlToqkIsilWiBEA6Zx6-->效果</th></tr></thead><tbody data-page-node-id="eW9CgJkmanLIfm28GgcS7C">
+    <tr data-page-node-id="MTvu45gNvTTLigbryvxBTP"><td data-page-node-id="1qlYRlmSFLrtJfDzI42Sbv"><!--pnid:zhBOcXXwsIg6gdQzNsnHGq-->动态生成测试集</td><td data-page-node-id="3V2qv3jlhEiQXFEhDUXF07"><!--pnid:m6yoHVeukJs4knMQd5NSvN-->评测时即时生成新题，不留固定题库</td><td data-page-node-id="YMLpTCVCPx9WSU2qHAbmtL"><!--pnid:ETiKhcnxCUe6sYTp34v7bz-->题目不可预测，不可能出现在任何已有数据集里</td></tr>
+    <tr data-page-node-id="vSe7I06ZTxtngHdfsfNAaH"><td data-page-node-id="v32ql8onJptyqwcpdPBxJ4"><!--pnid:KUOMIyXdkrmI0QjqbXH1r5-->与可复现性的张力</td><td data-page-node-id="xDcvAeF5cdbC4uhRATSUhi"><!--pnid:ZbBxPXzxIESSZHjwAdTUpp-->题目每次都不一样，怎么保证不同次之间的分数可比。作者的判断是「这并非一个轻松的挑战，因为这种动态性带来了与可复现性之间的张力」</td><td data-page-node-id="4rbhfRFUCohnJnn5kDBsJB"><!--pnid:y2E3zhZbOpHdYiPM73hEL2-->要求动态集在多次运行间保持低方差</td></tr>
+    <tr data-page-node-id="0uzUYBJSJm7LLor7fyeowT"><td data-page-node-id="c9zTedz8qONSex9mxDJZSo"><!--pnid:hZsHihMOhACMFIgUIMgzRP-->验证方式</td><td data-page-node-id="DUlg4yk32246UOMNJu8hoZ"><!--pnid:uqQQkuxyzvLyueEhXH1Di2-->三次运行</td><td data-page-node-id="kqx6tWRzNxslfxk0MSGqPk"><!--pnid:IgJwOy52hJHItDzG3rVfSf-->平均标准差低于 1.01%，且保持模型相对排名</td></tr>
+  </tbody></table>
+  <p data-page-node-id="Tk1HeaAoQIEZW2yr844Kjh"><strong data-page-node-id="Rjl91SMGQgtYZm6ev20y6c"><!--pnid:g4tsjnxJeFvx2AZrfXXhWE-->作者把「稳定」拆成了两个指标</strong><!--pnid:Yubj5FzBPrCyagR6Szhi19-->，这个拆分值得注意：一是<strong data-page-node-id="Qac7OlpWlPrTRcisPV2wQE"><!--pnid:f20lsSW4g6qLPS2Smzt5n3-->低组内方差</strong><!--pnid:akHQoKIhhZvI7dFewINpDU-->（同一个模型重复测，结果要接近）；二是<strong data-page-node-id="IQjuajDOT2bqGoT8aNVZhX"><!--pnid:4w1LM2U5VdC6hXTrnNvsH6-->高组间敏感性</strong><!--pnid:UeAWcRTaJWJ7ZNGlGGNNd7-->（模型之间的差距要明显大于同一个模型内部的抖动）。只有第一条没有第二条，基准就废了：所有模型分数都稳，但稳得像一条线，谁都分不出来。</p>
+  <p data-page-node-id="av84N8ruwcCai37jTfR5MT"><!--pnid:ojMavJV6wyi3WDX1UgITa7-->动态生成这套办法<strong data-page-node-id="NRPVQik6eDGkvcrmeNq8JD"><!--pnid:k1lIYXPYs5RdCxMoXbHLlc-->只适用于外延幻觉，内在幻觉做不到</strong><!--pnid:aKYo8k0WsDw1ZEEhYqS0PX-->。理由很硬：外延幻觉可以自动生成金标准答案，因为参照系是训练数据；内在幻觉的判据是与源文本对照，而<strong data-page-node-id="oykru71hWFioNHKvheFVnn"><!--pnid:lmtpi6trf9wWPqtWtl00u7-->用大模型当评委本身就可能产生内在幻觉</strong><!--pnid:moLPGImSNtlfaaVc3ubdbW-->，裁判会自己犯它要判的错。论文明确写了「为内在幻觉做动态测试集是一个有前景的研究方向」，也就是承认现在没解决，只能先沿用三个已有的内在幻觉基准。</p>
+  <div data-page-node-id="H4ea5U9Sem6memyneDomOH" class="bnd"><div data-page-node-id="hYErMvFcK3Fpp9q4ZXTDTu" class="bnd-t"><!--pnid:uGwcSVAsJgdOWFMVnml5g5-->前提与边界</div><p data-page-node-id="rFYTjRMR8vrzmbJ5xAlOEk"><!--pnid:J6i2nhbQYuTF2zCCdf2aKb-->动态生成把成本从「一次标注」转移成「每次评测调一次大模型」。论文只报告了那个标准差数字，<strong data-page-node-id="7kGRGPMJPAWcXXb5MXXi9h"><!--pnid:1M1TaXEx5hLPPGvArXiY1D-->没有报告生成耗时，也没有报告与静态题库的成本对比</strong><!--pnid:kmrJKnx1AKfVDNRhirHC7h-->。另外那个低方差结论只在精确问答上验证过，另外两个任务没有各自的方差数据。</p></div>
+  <div data-page-node-id="2ukkSGssYcaO3oMXdikrzv" class="age"><div data-page-node-id="EWM7IjTlD9wEwhWkW5XeKy" class="age-t"><!--pnid:CNrqTxJSiNcnhzThIp1sHS-->时代限定</div><p data-page-node-id="hCW6OkTBIad7NkCzE4JQmq"><!--pnid:rT3EKjzGLguXNU6s8cql3a-->对于评测集需要长期稳定版本号的场景，动态生成反而不可用。<strong data-page-node-id="FN1lnVVKiMS1ueCXdmdAEU"><!--pnid:dFDbB5uRTypyo3Td7vT9cE-->这个工程约束论文没提</strong><!--pnid:MD3GLJoLtnTMZ3BXiKw2Jn-->。</p></div>
+</div>
+
+<div data-page-node-id="vgi9A27qBMupiV4FUrMtV9" class="block">
+  <div data-page-node-id="BIjVZZeIfN4CW1tZmqurZi" class="tag"><!--pnid:DWeQmLrZOWDiulHT2NKqhJ-->重估</div>
+  <div data-page-node-id="i8FmqjaZV6jmwgCCEW8xWQ" class="claim"><!--pnid:YJNbQof3bam6XvU9SdhOUx-->给现有基准开药方</div>
+  <p data-page-node-id="ptiRh56G1D5Fr4n8XUVl0J" class="lead"><!--pnid:dA9X7rCNLhZN28IEAc3Aaf-->这里给的是<strong data-page-node-id="FCilgsSKuBgvsDu8VB0HVw"><!--pnid:MK3495qaA1GO2dABmw0BXH-->判断标准</strong><!--pnid:uQ94qrlETiNEbaiw7ATCCM-->，不是新数据集。</p>
+  <p data-page-node-id="sJqC3B5CuJc46EBmku90bz"><!--pnid:zq4fCqL4LuCFEgpIi26Oau-->转换条件只有一条，但很硬：必须加拒答率测量，且数据集可论证地限定在训练数据范围内。理由在指标定义里写得很清楚：幻觉率的计算是「未拒答时的错误答案比例」。如果没有拒答率这一项，一个模型对所有问题一律回答「我不知道」，幻觉率就是零。没有拒答率的幻觉基准，天然奖励逃避作答。</p>
+  <details data-page-node-id="bZWiPrzEkpBb7oR71vOgAB"><summary data-page-node-id="wJNEZyW7uSsvFRIoWp6EWg"><!--pnid:HAjC5lULLfFF17XlECXoyN-->五个基准的逐项裁定</summary>
+  <table data-page-node-id="nvFwsHiWmKYTOyH08zSMCG"><thead data-page-node-id="5gIp8Xi3qg4e8WTm8I2icO"><tr data-page-node-id="tcrs7LDT3kUtHQDDjnCs9v"><th data-page-node-id="Ctf487irxT8wXDbUoyuYvo"><!--pnid:uQWM7JgjYGOL0PcZJP07oE-->基准</th><th data-page-node-id="FVW7gs9OqoO8kRz80MwpDa"><!--pnid:bSfKEPN0DaSIxo1ZHT0OWn-->能否当幻觉基准</th><th data-page-node-id="qSnP9u97UDHCeQXK4AjDyU"><!--pnid:DzHDDuQJUlIdJurOSxC2e3-->理由</th></tr></thead><tbody data-page-node-id="ru2AHXQLqmB5omshIULvl6">
+    <tr data-page-node-id="boA9T7GGpl7mu5k2OnIiTW"><td data-page-node-id="wdLR1xYTN72vvtMhbq0VMu"><strong data-page-node-id="IKgZ6smtaZNI4NuIh1846B"><!--pnid:tCRo8CumHQw8ZW0DrwdnZu-->TruthfulQA</strong></td><td data-page-node-id="KdZklx9M35TP6Z5mcUXywY"><!--pnid:QyelSypPOCQxHKkVeda7iB-->存疑，<strong data-page-node-id="AYr47GRxeFm8SZ7nyWHTKO"><!--pnid:hKeT8KmgJvP3KzAapctc8a-->可能需要修订</strong></td><td data-page-node-id="B2MZxVO4tXYKWjpccn61Fb"><!--pnid:DGJ4aGdeh4nTlCg6lXboox-->它测的东西不完全是事实性，还涉及「是否本就该拒答」这类判断；论文指出这些问题让它无法区分「模型不知道」与「模型答错」</td></tr>
+    <tr data-page-node-id="TftFubbgISHT5HkJNvDQgW"><td data-page-node-id="ulUAVsuHdL7NSCXOezibxa"><strong data-page-node-id="7NtQrbkiRJWyK44pxtQOGH"><!--pnid:OsIatc6mQcdIEOvIDnHDu3-->SimpleQA 与 PopQA</strong></td><td data-page-node-id="b4qVaB0Jut0CZwK7PR6pL8"><strong data-page-node-id="7evKmQRL0FSmUoxffq5XQk"><!--pnid:JwDtLsbM1MCliqm1CYobYn-->可以改造</strong></td><td data-page-node-id="YyEwSzbXYvy4u7F3xLMJNn"><!--pnid:Evaz609fYRxVEQNmGiiLoN-->改写评测指标即可</td></tr>
+    <tr data-page-node-id="ze5MMEndApBstBxdMpRrty"><td data-page-node-id="1TFD2Jdbe6MYio9Im7KsQs"><strong data-page-node-id="WjyrUlCnppl1VfJ0do27H2"><!--pnid:97y90VhgErUgGsCdVpXdr3-->HaluEval 2.0</strong></td><td data-page-node-id="WPvkqZHeZBZLllze7OIRat"><!--pnid:fBsXZPktt5pu2tkEzluVuF-->缺一项</td><td data-page-node-id="bNncfqoO6MoXz6ywKhHO4v"><!--pnid:CvyzHNEzTHpHiRCTiSuuXX-->只测幻觉率（MiHR 与 MaHR），<strong data-page-node-id="4mKtBSPUzOUElcH8XEnyEi"><!--pnid:0PnyXjaiqHsXeqQywXmJEp-->没有拒答率测量</strong><!--pnid:KEJJlVJoERF6pyUEnLULb4-->。而缺了拒答率，模型可以通过「一律拒答」来刷分</td></tr>
+    <tr data-page-node-id="PqkmCY5jL7OMtO6Xxjewn2"><td data-page-node-id="ii58kd7xdq91xWbKi0Io1F"><strong data-page-node-id="vKswcSGhwAwjfX10q2EW1t"><!--pnid:m11fwXXiYz2Vb5ktsbey2N-->ERBench</strong></td><td data-page-node-id="cgyxSeTZgqJRXukrT6OTo7"><!--pnid:9zSIRVhsURiuhoDldXYAHA-->接近</td><td data-page-node-id="lupQJ0Bzox1Tf9Am0QkWWO"><!--pnid:FylSMPYHvDFN7ReNR2IXvH-->与精确问答相似，但用实体关系模型自动构造，扩展性更好</td></tr>
+    <tr data-page-node-id="gZ1QpQfIFm8Aq0WVMeJSjz"><td data-page-node-id="p7ZyVNHtmR5kSLagiNL0NV"><!--pnid:iAZD7nSt5QWlxg9IMtJFmJ-->超纲更新的基准</td><td data-page-node-id="abXjjtC30AfcplirzT8DX7"><strong data-page-node-id="LRmOhwZcLr0gSBTwF6oA7C"><!--pnid:ttZqdJdlbeSvsMb8vbXz47-->不行</strong></td><td data-page-node-id="JzXgqawVoSVypiBj7QSHxl"><!--pnid:spAubcUB1TltwUbE94eXO1-->测的是事实性，不是幻觉</td></tr>
+  </tbody></table>
+  </details>
+  <div data-page-node-id="55qdSyDwQmo8tSRLfoxEIt" class="age"><div data-page-node-id="8XQ2BgbjsjFEp7AzZKjE2D" class="age-t"><!--pnid:jBSq7ly4uiu7CvkCC2bLPl-->时代限定</div><p data-page-node-id="xRUBmbWiTGqQRtxFJKLv3U"><!--pnid:iIDzizq4RFj0SptoYxK3LH-->论文测的是 2025 年当时的模型（Claude-3 系列、GPT-4o、Llama-3、Gemma-2、Qwen2、Mistral 等）。<strong data-page-node-id="M46XzTMc0M2ieSmIMCBjq9"><!--pnid:j7Pb56VuWs7ofS3bIVzmEC-->具体分数的绝对值现在几乎已经失效</strong><!--pnid:lc9IAVqD7RFCIF9B9vWQm0-->，模型迭代比论文发表快得多。可迁移的是分类框架和「必须测拒答率」这条方法论，不是它的排名。</p></div>
+</div>
+
+<div data-page-node-id="MAcsKzW2dPpFeCjUJbW5ih" class="block">
+  <div data-page-node-id="Dcy8wnpZlXDQc2C0Ss7HUb" class="tag"><!--pnid:KeYW4ayzsOFdgzgUiIRrWo-->指标</div>
+  <div data-page-node-id="UQ5bC9xC0Q4mozH1NOkZej" class="claim"><!--pnid:avO8dIg1Tldx3kjmiaKoNT-->三个数字必须一起看</div>
+  <p data-page-node-id="lvUxwau49SAOKmCdlT1bJr" class="lead"><!--pnid:FBH7PjVwZ9gxG3guLU3XNE-->论文用三个指标而非单一幻觉率，因为单一指标可以被博弈。</p>
+  <div data-page-node-id="495c90xAFMp62qqZLFlTDz" class="fig">
+  <svg data-page-node-id="bOj7ovoREwbDFm8xEr2CJe" aria-label="误拒率、正确率与幻觉率构成的三角博弈关系" role="img" viewBox="0 0 1000 350">
+    <path data-page-node-id="o6XRhFY7UNUHjjNWP1bLlu" d="M500 52 L840 262 L160 262 Z" fill="none" stroke="#c9c7bd" stroke-dasharray="5 4" stroke-width="1"></path>
+    <rect data-page-node-id="1sxxP9mSX7k8QRb88tmD1a" fill="#fdeeee" height="92" rx="10" stroke="#c02626" stroke-width="1.2" width="360" x="320" y="84"></rect>
+    <text data-page-node-id="5wWdO1bfSdp4ztZIu8fGAo" fill="#501313" font-family="-apple-system,sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="500" y="114"><!--pnid:Wogn6aGDjGiPGmJv3OghFo-->单看幻觉率 = 全部拒答</text>
+    <text data-page-node-id="m5XjwwTHfsa9EZyRFovJl9" fill="#c02626" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="500" y="140"><!--pnid:KotYct4E7GzhvyBXaXxdnR-->模型对所有问题答「我不知道」</text>
+    <text data-page-node-id="vZhCkeiZoJP3YYACOGkOaX" fill="#c02626" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="500" y="160"><!--pnid:mZxAipTcCKEmWH9tu5nsRc-->幻觉率 = 0 · 得分最高</text>
+    <rect data-page-node-id="bKNexSk1X2ozFb4iDwwNIe" fill="#ebf7ef" height="78" rx="10" stroke="#15803d" stroke-width="1" width="320" x="60" y="262"></rect>
+    <text data-page-node-id="pBklkI9Oustjg3sY8xumk8" fill="#173404" font-family="-apple-system,sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="220" y="288"><!--pnid:YwoALPfnsZJ04z1tuHx1YV-->误拒率</text>
+    <text data-page-node-id="aR3stUmbXUj5QkoSsskn6m" fill="#15803d" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="220" y="312"><!--pnid:N0BiKdpilDp5EKnS1l3BV0-->越低越好：理想模型不该拒答</text>
+    <rect data-page-node-id="lI8MooAFIuWmbrwOfeuxsg" fill="#f1efe8" height="78" rx="10" stroke="#888780" stroke-width="1" width="180" x="410" y="262"></rect>
+    <text data-page-node-id="mv5i7GbN6ncr0G5nyf5pZB" fill="#2c2c2a" font-family="-apple-system,sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="500" y="288"><!--pnid:tNhT58L29oieVGpxDgJYQj-->正确率</text>
+    <text data-page-node-id="UapsXCsxJSfe2cULHbdXtj" fill="#5f5e5a" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="500" y="312"><!--pnid:iEpI6mu2PjRTgPa2Q1xByv-->越高越好</text>
+    <rect data-page-node-id="xyyn90ZUHnz7mJV4ZzLlGg" fill="#fdf4e7" height="78" rx="10" stroke="#b45309" stroke-width="1.2" width="320" x="620" y="262"></rect>
+    <text data-page-node-id="Pu64jYBfWisvQ4sF65ceBy" fill="#412402" font-family="-apple-system,sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="780" y="288"><!--pnid:dG0FeAs9HQDKWckiz5oOVK-->幻觉率（未拒答时）</text>
+    <text data-page-node-id="AhwaA3kawAl7KzZOo2hYNi" fill="#b45309" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="780" y="312"><!--pnid:QyYw7tjTsYulId3XPeMh6d-->越低越好：衡量编造倾向</text>
+  </svg>
+  <div data-page-node-id="u40S2CkrKMBzUbJYBjWgNa" class="fig-c"><!--pnid:MFH0uAdCUeJrEnbEZZQ1xQ-->三角约束。三者必须同时读，单独任何一个都可以被博弈：<strong data-page-node-id="TvRuacWJzEeKekgObFpwm2"><!--pnid:OH8xlnemhn7PjBKjEbCdPj-->单看幻觉率，一个全部拒答的模型得分最高</strong><!--pnid:VIBr9bLWy6Ib2u8ntVqoQ2-->。论文所有的设计（动态生成、拒答率测量、造不存在的实体）都是为了堵住红框那一种作弊。</div>
+  <p data-page-node-id="PteBRfEJI5wAERJHaCgJ4U"><!--pnid:HPexuAAUKke2VNFcXwTEbK-->长文本一致性那一套指标是另一个博弈面：它的精确率是「每条声明是否有维基页面支撑」，如果只看精确率，<strong data-page-node-id="IP2P6DiupgrxLkL9LndlUI"><!--pnid:iHGr3peWQyAckP6Be4TiaL-->模型生成得越短越占便宜</strong><!--pnid:LMT9laVOcudMCUeCEh5AHB-->。只写最有把握的那几句，精确率就很好看。论文因此加了一个召回率指标，保证生成不能太短太不完整。但这个指标的参数是个固定值（取 32 条），短到 32 条以下就满分的生成，仍然优于该生成 200 条却只对 30 条的模型。<strong data-page-node-id="IurmUuAfCTESkCH9ye7Ill"><!--pnid:GejEz0dYKatpPDkyzwo2uM-->这个偏置论文没有讨论</strong><!--pnid:z2D88auCFmL0FMlM8buwQE-->。</p>
+  <div data-page-node-id="xKYnNkBjWBFWQ5VKD0E7lZ" class="bnd"><div data-page-node-id="W35H32244VGxwyp1w9syYp" class="bnd-t"><!--pnid:WeMn2dxyXEmLAcTTgADW69-->前提与边界（补充）</div><p data-page-node-id="qR6ambskFszcOmcrf4Gfls"><!--pnid:vVVpK4utZsvpni5oOaKFvS-->三项指标全部由模型评委给出。评委一致率作者报了（拒答判定 96.67%、正确性判定 95.56%、不存在实体判定与人类判断一致 94.77%），三个数字都在 95%上下，<strong data-page-node-id="keyjURJJmLfnlJt7OpAtRp"><!--pnid:4X9oTrvFJp6hCE4JuC893e-->意味着一套本来想测「模型有没有乱说」的基准，误差的一部分来自评委自己乱说</strong><!--pnid:J24LEr6dNnDrxmXT7mvIyL-->。论文没有给出这三项分数的置信区间。</p></div>
+  </div>
+  <div data-page-node-id="uAJ9WaqMR9VQOxB4TxHybF" class="bnd"><div data-page-node-id="AicYEEKxf0YZxEnvhvppcG" class="bnd-t"><!--pnid:6g7k41RWKMjHqz6O2HRsQK-->前提与边界</div><p data-page-node-id="rnRVpPVFdRiAO7uXoG6ugl"><!--pnid:NLtnvJJqf2cpl81yZDdgoA-->这套指标成立的前提是「知识范围可判定」。不存在实体拒答靠人造实体保证可判定；精确问答靠「维基在训练数据里」这个假设间接保证。如果哪个任务的答案边界本身模糊，这三个指标会同时失真。</p></div>
+</div>
+
+<div data-page-node-id="NWBhiIasGVr99mFobxgWoG" class="block">
+  <div data-page-node-id="wfqq2X4aPiDXK8o8CDpiB6" class="tag"><!--pnid:1UbvhzaftRwXsyVwYIUkmI-->缺口</div>
+  <div data-page-node-id="BFTOHRy85js6NfB90iC064" class="claim"><!--pnid:VKHm9YsrmKl1HHLM8xVE2T-->这篇论文没回答什么</div>
+  <div data-page-node-id="ikOzGikYbln1qqx1msuT5w" class="gap"><div data-page-node-id="NFyj9w9RuG6q8MNZ7WnTmb" class="gap-h"><!--pnid:IMm5OQbEKssSFfAh9jSomf-->1. 动态生成测试集的评测成本，没有量化的交代</div>
+  <p data-page-node-id="TD87UyVUHT8C9A1uB3n5iW"><!--pnid:dggbNq4OsU6ZeKIRRfHcUs-->动态生成把成本从「一次标注」转移到「每次评测调一次 LLM」，而动态生成导致的方差上升会进一步增加重复评测的次数。论文只报告了「三次运行标准差 &lt; 1.01%」这一个数字，<strong data-page-node-id="e9ZRnHeYgR1fuoAfCpE1cJ"><!--pnid:46oCxAkFnFrpCgu8k9pmG4-->没有报告生成耗时、没有报告与静态集的对比成本</strong><!--pnid:jtz4ROKRCHjpkMbXYxl5wJ-->。对一个要在 CI 里跑的评测基准，这是能不能落地的关键。</p></div>
+  <div data-page-node-id="UmXNaIzwUw4fhTMZzQ3Ljw" class="gap"><div data-page-node-id="sMsAC3Kj72lyx6RixFWZxf" class="gap-h"><!--pnid:sTvHOjYcjyVJIgE3P6m62F-->2. RAG 场景下这套分类不成立，论文没有处理</div>
+  <p data-page-node-id="Z0A5sR701nuobgtDD2Wbbf"><!--pnid:UnGA7flx2JuDjwsAuvMpeH-->外延幻觉的判据是「与训练数据不一致」，前提是训练数据是一个可指认的对象。<strong data-page-node-id="ubrts9RkJHQacrVOCRDtfw"><!--pnid:OBEtOQzKSucCUbdD8hLmq9-->当模型把检索文档放进上下文，比对的参照系就变成了那份文档，而不是训练数据</strong><!--pnid:Xxl79kh1YITCzSuJJ9qssK-->，判据本身失效。论文发布于 2025 年 4 月，那时检索增强已是主流部署形态。论文没有讨论「检索到的内容与训练数据不一致」这种情况该归到哪一类。</p></div>
+  <div data-page-node-id="eTxOTa5MPs19xQElkAJbli" class="gap"><div data-page-node-id="j3yNqZ3dyZlgjkdS9OcQ6W" class="gap-h"><!--pnid:P8XH6DR5jjKfTJZ45YEZcS-->3.「训练数据范围」不可判定，所以分类在原理上不可验证</div>
+  <p data-page-node-id="qUAjLgYGWG3VLxr84GFwOx"><!--pnid:xef6iQZsta7lVs4JOf2PBA-->论文自己写明所有前提都依赖「维基百科在大部分先进模型的训练数据里」。但没有任何一个公开模型会披露完整训练数据清单。所以「问题的知识范围是否落在训练数据内」这个核心判断，在实践中只能靠假设，不能靠核验。这意味着「外延幻觉率」这个数字的精度，取决于一个外界无法检查的假设有多可靠。</p></div>
+  <div data-page-node-id="ENDT5ge8vVSUuoe33sAfhv" class="gap"><div data-page-node-id="XP9yEeTpit1iRGUc6mqeNI" class="gap-h"><!--pnid:zrgEw3rvqsnKIThl2uvPLT-->4. 三个新任务的实验完备度不均衡，稳定性结论只在一处被验证</div>
+  <p data-page-node-id="cueSRxcTOXodLDGDiMgeMo"><!--pnid:5FN12yTxpHAvRWas4FkAFl-->PreciseWikiQA 和 NonExistentRefusal 各有完整结果表与指标定义。<strong data-page-node-id="zYXWTTVfigCGN4pdY1SeNP"><!--pnid:C20pTqk4MK9ZFmH6XKOk97-->长文本一致性的结果只在附录的表格里给出</strong><!--pnid:SdzsNOb129nE6EoI4sq0OS-->，正文没有展开分析，而它用的是另一套指标（精确率、召回率、合一分数，取 K 为 32，方法采自 SAFE），与另两个任务的三个指标不同构。</p>
+  <p data-page-node-id="s7prtNSuiF0vi5ZGRVn2t5"><!--pnid:Qf8H4ZrpGW2tR4nmFOBfoo-->更要紧的是：动态生成测试集的稳定性结论：<strong data-page-node-id="gwFGbXY67YCXv4MZSBHzwu"><!--pnid:Eo8HySBpKbQVihVLp8Z8td-->标准差那个数字只在精确问答这个任务上给出</strong><!--pnid:8X1MWOA3Uj6pBxn3Heakym-->。另外两个任务没有各自的方差数据。用一套任务的方差结论支撑整个基准的可靠性，这个外推没有交代。</p>
+  <p data-page-node-id="fMfrA8Xt169nQP8gmSwJcW"><!--pnid:Io423s5k48BACM3kvv9afY-->而且长文本一致性的指标设计暴露了一个新的博弈面：论文自己承认，只算精确率的话模型可以靠生成短段落来获利，所以加了召回率指标。但 K 为 32 是固定值，短到 <strong data-page-node-id="nFPLtOyPjR3UneEK8XBANZ"><!--pnid:I62cY3fdOCYS2qCK5YCFnG-->32 条以下就满分的生成</strong><!--pnid:3edJlZpKBqTcMbaOlVM470-->，仍优于该生成 200 条却只对 30 条的模型。这个偏置论文没有讨论。</p></div>
+  <div data-page-node-id="c4Ed6kJYsyTUKQO7mlmaCm" class="gap"><div data-page-node-id="iaPFqpIdTMYXAN0LJplCLa" class="gap-h"><!--pnid:3jKqgoh0K2Gm9ozUp26mmi-->5. <strong data-page-node-id="gcz9iY9miS9TXlVLVvOqVx"><!--pnid:xfmmQAhhaul59RIgehbsfN-->前提散落在各处，没有收拢成边界声明</strong></div>
+  <p data-page-node-id="5MOlOfdKVhyOgND2io7dXq"><!--pnid:Lqaw9uBq5nAFpPVk2mU9Z6-->提出了一套新分类体系，<strong data-page-node-id="NSqzYE84buHCQ4bRqfigXB"><!--pnid:3IH1j2NBhMrepj2UVEwUkX-->却没有一处集中说明这套分类在哪些条件下失效</strong><!--pnid:NSwfmYFfojJalNjV4g2Jdt-->。相关前提分散在各章，没有汇总。读者需要自己把分散的限定条件拼起来，才能判断这套分类对自己的场景适不适用。</p></div>
+  <div data-page-node-id="ShXgAxVqlO8Ll56If4r9V8" class="gap"><div data-page-node-id="aKCLCfLztqDcOO04pAkCIP" class="gap-h"><!--pnid:S2H8K7GjnTfyw84JNTpW7y-->6. 分类体系的第三条腿没有展开</div>
+  <p data-page-node-id="ySxeWlSE0EG7QDXlgzgdWP"><!--pnid:xdskQmnh6RS2TCcQmGS0U2-->论文在讲分类那一段引了 Ji et al. (2023) 的内在与外延二分，并在后续讨论中提到「factuality hallucination」这个第三类，说它<strong data-page-node-id="iqe7eU70V5TshqsgeUzZCv"><!--pnid:6bH96rvM7APDJT7jVrcavc-->处于事实性挑战与外延幻觉的重叠区</strong><!--pnid:tUkCVaQDgpZeVu0n2x8Cca-->。但这个第三类只被用于解释现有文献的混乱，没有被纳入 HalluLens 的分类树，也没有对应任务。一个用来诊断领域混乱的分类法，自己留了一个未处理的对象在体系之外。</p></div>
+</div>
+
+
+</div>
+<script data-page-node-id="0b4Rl6qfmvFgEfFlFMjiu2" data-pnid-children="Im3erVPR04tp6GfcPGOuxm">
+function setM(m){
+  document.body.classList.toggle('present',m==='pres');
+  document.getElementById('bRead').classList.toggle('on',m==='read');
+  document.getElementById('bPres').classList.toggle('on',m==='pres');
+  document.getElementById('hint').textContent = m==='pres'
+    ? '投屏态：细节已折叠，一屏一个论点'
+    : '阅读态：表格与细节完整展开';
+  window.scrollTo({top:0,behavior:'instant'});
+}
+if(location.hash==='#pres')setM('pres');
+</script>
+
+
+
+</body></html>

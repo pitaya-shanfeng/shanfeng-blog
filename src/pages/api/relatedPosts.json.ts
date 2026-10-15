@@ -1,5 +1,4 @@
-import { getCollection } from "astro:content";
-import { getRelatedPosts } from "@/utils/content-utils";
+import { getRelatedPosts, getSortedPostsList } from "@/utils/content-utils";
 
 /**
  * 预生成「文章 → 相关文章 id」映射（构建期算一次）。
@@ -10,9 +9,8 @@ import { getRelatedPosts } from "@/utils/content-utils";
  * 就不用把那套推荐算法在客户端再实现一遍（避免两处逻辑漂移）。
  */
 export async function GET(): Promise<Response> {
-	const posts = await getCollection("posts", ({ data }) =>
-		import.meta.env.PROD ? data.draft !== true : true,
-	);
+	// 合并后的列表（含 HTML 文章），草稿过滤与排序规则与其他页面一致
+	const posts = await getSortedPostsList();
 
 	const map: Record<string, string[]> = {};
 	for (const post of posts) {

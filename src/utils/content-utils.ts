@@ -5,11 +5,21 @@ import { getCategoryUrl } from "@utils/url-utils";
 
 // // Retrieve posts and sort them by publication date
 async function getRawSortedPosts() {
-	const allBlogPosts = await getCollection("posts", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
-	});
+	const filter = ({ data }: { data: { draft?: boolean } }) =>
+		import.meta.env.PROD ? data.draft !== true : true;
 
-	const sorted = allBlogPosts.sort((a, b) => {
+	const allBlogPosts = await getCollection("posts", filter);
+
+	// HTML 文章（内容目录下的 .html）与 md 文章字段完全一致，
+	// 在这里合并成同一份列表：列表页 / 分类 / 标签 / 归档 / RSS / 相关文章便都能带上它们。
+	// 两者 data 形状同源（同一个 schema），故此处做一次显式断言。
+	const htmlPosts = await getCollection("htmlPosts", filter);
+	const merged = [
+		...allBlogPosts,
+		...(htmlPosts as unknown as typeof allBlogPosts),
+	];
+
+	const sorted = merged.sort((a, b) => {
 		// 首先按置顶状态排序，置顶文章在前
 		if (a.data.pinned && !b.data.pinned) return -1;
 		if (!a.data.pinned && b.data.pinned) return 1;
@@ -157,9 +167,8 @@ export type Tag = {
 };
 
 export async function getTagList(): Promise<Tag[]> {
-	const allBlogPosts = await getCollection<"posts">("posts", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
-	});
+	// 走合并入口，HTML 文章（.html）的标签才会一并计入
+	const allBlogPosts = await getRawSortedPosts();
 
 	const countMap: { [key: string]: number } = {};
 	allBlogPosts.forEach((post: { data: { tags: string[] } }) => {
@@ -184,9 +193,8 @@ export type Category = {
 };
 
 export async function getCategoryList(): Promise<Category[]> {
-	const allBlogPosts = await getCollection<"posts">("posts", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
-	});
+	// 走合并入口，HTML 文章（.html）的分类才会一并计入
+	const allBlogPosts = await getRawSortedPosts();
 	const count: { [key: string]: number } = {};
 	allBlogPosts.forEach((post: { data: { category: string | null } }) => {
 		if (!post.data.category) {
@@ -257,12 +265,11 @@ function jaccardSimilarity(a: Set<string>, b: Set<string>): number {
  * - categoryBonus (0 or 10): 同分类加 10 分
  */
 export async function getRelatedPosts(
-	currentPost: CollectionEntry<"posts">,
+	currentPost: Pick<CollectionEntry<"posts">, "id" | "data">,
 	maxCount = 5,
 ): Promise<PostForList[]> {
-	const allPosts = await getCollection<"posts">("posts", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
-	});
+	// 候选池用合并后的列表，HTML 文章同样能被推荐 / 参与推荐
+	const allPosts = await getRawSortedPosts();
 
 	// 排除自身和加密文章
 	const candidates = allPosts.filter(

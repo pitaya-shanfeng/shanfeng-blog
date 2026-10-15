@@ -17,6 +17,38 @@
   margin-top: 0;
 }
 
+/* ===== HTML 文章（.html）的正文适配 =====
+   这类正文是外部系统整页导出的 HTML，自带一套「页面级」样式：一个居中限宽的卡片（自己带白底与圆角）。
+   嵌进博客卡片后，卡片外面那圈页面留白（浅底 + 内边距）会变成卡片里的一圈空框。
+   处理分两处：
+   1) 解析阶段剥掉文档的页面级留白与底色 —— 见 utils/html-post-utils.ts 的 scopeCss
+   2) 这里让文档自带的卡片横向铺满博客卡片：用负外边距抵掉一部分卡片内边距（px-6 / md:px-9），
+      留出一圈窄边距 —— 顶到卡片边缘会显得"贴死了"，完全不留又回到原来那圈空框。
+      当前留白：移动端 24-8 = 16px，桌面 36-16 = 20px。
+      想调：把这两个负值改小 → 留白更多；改成 -2.25rem（桌面）→ 完全顶满。
+      只作用在正文容器上，卡片内的其他块（支持与分享、上下篇）不受影响。
+      外层 #post-card-wrapper 带 overflow-hidden，所以不会撑出横向滚动条。 */
+.html-post-content {
+  margin-inline: -0.5rem;
+}
+
+@media (min-width: 768px) {
+  .html-post-content {
+    margin-inline: -1rem;
+  }
+}
+
+/* 文档自己的卡片不再二次限宽，直接跟随博客卡片宽度。
+   ⚠️ 类名写两遍是为了压过文档自带样式 —— 作用域后的规则是 `.html-post-content .reader`
+   （0,2,0），而注入的 <style> 在文档里位置更靠后，同权重会赢；所以这里要凑到 (0,2,1)。 */
+.html-post-content.html-post-content > div,
+.html-post-content.html-post-content > section,
+.html-post-content.html-post-content > article,
+.html-post-content.html-post-content > main {
+  max-width: none;
+  margin-inline: 0;
+}
+
 .custom-md {
   /* 正文字号：Tailwind Typography 的 prose-base 默认 1rem(16px)。
      侧栏改单侧后正文区变宽，字号升一档。prose 内部元素按 em 计算，会等比缩放 */

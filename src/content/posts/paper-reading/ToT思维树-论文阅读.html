@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html data-page-node-id="CEKzuSx1ZoD50MwqfPhKxE" lang="zh-CN"><head data-page-node-id="zYPKszpABHpXg9pZixXPII">
+<script data-page-node-id="9FFQ87Xox6mN74tqKZ5aaa" src="/page/page_comm/inject.js"></script>
+<meta data-page-node-id="VwnQZ9rUDS2gQuBKf2eAeV" charset="UTF-8">
+<meta data-page-node-id="iqEJoErD2qOzPCCRW8NZKf" content="width=device-width,initial-scale=1" name="viewport">
+<title data-page-node-id="n6f7x663UWLvfQ1uhfkaHL" data-pnid-children="CgWUqTSpHdZzu1SYsHaxO6">ToT思维树 · 论文阅读</title>
+<style data-page-node-id="00gSGymweMZ70VZALeVGEN" data-pnid-children="PDSrXpqyZYswWlM7j7euRw">
+:root{
+  --page:#eef0f3; --card:#ffffff; --sunken:#f6f7f9; --sunken-2:#edf0f3;
+  --ink:#12141a; --ink-2:#48505a; --ink-3:#8b929c; --line:#e2e5ea;
+  --accent:#1f5fd0; --todo:#c02626; --ok:#15803d; --warn:#b45309;
+  --accent-bg:#eaf1fd; --todo-bg:#fdeeee; --ok-bg:#ebf7ef; --warn-bg:#fdf4e7;
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --mono:"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.75;padding:40px 24px 80px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto}
+.block{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:34px 40px 38px;margin:0 0 20px;box-shadow:0 1px 2px rgba(16,24,40,.045)}
+.tag{display:inline-block;background:var(--accent-bg);color:var(--accent);font-size:14px;font-weight:600;padding:4px 12px;border-radius:6px;margin-bottom:18px;align-self:flex-start}
+.claim{font-size:32px;line-height:1.45;font-weight:700;margin-bottom:22px;letter-spacing:-.01em}
+p{margin:0 0 16px;color:var(--ink-2)}
+p.lead{color:var(--ink);font-size:17px}
+strong{color:var(--ink);font-weight:600}
+em{font-style:normal;background:linear-gradient(transparent 62%,#ffe9a8 62%);padding:0 2px}
+.fig{margin:24px 0 8px;background:var(--sunken);border:1px solid var(--line);border-radius:12px;padding:28px 24px 20px}
+.fig svg{width:100%;height:auto;display:block}
+.fig-c{font-size:13px;line-height:1.7;color:var(--ink-3);margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:15px;background:var(--sunken);border-radius:10px;overflow:hidden}
+th{background:var(--sunken-2);color:var(--ink);font-weight:600;text-align:left;padding:12px 16px;font-size:14px;border-bottom:1px solid var(--line)}
+td{padding:12px 16px;color:var(--ink-2);border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.bnd{border-left:3px solid var(--warn);background:var(--warn-bg);border-radius:0 8px 8px 0;padding:16px 20px;margin:20px 0}
+.bnd-t{font-size:13px;font-weight:600;color:var(--warn);letter-spacing:.06em;margin-bottom:8px}
+.bnd p{margin:0;color:var(--ink-2)}
+.age{border-left:3px solid var(--line);padding:14px 20px;margin:18px 0}
+.age-t{font-size:13px;font-weight:600;color:var(--ink-3);letter-spacing:.06em;margin-bottom:8px}
+.age p{margin:0;color:var(--ink-3);font-size:15px}
+.quote{border-left:3px solid var(--accent);background:var(--accent-bg);padding:16px 20px;border-radius:0 8px 8px 0;margin:18px 0;color:var(--ink);font-size:15px;line-height:1.7}
+.meta{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:34px 40px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(16,24,40,.045)}
+.meta-t{font-size:40px;line-height:1.2;font-weight:700;margin-bottom:10px;letter-spacing:-.02em}
+.meta-sub{font-size:20px;color:var(--ink-2);margin-bottom:14px;font-weight:500}
+.meta-a{font-size:15px;color:var(--ink-2);margin-bottom:18px;line-height:1.6}
+.guide{border-top:1px solid var(--line);margin-top:24px;padding-top:20px;display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.guide-i{min-width:0}
+.guide-l{font-size:13px;font-weight:600;color:var(--ink-3);letter-spacing:.06em;margin-bottom:8px}
+.guide-v{font-size:15px;color:var(--ink-2);line-height:1.7}
+.guide-v em{font-weight:600}
+.idbar{border-top:1px solid var(--line);margin-top:26px;padding-top:18px;font-size:14px;color:var(--ink-3);font-weight:600;letter-spacing:.02em}
+.gap{margin:0 0 26px}
+.gap:last-child{margin-bottom:0}
+.gap-h{font-size:19px;line-height:1.5;font-weight:600;color:var(--ink);margin-bottom:10px}
+.gap p{margin-bottom:12px}
+.bar{position:sticky;top:0;z-index:20;background:var(--page);border-bottom:1px solid var(--line);padding:10px 0;margin:-40px -24px 24px;padding-left:24px;padding-right:24px;display:flex;justify-content:flex-end;gap:12px;align-items:center}
+.toggle{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 8px;display:flex;gap:2px}
+.tg{border:0;background:transparent;font-family:inherit;font-size:13px;color:var(--ink-2);padding:6px 14px;border-radius:6px;cursor:pointer;transition:.12s}
+.tg.on{background:var(--accent);color:#fff;font-weight:600}
+.hint{font-size:12px;color:var(--ink-3)}
+details>summary{cursor:pointer;font-size:14px;color:var(--ink-2);padding:12px 0;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary:before{content:"＋";color:var(--accent);font-weight:600;width:16px;flex-shrink:0}
+details[open]>summary:before{content:"－"}
+body.present .wrap{max-width:1280px}
+body.present .claim{font-size:44px;line-height:1.3;margin-bottom:30px}
+body.present p{font-size:19px;line-height:1.8}
+body.present .meta-t{font-size:56px}
+body.present .meta-sub{font-size:26px}
+body.present .guide-v{font-size:18px}
+body.present .guide-l{font-size:15px}
+body.present .guide{grid-template-columns:1fr;gap:26px}
+body.present .block,body.present .meta{padding:48px 56px 52px;margin-bottom:32px}
+body.present .fig{padding:40px 40px 30px}
+body.present .fig-c{font-size:16px}
+body.present .bnd p{font-size:18px}
+body.present .age p{font-size:17px}
+body.present .bnd-t,body.present .age-t{font-size:15px}
+body.present table{font-size:17px}
+body.present th{font-size:16px;padding:16px 20px}
+body.present td{padding:16px 20px}
+body.present .gap-h{font-size:22px}
+body.present .gap p{font-size:18px;line-height:1.8}
+@media print{body{background:#fff;padding:0}.bar{display:none}details{open:true}}
+@media (max-width:760px){.meta-t{font-size:28px}.claim{font-size:22px}.guide{grid-template-columns:1fr}.block,.meta{padding:24px 22px}.tag{align-self:flex-start}}
+
+  /* 英文标题指向原始论文（arXiv） */
+  .meta-sub a{color:inherit;text-decoration:none;border-bottom:1px solid color-mix(in srgb,currentColor 35%,transparent);transition:color .15s,border-color .15s}
+  .meta-sub a::after{content:" \2197";font-size:.72em;opacity:.55;margin-left:2px}
+  .meta-sub a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+</style>
+<style data-page-node-id="daJAh4cG1SseVdko9pnvJh" data-pnid-children="zvw2eBEb50yFAtqpnLq3TE" id="__dm_no_drag_style__">* { -webkit-user-drag: none !important; }</style><style data-page-node-id="SIattny41JjWv0jg0cQXfq" data-pnid-children="SRxjdRMwyhJN8yCmMP5Cyp" id="__dm_bindable_badge_style__">[data-sp-bindable="database"]{outline:1px dashed #0088ff;outline-offset:2px;border-radius:4px;}[data-sp-bindable="database"] *{pointer-events:none !important;transition:none !important;animation:none !important;}[data-sp-bindable="database"]{transition:none !important;animation:none !important;}</style><meta name="slug" content="paper-tot">
+<meta name="category" content="论文阅读">
+<meta name="keywords" content="思维树,推理,搜索">
+<meta name="date" content="2026-10-15T17:35">
+<meta name="description" content="大模型的推理是逐词向左向右走的，这在需要探索和试错的题上必然出错。这篇的改法是把思维链从一条线扩成一棵树，让模型能在多个候选路径里选、往前看、往回退。24 点游戏这个题目上，思维链的成功率是 4%，思维树是 74%。">
+<meta name="blog-remove" content="bar">
+<meta name="blog-heading" content="claim">
+</head>
+
+<div data-page-node-id="v2oKE2WxQF7NzCn7fiXU0q" class="bar"><span data-page-node-id="Qwg287GDvAdwatzZk7r7vv" class="hint" id="hint"><!--pnid:V7rZtX0ZCem6k71KivB4xZ-->阅读态：表格与细节完整展开</span><div data-page-node-id="If3igYt1VYOK0N5iznqt5j" class="toggle"><button data-page-node-id="GRwYpUaAdeYzgaAJzAtpCS" class="tg on" id="bRead" onclick="setM('read')"><!--pnid:JG2o8ysWpuiEL2FBRcRSv9-->阅读</button><button data-page-node-id="GIkYeZqvNyyY5pwQamNM8d" class="tg" id="bPres" onclick="setM('pres')"><!--pnid:pPFzCbRxFC8l6jm16T82Zu-->投屏</button></div></div>
+<div data-page-node-id="qp2UrnJG2eiF7zghNYrRWe" class="wrap">
+
+<div data-page-node-id="HOz4rM4lxtqR9ShrIMEV7x" class="meta">
+  <div data-page-node-id="KndbTWAVdDlcUCgbxoXknR" class="meta-t"><!--pnid:p6Fvk4F2G5EDlriwoAU94H-->思维树</div>
+  <div data-page-node-id="Jo9UYjl6k1Qkb2OvGwpALI" class="meta-sub"><a href="https://arxiv.org/abs/2305.10601" target="_blank" rel="noopener noreferrer" title="打开原始论文"><!--pnid:FKJ8zG19X2RD7iA5Kri3w8-->Tree of Thoughts: Deliberate Problem Solving with Large Language Models</a></div>
+  <div data-page-node-id="rN2FfLNYRol2hcdGht2C9x" class="meta-a"><!--pnid:2b3oe2SaU5RxFUBM1wKFHY-->Shunyu Yao 等　·　普林斯顿大学与 Google DeepMind　·　2023 年 12 月</div>
+  <div data-page-node-id="nNnIqvcTfIRsT8JtQ6GhTz" class="guide">
+    <div data-page-node-id="kVsYc2TCzTCuSj0Ljq9c8n" class="guide-i"><div data-page-node-id="JVoEyTF77aXZd20oDq081I" class="guide-l"><!--pnid:C9p8QxTpD14s254cqo3NML-->主线</div><div data-page-node-id="QCHP8DZyVNr4yx6QMcEYxx" class="guide-v"><!--pnid:QzIIvbAj0QQcaGJQ0z3RNz-->大模型的推理是逐词向左向右走的，这在需要探索和试错的题上必然出错。这篇的改法是把思维链从一条线扩成一棵树，让模型能在多个候选路径里选、往前看、往回退。24 点游戏这个题目上，<em data-page-node-id="9LaJfWsXJrXjsPzqdG4OWt"><!--pnid:QtTbqtDyW6WHKEVbyRoUvZ-->思维链的成功率是 4%，思维树是 74%</em><!--pnid:lPAanr4JATFF5dGubyfo5n-->。</div></div>
+    <div data-page-node-id="KE9joEbaPs7bkcoae5sJaQ" class="guide-i"><div data-page-node-id="IpE6Y3HmtPVF8FfTAFse7s" class="guide-l"><!--pnid:oyb717I3ffXc92ESInDjZu-->内核</div><div data-page-node-id="pVnz5tcLnMto4XKW1mher0" class="guide-v"><!--pnid:onOuMRPQVugpSeNvAKqM33-->推理慢不是问题，<em data-page-node-id="xgdsWEduBYZyd5uoV8yCPh"><!--pnid:Rz48OW0gf3uRL9GXJBGu2i-->不能反悔才是问题</em><!--pnid:AU61cljL3GJxqbCJYmBrXK-->。人类解问题的方式是在一棵搜索树上走，走错了可以退回来换个分支；大模型只能一条路走到底。这篇的核心不是让模型想得更多，而是给它一个可以放弃当前答案的结构。</div></div>
+  </div>
+</div>
+
+<div data-page-node-id="okaEPJzt2dVV0kHbXENEz7" class="block">
+  <div data-page-node-id="gdAuAszkAZP9tVbLlQPiQl" class="tag"><!--pnid:o5npc0WcXlFfoRsQupUTXf-->方法</div>
+  <div data-page-node-id="kDuZWo7oF4w37iyrbOj3bm" class="claim"><!--pnid:XilbS5jjZNTm0Pd1Rh3cTy-->把三条旧路线写成公式，逐条指出不足</div>
+  <p data-page-node-id="m63X0DqyR18uQYdjCDkCUD" class="lead"><!--pnid:n6jvVyYbfIm3L8ZrYf5mqE-->思维树不是拍脑袋想出来的，它是<strong data-page-node-id="KOnDC2qvzsiVWHE1P6r44v"><!--pnid:eCWJqojFmPJSJqCDynTbNd-->把已有的三条路线放在同一个形式下比较，然后补上它们共同缺的那一块</strong><!--pnid:qgz9xW8yHCin028l0JkiNg-->。</p>
+  <table data-page-node-id="twasIp4oFMC4dPomkirm7Y"><thead data-page-node-id="vYD7COggYjkTrllgMbtdmC"><tr data-page-node-id="yebEKg6R5wG4zHbZet4hda"><th data-page-node-id="Gl0RvNHfeuVo4QFXBY3WGn" style="width:30%"><!--pnid:aGfDw7iMPuxyemiskpfcac-->路线</th><th data-page-node-id="5TXa7kS5CNZjfCJvleIpHw" style="width:34%"><!--pnid:s4U1mSyfG8iU7G5UL8mOIU-->做法</th><th data-page-node-id="ivPJmmeJwiLov0pPhyF979"><!--pnid:6JzMklfTQnzjQ5u1flfCD1-->不足</th></tr></thead><tbody data-page-node-id="nafqYXmH5WBecWcffhOETL">
+    <tr data-page-node-id="8PK9lbNso8o0fNxgcaQ5Fd"><td data-page-node-id="dQOFXHbH0tLIv7ESXgJHdN"><strong data-page-node-id="WdZtkMftpeAuCMGYuQgjgL"><!--pnid:gjxnJPGU5Iq2lOsTKWTZNR-->直接问答</strong></td><td data-page-node-id="Sm1LG0psmFQCVP4JIRHjGg"><!--pnid:L4SDaE5yvwdnyQuPICC92x-->把问题包成提示，直接生成答案</td><td data-page-node-id="KQhayC99mhBpVXxUkj39O3"><!--pnid:a64yqyV3JomSP4gYGCoUwE-->没有中间过程可言</td></tr>
+    <tr data-page-node-id="MQ3K9WqaD2QNNzwrYGNxCH"><td data-page-node-id="C2X7rMb9TLc8DWDtSKOYdA"><strong data-page-node-id="ARjvjh7I7Aot300m7XFnQ0"><!--pnid:ZdKWEppEtMLQUuCXIk8nxq-->思维链</strong></td><td data-page-node-id="3uhhYhMeIaSkdOJ9E0lb9I"><!--pnid:sbEmJ6MpW6Ck90pJEadFcP-->生成一串想法当中间步骤，串起来通向答案</td><td data-page-node-id="MZngDHQpbX6vVOFn337PIJ"><strong data-page-node-id="CIMVFy1wwGD8WyqV9t8naR"><!--pnid:iDsFKtSK05Dq8fKohsfZ51-->链内不探索</strong><!--pnid:4DJQ6HNLEqB7FF4Cq9X9xS-->，一条链只有一条走法</td></tr>
+    <tr data-page-node-id="DaodWxcGTAqrZvah1xHxEg"><td data-page-node-id="kl9afI1i6SFY8QcW4wIPir"><strong data-page-node-id="SJR1HEy21cpfQ4pK3ZRYtS"><!--pnid:VCKKwkv2lzHFHr9XmV2drc-->思维链 + 自我一致性</strong></td><td data-page-node-id="lLUO0eK4UmM23oLOD7e3Xh"><!--pnid:8LXQarqT9qdBF5B3e63Vcm-->独立采样 k 条链，答案最频繁的赢</td><td data-page-node-id="r0QwsmvnSXnsBTjIuXrOJk"><!--pnid:EenEdgJZCNBHpbny4dkThk-->同样<strong data-page-node-id="0J4b8NapxA5HWtosfwF2Hr"><!--pnid:ioXJh3qeAFSf9MmzvXWrqp-->链内不探索</strong><!--pnid:axFZSpWHKpvKbGSeUFqDB6-->；而且「最频繁」这个启发式<strong data-page-node-id="ugYgua9ZiLKhBWY3p6SytR"><!--pnid:R4DklKbRZqGyW2NFzLkfvR-->只在输出空间有限时成立</strong><!--pnid:vgBXw8RoVuy5dW3SLy8rgh-->，比如多选题</td></tr>
+  </tbody></table>
+  <div data-page-node-id="v0D0Ndjiwhi1qIndy1htEo" class="fig">
+  <svg data-page-node-id="Y9wbNH9o7KMfWruF8k8WeB" aria-label="独立采样多条完整链与在每一步分叉的区别" role="img" viewBox="0 0 1000 250">
+    <rect data-page-node-id="LKpFDZA9qqWTouSLJusuzC" fill="#fdeeee" height="220" rx="10" stroke="#c02626" stroke-width="1" width="464" x="20" y="14"></rect>
+    <text data-page-node-id="1xQbaXsNToVVzwNFULfxmO" fill="#7f1d1d" font-family="-apple-system,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="252" y="40"><!--pnid:X09dn5lKdvzmewW61sQbCT-->思维链 + 自我一致性：只在开头分叉</text>
+    <circle data-page-node-id="Zi8eYSo5Howui30LZnAfsR" cx="90" cy="80" fill="#f8d7d7" r="20" stroke="#c02626" stroke-width="1.2"></circle>
+    <text data-page-node-id="QcRrsVy6s8OKD2ELjDqXPc" fill="#7f1d1d" font-family="-apple-system,sans-serif" font-size="12" text-anchor="middle" x="90" y="86"><!--pnid:vvIgadf1sB2Pza5bHKIDcz-->起</text>
+    <path data-page-node-id="KqFXsuxFiVysbcBZdyZJ7C" d="M108 76 L180 68" fill="none" stroke="#c02626" stroke-width="1.4"></path>
+    <path data-page-node-id="fxLpUb2SBFaW2dRnlypatu" d="M108 82 L180 92" fill="none" stroke="#c02626" stroke-width="1.4"></path>
+    <path data-page-node-id="i98HiGbIcEdtlsgKJx0WvQ" d="M108 88 L180 118" fill="none" stroke="#c02626" stroke-width="1.4"></path>
+    <circle data-page-node-id="k9aupimLij7wXpxLv6igz6" cx="200" cy="64" fill="#f8d7d7" r="15" stroke="#c02626" stroke-width="0.8"></circle>
+    <circle data-page-node-id="r5S1RJlAkUYvWwbSsQsuZv" cx="200" cy="92" fill="#f8d7d7" r="15" stroke="#c02626" stroke-width="0.8"></circle>
+    <circle data-page-node-id="EYZ6bv0XNhJAcSFFPQ5Pze" cx="200" cy="122" fill="#f8d7d7" r="15" stroke="#c02626" stroke-width="0.8"></circle>
+    <path data-page-node-id="4XGstf1kO9KoXmiIzGPxVt" d="M215 64 L300 64" fill="none" stroke="#c02626" stroke-width="1.2"></path>
+    <path data-page-node-id="CP9g7CzEYLt0C24YsqGKMm" d="M215 92 L300 92" fill="none" stroke="#c02626" stroke-width="1.2"></path>
+    <path data-page-node-id="ipvbgNpuuliCLsH6PBHYOh" d="M215 122 L300 122" fill="none" stroke="#c02626" stroke-width="1.2"></path>
+    <circle data-page-node-id="OArInA4qP1ppIRBMxwtMBM" cx="320" cy="64" fill="#f8d7d7" r="15" stroke="#c02626" stroke-width="0.8"></circle>
+    <circle data-page-node-id="f6Z0RqngFZQjePg27W2KY7" cx="320" cy="92" fill="#f8d7d7" r="15" stroke="#c02626" stroke-width="0.8"></circle>
+    <circle data-page-node-id="aDeNLu8UNrP57QDUHHNM51" cx="320" cy="122" fill="#f8d7d7" r="15" stroke="#c02626" stroke-width="0.8"></circle>
+    <text data-page-node-id="ZJ088X5M809tlXKhCZzV8J" fill="#991b1b" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="252" y="166"><!--pnid:A4CuZNdLICNKvkH7jagMeS-->每条链一旦选了就走到底</text>
+    <text data-page-node-id="PfRzHcnaNxp7VyOKLU2MCq" fill="#991b1b" font-family="-apple-system,sans-serif" font-size="12" text-anchor="middle" x="252" y="190"><!--pnid:3b0gCaLhq7LWPOuZH025au-->而且「多数票」只在输出空间有限时才成立</text>
+    <text data-page-node-id="e4mvrf2IhdGgrhGUwDBLSk" fill="#c02626" font-family="-apple-system,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="252" y="216"><!--pnid:NvZOSIkbO9qDWoRr34m592-->24 点的输出空间是无限的，多数票无从下手</text>
+
+    <rect data-page-node-id="WUpdf0XbheoAUNwTuwZh9K" fill="#ebf7ef" height="220" rx="10" stroke="#15803d" stroke-width="1" width="464" x="516" y="14"></rect>
+    <text data-page-node-id="cEORhdfwmLG68JL6celCl7" fill="#14532d" font-family="-apple-system,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="748" y="40"><!--pnid:wMEcJHJyLJ3ihiYp3tD8fK-->思维树：每一步都分叉</text>
+    <circle data-page-node-id="iH3r0GtT8c4jDNYeFQDNb0" cx="600" cy="80" fill="#ccebdb" r="20" stroke="#15803d" stroke-width="1.2"></circle>
+    <text data-page-node-id="ISXa5fVU3uNawOlgDmhQxx" fill="#14532d" font-family="-apple-system,sans-serif" font-size="12" text-anchor="middle" x="600" y="86"><!--pnid:QG8VXmtXsnC6R46mNyiHvs-->起</text>
+    <path data-page-node-id="iIlmRcStQMKHKALRRaM9JZ" d="M618 76 L680 66" fill="none" stroke="#15803d" stroke-width="1.4"></path>
+    <path data-page-node-id="vlq0VlZuPO8Jflz3o8JvBc" d="M618 82 L680 92" fill="none" stroke="#15803d" stroke-width="1.4"></path>
+    <circle data-page-node-id="JsgVh2DRgCUfyVtWg4h1cp" cx="700" cy="62" fill="#ccebdb" r="15" stroke="#15803d" stroke-width="0.8"></circle>
+    <circle data-page-node-id="RF9dmrdOqqXaxhpRMs4khA" cx="700" cy="96" fill="#ccebdb" r="15" stroke="#15803d" stroke-width="0.8"></circle>
+    <path data-page-node-id="RTOjvWjBMyCNF5laSRr6MR" d="M715 62 L780 56" fill="none" stroke="#15803d" stroke-width="1.2"></path>
+    <path data-page-node-id="GlPzZHQjjwlHpDpYd80ZqX" d="M715 66 L780 76" fill="none" stroke="#15803d" stroke-width="1.2"></path>
+    <path data-page-node-id="fuwliLSbMlwocuSySNJkhK" d="M715 96 L780 104" fill="none" stroke="#15803d" stroke-width="1.2"></path>
+    <path data-page-node-id="RRdwL0zZANiwwvf2DCkzoT" d="M715 100 L780 120" fill="none" stroke="#9ca3af" stroke-dasharray="4 3" stroke-width="1.2"></path>
+    <circle data-page-node-id="BsExtgNcbfqYLElxyNz17X" cx="800" cy="52" fill="#ccebdb" r="15" stroke="#15803d" stroke-width="0.8"></circle>
+    <circle data-page-node-id="esadi89I4FDutykQZJusp0" cx="800" cy="76" fill="#ccebdb" r="15" stroke="#15803d" stroke-width="0.8"></circle>
+    <circle data-page-node-id="QWlyzvRqvk2DKY6RX7Z5KT" cx="800" cy="104" fill="#ccebdb" r="15" stroke="#15803d" stroke-width="0.8"></circle>
+    <circle data-page-node-id="3FxAsaNYRaPO8K9eTdXAty" cx="800" cy="124" fill="#e0e0e0" r="15" stroke="#9ca3af" stroke-width="0.8"></circle>
+    <text data-page-node-id="XjnzacAwAeWfUFInPjkEXc" fill="#6b7280" font-family="-apple-system,sans-serif" font-size="11" text-anchor="middle" x="800" y="130"><!--pnid:r9gI05i0FPcZLWx2IDnYuF-->剪</text>
+    <text data-page-node-id="lcpx7GJRH7FRct9J6B1zHX" fill="#14532d" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="748" y="166"><!--pnid:asy1TwGRNBuvsChisYuXMw-->每个状态都能停下来评估分支</text>
+    <text data-page-node-id="jGsmXWPRYa7Deyd4psaRjm" fill="#15803d" font-family="-apple-system,sans-serif" font-size="12" text-anchor="middle" x="748" y="190"><!--pnid:2UIeCRi0TI1YvZYB3YFWYo-->分叉发生在每一步，不只在开头</text>
+    <text data-page-node-id="FcQY6jjz3eYfVbd41ORdYE" fill="#15803d" font-family="-apple-system,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="748" y="216"><!--pnid:laP0kPJoMyc0OoSqmMxhLG-->所以能剪掉走不通的分支</text>
+  </svg>
+  <div data-page-node-id="8acclyjfJrUyunl3NIJXUU" class="fig-c"><!--pnid:k4ig9hdHttLClvNunGHuAt-->思维树补的正是「探索」这一块：不是独立采样 k 条完整的链，而是在一个状态上分叉出 k 个候选想法，给每个打分，再决定往哪条走。</div>
+  </div>
+  <p data-page-node-id="4uaCNggohQmRvpTtdYd40m"><strong data-page-node-id="Tw7ODHV7HU1N05Xg3yQbug"><!--pnid:zEado9LyqjF28341aAuIo7-->第三条的批评最关键，而且直接解释了 24 点游戏上的现象。</strong><!--pnid:MMDNMcUJyk9Gxip58u6Upx-->自我一致性的胜负靠多数票，但 24 点的输出空间是无限的（四个数字有无数种排列组合），<strong data-page-node-id="IDgTy2tWtP2HKij2Iy5H2M"><!--pnid:kBaF6CdDBY72coUZS8MGEM-->多数票无从下手</strong><!--pnid:gdjE65dPg5Aib4DTjrragd-->。所以采样投票在这个任务上只有 9%。</p>
+  <p data-page-node-id="blLQhLCatrwfyHs45FsIs5"><!--pnid:UGP5zRj7eXVql1KQ6q1prm-->作者用一句话概括方法的定义：<strong data-page-node-id="8ixPFaGs2wNSeAreZCnNXl"><!--pnid:UBH42QcPL96dRSJffDSoPu-->思维树的一个具体实现要回答四个问题</strong><!--pnid:7MwYSM0GupT5uLmVlj1zf2-->：中间过程怎么拆成想法、想法怎么生成、状态怎么评估、用什么搜索算法。这四个问题就是后面四个部件的由来。</p>
+  <p data-page-node-id="s45FVxc1do05J2A4rPgu4U"><!--pnid:WtCriYK9d4H6m1VK2MKweq-->作者还引了人类问题解决研究作为依据：人在解问题时是在一棵组合树上搜索，节点是部分解，分支是修改它的算子，走哪条分支由启发式决定。<strong data-page-node-id="0CEl8wn0wqWbRSAwPEutGf"><!--pnid:8lR55VWnlKnwbCqKpgeZJN-->大模型缺的正是那个启发式式的搜索。</strong></p>
+</div>
+
+<div data-page-node-id="y1byMPQxMUt4PHfYS6za9O" class="block">
+  <div data-page-node-id="YwKmUjCBeTQkSAsPxWAffw" class="tag"><!--pnid:DONTfcSU423LHdUkx34C73-->论证链</div>
+  <div data-page-node-id="SGGCji0gvxuatmsHSuRroS" class="claim"><!--pnid:qwgLskBPRlHtIqi8Tq9xvH-->从一条线扩成一棵树</div>
+  <p data-page-node-id="uDHnH70uuXn5kznqhF8unG" class="lead"><!--pnid:5CqXTCKgxfzNNJ1SlQzYD6-->作者先指出两个具体缺陷，再给解法。</p>
+  <div data-page-node-id="VGZVTWpxmaNYDVMMypjvni" class="fig">
+  <svg data-page-node-id="aYL2WU9d0oURPa5ojpmAyj" aria-label="一条线与一棵树两种推理结构的对比" role="img" viewBox="0 0 1000 420">
+    <rect data-page-node-id="Fu8vSH4TiBHtSAvEVS1GoD" fill="#fdeeee" height="250" rx="10" stroke="#c02626" stroke-width="1" width="430" x="40" y="14"></rect>
+    <text data-page-node-id="kDMq1Js3X5qw7sN42Qo7QQ" fill="#7f1d1d" font-family="-apple-system,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="255" y="40"><!--pnid:dHCEzwiurdNPmiMDPMCsKF-->一条线：只能往前，不能反悔</text>
+    <circle data-page-node-id="3Ml4x3djBLmNYrBpAJRGHE" cx="90" cy="90" fill="#f8d7d7" r="22" stroke="#c02626" stroke-width="1"></circle>
+    <text data-page-node-id="1wI0rpqZuZXE47FdWuDKcG" fill="#7f1d1d" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="90" y="96"><!--pnid:VH0R8gZhFOtUGB5cPfKXb4-->起</text>
+    <circle data-page-node-id="tOGEcMg5gsk46DRe0b8mzN" cx="200" cy="90" fill="#f8d7d7" r="22" stroke="#c02626" stroke-width="1"></circle>
+    <text data-page-node-id="NdpTZ6v3nYlPAlw3qF9Ijl" fill="#7f1d1d" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="200" y="96"><!--pnid:KblujGWMrFJdarDH2YzCdq-->1</text>
+    <circle data-page-node-id="7VejxubTvzsP7EG5lPiF3z" cx="310" cy="90" fill="#f8d7d7" r="22" stroke="#c02626" stroke-width="1"></circle>
+    <text data-page-node-id="hvYvnr4uP9WoGMn5ukoqxg" fill="#7f1d1d" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="310" y="96"><!--pnid:tPNYDPf55ci8aPOeQr0xMv-->2</text>
+    <circle data-page-node-id="zLzlND4aMiGIL9bkwEGP94" cx="415" cy="90" fill="#f8d7d7" r="22" stroke="#c02626" stroke-width="1"></circle>
+    <text data-page-node-id="t6o1eSgIKSEevDc8Ut5nLf" fill="#7f1d1d" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="415" y="96"><!--pnid:gapp2RCISBwePcpsMC2Spi-->3</text>
+    <path data-page-node-id="20If7y93doU2a1FToxu4zV" d="M112 90 L178 90" fill="none" stroke="#c02626" stroke-width="1.6"></path>
+    <path data-page-node-id="xIre4DAGHXUBGzneJrDYrY" d="M222 90 L288 90" fill="none" stroke="#c02626" stroke-width="1.6"></path>
+    <path data-page-node-id="Z73uGNN6pUIXv0C9CrpkGj" d="M332 90 L393 90" fill="none" stroke="#c02626" stroke-width="1.6"></path>
+    <path data-page-node-id="KZFX3CrAFg514LC2FBCnrZ" d="M90 118 L90 160" fill="none" stroke="#c02626" stroke-dasharray="4 3" stroke-width="1.6"></path>
+    <text data-page-node-id="cT4509HPcYzZjTwnWP2bvn" fill="#991b1b" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="90" y="184"><!--pnid:1X4dXLZxWefYvb6PJGFDtH-->开局决定错了</text>
+    <text data-page-node-id="87pAt4Jhyjg2Q3leZSl1br" fill="#991b1b" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="90" y="206"><!--pnid:UjXk5cgNd1Tb2ELU26yobj-->后面只能一条路走到底</text>
+    <text data-page-node-id="nkALFjITr3tEhNqtYuNZt0" fill="#991b1b" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="255" y="238"><!--pnid:rTTsLiBWl7O3vce92RECPL-->思维链在这个结构上 24 点题只有 4%</text>
+
+    <rect data-page-node-id="1Jecry80jCB01tstZNYI8A" fill="#ebf7ef" height="250" rx="10" stroke="#15803d" stroke-width="1" width="430" x="530" y="14"></rect>
+    <text data-page-node-id="U7yPsqMQziRwZxBm1u8MHo" fill="#14532d" font-family="-apple-system,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="745" y="40"><!--pnid:dxrLWtrISz9EMUbQHfkJbf-->一棵树：可以选、可以回退</text>
+    <circle data-page-node-id="OPGIwafe1pHda9gvsM5siA" cx="745" cy="82" fill="#ccebdb" r="20" stroke="#15803d" stroke-width="1.2"></circle>
+    <text data-page-node-id="pz3phTTX04F5jBzOUBhcLa" fill="#14532d" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="745" y="88"><!--pnid:NiHSwFx0nb7g1WOWvL3amK-->起</text>
+    <circle data-page-node-id="GPXGJvtR0S6V9ZQdC6SImQ" cx="650" cy="140" fill="#ccebdb" r="18" stroke="#15803d" stroke-width="1"></circle>
+    <circle data-page-node-id="XkgfqqG1XOhXdB0FRLyXVN" cx="790" cy="140" fill="#ccebdb" r="18" stroke="#15803d" stroke-width="1"></circle>
+    <circle data-page-node-id="iZUOWaOhLiyyOMlciJ8HKa" cx="880" cy="140" fill="#e0e0e0" r="18" stroke="#9ca3af" stroke-width="1"></circle>
+    <text data-page-node-id="1bUjXUiq5rcE50rWQzNNNy" fill="#6b7280" font-family="-apple-system,sans-serif" font-size="12" text-anchor="middle" x="880" y="146"><!--pnid:bkmyYdZoBLL8WnNr3tvTUB-->剪</text>
+    <path data-page-node-id="4mkZfvrZYGtwAIXw3MRrZD" d="M730 97 L663 126" fill="none" stroke="#15803d" stroke-width="1.4"></path>
+    <path data-page-node-id="B7siGvPDYfuuKrItic51Cl" d="M760 97 L778 126" fill="none" stroke="#15803d" stroke-width="1.4"></path>
+    <path data-page-node-id="HiOXr9SSpRnwm4PjDhJ9HK" d="M803 97 L871 126" fill="none" stroke="#9ca3af" stroke-dasharray="4 3" stroke-width="1.4"></path>
+    <circle data-page-node-id="7V1tserzJILft3OLpFlqDI" cx="620" cy="200" fill="#ccebdb" r="18" stroke="#15803d" stroke-width="1"></circle>
+    <circle data-page-node-id="rCzyjVUBoFGJfb4eqYa49T" cx="700" cy="200" fill="#ccebdb" r="18" stroke="#15803d" stroke-width="1"></circle>
+    <circle data-page-node-id="jbui1wngJ67eOHDXvt5QpB" cx="790" cy="200" fill="#ccebdb" r="18" stroke="#15803d" stroke-width="1"></circle>
+    <path data-page-node-id="8a43tGSdq5v2vXHPJQnEYY" d="M638 154 L627 182" fill="none" stroke="#15803d" stroke-width="1.4"></path>
+    <path data-page-node-id="ANQ6FmLg4y1xdqRepc2DgF" d="M662 154 L692 182" fill="none" stroke="#15803d" stroke-width="1.4"></path>
+    <path data-page-node-id="B8ZimDVPaY8vX2gLHGtboZ" d="M782 154 L790 182" fill="none" stroke="#15803d" stroke-width="1.4"></path>
+    <text data-page-node-id="nJ3vQXPw7pMmXfQ2vFHZft" fill="#14532d" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="700" y="242"><!--pnid:LaCcL26limXOROP9eE7wce-->状态评估器给每个分支打分，分数低就剪掉</text>
+
+    <rect data-page-node-id="2nhymGo7sKkWtVOrzmWUbd" fill="#eef0f3" height="112" rx="8" stroke="#e2e5ea" stroke-width="0.8" width="920" x="40" y="288"></rect>
+    <text data-page-node-id="oEBgjNlJ4HVmjf8yvy8kag" fill="#12141a" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="500" y="316"><!--pnid:brVO2ZDPjvpzRw4A9IX7uN-->作者指出的两个具体缺陷</text>
+    <text data-page-node-id="TzceYI1jIQVk8Vcoisd64y" fill="#48505a" font-family="-apple-system,sans-serif" font-size="14" text-anchor="middle" x="270" y="344"><!--pnid:o1gvlMuxJhKu1hwqRzGP3X-->局部不探索</text>
+    <text data-page-node-id="lY9qO7lyROGC6eUKKe0R6F" fill="#8b929c" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="270" y="366"><!--pnid:oqRiXIPj9PitZLmkEf4eIc-->在一段推理内部不尝试别的走法</text>
+    <text data-page-node-id="bxLTo2XO0pJY09DIeeNFju" fill="#48505a" font-family="-apple-system,sans-serif" font-size="14" text-anchor="middle" x="730" y="344"><!--pnid:zgQKUvinX1tswsOExCsykK-->全局无规划</text>
+    <text data-page-node-id="9aWTtNiGI0QEhN5XFZ0iTO" fill="#8b929c" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="730" y="366"><!--pnid:5orq9cOlQRYOQTSNDbLAbS-->没有往前看、没有回头路</text>
+  </svg>
+  <div data-page-node-id="4bbrXMnKwXQrNSz6PV1z1R" class="fig-c"><!--pnid:naJKm0a8QZKSomKpy5gcaX-->人类认知里有两套系统：快而自动的系统一负责直觉，慢而有意识的系统二负责检查和重来。作者的判断是大模型只有系统一：<strong data-page-node-id="Tboyrv8XHJ4ew3YCAkpyJl"><!--pnid:r7lDvtVkclXizADzlCcMki-->它能联想，但不能审视自己的联想</strong><!--pnid:wTRx9OpQYiu8QupyX1mb6F-->。</div>
+  </div>
+  <table data-page-node-id="YYFheiPZUbkWbzXW6RXmQT"><thead data-page-node-id="C4SDxwJMyPJmREFeZnYGq8"><tr data-page-node-id="uTtaADvMxRshjJghRjNTkk"><th data-page-node-id="XLtwFub23S6arkYCUKqudN" style="width:26%"><!--pnid:mYAaIYAhipo77yiGvBUN4i-->缺陷</th><th data-page-node-id="Ia830EchQ6KjAsdmflckS8"><!--pnid:KWJUhqAv1LOSUMaZRyP4ks-->说的是什么</th></tr></thead><tbody data-page-node-id="6m82i1zbQufjBYkNNBFZP7">
+    <tr data-page-node-id="U3xCL4NU9fbSvzoF8YC0za"><td data-page-node-id="vs6qXywiFBarZ7IvVyHAAt"><strong data-page-node-id="JkiJAze9p9cY7nnBDbGdtS"><!--pnid:UyUzchahnKrV2Bkr5IDymo-->局部不探索</strong></td><td data-page-node-id="qzfMWFAgwpIPCH3gZ64NKz"><!--pnid:wl3ljhLjgahjbtn7TUe9si-->模型在一段推理内部不尝试别的走法，没有「这里也可以那样算」的分支</td></tr>
+    <tr data-page-node-id="41TsN4MrywYLZ5yoseW2Fi"><td data-page-node-id="5KxFtN0qUDvlnzVy8WH3Or"><strong data-page-node-id="AyJQg16nDICj9QLHxcay0Q"><!--pnid:qUErJR5scxoqEPdYFLaR5l-->全局无规划</strong></td><td data-page-node-id="cvQ4y8FmSxcyEVFeRMyXYG"><!--pnid:dUtU9BFH7D3XPq29UpX5cm-->没有往前看、没有回头路。<strong data-page-node-id="fPcRkW6D6o9cL3hqUpGkjU"><!--pnid:9eF43AD7wVliOzp4Icm9Rn-->开局决定错了，后面只能一条路走到底</strong></td></tr>
+  </tbody></table>
+  <p data-page-node-id="otbS7TYkSDKCqPKQHGc4sK"><strong data-page-node-id="5fP7pP2kc8CpuLqCaWJG6F"><!--pnid:B0JtL58gS0xvBUIzvru4yZ-->解法是把问题定义成一棵搜索树。</strong><!--pnid:OR9fqGglXjqTY8QsBKHejk-->树上每个节点是一个「状态」，也就是原始输入加到目前为止生成的一串想法；从状态出发的每条分支是一个候选想法。这样一来，「生成下一步」变成扩展节点，「判断对不对」变成给状态打分，「推倒重来」变成剪枝。</p>
+  <p data-page-node-id="ja8PS9e7Zws4u42f2crc0e"><strong data-page-node-id="c6bDORIX2BGAkrOrsA5A3Y"><!--pnid:9etfc5sYxgRif9zkY2NQIF-->证据的重量在 24 点游戏上。</strong><!--pnid:YbDX2FiOQFPABCoXkhOA1K-->这个任务的规则极简：四个数字凑出 24，只能用加减乘除，但 GPT-4 用思维链只有 4% 的成功率，用思维树（宽度 5）是 74%。</p>
+  <table data-page-node-id="Zr5xTB6D2HUuEgxCkQZn7m"><thead data-page-node-id="iyYgJaC598LegRz7lxLlEM"><tr data-page-node-id="QCQujQEPC6iNGdUcuWCiln"><th data-page-node-id="m6xlhboEHwVpcij1KLacCx" style="width:56%"><!--pnid:yvK8Cne1eExfqyeX13uhDT-->方法</th><th data-page-node-id="OiAacmxXiYD8WvGcwNFPYB"><!--pnid:YY41GpywjTlSE1W3MwIsqu-->成功率</th></tr></thead><tbody data-page-node-id="bPLzDVaCCBe3DmxmhqKlSb">
+    <tr data-page-node-id="POa62SWQW7HvoM77sWf0C9"><td data-page-node-id="7XWk9zePTyafDtcag6GMlV"><!--pnid:sPAUZcp634wHazzMN2SCl9-->直接问答</td><td data-page-node-id="TNfJEe4jxbEnf7HE5d6sxB"><!--pnid:CrCG57XkJeebJlZujtLNWw-->7.3%</td></tr>
+    <tr data-page-node-id="LlMyQdf81IgpKFJByGhXra"><td data-page-node-id="GTjrOl7QEJPOxdb8orfuUQ"><!--pnid:IoddEsOTzOOGh2sY0wEfCC-->思维链</td><td data-page-node-id="4CIsNfxlzKeMQuvdzv3VjS"><!--pnid:X11WSvgqFNqpyRWy3xljP4-->4.0%</td></tr>
+    <tr data-page-node-id="afEUnkeDdVyGAPEwXKzGXF"><td data-page-node-id="DvHvYobHFq3hKG1FUNOvOk"><!--pnid:e9tTgOaaeiw8tZpVOtMWFz-->思维链 + 100 次采样投票</td><td data-page-node-id="vbMjoDHWXckwqaGqir6QoM"><!--pnid:1P5Wc2Hiqk7j3PKbJImcSz-->9.0%</td></tr>
+    <tr data-page-node-id="flZX3Xt45rFAC4z0aTUepJ"><td data-page-node-id="t7S25eNnsrxuG6RzZj6OBS"><strong data-page-node-id="Ty6eeccmej4tG9tJOFB9F3"><!--pnid:uDj3BLTN9bs8wvxOKn4esq-->思维树（宽度 1）</strong></td><td data-page-node-id="qJ8CeCpwoNmXtRFpsBhCl1"><strong data-page-node-id="beJLoMM2V9JuXhxn73QMTg"><!--pnid:Ibm8pjPH3PxV491bQ5ESeK-->45%</strong></td></tr>
+    <tr data-page-node-id="Q495DQ9f164elgyMBSiOxf"><td data-page-node-id="ccc2eZeLXMLKSqVFZdUloa"><strong data-page-node-id="6nvpUbVq1ee4qg32n0zRnC"><!--pnid:U61hExLyq4nTpEiijaZmS0-->思维树（宽度 5）</strong></td><td data-page-node-id="2iJW3S6ep6v1SKycvcNIy7"><strong data-page-node-id="rewEVdMo5X8eYWSOVEgRfk"><!--pnid:G0dD8rxFN2rp1rpoOi9D2V-->74%</strong></td></tr>
+  </tbody></table>
+  <p data-page-node-id="OTsoXOY6xtoyo0Hfye3KaH"><strong data-page-node-id="66QnBwOM1bJ57tEjgndBM1"><!--pnid:TFiodmweBIZYX2sK7AJABx-->这张表里最该看的是宽度 1 和宽度 5 的差距。</strong><!--pnid:v6GbncDt9ruaEFUDPcsEbU-->宽度 1 就是「只探索一条，但会评估并回退」，已经到 45%，比思维链高十倍。说明主要的收益来自<strong data-page-node-id="4KgjHltpp02fsswtKG3OdC"><!--pnid:gf481wp2MjsV6WhSXdSM82-->能反悔</strong><!--pnid:B385Fj8ynrn92ThgWis7Cx-->，而不是看得宽。而从 45% 到 74% 才是宽度带来的第二段收益。</p>
+  <p data-page-node-id="ELmCnSiKT3sMB362vbIFUe"><!--pnid:kO298xDHlWjbOksQSYhtyX-->作者还做了一个公平对照：把直接问答和思维链各采样 100 次取最好的，成绩是 33% 和 49%，仍然低于思维树。这个对照很关键：它排除了「多采样几次总会碰对」这个解释。</p>
+  <div data-page-node-id="3UyS8I5fkyxnHtntTMtVpM" class="bnd"><div data-page-node-id="1ehDLat0hSZLVflMywl8lA" class="bnd-t"><!--pnid:fzNidmlsJhSJdH1rXiUAVC-->前提与边界</div><p data-page-node-id="bKekqkSSKNxRnAB2SW20FT"><!--pnid:HdWdwN4Ec6N26DMIGw1BJ9-->三个任务（24 点、创意写作、迷你填字）都是作者新设计的，题目规模都很小。这些任务是否真的代表「需要规划的复杂问题」，论文没有论证。而且这三个任务恰好都是训练数据里可能有大量同题的，模型可能有记忆优势。</p></div>
+</div>
+
+<div data-page-node-id="Kp3ouYR5JFmRBhbyhEx6Lg" class="block">
+  <div data-page-node-id="Ps6MDeg5dAYkSLyfmgckym" class="tag"><!--pnid:GaatAmFHY8hKCa334e0cie-->四部件</div>
+  <div data-page-node-id="MCkJHe6Aq7CI1yZWBEMTvv" class="claim"><!--pnid:s7Qa4O2Z6bfCUHxeFSKKV4-->四个部件，都是可换的</div>
+  <p data-page-node-id="C1pYGAl3MnSNvvPpH4ZXwq" class="lead"><!--pnid:oC6TCYbwrZi8JCYxsoJakQ-->思维树不是一招固定的提示技巧，而是一个框架。<strong data-page-node-id="7ybooMJvCW5Jv8nsAKSFIA"><!--pnid:UgaJBeH4w4rjZivtXeWfBw-->这四个部件作者都给了不止一种实现，并且做了消融。</strong><!--pnid:rvOE6eVejjkFTTAIlPU1eu-->这一点比结果本身更重要：它说明效果不来自某个具体的提示词。</p>
+  <div data-page-node-id="qAeMpNV7IGeo3WqO8wGCrw" class="fig">
+  <svg data-page-node-id="KkUDwYGe1eVqCi0fuPPzkC" aria-label="思维树框架的四个可替换部件" role="img" viewBox="0 0 1000 320">
+    <rect data-page-node-id="UYfnYR1SgaWowzsutdNAyk" fill="#eaf1fd" height="52" rx="8" stroke="#1f5fd0" stroke-width="1.2" width="960" x="20" y="14"></rect>
+    <text data-page-node-id="zxCa0yzRYJOQ7kHsJvBv5W" fill="#042c53" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="500" y="46"><!--pnid:72lgrMiAzVEzWtlVLPHyDS-->任何问题都是一棵搜索树：每个节点是一个状态，每条分支是一个候选想法</text>
+
+    <rect data-page-node-id="UFoLLFjJsEsYDsr3jzeyA2" fill="#e6f1fb" height="112" rx="8" stroke="#185FA5" stroke-width="0.8" width="228" x="20" y="86"></rect>
+    <text data-page-node-id="ncAX576yWjFuBFO6hW7VuH" fill="#042c53" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="134" y="112"><!--pnid:HkCVRsjy3RdxOZYRf9LNR8-->想法的粒度</text>
+    <text data-page-node-id="WZLQJcC7IvEx2UPFqJpeOD" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="12" text-anchor="middle" x="134" y="140"><!--pnid:smHhfwHXmrRokoIaxWALNX-->小到能生成有差异的候选</text>
+    <text data-page-node-id="CjJptGcE81bhbkdVgwq3G2" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="12" text-anchor="middle" x="134" y="160"><!--pnid:nbuUxynzO5MYdj0HUfWstK-->大到能判断它的前景</text>
+    <text data-page-node-id="1hWgOvjPeVKuhNqnL91nG4" fill="#0c4a6e" font-family="-apple-system,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="134" y="184"><!--pnid:5hg1NmhiRRq8GP3nmm9Esc-->填字一个词，24 点一行算式</text>
+
+    <rect data-page-node-id="RX3qTJJwXgfeZbkaeuem6B" fill="#e6f1fb" height="112" rx="8" stroke="#185FA5" stroke-width="0.8" width="228" x="264" y="86"></rect>
+    <text data-page-node-id="yriDjQBhjtIWhJSivzkMMd" fill="#042c53" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="378" y="112"><!--pnid:SzxOowneB9qer1ZlHoLYHK-->想法生成器</text>
+    <text data-page-node-id="RcfHnoDjLxNHwnVA2hzX3t" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="12" text-anchor="middle" x="378" y="140"><!--pnid:Ne0OeLm3dnQmR82MoYI4aP-->独立采样：空间大时</text>
+    <text data-page-node-id="U8t2pKGNQoqkkJazYSA3Wy" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="12" text-anchor="middle" x="378" y="160"><!--pnid:lRPTJ9QD2S8SIo9SJ6w36c-->顺序提议：空间小时</text>
+    <text data-page-node-id="4FBCcU6yCBY68beozlKuTo" fill="#0c4a6e" font-family="-apple-system,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="378" y="184"><!--pnid:hrqpJDcB3LTgScVcxWg7Ek-->两种可换</text>
+
+    <rect data-page-node-id="fEpWSYc3mZFV4f1AEXPhxO" fill="#ebf7ef" height="112" rx="8" stroke="#15803d" stroke-width="1.2" width="228" x="508" y="86"></rect>
+    <text data-page-node-id="kS6Q227vORa3VI8aPugkjO" fill="#14532d" font-family="-apple-system,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="622" y="112"><!--pnid:2WW71Nf99HBSyn5lurPmxZ-->状态评估器</text>
+    <text data-page-node-id="TUwdOtKl6VVIGlSczHja1p" fill="#15803d" font-family="-apple-system,sans-serif" font-size="12" text-anchor="middle" x="622" y="140"><!--pnid:5hr27AFRjImq3Q0l8KoFei-->给人写死的规则之外</text>
+    <text data-page-node-id="jFJP3YUnJSgjkZgTTyLYUG" fill="#15803d" font-family="-apple-system,sans-serif" font-size="12" text-anchor="middle" x="622" y="160"><!--pnid:ltWiD5t6kz21733Ek6Yfwg-->学出来的策略之外</text>
+    <text data-page-node-id="cnNJ6NqBJQERCXh7T1tmHa" fill="#14532d" font-family="-apple-system,sans-serif" font-size="12" font-weight="700" text-anchor="middle" x="622" y="184"><!--pnid:fXxfm617ANdCDSUFqVj4Lu-->第三条路：让模型自己推理</text>
+
+    <rect data-page-node-id="JkCcISmAy3RzwwUOAfsA1V" fill="#e6f1fb" height="112" rx="8" stroke="#185FA5" stroke-width="0.8" width="228" x="752" y="86"></rect>
+    <text data-page-node-id="cH4Fc0bet7p41FFNyrT3EX" fill="#042c53" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="866" y="112"><!--pnid:T0dcdX8faeo09n5Hy7fXQs-->搜索算法</text>
+    <text data-page-node-id="8FtCI5HkbKwMhVRypvM1K8" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="12" text-anchor="middle" x="866" y="140"><!--pnid:PxZKbjP6oNgC4EJi0aksF5-->广度优先：树浅时</text>
+    <text data-page-node-id="RtjF0RiTWRHTZuQA1xXq6F" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="12" text-anchor="middle" x="866" y="160"><!--pnid:VTRUGl5B7U87QmDIPBMjKe-->深度优先：需要回溯时</text>
+    <text data-page-node-id="ZZCQ9AK4iWrNG76DEtX1Zr" fill="#0c4a6e" font-family="-apple-system,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="866" y="184"><!--pnid:Q9FXatuWhN7XQE1eqcpHLl-->两种可换</text>
+
+    <path data-page-node-id="G4YT6XyoIhK7KVrRJipZ0A" d="M622 202 L622 236" fill="none" stroke="#15803d" stroke-width="1.6"></path>
+    <rect data-page-node-id="yPqHBz880xWZL8B8lcGESX" fill="#ebf7ef" height="66" rx="8" stroke="#15803d" stroke-width="1.2" width="520" x="360" y="236"></rect>
+    <text data-page-node-id="GIzbO4mkNl0DH6eo3rjL0v" fill="#14532d" font-family="-apple-system,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="620" y="264"><!--pnid:95CbPpYtro1GhoTBpQ1thJ-->没有它就没有回退的可能</text>
+    <text data-page-node-id="Pt8pZSZGqRqHQW1XNtEQqs" fill="#166534" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="620" y="288"><!--pnid:CMr7qG0HQS0TU55TrS8xzP-->传统启发式要么人写死，要么学出来；这篇用模型自己给每个状态打分</text>
+  </svg>
+  <div data-page-node-id="CcOVfOHp3T0mvWo7adwX2H" class="fig-c"><!--pnid:NSU9yhmQLjRC53svg8MKsl-->评估器是最关键的一个部件。独立打分（1-10 分或「有把握、可能、不可能」分类）或放在一起比较投票，都可以。</div>
+  </div>
+  <p data-page-node-id="7k8qYZsyfKwztEMMNaPHnk"><strong data-page-node-id="L8zOS68NYM1rxVHQB68Y2D"><!--pnid:y2x7bwo6rDUA13mckCC2UJ-->一、想法的粒度。</strong><!--pnid:xouacAStydNH9jwXkO6hFl-->一个想法该多大，没有标准答案。论文给的判据是一句话：<strong data-page-node-id="zA0HvNU7PpOkWbFbU4vYOH"><!--pnid:pKpMEp0jNVaXQE2h0qSYzJ-->小到模型能生成有差异的候选，大到模型能对它的前景做出判断。</strong><!--pnid:5M0p4RqE2sur4Q6SRwpiXr-->具体任务里的粒度差别很大：填字游戏是一个词，24 点是一行算式，创意写作是一整段写作计划。生成整本书太大，会不连贯；单个 token 太小，无法评估。</p>
+  <p data-page-node-id="mcH4Csdk44u0Q3SMcZeIW9"><strong data-page-node-id="I7s5ULKADLAgXaVjaHDXPr"><!--pnid:hYUqOGfKcYk51JykGE6zva-->二、想法生成器。</strong><!--pnid:EK85NGV5jsStL46W8wN8gH-->给下一步出 k 个候选，两种策略各有适用场景：</p>
+  <table data-page-node-id="3BG8leBpUP4riUwjm8Sl0i"><thead data-page-node-id="OuRctXomLdeCOY8JMAtbkI"><tr data-page-node-id="LSd94tDdNqWDI94zhHZqFi"><th data-page-node-id="ZU0wSY6Da1dsRs33pcZHgE" style="width:18%"><!--pnid:mzdGpWifKgEnuj5bsaXrVo-->策略</th><th data-page-node-id="5cJnh3jThhog9QtqqM5IIG" style="width:42%"><!--pnid:E0UQFOMPpHU6ntRspZ84zU-->做法</th><th data-page-node-id="fR2Q9SCGFYGhkzjdzC0ALg"><!--pnid:pnUWTKzNxTqvPDoN6Z7NAy-->什么时候好用</th></tr></thead><tbody data-page-node-id="T5gttjlVYS43Nkxn78IiaO">
+    <tr data-page-node-id="CUJec3krZN6EeRHigNnXx8"><td data-page-node-id="srz1fFWTQPQqjNPU1kVELt"><strong data-page-node-id="01znX0pQuN5TC3iiMK78bF"><!--pnid:pFBCsWsIsg7RgOsxnOUt7o-->独立采样</strong></td><td data-page-node-id="AF2MB78CJqQAyTLJmGwwb9"><!--pnid:ylTBxMvmxIQesPghYuXkr3-->从思维链提示里独立抽 k 个想法</td><td data-page-node-id="47M9DKyYBMPpUyG6QtSgF3"><!--pnid:EGKu5Fe5Jp5vGRsNZeRHUC-->想法空间大时（如一段写作计划）。<strong data-page-node-id="OPGgnCQ7qY2r3ByuGK0Opy"><!--pnid:3dugdyxbXfigsG3CayUPby-->独立采样天然带来多样性</strong></td></tr>
+    <tr data-page-node-id="KRLSOkwFYSq5RSAcgxi2SW"><td data-page-node-id="toKhOoMmSi3jXeA8M7YcmB"><strong data-page-node-id="KaHpYmAFL5AIAiJRu14bS1"><!--pnid:1ipiegKW5FeGf8Kc1AIjLV-->顺序提议</strong></td><td data-page-node-id="kcIsTqQRlnBmSSHwVbohLW"><!--pnid:KzA54vf19XPj5POHnEK52a-->用一个「提议提示」依次给出 k 个想法，彼此看得见</td><td data-page-node-id="5tZDhGLynqXsUfQqv9wrLb"><!--pnid:g36OFYx5fW28xIBg00oLru-->想法空间受限时（如一个词、一行算式）。<strong data-page-node-id="k3nla3mX2jGWdrFZHJK680"><!--pnid:IEATqOdAtf8KRcfhS7exos-->同上下文提议能避免重复</strong></td></tr>
+  </tbody></table>
+  <p data-page-node-id="cT0RmEMBCEeIy8QMmWAsti"><strong data-page-node-id="dZ7IgF4WCPTutviDmHnYnu"><!--pnid:9ItoBg0JFW6PWD02GvzCj7-->三、状态评估器。</strong><!--pnid:T9VthN0uOUTjYR0r7fbhAA-->这是最关键的一个部件。<strong data-page-node-id="T8gdlMTOejgrUkmQTle7n8"><!--pnid:tqLnU8k95dXTpcq3csHMXc-->没有它就没有回退的可能。</strong><!--pnid:Pm2bf2BpWIlkrtfnd0qvI2-->传统搜索算法的启发式规则要么是人写死的（如国际象棋引擎），要么是学出来的（如围棋）。这篇提出第三条路：<strong data-page-node-id="VneCMlO1LAfox8RMeKkVSv"><!--pnid:brlgKwqdl4Yxuijzy1d0YP-->用大模型自己去推理每个状态值不值得继续</strong><!--pnid:vKJJDenortVGQrCckImOqm-->。同样分两种：独立给每个状态打分，或者把一批状态放在一起比较投票。可以用 1-10 的分值，也可以用「有把握、可能、不可能」这样的分类。</p>
+  <p data-page-node-id="dhemrIENCsRiFG33SVjVKU"><strong data-page-node-id="wCFpPzhEi32xl8YM01Lx1E"><!--pnid:u6H7HnDSKmmz2wEMWdI3BK-->四、搜索算法。</strong><!--pnid:Z3N4qEb57AGtMyrsPj7D4V-->广度优先是每层保留最有希望的 b 个状态，用于树浅的任务（24 点、创意写作，最多 3 步）。深度优先是先走最有希望的，走不动了就剪掉这棵子树换一条，用于树深、需要回溯的任务。作者明确说更复杂的算法（A*、蒙特卡洛树搜索）留作未来工作。这两个都不是最优搜索算法，价值在于简单、可解释、随插随用。</p>
+  <div data-page-node-id="61vadNmTJGFMDCFRl21bnt" class="bnd"><div data-page-node-id="FjUghcEGlubUDVskHpv0l3" class="bnd-t"><!--pnid:unozRd8e1f1AnRxe1UMpk9-->前提与边界</div><p data-page-node-id="cDU5IUFXELPhmxBWbqhXON"><!--pnid:mcd2PyQuAzznQEcuLkGstp-->四个部件的组合有 16 种可能，论文只测了其中一部分。作者没有给出「怎么给不同任务选组合」的方法论。框架给了灵活性，选择的成本留给了用户。</p></div>
+</div>
+
+<div data-page-node-id="0bhyHfbTG0JC0zoDz14U0q" class="block">
+  <div data-page-node-id="c0zaAllDOvoSaKk0AYBb2J" class="tag"><!--pnid:LtrMGoyMZ24mCHmnuXXwY4-->实验</div>
+  <div data-page-node-id="bjdYqYwyZDXYN81cB8Ps7v" class="claim"><!--pnid:t2QMCb40S7KMB7stLwZuLe-->三个任务，三种「难」</div>
+  <p data-page-node-id="DMNobsPdDMdR3WJj7lT9wy" class="lead"><!--pnid:BejXujt1DlAX6MTGBhzY3T-->作者设计三个任务不是为了覆盖场景，而是<strong data-page-node-id="amJVEaq90JxntCva9j5qLr"><!--pnid:KGnC9RUKgCYSTscwrBO8ZM-->让三种不同的难题各显形</strong><!--pnid:e7XESBm3uc6oYoJdnjxHch-->。</p>
+  <div data-page-node-id="OjeYDTx1NmqYEHI9jeixIG" class="fig">
+  <svg data-page-node-id="983jAXbURSdw0wVP6TklYa" aria-label="三个任务各自要求的难度类型" role="img" viewBox="0 0 1000 300">
+    <rect data-page-node-id="Hnajganb6DM9CTzqVjeY7J" fill="#e6f1fb" height="130" rx="8" stroke="#185FA5" stroke-width="0.8" width="308" x="20" y="14"></rect>
+    <text data-page-node-id="TGRH6mjsl8pKfWrD38Zgb5" fill="#042c53" font-family="-apple-system,sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="174" y="42"><!--pnid:SKe7RzasYsBBGHbgkRu0VW-->24 点游戏</text>
+    <text data-page-node-id="glbgKac6x2UNEuvg9ziDdp" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="174" y="70"><!--pnid:AVXQmZVTPIXhwpjoBDbu51-->规则确定、步骤浅</text>
+    <text data-page-node-id="wszg2Fei0oK58QfkbcfDiz" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="174" y="90"><!--pnid:pGkH9F5PRNUQ5KD95BYAHO-->只有算式这一种想法</text>
+    <text data-page-node-id="8VoespbtodkOQbc3CbfAYM" fill="#0c4a6e" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="174" y="118"><!--pnid:hvPaFhGCasrMVxEVIh6aG4-->难点在全局找不找得到</text>
+
+    <rect data-page-node-id="T8Y7K9SJMeo2UTBBgLRFHc" fill="#e6f1fb" height="130" rx="8" stroke="#185FA5" stroke-width="0.8" width="308" x="346" y="14"></rect>
+    <text data-page-node-id="uUuyFuZcmxP1YCqWemmISc" fill="#042c53" font-family="-apple-system,sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="500" y="42"><!--pnid:ljRqgpNsjgZjcZ4NtHhraI-->创意写作</text>
+    <text data-page-node-id="jnoYamrrwpKnvoatEOTReS" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="500" y="70"><!--pnid:tyWed7IngzpFath6dyBWKp-->想法空间最宽</text>
+    <text data-page-node-id="fE94ZU6VGOkAViO6EDJNOE" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="500" y="90"><!--pnid:paJHa8bTHc708XJll1CnZE-->一个想法是一整段写作计划</text>
+    <text data-page-node-id="ADyb2SxHvN7E1r75q660HL" fill="#0c4a6e" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="500" y="118"><!--pnid:DpmIZ0eNLZQvhPSxComeWP-->没有唯一正确答案</text>
+
+    <rect data-page-node-id="WHtmAHTDZnCc73baP8tLIB" fill="#ebf7ef" height="130" rx="8" stroke="#15803d" stroke-width="1" width="308" x="672" y="14"></rect>
+    <text data-page-node-id="gkWcS3p9Es04sOoc64ccJI" fill="#14532d" font-family="-apple-system,sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="826" y="42"><!--pnid:WhGFjJQkW7rSLJ6mL2KNJ4-->迷你填字</text>
+    <text data-page-node-id="dBMpH6bKhwHY3qcjZwAd0x" fill="#15803d" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="826" y="70"><!--pnid:vvRwTmNUZDlj9RYWBTTzFP-->唯一涉及自然语言</text>
+    <text data-page-node-id="f8niCykxWtg89DDbrI7TAu" fill="#15803d" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="826" y="90"><!--pnid:2k6MCAJjMj9l405EyUboG0-->跨词联想、带约束的搜索</text>
+    <text data-page-node-id="2LvmsSimctXUWt6S1sfcEk" fill="#14532d" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="826" y="118"><!--pnid:uDlvdfjar3kMM1iCTIs9A3-->最难的一个</text>
+
+    <rect data-page-node-id="EKy99fsa2lz4pfdSSWAYUe" fill="#fff4d6" height="56" rx="8" stroke="#b45309" stroke-width="1" width="960" x="20" y="164"></rect>
+    <text data-page-node-id="vcRsMf31DOoLfZjJffWTU0" fill="#412402" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="500" y="188"><!--pnid:Qag9WUn1ryMUy2S3qpJUi9-->创意写作里还有第三种生成方式</text>
+    <text data-page-node-id="lD7sxozugEDZCqtGDgUJj8" fill="#8a5a20" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="500" y="210"><!--pnid:Klu3gp5RKZz2q2g8oi7DDD-->修改已有的想法，而不是每次重新生成，连贯性评分从 6.19 提到 7.67</text>
+
+    <rect data-page-node-id="Jrd3BO3bolrfzfhnPjtbYU" fill="#eef0f3" height="50" rx="8" stroke="#e2e5ea" stroke-width="0.8" width="960" x="20" y="240"></rect>
+    <text data-page-node-id="L2XFqeLGAbe0ENz4ukbYBs" fill="#12141a" font-family="-apple-system,sans-serif" font-size="14" text-anchor="middle" x="500" y="262"><!--pnid:45CG1CH8OqP8q74aCqiGDC-->为什么不直接做普通填字</text>
+    <text data-page-node-id="UhiTBhLz2cVui9ub7eVLii" fill="#48505a" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="500" y="282"><!--pnid:UkUcCOpoHifObtgA8EDMPF-->普通填字可以用专门的大规模检索管线解掉，测不出模型作为通用问题求解器的上限</text>
+  </svg>
+  <div data-page-node-id="m0TrnNSXfOa7N9cuh6vs53" class="fig-c"><!--pnid:j6U9dLGaIG0VUPyYF9QYzC-->三个任务的「难」不在一个方向上：24 点难在组合搜索，创意写作难在想法太宽，填字难在两者兼有。所以生成器和搜索算法的选法也不同。</div>
+  </div>
+  <p data-page-node-id="zZl8rVklYE6rxE5uP1sqk4"><strong data-page-node-id="p05KXAPgl5EhKBqMonfupb"><!--pnid:1Twd4GPwk1zd65NlEcReEl-->24 点游戏</strong><!--pnid:0AUHfcfDH47PE7QLO0aoPa-->是最纯粹的搜索问题，思维链在这里几乎无效，因为难点不在每一步，而在全局找不找得到那个组合。思维树的收益主要来自评估器剪掉了大量走不通的分支。</p>
+  <p data-page-node-id="8cf6wDdv7O1Sr9Y1RAzWUN"><strong data-page-node-id="l8QdCVn96XViwJ45uW22yf"><!--pnid:D3bQ1FjwWi835hFwXGgLfy-->创意写作</strong><!--pnid:a7UmP4Cd7KCK8Yvv8pRGN4-->的想法空间最宽（整段写作计划），所以生成器用的是独立采样。任务本身没有唯一正确答案，评估靠人工按 1-10 分打分。<strong data-page-node-id="hkszYAgNsn6CEUCy10PiLX"><!--pnid:E07YgAHWoZ5O8KY6TLuh66-->这里有个关键细节：作者又加了第三种生成方式，修改已有的想法</strong><!--pnid:ExzouYZKVoOwA5ROP2tRhS-->，而不是每次重新生成。这让连贯性评分从 6.19 提到 7.67。</p>
+  <p data-page-node-id="akyECa2dT3LoUrTghdtMdK"><strong data-page-node-id="GYVuJvpX25u7v3nypbzzfV"><!--pnid:niUmm2S1MFWsYPhjcocM96-->迷你填字</strong><!--pnid:cpQvrFraNtuJn2wRQv5FDq-->是最难的一个，也是唯一的自然语言任务。作者说明了为什么不直接做普通填字：<strong data-page-node-id="SI3fPGV3jXsTVgU3lk2Ool"><!--pnid:bTwv5qCXV0CyiNjpUov10c-->普通填字可以用专门的大规模检索管线解掉，测不出模型作为通用问题求解器的上限。</strong><!--pnid:mDAadN0w5Momh4jWcJb9s2-->5×5 迷你填字需要跨词联想、带约束的搜索，正好卡在模型能力的边界上。</p>
+  <p data-page-node-id="xTDA7CLLgD3sDzMuQ2UDO7"><strong data-page-node-id="iXXWuibpqOwgpyMGuM7kf4"><!--pnid:KSgeKZ1UDT9KrEVxG27FZJ-->三个任务上思维树都赢，但赢的幅度差别很大</strong><!--pnid:AQZUmUZ7fCCFdznoMARNDw-->，这跟任务的想法空间宽窄直接相关。</p>
+  <p data-page-node-id="4HFq4MsfVvSygfbZxx93fw"><!--pnid:mMIU4dEL5HjJaqlYlvLOhY-->作者在迷你填字上还做了一组消融，<strong data-page-node-id="mnsYbwKZtFBHJtV4Tv4HIx"><!--pnid:4ZkSx5TJ9xbK914t7CXR7y-->这组数据比成功案例更能说明方法的核心</strong><!--pnid:3AOapS0tSBefRYttf0G0aj-->。逐个去掉组件看掉多少：</p>
+  <table data-page-node-id="6ZS4fOmicJJyv6XwmX7WYA"><thead data-page-node-id="GqKXwZFR09h12AGQc9HKS8"><tr data-page-node-id="NKDrbG0MNa6ugtZ7VqQyAT"><th data-page-node-id="G1UveTwyHrI7VoijVDcDmp" style="width:34%"><!--pnid:nzpt1hF0Kcs6MsXNfzShVF-->配置</th><th data-page-node-id="cWiA1gSusTHZm0bXqxgUvZ"><!--pnid:innQkv1rjDoEnWC6uBpY2h-->成功率</th><th data-page-node-id="4kplEJPANRPskvrqnq6Da7"><!--pnid:M2RizLtgGqqfXHrq23qUbH-->单独字母</th><th data-page-node-id="JQQHVD5O4bMJ8n6N1qofzD"><!--pnid:9rS74rcV4l6PgdBtYwRPQI-->单词</th></tr></thead><tbody data-page-node-id="iVuHswimgQNNa4K17Cettw">
+    <tr data-page-node-id="0N041Ku49AK2KBFlA6X2jD"><td data-page-node-id="5CUQsFMGltGP9SN1vVSzdT"><strong data-page-node-id="A31os9GruVQTcAS9SQrfOf"><!--pnid:JQPteXrrZpIEfnwMb9V39F-->完整方法</strong></td><td data-page-node-id="Vb23FcEERAuF9XQ1cZ7SXr"><strong data-page-node-id="IPlbukzwvg7Vtlkh0jMTvR"><!--pnid:LiW6FdxVp9GEjlqfVJywyj-->78%</strong></td><td data-page-node-id="CePbBBvRtapfEYKcup9n3S"><strong data-page-node-id="A8vm3RE2z5aEM4dYCpjbR4"><!--pnid:WqF0EcJw4ogih4zgJWf1Cv-->60%</strong></td><td data-page-node-id="xThftCL0rxlDLC0WL8Rxla"><strong data-page-node-id="zrL4SiRivh6Fzxp0CM5pG9"><!--pnid:HDRDJpkyOzvyOJwhlJRBZB-->20</strong></td></tr>
+    <tr data-page-node-id="i5HjWj0cY0mjGm2bUjTTgj"><td data-page-node-id="UWh7JD0zs3FOTFACZ4V9oh"><!--pnid:eJeLEGTexMZwGivbrJ11Be-->去掉剪枝</td><td data-page-node-id="OwQ60coqBhYjZbczxKabur"><!--pnid:MhWc6OzNVaw0txkQBBJGbJ-->65.4%</td><td data-page-node-id="JZhKOZHTlaEKR5fJPZ85wv"><!--pnid:rzr6L17QCGPQoU1NLu4MPW-->41.5%</td><td data-page-node-id="bftphv2bjSOgGWWb3UJ82U"><!--pnid:EPdatpHXiQFQagcWgvmbeO-->5</td></tr>
+    <tr data-page-node-id="e80ViRluwYQ5rU6GKXC9g2"><td data-page-node-id="ZkiaZqcBfbJsbJVefIpWx6"><!--pnid:KpRYiwhzEk0JblIMjY3UNb-->去掉回退</td><td data-page-node-id="IwUJu4Uk7KA6aCW1RqQzqg"><!--pnid:oVqlopX9fqy33yO28JoYFy-->54.6%</td><td data-page-node-id="g1iEgo9CEB4mN6pm8VlOEj"><!--pnid:LtppcKz5XUQI1z5XJK3uu4-->20</td><td data-page-node-id="OTNcS6bJgkoBuZT9EypUlb"><!--pnid:OdXdJQQKXpXUxGibR9CyhH-->5</td></tr>
+  </tbody></table>
+  <div data-page-node-id="zJWw3GT42i0EBCzzA3NJ82" class="fig">
+  <svg data-page-node-id="8yC8QgibJzebNPHZd9dlvX" aria-label="去掉剪枝与去掉回退的对照：回退的贡献接近剪枝的两倍" role="img" viewBox="0 0 1000 260">
+    <text data-page-node-id="aXJEjZGnN05ACGlXoykmpT" fill="#12141a" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" x="80" y="28"><!--pnid:TaWPoCEd7EXHGaY02p7Dva-->迷你填字成功率（%）</text>
+
+    <text data-page-node-id="lUkZ04XoiCLKeKE0AESrck" fill="#48505a" font-family="-apple-system,sans-serif" font-size="13" text-anchor="end" x="66" y="76"><!--pnid:BkUqxx8CFGrIgYoMhBmuew-->完整方法</text>
+    <rect data-page-node-id="5RAbmTvGtPxHdvPHmb8UhW" fill="#ccebdb" height="18" rx="4" stroke="#15803d" stroke-width="1.2" width="490" x="80" y="62"></rect>
+    <text data-page-node-id="4bZZzMU27gBGiyInGqu7vL" fill="#14532d" font-family="-apple-system,sans-serif" font-size="13" font-weight="700" x="578" y="76"><!--pnid:n6Djd8CuWwEuPBCA54hWfE-->78</text>
+
+    <text data-page-node-id="a39ZibpEW7biDFCXRYtebg" fill="#48505a" font-family="-apple-system,sans-serif" font-size="13" text-anchor="end" x="66" y="136"><!--pnid:4kNOaw95dDIody6RzKnakf-->去掉剪枝</text>
+    <rect data-page-node-id="i7iikJzbO6C9oC6ZdWRjDw" fill="#fff4d6" height="18" rx="4" stroke="#b45309" stroke-width="1" width="411" x="80" y="122"></rect>
+    <text data-page-node-id="OhZ34mCFHh76pBVLIksYSo" fill="#8a5a20" font-family="-apple-system,sans-serif" font-size="13" font-weight="700" x="499" y="136"><!--pnid:tAVXRErTBSR4vQfpHO7Fb7-->65.4</text>
+
+    <text data-page-node-id="zPQR5sUgTlSIgBsFDyZ9Sy" fill="#48505a" font-family="-apple-system,sans-serif" font-size="13" text-anchor="end" x="66" y="196"><!--pnid:jE4Wbt3rj7ENzUG32cR9ws-->去掉回退</text>
+    <rect data-page-node-id="13X8kAMD8xBoE1HpV2eM6T" fill="#fdeeee" height="18" rx="4" stroke="#c02626" stroke-width="1" width="343" x="80" y="182"></rect>
+    <text data-page-node-id="JQUrLvxkjh3fxrEHM3mURm" fill="#7f1d1d" font-family="-apple-system,sans-serif" font-size="13" font-weight="700" x="431" y="196"><!--pnid:1cZkxraYG6OsG4RVtMJOqW-->54.6</text>
+
+    <rect data-page-node-id="XWkbVHlBlhGMcZmoR5FQlI" fill="#fff4d6" height="32" rx="8" stroke="#b45309" stroke-width="1" width="960" x="20" y="218"></rect>
+    <text data-page-node-id="4OKbHOaEO0pLEgOharSmHq" fill="#412402" font-family="-apple-system,sans-serif" font-size="13" font-weight="700" text-anchor="middle" x="500" y="239"><!--pnid:ejKJoWkJnI4dhGkeuG7sDi-->去掉剪枝掉 13 个点，去掉回退掉 23 个点，回退的贡献接近剪枝的两倍</text>
+  </svg>
+  <div data-page-node-id="YyBvZr3JvAxTn3jfJxhTgR" class="fig-c"><!--pnid:J6d0gglihhNRAVR6ywlJGq-->这与 24 点游戏上「宽度 1 就到 45%」的发现对上了：能走回头路，比能剪掉一个分支更关键。单词这一列掉得最狠（20 掉到 5），因为填字要靠回退才有机会重填。</div>
+  </div>
+  <div data-page-node-id="OUGPZbtR6OBrfI5gUKm44c" class="bnd"><div data-page-node-id="xXgvDL2Mq6rwXRogMDV7HF" class="bnd-t"><!--pnid:i2Z5XYiP0BqLQeKhRl0UvW-->前提与边界</div><p data-page-node-id="yskoIrDfnxck8bxHpdUQrY"><!--pnid:fFXIZDNg3U74GI6YrOzErg-->创意写作的评估是人工打分，样本量与评分者一致性论文交代得不多。而 24 点游戏上，同一个题目在训练数据里几乎肯定出现过大量变体。</p></div>
+</div>
+
+<div data-page-node-id="oJyxTtdUIHizzcY3fb5zPc" class="block">
+  <div data-page-node-id="0bVV3tBgognG292Ovz9suM" class="tag"><!--pnid:raTg4tBvR2qbpp7gS7ycJ3-->缺口</div>
+  <div data-page-node-id="qzrgiSkfbaOAP4ZRXXt48E" class="claim"><!--pnid:T6HnfrRKJ4x1hVjM6IzzF0-->这篇论文没回答什么</div>
+  <div data-page-node-id="MnNDF1pY245pDSSRNRQqzL" class="gap"><div data-page-node-id="ZAp9IPCBBqFUs27Nl2rbai" class="gap-h"><!--pnid:mNTcsmSdczsGbniwCK1yXS-->1. 成本没给完整对照。</div>
+  <p data-page-node-id="xvFlA1S0bbUTX0IL0Ntp0f"><!--pnid:44Dl2ryW8NfaLbq3pme6Wi-->作者承认思维树比采样方法贵（要用多次接口调用），但说「模块化让用户可以自定义性能与成本的取舍」。具体贵多少、能换来多少，这篇没给一张直接的表。附录里有成本讨论，但正文没有。</p></div>
+  <div data-page-node-id="XpMNKQlcyR5eNBZHAQfj4m" class="gap"><div data-page-node-id="NCzJNCt6DOVYLGkSBGP2BF" class="gap-h"><!--pnid:0ApSGDxZvhp3lgXWm21LpF-->2. 「需要规划的复杂问题」这个判断是事后给的。</div>
+  <p data-page-node-id="wBQ10fm6C4oxeeoGSNoWjD"><!--pnid:LENkp5eI9wTj1AJFxKjZPt-->三个任务都是作者挑的、都能被思维树解好。<strong data-page-node-id="lBAl8Au5BaBJMEDP6SqMEP"><!--pnid:AlLQxah5yxiI4TrCsuvQnG-->没有第四个任务是思维树解不好的</strong><!--pnid:fMgpUvSEmuZPm6nL7ELDiO-->，所以「这类任务需要思维树」这个结论的强度，比实验设计能支撑的要弱。</p></div>
+  <div data-page-node-id="vxEvbFikMXTgFVMc4wLA2W" class="gap"><div data-page-node-id="YYjoTfm1i3ZlWnG42Jfwiq" class="gap-h"><!--pnid:I8su7XViog2Ne5Fw0P7eAu-->3. 评估器本身可能出错，论文没量化。</div>
+  <p data-page-node-id="w4MoT3vYGsFS7g9HHNnsrx"><!--pnid:KSxZKccw9cOmFboEtMkaoq-->整套方法依赖「模型能判断一个状态值不值得继续」。<strong data-page-node-id="CeFZyrptIqqxzbxcIiz5D5"><!--pnid:E78iK1iFUmgdsGwZpLxkvC-->如果评估器剪掉了正确分支，整棵树就废了。</strong><!--pnid:5MsLn73AeBYEwzIWOyYwVl-->论文报告了失败样本的分布，但没给评估器的准确率。</p></div>
+  <div data-page-node-id="F1qX2M17DHln6zL2NOKuH9" class="gap"><div data-page-node-id="mkCOKhty9vt6c6onQhf25I" class="gap-h"><!--pnid:KIcgpcfpm4fbv7N2O8Kn23-->4. 只用现成模型，没有训练。</div>
+  <p data-page-node-id="qZkIl5qosxR4tdPVpccwRP"><!--pnid:3UpmOHpWtiEEbRhgdRVJlC-->作者自己列为未来工作：能不能用「反事实决策」的思路去微调模型，比如让它预测下一段而不是下一个词。也就是说，这篇验证的是推理时框架，没有回答能不能把这种能力内化进权重。</p></div>
+  <div data-page-node-id="cUpZtBWgZXe7BdG5j8bGw6" class="gap"><div data-page-node-id="QvTVzPjDhlKJc0amnz0iS8" class="gap-h"><!--pnid:htvjfUPq1a71zex7SmpQic-->5. 深度优先的回退机制依赖阈值，阈值怎么定没说。</div>
+  <p data-page-node-id="cYVRIa4EdI5x0Im8YaibEa"><!--pnid:EvoA21OUbLlxvmMs9ozNrX-->剪枝时的价值阈值是一个超参，论文没有敏感性分析。阈值太高会过早剪掉正确分支，太低就退化成暴力搜索。这个平衡点在哪，论文没回答。</p></div>
+</div>
+
+</div>
+
+
+<script data-page-node-id="5EOdaaSZV9ZkG5EYY9dRGC" data-pnid-children="a1JenuH0fYcfyqvB584aEZ">
+function setM(m){
+  document.body.classList.toggle('present',m==='pres');
+  document.getElementById('bRead').classList.toggle('on',m==='read');
+  document.getElementById('bPres').classList.toggle('on',m==='pres');
+  document.getElementById('hint').textContent = m==='pres'
+    ? '投屏态：细节已折叠，一屏一个论点'
+    : '阅读态：表格与细节完整展开';
+  window.scrollTo({top:0,behavior:'instant'});
+}
+if(location.hash==='#pres')setM('pres');
+</script>
+</html>

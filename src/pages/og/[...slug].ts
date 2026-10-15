@@ -1,11 +1,11 @@
 import type { CollectionEntry } from "astro:content";
-import { getCollection } from "astro:content";
 import * as fs from "node:fs";
 import type { APIContext, GetStaticPaths } from "astro";
 import type { FontDetails } from "takumi-js";
 import { ImageResponse } from "takumi-js/response";
 import { profileConfig } from "@/config/profileConfig";
 import { siteConfig } from "@/config/siteConfig";
+import { getSortedPostsList } from "@/utils/content-utils";
 import { removeFileExtension } from "@/utils/url-utils";
 
 export const prerender = true;
@@ -15,7 +15,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 		return [];
 	}
 
-	const allPosts = await getCollection("posts");
+	// 合并后的列表（含 HTML 文章），保证它们也有分享图
+	const allPosts = await getSortedPostsList();
 	const publishedPosts = allPosts.filter((post) => !post.data.draft);
 
 	return publishedPosts.map((post) => {

@@ -48,6 +48,10 @@ export class TOCManager {
 
 	/**
 	 * 查找所有标题
+	 *
+	 * 除常规的 h1~h6，还要带上 `[data-toc-heading]` —— 有些文档（外部导出的 HTML）
+	 * 章节标题不在 h 标签上，由解析阶段用 `<meta name="blog-heading">` 声明并打上该标记。
+	 * 漏掉它的话，站内跳转后重建目录会把这类文章的目录清空。
 	 */
 	private getAllHeadings(): HTMLElement[] {
 		const contentContainer = this.getContentContainer();
@@ -55,7 +59,7 @@ export class TOCManager {
 			return [];
 		}
 		return Array.from(
-			contentContainer.querySelectorAll("h1, h2, h3, h4, h5, h6"),
+			contentContainer.querySelectorAll("h1, h2, h3, h4, h5, h6, [data-toc-heading]"),
 		);
 	}
 
@@ -82,7 +86,12 @@ export class TOCManager {
 	 */
 	private domHeadingsToInputs(headings: HTMLElement[]): TocInput[] {
 		return headings.map((heading) => {
-			const depth = Number.parseInt(heading.tagName.charAt(1), 10);
+			// 显式声明过层级的（非 h 标签的标题）优先用它，否则按标签名推
+			const declared = Number.parseInt(heading.getAttribute("data-toc-heading") ?? "", 10);
+			const depth =
+				Number.isFinite(declared) && declared > 0
+					? declared
+					: Number.parseInt(heading.tagName.charAt(1), 10);
 			let text = this.getCleanTextContent(heading)
 				.replace(/#+\s*$/, "")
 				.trim();

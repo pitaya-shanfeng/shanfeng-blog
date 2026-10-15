@@ -97,8 +97,9 @@ const hiddenTagCount = hiddenTags.length;
 
 const { remarkPluginFrontmatter } = await render(entry);
 const descriptionText = description || remarkPluginFrontmatter.excerpt || "";
-const words = remarkPluginFrontmatter.words;
-const minutes = remarkPluginFrontmatter.minutes;
+// HTML 文章没有 markdown 渲染流程，字数/时长由 loader 写在 data 上
+const words = entry.data.words ?? remarkPluginFrontmatter.words;
+const minutes = entry.data.minutes ?? remarkPluginFrontmatter.minutes;
 ---
 
 <div

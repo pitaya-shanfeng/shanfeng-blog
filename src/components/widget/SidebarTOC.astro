@@ -81,7 +81,12 @@ const items = encrypted ? [] : computeTocItems(headings, { maxLevel: 3 });
 <style lang="stylus">
 /* SidebarTOC 特定样式 */
 .toc-scroll-container
-	max-height: calc(100vh - 25rem)
+	/* 目录最高能到哪里：与右栏「相关文章」大致齐平。
+	   整块高度 = 组件头 52 + 本容器 + 下内边距 16，所以容器按 100vh - 21rem 取，
+	   在 950 高的窗口下约 614（整块 ≈ 682，右栏相关文章为 689）。
+	   原值是 calc(100vh - 25rem)（=550），比右栏矮一截，长目录会过早出现内部滚动条。
+	   调大 → 目录更高；调小 → 更早开始滚动。 */
+	max-height: calc(100vh - 21rem)
 	/* 滚动条与内容之间的小间隙（从共享样式挪入，避免影响浮动目录的对称内边距） */
 	padding-right: 0.125rem
 </style>

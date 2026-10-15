@@ -33,8 +33,19 @@ const tags = await getTagList();
 let totalWords = 0;
 for (const post of posts) {
 	if (post.body) {
+		let text = post.body;
+
+		// HTML 文章（.html）的 body 是 HTML 片段，自带样式与内嵌图片（base64）也在里面，
+		// 直接按字符统计会把 CSS 与 base64 一起数进去（实测虚高十倍以上），先剥掉标签与资源。
+		if (post.data.format === "html") {
+			text = text
+				.replace(/<style[\s\S]*?<\/style>/gi, "") // 移除自带样式
+				.replace(/<script[\s\S]*?<\/script>/gi, "") // 移除脚本
+				.replace(/<[^>]*>/g, " "); // 移除所有标签（含标签内的 base64 属性）
+		}
+
 		// 移除代码块和内联代码后计算字数
-		let text = post.body
+		text = text
 			.replace(/```[\s\S]*?```/g, "") // 移除代码块
 			.replace(/`[^`]*`/g, "") // 移除内联代码
 			.replace(/\s+/g, " ") // 合并空白

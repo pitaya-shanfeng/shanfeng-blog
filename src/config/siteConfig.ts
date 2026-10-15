@@ -247,7 +247,9 @@ export const siteConfig: SiteConfig = {
 		// 是否显示文章页的分享按钮
 		share: true,
 		// 是否显示上一篇/下一篇文章导航
-		postNavigation: true,
+		// 已关闭：本站按知识库组织内容，文章之间没有「章节顺序」，
+		// 上一章/下一章按钮（移动端与桌面端共用这一处开关）会指向无关文章，故去掉
+		postNavigation: false,
 		// 是否显示相关文章推荐
 		relatedPosts: true,
 		// 是否显示随机文章推荐

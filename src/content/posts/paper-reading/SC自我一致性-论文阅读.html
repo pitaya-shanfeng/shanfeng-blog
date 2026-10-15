@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html data-page-node-id="6WiW1BwOWbTGIdviLtPu7N" lang="zh-CN"><head data-page-node-id="723incuIVZ6KtqO3sU9RoZ">
+<script data-page-node-id="ATfvaUiY0MKTvUY4A9nHZX" src="/page/page_comm/inject.js"></script>
+<meta data-page-node-id="gSzB1OgCtXgJOmfEt38l33" charset="UTF-8">
+<meta data-page-node-id="LCLT6Ml1C6n79FtXW33R1q" content="width=device-width,initial-scale=1" name="viewport">
+<title data-page-node-id="Dad3Zf4uRPTAKx9P3SQyYO" data-pnid-children="tOnLCC7HIphyaj7Dws3nlp">SC自我一致性 · 论文阅读</title>
+<style data-page-node-id="M8cMW8JG1JwoFJCS9kGukt" data-pnid-children="UKldfdhBE39LOnzB2JTwnH">
+:root{
+  --page:#eef0f3; --card:#ffffff; --sunken:#f6f7f9; --sunken-2:#edf0f3;
+  --ink:#12141a; --ink-2:#48505a; --ink-3:#8b929c; --line:#e2e5ea;
+  --accent:#1f5fd0; --todo:#c02626; --ok:#15803d; --warn:#b45309;
+  --accent-bg:#eaf1fd; --todo-bg:#fdeeee; --ok-bg:#ebf7ef; --warn-bg:#fdf4e7;
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --mono:"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.75;padding:40px 24px 80px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto}
+.block{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:34px 40px 38px;margin:0 0 20px;box-shadow:0 1px 2px rgba(16,24,40,.045)}
+.tag{display:inline-block;background:var(--accent-bg);color:var(--accent);font-size:14px;font-weight:600;padding:4px 12px;border-radius:6px;margin-bottom:18px;align-self:flex-start}
+.claim{font-size:32px;line-height:1.45;font-weight:700;margin-bottom:22px;letter-spacing:-.01em}
+p{margin:0 0 16px;color:var(--ink-2)}
+p.lead{color:var(--ink);font-size:17px}
+strong{color:var(--ink);font-weight:600}
+em{font-style:normal;background:linear-gradient(transparent 62%,#ffe9a8 62%);padding:0 2px}
+.fig{margin:24px 0 8px;background:var(--sunken);border:1px solid var(--line);border-radius:12px;padding:28px 24px 20px}
+.fig svg{width:100%;height:auto;display:block}
+.fig-c{font-size:13px;line-height:1.7;color:var(--ink-3);margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:15px;background:var(--sunken);border-radius:10px;overflow:hidden}
+th{background:var(--sunken-2);color:var(--ink);font-weight:600;text-align:left;padding:12px 16px;font-size:14px;border-bottom:1px solid var(--line)}
+td{padding:12px 16px;color:var(--ink-2);border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.bnd{border-left:3px solid var(--warn);background:var(--warn-bg);border-radius:0 8px 8px 0;padding:16px 20px;margin:20px 0}
+.bnd-t{font-size:13px;font-weight:600;color:var(--warn);letter-spacing:.06em;margin-bottom:8px}
+.bnd p{margin:0;color:var(--ink-2)}
+.age{border-left:3px solid var(--line);padding:14px 20px;margin:18px 0}
+.age-t{font-size:13px;font-weight:600;color:var(--ink-3);letter-spacing:.06em;margin-bottom:8px}
+.age p{margin:0;color:var(--ink-3);font-size:15px}
+.quote{border-left:3px solid var(--accent);background:var(--accent-bg);padding:16px 20px;border-radius:0 8px 8px 0;margin:18px 0;color:var(--ink);font-size:15px;line-height:1.7}
+.meta{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:34px 40px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(16,24,40,.045)}
+.meta-t{font-size:40px;line-height:1.2;font-weight:700;margin-bottom:10px;letter-spacing:-.02em}
+.meta-sub{font-size:20px;color:var(--ink-2);margin-bottom:14px;font-weight:500}
+.meta-a{font-size:15px;color:var(--ink-2);margin-bottom:18px;line-height:1.6}
+.guide{border-top:1px solid var(--line);margin-top:24px;padding-top:20px;display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.guide-i{min-width:0}
+.guide-l{font-size:13px;font-weight:600;color:var(--ink-3);letter-spacing:.06em;margin-bottom:8px}
+.guide-v{font-size:15px;color:var(--ink-2);line-height:1.7}
+.guide-v em{font-weight:600}
+.idbar{border-top:1px solid var(--line);margin-top:26px;padding-top:18px;font-size:14px;color:var(--ink-3);font-weight:600;letter-spacing:.02em}
+.gap{margin:0 0 26px}
+.gap:last-child{margin-bottom:0}
+.gap-h{font-size:19px;line-height:1.5;font-weight:600;color:var(--ink);margin-bottom:10px}
+.gap p{margin-bottom:12px}
+.bar{position:sticky;top:0;z-index:20;background:var(--page);border-bottom:1px solid var(--line);padding:10px 0;margin:-40px -24px 24px;padding-left:24px;padding-right:24px;display:flex;justify-content:flex-end;gap:12px;align-items:center}
+.toggle{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 8px;display:flex;gap:2px}
+.tg{border:0;background:transparent;font-family:inherit;font-size:13px;color:var(--ink-2);padding:6px 14px;border-radius:6px;cursor:pointer;transition:.12s}
+.tg.on{background:var(--accent);color:#fff;font-weight:600}
+.hint{font-size:12px;color:var(--ink-3)}
+details>summary{cursor:pointer;font-size:14px;color:var(--ink-2);padding:12px 0;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary:before{content:"＋";color:var(--accent);font-weight:600;width:16px;flex-shrink:0}
+details[open]>summary:before{content:"－"}
+body.present .wrap{max-width:1280px}
+body.present .claim{font-size:44px;line-height:1.3;margin-bottom:30px}
+body.present p{font-size:19px;line-height:1.8}
+body.present .meta-t{font-size:56px}
+body.present .meta-sub{font-size:26px}
+body.present .guide-v{font-size:18px}
+body.present .guide-l{font-size:15px}
+body.present .guide{grid-template-columns:1fr;gap:26px}
+body.present .block,body.present .meta{padding:48px 56px 52px;margin-bottom:32px}
+body.present .fig{padding:40px 40px 30px}
+body.present .fig-c{font-size:16px}
+body.present .bnd p{font-size:18px}
+body.present .age p{font-size:17px}
+body.present .bnd-t,body.present .age-t{font-size:15px}
+body.present table{font-size:17px}
+body.present th{font-size:16px;padding:16px 20px}
+body.present td{padding:16px 20px}
+body.present .gap-h{font-size:22px}
+body.present .gap p{font-size:18px;line-height:1.8}
+@media print{body{background:#fff;padding:0}.bar{display:none}details{open:true}}
+@media (max-width:760px){.meta-t{font-size:28px}.claim{font-size:22px}.guide{grid-template-columns:1fr}.block,.meta{padding:24px 22px}.tag{align-self:flex-start}}
+
+  /* 英文标题指向原始论文（arXiv） */
+  .meta-sub a{color:inherit;text-decoration:none;border-bottom:1px solid color-mix(in srgb,currentColor 35%,transparent);transition:color .15s,border-color .15s}
+  .meta-sub a::after{content:" \2197";font-size:.72em;opacity:.55;margin-left:2px}
+  .meta-sub a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+</style>
+<style data-page-node-id="W9RWLHZJEneE05BD2hqib7" data-pnid-children="1jhNm6VbhnIAOD0ZclG5Z1" id="__dm_no_drag_style__">* { -webkit-user-drag: none !important; }</style><style data-page-node-id="0ueifoLegOXD7G3DRoRoh9" data-pnid-children="G2nZkqnuqnxbiayNRbASXZ" id="__dm_bindable_badge_style__">[data-sp-bindable="database"]{outline:1px dashed #0088ff;outline-offset:2px;border-radius:4px;}[data-sp-bindable="database"] *{pointer-events:none !important;transition:none !important;animation:none !important;}[data-sp-bindable="database"]{transition:none !important;animation:none !important;}</style><meta name="slug" content="paper-self-consistency">
+<meta name="category" content="论文阅读">
+<meta name="keywords" content="自我一致性,解码策略,推理">
+<meta name="date" content="2026-10-15T18:13">
+<meta name="description" content="思维链生成推理时用的是贪心解码，永远走概率最高的那条路。这篇换了个解码策略：先随机采样出四十条推理路径，再把推理过程边缘化掉，只数最终答案哪个出现得最多。小学应用题基准上准确率从 56.5% 提到 74.4%。">
+<meta name="blog-remove" content="bar">
+<meta name="blog-heading" content="claim">
+</head>
+
+<div data-page-node-id="OSnQjHvjmYOwASnXOeXQ37" class="bar"><span data-page-node-id="lrHQzsSnRJTZClbF9rp51X" class="hint" id="hint"><!--pnid:GfGf7DMaZA8giNeGKrwdmE-->阅读态：表格与细节完整展开</span><div data-page-node-id="OUgpiD3uaRL5XTeMeXFjFH" class="toggle"><button data-page-node-id="f178n4XVjIDdIrPYj05Vqq" class="tg on" id="bRead" onclick="setM('read')"><!--pnid:SRc5zS52nASLOEPLGCBmiW-->阅读</button><button data-page-node-id="Zut4Yma548erm107MUEM0x" class="tg" id="bPres" onclick="setM('pres')"><!--pnid:iQe6ma51Mx80EKH7WEQvHV-->投屏</button></div></div>
+<div data-page-node-id="6qURsiLmTMjkhnwRBNhIOq" class="wrap">
+
+<div data-page-node-id="bdCe1eq1tBK2bqjQju8nJp" class="meta">
+  <div data-page-node-id="XFjGqImOKgDNuRsfq0TOu3" class="meta-t"><!--pnid:Xf2FEfigMHGXu6Ni98ZaY6-->自我一致性</div>
+  <div data-page-node-id="8k67EdjZV2DfiXvfpIcZfa" class="meta-sub"><a href="https://arxiv.org/abs/2203.11171" target="_blank" rel="noopener noreferrer" title="打开原始论文"><!--pnid:uGR1RtHO49ymOWiA74vx1O-->Self-Consistency Improves Chain of Thought Reasoning in Language Models</a></div>
+  <div data-page-node-id="1mKZZfgsYbM5fkHL43h4X1" class="meta-a"><!--pnid:dEhLKcXdilgcFBAbXUenq0-->Xuezhi Wang、Jason Wei、Dale Schuurmans 等　·　Google Research, Brain Team　·　2023 年 3 月（ICLR 2023）</div>
+  <div data-page-node-id="w4hSpKpjP0BVh4vEqHszyU" class="guide">
+    <div data-page-node-id="CcpUiFJIeW1fyOux1yIpYP" class="guide-i"><div data-page-node-id="Tmz335X5xsxweL7fu6jCjm" class="guide-l"><!--pnid:WN7LUQkwnTRjiFNxxpFVAI-->主线</div><div data-page-node-id="WnV0cWVVA3eJfvdtXnMuNq" class="guide-v"><!--pnid:Kt0xFpjqKkKUJBoyyh0YRj-->思维链生成推理时用的是贪心解码，永远走概率最高的那条路。这篇换了个解码策略：<em data-page-node-id="0C7O94KVUAlGYWgZozo84P"><!--pnid:CsaeYwB4kguET5uLOSAU6Q-->先随机采样出四十条推理路径，再把推理过程边缘化掉，只数最终答案哪个出现得最多</em><!--pnid:ceqLwVrobP67IWunMdMYQl-->。小学应用题基准上准确率从 56.5% 提到 74.4%。</div></div>
+    <div data-page-node-id="GPRc7kx7Fl80WH9HRUa1ud" class="guide-i"><div data-page-node-id="k9JL2H6kvigHEFu88fkSh6" class="guide-l"><!--pnid:gQFKHx5W6lDlcYeakXTR4n-->内核</div><div data-page-node-id="kG4uq3dWF2ajVbwWDP5lfT" class="guide-v"><!--pnid:LwNMgmPZ6D7hjKIwyYnc8O-->人的思考方式不是贪心的。原文第一句就这样开场：「人类一个显著的特点是思考方式各不相同」。一道难题通常有好几条通向答案的路，<em data-page-node-id="Aem2fewvv0GuyCMkG5gVQY"><!--pnid:q8z9CNZYK16zxiokCGytiY-->如果不同的路走到了同一个答案，那这个答案就更可信</em><!--pnid:Y8QbRsDNp2I3IBpPGFuQYk-->。这篇的全部机制就是把这个直觉变成解码算法。</div></div>
+  </div>
+</div>
+
+<div data-page-node-id="DeEpgjo6eyZ6U0M7Pq88GO" class="block">
+  <div data-page-node-id="HD6bzf2Q8qwata2YNCfGqJ" class="tag"><!--pnid:ZCLB80NS3V09iIXaFBhjSy-->方法</div>
+  <div data-page-node-id="NOHJjHczmqbR4jsMHfM21w" class="claim"><!--pnid:EFMbAQpQbvxtuXp6WhMCuG-->三步，把贪心解码换成数答案</div>
+  <p data-page-node-id="9JRn5LDmOSJXxFBy9wTWbl" class="lead"><!--pnid:4lgORGG90VJWdKbmnDy7PC-->原文把方法写成一个三步流程，替换掉的正是思维链里的「贪心解码」这一步。</p>
+  <table data-page-node-id="MBpIVCiyB44PlMdf2fvvJr"><thead data-page-node-id="dAtMKktvlF23L9eTRT6h1P"><tr data-page-node-id="ykrYqDYGJlMIWy1TiCI9wa"><th data-page-node-id="67c7T4ZLS5LHkAXPTTbuEV" style="width:14%"><!--pnid:W8WFGIaZN3iI1aTq9Teqcb-->步骤</th><th data-page-node-id="TIvW2XPdwkf2x9XKRadoV8"><!--pnid:HG2hikWhDbFnIx7H9DWLAh-->做法</th></tr></thead><tbody data-page-node-id="ZLn2KiYAol7CDUbvgGNoHC">
+    <tr data-page-node-id="lnDFKT55goMj2CQZluxAAJ"><td data-page-node-id="JoO7NL5L4sTd5lPfciEGeI"><!--pnid:Re22WIe53CmAL2B2j3kbJr-->1</td><td data-page-node-id="yP8jr2eZqDnQmpAQ5yK2tW"><!--pnid:rDUU6peYSli5Wd2JqoN5R1-->用思维链提示词问模型</td></tr>
+    <tr data-page-node-id="ZVgGUbtqljaKvmHPVY662J"><td data-page-node-id="eoVKIcJfFUI38nkL9lhAda"><!--pnid:t9Mtosc8MvtVz03jaJxqW5-->2</td><td data-page-node-id="54XUegwZucX8zU3JVJP0XG"><strong data-page-node-id="TX1HTIy1hvg4hRLPOUQJmY"><!--pnid:MEssAqmQFCvvPVzptZmlMA-->不从贪心解码取一条最优路径，而是采样出四十条不同的推理路径</strong></td></tr>
+    <tr data-page-node-id="xOT66mPUJSPbWqiL9CpHk3"><td data-page-node-id="I1cajtKhj20jp72F5Z3HIm"><!--pnid:5jV1dbWHVa7dXBWMEJm1f6-->3</td><td data-page-node-id="Oj9I3x42hoK9sqbGcB5NnC"><strong data-page-node-id="S1zHce4JKlMmP5KEU50hr1"><!--pnid:laJ9szLsXkM0FziPwIS5SV-->把推理过程边缘化掉，只看最终答案，选出现最多的那个</strong></td></tr>
+  </tbody></table>
+  <p data-page-node-id="ZDfmkOUdqU3kWKHrk7m87A"><!--pnid:uqVq8sBtGc7HZU6ssOBACL-->论文里那道养鸭子的题最能说明这四条路径怎么走。同一个提问（一天 16 个蛋，早餐吃 3 个，做松饼用 4 个，剩下的每个卖 2 美元）：</p>
+  <div data-page-node-id="6qsS1B3SWnrh1nNI0UN6uO" class="fig">
+  <svg data-page-node-id="Udd4KIUORfOkCEZ8DcTngR" aria-label="同一个问题的四条推理路径，答案 18 出现两次因此胜出" role="img" viewBox="0 0 1000 400">
+    <rect data-page-node-id="FKKlRhq6odzwyWweagsLHc" fill="#eef0f3" height="46" rx="8" stroke="#e2e5ea" stroke-width="0.8" width="960" x="20" y="14"></rect>
+    <text data-page-node-id="TYqmMSsTrlFuLoVD4zWcUf" fill="#12141a" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="500" y="42"><!--pnid:Oc0KjqAE9PGr8rLNKnI2ix-->问：一天 16 个蛋，早餐吃 3 个，做松饼用 4 个，剩下的每个卖 2 美元，每天赚多少</text>
+
+    <rect data-page-node-id="8LHQwqGTOABnJFEimHdg3N" fill="#ebf7ef" height="76" rx="8" stroke="#15803d" stroke-width="1.2" width="464" x="20" y="76"></rect>
+    <text data-page-node-id="xstmttt4CA2NH5rASfoGey" fill="#14532d" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" x="40" y="100"><!--pnid:dZ4HAPU306n0ZcKvkSxzcS-->路径一</text>
+    <text data-page-node-id="uRiqeljpHJcY2Vv6PpkHhd" fill="#15803d" font-family="-apple-system,sans-serif" font-size="12" x="40" y="122"><!--pnid:M5xXCL5VzPKOjmFZTxmHWC-->16 − 3 − 4 = 9 个蛋，9 × 2 = 18</text>
+    <text data-page-node-id="DzZ6OfDiLkcforcxNXUimR" fill="#15803d" font-family="-apple-system,sans-serif" font-size="18" font-weight="700" text-anchor="end" x="450" y="112"><!--pnid:UZjC3ozpxeLyrCIUnOVh9x-->18</text>
+
+    <rect data-page-node-id="1sq9Z3dkCGpUgFc9YQeVeD" fill="#ebf7ef" height="76" rx="8" stroke="#15803d" stroke-width="1.2" width="464" x="516" y="76"></rect>
+    <text data-page-node-id="MCv1Lo8PN83Ni1WmdcIPqN" fill="#14532d" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" x="536" y="100"><!--pnid:1QCxSISLqybJZKBV7TnXrI-->路径二</text>
+    <text data-page-node-id="8dmLer3XTo3xKmFJX04FwP" fill="#15803d" font-family="-apple-system,sans-serif" font-size="12" x="536" y="122"><!--pnid:ZXh0yzsnxWRQyyT76UPNig-->16 − 3 = 13，13 − 4 = 9，9 × 2 = 18</text>
+    <text data-page-node-id="r6B2eSy5M8RmGNr25nhKED" fill="#15803d" font-family="-apple-system,sans-serif" font-size="18" font-weight="700" text-anchor="end" x="946" y="112"><!--pnid:LmoJmSYVwVLEauKd0w7oY0-->18</text>
+
+    <rect data-page-node-id="ucLsVJHPbMaAW5PlKtYgI6" fill="#fdeeee" height="76" rx="8" stroke="#c02626" stroke-width="1" width="464" x="20" y="164"></rect>
+    <text data-page-node-id="qjnYaHjMhQjVfmDuU1PTth" fill="#7f1d1d" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" x="40" y="188"><!--pnid:ka1EIjRDYFpChQNehol594-->路径三</text>
+    <text data-page-node-id="9pCN5MPZTVZAc8Csyr63GS" fill="#991b1b" font-family="-apple-system,sans-serif" font-size="12" x="40" y="210"><!--pnid:e5rBhEiZHRsOhch9REeusM-->2 × (16 − 4 − 3) = 26</text>
+    <text data-page-node-id="S5Gxs7Shl3EvTtErtuC7CI" fill="#c02626" font-family="-apple-system,sans-serif" font-size="18" font-weight="700" text-anchor="end" x="450" y="200"><!--pnid:8CIxNi3n8B2BxnLA3ellTU-->26</text>
+    <text data-page-node-id="k0i6Uj1kIIhQjk9KqeSmAo" fill="#991b1b" font-family="-apple-system,sans-serif" font-size="11" text-anchor="end" x="450" y="228"><!--pnid:Ke5otha4KM8xWj48XOkpIa-->算错了</text>
+
+    <rect data-page-node-id="PN0nOZUB2Wfs217f4YLZuG" fill="#fdeeee" height="76" rx="8" stroke="#c02626" stroke-width="1" width="464" x="516" y="164"></rect>
+    <text data-page-node-id="SOtPDeczoV5Cj9gDOsgsZK" fill="#7f1d1d" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" x="536" y="188"><!--pnid:rQgEShXeHPjmWSTbt7JVjW-->路径四（贪心解码选出来的）</text>
+    <text data-page-node-id="Fk7voPVDhpDq8YvMF2eRxQ" fill="#991b1b" font-family="-apple-system,sans-serif" font-size="12" x="536" y="210"><!--pnid:DDCG3q4qVdJxxXSHc5GRnR-->3 + 4 = 7 个，剩 9 个 × 2 = 14</text>
+    <text data-page-node-id="IZQ8vA5a33nJyAb4LMPD17" fill="#c02626" font-family="-apple-system,sans-serif" font-size="18" font-weight="700" text-anchor="end" x="946" y="200"><!--pnid:sThinM7IbGfvQz0dog7a4A-->14</text>
+    <text data-page-node-id="OmiXZXFYctE5snd1sb05rf" fill="#991b1b" font-family="-apple-system,sans-serif" font-size="11" text-anchor="end" x="946" y="228"><!--pnid:56ymHpcxg4OV77mRCky2gj-->算错了</text>
+
+    <path data-page-node-id="b1Ac9z906fCYGlloRQL1rJ" d="M490 114 L492 200 L492 300 L500 300" fill="none" stroke="#15803d" stroke-width="1.6"></path>
+    <path data-page-node-id="MWiQ6rUluRbx8iFgzvJgSl" d="M908 114 L908 300 L500 300" fill="none" stroke="#15803d" stroke-width="1.6"></path>
+
+    <rect data-page-node-id="LDiWyTSyQw5FHx4kz2qyBh" fill="#ebf7ef" height="52" rx="8" stroke="#15803d" stroke-width="1.4" width="340" x="330" y="292"></rect>
+    <text data-page-node-id="TOnNQ3y4yBeKv6Y8OgOxW8" fill="#14532d" font-family="-apple-system,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="500" y="316"><!--pnid:sLWTsKsBuFTKclVsR26Jpb-->18 出现两次，其余各一次</text>
+    <text data-page-node-id="m0lTas9EYY3eYgMNL0WDx1" fill="#15803d" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="500" y="336"><!--pnid:hvEFwK1rlTjqS069DtjMjg-->于是 18 胜出</text>
+
+    <rect data-page-node-id="eu38Xe24kuaxC7CQrTjdIS" fill="#fff4d6" height="36" rx="8" stroke="#b45309" stroke-width="1" width="960" x="20" y="358"></rect>
+    <text data-page-node-id="L1k29CKDX6VWKBfrd7lydh" fill="#412402" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="500" y="382"><!--pnid:5BIp2iGjOOo385mvWL7bAf-->赢的不是「最自信」的那条，是「最一致」的那条</text>
+  </svg>
+  <div data-page-node-id="2YDNcCClniImYjPmdmSZq4" class="fig-c"><!--pnid:thqc47K1MwF4zlPAKJQqsc-->四条路径的推理过程各不相同，其中一条还是贪心解码选出来的。边缘化掉推理过程、只数答案之后，两条指向 18 的路径赢了。</div>
+  </div>
+  <p data-page-node-id="sLCARiqvpUS56TURdSEndy"><strong data-page-node-id="wxDi0zg6qWOoZZwnqmO0Rm"><!--pnid:JyrEenggTgTyh7KnNZoK0S-->边缘化这个词是这个方法的核心。</strong><!--pnid:Cq2T99XYT1qbL7AX0g4Ty4-->数学上它指的是「把一个变量积分掉」。这里的意思是：<strong data-page-node-id="HK6QgHmeWJXjNQkM0koYtG"><!--pnid:lYnjephRp0ypuwsf3erGBD-->不关心哪条推理路径最可能，只关心哪个最终答案被最多路径指向。</strong><!--pnid:cFdxgELiwZlbW11VIS0yDb-->推理路径是中间变量，被消掉了，留在最后的只有答案的分布。</p>
+  <p data-page-node-id="FPBcY7B5m9XzNCMkFdQJOg"><strong data-page-node-id="krUClapWp35b8xnGevzgcP"><!--pnid:Ad47gCcErSo1CHaJSlp657-->这个方法有三个前置条件，论文交代得很清楚：</strong></p>
+  <table data-page-node-id="zBYibgj0qm0teE8nQ737aU"><thead data-page-node-id="jHMkIzzk8WamKbuyv7Xcr5"><tr data-page-node-id="hhuXxPaDrzmUwWicUkqvtO"><th data-page-node-id="PULLsGgiVxrONyXVkK5HZj" style="width:26%"><!--pnid:C5x0yM05IuIMk0zgpzrdq3-->条件</th><th data-page-node-id="0yfofRop5NhBEmKCUSh5Gu"><!--pnid:y2QIGGs6Ij9LCqHXZAA8aY-->含义</th></tr></thead><tbody data-page-node-id="j2P6pf2yP4qe2zzo4to2ky">
+    <tr data-page-node-id="nnaNunNuEolPpMOpa8Nya0"><td data-page-node-id="Wr6E5wmZKHgPUpb0lULc7i"><strong data-page-node-id="QOUze2wMPmZzEqcus3akNW"><!--pnid:UgNocqped8jhBL5NLgbqRq-->最终答案必须可归类</strong></td><td data-page-node-id="qDR7TmpUvgIMv8sOtQQDVv"><!--pnid:AWkBYPf2svGkR8XJdpZ9um-->答案要落在一个有限集合里，才能数它出现了几次</td></tr>
+    <tr data-page-node-id="UFLy3lF5tnIzetofgGbDpC"><td data-page-node-id="XEXjbgUT3Wy6IYCuKEoT3W"><strong data-page-node-id="OzKbto32BxY8qsix9cYV8E"><!--pnid:JokICiP8Bi7J5AmYjFH9fv-->不需要额外训练</strong></td><td data-page-node-id="kSA4o1L9ZhYuIqfdGgrWyV"><!--pnid:YWpKSat1wo9WVXFXy6wTwT-->不用验证器、不用重排序模型、不用人工标注</td></tr>
+    <tr data-page-node-id="O21kEfQazOYL0iQJo0T3EV"><td data-page-node-id="SqkEiKHL5arIsNgya7AVyF"><strong data-page-node-id="gDaapr2iTfQ19oAXi3nbpJ"><!--pnid:E0qcvm6O2HeDGBMDVKpAU8-->兼容多数采样算法</strong></td><td data-page-node-id="sWMlmg9KLMjI07FI4s51Wf"><!--pnid:OzyFfBXnYm0lwr8EQ4Kr1q-->温度采样、top-k、nucleus 采样都能用</td></tr>
+  </tbody></table>
+  <p data-page-node-id="izVQNZqcELLtuqxPhGHn1R"><strong data-page-node-id="x95o6WAKC4YwiHchg4ENoN"><!--pnid:QdQo1IVp86csp6y9WKEJza-->第三个条件有个隐含后果：它不是「多采样几次总会碰对」。</strong><!--pnid:xIZI0PQ59H64qkcY6tuKJP-->采样算法只负责产出多样性，答案怎么聚合是另一件事。作者专门做过对照，见后面的「对照实验」那节。</p>
+  <div data-page-node-id="wXJUdlcs5Ninf7hFYyvhoe" class="bnd"><div data-page-node-id="yhbMErmyVXuNH9eDCvZt5k" class="bnd-t"><!--pnid:ncwAkUxE2qKjYWBaN94elk-->前提与边界</div><p data-page-node-id="ydsBw7WO53COK12riInBM1"><!--pnid:0c7uK0OIdeZJmdH001cP9f-->「答案落在一个有限集合里」这条限制很硬。论文自己在讨论思维树时指出过，多数投票这个启发式<strong data-page-node-id="DPkUBDTs21cqtQtFRp1A0P"><!--pnid:MADt1olHHzasBuB6dTbj0i-->只在输出空间有限时成立</strong><!--pnid:4KegYyjZ2ZeVWzyfJaOKTo-->，比如选择题、多选题、数学填空。遇到开放式生成（写一段话、画一张图），数答案这一步根本没法做。</p></div>
+</div>
+
+<div data-page-node-id="6Gwgy4ZWXAV6kXllv0jheH" class="block">
+  <div data-page-node-id="MOhSDQlKWSCcwk8YLyy3mQ" class="tag"><!--pnid:1e67CF2Gk7Zik13lz5tD8m-->四条优势</div>
+  <div data-page-node-id="aE1uoVSpBIqnnNzVphk39P" class="claim"><!--pnid:eJOfKC7Mnq3Pt7hNVzSg19-->作者给的四条</div>
+  <p data-page-node-id="7mQyamhLN2L1HqbfZBitpt" class="lead"><!--pnid:hqmltAGcF7BR6sJVDTuxlo-->作者在方法之后单独列了几条性质，这段比结果本身更能说明这个方法站在哪。</p>
+  <table data-page-node-id="FJXfsdouuAH5lMuIOAinZV"><thead data-page-node-id="CKD8KwOYkAyhbZ8VmJKV5i"><tr data-page-node-id="f43Aufcv6Do4Zg1xqeTqoo"><th data-page-node-id="O7OHiORnWjphsDGkabUdCd" style="width:8%"><!--pnid:ANuopBQhvY8t9gY8MvYslr-->#</th><th data-page-node-id="fGIwd0oRYjwAkUHtTlGnk4" style="width:26%"><!--pnid:qvPRQELSISNtsIfAhQwiux-->优势</th><th data-page-node-id="0vG0sFLCIe1fSjImPdyIMA"><!--pnid:ohlVOp93lPktAabzrqXUGo-->说的是什么</th></tr></thead><tbody data-page-node-id="hj6vAyaTa3aTjMuFvTYFCX">
+    <tr data-page-node-id="AC7qC08QSW43OahysVB312"><td data-page-node-id="gk391T81NmfrIaXUzcoY0F"><!--pnid:67Gl9ElkUm16gRM5XSBMoZ-->1</td><td data-page-node-id="yKTCLEexh9QmChZAkDgCN8"><strong data-page-node-id="jzHvoKJnvzH3y4lqlRwOEy"><!--pnid:qzFEH6FDLUGe4EubIOolTm-->完全无监督</strong></td><td data-page-node-id="ilEN6zonf9FFN07o8gL7Z7"><!--pnid:T7JFCpL1di3zpzJliIRjvZ-->不用额外人工标注、不用训练辅助模型、不用微调</td></tr>
+    <tr data-page-node-id="rpB2Xws4S5MhCPIYBewQsi"><td data-page-node-id="4ibmhO8LhZRLpFWGv54Rm3"><!--pnid:fDhdfBE02CICjhl0VEYUY1-->2</td><td data-page-node-id="0mXdSikA7zYlVYdGCclUR6"><strong data-page-node-id="i37MlDAMPkhgYFi25cvw6b"><!--pnid:MPEvhAMkk92lrKlbIH7jn5-->任务无关</strong></td><td data-page-node-id="VT6G9BjB4niExNPuIul485"><!--pnid:TMeArAxGUbkXcASnMRe1nZ-->同一套解码策略，跨算术、常识、符号三类任务都能用</td></tr>
+    <tr data-page-node-id="7JNoR4auxinp16OlaGv9JZ"><td data-page-node-id="QugbRUCJWpoxN1L5M0h4Z2"><!--pnid:49MyeSYdQDM5vFH5SsbUpH-->3</td><td data-page-node-id="XRIk5gQMNwhBQFN3hfYRm0"><strong data-page-node-id="EtvQCs5oNWaTbxLtSuz29F"><!--pnid:43SzDSFFFsZCjl7XbqTYzV-->避开贪心解码的两个毛病</strong></td><td data-page-node-id="UqzEhGyE4enNox0zjNH4VQ"><strong data-page-node-id="l4VChWLgKWI3eobb8K9N5b"><!--pnid:KSmImMOLlDbH4Hnk733uuL-->重复性</strong><!--pnid:TwVGcKHM0b36X7AGZsdT3B-->与<strong data-page-node-id="VjOJgJ6MeyPSVTDdivAAF3"><!--pnid:uf6RXyFPrbqHs4xXxM0BJR-->局部最优</strong></td></tr>
+    <tr data-page-node-id="bjZbI9fVU7NlkfYr3s7Uj7"><td data-page-node-id="T24bMhwt3frkjcMUmS5OD8"><!--pnid:i4JTdBWYJpebm4GCZ0HyJ8-->4</td><td data-page-node-id="nraP4NyEis3Q6I6DGUhZ5y"><strong data-page-node-id="kL8YAEgkzQi9XvSooEUYgZ"><!--pnid:lcZHRUA6lKO8PWBhriUvnN-->缓解单次采样的随机性</strong></td><td data-page-node-id="SrM1yAvTPT0vn558ZNFk5q"><!--pnid:7rGTU1BdbWAS8wtgxbUjwe-->单条路径可能歪，采四十条再投票就稳了</td></tr>
+  </tbody></table>
+  <p data-page-node-id="rghs23VOtN3Ro5uOFvqiGI"><strong data-page-node-id="SmPWbj4YXMkFMYRozYGDEU"><!--pnid:rrm42SAQKRBfqwKNxWG9tM-->第 1 条跟之前的做法对比最明显。</strong><!--pnid:BnMqIiUJ13yxdVFULbQpuE-->作者点名了两种更重的替代方案：一种要训练一个验证器，另一种要人工标注一批数据来训练重排序模型。<strong data-page-node-id="4iZjfuhqMtmXkNa3YzgOwA"><!--pnid:X6sqcpxod6f2Rc6xMtFqFu-->自我一致性两样都不需要</strong><!--pnid:6neX1qaVGlZS3SBB8rhHlI-->。</p>
+  <p data-page-node-id="5GfVHiuEPVRR3ddTRIvlVo"><strong data-page-node-id="4ELN2d331mUHUxR31fsiwA"><!--pnid:kgQJObGWqDfblI45G46xOF-->第 3 条是它相对思维链的原罪。</strong><!--pnid:dHPz3yzgoY2dl6w4NHrf1j-->贪心解码的问题不在于「错得离谱」，而在于<strong data-page-node-id="61MV2KSHYz1GSojcqevipA"><!--pnid:3gyuso5bknVn7udkxoi1Oi-->它每一步都选概率最高的那个</strong><!--pnid:qT0CYjb1eqVTDhGkjrsPx9-->，于是走进一条局部最优的路出不来，它天然怕重复。自我一致性采 40 条不同路径，从源头上绕开了这个问题。</p>
+  <p data-page-node-id="bzuILfBRDV4zC2ZXUkEkP4"><!--pnid:ss2P19xrZjd2fo88tcbqPl-->还有一点作者特别强调了：自我一致性跟通常的「集成」不一样。集成是<strong data-page-node-id="XsEKwaNdW4HH3XEoPKF01y"><!--pnid:Bekm4mNFb5CHfWSxWhABM2-->训练多个模型再把输出聚合</strong><!--pnid:RhIEYP5jL0OCRnkBrlV47Y-->，而自我一致性是<strong data-page-node-id="Fth8tbb4nkjnIYrfDhNE4v"><!--pnid:aHqBBLiqUkB7GbKGpZwhu8-->在单个模型上做，作用更像一个「自集成」</strong><!--pnid:buy97GNWDYH61A0qdXowmd-->。</p>
+  <div data-page-node-id="61oJn2KQKETUADlBqYeams" class="bnd"><div data-page-node-id="ZtqubbWXNWMnJc8kG6xQqI" class="bnd-t"><!--pnid:jI6BlL9MbVozpUDsXaVM46-->前提与边界</div><p data-page-node-id="ZDFn8qA2mUR1mZXctyDPSs"><!--pnid:NBr3KeLLQjW0iFHogWkEQw-->第 4 条的「缓解」用得很准。它<strong data-page-node-id="TkmlVDMBZT3pSkFqDyp73m"><!--pnid:HRmYc3DDG8suHN2Unv7v85-->没有消除</strong><!--pnid:pERk3seLlDJq8OmXf9Mmfr-->随机性，只是把它摊到 40 条上再用多数投票压下去。</p></div>
+</div>
+
+<div data-page-node-id="vaOzd3CoifEWHEYmObRMQH" class="block">
+  <div data-page-node-id="TDRfWJkh0AWxtW6FwBT130" class="tag"><!--pnid:sZeIvb0LyXitCAyIb8DiM8-->结果</div>
+  <div data-page-node-id="dVZw6WYxInPqUkJFbi4asl" class="claim"><!--pnid:LSTdH8CVAClVShioB4iw6N-->模型越大，提升越大</div>
+  <p data-page-node-id="7ku3s6ogRfmFFkOPpmzA1l" class="lead"><!--pnid:izn8Mt8NSSphxTzUQFvE1x-->作者在四个不同规模的模型上测，每一轮独立采样 40 条路径，跑 10 轮取平均。对照是思维链配贪心解码。</p>
+  <div data-page-node-id="krn5K4fT0DPqyo6FGF8sYI" class="fig">
+  <svg data-page-node-id="F9jd9khyTFZKLXb6wuDfrt" aria-label="小学应用题基准上自我一致性相对思维链的提升随模型规模递增" role="img" viewBox="0 0 1000 360">
+    <text data-page-node-id="vvCuuk7wp2RiP5icq1SD01" fill="#12141a" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" x="80" y="28"><!--pnid:AQ8OSBUHr5rAqFurMtMk71-->小学应用题基准准确率</text>
+    <text data-page-node-id="CXFkC1cf47AttslyRqUGVG" fill="#8b929c" font-family="-apple-system,sans-serif" font-size="12" x="245" y="28"><!--pnid:uZo53KGC2YZJ2DHMAVZFlJ-->思维链贪心解码 → 自我一致性</text>
+    <text data-page-node-id="GKVCrpWey6WYPSr9I82KXi" fill="#48505a" font-family="-apple-system,sans-serif" font-size="13" text-anchor="end" x="66" y="76"><!--pnid:dq6rtlWqoYRryH3idrUbob-->UL2-20B</text>
+    <rect data-page-node-id="PvKlHAxMyCWpcFs84ItHcI" fill="#f8d7d7" height="18" rx="4" stroke="#c02626" stroke-width="0.8" width="45" x="80" y="62"></rect>
+    <text data-page-node-id="r3SkiA6GfYvEjlJI0iQ6VH" fill="#991b1b" font-family="-apple-system,sans-serif" font-size="12" x="133" y="76"><!--pnid:3BaKAJRAhtkLFu5sdiZD1d-->4.1</text>
+    <rect data-page-node-id="BMsigyKFjrD0CSPU2d2UfV" fill="#ccebdb" height="18" rx="4" stroke="#15803d" stroke-width="1.2" width="80" x="80" y="84"></rect>
+    <text data-page-node-id="Jk1beEoV4tg3pDjRYnFQxg" fill="#14532d" font-family="-apple-system,sans-serif" font-size="13" font-weight="700" x="168" y="98"><!--pnid:QW2isudqXBf5He82AVWebS-->7.3　+3.2</text>
+    <text data-page-node-id="wuur1xPvzdUG3GkOsqvctW" fill="#48505a" font-family="-apple-system,sans-serif" font-size="13" text-anchor="end" x="66" y="136"><!--pnid:14WjOFXhBBsPPMtR9KxE8l-->GPT-3 一代</text>
+    <rect data-page-node-id="b90t48Avp1R3GRkUUc3kX5" fill="#f8d7d7" height="18" rx="4" stroke="#c02626" stroke-width="0.8" width="161" x="80" y="122"></rect>
+    <text data-page-node-id="nmpLYV8SlvXjxMaGZvy42G" fill="#991b1b" font-family="-apple-system,sans-serif" font-size="12" x="249" y="136"><!--pnid:AyGG4gSnRYIRPFx0mmmvmp-->14.6</text>
+    <rect data-page-node-id="QAeU1vvBoMFLEObm0Sd5AZ" fill="#ccebdb" height="18" rx="4" stroke="#15803d" stroke-width="1.2" width="258" x="80" y="144"></rect>
+    <text data-page-node-id="IjFcWTg16rrzO62qiICzAU" fill="#14532d" font-family="-apple-system,sans-serif" font-size="13" font-weight="700" x="346" y="158"><!--pnid:zR5W0ckkUmghNx0Wz8bBaB-->23.4　+8.8</text>
+    <text data-page-node-id="cWeiy4AXhIbtUWd0uZekg7" fill="#48505a" font-family="-apple-system,sans-serif" font-size="13" text-anchor="end" x="66" y="196"><!--pnid:R1g8yvdq07Lle0AqXduE6b-->LaMDA-137B</text>
+    <rect data-page-node-id="mW2RsOD3WKM0QsVhmoDoFO" fill="#f8d7d7" height="18" rx="4" stroke="#c02626" stroke-width="0.8" width="188" x="80" y="182"></rect>
+    <text data-page-node-id="KdIqBZSvgHw9vVLNTLyn0Y" fill="#991b1b" font-family="-apple-system,sans-serif" font-size="12" x="276" y="196"><!--pnid:jzSBKGI6Mz1b6Yf9ZZzRBR-->17.1</text>
+    <rect data-page-node-id="A2lQv71U5lVvXQsBvHDbqH" fill="#ccebdb" height="18" rx="4" stroke="#15803d" stroke-width="1.2" width="305" x="80" y="204"></rect>
+    <text data-page-node-id="YQlOUYttDkQxubkbT0Nz73" fill="#14532d" font-family="-apple-system,sans-serif" font-size="13" font-weight="700" x="393" y="218"><!--pnid:Kr5uH1kN5icEfRL6mBlQPS-->27.7　+10.6</text>
+    <text data-page-node-id="fMQSbkiR1jQoyVmsyYX48G" fill="#48505a" font-family="-apple-system,sans-serif" font-size="13" text-anchor="end" x="66" y="256"><!--pnid:aZalNocqVTLmdyUdaAPAE4-->PaLM-540B</text>
+    <rect data-page-node-id="Vo3s0M4PRIdgd2n0lrnpRd" fill="#f8d7d7" height="18" rx="4" stroke="#c02626" stroke-width="0.8" width="623" x="80" y="242"></rect>
+    <text data-page-node-id="IGlXznVM5W0esf6RdGhDbp" fill="#991b1b" font-family="-apple-system,sans-serif" font-size="12" x="711" y="256"><!--pnid:JOUHjJwuUi0L1yGaWX3lxc-->56.5</text>
+    <rect data-page-node-id="2ByYuXOmn4fGlCsdxofsbW" fill="#ccebdb" height="18" rx="4" stroke="#15803d" stroke-width="1.2" width="820" x="80" y="264"></rect>
+    <text data-page-node-id="zx41WcrxZTLX5ARTtQsYXv" fill="#14532d" font-family="-apple-system,sans-serif" font-size="13" font-weight="700" x="908" y="278"><!--pnid:gUb0gS4iOgDBVVFGjwWi3L-->74.4　+17.9</text>
+    <rect data-page-node-id="V5v7CJKGPQnmKibu1RkC78" fill="#fff4d6" height="26" rx="8" stroke="#b45309" stroke-width="1" width="960" x="20" y="318"></rect>
+    <text data-page-node-id="zPXRLj4iEv0aYShuiGXK09" fill="#412402" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="500" y="336"><!--pnid:5X3wFlJQsuHrDQV5cJixDC-->20 亿参数那档只涨 3 个点，5400 亿那档涨了近 18 个点</text>
+  </svg>
+  <div data-page-node-id="SBRZvddzjDgxF3LYz6JbnI" class="fig-c"><!--pnid:Cv52jndGsJIhQ37pFhGO0w-->条长按绝对准确率，右侧标注是提升幅度。20 亿参数那档只涨 3 个点，5400 亿那档涨了近 18 个点。</div>
+  </div>
+  <p data-page-node-id="ZHSCSoRCdrAlDxaDWg0dMe"><strong data-page-node-id="7qDtXdqxlEQMzViJtdKZyw"><!--pnid:8gbNolaJ8Mv9Pnn07dmjvf-->这个递增的趋势是最值得看的一处。</strong><!--pnid:v26n2heikggWUTbAEL3J9U-->20 亿参数那档只涨 3 个点，5400 亿那档涨了近 18 个点。作者的解释是：<strong data-page-node-id="fzXQu5hCU2dUhzuWbFCDun"><!--pnid:1b9KlwfVACLcsgHllIBqJs-->在低精度模型上，采样的 40 条里有大量是彻底走错的，投票也救不回来；模型本身越强，采出来的路径质量越高，投票机制才越有东西可投。</strong></p>
+  <p data-page-node-id="VUCkDbhGlKx4TQuH37isKD"><strong data-page-node-id="wuIeDh9JDNrZwAOVk8kUmX"><!--pnid:nvzAdW4KdOp3i77m4wnIS6-->这跟思维链那篇的「涌现」是同一个现象的两面</strong><!--pnid:jCHBJNI3tth3W6o9iFbNeR-->：思维链说推理能力是大模型长出来的，自我一致性说能力越强，这个解码策略的收益越大。两篇合起来看：<strong data-page-node-id="FXGk3srb7ZTpDzATbIRROp"><!--pnid:yZPZeHzEJDnAQMUrvfH10x-->推理方法的效果取决于底座模型的精度，不是免费的。</strong></p>
+  <p data-page-node-id="6jhkmmBtwvHzT8VJZ6YYXD"><strong data-page-node-id="C4Vtihau53pgZCeQgaOCVE"><!--pnid:oKNMR5CWPGttv29dmU6xuJ-->符号推理那部分是分布外测试。</strong><!--pnid:HeBqZi4hnRRuw6crsa1Bh4-->训练示例里给的是两个字母、两次抛硬币，测试时换成四个字母、四次。结果是<strong data-page-node-id="NihBZxZacFrTtOsWyO9GBx"><!--pnid:aAWB9A3NFh4c29gWwznshM-->在同样困难的前提下提升依然显著</strong><!--pnid:4THQvh1m6nl8dX3ierxtUz-->，说明这个方法在长度和步数上都还有余量。</p>
+  <div data-page-node-id="BTaWzDiGXorOrmNyjRMAt5" class="bnd"><div data-page-node-id="0Zpvg60PQRbmKpa3ZGpQzq" class="bnd-t"><!--pnid:sXXGpQb5S2AhajxpIM4U4G-->前提与边界</div><p data-page-node-id="ckwqkuHdVVvW7BsGEtpWPQ"><!--pnid:oLS1V3pE8hyu6K6tnSilyP-->所有数字都跑在 2023 年的模型上。这些解码策略本身还活着，但<strong data-page-node-id="AKhyWhSCLZfF9CLyp6Bxv6"><!--pnid:Ce2gIuLhc2KTDBodJWRLwE-->具体涨多少点已经不能照搬</strong><!--pnid:fA3miX7tnaEpwZspOW3Jpv-->了：底座模型的推理能力已经大幅提高，贪心解码的基线也没那么低了。</p></div>
+</div>
+
+<div data-page-node-id="tDeEZUhWbByWHS5beQBH6b" class="block">
+  <div data-page-node-id="G3BTTEgBJbI2x7jiqKORRp" class="tag"><!--pnid:7LtcBBOV04n0Jz0kGVg8SI-->对照实验</div>
+  <div data-page-node-id="SwgORDSjdWxQczAUYc3UsA" class="claim"><!--pnid:Rbyp4zzIFUnjdAk2klkeMa-->跟谁比才说明它有用</div>
+  <p data-page-node-id="JrDe8zupIsT2NwF4kUApVJ" class="lead"><!--pnid:liC5hCbPrwzipBn8zP51Am-->作者拿自我一致性和四类方法做了对照，每一类都只改一个变量。</p>
+  <div data-page-node-id="CSsofyw4MXJhRjAc8Q9owg" class="fig">
+  <svg data-page-node-id="6xwFgH5tyKsNwtDw6t61tR" aria-label="四组对照实验：采样加排序、集束搜索、答案聚合方式、已有集成方法" role="img" viewBox="0 0 1000 320">
+    <rect data-page-node-id="th6PTWzMtsnqvTknF7OM98" fill="#fff4d6" height="62" rx="8" stroke="#b45309" stroke-width="1.2" width="960" x="20" y="14"></rect>
+    <text data-page-node-id="n3lVA2xEvPDZUtNAG5r5Vw" fill="#412402" font-family="-apple-system,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="500" y="42"><!--pnid:5l5XbaLUysggdtKy9zO3jx-->四组对照，每组只改一个变量</text>
+    <text data-page-node-id="2rQKCaIFxjoT2F3vKEn8KZ" fill="#8a5a20" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="500" y="64"><!--pnid:yneQTNRVWCOz2rMVue9LDE-->结论：收益来自「换掉筛选标准」，不是来自「多采样」</text>
+
+    <rect data-page-node-id="Hd4wHK1qg9UhLGBMiDVWZt" fill="#e6f1fb" height="100" rx="8" stroke="#185FA5" stroke-width="0.8" width="464" x="20" y="90"></rect>
+    <text data-page-node-id="haMnePLz8r0T5c1CIPj04q" fill="#042c53" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="252" y="116"><!--pnid:G7hHIzfGUN8go0kQfCmXT9-->一、对采样加排序</text>
+    <text data-page-node-id="8Rb7MOdA1Rzdwm7pbE8hRB" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="252" y="142"><!--pnid:g6s8i7UaSO1IfK5o28sPnO-->同样采 40 条，按对数概率排序取最高</text>
+    <text data-page-node-id="NuOQhCW1yc7Ts48WbGqVKO" fill="#0c4a6e" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="252" y="166"><!--pnid:L29bHnJvU26HlpyHBmYlua-->也有提升，但小得多</text>
+
+    <rect data-page-node-id="9gpKteF8YtUbI2Shq11FA6" fill="#e6f1fb" height="100" rx="8" stroke="#185FA5" stroke-width="0.8" width="464" x="516" y="90"></rect>
+    <text data-page-node-id="yfQX91wAHzaKFNaeecDp14" fill="#042c53" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="748" y="116"><!--pnid:S55mNlMEFxvNx6ByfDEChM-->二、对集束搜索</text>
+    <text data-page-node-id="38EBKKiMwuyKgv0PxFqWtO" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="748" y="142"><!--pnid:2K7zL4wEZc0SEi65SXp3YR-->也保留多条路径，但按概率筛</text>
+    <text data-page-node-id="bmlAcueHFl1xcKD0N7kr8e" fill="#0c4a6e" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="748" y="166"><!--pnid:RKlXA1jvTmkQj2yrtQRPPu-->自我一致性胜出</text>
+
+    <rect data-page-node-id="oUwtDXH6jKisqekj0Hufsq" fill="#e6f1fb" height="100" rx="8" stroke="#185FA5" stroke-width="0.8" width="464" x="20" y="204"></rect>
+    <text data-page-node-id="nvB7q3HbZQhjodUegYlhJW" fill="#042c53" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="252" y="230"><!--pnid:dCobLzTvCCZ6KwQyMSfyeQ-->三、对答案聚合方式</text>
+    <text data-page-node-id="fl61VlYWIgevZyFrrZhX2J" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="252" y="256"><!--pnid:Xc8zX5DiHWUUg5AO4N940d-->加权求和 vs 多数投票</text>
+    <text data-page-node-id="8UOJeMf1xEmE1W7lopeC5l" fill="#0c4a6e" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="252" y="280"><!--pnid:zx7JFWs23OjqjifyNdiqPK-->最终选多数投票，不需额外输出概率</text>
+
+    <rect data-page-node-id="sEt8PvkJgc0Rnh0ngdrf1j" fill="#e6f1fb" height="100" rx="8" stroke="#185FA5" stroke-width="0.8" width="464" x="516" y="204"></rect>
+    <text data-page-node-id="bSPiW7cras3Bjm0W6t0uFC" fill="#042c53" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="748" y="230"><!--pnid:nJZreLaZhd3rwsrQsHMj61-->四、对已有的集成方法</text>
+    <text data-page-node-id="hkmeEOloLozXVUGsOSV7HK" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="748" y="256"><!--pnid:GdEaD6sJ1E61iR0xHbLywQ-->打乱示例顺序、手写三套提示词</text>
+    <text data-page-node-id="E9i3SqiFmQbSMzTdMOgydT" fill="#0c4a6e" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="748" y="280"><!--pnid:BuzAPy7BfavKSgRwcC68kE-->收益远小于自我一致性</text>
+  </svg>
+  <div data-page-node-id="BGOesArIW1NnJxqhqie5XS" class="fig-c"><!--pnid:QCzPod8eyo78LEdk8V20kR-->集成方法只换了提示词，模型本身的解码策略没变，贪心解码的重复性问题还在。</div>
+  </div>
+  <p data-page-node-id="8eZC37HRzuhWdo5JtKW63X"><strong data-page-node-id="0yMOxTGB7Cxgc6X4U3TrwT"><!--pnid:EgO4oPiHzdY8j4YbiV9cvI-->第一组最关键。</strong><!--pnid:g3SrW7wsmjzoK5b3Chx1v9-->同样采 40 条，按对数概率排序取最高的那条，也有提升，但小得多。<strong data-page-node-id="TaUqyvW9nKDMgjSmXqGmZb"><!--pnid:H0TrozNOVCTzf9ZL5ycIYz-->这一条排除了「收益来自采样本身」的解释。</strong><!--pnid:IUZgclJ0WfBfq45t1bjHA8-->采 40 条确实有用，但<strong data-page-node-id="alhSsBMMbonxKzTyQOrxaY"><!--pnid:6KC69vDeL90BJgSzEyeZRd-->按概率取最优不如按答案一致性取最优</strong><!--pnid:NuRLLxPBZrKm3bGq8MVgPK-->，因为概率高低和最终答案对不对是两件事。</p>
+  <p data-page-node-id="P339d7I8AIHMOeyO0mgFh4"><strong data-page-node-id="7ax1ssRhgoiJ69iDWT0w30"><!--pnid:JbN5C0eBYvfNzBuvok2mOD-->第二组</strong><!--pnid:7SmVtb66jmzRRgqIwxeH6t-->里两者都是「保留多条路径」，区别在于集束搜索的筛选标准是概率，自我一致性的筛选标准是答案分布。</p>
+  <p data-page-node-id="chSyifiwMaS4IoodlWqKTK"><strong data-page-node-id="tFSCjImYAo3iOFRt2553rc"><!--pnid:6WBeiecR35VFhKGaD50CCO-->第三组</strong><!--pnid:Fkho76YScK3CHYOhZd7ekq-->作者试了加权求和（按概率加权）与多数投票。加权求和在部分任务上略高，多数投票则更稳。论文最终采用多数投票，因为它不需要模型额外输出概率值。</p>
+  <p data-page-node-id="ZJYUN001RlyK6JVrX6XOjn"><strong data-page-node-id="pQ3rPq5D828XvIgTzFyPLD"><!--pnid:6jShwpWj8s5vXp9sN4Bdvq-->第四组</strong><!--pnid:6jxkMZj5bFaU2FZzNbHw6F-->的集成方法只换了提示词，模型本身的解码策略没变，<strong data-page-node-id="awt3Zhe2t4g5RtBCKUgQor"><!--pnid:35RT4WZ94zlbv1ZvX8CMBm-->贪心解码的重复性问题还在</strong><!--pnid:ANWdIRFg8EVKluZhRKqXkB-->。</p>
+</div>
+
+<div data-page-node-id="YMK1mF4Y7w5OrLyWSkAzUp" class="block">
+  <div data-page-node-id="D26FVQyMdsOxpThRiqdK32" class="tag"><!--pnid:IPjeYPpfSMZXyxW31RmR0V-->局限</div>
+  <div data-page-node-id="0vharQoJFiM4OROXhGzGkg" class="claim"><!--pnid:VP31oKFl38RhXjF4GbTbK0-->成本，以及它救不了什么</div>
+  <div data-page-node-id="hcYzfO9jVAH0QSJCI9CXR4" class="gap"><div data-page-node-id="zk5BN66oOFZZ00KCqGPvWC" class="gap-h"><!--pnid:meQ1ozIRUtA50w4Jbf5gfr-->一、成本更高。</div>
+  <p data-page-node-id="MXWQvYztubZhRWq3B4p6jg"><!--pnid:YSyXTuyhKe06VsuTptGJil-->这是作者列的第一条局限：采 40 条路径意味着 40 倍的解码开销。他给的实用建议是：<strong data-page-node-id="ddNN2AJOH1SoybFXY2n3SJ"><!--pnid:9SXqJsaBFxn5iUAKUWhqds-->先试 5 到 10 条就能拿到大部分收益，因为性能很快就饱和了。</strong></p></div>
+  <div data-page-node-id="qTmTUA8EjLNhogoBq8U7za" class="gap"><div data-page-node-id="tS4dPv7YjkaWiTC7B3Hj2Z" class="gap-h"><!--pnid:P6odU5DwAg1SE9s6X6maNV-->二、模型会生成「看起来对但其实错」的推理。</div>
+  <p data-page-node-id="RFaACR1cGlUJ3Qdl81nA6B"><!--pnid:d3KtXVGnKpPXHZcHGYQy7A-->作者举了一个反例：有两条路径在读某个数量时把数字读错了，最后答案也不对，但<strong data-page-node-id="Hku5CcYD8zgMJyLdP60B3P"><!--pnid:AdmV3embtgsHuMpOMcs7l9-->推理读起来完全通顺</strong><!--pnid:wVD2g5SWwQtDRsKX8ygJeQ-->。他把这件事说成「需要更好的办法把模型的推理接地到事实」。</p>
+  <p data-page-node-id="VIN8NiZFam9kpV8IeMjbpo"><strong data-page-node-id="mJ5zxzkJEdSOUlsQFNbBzs"><!--pnid:pwgGK2e2md7juqkCipc4d7-->这条比成本严重。</strong><!--pnid:iEpupDoMgciC0EwvSiRQYG-->多数投票能压住「随机歪掉的路径」，但<strong data-page-node-id="7d2xB663WfOHxerm2a0TZV"><!--pnid:7Aw7wWLf8cWSSodhzELIEw-->压不住「系统性地歪」的路径</strong><!--pnid:5ZpWTQHdoqdf7PN8XqvIsV-->：如果模型的错误是稳定的、可重复的，那么采 40 次会得到 40 个同样错误的答案，投票反而会把这个错误推得更稳。</p></div>
+  <div data-page-node-id="J8a0ss6nLbjUaKO0Rx3qVE" class="gap"><div data-page-node-id="H5i5AfZjnrePYVIxrpY6XP" class="gap-h"><!--pnid:VVBsqvvPrIy12ty14O3Dnn-->三、需要额外解码的那一步。</div>
+  <p data-page-node-id="bHymhI6swKeFO9zbJ4d7vP"><!--pnid:SKEhVgLmnqi454EMCqWR3i-->作者列的第三条局限是：采样多样性与引导贪心解码的多样性之间存在张力，而这两者需要平衡。做法本身需要设计消融实验来处理这种张力。这条读起来更像是方法论上的坦白，而不是一个具体的缺陷。</p></div>
+  <div data-page-node-id="KOyOndin2rVqwvxt0iV1SO" class="bnd"><div data-page-node-id="UNM9jzJorvRs4pxf5Q7EZa" class="bnd-t"><!--pnid:Rfz65KfZ4Sg6Ps9fH7r5XC-->前提与边界</div><p data-page-node-id="cXhpu8MXyngWl09pRBxvXP"><!--pnid:xvMeO1UmCqNwfKpeMzmYCx-->论文没有做的一件事：<strong data-page-node-id="KrzNKbKl61CKLpPfRrrTsg"><!--pnid:TtNg1vQ8GmvEzIVz7ZP0uW-->没有把自我一致性和思维树这类带搜索的方法放在一起比</strong><!--pnid:uP53DwzUnnBYSFPxxhQ2Xq-->。也就是说，「采样投票」和「树搜索回退」这两条路线的边界在哪里，这篇没有回答。</p></div>
+</div>
+
+<div data-page-node-id="3YHoPwWDTvuYfNKHo9uk5N" class="block">
+  <div data-page-node-id="evnnF2uyJ6xbeqHLJtgZhG" class="tag"><!--pnid:Ems8XSJYNEs0DUqCl8ZXfb-->缺口</div>
+  <div data-page-node-id="cAVMObCLWzvlAq5HRSnLGA" class="claim"><!--pnid:atKjZyEllxAoKXP65zbhd9-->这篇论文没回答什么</div>
+  <div data-page-node-id="1ONOoZq6NyBrV5ja73RkXe" class="gap"><div data-page-node-id="9Esv9qLz9Q6ZFvgv9q1PAJ" class="gap-h"><!--pnid:18TmHMRDAaIyMDiteCmtwz-->1. 输出空间有限这个前提有多硬，论文只提了没量化。</div>
+  <p data-page-node-id="YyITW95DBdkrZDcTR0z24M"><!--pnid:70S5FbEbt0nA7ukzf5JQee-->方法要求最终答案能落在一个可枚举的集合里才能数次数。数学题、选择题满足这个条件，<strong data-page-node-id="cODLCFZQS8ei6DybDxvd2l"><!--pnid:VhYecF2ufRlCAHmV0UikRm-->开放式生成不满足</strong><!--pnid:0KjbbNSsk6oYQmehkSfcUd-->。但论文没有说清楚这个方法的适用边界到底在哪，多开放算开放。它也<strong data-page-node-id="gTNAVR8mIA7ibpUX51UENe"><!--pnid:gowQowpXQVOqvLgSBQKqOo-->没有测过任何开放式任务</strong><!--pnid:R0cg5H9PMk8jCBvLQyOGjp-->。</p></div>
+  <div data-page-node-id="x8k5XJVXWh8n58u2tN7YSp" class="gap"><div data-page-node-id="CiolhQs0reaMUPoH2Uj3dD" class="gap-h"><!--pnid:Yf5LXEqMY6xkJWbQATNPXj-->2. 40 条这个数字是怎么定的，没有交代。</div>
+  <p data-page-node-id="VE0xhyJ4op238AVfuvlHyz"><!--pnid:clLmgLze66a2uT4QjPRFhy-->主实验一律采 40 条，然后在局限里建议「先试 5 到 10 条」。<strong data-page-node-id="eeY4PSDkEbmRa8rBwj0OyC"><!--pnid:Xz60v77843V9uY24NQuG5f-->到底是采 5 条就能拿到八成收益，还是必须 40 条，论文的数据没有给成一张可直接查的表</strong><!--pnid:Z38Dh8bBXQNMBFZlKHeLBd-->，只有一张曲线图说明会饱和。</p></div>
+  <div data-page-node-id="9UZmnLqhK115N349ssg0qz" class="gap"><div data-page-node-id="0PSlnK8XT8TM2TSbI8OOtK" class="gap-h"><!--pnid:8N8iJBTunx0DaSyJX1FOGk-->3. 错误会互相强化这件事没有正面对待。</div>
+  <p data-page-node-id="J72XpSU8oGjVeZQcyEoh76"><!--pnid:fF2mVUCd187w1tT6oaRKrN-->前面提到的那条局限，模型生成通顺但错误的推理，作者承认了，但只是说「需要更好的办法接地」。<strong data-page-node-id="xPnvw1wgA9YaqZt3W2xi1M"><!--pnid:tlXPHeET26FaDIKZNZKSsp-->他没有回答：这种情况下多数投票是帮忙还是添乱？</strong><!--pnid:zC0aHIifgklYKASQbFu7sl-->如果 40 条里有 20 条同向错误，投票会把错误推到 50%，比单条采样更糟。</p></div>
+  <div data-page-node-id="Mi6zIfeDFVChI5ooZDoI3a" class="gap"><div data-page-node-id="REpO0YzWim7ehnPI5Omvg9" class="gap-h"><!--pnid:c6KO3X7wWK3789UElRbfTR-->4. 跟带搜索的方法的关系，完全没有讨论。</div>
+  <p data-page-node-id="MT88mTA4Spf2NfoeZ9uZ5t"><!--pnid:OUoauodgAiLwysWCu33EvE-->思维树那篇在同一时间发表，思路恰好互补：一个在同一条链上采多条然后投票，一个在每一步分叉然后回退。<strong data-page-node-id="Hqx2EkNAIBBJ4qXHF6pIjR"><!--pnid:dzZAYAcjGxUxMiXMF4vtT3-->两篇都没有把对方列为对照。</strong><!--pnid:DeMcfiKjY4C3UplrI8fqQf-->从 24 点游戏那个结果看，多数投票只有 9%、树搜索是 74%，<strong data-page-node-id="1kpOjGxIllbZ0an9kVHeTf"><!--pnid:QWDHgTUj4phYLK5N6ly4cB-->这个差距恰好说明「多数投票」在输出空间无限时失效</strong><!--pnid:uPDx7xZhuOp4WoVW24mR4d-->。但这是从另一篇论文的实验里推出来的，<strong data-page-node-id="pQpm42f9ddReGUTzDPTegA"><!--pnid:da4RKtxWVyZyWwckoYh75p-->这篇自己没有意识到这个边界</strong><!--pnid:ZAEhPcnLqkl5hoZzl1307J-->。</p></div>
+  <div data-page-node-id="dVCEd2ksWeQ4OzhzkHqKdm" class="gap"><div data-page-node-id="w20Oi0x9R6xGL2UfiJTymZ" class="gap-h"><!--pnid:sk7adHmwW7YOkL0C5HIh7R-->5. 成本收益没有量化对比。</div>
+  <p data-page-node-id="TITJ3pY6e0cjmfn3H5gJK0"><!--pnid:Q0xZGinn4uKIs40sqeZzyM-->作者说「采 5 到 10 条能拿到大部分收益」，也说了「成本更高」，<strong data-page-node-id="F196RtEfy56vbktje7o5bs"><!--pnid:1vWIiWRh5awd5pcQGinxpd-->但没有把两者放在一起算一笔账</strong><!--pnid:0hr5YN1KwZRHstAGDIh4Ww-->：多花几倍的解码，换来几个点的准确率提升，值不值。</p></div>
+</div>
+
+</div>
+
+
+<script data-page-node-id="4mUXlPFjbNw1nWOl6mtkTT" data-pnid-children="Nujks3ZUfxcqHHfYyycGLQ">
+function setM(m){
+  document.body.classList.toggle('present',m==='pres');
+  document.getElementById('bRead').classList.toggle('on',m==='read');
+  document.getElementById('bPres').classList.toggle('on',m==='pres');
+  document.getElementById('hint').textContent = m==='pres'
+    ? '投屏态：细节已折叠，一屏一个论点'
+    : '阅读态：表格与细节完整展开';
+  window.scrollTo({top:0,behavior:'instant'});
+}
+if(location.hash==='#pres')setM('pres');
+</script>
+</html>

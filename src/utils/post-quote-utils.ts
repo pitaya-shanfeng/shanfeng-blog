@@ -20,8 +20,29 @@ function stripInlineMarkdown(text: string): string {
 		.trim();
 }
 
+/** 从 HTML 正文里取第一个 <blockquote> 的文本（优先其内部第一段） */
+function extractHtmlQuote(body: string): string {
+	const block = body.match(/<blockquote[\s\S]*?<\/blockquote>/i);
+	if (!block) return "";
+	const inner = block[0];
+	const firstParagraph = inner.match(/<p[\s>][\s\S]*?<\/p>/i);
+	const source = firstParagraph ? firstParagraph[0] : inner;
+	return stripInlineMarkdown(
+		source
+			.replace(/<br\s*\/?>/gi, " ")
+			.replace(/<\/(p|div|li|h[1-6])>/gi, " ")
+			.replace(/<[^>]+>/g, ""),
+	);
+}
+
 export function extractPostQuote(body?: string): string {
 	if (!body) return "";
+
+	// HTML 文章（正文是 HTML 标签）：直接取第一个 <blockquote> 的文本
+	if (/<blockquote[\s>]/i.test(body)) {
+		const htmlQuote = extractHtmlQuote(body);
+		if (htmlQuote) return htmlQuote;
+	}
 
 	const lines = body.split("\n");
 	const paragraphs: string[] = [];
