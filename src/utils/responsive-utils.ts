@@ -1,9 +1,16 @@
 import { sidebarLayoutConfig } from "@/config";
 
 /** 侧栏列宽，全仓库唯一字面值出处 */
+// 平板端（768–1279px）：position 为 both 时只显示 tabletSidebar 指定的一侧
 const SIDEBAR_WIDTH = "17.5rem";
+// 桌面端（≥1280px）：文章页是**双栏**，左右各一条，所以每条都必须保持窄，
+// 中间内容列才够 ~800px（正好容纳正文的 50rem 上限，正文得以填满卡片、不留空条）。
+// 若改成单侧布局，可把这个值调大（如 21rem）换取更宽的侧栏。
+const SIDEBAR_WIDTH_XL = "17.5rem";
 
 const SIDEBAR_TRACK = "var(--grid-sidebar-width)";
+/** 桌面端轨道用 XL 值；只改元素 max-width 无效——真正卡住宽度的是网格轨道 */
+const SIDEBAR_TRACK_XL = "var(--grid-sidebar-width-xl)";
 
 export interface ResponsiveSidebarConfig {
 	/**
@@ -116,10 +123,14 @@ export interface GridColumnVars {
 }
 
 /** 按左右两侧是否占列生成轨道串 */
-function trackSegments(left: boolean, right: boolean): string {
-	if (left && right) return `${SIDEBAR_TRACK} 1fr ${SIDEBAR_TRACK}`;
-	if (left) return `${SIDEBAR_TRACK} 1fr`;
-	if (right) return `1fr ${SIDEBAR_TRACK}`;
+function trackSegments(
+	left: boolean,
+	right: boolean,
+	track = SIDEBAR_TRACK,
+): string {
+	if (left && right) return `${track} 1fr ${track}`;
+	if (left) return `${track} 1fr`;
+	if (right) return `1fr ${track}`;
 	return "1fr";
 }
 
@@ -157,12 +168,13 @@ export function computeGridColumns(input: GridColumnsInput): GridColumnVars {
 
 	return {
 		"--cols-md": trackSegments(mdLeft, mdRight),
-		"--cols-xl": trackSegments(leftIn, rightIn),
+		"--cols-xl": trackSegments(leftIn, rightIn, SIDEBAR_TRACK_XL),
 		"--left-display-md": mdLeft ? "contents" : "none",
 		"--left-display-xl": leftIn ? "contents" : "none",
 		"--right-display-md": mdRight ? "contents" : "none",
 		"--right-display-xl": rightIn ? "contents" : "none",
 		"--grid-sidebar-width": SIDEBAR_WIDTH,
+		"--grid-sidebar-width-xl": SIDEBAR_WIDTH_XL,
 		"--content-ratio-md": ratioMd,
 		"--content-ratio-xl": ratioXl,
 	};

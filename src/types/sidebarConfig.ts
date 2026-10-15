@@ -10,13 +10,18 @@ export type WidgetComponentType =
 	| "calendar"
 	| "music"
 	| "siteInfo"
-	| "dynamic";
+	| "dynamic"
+	| "relatedPosts";
 
 export type WidgetComponentConfig = {
 	type: WidgetComponentType; // 组件类型
 	enable: boolean; // 是否启用该组件
 	showTitle?: boolean; // 是否显示该组件标题，默认true
-	position: "top" | "sticky"; // 组件位置：top=固定在顶部，sticky=粘性定位（可滚动）
+	// 组件位置：
+	//   top    渲染在列首（常规流）
+	//   sticky 渲染在粘性容器里（跟随滚动），排在 top 之后
+	//   bottom 渲染在粘性容器之后（常规流），滚动时会滑到粘性组下面
+	position: "top" | "sticky" | "bottom";
 	showOnPostPage?: boolean; // 是否在文章详情页显示
 	hideOnNonPostPage?: boolean; // 是否在非文章详情页隐藏
 	specificConfig?: WidgetSpecificConfig;
@@ -40,6 +45,11 @@ export type WidgetSpecificConfig = {
 	ad?: AdConfig; // 广告组件专用配置
 	siteInfo?: SiteInfoConfig; // 站点信息组件专用配置
 	dynamic?: DynamicWidgetConfig; // 最新动态组件专用配置
+	relatedPosts?: RelatedPostsWidgetConfig; // 相关文章组件专用配置
+};
+
+export type RelatedPostsWidgetConfig = {
+	limit?: number; // 最多显示多少篇，默认 10
 };
 
 export type DynamicWidgetConfig = {

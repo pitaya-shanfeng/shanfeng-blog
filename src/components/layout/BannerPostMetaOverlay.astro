@@ -4,6 +4,7 @@ import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import type { BannerPostMeta } from "@/utils/banner-visibility-utils";
 import { formatDateToYYYYMMDD } from "@/utils/date-utils";
+import { getCategoryUrl } from "@/utils/url-utils";
 
 interface Props {
 	showBannerPostMeta: boolean;
@@ -40,7 +41,13 @@ const {
                                 class="banner-post-description-quote banner-post-description-quote-start"
                                 aria-hidden="true"
                             />
-                            {bannerPostMeta.description}
+                            <span
+                                class="banner-post-description-text"
+                                data-banner-typewriter
+                            >{bannerPostMeta.description}</span><span
+                                class="banner-typewriter-cursor"
+                                aria-hidden="true"
+                            ></span>
                             <Icon
                                 name="material-symbols:format-quote-rounded"
                                 class="banner-post-description-quote banner-post-description-quote-end"
@@ -49,6 +56,68 @@ const {
                         </div>
                     </div>
                 )}
+                {/* description 模式下的元信息行：分类 / 标签 / 字数 / 阅读时长（不含日期） */}
+                {bannerPostInfoMode === "description" &&
+                    (bannerPostMeta.category ||
+                        (bannerPostMeta.tags && bannerPostMeta.tags.length > 0) ||
+                        typeof bannerPostMeta.words === "number" ||
+                        typeof bannerPostMeta.minutes === "number") && (
+                        <div class="banner-post-meta-list flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-white/90 md:text-base">
+                            {bannerPostMeta.category && (
+                                <a
+                                    href={getCategoryUrl(bannerPostMeta.category)}
+                                    class="inline-flex items-center gap-1.5 transition hover:text-white"
+                                >
+                                    <Icon
+                                        name="material-symbols:book-2-outline-rounded"
+                                        class="text-[1.05em]"
+                                    />
+                                    <span>{bannerPostMeta.category}</span>
+                                </a>
+                            )}
+                            {bannerPostMeta.tags && bannerPostMeta.tags.length > 0 && (
+                                <span class="inline-flex items-center gap-1.5">
+                                    <Icon
+                                        name="material-symbols:tag-rounded"
+                                        class="text-[1.05em]"
+                                    />
+                                    <span>{bannerPostMeta.tags.join(" / ")}</span>
+                                </span>
+                            )}
+                            {typeof bannerPostMeta.words === "number" && (
+                                <span class="inline-flex items-center gap-1.5">
+                                    <Icon
+                                        name="material-symbols:notes-rounded"
+                                        class="text-[1.05em]"
+                                    />
+                                    <span>
+                                        {bannerPostMeta.words}{" "}
+                                        {i18n(
+                                            bannerPostMeta.words === 1
+                                                ? I18nKey.wordCount
+                                                : I18nKey.wordsCount,
+                                        )}
+                                    </span>
+                                </span>
+                            )}
+                            {typeof bannerPostMeta.minutes === "number" && (
+                                <span class="inline-flex items-center gap-1.5">
+                                    <Icon
+                                        name="material-symbols:schedule-outline-rounded"
+                                        class="text-[1.05em]"
+                                    />
+                                    <span>
+                                        {bannerPostMeta.minutes}{" "}
+                                        {i18n(
+                                            bannerPostMeta.minutes === 1
+                                                ? I18nKey.minuteCount
+                                                : I18nKey.minutesCount,
+                                        )}
+                                    </span>
+                                </span>
+                            )}
+                        </div>
+                    )}
                 {bannerPostInfoMode === "meta" && (
                     <div class="banner-post-meta-list flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-white/90 text-sm md:text-base">
                         <span class="inline-flex items-center gap-1.5">
@@ -84,3 +153,90 @@ const {
         </div>
     </div>
 )}
+
+<style>
+    /* 打字机光标：逐字显示时跟随在文字末尾的闪烁竖线 */
+    .banner-typewriter-cursor {
+        display: inline-block;
+        width: 2px;
+        height: 1em;
+        margin-left: 3px;
+        vertical-align: -0.12em;
+        background-color: currentColor;
+        animation: banner-typewriter-blink 1s step-end infinite;
+    }
+
+    @keyframes banner-typewriter-blink {
+        0%,
+        100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .banner-typewriter-cursor {
+            display: none;
+        }
+    }
+</style>
+
+<script is:inline>
+    (function () {
+        function play() {
+            var el = document.querySelector("[data-banner-typewriter]");
+            if (!el || el.dataset.typewriterDone === "1") return;
+
+            var full = el.textContent || "";
+            if (!full.trim()) return;
+            el.dataset.typewriterDone = "1";
+
+            var cursor = el.parentElement
+                ? el.parentElement.querySelector(".banner-typewriter-cursor")
+                : null;
+
+            // 尊重系统的「减弱动态效果」设置：不播放，直接完整显示
+            if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                if (cursor) cursor.remove();
+                return;
+            }
+
+            // 单字间隔自适应，整体时长控制在 0.7s ~ 2.6s 之间
+            var total = Math.min(2600, Math.max(700, full.length * 55));
+            var step = total / full.length;
+            var i = 0;
+            el.textContent = "";
+
+            function type() {
+                if (i >= full.length) {
+                    if (cursor) {
+                        setTimeout(function () {
+                            cursor.remove();
+                        }, 1600);
+                    }
+                    return;
+                }
+                el.textContent += full.charAt(i);
+                i += 1;
+                setTimeout(type, step);
+            }
+
+            setTimeout(type, 260);
+        }
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", play);
+        } else {
+            play();
+        }
+
+        // 客户端路由切换后重新播放
+        document.addEventListener("astro:page-load", function () {
+            var el = document.querySelector("[data-banner-typewriter]");
+            if (el) delete el.dataset.typewriterDone;
+            play();
+        });
+    })();
+</script>

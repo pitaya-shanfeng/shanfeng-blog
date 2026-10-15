@@ -75,6 +75,7 @@ export type SiteConfig = {
 			alt?: string; // 图片alt文本
 		};
 		title?: string; // 导航栏标题，如果不设置则使用 title
+		subtitle?: string; // 导航栏副标题，显示在标题下方的小字，不设置则不显示
 		widthFull?: boolean; // 导航栏是否占满屏幕宽度
 		menuAlign?: "left" | "center"; // 导航菜单对齐方式（仅桌面端菜单）
 		followTheme?: boolean; // 导航栏图标和标题是否跟随主题色

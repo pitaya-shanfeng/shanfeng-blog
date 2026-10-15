@@ -61,6 +61,12 @@
     #main-grid > #right-sidebar-dynamic {
       display: var(--right-display-xl, contents);
     }
+    /* 桌面端侧栏加宽；平板端仍用 --grid-sidebar-width。
+       侧栏变宽后，1fr 的内容列会同步收窄（见 responsive-utils 的 SIDEBAR_WIDTH_XL） */
+    #main-grid #left-sidebar,
+    #main-grid #right-sidebar {
+      max-width: var(--grid-sidebar-width-xl, var(--grid-sidebar-width));
+    }
     body:not(.immersive-reading) #main-grid > #content-column {
       max-width: calc(100% * var(--content-ratio-xl, 1));
     }

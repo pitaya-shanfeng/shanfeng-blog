@@ -21,7 +21,11 @@ body.immersive-reading #mobile-bottom-sidebar,
 body.immersive-reading #category-bar-wrapper,
 body.immersive-reading .site-footer,
 body.immersive-reading #outdated-card,
-body.immersive-reading #content-wrapper > *:not(:first-child),
+/* 「支持与分享」条现在排在文章卡片之前（原分类栏位置），
+   所以这里不再用「保留第一个子元素」，改为按 id 锁定文章卡片，
+   并把该条单列出来一并隐藏。其他页面仍保持「只留第一个子元素」的原有行为。 */
+body.immersive-reading #content-wrapper > *:not(:first-child):not(#post-card-wrapper),
+body.immersive-reading #content-wrapper > [data-post-action-bar],
 body.immersive-reading #post-container > .mb-6.rounded-xl,
 body.immersive-reading #post-container .license-container,
 body.immersive-reading .floating-controls-container #back-to-comment-btn,

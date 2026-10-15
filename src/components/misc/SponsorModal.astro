@@ -1,0 +1,229 @@
+---
+import { Icon } from "astro-icon/components";
+import { sponsorConfig } from "@/config";
+import I18nKey from "@/i18n/i18nKey";
+import { i18n } from "@/i18n/translation";
+import { url } from "@/utils/url-utils";
+
+const enabledMethods = sponsorConfig.methods.filter((method) => method.enabled);
+const title = sponsorConfig.title || i18n(I18nKey.sponsorTitle);
+const description =
+	sponsorConfig.description || i18n(I18nKey.sponsorDescription);
+---
+
+<dialog id="sponsor-modal" class="sponsor-modal" aria-labelledby="sponsor-modal-title">
+  <div class="sponsor-modal-panel">
+    <div class="sponsor-modal-head">
+      <h3 id="sponsor-modal-title" class="sponsor-modal-title">{title}</h3>
+      <button type="button" class="sponsor-modal-close" data-sponsor-close aria-label="关闭">
+        <Icon name="material-symbols:close-rounded" class="text-xl" />
+      </button>
+    </div>
+
+    <p class="sponsor-modal-desc">{description}</p>
+
+    <div class="sponsor-modal-grid">
+      {
+        enabledMethods.map((method) => (
+          <div class="sponsor-modal-card">
+            {method.qrCode && (
+              <div class="sponsor-modal-qr">
+                <img
+                  src={url(method.qrCode)}
+                  alt={`${method.name} ${i18n(I18nKey.scanToSponsor)}`}
+                  loading="lazy"
+                />
+              </div>
+            )}
+            <div class="sponsor-modal-method">
+              {method.icon && <Icon name={method.icon} class="text-lg" />}
+              <span>{method.name}</span>
+            </div>
+            {method.description && (
+              <p class="sponsor-modal-hint">{method.description}</p>
+            )}
+          </div>
+        ))
+      }
+    </div>
+
+    {
+      sponsorConfig.usage && (
+        <p class="sponsor-modal-usage">{sponsorConfig.usage}</p>
+      )
+    }
+  </div>
+</dialog>
+
+<style>
+  .sponsor-modal {
+    padding: 0;
+    border: none;
+    background: transparent;
+    max-width: min(440px, calc(100vw - 2rem));
+    width: 100%;
+    margin: auto;
+    overflow: visible;
+  }
+
+  .sponsor-modal::backdrop {
+    background: rgba(0, 0, 0, 0.45);
+  }
+
+  /* 打开时锁定背景滚动：只要 dialog 处于 open 状态就锁，
+     不依赖 JS 事件（ESC 关闭也能正确解锁） */
+  :global(html:has(.sponsor-modal[open])) {
+    overflow: hidden;
+  }
+
+  .sponsor-modal-panel {
+    background: var(--card-bg);
+    border-radius: var(--radius-large);
+    padding: 1.25rem 1.5rem 1.5rem;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+    border: 1px solid var(--line-divider);
+  }
+
+  .sponsor-modal-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .sponsor-modal-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--deep-text);
+    margin: 0;
+  }
+
+  .sponsor-modal-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 0.5rem;
+    color: var(--content-meta);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .sponsor-modal-close:hover {
+    background: var(--btn-regular-bg);
+    color: var(--deep-text);
+  }
+
+  .sponsor-modal-desc {
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    color: var(--content-meta);
+    margin: 0.25rem 0 1.25rem;
+  }
+
+  .sponsor-modal-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 480px) {
+    .sponsor-modal-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .sponsor-modal-card {
+    border: 1px solid var(--line-divider);
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    text-align: center;
+  }
+
+  .sponsor-modal-qr {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+
+  .sponsor-modal-qr img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .sponsor-modal-method {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin-top: 0.625rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--deep-text);
+  }
+
+  .sponsor-modal-hint {
+    font-size: 0.75rem;
+    color: var(--content-meta);
+    margin: 0.125rem 0 0;
+  }
+
+  .sponsor-modal-usage {
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: var(--content-meta);
+    text-align: center;
+    margin: 1.25rem 0 0;
+    padding-top: 0.75rem;
+    border-top: 1px dashed var(--line-divider);
+  }
+</style>
+
+<script>
+  function setupSponsorModal() {
+    const dialog = document.getElementById(
+      "sponsor-modal",
+    ) as HTMLDialogElement | null;
+    if (!dialog) return;
+
+    function open() {
+      if (dialog.open) return;
+      dialog.showModal();
+    }
+
+    function close() {
+      if (!dialog.open) return;
+      dialog.close();
+    }
+
+    // 所有触发按钮（文章页可能有多处）
+    document.querySelectorAll("[data-sponsor-open]").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        open();
+      });
+    });
+
+    dialog.querySelectorAll("[data-sponsor-close]").forEach((btn) => {
+      btn.addEventListener("click", close);
+    });
+
+    // 点击遮罩空白处关闭（点击面板内部不关闭）
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) close();
+    });
+  }
+
+  setupSponsorModal();
+  document.addEventListener("astro:page-load", setupSponsorModal);
+</script>

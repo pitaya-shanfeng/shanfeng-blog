@@ -10,6 +10,8 @@ export interface BannerPostMeta {
 	updated?: Date;
 	words?: number;
 	minutes?: number;
+	category?: string;
+	tags?: string[];
 }
 
 export interface BannerVisibilityContext {

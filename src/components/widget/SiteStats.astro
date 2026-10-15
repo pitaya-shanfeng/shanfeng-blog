@@ -92,22 +92,27 @@ const stats = [
 		value: totalWords,
 		formatted: true,
 	},
-	{
-		icon: "material-symbols:calendar-clock-outline",
-		label: i18n(I18nKey.siteStatsRunningDays),
-		value: 0, // 将由客户端更新
-		suffix: i18n(I18nKey.siteStatsDays).replace("{days}", ""),
-		dynamic: true,
-		id: "running-days",
-	},
-	{
-		icon: "mingcute:heartbeat-line",
-		label: i18n(I18nKey.siteStatsLastUpdate),
-		value: 0, // 将由客户端更新
-		suffix: i18n(I18nKey.siteStatsDaysAgo).replace("{days}", ""),
-		dynamic: true,
-		id: "last-update",
-	},
+	// 原本这里还有两条时间类统计：「运行天数」与「最后更新 N 天前」。
+	// 已移除，原因有二：
+	//   1. 本站定位是知识仓库，不展示时间概念；
+	//   2. 文章日期统一用了 1970 占位，这两项算出来是无意义的大数字（如「24497 天前」）。
+	// 若将来要加回来，恢复下面两项即可，下方脚本会自动填充（脚本按 data-stat-id 查找，找不到不报错）：
+	// {
+	// 	icon: "material-symbols:calendar-clock-outline",
+	// 	label: i18n(I18nKey.siteStatsRunningDays),
+	// 	value: 0,
+	// 	suffix: i18n(I18nKey.siteStatsDays).replace("{days}", ""),
+	// 	dynamic: true,
+	// 	id: "running-days",
+	// },
+	// {
+	// 	icon: "mingcute:heartbeat-line",
+	// 	label: i18n(I18nKey.siteStatsLastUpdate),
+	// 	value: 0,
+	// 	suffix: i18n(I18nKey.siteStatsDaysAgo).replace("{days}", ""),
+	// 	dynamic: true,
+	// 	id: "last-update",
+	// },
 ];
 ---
 

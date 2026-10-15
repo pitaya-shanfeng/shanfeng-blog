@@ -73,17 +73,14 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 			// 是否启用主页横幅文字
 			enable: true,
 			// 主页横幅主标题
-			title: "Lovely firefly!",
+			// 原为模板文案「Lovely firefly!」，已换成站点标语
+			title: "做个靠谱的产品经理",
 			// 主页横幅主标题字体大小
 			titleSize: "4.5rem",
-			// 主页横幅副标题
+			// 主页横幅副标题（打字机开启时会循环显示）
+			// 原为模板的 6 行英文诗，已换成《见山》序言里那句
 			subtitle: [
-				"In Reddened Chrysalis, I Once Rest",
-				"From Shattered Sky, I Free Fall",
-				"Amidst Silenced Stars, I Deep Sleep",
-				"Upon Lighted Fyrefly, I Soon Gaze",
-				"From Undreamt Night, I Thence Shine",
-				"In Finalized Morrow, I Full Bloom",
+				"见山是山，见山不是山，见山还是山",
 			],
 			// 主页横幅副标题字体大小
 			subtitleSize: "1.5rem",
@@ -103,23 +100,16 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 			linksEnable: true,
 			// 首页横幅标题下方的链接图标（可选，支持 showName 显示文字）
 			// 图标支持 Iconify 格式：fa7-brands:github、fa7-solid:envelope、mdi:rss 等
+			// 原模板这里是 GitHub / Email / Sponsor 三个入口，指向模板作者（CuteLeaf 仓库、
+			// xiaye@msn.com、作者的打赏页），已移除。等你有自己的外链时按下面写法加回来：
+			//
+			// {
+			// 	name: "GitHub",
+			// 	icon: "fa7-brands:github",
+			// 	url: "https://github.com/你的账号",
+			// 	showName: true,
+			// },
 			links: [
-				{
-					name: "GitHub",
-					icon: "fa7-brands:github",
-					url: "https://github.com/CuteLeaf/Firefly",
-					showName: true,
-				},
-				{
-					name: "Email",
-					icon: "fa7-solid:envelope",
-					url: "mailto:xiaye@msn.com",
-				},
-				{
-					name: "Sponsor",
-					icon: "material-symbols:favorite",
-					url: "https://blog.cuteleaf.cn/sponsor/",
-				},
 				{
 					name: "RSS",
 					icon: "fa7-solid:rss",

@@ -1,0 +1,254 @@
+---
+import { Icon } from "astro-icon/components";
+import WidgetLayout from "@/components/common/WidgetLayout.astro";
+import I18nKey from "@/i18n/i18nKey";
+import { i18n } from "@/i18n/translation";
+import type { WidgetComponentConfig } from "@/types/config";
+import type { PostForList } from "@/utils/content-utils";
+import { getPostUrlBySlug, url } from "@/utils/url-utils";
+
+interface Props {
+	class?: string;
+	style?: string;
+	widgetConfig?: WidgetComponentConfig;
+	/** 由文章页计算后经布局层传入，侧栏不做推荐逻辑 */
+	posts?: PostForList[];
+}
+
+const { class: className, style, widgetConfig, posts = [] } = Astro.props;
+
+const showTitle = widgetConfig?.showTitle !== false;
+const configuredLimit = widgetConfig?.specificConfig?.relatedPosts?.limit ?? 10;
+const limit = Math.max(1, Math.floor(configuredLimit));
+const list = posts.slice(0, limit);
+const emptyText = i18n(I18nKey.noRelatedPosts);
+---
+
+<WidgetLayout
+	id="related-posts-widget"
+	name={i18n(I18nKey.relatedPosts)}
+	showTitle={showTitle}
+	class={className}
+	style={style}
+	contentPadding={false}
+>
+	<div
+		data-related-root
+		data-limit={limit}
+		data-related-api={url("/api/relatedPosts.json")}
+		data-meta-api={url("/api/allPostMeta.json")}
+		data-empty-text={emptyText}
+		class="flex flex-col px-4 pb-3 -mt-1"
+	>
+		{
+			list.length > 0 ? (
+				list.map((post, idx) => (
+					<a
+						href={getPostUrlBySlug(post.id)}
+						class:list={[
+							"group flex items-center gap-2.5 px-2 py-2 rounded-lg",
+							"transition-all hover:bg-black/5 dark:hover:bg-white/5 active:scale-[0.98]",
+							idx < list.length - 1 &&
+								"border-b border-dashed border-(--line-divider)",
+						]}
+					>
+						<div class="shrink-0 w-5 h-5 rounded-md bg-(--enter-btn-bg) text-(--primary) flex items-center justify-center text-xs font-bold transition">
+							{idx + 1}
+						</div>
+						<div class="flex-1 min-w-0">
+							<div class="text-sm font-bold text-black/75 dark:text-white/75 truncate transition group-hover:text-(--primary)">
+								{post.data.title}
+							</div>
+							{post.data.category && (
+								<div class="mt-0.5">
+									<span class="inline-block text-xs px-1.5 py-0.5 rounded-sm bg-black/5 dark:bg-white/10 text-black/40 dark:text-white/40">
+										{post.data.category}
+									</span>
+								</div>
+							)}
+						</div>
+						<Icon
+							name="material-symbols:chevron-right-rounded"
+							class="shrink-0 text-lg text-black/15 dark:text-white/15 transition group-hover:text-(--primary) group-hover:translate-x-0.5"
+						/>
+					</a>
+				))
+			) : (
+				<div class="flex items-center gap-2 px-1 py-2 text-sm text-black/30 dark:text-white/30 transition">
+					<Icon name="material-symbols:article-outline" class="text-lg" />
+					<span>{emptyText}</span>
+				</div>
+			)
+		}
+	</div>
+</WidgetLayout>
+
+<script>
+	// 侧栏在 swup 容器之外，站内无刷新跳转时 DOM 不会被替换。
+	// 「相关文章」与当前文章绑定，所以跳转后必须自己重建——
+	// 数据来自构建期预生成的映射（/api/relatedPosts.json），
+	// 保证与 SSR 用的是同一套推荐结果，不在客户端重复实现推荐逻辑。
+	const WIDGET_SELECTOR = 'widget-layout[data-id="related-posts-widget"]';
+
+	function getCurrentPostId(): string {
+		const el = document.querySelector("[data-post-page]");
+		return el?.getAttribute("data-post-id") || "";
+	}
+
+	function buildItem(
+		post: { id: string; title: string; category?: string },
+		index: number,
+		isLast: boolean,
+		basePath: string,
+	): HTMLAnchorElement {
+		const a = document.createElement("a");
+		a.href = `${basePath}/posts/${post.id}/`;
+		a.className =
+			"group flex items-center gap-2.5 px-2 py-2 rounded-lg transition-all hover:bg-black/5 dark:hover:bg-white/5 active:scale-[0.98]" +
+			(isLast ? "" : " border-b border-dashed border-(--line-divider)");
+
+		const num = document.createElement("div");
+		num.className =
+			"shrink-0 w-5 h-5 rounded-md bg-(--enter-btn-bg) text-(--primary) flex items-center justify-center text-xs font-bold transition";
+		num.textContent = String(index + 1);
+
+		const body = document.createElement("div");
+		body.className = "flex-1 min-w-0";
+
+		const title = document.createElement("div");
+		title.className =
+			"text-sm font-bold text-black/75 dark:text-white/75 truncate transition group-hover:text-(--primary)";
+		title.textContent = post.title;
+		body.appendChild(title);
+
+		if (post.category) {
+			const chipWrap = document.createElement("div");
+			chipWrap.className = "mt-0.5";
+			const chip = document.createElement("span");
+			chip.className =
+				"inline-block text-xs px-1.5 py-0.5 rounded-sm bg-black/5 dark:bg-white/10 text-black/40 dark:text-white/40";
+			chip.textContent = post.category;
+			chipWrap.appendChild(chip);
+			body.appendChild(chipWrap);
+		}
+
+		const svgNS = "http://www.w3.org/2000/svg";
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttribute("width", "24");
+		svg.setAttribute("height", "24");
+		svg.setAttribute("viewBox", "0 0 24 24");
+		svg.setAttribute(
+			"class",
+			"shrink-0 text-lg text-black/15 dark:text-white/15 transition group-hover:text-(--primary) group-hover:translate-x-0.5",
+		);
+		const path = document.createElementNS(svgNS, "path");
+		path.setAttribute("fill", "currentColor");
+		path.setAttribute(
+			"d",
+			"M9.29 6.71a1 1 0 0 0 0 1.41L13.17 12l-3.88 3.88a1 1 0 1 0 1.41 1.41l4.59-4.59a1 1 0 0 0 0-1.41L10.7 6.7a1 1 0 0 0-1.41.01z",
+		);
+		svg.appendChild(path);
+
+		a.appendChild(num);
+		a.appendChild(body);
+		a.appendChild(svg);
+		return a;
+	}
+
+	async function fetchRelatedData(root: HTMLElement) {
+		const w = window as any;
+		if (w.__relatedPostsCache) return w.__relatedPostsCache;
+
+		const [relatedRes, metaRes] = await Promise.all([
+			fetch(root.dataset.relatedApi as string),
+			fetch(root.dataset.metaApi as string),
+		]);
+		const related: Record<string, string[]> = await relatedRes.json();
+		const meta: Array<{ id: string; title: string; category?: string }> =
+			await metaRes.json();
+
+		const byId = new Map<string, { id: string; title: string; category?: string }>();
+		for (const item of meta) byId.set(item.id, item);
+
+		w.__relatedPostsCache = { related, byId };
+		return w.__relatedPostsCache;
+	}
+
+	async function refreshRelatedPosts() {
+		const layout = document.querySelector(WIDGET_SELECTOR) as HTMLElement | null;
+		const root = document.querySelector("[data-related-root]") as HTMLElement | null;
+		if (!layout || !root) return;
+
+		const w = window as any;
+		const postId = getCurrentPostId();
+
+		// 非文章页整块隐藏：服务端渲染的显隐状态在无刷新跳转后不再准确
+		if (!postId) {
+			layout.classList.add("hidden");
+			w.__relatedPostsRenderedFor = "";
+			return;
+		}
+		layout.classList.remove("hidden");
+
+		// 首次执行时，DOM 就是服务端为当前文章渲染的，无需重建
+		if (w.__relatedPostsRenderedFor === undefined) {
+			w.__relatedPostsRenderedFor = postId;
+			return;
+		}
+		if (w.__relatedPostsRenderedFor === postId) return;
+
+		try {
+			const { related, byId } = await fetchRelatedData(root);
+			const ids = related[postId] || [];
+			const picked = ids
+				.map((id) => byId.get(id))
+				.filter((item): item is NonNullable<typeof item> => Boolean(item));
+
+			const limit = Number(root.dataset.limit || 10);
+			const basePath = (root.dataset.metaApi as string).replace(
+				/\/api\/allPostMeta\.json$/,
+				"",
+			);
+
+			root.replaceChildren();
+			if (picked.length === 0) {
+				const empty = document.createElement("div");
+				empty.className =
+					"flex items-center gap-2 px-1 py-2 text-sm text-black/30 dark:text-white/30 transition";
+				empty.textContent = root.dataset.emptyText || "";
+				root.appendChild(empty);
+			} else {
+				const shown = picked.slice(0, limit);
+				shown.forEach((post, idx) => {
+					root.appendChild(
+						buildItem(post, idx, idx === shown.length - 1, basePath),
+					);
+				});
+			}
+
+			w.__relatedPostsRenderedFor = postId;
+		} catch (error) {
+			console.error("[related-posts] 站内跳转后重建失败", error);
+		}
+	}
+
+	if (!(window as any).__relatedPostsInit) {
+		(window as any).__relatedPostsInit = true;
+
+		if (document.readyState === "loading") {
+			document.addEventListener("DOMContentLoaded", refreshRelatedPosts);
+		} else {
+			refreshRelatedPosts();
+		}
+
+		document.addEventListener("astro:page-load", () =>
+			setTimeout(refreshRelatedPosts, 100),
+		);
+		document.addEventListener("swup:contentReplaced", () =>
+			setTimeout(refreshRelatedPosts, 100),
+		);
+		window.addEventListener("popstate", () =>
+			setTimeout(refreshRelatedPosts, 200),
+		);
+	}
+</script>

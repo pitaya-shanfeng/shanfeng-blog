@@ -9,10 +9,10 @@ export const profileConfig: ProfileConfig = {
 	avatar: "assets/images/avatar.avif",
 
 	// 名字
-	name: "XiaYe",
+	name: "余涛（山风）",
 
 	// 个人签名
-	bio: "Hello, I'm XiaYe.",
+	bio: "做个靠谱的产品经理",
 
 	// 链接配置
 	// 已经预装的图标集：fa7-brands，fa7-regular，fa7-solid，material-symbols，simple-icons
@@ -21,18 +21,21 @@ export const profileConfig: ProfileConfig = {
 	// `pnpm add @iconify-json/<icon-set-name>`
 	// showName: true 时显示图标和名称，false 时只显示图标
 	links: [
-		{
-			name: "GitHub",
-			icon: "fa7-brands:github",
-			url: "https://github.com/CuteLeaf",
-			showName: false,
-		},
-		{
-			name: "Email",
-			icon: "fa7-solid:envelope",
-			url: "mailto:xiaye@msn.com",
-			showName: false,
-		},
+		// 原模板这里挂了两个指向模板作者的链接（GitHub 指向 CuteLeaf、Email 指向 xiaye@msn.com），
+		// 已移除，避免访客点进去是模板作者。等你补上自己的账号/邮箱时按下面写法加回来：
+		//
+		// {
+		// 	name: "GitHub",
+		// 	icon: "fa7-brands:github",
+		// 	url: "https://github.com/你的账号",
+		// 	showName: false,
+		// },
+		// {
+		// 	name: "Email",
+		// 	icon: "fa7-solid:envelope",
+		// 	url: "mailto:你的邮箱",
+		// 	showName: false,
+		// },
 		{
 			name: "RSS",
 			icon: "fa7-solid:rss",

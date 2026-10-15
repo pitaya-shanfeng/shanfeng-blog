@@ -11,6 +11,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 	// left: 仅显示左侧边栏
 	// right: 仅显示右侧边栏
 	// both: 双侧边栏，1280px以上同时显示左右，769-1279px根据tabletSidebar配置显示其中一侧
+	// 文章页用 both：左＝相关文章，右＝文章目录（目录回到它原本的右侧、且保持粘性跟随滚动）
 	position: "both",
 
 	// 平板端(769-1279px)显示哪侧侧边栏，仅position为both时生效
@@ -41,8 +42,8 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			enable: true,
 			// 组件位置
 			position: "top",
-			// 是否在文章详情页显示
-			showOnPostPage: true,
+			// 是否在文章详情页显示（文章页专注正文，仅保留文章目录）
+			showOnPostPage: false,
 		},
 		{
 			// 组件类型：公告组件
@@ -52,7 +53,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			// 组件位置
 			position: "top",
 			// 是否在文章详情页显示
-			showOnPostPage: true,
+			showOnPostPage: false,
 		},
 		{
 			// 组件类型：音乐播放器
@@ -62,7 +63,24 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			// 组件位置
 			position: "top",
 			// 是否在文章详情页显示
-			showOnPostPage: true,
+			showOnPostPage: false,
+		},
+		{
+			// 组件类型：最新动态组件（原在右侧栏，因改为单侧布局移到这里）
+			type: "dynamic",
+			// 是否启用该组件
+			enable: true,
+			// 组件位置
+			position: "top",
+			// 是否在文章详情页显示
+			showOnPostPage: false,
+			// 组件专属配置
+			specificConfig: {
+				dynamic: {
+					// 显示的最新动态数量
+					limit: 2,
+				},
+			},
 		},
 		{
 			// 组件类型：分类组件
@@ -72,7 +90,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			// 组件位置
 			position: "sticky",
 			// 是否在文章详情页显示
-			showOnPostPage: true,
+			showOnPostPage: false,
 			// 组件专属配置
 			specificConfig: {
 				// 折叠阈值：当分类数量超过>5个时自动折叠
@@ -87,49 +105,66 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			// 组件位置
 			position: "sticky",
 			// 是否在文章详情页显示
-			showOnPostPage: true,
+			showOnPostPage: false,
 			// 组件专属配置
 			specificConfig: {
 				// 折叠阈值：当标签数量超过>10个时自动折叠
 				collapseThreshold: 10,
 			},
 		},
+		{
+			// 组件类型：侧边栏目录组件（文章页左侧）
+			type: "sidebarToc",
+			// 是否启用该组件
+			enable: true,
+			// 组件位置：sticky = 页面下滑时吸顶
+			position: "sticky",
+			// 是否在文章详情页显示
+			showOnPostPage: true,
+			// 是否在非文章详情页隐藏
+			hideOnNonPostPage: true,
+		},
 	],
 
 	// 右侧边栏组件配置列表
+	// 文章页：左＝文章目录，右＝相关文章，两块都粘性吸顶
+	// 模板自带的 stats / siteInfo / calendar 已停用 —— 它们 showOnPostPage 为 false，
+	// 若保持启用会在**非文章页**冒出右栏（首页等也变成两列），而这里只想要文章页两列
 	rightComponents: [
 		{
-			// 组件类型：最新动态组件
-			type: "dynamic",
+			// 组件类型：相关文章组件（文章页右侧；数据由文章页计算后透传）
+			type: "relatedPosts",
 			// 是否启用该组件
 			enable: true,
-			// 组件位置
-			position: "top",
+			// 组件位置：sticky = 页面下滑时吸顶
+			position: "sticky",
 			// 是否在文章详情页显示
 			showOnPostPage: true,
+			// 是否在非文章详情页隐藏
+			hideOnNonPostPage: true,
 			// 组件专属配置
 			specificConfig: {
-				dynamic: {
-					// 显示的最新动态数量
-					limit: 2,
+				relatedPosts: {
+					// 最多显示多少篇
+					limit: 10,
 				},
 			},
 		},
 		{
-			// 组件类型：站点统计组件
+			// 组件类型：站点统计组件（模板自带，已停用）
 			type: "stats",
 			// 是否启用该组件
-			enable: true,
+			enable: false,
 			// 组件位置
 			position: "top",
 			// 是否在文章详情页显示
 			showOnPostPage: false,
 		},
 		{
-			// 组件类型：站点信息组件
+			// 组件类型：站点信息组件（模板自带，已停用）
 			type: "siteInfo",
 			// 是否启用该组件
-			enable: true,
+			enable: false,
 			// 组件位置
 			position: "top",
 			// 是否在文章详情页显示
@@ -143,10 +178,10 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			},
 		},
 		{
-			// 组件类型：日历组件
+			// 组件类型：日历组件（模板自带，已停用）
 			type: "calendar",
 			// 是否启用该组件
-			enable: true,
+			enable: false,
 			// 是否显示组件标题
 			showTitle: false,
 			// 组件位置
@@ -160,18 +195,6 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 					showHeatmap: true,
 				},
 			},
-		},
-		{
-			// 组件类型：侧边栏目录组件（只在文章详情页显示）
-			type: "sidebarToc",
-			// 是否启用该组件
-			enable: true,
-			// 组件位置
-			position: "sticky",
-			// 是否在文章详情页显示
-			showOnPostPage: true,
-			// 是否在非文章详情页隐藏
-			hideOnNonPostPage: true,
 		},
 		{
 			// 组件类型：广告栏组件 1
@@ -239,8 +262,8 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			type: "profile",
 			// 是否启用该组件
 			enable: true,
-			// 是否在文章详情页显示
-			showOnPostPage: true,
+			// 是否在文章详情页显示（与桌面端一致：文章页不展示）
+			showOnPostPage: false,
 		},
 		{
 			// 组件类型：公告组件
@@ -248,7 +271,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			// 是否启用该组件
 			enable: true,
 			// 是否在文章详情页显示
-			showOnPostPage: true,
+			showOnPostPage: false,
 		},
 		{
 			// 组件类型：分类组件
@@ -256,7 +279,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			// 是否启用该组件
 			enable: true,
 			// 是否在文章详情页显示
-			showOnPostPage: true,
+			showOnPostPage: false,
 			// 组件专属配置
 			specificConfig: {
 				// 折叠阈值：当分类数量超过5个时自动折叠
@@ -269,7 +292,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			// 是否启用该组件
 			enable: true,
 			// 是否在文章详情页显示
-			showOnPostPage: true,
+			showOnPostPage: false,
 			// 组件专属配置
 			specificConfig: {
 				// 折叠阈值：当标签数量超过20个时自动折叠
@@ -282,7 +305,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			// 是否启用该组件
 			enable: true,
 			// 是否在文章详情页显示
-			showOnPostPage: true,
+			showOnPostPage: false,
 			// 组件专属配置
 			specificConfig: {
 				dynamic: {

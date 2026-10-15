@@ -52,15 +52,18 @@ export const commentConfig: CommentConfig = {
 	},
 
 	//giscus评论系统配置
+	// ⚠️ 原模板这里填的是作者自己的仓库（CuteLeaf/Firefly），若将来启用 giscus 而不改，
+	//    评论会被写进模板作者的仓库。已清空，启用前请填自己的：
+	//    在 https://giscus.app 选中自己的公开仓库，复制 repo / repoId / categoryId
 	giscus: {
 		// 设置 Giscus 评论系统仓库
-		repo: "CuteLeaf/Firefly",
+		repo: "",
 		// 设置 Giscus 评论系统仓库ID
-		repoId: "R_kgD2gfdFGd",
+		repoId: "",
 		// 设置 Giscus 评论系统分类
 		category: "General",
 		// 获取 Giscus 评论系统分类ID
-		categoryId: "DIC_kwDOKy9HOc4CegmW",
+		categoryId: "",
 		// 获取 Giscus 评论系统映射方式
 		mapping: "title",
 		// 获取 Giscus 评论系统严格模式

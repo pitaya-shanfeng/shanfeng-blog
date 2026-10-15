@@ -67,22 +67,8 @@ export const booknavConfig: BooknavGroup[] = [
 			},
 		],
 	},
-	{
-		id: "opensource",
-		name: "项目",
-		icon: "material-symbols:code-rounded",
-		desc: "好用的开源项目",
-		weight: 90,
-		items: [
-			{
-				title: "Firefly",
-				url: "https://github.com/CuteLeaf/Firefly",
-				desc: "清晰美观的 Astro 个人博客主题模板",
-				icon: "/favicon/firefly-32.png",
-				weight: 10,
-			},
-		],
-	},
+	// 原模板在这里还有一个「项目」分组，里面只放了模板作者的项目（Firefly 仓库），已整组移除。
+	// 想加回自己的项目收藏，照上面「开发」分组的格式写即可。
 	{
 		id: "design",
 		name: "设计",
@@ -131,26 +117,5 @@ export const booknavConfig: BooknavGroup[] = [
 			},
 		],
 	},
-	{
-		id: "resources",
-		name: "资源",
-		icon: "material-symbols:auto-stories-outline-rounded",
-		desc: "文档、教程与阅读",
-		weight: 70,
-		items: [
-			{
-				title: "Firefly Docs",
-				url: "https://docs-firefly.cuteleaf.cn",
-				desc: "Firefly 主题模板文档",
-				icon: "https://docs-firefly.cuteleaf.cn/logo.png",
-				weight: 10,
-			},
-			{
-				title: "夏夜流萤",
-				url: "https://blog.cuteleaf.cn",
-				desc: "飞萤之火自无梦的长夜亮起",
-				weight: 9,
-			},
-		],
-	},
+	// 原模板在这里还有一个「资源」分组，两条分别是模板作者的文档站与博客，已整组移除。
 ];

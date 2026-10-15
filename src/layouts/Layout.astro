@@ -100,11 +100,12 @@ const navbarPanelBlur = Math.max(
 );
 
 let pageTitle: string;
+// 统一用竖线分隔（首页与内页一致）：内页「文章 | 站点」，首页「站点 | 副标题」
 if (title) {
-	pageTitle = `${title} - ${siteConfig.title}`;
+	pageTitle = `${title} | ${siteConfig.title}`;
 } else {
 	pageTitle = siteConfig.subtitle
-		? `${siteConfig.title} - ${siteConfig.subtitle}`
+		? `${siteConfig.title} | ${siteConfig.subtitle}`
 		: siteConfig.title;
 }
 

@@ -7,6 +7,7 @@ import Categories from "@/components/widget/Categories.astro";
 import Dynamic from "@/components/widget/Dynamic.astro";
 import Music from "@/components/widget/Music.astro";
 import Profile from "@/components/widget/Profile.astro";
+import RelatedPosts from "@/components/widget/RelatedPosts.astro";
 import SidebarTOC from "@/components/widget/SidebarTOC.astro";
 import SiteInfo from "@/components/widget/SiteInfo.astro";
 import SiteStats from "@/components/widget/SiteStats.astro";
@@ -17,6 +18,7 @@ import type {
 	WidgetComponentConfig,
 } from "@/types/config";
 import { isWidgetVisibleOnPageType } from "@/utils/responsive-utils";
+import type { PostForList } from "@/utils/content-utils";
 import { isArticleDetailPage } from "@/utils/url-utils";
 
 interface Props {
@@ -24,6 +26,8 @@ interface Props {
 	headings?: MarkdownHeading[];
 	encrypted?: boolean;
 	side?: "left" | "right" | "bottom";
+	/** 相关文章数据，由文章页计算后传入（侧栏只负责展示） */
+	relatedPostList?: PostForList[];
 }
 
 // 侧边栏位置常量
@@ -37,6 +41,7 @@ const SIDEBAR_SIDE = {
 const COMPONENT_POSITION = {
 	TOP: "top",
 	STICKY: "sticky",
+	BOTTOM: "bottom",
 } as const;
 
 // 动画延迟配置
@@ -55,6 +60,7 @@ const componentMap = {
 	music: Music,
 	siteInfo: SiteInfo,
 	dynamic: Dynamic,
+	relatedPosts: RelatedPosts,
 };
 
 // 获取侧边栏位置
@@ -96,7 +102,11 @@ const getComponentsByPosition = (
 	const stickyComponents = components.filter(
 		(c) => "position" in c && c.position === COMPONENT_POSITION.STICKY,
 	) as WidgetComponentConfig[];
-	return { topComponents, stickyComponents };
+	// 排在粘性容器之后的组件（常规流）：滚动时会滑到粘性组下面
+	const bottomComponents = components.filter(
+		(c) => "position" in c && c.position === COMPONENT_POSITION.BOTTOM,
+	) as WidgetComponentConfig[];
+	return { topComponents, stickyComponents, bottomComponents };
 };
 
 // 获取动画延迟（硬编码）
@@ -148,6 +158,14 @@ const getComponentProps = (
 		};
 	}
 
+	// 特殊处理相关文章组件（数据由文章页计算后透传，侧栏不做推荐逻辑）
+	if (config.type === "relatedPosts") {
+		return {
+			...baseProps,
+			posts: Astro.props.relatedPostList || [],
+		};
+	}
+
 	return baseProps;
 };
 
@@ -157,9 +175,13 @@ const filteredComponents = filterAndSortComponents(allComponents);
 
 // 对于移动端底部组件，直接使用所有组件，不进行position分组
 const isMobileBottom = side === SIDEBAR_SIDE.BOTTOM;
-const { topComponents, stickyComponents } = !isMobileBottom
+const {
+	topComponents,
+	stickyComponents,
+	bottomComponents: tailComponents,
+} = !isMobileBottom
 	? getComponentsByPosition(filteredComponents)
-	: { topComponents: [], stickyComponents: [] };
+	: { topComponents: [], stickyComponents: [], bottomComponents: [] };
 const bottomComponents = isMobileBottom ? filteredComponents : [];
 const hasInitiallyVisibleTopComponents = topComponents.some(
 	isComponentInitiallyVisible,
@@ -167,7 +189,10 @@ const hasInitiallyVisibleTopComponents = topComponents.some(
 ---
 
 {
-	(topComponents.length > 0 || stickyComponents.length > 0 || bottomComponents.length > 0) && (
+	(topComponents.length > 0 ||
+		stickyComponents.length > 0 ||
+		tailComponents.length > 0 ||
+		bottomComponents.length > 0) && (
 		<div id={`${side}-sidebar`} class:list={[className, "flex flex-col w-full pt-0"]}>
 			{/* Mobile bottom components - 直接渲染所有组件，不分组 */}
 			{isMobileBottom ? (
@@ -204,7 +229,7 @@ const hasInitiallyVisibleTopComponents = topComponents.some(
 							id={`${side}-sidebar-sticky`}
 							class:list={[
 								"flex flex-col w-full mt-0 gap-4",
-								"sticky",
+								"sticky z-10",
 								hasInitiallyVisibleTopComponents ? "top-4" : "top-0",
 							]}
 						>
@@ -214,6 +239,21 @@ const hasInitiallyVisibleTopComponents = topComponents.some(
 								const props = getComponentProps(
 									comp,
 									topComponents.length + index
+								) as any;
+								return <Component {...props} />;
+							})}
+						</div>
+					)}
+
+					{/* 排在粘性组之后的组件（常规流）：滚动时滑到粘性组下面，故粘性组加了 z-10 */}
+					{tailComponents.length > 0 && (
+						<div class="flex flex-col w-full gap-4 mt-4">
+							{tailComponents.map((comp, index) => {
+								const Component = componentMap[comp.type];
+								if (!Component) return null;
+								const props = getComponentProps(
+									comp,
+									topComponents.length + stickyComponents.length + index
 								) as any;
 								return <Component {...props} />;
 							})}

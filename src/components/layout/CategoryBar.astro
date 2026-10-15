@@ -254,10 +254,23 @@ function initialActive(categoryName: string): {
     return isMobile && isBannerMode && !isHome;
   }
 
+  // 文章详情页由「支持与分享」条替代分类栏。
+  // 这条栏位于 swup 容器之外，站内无刷新跳转时不会被替换，
+  // 所以每次内容更新后都要按当前页型重新同步显隐。
+  // 页型判断用「文章卡片是否存在」而不是解析 URL：文章卡片在 swup 容器内、
+  // 跳转后必然随内容更新，比硬编码路径规则更不容易失效。
+  function syncCategoryBarVisibility() {
+    const wrapper = document.getElementById("category-bar-wrapper");
+    if (!wrapper) return;
+    wrapper.classList.toggle("hidden", !!document.querySelector("[data-post-page]"));
+  }
+
   function updateCategoryBar(
     currentUrl = new URL(window.location.href),
     options: { scrollBehavior?: ScrollBehavior; deferScroll?: boolean } = {},
   ) {
+    syncCategoryBarVisibility();
+
     const bar = document.getElementById("category-bar");
     if (!bar) return;
 

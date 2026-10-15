@@ -36,33 +36,33 @@ const pages = resolvePageToggles({
 
 	// ── 关于 (About) ──────────────────────────────────
 
-	// 打赏页面开关
-	sponsor: true,
+	// 打赏页面开关（独立页已下线，打赏改由文章内弹窗承载）
+	sponsor: false,
 });
 
 export const siteConfig: SiteConfig = {
 	// 站点标题
-	title: "Firefly",
+	title: "山风Blog",
 
 	// 站点副标题
-	subtitle: "Demo site",
+	subtitle: "做个靠谱的产品经理",
 
 	// 站点 URL
-	site_url: "https://firefly.cuteleaf.cn",
+	site_url: "https://shanfengpm.com",
 
-	// 站点描述
+	// 站点描述（用于 SEO 与社交分享卡片）
 	description:
-		"Firefly 是一款基于 Astro 框架和 Fuwari 模板开发的清新美观且现代化个人博客主题模板，专为技术爱好者和内容创作者设计。该主题融合了现代 Web 技术栈，提供了丰富的功能模块和高度可定制的界面，让您能够轻松打造出专业且美观的个人博客网站。",
+		"余涛（山风）的知识仓库。沉淀产品方法论、项目复盘与学习笔记 —— 著书立说、方法沉淀、实战复盘、学海拾遗。",
 
 	// 站点关键词
 	keywords: [
-		"Firefly",
-		"Fuwari",
-		"Astro",
-		"ACGN",
-		"博客",
-		"技术博客",
-		"静态博客",
+		"山风",
+		"产品经理",
+		"产品方法论",
+		"需求分析",
+		"用户运营",
+		"增长",
+		"知识库",
 	],
 
 	// 主题色
@@ -76,6 +76,7 @@ export const siteConfig: SiteConfig = {
 	// 页面整体宽度（单位：rem）
 	// 数值越大可以让页面内容区域更宽
 	// 在使用单侧栏边栏时，建议调低一些宽度以获得更好的视觉效果。
+	// 保持模板默认 100rem(1600px)：曾试过收到 88rem 压住宽屏行宽，但页面显得太窄，已撤回。
 	pageWidth: 100,
 
 	// 网站Card样式配置
@@ -90,12 +91,17 @@ export const siteConfig: SiteConfig = {
 	// 如果启用了OpenGraph图片功能，数组中需要包含png格式的favicon图标
 	favicon: [
 		{
-			// 图标文件路径
-			src: "/favicon/firefly-32.png",
-			// 可选，指定主题 'light' | 'dark'
-			// theme: "light",
-			// 可选，图标大小
-			// sizes: "32x32",
+			// 图标文件路径（放在首位，同时用作 apple-touch-icon）
+			src: "/favicon/shanfeng-180.png",
+			sizes: "180x180",
+		},
+		{
+			src: "/favicon/shanfeng-32.png",
+			sizes: "32x32",
+		},
+		{
+			src: "/favicon/shanfeng-192.png",
+			sizes: "192x192",
 		},
 	],
 
@@ -112,12 +118,14 @@ export const siteConfig: SiteConfig = {
 		// 使用 Astro 图标库时不需要设置 valueDark，图标会自动跟随主题亮暗色切换
 		logo: {
 			type: "image",
-			value: "assets/images/logo/firefly-light.png",
-			valueDark: "assets/images/logo/firefly-dark.png",
-			alt: "🍀",
+			value: "assets/images/logo/shanfeng-light.png",
+			valueDark: "assets/images/logo/shanfeng-dark.png",
+			alt: "山风",
 		},
 		// 导航栏标题
-		title: "Firefly Blog",
+		title: "山风Blog",
+		// 导航栏副标题（显示在标题下方的小字）
+		subtitle: "shanfengpm.com",
 		// 全宽导航栏，导航栏是否占满屏幕宽度
 		widthFull: false,
 		// 导航菜单对齐方式，left：左对齐，center：居中
@@ -180,8 +188,8 @@ export const siteConfig: SiteConfig = {
 		tagsBottomStyle: "chip",
 		// PostMeta 元数据显示控制
 		meta: {
-			// 是否显示发布日期
-			showPublished: true,
+			// 是否显示发布日期（本站定位是知识仓库/数字花园，不要「日记感」，故关闭）
+			showPublished: false,
 			// 是否显示分类
 			showCategory: true,
 			// 是否显示标签
@@ -196,8 +204,8 @@ export const siteConfig: SiteConfig = {
 		// 底部 PostStats 统计信息显示控制
 		// 如果tagsPosition设置为"bottom"，则stats将不显示
 		stats: {
-			// 是否显示发布日期
-			showPublished: true,
+			// 是否显示发布日期（同上，关闭；将来 tagsPosition 改回 "meta" 时也不会冒出日期）
+			showPublished: false,
 			// 是否显示字数
 			showWords: true,
 			// 是否显示阅读时间
@@ -233,7 +241,7 @@ export const siteConfig: SiteConfig = {
 			enablePythonMarkdownAdmonitions: false,
 		},
 		// 文章页底部的"上次编辑时间"卡片开关
-		showLastModified: true,
+		showLastModified: false,
 		// 文章过期阈值（天数），超过此天数才显示"上次编辑"卡片
 		outdatedThreshold: 30,
 		// 是否显示文章页的分享按钮
@@ -310,11 +318,13 @@ export const siteConfig: SiteConfig = {
 	},
 
 	// ── MyAnimeList配置 ──────────────────────────────────
+	// 本页当前关闭（pages.mal: false）。原模板填的是作者的用户名与 Client ID，已清空，
+	// 将来若要启用番剧页，请填自己的 MyAnimeList 账号与 Client ID
 	mal: {
 		// MyAnimeList 用户名（列表需为公开状态，私密列表无法读取）
-		username: "cuteleaf",
+		username: "",
 		// MyAnimeList Client ID，在 https://myanimelist.net/apiconfig 注册免费应用后获取
-		clientId: "	0ef34371450f9c6c809deaadec6aa8f3",
+		clientId: "",
 		// MAL API 地址
 		apiUrl: "https://api.myanimelist.net/v2",
 		// 动画条目详情页地址，末尾需要带 /

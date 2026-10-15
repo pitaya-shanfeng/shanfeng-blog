@@ -1,6 +1,26 @@
 @reference "tailwindcss";
 
+/* 正文宽度：不用自定义 max-width，保持模板默认 ——
+   容器类上的 max-w-none! 会让正文直接铺满所在卡片（只留卡片自身内边距）。
+   文章页是双栏布局，中间列本身就是 ~767px（正文 ~695，约 43 汉字/行），
+   宽度由布局决定即可，不再额外限制。
+   注：若将来又要限制行宽，记得 max-w-none! 在 utilities 层里带 !important，
+   普通的 max-width 规则压不过它，得先把这个类去掉。 */
+
+/* 正文首个元素不吃上边距。
+   否则正文若以 h2 开头，标题自带的 margin-top（48px）会与卡片内边距叠加，
+   卡片顶部多出一段空白（该 margin 还会向外塌陷，把整个正文容器一起推下去）。
+   注意：正文字段会被包进 <section>，所以 h2 常常不是容器的直接子元素，
+   要往下多盖一层，否则只置零了 section、里层标题的 margin 照样塌陷。 */
+.custom-md > :first-child,
+.custom-md > :first-child > :first-child {
+  margin-top: 0;
+}
+
 .custom-md {
+  /* 正文字号：Tailwind Typography 的 prose-base 默认 1rem(16px)。
+     侧栏改单侧后正文区变宽，字号升一档。prose 内部元素按 em 计算，会等比缩放 */
+  font-size: 1rem;
   overflow-wrap: break-word;
 
   body.sticky-navbar & {

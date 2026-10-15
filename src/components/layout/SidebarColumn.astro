@@ -1,6 +1,7 @@
 ---
 import SideBar from "@components/layout/SideBar.astro";
 import type { MarkdownHeading } from "astro";
+import type { PostForList } from "@/utils/content-utils";
 
 interface Props {
 	side: "left" | "right";
@@ -12,6 +13,7 @@ interface Props {
 	sidebarClass: string;
 	headings?: MarkdownHeading[];
 	encrypted?: boolean;
+	relatedPostList?: PostForList[];
 }
 
 const {
@@ -24,6 +26,7 @@ const {
 	sidebarClass,
 	headings = [],
 	encrypted = false,
+	relatedPostList = [],
 } = Astro.props;
 
 // 静态容器 id（左侧为 wrapper，右侧为 static，保持原有 id 不变）
@@ -53,6 +56,7 @@ const staticSideBarSide =
 					class={sidebarClass}
 					headings={headings}
 					encrypted={encrypted}
+					relatedPostList={relatedPostList}
 				/>
 			)}
 		</div>

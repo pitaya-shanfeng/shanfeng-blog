@@ -11,6 +11,7 @@ import FloatingControls from "@/components/controls/FloatingControls.astro";
 import CategoryBar from "@/components/layout/CategoryBar.astro";
 import SidebarColumn from "@/components/layout/SidebarColumn.astro";
 import WallpaperSection from "@/components/layout/WallpaperSection.astro";
+import type { PostForList } from "@/utils/content-utils";
 import {
 	live2dWidgetConfig,
 	navbarMode,
@@ -38,6 +39,8 @@ interface Props {
 	postCategory?: string;
 	headings?: MarkdownHeading[];
 	encrypted?: boolean;
+	/** 相关文章数据，透传给侧栏的相关文章组件（侧栏不做推荐逻辑） */
+	relatedPostList?: PostForList[];
 	bannerPostMeta?: {
 		title: string;
 		description?: string;
@@ -45,6 +48,8 @@ interface Props {
 		updated?: Date;
 		words?: number;
 		minutes?: number;
+		category?: string;
+		tags?: string[];
 	};
 	heading?: string;
 }
@@ -64,6 +69,7 @@ const {
 	postCategory,
 	headings = [],
 	encrypted = false,
+	relatedPostList = [],
 	bannerPostMeta,
 	heading,
 } = Astro.props;
@@ -122,12 +128,20 @@ const {
                 sidebarClass={sidebarClass}
                 headings={headings}
                 encrypted={encrypted}
+                relatedPostList={relatedPostList}
             />
                     
             {/* 主内容区包装器 - 包含静态栏位和swup容器，作为单个grid item */}
             <div id="content-column" class={staticBarClass}>
-                {/* 分类导航栏 - 全站渲染并显示 */}
-                {shouldRenderCategoryBar && <div id="category-bar-wrapper"><CategoryBar currentPostCategory={postCategory} /></div>}
+                {/* 分类导航栏 - 全站渲染；文章详情页由「支持与分享」条替代，渲染时即隐藏（避免闪烁） */}
+                {shouldRenderCategoryBar && (
+                    <div
+                        id="category-bar-wrapper"
+                        class:list={[isPostPage && "hidden"]}
+                    >
+                        <CategoryBar currentPostCategory={postCategory} />
+                    </div>
+                )}
                 {/* 主内容区 - 始终渲染，确保 Swup 容器存在 */}
                 <main
                     id="swup-container"
@@ -144,7 +158,7 @@ const {
                 {/* 移动端底部组件：<768px 时 #main-grid 是 display:block，必须排在页脚之前 */}
                 {sidebarLayoutConfig.mobileBottomComponents && sidebarLayoutConfig.mobileBottomComponents.length > 0 && (
                     <div id="mobile-bottom-sidebar" class="block md:hidden mt-4">
-                        <SideBar side="bottom" headings={headings} encrypted={encrypted}></SideBar>
+                        <SideBar side="bottom" headings={headings} encrypted={encrypted} relatedPostList={relatedPostList}></SideBar>
                     </div>
                 )}
             </div>
@@ -159,6 +173,7 @@ const {
                 sidebarClass={sidebarClass}
                 headings={headings}
                 encrypted={encrypted}
+                relatedPostList={relatedPostList}
             />
 
         </div>
