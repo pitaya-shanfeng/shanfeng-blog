@@ -9,105 +9,128 @@ import {
 // 导航栏配置 - 根据顺序动态生成导航栏链接
 // NavBar Configuration - Dynamically generate navigation bar links based on order
 // ============================================================================
+//
+// 结构按内容体系组织：
+//
+//   主页
+//   ├── 著书立说 → 见山 / 增长三部曲
+//   ├── 方法沉淀 → 全部方法 / 数据分析 / 用户调研 / 需求分析 / 项目管控 / 团队管理
+//   ├── 实战复盘 → 全部复盘 / 项目复盘 / 调研报告 / 数据案例 / 原型设计
+//   ├── 学海拾遗 → 全部拾遗 / 转载精选 / 学习笔记 / 读书报告 / 行业报告
+//   └── 关于山风 → 个人介绍 / 版权声明 / 书签导航 / 联系合作
+//
+// 二级项为什么指向 /archive/?category=&tag= ：
+// 模板的分类没有独立页面（`getCategoryUrl` 同样指向归档页的筛选），而归档页的筛选支持
+// `?category=` 与 `?tag=` **同时给出、取交集**（见 ArchivePanel 的 applyFilter）。
+// 所以「分类当一级桶（如 方法沉淀）+ 标签当二级主题（如 数据分析）」就能精确落到子项：
+//   全部方法 → /archive/?category=方法沉淀
+//   数据分析 → /archive/?category=方法沉淀&tag=数据分析
+// 这也意味着发文章时：**category 填一级桶名，tags 里带上对应的二级主题名**，导航才对得上。
+
+/** 归档页筛选链接（category 与 tag 同时给出时取交集） */
+const archiveFilter = ({ category, tag }: { category?: string; tag?: string }): string => {
+	const params = new URLSearchParams();
+	if (category) params.set("category", category);
+	if (tag) params.set("tag", tag);
+	return `/archive/?${params.toString()}`;
+};
+
+/** 内容分组：category = 一级桶，topics = 二级主题（存成标签） */
+interface ContentGroupConfig {
+	name: string;
+	icon: string;
+	category: string;
+	/** 「全部 XX」入口的文案；不填则不生成该入口（如「著书立说」下都是具体的书） */
+	allLabel?: string;
+	topics: string[];
+}
+
+const CONTENT_GROUPS: ContentGroupConfig[] = [
+	{
+		name: "著书立说",
+		icon: "material-symbols:menu-book",
+		category: "著书立说",
+		// 见山 / 增长三部曲 是「书」，先按标签落；将来若要做「篇 / 章」两层，
+		// 需要单独改 series 机制（模板的 series 只有一层扁平集合）
+		topics: ["见山", "增长三部曲"],
+	},
+	{
+		name: "方法沉淀",
+		icon: "material-symbols:handyman",
+		category: "方法沉淀",
+		allLabel: "全部方法",
+		topics: ["数据分析", "用户调研", "需求分析", "项目管控", "团队管理"],
+	},
+	{
+		name: "实战复盘",
+		icon: "material-symbols:fact-check",
+		category: "实战复盘",
+		allLabel: "全部复盘",
+		topics: ["项目复盘", "调研报告", "数据案例", "原型设计"],
+	},
+	{
+		name: "学海拾遗",
+		icon: "material-symbols:school",
+		category: "学海拾遗",
+		allLabel: "全部拾遗",
+		topics: ["转载精选", "学习笔记", "读书报告", "行业报告"],
+	},
+];
+
+/** 内容分组 → 导航项（一级 = 分组，二级 =「全部」+ 各主题） */
+const buildContentGroup = (group: ContentGroupConfig): NavBarLink => ({
+	name: group.name,
+	url: "#",
+	icon: group.icon,
+	children: [
+		...(group.allLabel
+			? [{ name: group.allLabel, url: archiveFilter({ category: group.category }) }]
+			: []),
+		...group.topics.map((topic) => ({
+			name: topic,
+			url: archiveFilter({ category: group.category, tag: topic }),
+		})),
+	],
+});
+
+/** 关于分组 */
+const ABOUT_GROUP: NavBarLink = {
+	name: "关于山风",
+	url: "#",
+	icon: "material-symbols:person",
+	children: [
+		{ name: "个人介绍", url: "/about/" },
+		{ name: "版权声明", url: "/privacy/" },
+		{ name: "书签导航", url: "/booknav/" },
+		{ name: "联系合作", url: "/contact/" },
+	],
+};
+
 const getDynamicNavBarConfig = (): NavBarConfig => {
-	// 基础导航栏链接
-	const links: NavBarLink[] = [];
+	const links: NavBarLink[] = [
+		// 主页
+		LinkPresets.Home,
 
-	// 主页
-	links.push(LinkPresets.Home);
+		// 四个内容分组（著书立说 / 方法沉淀 / 实战复盘 / 学海拾遗）
+		...CONTENT_GROUPS.map(buildContentGroup),
 
-	// 文章及其子菜单
-	links.push({
-		name: "文章",
-		url: "#",
-		icon: "material-symbols:article",
-		children: [
-			// 归档
-			LinkPresets.Archive,
+		// 关于
+		ABOUT_GROUP,
+	];
 
-			// 分类
-			LinkPresets.Categories,
-
-			// 标签
-			LinkPresets.Tags,
-
-			// 系列
-			LinkPresets.Series,
-		],
-	});
-
-	//社交及其子菜单
-	links.push({
-		name: "社交",
-		url: "#",
-		icon: "material-symbols:group",
-		children: [
-			// 友链
-			LinkPresets.Friends,
-
-			// 留言
-			LinkPresets.Guestbook,
-		],
-	});
-
-	// 我的及其子菜单
-	links.push({
-		name: "我的",
-		url: "#",
-		icon: "material-symbols:person",
-		children: [
-			// 动态
-			LinkPresets.Dynamic,
-
-			// 项目
-			LinkPresets.Projects,
-
-			// 相册
-			LinkPresets.Gallery,
-
-			// 书签导航
-			LinkPresets.Booknav,
-
-			// 哔哩哔哩追番
-			LinkPresets.Bilibili,
-
-			// 番组计划
-			LinkPresets.Bangumi,
-
-			// VNDB
-			LinkPresets.VNDB,
-
-			// MyAnimeList
-			LinkPresets.MAL,
-		],
-	});
-
-	// 关于及其子菜单
-	links.push({
-		name: "关于",
-		url: "#",
-		icon: "material-symbols:info",
-		children: [
-			// 打赏
-			LinkPresets.Sponsor,
-
-			// 关于页面
-			LinkPresets.About,
-		],
-	});
-
-	// 自定义导航栏链接
-	// 原模板在此放了一组「链接」菜单（GitHub / Gitee / Firefly文档），三个入口都指向模板作者，
-	// 已移除。等你有自己的外链时，按下面的写法加回来即可：
+	// 说明：模板原有的「文章」（归档/分类/标签/系列）、「社交」（友链/留言）、「我的」
+	// （动态/项目/相册）三组已从导航中撤下 —— 页面本身都还在，直接访问 URL 不受影响。
+	// 想加回来的话，按下面的写法插到 links 里即可：
 	//
-	// links.push({
-	// 	name: "链接",
+	// links.splice(1, 0, {
+	// 	name: "浏览",
 	// 	url: "#",
-	// 	icon: "material-symbols:link",
-	// 	children: [
-	// 		{ name: "GitHub", url: "https://github.com/你的账号", external: true, icon: "fa7-brands:github" },
-	// 	],
+	// 	icon: "material-symbols:article",
+	// 	children: [LinkPresets.Archive, LinkPresets.Categories, LinkPresets.Tags, LinkPresets.Series],
 	// });
+	//
+	// 自定义外链同理（原模板此处的「链接」菜单指向模板作者，已移除）：
+	// { name: "GitHub", url: "https://github.com/你的账号", external: true, icon: "fa7-brands:github" }
 
 	return { links } as NavBarConfig;
 };

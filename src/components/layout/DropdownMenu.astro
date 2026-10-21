@@ -75,6 +75,34 @@ const hasChildren = processedLink.children && processedLink.children.length > 0;
 
 	.dropdown-container {
 		@apply relative;
+		/* 一级项不参与压缩：被压缩时按钮内的文字会折成两行（如「方法沉淀」） */
+		flex: 0 0 auto;
+	}
+
+	/**
+	 * 一级导航按钮：文字永不换行。
+	 *
+	 * 模板的浮动胶囊在 1280–1440 这类常见笔记本宽度下，可用宽度放不下 6 个四字标签，
+	 * 按钮被 flex 压缩 → 文字折成两行。这里做两件事：
+	 * 1) 收紧内边距与图标间距（原 px-4 pr-8 / mr-1.5 太宽）
+	 * 2) 禁止换行；真放不下时宁可溢出也不折行
+	 * 图标在 1400 以下隐藏（见下方媒体查询），给文字腾出宽度。
+	 */
+	.dropdown-trigger {
+		@apply whitespace-nowrap;
+		flex: 0 0 auto;
+		padding-left: 0.75rem;
+		padding-right: 1.5rem;
+	}
+
+	.dropdown-trigger .navbar-icon {
+		margin-right: 0.25rem;
+	}
+
+	@media (max-width: 1400px) {
+		.dropdown-trigger .navbar-icon {
+			display: none;
+		}
 	}
 
 	.dropdown-menu {
