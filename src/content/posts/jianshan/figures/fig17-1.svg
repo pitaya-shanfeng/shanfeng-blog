@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 250" width="680" height="250" role="img" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <title>图 17-1　预告商品的两段路径与两个卡点</title>
+  <desc>同一批用户走完这条路径要经过两段：先看预告、再决定要不要加购，然后等到正式售卖再看要不要买。两段的卡点不在同一个位置。加购这一段出问题，说明商品没有引起兴趣，或者介绍没有讲清楚；加购之后出问题，说明意向已经形成，卡住的地方更靠后。</desc>
+  <rect width="680" height="250" fill="#ffffff"/>
+
+  <rect x="40" y="52" width="150" height="52" rx="8" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="115" y="83" text-anchor="middle" font-size="12.5" fill="#374151">看过预告</text>
+
+  <rect x="250" y="52" width="150" height="52" rx="8" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="325" y="83" text-anchor="middle" font-size="12.5" fill="#374151">加购</text>
+
+  <rect x="460" y="52" width="180" height="52" rx="8" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="550" y="83" text-anchor="middle" font-size="12.5" fill="#374151">正式售卖后购买</text>
+
+  <path d="M194 78 H238" stroke="#D1D5DB" stroke-width="1.2" fill="none"/>
+  <path d="M234 73 L243 78 L234 83" stroke="#D1D5DB" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+  <path d="M404 78 H448" stroke="#D1D5DB" stroke-width="1.2" fill="none"/>
+  <path d="M444 73 L453 78 L444 83" stroke="#D1D5DB" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+
+  <path d="M220 104 V126" stroke="#B45309" stroke-width="1" stroke-dasharray="3 3" fill="none"/>
+  <rect x="130" y="126" width="180" height="76" rx="8" fill="#FFFFFF" stroke="#B45309" stroke-width="1.4"/>
+  <text x="220" y="148" text-anchor="middle" font-size="12.5" fill="#B45309">加购率低</text>
+  <text x="220" y="170" text-anchor="middle" font-size="12.5" fill="#B45309">商品没有引起兴趣</text>
+  <text x="220" y="192" text-anchor="middle" font-size="12.5" fill="#B45309">介绍没有讲清楚</text>
+
+  <path d="M430 104 V126" stroke="#B45309" stroke-width="1" stroke-dasharray="3 3" fill="none"/>
+  <rect x="340" y="126" width="180" height="76" rx="8" fill="#FFFFFF" stroke="#B45309" stroke-width="1.4"/>
+  <text x="430" y="148" text-anchor="middle" font-size="12.5" fill="#B45309">加购不少、后续购买却弱</text>
+  <text x="430" y="170" text-anchor="middle" font-size="12.5" fill="#B45309">问题更可能发生在</text>
+  <text x="430" y="192" text-anchor="middle" font-size="12.5" fill="#B45309">意向形成之后</text>
+</svg>

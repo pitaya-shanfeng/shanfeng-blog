@@ -259,10 +259,15 @@ function initialActive(categoryName: string): {
   // 所以每次内容更新后都要按当前页型重新同步显隐。
   // 页型判断用「文章卡片是否存在」而不是解析 URL：文章卡片在 swup 容器内、
   // 跳转后必然随内容更新，比硬编码路径规则更不容易失效。
+  // `[data-no-category-bar]` 是通用退出标记：书籍落地页这类「自成一体」的页面
+  // 自己声明不要分类栏，不必在这里堆路径判断。
   function syncCategoryBarVisibility() {
     const wrapper = document.getElementById("category-bar-wrapper");
     if (!wrapper) return;
-    wrapper.classList.toggle("hidden", !!document.querySelector("[data-post-page]"));
+    wrapper.classList.toggle(
+      "hidden",
+      !!document.querySelector("[data-post-page], [data-no-category-bar]"),
+    );
   }
 
   function updateCategoryBar(

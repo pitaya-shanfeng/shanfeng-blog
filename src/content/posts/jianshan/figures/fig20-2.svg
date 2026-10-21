@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 216" width="680" height="216" role="img" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <title>图 20-2　决策三级与升级条件</title>
+  <desc>影响范围决定由谁判断。领域内、可逆、影响有限的日常判断，由负责成员直接决定并对结果负责；跨多个板块、影响阶段目标的取舍，由产品 owner 组织相关人员共同判断；涉及方向、重大承诺与资源重配的事，由产品负责人或业务负责人决策。范围扩大、证据冲突、资源超约、涉及对外承诺或难以撤回时升级。</desc>
+  <rect width="680" height="216" fill="#ffffff"/>
+
+  <rect x="40" y="30" width="600" height="42" rx="8" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="62" y="56" font-size="13" fill="#374151">日常判断</text>
+  <text x="146" y="56" font-size="12" fill="#6B7280">领域内 · 可逆 · 影响有限 → 负责成员直接决定，对结果负责</text>
+
+  <rect x="40" y="82" width="600" height="42" rx="8" fill="#F7F8FA" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="62" y="108" font-size="13" fill="#374151">项目取舍</text>
+  <text x="146" y="108" font-size="12" fill="#6B7280">跨多板块 · 影响阶段目标 → 产品 owner 组织相关人员共同判断</text>
+
+  <rect x="40" y="134" width="600" height="42" rx="8" fill="#FFF7ED" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="62" y="160" font-size="13" fill="#374151">战略决策</text>
+  <text x="146" y="160" font-size="12" fill="#6B7280">方向 · 重大承诺 · 资源重配 · 难撤回 → 产品／业务负责人决策</text>
+
+  <path d="M340 72 V80" stroke="#D1D5DB" stroke-width="1.2" fill="none"/>
+  <path d="M337 76 L340 81 L343 76" stroke="#D1D5DB" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+  <path d="M340 124 V132" stroke="#D1D5DB" stroke-width="1.2" fill="none"/>
+  <path d="M337 128 L340 133 L343 128" stroke="#D1D5DB" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+
+  <text x="340" y="198" text-anchor="middle" font-size="11" fill="#B45309">升级条件：范围扩大 · 证据冲突 · 资源超约 · 对外承诺 · 难撤回</text>
+</svg>

@@ -4,7 +4,8 @@ import { i18n } from "@i18n/translation";
 import { getCategoryUrl } from "@utils/url-utils";
 
 // // Retrieve posts and sort them by publication date
-async function getRawSortedPosts() {
+/** 合并 md 与 html 两条内容源并按日期排序。**不做 series 过滤** —— 书页与文章路由要用全量 */
+async function getMergedSortedPosts() {
 	const filter = ({ data }: { data: { draft?: boolean } }) =>
 		import.meta.env.PROD ? data.draft !== true : true;
 
@@ -32,9 +33,20 @@ async function getRawSortedPosts() {
 	return sorted;
 }
 
-export async function getSortedPosts(): Promise<CollectionEntry<"posts">[]> {
-	const sorted = await getRawSortedPosts();
+/**
+ * 列表视角：**丛书条目（`series` 非空）不进博客流**。
+ *
+ * 一本书的章节有自己的落地页（`/books/<id>/`），二十几章混进首页 / 归档 / RSS
+ * 会把博客内容淹掉。所以列表类取数统一在这里把带 series 的过滤掉；
+ * 章节页本身由 getAllPostsForRoutes() 保证生成，不受影响。
+ */
+async function getRawSortedPosts() {
+	const all = await getMergedSortedPosts();
+	return all.filter((post) => !post.data.series);
+}
 
+/** 给一组文章补上「上一篇 / 下一篇」指针（站点已关闭该导航，仅保持数据完整） */
+function linkPrevNext(sorted: CollectionEntry<"posts">[]) {
 	for (let i = 1; i < sorted.length; i++) {
 		sorted[i].data.nextSlug = sorted[i - 1].id;
 		sorted[i].data.nextTitle = sorted[i - 1].data.title;
@@ -43,8 +55,31 @@ export async function getSortedPosts(): Promise<CollectionEntry<"posts">[]> {
 		sorted[i].data.prevSlug = sorted[i + 1].id;
 		sorted[i].data.prevTitle = sorted[i + 1].data.title;
 	}
-
 	return sorted;
+}
+
+/**
+ * 文章路由专用：**包含丛书条目**。
+ * `[...slug].astro` 的 getStaticPaths 用它，否则章节页不会生成（生产环境点进去 404）。
+ */
+export async function getAllPostsForRoutes(): Promise<CollectionEntry<"posts">[]> {
+	return linkPrevNext(await getMergedSortedPosts());
+}
+
+/** 某本书的全部条目，按 seriesOrder 升序（书页用） */
+export async function getSeriesPostsOf(
+	series: string,
+): Promise<CollectionEntry<"posts">[]> {
+	const all = await getMergedSortedPosts();
+	return all
+		.filter((post) => post.data.series === series)
+		.sort(
+			(a, b) => (a.data.seriesOrder ?? 0) - (b.data.seriesOrder ?? 0),
+		);
+}
+
+export async function getSortedPosts(): Promise<CollectionEntry<"posts">[]> {
+	return linkPrevNext(await getRawSortedPosts());
 }
 export type PostForList = {
 	id: string;

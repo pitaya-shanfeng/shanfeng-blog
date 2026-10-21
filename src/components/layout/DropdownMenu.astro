@@ -87,16 +87,30 @@ const hasChildren = processedLink.children && processedLink.children.length > 0;
 	 * 1) 收紧内边距与图标间距（原 px-4 pr-8 / mr-1.5 太宽）
 	 * 2) 禁止换行；真放不下时宁可溢出也不折行
 	 * 图标在 1400 以下隐藏（见下方媒体查询），给文字腾出宽度。
+	 *
+	 * 字号/字重：15px / 600 / 字距 0.02em。原来是 16px / 700 / 0 ——
+	 * 中文在 16px 粗体下笔画会糊成一团，是导航显得"粗糙"的主因。
 	 */
 	.dropdown-trigger {
-		@apply whitespace-nowrap;
+		@apply whitespace-nowrap text-black/80 dark:text-white/80;
 		flex: 0 0 auto;
-		padding-left: 0.75rem;
-		padding-right: 1.5rem;
+		font-size: 0.9375rem;
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		padding-left: 0.875rem;
+		padding-right: 1.625rem;
 	}
 
+	/* 图标与文字的间距交给 flex 的 gap-1.5，避免 margin 再叠一层（原来共 10px，偏散） */
 	.dropdown-trigger .navbar-icon {
-		margin-right: 0.25rem;
+		margin-right: 0;
+	}
+
+	/* 下拉箭头：收小到 14px、压到 45% 对比，别和文字抢注意力 */
+	.dropdown-arrow {
+		font-size: 0.875rem;
+		right: 0.5rem;
+		opacity: 0.45;
 	}
 
 	@media (max-width: 1400px) {

@@ -56,7 +56,7 @@ const emptyText = i18n(I18nKey.noRelatedPosts);
 							{idx + 1}
 						</div>
 						<div class="flex-1 min-w-0">
-							<div class="text-sm font-bold text-black/75 dark:text-white/75 truncate transition group-hover:text-(--primary)">
+							<div class="text-sm font-medium text-black/75 dark:text-white/75 truncate transition group-hover:text-(--primary)">
 								{post.data.title}
 							</div>
 							{post.data.category && (
@@ -117,7 +117,7 @@ const emptyText = i18n(I18nKey.noRelatedPosts);
 
 		const title = document.createElement("div");
 		title.className =
-			"text-sm font-bold text-black/75 dark:text-white/75 truncate transition group-hover:text-(--primary)";
+			"text-sm font-medium text-black/75 dark:text-white/75 truncate transition group-hover:text-(--primary)";
 		title.textContent = post.title;
 		body.appendChild(title);
 

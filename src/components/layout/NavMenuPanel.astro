@@ -244,8 +244,12 @@ const navTitle = siteConfig.navbar.title || siteConfig.title;
         border-radius: var(--radius-large);
         background: transparent;
         color: var(--drawer-on-surface-variant);
+        /* 用 1rem 而不是固定 px：根字号是响应式的（桌面 16 / 移动 14），
+           1rem 在两端分别落在 16 / 14，与正文字号持平 —— 抽屉是全屏导航，不该比正文还小。
+           只补一点字距，和桌面导航的观感对齐。 */
         font-size: 1rem;
         font-weight: 500;
+        letter-spacing: 0.02em;
         line-height: 1.25;
         cursor: pointer;
         user-select: none;

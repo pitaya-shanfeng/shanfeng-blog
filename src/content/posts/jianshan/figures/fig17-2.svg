@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 250" width="680" height="250" role="img" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <title>图 17-2　复盘时的判断顺序</title>
+  <desc>复盘不能从原因讲起，顺序颠倒会把执行问题写成结论。第一步先确认版本是否按计划运行、分流与记录是否可靠；过程可靠，第二步再看目标行为有没有变化；最后才解释可能的原因。</desc>
+  <rect width="680" height="250" fill="#ffffff"/>
+
+  <rect x="30" y="84" width="190" height="80" rx="8" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="1"/>
+  <circle cx="56" cy="120" r="11" fill="none" stroke="#9CA3AF" stroke-width="1.2"/>
+  <text x="56" y="124" text-anchor="middle" font-size="11" fill="#6B7280">1</text>
+  <text x="78" y="114" font-size="12.5" fill="#374151">版本是否按计划运行</text>
+  <text x="78" y="138" font-size="12.5" fill="#374151">分流与记录是否可靠</text>
+
+  <path d="M224 124 H238" stroke="#D1D5DB" stroke-width="1.2" fill="none"/>
+  <path d="M234 119 L243 124 L234 129" stroke="#D1D5DB" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+
+  <rect x="247" y="84" width="186" height="80" rx="8" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="1"/>
+  <circle cx="273" cy="124" r="11" fill="none" stroke="#9CA3AF" stroke-width="1.2"/>
+  <text x="273" y="128" text-anchor="middle" font-size="11" fill="#6B7280">2</text>
+  <text x="295" y="129" font-size="12.5" fill="#374151">目标行为有没有变化</text>
+
+  <path d="M437 124 H451" stroke="#D1D5DB" stroke-width="1.2" fill="none"/>
+  <path d="M447 119 L456 124 L447 129" stroke="#D1D5DB" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+
+  <rect x="460" y="84" width="190" height="80" rx="8" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="1"/>
+  <circle cx="486" cy="124" r="11" fill="none" stroke="#9CA3AF" stroke-width="1.2"/>
+  <text x="486" y="128" text-anchor="middle" font-size="11" fill="#6B7280">3</text>
+  <text x="508" y="129" font-size="12.5" fill="#374151">解释可能的原因</text>
+</svg>

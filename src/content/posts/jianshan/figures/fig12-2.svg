@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 340" width="680" height="340" role="img" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <title>图 12-2　一个资源位上的优先级裁决</title>
+  <desc>同一个用户在一次访问里同时命中三条投放关系：新人活动、会员礼包、品类活动。三条都指向首页弹窗这一个资源位，系统需要根据资源位和优先级决定最终展示哪一个。</desc>
+  <rect width="680" height="340" fill="#ffffff"/>
+  <rect x="270" y="14" width="140" height="36" rx="6" fill="#F9FAFB" stroke="#9CA3AF" stroke-width="1.2"/>
+  <text x="340" y="37" text-anchor="middle" font-size="15" fill="#374151">一次访问</text>
+
+  <path d="M340 50 V72 M110 72 H570 M110 72 V100 M340 72 V100 M570 72 V100"
+        stroke="#9CA3AF" stroke-width="1.2" fill="none"/>
+
+  <rect x="35" y="100" width="150" height="58" rx="6" fill="#F9FAFB" stroke="#B45309" stroke-width="1.8"/>
+  <text x="110" y="126" text-anchor="middle" font-size="15" fill="#B45309">新人活动</text>
+  <text x="104.5" y="147" text-anchor="middle" font-size="12" fill="#6B7280">优先级</text>
+  <text x="130" y="147" text-anchor="middle" font-size="12" fill="#B45309">1</text>
+
+  <rect x="265" y="100" width="150" height="58" rx="6" fill="#F9FAFB" stroke="#9CA3AF" stroke-width="1.2"/>
+  <text x="340" y="126" text-anchor="middle" font-size="15" fill="#374151">会员礼包</text>
+  <text x="334.5" y="147" text-anchor="middle" font-size="12" fill="#6B7280">优先级</text>
+  <text x="360" y="147" text-anchor="middle" font-size="12" fill="#6B7280">2</text>
+
+  <rect x="495" y="100" width="150" height="58" rx="6" fill="#F9FAFB" stroke="#9CA3AF" stroke-width="1.2"/>
+  <text x="570" y="126" text-anchor="middle" font-size="15" fill="#374151">品类活动</text>
+  <text x="564.5" y="147" text-anchor="middle" font-size="12" fill="#6B7280">优先级</text>
+  <text x="590" y="147" text-anchor="middle" font-size="12" fill="#6B7280">3</text>
+
+  <path d="M110 158 V176 H340 M570 158 V176 H340 M340 158 V186"
+        stroke="#9CA3AF" stroke-width="1.2" fill="none"/>
+
+  <rect x="230" y="186" width="220" height="48" rx="6" fill="#F9FAFB" stroke="#9CA3AF" stroke-width="1.2"/>
+  <text x="308" y="215" text-anchor="middle" font-size="15" fill="#374151">资源位</text>
+  <text x="364.5" y="215" text-anchor="middle" font-size="15" fill="#374151">首页弹窗</text>
+
+  <path d="M340 234 V262" stroke="#B45309" stroke-width="1.6"/>
+  <path d="M333 255 L340 266 L347 255" fill="none" stroke="#B45309" stroke-width="1.6" stroke-linejoin="round"/>
+
+  <rect x="170" y="266" width="340" height="54" rx="6" fill="#ffffff" stroke="#B45309" stroke-width="1.8"/>
+  <text x="340" y="299" text-anchor="middle" font-size="15" fill="#B45309">决定最终展示哪一个</text>
+</svg>

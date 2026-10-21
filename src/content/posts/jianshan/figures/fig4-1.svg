@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 300" width="680" height="300" role="img" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <title>图 4-1　功能与任务的错位</title>
+  <desc>用户说出口的是功能，我们要看的是他要完成的事：加一个推销位背后是确认没漏东西，做一个更全的看板背后是把数据带进工作流，加一个筛选按钮背后是别让他反复来查。功能只是手段，任务是目的。</desc>
+  <defs>
+    <marker id="f41ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="f41ao" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#B45309" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- 上层：用户说出口的功能 -->
+  <rect x="16" y="16" width="648" height="96" rx="12" fill="#F7F8FA" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="36" y="44" font-size="12" fill="#6B7280">用户说出口的：功能</text>
+
+  <rect x="36" y="60" width="196" height="40" rx="8" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="134" y="80" font-size="13" fill="#1F2937" text-anchor="middle" dominant-baseline="central">加一个推销位</text>
+
+  <rect x="246" y="60" width="196" height="40" rx="8" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="344" y="80" font-size="13" fill="#1F2937" text-anchor="middle" dominant-baseline="central">做一个更全的看板</text>
+
+  <rect x="456" y="60" width="196" height="40" rx="8" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="554" y="80" font-size="13" fill="#1F2937" text-anchor="middle" dominant-baseline="central">加一个筛选按钮</text>
+
+  <!-- 分界：功能只是手段 -->
+  <path d="M16 132 L664 132" fill="none" stroke="#B45309" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <rect x="248" y="120" width="184" height="24" rx="6" fill="#FFFFFF" stroke="#B45309" stroke-width="1"/>
+  <text x="340" y="132" font-size="12" fill="#B45309" text-anchor="middle" dominant-baseline="central">功能是手段，任务是目的</text>
+  <path d="M340 146 L340 154" fill="none" stroke="#B45309" stroke-width="1.5" marker-end="url(#f41ao)"/>
+
+  <!-- 下层：用户真正要完成的任务 -->
+  <rect x="16" y="160" width="648" height="88" rx="12" fill="#FFFFFF" stroke="#B45309" stroke-width="1" stroke-dasharray="5 3"/>
+  <text x="36" y="186" font-size="12" fill="#B45309">用户真正要完成的：任务</text>
+
+  <rect x="36" y="200" width="196" height="36" rx="8" fill="#FFFFFF" stroke="#B45309" stroke-width="1"/>
+  <text x="134" y="218" font-size="13" fill="#1F2937" text-anchor="middle" dominant-baseline="central">确认我没有漏东西</text>
+
+  <rect x="246" y="200" width="196" height="36" rx="8" fill="#FFFFFF" stroke="#B45309" stroke-width="1"/>
+  <text x="344" y="218" font-size="13" fill="#1F2937" text-anchor="middle" dominant-baseline="central">把数据带进工作流</text>
+
+  <rect x="456" y="200" width="196" height="36" rx="8" fill="#FFFFFF" stroke="#B45309" stroke-width="1"/>
+  <text x="554" y="218" font-size="13" fill="#1F2937" text-anchor="middle" dominant-baseline="central">别让我反复来查</text>
+
+  <text x="340" y="278" font-size="13" fill="#B45309" text-anchor="middle">用户不是来用功能，是来完成自己的事</text>
+</svg>

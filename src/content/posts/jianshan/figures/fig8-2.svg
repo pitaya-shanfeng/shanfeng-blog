@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 300" width="680" height="300" role="img" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <title>图 8-2　复盘要面对的三档结论和各自的下一步</title>
+  <desc>复盘时对着证据问下去，结论会落成三档：判断成立，要问能不能无限外推，下一步是守住边界；判断部分成立，要问代价算清了没有，下一步是把代价算清；判断不成立，要问要不要继续投入，下一步是换方向。</desc>
+  <defs>
+    <marker id="f82ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="f82ao" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#B45309" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <text x="18" y="26" font-size="12" fill="#6B7280">三档结论</text>
+  <text x="252" y="26" font-size="12" fill="#6B7280">还要接着问一句</text>
+  <text x="478" y="26" font-size="12" fill="#6B7280">下一步</text>
+
+  <rect x="18" y="40" width="214" height="58" rx="9" fill="#F7F8FA" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="125" y="75" font-size="13" font-weight="500" fill="#1F2937" text-anchor="middle">判断成立</text>
+
+  <rect x="252" y="40" width="206" height="58" rx="9" fill="#F7F8FA" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="355" y="75" font-size="12.5" fill="#1F2937" text-anchor="middle">能不能无限外推</text>
+
+  <rect x="478" y="40" width="184" height="58" rx="9" fill="#F7F8FA" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="570" y="75" font-size="12.5" fill="#1F2937" text-anchor="middle">守住边界</text>
+
+  <path d="M232 69 L248 69" fill="none" stroke="#9CA3AF" stroke-width="1" marker-end="url(#f82ar)"/>
+  <path d="M458 69 L474 69" fill="none" stroke="#9CA3AF" stroke-width="1" marker-end="url(#f82ar)"/>
+
+  <rect x="18" y="112" width="214" height="58" rx="9" fill="#F7F8FA" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="125" y="147" font-size="13" font-weight="500" fill="#1F2937" text-anchor="middle">判断部分成立</text>
+
+  <rect x="252" y="112" width="206" height="58" rx="9" fill="#F7F8FA" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="355" y="147" font-size="12.5" fill="#1F2937" text-anchor="middle">代价算清了没有</text>
+
+  <rect x="478" y="112" width="184" height="58" rx="9" fill="#F7F8FA" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="570" y="147" font-size="12.5" fill="#1F2937" text-anchor="middle">把代价算清</text>
+
+  <path d="M232 141 L248 141" fill="none" stroke="#9CA3AF" stroke-width="1" marker-end="url(#f82ar)"/>
+  <path d="M458 141 L474 141" fill="none" stroke="#9CA3AF" stroke-width="1" marker-end="url(#f82ar)"/>
+
+  <rect x="18" y="184" width="214" height="58" rx="9" fill="#FEF3E2" stroke="#B45309" stroke-width="1.2"/>
+  <text x="125" y="219" font-size="13" font-weight="600" fill="#B45309" text-anchor="middle">判断不成立</text>
+
+  <rect x="252" y="184" width="206" height="58" rx="9" fill="#FEF3E2" stroke="#B45309" stroke-width="1.2"/>
+  <text x="355" y="219" font-size="12.5" fill="#B45309" text-anchor="middle">要不要继续投入</text>
+
+  <rect x="478" y="184" width="184" height="58" rx="9" fill="#FEF3E2" stroke="#B45309" stroke-width="1.2"/>
+  <text x="570" y="219" font-size="12.5" font-weight="600" fill="#B45309" text-anchor="middle">换方向</text>
+
+  <path d="M232 213 L248 213" fill="none" stroke="#B45309" stroke-width="1" marker-end="url(#f82ao)"/>
+  <path d="M458 213 L474 213" fill="none" stroke="#B45309" stroke-width="1" marker-end="url(#f82ao)"/>
+
+  <text x="340" y="272" font-size="11.5" fill="#6B7280" text-anchor="middle">数据不是为了保护产品经理的自尊，而是为了保护团队不在错误判断上继续加码</text>
+  <text x="340" y="292" font-size="11.5" fill="#6B7280" text-anchor="middle">这个结论最难写，也最有价值</text>
+</svg>

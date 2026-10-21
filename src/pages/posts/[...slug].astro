@@ -12,7 +12,7 @@ import "@/styles/banner-post.css";
 import {
 	getRelatedPosts,
 	getSeriesPosts,
-	getSortedPosts,
+	getAllPostsForRoutes,
 } from "@utils/content-utils";
 import { extractPostQuote } from "@utils/post-quote-utils";
 import { getBannerVisibilityState } from "@utils/banner-visibility-utils";
@@ -57,7 +57,7 @@ const showSponsorButton = sponsorConfig.showButtonInPost;
 const showPostActionCard = siteConfig.post.share || showSponsorButton;
 
 export async function getStaticPaths() {
-	const blogEntries = await getSortedPosts();
+	const blogEntries = await getAllPostsForRoutes();
 	return blogEntries.map((entry) => {
 		// 将 id 转换为 slug（移除扩展名）以匹配路由参数
 		const slug = removeFileExtension(entry.id);

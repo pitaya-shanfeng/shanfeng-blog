@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 300" width="680" height="300" role="img" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <title>图 21-3　磨出口径：一条线比一堆结论值钱</title>
+  <desc>同样是判断一个需求该不该做，一种人靠的是以前做过、效果一般，给出的是一个结论，换一个场景就不适用；另一种人靠的是这个需求成立的前提是什么，给出的是一条线，换一个场景还能用。攒案例是往外搬，磨口径是把外面的东西转成内部那条线。</desc>
+  <rect width="680" height="300" fill="#ffffff"/>
+
+  <text x="40" y="26" font-size="12.5" fill="#6B7280">只攒案例：越攒越多，换个场景用不上</text>
+  <text x="640" y="26" text-anchor="end" font-size="11" fill="#9CA3AF">案例条数 →</text>
+  <rect x="40" y="38" width="450" height="18" rx="6" fill="#E5E7EB"/>
+  <rect x="40" y="66" width="505" height="18" rx="6" fill="#E5E7EB"/>
+  <rect x="40" y="94" width="560" height="18" rx="6" fill="#E5E7EB"/>
+  <rect x="40" y="122" width="615" height="18" rx="6" fill="#E5E7EB"/>
+  <text x="352" y="160" text-anchor="middle" font-size="11" fill="#9CA3AF">一条结论　换一个场景就不适用</text>
+
+  <line x1="40" y1="182" x2="640" y2="182" stroke="#D1D5DB" stroke-width="1" stroke-dasharray="4 4"/>
+
+  <text x="40" y="208" font-size="12.5" fill="#B45309">磨出口径：攒得少，一条线越来越准</text>
+  <text x="640" y="208" text-anchor="end" font-size="11" fill="#B45309">准确度 →</text>
+  <path d="M40 288 L640 216" fill="none" stroke="#B45309" stroke-width="2.6"/>
+  <circle cx="40" cy="288" r="3.5" fill="#B45309"/>
+  <circle cx="640" cy="216" r="3.5" fill="#B45309"/>
+  <text x="352" y="270" text-anchor="middle" font-size="11" fill="#B45309">一条线　换一个场景还能用</text>
+</svg>

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 258" width="680" height="258" role="img" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <title>图 7-1　页面路径与任务线的错位</title>
+  <desc>上排是页面路径，下排是任务线。图上两排是对齐的，对齐的是位置，不是内容：高亮那一格「自己算」，在页面路径上没有对应的一步。页面路径看不出这一步，用户却要在这里做功。</desc>
+  <defs>
+    <marker id="f71ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <text x="18" y="28" font-size="12" fill="#6B7280">页面路径：用户经过了哪些页面</text>
+
+  <rect x="18" y="40" width="116" height="50" rx="9" fill="#F7F8FA" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="76" y="71" font-size="13" font-weight="500" fill="#1F2937" text-anchor="middle">商详页</text>
+  <path d="M134 65 L146 65" fill="none" stroke="#9CA3AF" stroke-width="1" marker-end="url(#f71ar)"/>
+
+  <rect x="150" y="40" width="116" height="50" rx="9" fill="#F7F8FA" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="208" y="71" font-size="13" font-weight="500" fill="#1F2937" text-anchor="middle">价格区</text>
+  <path d="M266 65 L278 65" fill="none" stroke="#9CA3AF" stroke-width="1" marker-end="url(#f71ar)"/>
+
+  <rect x="282" y="40" width="116" height="50" rx="9" fill="#F7F8FA" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="340" y="71" font-size="13" font-weight="500" fill="#1F2937" text-anchor="middle">优惠券领取区</text>
+  <path d="M398 65 L410 65" fill="none" stroke="#9CA3AF" stroke-width="1" marker-end="url(#f71ar)"/>
+
+  <rect x="414" y="40" width="116" height="50" rx="9" fill="#F7F8FA" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="472" y="71" font-size="13" font-weight="500" fill="#1F2937" text-anchor="middle">加购</text>
+  <path d="M530 65 L542 65" fill="none" stroke="#9CA3AF" stroke-width="1" marker-end="url(#f71ar)"/>
+
+  <rect x="546" y="40" width="116" height="50" rx="9" fill="#F7F8FA" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="604" y="71" font-size="13" font-weight="500" fill="#1F2937" text-anchor="middle">支付</text>
+
+  <text x="18" y="132" font-size="12" fill="#6B7280">任务线：用户为什么要经过这些页面</text>
+
+  <rect x="18" y="144" width="116" height="50" rx="9" fill="#F7F8FA" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="76" y="175" font-size="13" font-weight="500" fill="#1F2937" text-anchor="middle">看价格</text>
+  <path d="M134 169 L146 169" fill="none" stroke="#B45309" stroke-width="1" marker-end="url(#f71ar)"/>
+
+  <rect x="150" y="144" width="116" height="50" rx="9" fill="#FEF3E2" stroke="#B45309" stroke-width="1.2"/>
+  <text x="208" y="175" font-size="13" font-weight="600" fill="#B45309" text-anchor="middle">自己算</text>
+  <path d="M266 169 L278 169" fill="none" stroke="#B45309" stroke-width="1" marker-end="url(#f71ar)"/>
+
+  <rect x="282" y="144" width="116" height="50" rx="9" fill="#F7F8FA" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="340" y="175" font-size="13" font-weight="500" fill="#1F2937" text-anchor="middle">确认最终价格</text>
+  <path d="M398 169 L410 169" fill="none" stroke="#9CA3AF" stroke-width="1" marker-end="url(#f71ar)"/>
+
+  <rect x="414" y="144" width="116" height="50" rx="9" fill="#F7F8FA" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="472" y="175" font-size="13" font-weight="500" fill="#1F2937" text-anchor="middle">判断值不值</text>
+  <path d="M530 169 L542 169" fill="none" stroke="#9CA3AF" stroke-width="1" marker-end="url(#f71ar)"/>
+
+  <rect x="546" y="144" width="116" height="50" rx="9" fill="#F7F8FA" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="604" y="175" font-size="13" font-weight="500" fill="#1F2937" text-anchor="middle">决定</text>
+
+  <text x="340" y="218" font-size="12" fill="#B45309" text-anchor="middle">两条线在起点和终点附近是重合的，错位出现在中间</text>
+  <text x="340" y="242" font-size="11.5" fill="#6B7280" text-anchor="middle">停留变长不一定是因为更感兴趣，有时只是用户被困住了</text>
+</svg>

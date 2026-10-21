@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 340" width="680" height="340" role="img" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <title>图 4-2　产品内半段与产品外半段</title>
+  <desc>用户任务被系统边界切成两段：系统内是进入页面、点击按钮、查看数据、提交表单、完成配置；产品外是复制数据、打开表格、找人确认、写汇报、发群聊。产品经理最容易看见的，永远是自己负责的那一段；而用户真实的路径几乎不会在系统边界内闭合。</desc>
+  <defs>
+    <marker id="f41ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="f41ao" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#B45309" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- 泳道一：系统内（产品能记录到的那一段） -->
+  <rect x="16" y="16" width="648" height="116" rx="12" fill="#F7F8FA" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="36" y="40" font-size="12" fill="#6B7280">系统内</text>
+
+  <rect x="36" y="64" width="96" height="40" rx="8" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="84" y="84" font-size="13" fill="#1F2937" text-anchor="middle" dominant-baseline="central">进入页面</text>
+  <path d="M136 84 L156 84" fill="none" stroke="#9CA3AF" stroke-width="1" marker-end="url(#f41ar)"/>
+
+  <rect x="164" y="64" width="96" height="40" rx="8" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="212" y="84" font-size="13" fill="#1F2937" text-anchor="middle" dominant-baseline="central">点击按钮</text>
+  <path d="M264 84 L284 84" fill="none" stroke="#9CA3AF" stroke-width="1" marker-end="url(#f41ar)"/>
+
+  <rect x="292" y="64" width="96" height="40" rx="8" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="340" y="84" font-size="13" fill="#1F2937" text-anchor="middle" dominant-baseline="central">查看数据</text>
+  <path d="M392 84 L412 84" fill="none" stroke="#9CA3AF" stroke-width="1" marker-end="url(#f41ar)"/>
+
+  <rect x="420" y="64" width="96" height="40" rx="8" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="468" y="84" font-size="13" fill="#1F2937" text-anchor="middle" dominant-baseline="central">提交表单</text>
+  <path d="M520 84 L540 84" fill="none" stroke="#9CA3AF" stroke-width="1" marker-end="url(#f41ar)"/>
+
+  <rect x="548" y="64" width="96" height="40" rx="8" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="596" y="84" font-size="13" fill="#1F2937" text-anchor="middle" dominant-baseline="central">完成配置</text>
+
+  <!-- 系统边界 -->
+  <path d="M16 158 L664 158" fill="none" stroke="#B45309" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <rect x="292" y="146" width="96" height="24" rx="6" fill="#FFFFFF" stroke="#B45309" stroke-width="1"/>
+  <text x="340" y="158" font-size="12" fill="#B45309" text-anchor="middle" dominant-baseline="central">系统边界</text>
+
+  <!-- 泳道二：产品外（系统记录不到的那半段） -->
+  <rect x="16" y="184" width="648" height="116" rx="12" fill="#FFFFFF" stroke="#B45309" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="36" y="208" font-size="12" fill="#B45309">产品外</text>
+
+  <rect x="36" y="232" width="96" height="40" rx="8" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="84" y="252" font-size="13" fill="#1F2937" text-anchor="middle" dominant-baseline="central">复制数据</text>
+  <path d="M136 252 L156 252" fill="none" stroke="#B45309" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#f41ao)"/>
+
+  <rect x="164" y="232" width="96" height="40" rx="8" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="212" y="252" font-size="13" fill="#1F2937" text-anchor="middle" dominant-baseline="central">打开表格</text>
+  <path d="M264 252 L284 252" fill="none" stroke="#B45309" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#f41ao)"/>
+
+  <rect x="292" y="232" width="96" height="40" rx="8" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="340" y="252" font-size="13" fill="#1F2937" text-anchor="middle" dominant-baseline="central">找人确认</text>
+  <path d="M392 252 L412 252" fill="none" stroke="#B45309" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#f41ao)"/>
+
+  <rect x="420" y="232" width="96" height="40" rx="8" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="468" y="252" font-size="13" fill="#1F2937" text-anchor="middle" dominant-baseline="central">写汇报</text>
+  <path d="M520 252 L540 252" fill="none" stroke="#B45309" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#f41ao)"/>
+
+  <rect x="548" y="232" width="96" height="40" rx="8" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="596" y="252" font-size="13" fill="#1F2937" text-anchor="middle" dominant-baseline="central">发群聊</text>
+
+  <text x="340" y="322" font-size="13" fill="#B45309" text-anchor="middle">用户真实的路径几乎不会在系统边界内闭合</text>
+</svg>

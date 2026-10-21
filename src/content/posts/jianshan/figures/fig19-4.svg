@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 340" width="680" height="340" role="img" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <title>图 19-4　重叠动作稀释归因</title>
+  <desc>同一个季度里，用户运营、商品、产品、会员和社群的动作几乎同时上线，覆盖的是同一批用户，在时间上高度重叠。每一方都能在自己的指标上看到改善，同一笔复购同时进入几方成绩；数据能看到总量变化，却分辨不出各方的贡献，下一轮该保留什么因此没有依据。</desc>
+  <rect width="680" height="340" fill="#ffffff"/>
+
+  <rect x="208" y="68" width="328" height="18" rx="9" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="1"/>
+  <rect x="236" y="104" width="288" height="18" rx="9" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="1"/>
+  <rect x="264" y="140" width="248" height="18" rx="9" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="1"/>
+  <rect x="292" y="176" width="208" height="18" rx="9" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="1"/>
+  <rect x="320" y="212" width="168" height="18" rx="9" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="1"/>
+  <rect x="208" y="248" width="328" height="18" rx="9" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1" stroke-dasharray="3 3"/>
+
+  <rect x="320" y="68" width="168" height="18" rx="9" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+  <rect x="320" y="104" width="168" height="18" rx="9" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+  <rect x="320" y="140" width="168" height="18" rx="9" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+  <rect x="320" y="176" width="168" height="18" rx="9" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+  <rect x="320" y="212" width="168" height="18" rx="9" fill="#FFF7ED" stroke="#B45309" stroke-width="1.2"/>
+
+  <path d="M320 50 H488" stroke="#B45309" stroke-width="1.6" fill="none"/>
+  <path d="M320 45 V55" stroke="#B45309" stroke-width="1.6" fill="none"/>
+  <path d="M488 45 V55" stroke="#B45309" stroke-width="1.6" fill="none"/>
+
+  <rect x="16" y="67" width="88" height="22" rx="6" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="60" y="82" text-anchor="middle" font-size="11.5" fill="#374151">用户运营</text>
+  <text x="112" y="82" font-size="11" fill="#6B7280">券被核销</text>
+  <text x="604" y="82" text-anchor="middle" font-size="11" fill="#374151">有改善</text>
+
+  <rect x="16" y="103" width="88" height="22" rx="6" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="60" y="118" text-anchor="middle" font-size="11.5" fill="#374151">商品</text>
+  <text x="112" y="118" font-size="11" fill="#6B7280">推荐商品被购买</text>
+  <text x="604" y="118" text-anchor="middle" font-size="11" fill="#374151">有改善</text>
+
+  <rect x="16" y="139" width="88" height="22" rx="6" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="60" y="154" text-anchor="middle" font-size="11.5" fill="#374151">产品</text>
+  <text x="112" y="154" font-size="11" fill="#6B7280">入口点击增加</text>
+  <text x="604" y="154" text-anchor="middle" font-size="11" fill="#374151">有改善</text>
+
+  <rect x="16" y="175" width="88" height="22" rx="6" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="60" y="190" text-anchor="middle" font-size="11.5" fill="#374151">会员</text>
+  <text x="112" y="190" font-size="11" fill="#6B7280">会员复购提升</text>
+  <text x="604" y="190" text-anchor="middle" font-size="11" fill="#374151">有改善</text>
+
+  <rect x="16" y="211" width="88" height="22" rx="6" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="60" y="226" text-anchor="middle" font-size="11.5" fill="#374151">社群</text>
+  <text x="112" y="226" font-size="11" fill="#6B7280">社群订单占比上升</text>
+  <text x="604" y="226" text-anchor="middle" font-size="11" fill="#374151">有改善</text>
+
+  <rect x="16" y="247" width="88" height="22" rx="6" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1" stroke-dasharray="3 3"/>
+  <text x="60" y="262" text-anchor="middle" font-size="11.5" fill="#6B7280">数据</text>
+  <text x="112" y="262" font-size="11" fill="#9CA3AF">确认了总体变化</text>
+  <text x="604" y="262" text-anchor="middle" font-size="11" fill="#9CA3AF">分辨不出贡献</text>
+
+  <text x="16" y="27" font-size="12.5" fill="#374151">同一个季度里，五方的动作落在同一批用户身上</text>
+  <text x="404" y="41" text-anchor="middle" font-size="10.5" fill="#B45309">重叠区间</text>
+
+  <path d="M16 282 H664" stroke="#E5E7EB" stroke-width="1" fill="none"/>
+
+  <rect x="16" y="292" width="648" height="34" rx="8" fill="#FFFBEB" stroke="#B45309" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <circle cx="40" cy="309" r="8" fill="none" stroke="#B45309" stroke-width="1.2"/>
+  <path d="M34.3 303.3 L45.7 314.7" stroke="#B45309" stroke-width="1.2" fill="none"/>
+  <text x="356" y="314" text-anchor="middle" font-size="12.5" fill="#B45309">各方都能说明自己做了什么，合计却不是实际新增</text>
+</svg>

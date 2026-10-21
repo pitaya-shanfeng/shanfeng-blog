@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 266" width="680" height="266" role="img" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <title>图 8-1　立项写法把证据要求推到哪一侧</title>
+  <desc>左列是立项时的写法，中列是证据要求落在哪，右列是复盘时能回答什么。写目标指标，证据只需要覆盖结果，复盘只能回答数字涨没涨；写判断句，证据要伸到过程和副作用，复盘才能回答判断成不成立。</desc>
+  <defs>
+    <marker id="f81ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="f81ao" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#B45309" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <text x="18" y="26" font-size="12" fill="#6B7280">立项时的写法</text>
+  <text x="240" y="26" font-size="12" fill="#6B7280">证据要求落在哪</text>
+  <text x="462" y="26" font-size="12" fill="#6B7280">复盘时能回答什么</text>
+
+  <rect x="18" y="40" width="200" height="58" rx="9" fill="#F7F8FA" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="118" y="75" font-size="13" font-weight="500" fill="#1F2937" text-anchor="middle">目标指标</text>
+
+  <rect x="240" y="40" width="200" height="58" rx="9" fill="#F7F8FA" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="340" y="75" font-size="13" font-weight="500" fill="#1F2937" text-anchor="middle">只看结果</text>
+
+  <rect x="462" y="40" width="200" height="58" rx="9" fill="#F7F8FA" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="562" y="75" font-size="13" font-weight="500" fill="#1F2937" text-anchor="middle">数字涨没涨</text>
+
+  <path d="M218 69 L236 69" fill="none" stroke="#9CA3AF" stroke-width="1" marker-end="url(#f81ar)"/>
+  <path d="M440 69 L458 69" fill="none" stroke="#9CA3AF" stroke-width="1" marker-end="url(#f81ar)"/>
+
+  <rect x="18" y="116" width="200" height="58" rx="9" fill="#FEF3E2" stroke="#B45309" stroke-width="1.2"/>
+  <text x="118" y="151" font-size="13" font-weight="600" fill="#B45309" text-anchor="middle">判断句</text>
+
+  <rect x="240" y="116" width="200" height="58" rx="9" fill="#FEF3E2" stroke="#B45309" stroke-width="1.2"/>
+  <text x="340" y="151" font-size="13" font-weight="600" fill="#B45309" text-anchor="middle">过程和副作用</text>
+
+  <rect x="462" y="116" width="200" height="58" rx="9" fill="#FEF3E2" stroke="#B45309" stroke-width="1.2"/>
+  <text x="562" y="151" font-size="13" font-weight="600" fill="#B45309" text-anchor="middle">判断成不成立</text>
+
+  <path d="M218 145 L236 145" fill="none" stroke="#B45309" stroke-width="1" marker-end="url(#f81ao)"/>
+  <path d="M440 145 L458 145" fill="none" stroke="#B45309" stroke-width="1" marker-end="url(#f81ao)"/>
+
+  <text x="340" y="212" font-size="12.5" font-weight="600" fill="#B45309" text-anchor="middle">先把证据约定好，再看结果</text>
+  <text x="340" y="240" font-size="11.5" fill="#6B7280" text-anchor="middle">先看当初约定的证据是否支持判断</text>
+</svg>

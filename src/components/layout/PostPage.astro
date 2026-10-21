@@ -4,7 +4,11 @@ import { getPostUrlBySlug } from "@utils/url-utils";
 import PostCard from "@/components/layout/PostCard.astro";
 import { siteConfig } from "@/config";
 
-const { page } = Astro.props;
+const { page, containerId = "post-list-container" } = Astro.props as {
+	page: { data: CollectionEntry<"posts">[] };
+	/** 同页出现多段文章列表时，各段用不同 id，避免重复 id */
+	containerId?: string;
+};
 
 let delay = 0;
 const interval = 50;
@@ -30,7 +34,7 @@ const coverPositionClass =
 ---
 
 <div
-  id="post-list-container"
+  id={containerId}
   class={`transition-all duration-500 ease-in-out mb-4 ${initialLayoutClass}${coverPositionClass}`}
   data-default-layout={defaultLayout}
   data-mobile-default-layout={mobileDefaultLayout}

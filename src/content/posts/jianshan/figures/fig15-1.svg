@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 216" width="680" height="216" role="img" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <title>图 15-1　一笔长租订单的时间轴</title>
+  <desc>一笔长租订单从起租当天到账期展开、再到数月后，三个阶段各自留下不同的东西。起租当天，前台记录了订单和 GMV，渠道佣金、设备采购与交付成本也已经开始发生；账期展开以后，租金要在几个月甚至更长时间里陆续回来；数月后，逾期、催收、坏账和资金占用才逐渐显现。最下面把 GMV、已经收到的收入、扣除全部代价后的收益三个口径并排放到一起。</desc>
+  <defs>
+    <marker id="f15a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="680" height="216" fill="#ffffff"/>
+
+  <path d="M140 48 H540" stroke="#E5E7EB" stroke-width="1.2" fill="none"/>
+  <circle cx="140" cy="48" r="4.5" fill="#D1D5DB"/>
+  <circle cx="340" cy="48" r="4.5" fill="#D1D5DB"/>
+  <circle cx="540" cy="48" r="4.5" fill="#B45309"/>
+  <text x="140" y="28" text-anchor="middle" font-size="12" fill="#374151">起租当天</text>
+  <text x="340" y="28" text-anchor="middle" font-size="12" fill="#374151">账期展开</text>
+  <text x="540" y="28" text-anchor="middle" font-size="12" fill="#374151">数月后</text>
+
+  <path d="M140 54 V70" stroke="#D1D5DB" stroke-width="1" stroke-dasharray="3 3" fill="none"/>
+  <path d="M340 54 V70" stroke="#D1D5DB" stroke-width="1" stroke-dasharray="3 3" fill="none"/>
+  <path d="M540 54 V70" stroke="#B45309" stroke-width="1" stroke-dasharray="3 3" fill="none"/>
+
+  <rect x="55" y="72" width="170" height="70" rx="9" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="69" y="87" font-size="11.5" fill="#374151">前台记录了订单和 GMV</text>
+  <text x="69" y="107" font-size="11.5" fill="#374151">渠道佣金、设备采购</text>
+  <text x="69" y="127" font-size="11.5" fill="#374151">与交付成本也已经开始发生</text>
+
+  <rect x="255" y="72" width="170" height="70" rx="9" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="269" y="97" font-size="11.5" fill="#374151">租金要在几个月甚至</text>
+  <text x="269" y="117" font-size="11.5" fill="#374151">更长时间里陆续回来</text>
+
+  <rect x="455" y="72" width="170" height="70" rx="9" fill="#FFFFFF" stroke="#B45309" stroke-width="1"/>
+  <text x="469" y="87" font-size="11.5" fill="#374151">逾期、催收、坏账</text>
+  <text x="469" y="107" font-size="11.5" fill="#374151">和资金占用</text>
+  <text x="469" y="127" font-size="11.5" fill="#374151">则要等账期展开以后</text>
+
+  <path d="M227 107 H251" stroke="#9CA3AF" stroke-width="1.2" fill="none" marker-end="url(#f15a)"/>
+  <path d="M427 107 H451" stroke="#9CA3AF" stroke-width="1.2" fill="none" marker-end="url(#f15a)"/>
+
+  <path d="M140 144 V158" stroke="#D1D5DB" stroke-width="1" stroke-dasharray="3 3" fill="none"/>
+  <path d="M340 144 V158" stroke="#D1D5DB" stroke-width="1" stroke-dasharray="3 3" fill="none"/>
+  <path d="M540 144 V158" stroke="#B45309" stroke-width="1" stroke-dasharray="3 3" fill="none"/>
+
+  <rect x="55" y="158" width="170" height="38" rx="9" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="140" y="182" text-anchor="middle" font-size="12" fill="#6B7280">GMV</text>
+  <rect x="255" y="158" width="170" height="38" rx="9" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="340" y="182" text-anchor="middle" font-size="12" fill="#6B7280">已经收到的收入</text>
+  <rect x="455" y="158" width="170" height="38" rx="9" fill="#FFFFFF" stroke="#B45309" stroke-width="1"/>
+  <text x="540" y="182" text-anchor="middle" font-size="12" fill="#B45309">扣除全部代价后的收益</text>
+</svg>

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 330" width="680" height="330" role="img" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <title>图 14-2　开放平台的请求处理路径</title>
+  <desc>品牌的请求进来以后，先确认是谁、有没有相应权限，再把外部的商品、门店等信息转换成内部能够识别的对象，之后按照已有规则判断库存和履约条件，符合要求以后才进入后面的订单、仓储和配送体系。</desc>
+  <defs>
+    <marker id="f141a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#B45309" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="680" height="330" fill="#ffffff"/>
+  <text x="340" y="24" text-anchor="middle" font-size="11" fill="#9CA3AF">品牌的请求进来</text>
+  <path d="M340 32 V48" stroke="#B45309" stroke-width="1.4" fill="none" marker-end="url(#f141a)"/>
+  <rect x="140" y="52" width="400" height="56" rx="9" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="340" y="78" text-anchor="middle" font-size="13" fill="#374151">先确认是谁</text>
+  <text x="340" y="96" text-anchor="middle" font-size="10.5" fill="#6B7280">有没有相应权限</text>
+  <path d="M340 108 V124" stroke="#B45309" stroke-width="1.4" fill="none" marker-end="url(#f141a)"/>
+  <rect x="140" y="128" width="400" height="56" rx="9" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="340" y="154" text-anchor="middle" font-size="13" fill="#374151">转换成内部能够识别的对象</text>
+  <text x="340" y="172" text-anchor="middle" font-size="10.5" fill="#6B7280">外部的商品、门店等信息</text>
+  <path d="M340 184 V200" stroke="#B45309" stroke-width="1.4" fill="none" marker-end="url(#f141a)"/>
+  <rect x="140" y="204" width="400" height="56" rx="9" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="340" y="230" text-anchor="middle" font-size="13" fill="#374151">按照已有规则判断</text>
+  <text x="340" y="248" text-anchor="middle" font-size="10.5" fill="#6B7280">库存和履约条件</text>
+  <path d="M340 260 V276" stroke="#B45309" stroke-width="1.4" fill="none" marker-end="url(#f141a)"/>
+  <text x="352" y="272" font-size="10" fill="#B45309">符合要求以后</text>
+  <rect x="140" y="282" width="400" height="32" rx="9" fill="#F9FAFB" stroke="#D1D5DB" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="340" y="303" text-anchor="middle" font-size="12" fill="#374151">订单、仓储和配送体系</text>
+</svg>

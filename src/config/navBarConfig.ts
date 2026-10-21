@@ -4,6 +4,7 @@ import {
 	type NavBarSearchConfig,
 	NavBarSearchMethod,
 } from "../types/navBarConfig";
+import { booksConfig } from "./booksConfig";
 
 // ============================================================================
 // 导航栏配置 - 根据顺序动态生成导航栏链接
@@ -86,10 +87,16 @@ const buildContentGroup = (group: ContentGroupConfig): NavBarLink => ({
 		...(group.allLabel
 			? [{ name: group.allLabel, url: archiveFilter({ category: group.category }) }]
 			: []),
-		...group.topics.map((topic) => ({
-			name: topic,
-			url: archiveFilter({ category: group.category, tag: topic }),
-		})),
+		...group.topics.map((topic) => {
+			// 二级项如果对应一本已配置的书，直接进书页；否则退回归档筛选
+			const book = booksConfig.find((item) => item.title === topic);
+			return {
+				name: topic,
+				url: book
+					? `/books/${book.id}/`
+					: archiveFilter({ category: group.category, tag: topic }),
+			};
+		}),
 	],
 });
 

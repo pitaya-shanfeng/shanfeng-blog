@@ -4,6 +4,8 @@ published: 1970-01-01
 description: 《见山》序言。一个产品经理从「见山是山」走到「见山不是山」，再重新回到问题本身的过程。交代了这本书写给谁、要解决什么，以及为什么判断力比交付能力更难建立。
 tags: [见山, 产品思维, 判断力]
 category: 著书立说
+series: 见山
+seriesOrder: 0
 slug: jianshan-preface
 ---
 

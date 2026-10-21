@@ -1,0 +1,726 @@
+---
+/**
+ * 书籍落地页：/books/<book>/
+ *
+ * 稿 A「书卷」：封面领起 → 五个篇卡 → 章节行。
+ *
+ * 为什么是「篇卡 + 章节行」而不是文章卡片列表：
+ * 这本书是有顺序的目录，不是平级的文章流。母版里表达「有顺序的一组内容」的语汇是
+ * 系列手风琴（图标圈 + 折叠 + 编号行），这里取它的行式结构，配上书籍需要的封面与统计。
+ *
+ * 数据分工：
+ * - 篇 / 章 / 摘要 / 章号来自 `src/config/booksConfig.ts`（目录要能一次画全）
+ * - 链接、封面图来自文章（`series` + `seriesOrder` 对上）
+ *
+ * 篇首语不单独成页：从 `spec` 集合取正文，在本页内折叠展开。
+ * 展开用「隐藏 checkbox + label」的纯 CSS 方案，不用 JS ——
+ * 站内跳转（swup）后内联脚本不会重新执行，纯 CSS 才能保证一直可用。
+ */
+import { getEntry, render } from "astro:content";
+import { booksConfig } from "@/config";
+import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import CoverImage from "@/components/common/CoverImage.astro";
+import { getSeriesPostsOf } from "@/utils/content-utils";
+import { getApiUrlList, processCoverImageSync } from "@/utils/image-utils";
+import { getFileDirFromPath, getPostUrlBySlug } from "@/utils/url-utils";
+
+export async function getStaticPaths() {
+	return booksConfig.map((book) => ({
+		params: { book: book.id },
+		props: { book },
+	}));
+}
+
+const { book } = Astro.props;
+
+const posts = await getSeriesPostsOf(book.title);
+const byOrder = new Map(posts.map((post) => [post.data.seriesOrder ?? 0, post]));
+
+/** 全书章节数（只数「第 N 章」，附表不计） */
+const chapterCount = book.parts.reduce(
+	(sum, part) =>
+		sum + part.entries.filter((entry) => entry.label.includes("章")).length,
+	0,
+);
+
+/** 「另附」的条目：序 / 附 / 后记 */
+const extraLabels = [
+	book.preface?.label,
+	...book.parts.flatMap((part) =>
+		part.entries
+			.filter((entry) => !entry.label.includes("章"))
+			.map((entry) => entry.label),
+	),
+	book.afterword?.label,
+].filter((label): label is string => Boolean(label));
+
+/**
+ * 全书篇幅：与单章「15610 字」同一口径（非空白字符，含标点），不为此去 render 24 篇。
+ * 只数汉字会得到 21.4 万，点进任一章却是含标点的数，两边对不上。
+ */
+const totalChars = posts.reduce(
+	(sum, post) => sum + (post.body ?? "").replace(/\s/g, "").length,
+	0,
+);
+const totalWan = Math.max(1, Math.round(totalChars / 10000));
+
+/** 目录编号：「第 01 章」→「01」，「附」原样 */
+const entryNo = (label: string) => {
+	const matched = label.match(/第\s*(\d+)\s*章/);
+	return matched ? matched[1].padStart(2, "0") : label;
+};
+
+/** 篇的规模：「5 章 · 附 1」 */
+const partStat = (part: (typeof book.parts)[number]) => {
+	const chapters = part.entries.filter((e) => e.label.includes("章")).length;
+	const extras = part.entries.length - chapters;
+	return `${chapters} 章` + (extras > 0 ? ` · 附 ${extras}` : "");
+};
+
+/** 篇首语：取 spec 条目、渲染 */
+const intros = new Map<string, { Content: any }>();
+for (const part of book.parts) {
+	const entry = await getEntry("spec", part.introId);
+	if (!entry) continue;
+	const rendered = await render(entry);
+	intros.set(part.introId, { Content: rendered.Content });
+}
+
+const prefacePost = book.preface ? byOrder.get(book.preface.order) : undefined;
+const afterwordPost = book.afterword ? byOrder.get(book.afterword.order) : undefined;
+---
+
+<MainGridLayout title={book.title} description={book.description}>
+  <div class="book-page onload-animation" data-no-category-bar>
+    <nav class="crumb" aria-label="面包屑">
+      <a href="/">首页</a>
+      <i aria-hidden="true">/</i>
+      <a href="/archive/?category=%E8%91%97%E4%B9%A6%E7%AB%8B%E8%AF%B4">著书立说</a>
+      <i aria-hidden="true">/</i>
+      <b>{book.title}</b>
+    </nav>
+
+    <!-- 书籍头部：封面 + 定位 + 规模 + 入口 -->
+    <header class="hero card-base">
+      <div class="hero-cover">
+        {
+          book.cover ? (
+            <img src={book.cover} alt={`《${book.title}》封面`} loading="eager" />
+          ) : (
+            <div class="plate" aria-hidden="true">
+              <span class="plate-title">{book.title}</span>
+              <span class="plate-foot">封面 3 : 4</span>
+            </div>
+          )
+        }
+      </div>
+
+      <div class="hero-main">
+        <p class="kicker">{book.kicker}</p>
+        <h1>{book.title}</h1>
+        <p class="lead">{book.lead}</p>
+        <p class="desc">{book.description}</p>
+
+        <dl class="stats">
+          <div><dt>篇</dt><dd>{book.parts.length}</dd></div>
+          <div><dt>章</dt><dd>{chapterCount}</dd></div>
+          <div><dt>另附</dt><dd class="soft">{extraLabels.join(" · ")}</dd></div>
+          <div><dt>篇幅</dt><dd class="soft">约 {totalWan} 万字</dd></div>
+        </dl>
+
+        <div class="cta">
+          {
+            prefacePost && (
+              <a class="btn-fill" href={getPostUrlBySlug(prefacePost.id)}>从序读起</a>
+            )
+          }
+          <a class="btn-line" href="#toc">全书目录</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- 序 -->
+    {
+      prefacePost && (
+        <a class="quiet card-base" href={getPostUrlBySlug(prefacePost.id)}>
+          <b>序</b>
+          <span class="q-title">{book.preface?.title}</span>
+          <em class="q-sum">{book.preface?.summary}</em>
+        </a>
+      )
+    }
+
+    <div id="toc" class="toc-anchor"></div>
+
+    <!-- 篇 -->
+    {
+      book.parts.map((part, index) => {
+        const intro = intros.get(part.introId);
+        const checkId = `pi-${book.id}-${index}`;
+        return (
+          <section class="part card-base">
+            <div class="part-head">
+              <span class="rule" aria-hidden="true" />
+              <span class="pno">{part.name}</span>
+              <h2>{part.title}</h2>
+              <span class="pstat">{partStat(part)}</span>
+            </div>
+            <p class="psub">{part.subtitle}</p>
+
+            {intro && (
+              <>
+                <input type="checkbox" class="pi-check" id={checkId} />
+                <div class="intro">
+                  <div class="pi-body">
+                    <intro.Content />
+                  </div>
+                </div>
+                <label class="pi-toggle" for={checkId}>
+                  <span class="pi-open">展开篇首语</span>
+                  <span class="pi-close">收起</span>
+                  <svg
+                    class="pi-caret"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M9 6l6 6-6 6" />
+                  </svg>
+                </label>
+              </>
+            )}
+
+            <ul class="rows">
+              {part.entries.map((entry) => {
+                const post = byOrder.get(entry.order);
+                if (!post) return null;
+                const cover = processCoverImageSync(post.data.image, post.id);
+                return (
+                  <li>
+                    <a class="row" href={getPostUrlBySlug(post.id)}>
+                      <span class="rno">{entryNo(entry.label)}</span>
+                      <span class="rmain">
+                        <b>{entry.title}</b>
+                        {entry.summary && <i>{entry.summary}</i>}
+                      </span>
+                      {cover ? (
+                        <span class="rthumb">
+                          <CoverImage
+                            src={cover}
+                            basePath={getFileDirFromPath(post.filePath || "")}
+                            alt=""
+                            apiUrls={getApiUrlList(post.data.image, post.id)}
+                            loading="lazy"
+                            class="thumb-img"
+                          />
+                        </span>
+                      ) : null}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        );
+      })
+    }
+
+    <!-- 后记 -->
+    {
+      afterwordPost && (
+        <a class="quiet card-base" href={getPostUrlBySlug(afterwordPost.id)}>
+          <b>后记</b>
+          <span class="q-title">{book.afterword?.title}</span>
+          <em class="q-sum">{book.afterword?.summary}</em>
+        </a>
+      )
+    }
+  </div>
+</MainGridLayout>
+
+<style>
+  @reference "../../styles/main.css";
+
+  .book-page {
+    /* 主文字用模版同一套工具类，暗色自动切换（currentColor 继承的是 body 的黑色，暗色下不会变） */
+    @apply text-neutral-900 dark:text-neutral-100;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  /* ---------- 面包屑 ---------- */
+  .crumb {
+    font-size: var(--fs-sub);
+    color: var(--content-meta);
+    margin-bottom: 2px;
+  }
+  .crumb a {
+    color: color-mix(in oklab, var(--content-meta) 80%, transparent);
+    transition: color 0.15s;
+  }
+  .crumb a:hover {
+    color: var(--btn-content);
+  }
+  .crumb i {
+    font-style: normal;
+    margin: 0 7px;
+    opacity: 0.5;
+  }
+  .crumb b {
+    font-weight: 500;
+    color: var(--content-meta);
+  }
+
+  /* ---------- 头部 ---------- */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding: 22px;
+  }
+  /* 两栏要留够正文宽度：小于 1024 时内容列不足 700，200px 封面一占，
+     文字只剩 270–400，段落会碎成一条，所以下面几档先竖排 */
+  @media (min-width: 1024px) {
+    .hero {
+      grid-template-columns: 200px 1fr;
+      gap: 32px;
+      padding: 30px 34px;
+    }
+  }
+
+  .hero-cover {
+    position: relative;
+    width: 100%;
+    max-width: 200px;
+    margin-inline: auto;
+    aspect-ratio: 3 / 4;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 12px 26px -16px rgb(0 0 0 / 0.45);
+  }
+  @media (min-width: 1024px) {
+    .hero-cover {
+      margin-inline: 0;
+    }
+  }
+  .hero-cover img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* 没有封面图时的排版封面（竖排书名），换真图后自动不再出现 */
+  .plate {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    padding: 20px 16px 20px 26px;
+    background: radial-gradient(
+      120% 90% at 18% 0%,
+      oklch(0.78 0.1 168) 0%,
+      oklch(0.66 0.1 172) 58%,
+      oklch(0.55 0.09 176) 100%
+    );
+  }
+  /* 书脊：只有一片暗边，不引入新元素 */
+  .plate::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 13px;
+    background: linear-gradient(
+      90deg,
+      rgb(0 0 0 / 0.3) 0%,
+      rgb(0 0 0 / 0.1) 62%,
+      rgb(255 255 255 / 0.1) 100%
+    );
+    box-shadow: inset -1px 0 0 rgb(255 255 255 / 0.16);
+  }
+  .plate-title {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    align-self: flex-start;
+    font-size: var(--fs-h1);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    line-height: 1;
+    color: #fff;
+    text-shadow: 0 1px 3px rgb(0 0 0 / 0.18);
+  }
+  .plate-foot {
+    font-size: var(--fs-label);
+    letter-spacing: 0.14em;
+    color: rgb(255 255 255 / 0.72);
+  }
+
+  .hero-main {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .kicker {
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    /* 小字不用 --primary：它在白卡上只有 2.51:1。--btn-content 是模版为
+       「浅底上的主色文字」准备的同一个色相，4.53:1 过 AA */
+    color: var(--btn-content);
+  }
+  .hero-main h1 {
+    margin: 10px 0 0;
+    font-size: var(--fs-h1);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+  }
+  .lead {
+    margin: 12px 0 0;
+    font-size: var(--fs-body);
+    line-height: 1.8;
+    color: color-mix(in oklab, currentColor 78%, transparent);
+  }
+  .desc {
+    margin: 10px 0 0;
+    font-size: var(--fs-meta);
+    line-height: 1.9;
+    color: var(--content-meta);
+  }
+
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 34px;
+    margin: auto 0 0;
+    padding-top: 20px;
+    border-top: 1px solid var(--line-divider);
+  }
+  .stats dt {
+    font-size: var(--fs-label);
+    color: color-mix(in oklab, var(--content-meta) 65%, transparent);
+    letter-spacing: 0.04em;
+  }
+  .stats dd {
+    margin: 2px 0 0;
+    font-size: var(--fs-body);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .stats dd.soft {
+    padding-top: 3px;
+    font-size: var(--fs-sub);
+    font-weight: 500;
+    color: var(--content-meta);
+  }
+
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .btn-fill,
+  .btn-line {
+    display: inline-flex;
+    align-items: center;
+    padding: 9px 20px;
+    border-radius: 999px;
+    font-size: var(--fs-sub);
+    font-weight: 600;
+    transition:
+      background 0.16s,
+      color 0.16s,
+      transform 0.16s;
+  }
+  .btn-fill {
+    /* 白字压在 --primary 上是 2.51:1；改成深绿字，7.3:1，亮暗都成立 */
+    background: var(--primary);
+    color: oklch(0.20 0.03 165);
+  }
+  .btn-fill:hover {
+    transform: translateY(-1px);
+  }
+  .btn-line {
+    /* 模板的 btn-regular-bg 底 + btn-content 字是 3.95:1；这里退成纯文字按钮，
+       白卡上 4.53:1，也把「从序读起」留成唯一的主按钮 */
+    color: var(--btn-content);
+  }
+  .btn-line:hover {
+    background: color-mix(in oklab, var(--primary) 8%, transparent);
+  }
+
+  /* ---------- 序 / 后记：细条，与篇卡区分重量 ---------- */
+  .quiet {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding: 15px 22px;
+    transition: background 0.16s;
+  }
+  .quiet:hover {
+    background: color-mix(in oklab, var(--primary) 5%, var(--card-bg));
+  }
+  /* 与篇号同一套写法：不铺底色（铺了芯片底，同一个绿字只剩 4.07:1） */
+  .quiet b {
+    flex: 0 0 auto;
+    color: var(--btn-content);
+    font-size: var(--fs-label);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+  }
+  .q-title {
+    min-width: 0;
+    font-size: var(--fs-ui);
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .q-sum {
+    min-width: 0;
+    font-style: normal;
+    font-size: var(--fs-meta);
+    color: var(--content-meta);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  @media (max-width: 639px) {
+    .q-sum {
+      display: none;
+    }
+  }
+
+  .toc-anchor {
+    scroll-margin-top: 6rem;
+  }
+
+  /* ---------- 篇 ---------- */
+  .part {
+    padding: 22px 22px 12px;
+  }
+  @media (min-width: 768px) {
+    .part {
+      padding: 24px 26px 12px;
+    }
+  }
+
+  .part-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 11px;
+  }
+  .rule {
+    align-self: center;
+    width: 4px;
+    height: 17px;
+    border-radius: 4px;
+    background: var(--primary);
+  }
+  .pno {
+    font-size: var(--fs-label);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--btn-content);
+  }
+  .part-head h2 {
+    font-size: var(--fs-h3);
+    font-weight: 700;
+    line-height: 1.4;
+  }
+  .pstat {
+    margin-left: auto;
+    font-size: var(--fs-label);
+    letter-spacing: 0.04em;
+    color: color-mix(in oklab, var(--content-meta) 78%, transparent);
+  }
+  .psub {
+    margin-top: 7px;
+    font-size: var(--fs-sub);
+    color: var(--content-meta);
+  }
+
+  /* ---------- 篇首语（纯 CSS 折叠） ---------- */
+  /* 不用 display:none —— 那样键盘和读屏都够不到。保留在流里、透明 1px，
+     焦点环画到可见的 label 上 */
+  .pi-check {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    margin: 0;
+    pointer-events: none;
+  }
+  .pi-check:focus-visible ~ .pi-toggle {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .intro {
+    margin-top: 14px;
+    padding: 14px 16px 12px;
+    border-radius: 12px;
+    background: color-mix(in oklab, var(--primary) 7%, transparent);
+  }
+  .pi-body {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: var(--fs-sub);
+    line-height: 1.9;
+    color: var(--content-meta);
+  }
+  .pi-body :global(p) {
+    margin: 0;
+  }
+  .pi-body :global(p + p) {
+    margin-top: 20px;
+  }
+  .pi-check:checked ~ .intro .pi-body {
+    display: block;
+    overflow: visible;
+  }
+  .pi-toggle {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 8px;
+    font-size: var(--fs-label);
+    font-weight: 600;
+    color: var(--btn-content);
+    cursor: pointer;
+    user-select: none;
+  }
+  .pi-caret {
+    width: 12px;
+    height: 12px;
+    margin-left: 3px;
+    transform: rotate(90deg);
+    transition: transform 0.2s;
+  }
+  .pi-check:checked ~ .pi-toggle .pi-caret {
+    transform: rotate(-90deg);
+  }
+  .pi-close {
+    display: none;
+  }
+  .pi-check:checked ~ .pi-toggle .pi-open {
+    display: none;
+  }
+  .pi-check:checked ~ .pi-toggle .pi-close {
+    display: inline;
+  }
+
+  /* ---------- 章节行 ---------- */
+  .rows {
+    margin-top: 8px;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 10px;
+    border-radius: 10px;
+    transition: background 0.16s;
+  }
+  .rows li + li .row {
+    border-top: 1px dashed var(--line-divider);
+  }
+  .row:hover {
+    background: color-mix(in oklab, var(--primary) 6%, transparent);
+  }
+  .rno {
+    flex: 0 0 32px;
+    align-self: flex-start;
+    padding-top: 2px;
+    text-align: center;
+    font-size: var(--fs-meta);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+    color: var(--btn-content);
+  }
+  .rmain {
+    flex: 1;
+    min-width: 0;
+  }
+  .rmain b {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: var(--fs-ui);
+    font-weight: 600;
+    line-height: 1.5;
+    transition: color 0.16s;
+  }
+  .row:hover .rmain b {
+    color: var(--btn-content);
+  }
+  .rmain i {
+    display: block;
+    margin-top: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-style: normal;
+    font-size: var(--fs-meta);
+    line-height: 1.6;
+    color: color-mix(in oklab, var(--content-meta) 85%, transparent);
+  }
+  .rthumb {
+    flex: 0 0 56px;
+    width: 56px;
+    height: 56px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: color-mix(in oklab, var(--primary) 8%, transparent);
+  }
+  .rthumb :global(.thumb-img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.25s;
+  }
+  .row:hover .rthumb :global(.thumb-img) {
+    transform: scale(1.04);
+  }
+
+  @media (max-width: 639px) {
+    .row {
+      gap: 10px;
+      padding: 11px 6px;
+    }
+    .rno {
+      flex: 0 0 26px;
+    }
+    .rmain b {
+      font-size: var(--fs-sub);
+    }
+    .rmain i {
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+    }
+    .rthumb {
+      flex: 0 0 44px;
+      width: 44px;
+      height: 44px;
+    }
+    .pstat {
+      display: none;
+    }
+  }
+</style>

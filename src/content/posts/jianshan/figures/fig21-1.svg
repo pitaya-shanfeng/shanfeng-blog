@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 320" width="680" height="320" role="img" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <title>图 21-1　划清分工：两堆任务，两种衡量</title>
+  <desc>任务分成两堆。能当场验出对错的一堆，错了当场就改，可以整段交出去；验不出对错的一堆，当场没有答案可以核对，事先只能靠界定问题和预判后果支撑，只能留在手里。衡量交与不交有两种标准：难易衡量的是能力，代价衡量的是归属，真正决定归属的是代价。</desc>
+  <rect width="680" height="320" fill="#ffffff"/>
+
+  <text x="40" y="26" font-size="13" fill="#374151">产出：可以整段交出去</text>
+  <rect x="40" y="38" width="290" height="118" rx="8" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="58" y="62" font-size="11.5" fill="#6B7280">当场能验出对错</text>
+  <text x="58" y="88" font-size="12.5" fill="#374151">查资料、列清单</text>
+  <text x="58" y="112" font-size="12.5" fill="#374151">对比方案、出初稿</text>
+  <text x="58" y="138" font-size="11.5" fill="#9CA3AF">错了当场能改</text>
+
+  <text x="350" y="26" font-size="13" fill="#B45309">判断：只能留在手里</text>
+  <rect x="350" y="38" width="290" height="118" rx="8" fill="#FFFBEB" stroke="#B45309" stroke-width="1"/>
+  <text x="368" y="62" font-size="11.5" fill="#B45309">当场验不出对错</text>
+  <text x="368" y="88" font-size="12.5" fill="#374151">界定问题、冲突中取舍</text>
+  <text x="368" y="112" font-size="12.5" fill="#374151">对没有数据的事下注</text>
+  <text x="368" y="138" font-size="11.5" fill="#B45309">错了，得自己承担后果</text>
+
+  <line x1="340" y1="38" x2="340" y2="156" stroke="#D1D5DB" stroke-width="1.2" stroke-dasharray="4 4"/>
+
+  <text x="40" y="186" font-size="12.5" fill="#6B7280">难易衡量的是能力</text>
+  <rect x="40" y="198" width="290" height="70" rx="8" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="58" y="222" font-size="11.5" fill="#6B7280">从零做一个功能：两周</text>
+  <text x="58" y="248" font-size="11.5" fill="#6B7280">接一段现成能力：半天</text>
+
+  <text x="350" y="186" font-size="12.5" fill="#B45309">代价衡量的是归属</text>
+  <rect x="350" y="198" width="290" height="70" rx="8" fill="#FFFFFF" stroke="#B45309" stroke-width="1"/>
+  <text x="368" y="222" font-size="11.5" fill="#374151">前者错了：退回重做一遍</text>
+  <text x="368" y="248" font-size="11.5" fill="#B45309">后者错了：对外解释一个日期</text>
+
+  <rect x="40" y="286" width="600" height="26" rx="6" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="340" y="303" text-anchor="middle" font-size="11.5" fill="#6B7280">难易会随熟练程度变化，代价不会；所以分的时候不看能力，只看代价</text>
+</svg>

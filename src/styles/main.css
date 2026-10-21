@@ -9,6 +9,7 @@
 @import './display-settings.css';
 @import './categories.css';
 @import './layout-base.css';
+@import './type-scale.css'; /* 全站字阶：角色 → 字号 */
 
 @plugin '@tailwindcss/typography';
 
@@ -492,7 +493,12 @@ html {
     }
 
     .dropdown-item {
-        @apply flex items-center justify-between px-4 py-2.5 text-black/75 dark:text-white/75 hover:text-(--primary) hover:bg-(--btn-plain-bg-hover) transition-colors duration-150 font-medium;
+        @apply flex items-center justify-between px-4 py-2.5 text-black/65 dark:text-white/65 hover:text-(--primary) hover:bg-(--btn-plain-bg-hover) transition-colors duration-150;
+        /* 二级菜单：14px / 400 / 字距 0.01em。与一级的 15px/600 拉开层级，
+           而不是靠"都很粗"来区分 */
+        font-size: 0.875rem;
+        font-weight: 400;
+        letter-spacing: 0.01em;
     }
 
     .dropdown-item:first-child {

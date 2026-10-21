@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 250" width="680" height="250" role="img" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <title>图 12-1　三个位置各自换过什么</title>
+  <desc>同一条需求里装着的东西，换一批用户、换一个活动、换一个入口，就全部换掉了。人群可以是 30 天没有再次购买的老用户，活动可以是会员礼包，入口可以是 Banner 和频道入口；换掉的是这一次装进去的内容，三个位置自己一直没有被换掉。</desc>
+  <defs>
+    <marker id="f121a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#B45309" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="680" height="250" fill="#ffffff"/>
+  <text x="205" y="30" text-anchor="middle" font-size="11" fill="#9CA3AF">这次</text>
+  <text x="505" y="30" text-anchor="middle" font-size="11" fill="#9CA3AF">后来</text>
+  <rect x="90" y="46" width="230" height="52" rx="9" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <rect x="350" y="46" width="310" height="52" rx="9" fill="#F9FAFB" stroke="#D1D5DB" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="48" y="81" text-anchor="middle" font-size="12" fill="#374151">人群</text>
+  <text x="205" y="81" text-anchor="middle" font-size="12.5" fill="#374151">7 日内未转化新客</text>
+  <text x="505" y="81" text-anchor="middle" font-size="12.5" fill="#6B7280">30 天没有再次购买的老用户</text>
+  <path d="M325 77 H341" stroke="#B45309" stroke-width="1.4" fill="none" marker-end="url(#f121a)"/>
+  <rect x="90" y="110" width="230" height="52" rx="9" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <rect x="350" y="110" width="310" height="52" rx="9" fill="#F9FAFB" stroke="#D1D5DB" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="48" y="145" text-anchor="middle" font-size="12" fill="#374151">活动</text>
+  <text x="205" y="145" text-anchor="middle" font-size="12.5" fill="#374151">新人活动</text>
+  <text x="505" y="145" text-anchor="middle" font-size="12.5" fill="#6B7280">会员礼包</text>
+  <path d="M325 141 H341" stroke="#B45309" stroke-width="1.4" fill="none" marker-end="url(#f121a)"/>
+  <rect x="90" y="174" width="230" height="52" rx="9" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <rect x="350" y="174" width="310" height="52" rx="9" fill="#F9FAFB" stroke="#D1D5DB" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="48" y="209" text-anchor="middle" font-size="12" fill="#374151">资源位</text>
+  <text x="205" y="209" text-anchor="middle" font-size="12.5" fill="#374151">首页弹窗</text>
+  <text x="505" y="209" text-anchor="middle" font-size="12.5" fill="#6B7280">Banner、频道入口</text>
+  <path d="M325 205 H341" stroke="#B45309" stroke-width="1.4" fill="none" marker-end="url(#f121a)"/>
+</svg>

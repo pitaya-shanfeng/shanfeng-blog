@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 470" width="680" height="470" role="img" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <title>图 5-2　四个实验组的指标取舍</title>
+  <desc>同样是点击转化率、跨品类点击率、连带购买率、多样性指数、贡献 GMV 五个指标，对照组 A 旧模型、实验组 B、实验组 C、实验组 D 四组的形状完全不同：实验组 D 在点击转化率上最高，其余四项都塌了下去；实验组 B 不是每个单项指标的第一名，但它在几个关键目标之间形成了更健康的组合。</desc>
+
+  <!-- 行底纹 -->
+  <rect x="16" y="64" width="650" height="68" rx="6" fill="#F7F8FA"/>
+  <rect x="16" y="200" width="650" height="68" rx="6" fill="#F7F8FA"/>
+  <rect x="16" y="336" width="650" height="68" rx="6" fill="#F7F8FA"/>
+
+  <!-- 表头 -->
+  <text x="211" y="36" font-size="12.5" fill="#4B5563" text-anchor="middle">对照组 A</text>
+  <text x="211" y="54" font-size="11" fill="#9CA3AF" text-anchor="middle">旧模型</text>
+  <text x="341" y="36" font-size="12.5" fill="#B45309" text-anchor="middle">实验组 B</text>
+  <text x="341" y="54" font-size="11" fill="#B45309" text-anchor="middle">全量上线</text>
+  <text x="471" y="36" font-size="12.5" fill="#4B5563" text-anchor="middle">实验组 C</text>
+  <text x="471" y="54" font-size="11" fill="#9CA3AF" text-anchor="middle">约束无保底</text>
+  <text x="601" y="36" font-size="12.5" fill="#4B5563" text-anchor="middle">实验组 D</text>
+  <text x="601" y="54" font-size="11" fill="#9CA3AF" text-anchor="middle">纯转化率</text>
+
+  <!-- 实验组 B 高亮框 -->
+  <rect x="268" y="16" width="146" height="394" rx="10" fill="none" stroke="#B45309" stroke-width="1" stroke-dasharray="5 4"/>
+
+  <!-- 行标签 -->
+  <text x="140" y="102" font-size="12" fill="#1F2937" text-anchor="end">点击转化率</text>
+  <text x="140" y="170" font-size="12" fill="#1F2937" text-anchor="end">跨品类点击率</text>
+  <text x="140" y="238" font-size="12" fill="#1F2937" text-anchor="end">连带购买率</text>
+  <text x="140" y="306" font-size="12" fill="#1F2937" text-anchor="end">多样性指数</text>
+  <text x="140" y="374" font-size="12" fill="#1F2937" text-anchor="end">贡献 GMV</text>
+
+  <!-- 点击转化率 -->
+  <rect x="154" y="91" width="59" height="14" rx="3" fill="#D1D5DB"/>
+  <rect x="284" y="91" width="68" height="14" rx="3" fill="#B45309"/>
+  <rect x="414" y="91" width="69" height="14" rx="3" fill="#D1D5DB"/>
+  <rect x="544" y="91" width="76" height="14" rx="3" fill="#D1D5DB"/>
+  <text x="274" y="102" font-size="11" fill="#4B5563" text-anchor="end">3.20%</text>
+  <text x="404" y="102" font-size="11" fill="#B45309" text-anchor="end">3.65%</text>
+  <text x="534" y="102" font-size="11" fill="#4B5563" text-anchor="end">3.70%</text>
+  <text x="664" y="102" font-size="11" fill="#4B5563" text-anchor="end">4.10%</text>
+
+  <!-- 跨品类点击率 -->
+  <rect x="154" y="159" width="76" height="14" rx="3" fill="#D1D5DB"/>
+  <rect x="284" y="159" width="68" height="14" rx="3" fill="#B45309"/>
+  <rect x="414" y="159" width="62" height="14" rx="3" fill="#D1D5DB"/>
+  <rect x="544" y="159" width="22" height="14" rx="3" fill="#D1D5DB"/>
+  <text x="274" y="170" font-size="11" fill="#4B5563" text-anchor="end">38%</text>
+  <text x="404" y="170" font-size="11" fill="#B45309" text-anchor="end">34%</text>
+  <text x="534" y="170" font-size="11" fill="#4B5563" text-anchor="end">31%</text>
+  <text x="664" y="170" font-size="11" fill="#4B5563" text-anchor="end">11%</text>
+
+  <!-- 连带购买率 -->
+  <rect x="154" y="227" width="76" height="14" rx="3" fill="#D1D5DB"/>
+  <rect x="284" y="227" width="73" height="14" rx="3" fill="#B45309"/>
+  <rect x="414" y="227" width="68" height="14" rx="3" fill="#D1D5DB"/>
+  <rect x="544" y="227" width="27" height="14" rx="3" fill="#D1D5DB"/>
+  <text x="274" y="238" font-size="11" fill="#4B5563" text-anchor="end">12%</text>
+  <text x="404" y="238" font-size="11" fill="#B45309" text-anchor="end">11.50%</text>
+  <text x="534" y="238" font-size="11" fill="#4B5563" text-anchor="end">10.80%</text>
+  <text x="664" y="238" font-size="11" fill="#4B5563" text-anchor="end">4.20%</text>
+
+  <!-- 多样性指数 -->
+  <rect x="154" y="295" width="76" height="14" rx="3" fill="#D1D5DB"/>
+  <rect x="284" y="295" width="71" height="14" rx="3" fill="#B45309"/>
+  <rect x="414" y="295" width="65" height="14" rx="3" fill="#D1D5DB"/>
+  <rect x="544" y="295" width="23" height="14" rx="3" fill="#D1D5DB"/>
+  <text x="274" y="306" font-size="11" fill="#4B5563" text-anchor="end">0.62</text>
+  <text x="404" y="306" font-size="11" fill="#B45309" text-anchor="end">0.58</text>
+  <text x="534" y="306" font-size="11" fill="#4B5563" text-anchor="end">0.53</text>
+  <text x="664" y="306" font-size="11" fill="#4B5563" text-anchor="end">0.19</text>
+
+  <!-- 贡献 GMV -->
+  <rect x="154" y="363" width="66" height="14" rx="3" fill="#D1D5DB"/>
+  <rect x="284" y="363" width="76" height="14" rx="3" fill="#B45309"/>
+  <rect x="414" y="363" width="54" height="14" rx="3" fill="#D1D5DB"/>
+  <rect x="544" y="363" width="34" height="14" rx="3" fill="#D1D5DB"/>
+  <text x="274" y="374" font-size="11" fill="#4B5563" text-anchor="end">100%</text>
+  <text x="404" y="374" font-size="11" fill="#B45309" text-anchor="end">约 115%</text>
+  <text x="534" y="374" font-size="11" fill="#4B5563" text-anchor="end">约 82%</text>
+  <text x="664" y="374" font-size="11" fill="#4B5563" text-anchor="end">约 51%</text>
+
+  <!-- 结论 -->
+  <text x="340" y="432" font-size="12" fill="#B45309" text-anchor="middle">实验组 D 的点击转化率最高</text>
+  <text x="340" y="452" font-size="12" text-anchor="middle"><tspan fill="#B45309">实验组 B</tspan><tspan fill="#6B7280">：它不是每个单项指标的第一名，但它在几个关键目标之间形成了更健康的组合</tspan></text>
+</svg>

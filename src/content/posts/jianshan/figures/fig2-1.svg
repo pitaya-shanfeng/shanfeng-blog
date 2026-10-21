@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 400" width="680" height="400" role="img" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <title>图 2-1　产品观与功能观的判断路径</title>
+  <desc>一个需求进来，产品观要依次过三道判断：是问题还是方案、会不会改变产品的任务、代价由谁承担，然后才决定做不做。功能观从第一道判断就分岔出去，直接进入怎么做、排期上线的执行路径，结果往往是功能越加越多，产品开始变形。同样是「用户体验有痛点」，功能观会去优化交互、减少步骤，产品观先判断它来自体验，还是来自场景缺失。</desc>
+  <defs>
+    <marker id="f21ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <rect x="28" y="174" width="112" height="52" rx="8" fill="#F7F8FA" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="84" y="206" font-size="13.5" font-weight="500" fill="#1F2937" text-anchor="middle">一个需求进来</text>
+
+  <path d="M140 200 L156 200" fill="none" stroke="#9CA3AF" stroke-width="1" marker-end="url(#f21ar)"/>
+  <path d="M162 138 L162 262" fill="none" stroke="#9CA3AF" stroke-width="1"/>
+  <path d="M162 138 L172 138" fill="none" stroke="#9CA3AF" stroke-width="1" marker-end="url(#f21ar)"/>
+  <path d="M162 200 L172 200" fill="none" stroke="#9CA3AF" stroke-width="1" marker-end="url(#f21ar)"/>
+  <path d="M162 262 L172 262" fill="none" stroke="#9CA3AF" stroke-width="1" marker-end="url(#f21ar)"/>
+
+  <rect x="178" y="112" width="234" height="52" rx="8" fill="#F7F8FA" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="198" y="142" font-size="13" fill="#B45309" text-anchor="middle">①</text>
+  <text x="214" y="137" font-size="13.5" font-weight="500" fill="#1F2937">是问题，还是方案？</text>
+  <text x="214" y="156" font-size="11" fill="#6B7280">用户说出口的，只是他能想到的方案</text>
+
+  <rect x="178" y="174" width="234" height="52" rx="8" fill="#F7F8FA" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="198" y="204" font-size="13" fill="#B45309" text-anchor="middle">②</text>
+  <text x="214" y="199" font-size="13.5" font-weight="500" fill="#1F2937">会不会改变产品的任务？</text>
+  <text x="214" y="218" font-size="11" fill="#6B7280">做得更顺更完整，未必是好事</text>
+
+  <rect x="178" y="236" width="234" height="52" rx="8" fill="#F7F8FA" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="198" y="266" font-size="13" fill="#B45309" text-anchor="middle">③</text>
+  <text x="214" y="261" font-size="13.5" font-weight="500" fill="#1F2937">代价由谁承担？</text>
+  <text x="214" y="280" font-size="11" fill="#6B7280">成本、收益、风险分别归谁</text>
+
+  <path d="M412 138 L412 262" fill="none" stroke="#9CA3AF" stroke-width="1"/>
+  <path d="M412 200 L442 200" fill="none" stroke="#9CA3AF" stroke-width="1" marker-end="url(#f21ar)"/>
+
+  <rect x="448" y="156" width="204" height="88" rx="8" fill="#FFFFFF" stroke="#B45309" stroke-width="1.2"/>
+  <text x="468" y="184" font-size="14" font-weight="500" fill="#B45309">产品观</text>
+  <text x="468" y="206" font-size="11.5" fill="#4B5563">先算代价，再决定做不做</text>
+  <text x="468" y="226" font-size="11" fill="#6B7280">结果：知道它不该变成什么</text>
+
+  <path d="M84 226 L84 326 L442 326" fill="none" stroke="#9CA3AF" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#f21ar)"/>
+  <text x="248" y="318" font-size="10.5" fill="#9CA3AF">跳过判断，直接进执行</text>
+
+  <text x="340" y="368" font-size="10.5" fill="#9CA3AF" text-anchor="middle">以「用户体验有痛点」为例</text>
+  <text x="340" y="386" font-size="10.5" fill="#6B7280" text-anchor="middle">功能观优化交互、减少步骤，产品观先分清它来自体验还是场景缺失</text>
+
+  <rect x="448" y="282" width="204" height="88" rx="8" fill="#F7F8FA" stroke="#D1D5DB" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="468" y="310" font-size="14" font-weight="500" fill="#6B7280">功能观</text>
+  <text x="468" y="332" font-size="11.5" fill="#4B5563">直接评估怎么做、排期上线</text>
+  <text x="468" y="352" font-size="11" fill="#9CA3AF">结果：功能越加越多，产品开始变形</text>
+</svg>

@@ -3,6 +3,11 @@ import { Icon } from "astro-icon/components";
 import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 
+// 组件标题的样式：15px / 600 / 0.02em。
+// 原来是 text-lg + font-bold（18px / 700）—— 一个「公告」「文章目录」这种界面标签，
+// 却比正文（16px）还大、比导航（15px/600）还重，全站最重的小标题就没意义了。
+// 标题靠字重与字距区分，不靠加粗加大。
+
 interface Props {
 	id: string;
 	name?: string;
@@ -36,7 +41,7 @@ const className = Astro.props.class;
     style={style}
 >
     {name && showTitle && (
-        <div class="widget-title font-bold transition text-lg text-neutral-900 dark:text-neutral-100 relative ml-8 mt-4 mb-2
+        <div class="widget-title font-semibold tracking-[0.02em] transition text-[0.9375rem] text-neutral-900 dark:text-neutral-100 relative ml-8 mt-4 mb-2
             before:w-1 before:h-4 before:rounded-md before:bg-(--primary)
             before:absolute before:left-[-16px] before:top-[5.5px] flex items-center justify-between">
             <span class="widget-name">{name}</span>

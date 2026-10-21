@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 356" width="680" height="356" role="img" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <title>图 9-1　一句承诺往下压出多少事</title>
+  <desc>左列是产品文档里写下的承诺，右列是系统要承担的代价。承诺越确定，系统要承担的代价就越重。</desc>
+  <defs>
+    <marker id="f91a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#B45309" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <text x="44" y="34" font-size="12" fill="#6B7280">承诺</text>
+  <text x="236" y="34" font-size="12" fill="#6B7280">系统承担</text>
+
+  <rect x="44" y="52" width="140" height="46" rx="9" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="114" y="81" font-size="15" fill="#374151" text-anchor="middle">「实时」</text>
+  <path d="M188 75 L230 75" fill="none" stroke="#B45309" stroke-width="1" marker-end="url(#f91a)"/>
+  <rect x="236" y="52" width="400" height="46" rx="9" fill="#FBFCFD" stroke="#D1D5DB" stroke-width="1"/>
+  <line x1="237.5" y1="56" x2="237.5" y2="94" stroke="#B45309" stroke-width="3" stroke-linecap="round"/>
+  <text x="436" y="81" font-size="15" fill="#1F2937" text-anchor="middle">数据同步和延迟风险</text>
+
+  <rect x="44" y="118" width="140" height="46" rx="9" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="114" y="147" font-size="15" fill="#374151" text-anchor="middle">「自动」</text>
+  <path d="M188 141 L230 141" fill="none" stroke="#B45309" stroke-width="1" marker-end="url(#f91a)"/>
+  <rect x="236" y="118" width="400" height="46" rx="9" fill="#F3F5F7" stroke="#D1D5DB" stroke-width="1"/>
+  <line x1="237.5" y1="122" x2="237.5" y2="160" stroke="#B45309" stroke-width="3" stroke-linecap="round"/>
+  <text x="436" y="147" font-size="15" fill="#1F2937" text-anchor="middle">临界判断和重复执行风险</text>
+
+  <rect x="44" y="184" width="140" height="46" rx="9" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="114" y="213" font-size="15" fill="#374151" text-anchor="middle">「统一执行」</text>
+  <path d="M188 207 L230 207" fill="none" stroke="#B45309" stroke-width="1" marker-end="url(#f91a)"/>
+  <rect x="236" y="184" width="400" height="46" rx="9" fill="#EAEEF1" stroke="#D1D5DB" stroke-width="1"/>
+  <line x1="237.5" y1="188" x2="237.5" y2="226" stroke="#B45309" stroke-width="3" stroke-linecap="round"/>
+  <text x="436" y="213" font-size="15" fill="#1F2937" text-anchor="middle">峰值、批处理和失败补救风险</text>
+
+  <rect x="44" y="250" width="140" height="46" rx="9" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="114" y="279" font-size="15" fill="#374151" text-anchor="middle">「支付成功」</text>
+  <path d="M188 273 L230 273" fill="none" stroke="#B45309" stroke-width="1" marker-end="url(#f91a)"/>
+  <rect x="236" y="250" width="400" height="46" rx="9" fill="#E1E6EB" stroke="#D1D5DB" stroke-width="1"/>
+  <line x1="237.5" y1="254" x2="237.5" y2="292" stroke="#B45309" stroke-width="3" stroke-linecap="round"/>
+  <text x="436" y="279" font-size="15" fill="#1F2937" text-anchor="middle">支付、订单、库存、优惠和履约之间的状态一致</text>
+
+  <text x="340" y="336" font-size="12.5" font-weight="600" fill="#B45309" text-anchor="middle">承诺越确定，系统要承担的代价就越重</text>
+</svg>
