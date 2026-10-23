@@ -60,8 +60,16 @@ export function countChars(text) {
 	return text.replace(/\s/g, "").length;
 }
 
-/** 阅读速度：中文 200 字/分钟（沿用站点原口径） */
-export const WORDS_PER_MINUTE = 200;
+/**
+ * 阅读速度：150 字/分钟。
+ *
+ * 这个数字指的是**深度阅读**，不是通读：产品方法论这类内容，读一段要停下来
+ * 想一下、必要时回看上一节，速度上不去。常见参照：
+ *   通读 300–400 字/分 ｜ 一般技术阅读 200–250 ｜ 深度阅读（含回看与笔记）120–150
+ * 原来用 200（沿用母版 reading-time 的 200 词/分，但那是英文单词口径，
+ * 换到中文偏快），24 万字的书只算出 20 小时，没把理解的成本算进去。
+ */
+export const WORDS_PER_MINUTE = 150;
 
 /** 由总字数换算阅读分钟数，最少 1 分钟 */
 export function countMinutes(words) {
