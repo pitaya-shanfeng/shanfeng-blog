@@ -65,7 +65,7 @@ export const booksConfig: BookConfig[] = [
 		title: "见山",
 		// 分享海报等场合要写全名；title 保持「见山」以匹配文章 series
 		fullTitle: "见山：产品判断力",
-		kicker: "产品判断力",
+		kicker: "产品判断",
 		lead: "在复杂之后，重新看见问题本身。",
 		description:
 			"这本书讲的是产品经理的判断力——在信息不完整、目标还在变化的时候，怎么把问题看清楚，又怎么把判断变成可复用的方法。二十一章从认知、需求、用户，走到架构、商业、增长与组织，拆的是判断的各个面向。",
@@ -261,8 +261,8 @@ export const booksConfig: BookConfig[] = [
 	{
 		id: "zengzhang",
 		title: "道、法、术：增长黑客方法论",
-		// title 已是全名，fullTitle 可省；kicker 是类别标签，不再拼进书名
-		kicker: "增长方法论",
+		// title 已是全名，fullTitle 可省；kicker 是类别标签
+		kicker: "增长黑客",
 		lead: "先判断这是不是真增长，再谈怎么增长。",
 		description:
 			"这本书把增长拆成三层：道是判断——什么才算真增长；法是路径——从方向确认到实验设计怎么走；术是动作——电商链路里每个环节具体怎么改。十七篇从认知一直落到选品、转化、履约、复购与裂变，反复回答同一个问题：眼前这个增长，站不站得住。",
