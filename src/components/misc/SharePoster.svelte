@@ -13,6 +13,14 @@ export let description = "";
 export let pubDate: string;
 export let coverImage: string | null = null;
 export let coverImageSelector: string | null = null;
+/**
+ * 封面区内嵌的书名 / 副书名 / 金句。
+ * 只有「书」的分享海报会传：传了就在封面图上压一层遮罩并排书名，
+ * 不传（文章页）保持原来的「图 + 白底文字」结构。
+ */
+export let coverTitle: string | null = null;
+export let coverSubtitle: string | null = null;
+export let coverQuote: string | null = null;
 export let url: string;
 export let siteTitle: string;
 export let avatar: string | null = null;
@@ -388,6 +396,76 @@ async function generatePoster() {
 			ctx.globalAlpha = 0.2;
 			ctx.fillRect(0, 0, width, coverHeight);
 			ctx.restore();
+		}
+
+		// 封面区排版：遮罩 + 副书名 + 书名 + 金句
+		// 参考的是出版物封面那种「图压暗、书名浮上来」的做法，让海报像一页书而不是卡片
+		if (coverImg && coverTitle) {
+			// 遮罩：底部加深，给书名和金句让出对比
+			const shroud = ctx.createLinearGradient(0, 0, 0, coverHeight);
+			shroud.addColorStop(0, "rgba(8, 12, 16, 0.30)");
+			shroud.addColorStop(0.42, "rgba(8, 12, 16, 0.46)");
+			shroud.addColorStop(1, "rgba(8, 12, 16, 0.88)");
+			ctx.fillStyle = shroud;
+			ctx.fillRect(0, 0, width, coverHeight);
+
+			ctx.textAlign = "center";
+
+			// 金句（书名下方，最多两行）
+			const quoteFont = `${13 * scale}px 'Roboto', 'PingFang SC', sans-serif`;
+			ctx.font = quoteFont;
+			ctx.fillStyle = "rgba(255, 255, 255, 0.78)";
+			const quoteLines: string[] = [];
+			if (coverQuote) {
+				let line = "";
+				for (const ch of coverQuote) {
+					if (ctx.measureText(line + ch).width > width - padding * 4) {
+						quoteLines.push(line);
+						line = ch;
+						if (quoteLines.length === 2) break;
+					} else {
+						line += ch;
+					}
+				}
+				if (quoteLines.length < 2 && line) quoteLines.push(line);
+			}
+			const quoteLineH = 20 * scale;
+			const quoteTop = coverHeight - 26 * scale - quoteLines.length * quoteLineH;
+			quoteLines.forEach((l, i) => {
+				ctx.fillText(l, width / 2, quoteTop + (i + 1) * quoteLineH - 3 * scale);
+			});
+
+			// 书名：金色衬线大字
+			const titleSize = 62 * scale;
+			ctx.font = `700 ${titleSize}px "Songti SC", "Noto Serif SC", "STSong", serif`;
+			ctx.fillStyle = "#d8b56b";
+			ctx.shadowColor = "rgba(0, 0, 0, 0.45)";
+			ctx.shadowBlur = 12 * scale;
+			const titleY = quoteTop - 18 * scale;
+			ctx.fillText(coverTitle, width / 2, titleY);
+			ctx.shadowBlur = 0;
+
+			// 副书名：书名上方的小字，字距拉开
+			if (coverSubtitle) {
+				const subSize = 14 * scale;
+				ctx.font = `500 ${subSize}px 'Roboto', 'PingFang SC', sans-serif`;
+				ctx.fillStyle = "rgba(255, 255, 255, 0.80)";
+				const chars = [...coverSubtitle];
+				const gap = 6 * scale;
+				const totalW =
+					chars.reduce((w, c) => w + ctx.measureText(c).width, 0) +
+					gap * (chars.length - 1);
+				let cx = width / 2 - totalW / 2;
+				const subY = titleY - titleSize * 0.92;
+				for (const c of chars) {
+					const cw = ctx.measureText(c).width;
+					ctx.fillText(c, cx + cw / 2, subY);
+					cx += cw + gap;
+				}
+			}
+
+			// 恢复默认对齐，后续正文照旧靠左
+			ctx.textAlign = "left";
 		}
 
 		// Draw Header（不铺背景条、不显示日期；配色已在加载资源前定好）

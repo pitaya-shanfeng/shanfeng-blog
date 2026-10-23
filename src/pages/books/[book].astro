@@ -213,6 +213,9 @@ const indexOf = (anchor: string) =>
                   description={book.description}
                   pubDate={bookShareDate}
                   coverImage={book.cover ?? null}
+                  coverTitle={book.title}
+                  coverSubtitle={book.kicker}
+                  coverQuote={book.lead}
                   url={Astro.url.href}
                   siteTitle={siteConfig.title}
                   avatar={profileConfig.avatar ?? null}
