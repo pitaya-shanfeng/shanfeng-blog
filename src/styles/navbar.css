@@ -340,12 +340,13 @@ html[data-has-wallpaper] #navbar[data-transparent-mode="semi"].navbar-sticky-sha
 /*
  * 导航栏头像：直达「关于」。
  *
- * 36px 圆 + 1.5px 白描边，比 44px 的功能按钮小一档 —— 它不是工具，是人。
+ * 42px 圆 + 1.5px 白描边。与 44px 的功能按钮只差 2px：
+ * 圆的视觉面积比方的大，同尺寸会显压手，所以收 2px —— 齐平感还在，重量感刚好。
  * 图片走 ImageWrapper（与侧栏作者卡同一套），这里只管形状与描边。
  */
 #navbar .nav-avatar {
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   border-radius: 999px;
   overflow: hidden;
   flex: 0 0 auto;
