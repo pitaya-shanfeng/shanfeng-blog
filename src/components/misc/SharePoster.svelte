@@ -470,7 +470,9 @@ async function generatePoster() {
 		// 作者区紧跟正文，不再贴底：
 		// 贴底会把空白全挤到「描述」和「作者」之间，看起来像漏排了一块；
 		// 跟随内容排则空白落在海报最下方，和出版物内页一样。
-		const footerY = drawY + 16 * scale;
+		// 描述与作者区之间的呼吸：16 → 32（32px → 64px）
+		// 太贴会把作者区顶在描述下面，看着挤；放大后空白在「描述—作者」和「底部」之间分摊
+		const footerY = drawY + 32 * scale;
 
 		ctx.beginPath();
 		ctx.strokeStyle = "#f3f4f6";
