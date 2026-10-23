@@ -22,7 +22,8 @@ let showModal = false;
 let posterImage: string | null = null;
 let generating = false;
 let themeColor = "#558e88"; // Default blue
-const headerTextColor = "#1f2937"; // 站点名称与 Logo 颜色
+// 站点名称与 Logo 的颜色不再固定：页眉压在封面图上时用白，落在白底时用深。
+// 见 generatePoster 里的 headerTextColor。
 
 onMount(() => {
 	// Get theme color from CSS variable
@@ -112,7 +113,11 @@ function buildIconDataUrl(icon: string, color: string): string | null {
 	return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
 
-function resolveSiteLogoSource(color: string, size: number): string | null {
+function resolveSiteLogoSource(
+	color: string,
+	size: number,
+	preferDarkTheme = false,
+): string | null {
 	const logo = siteConfig.navbar.logo;
 	if (!logo?.value) return null;
 
@@ -123,11 +128,12 @@ function resolveSiteLogoSource(color: string, size: number): string | null {
 		);
 	}
 
-	// src 目录下的图片经 Astro 优化后只有导航栏能拿到最终地址
-	// 海报背景是白色，因此固定取亮色版本的 Logo
+	// src 目录下的图片经 Astro 优化后只有导航栏能拿到最终地址。
+	// 页眉压在封面图上时要用白色（dark 主题）那版，否则白底用深色版。
+	const theme = preferDarkTheme ? "dark" : "light";
 	const navbarLogo =
 		document.querySelector<HTMLImageElement>(
-			'#navbar img.navbar-logo[data-logo-theme="light"]',
+			`#navbar img.navbar-logo[data-logo-theme="${theme}"]`,
 		) ?? document.querySelector<HTMLImageElement>("#navbar img.navbar-logo");
 	const navbarLogoSrc = navbarLogo?.currentSrc || navbarLogo?.src;
 	if (navbarLogoSrc) return navbarLogoSrc;
@@ -230,7 +236,14 @@ async function generatePoster() {
 			coverImageSelector,
 		);
 		const resolvedAvatar = resolveImageSource(avatar, avatarSelector);
-		const resolvedSiteLogo = resolveSiteLogoSource(headerTextColor, logoBox);
+		// 页眉不再铺白条：有封面时直接压在图上（用白 logo + 白字），无封面时落在白底（深色）
+		const headerOnCover = !!resolvedCoverImage;
+		const headerTextColor = headerOnCover ? "#ffffff" : "#1f2937";
+		const resolvedSiteLogo = resolveSiteLogoSource(
+			headerTextColor,
+			logoBox,
+			headerOnCover,
+		);
 		const [qrImg, coverImg, avatarImg, logoImg] = await Promise.all([
 			loadImage(qrCodeUrl),
 			resolvedCoverImage
@@ -377,24 +390,9 @@ async function generatePoster() {
 			ctx.restore();
 		}
 
-		// Draw Header Overlay
+		// Draw Header（不铺背景条、不显示日期；配色已在加载资源前定好）
 		const headerHeight = (coverImg ? 44 : 64) * scale;
 		const headerCenterY = headerHeight / 2;
-		const dateText = dateObj
-			? `${dateObj.year}.${dateObj.month}.${dateObj.day}`
-			: "";
-
-		ctx.fillStyle = "rgba(255, 255, 255, 0.76)";
-		ctx.fillRect(0, 0, width, headerHeight);
-
-		ctx.textAlign = "right";
-		ctx.textBaseline = "middle";
-		ctx.fillStyle = "rgba(31, 41, 55, 0.68)";
-		ctx.font = `${11 * scale}px 'Roboto', sans-serif`;
-		const dateWidth = dateText ? ctx.measureText(dateText).width : 0;
-		if (dateText) {
-			ctx.fillText(dateText, width - padding, headerCenterY);
-		}
 
 		ctx.textAlign = "left";
 		ctx.fillStyle = headerTextColor;
@@ -412,12 +410,11 @@ async function generatePoster() {
 		}
 		const siteTitleX = logoImg ? padding + logoW + logoGap : padding;
 
+		// 日期已去掉，站名可以用满剩余宽度
 		const siteTitleText = fitText(
 			ctx,
 			siteTitle,
-			contentWidth -
-				(siteTitleX - padding) -
-				(dateWidth > 0 ? dateWidth + 16 * scale : 0),
+			contentWidth - (siteTitleX - padding),
 		);
 
 		if (logoImg) {
@@ -432,7 +429,17 @@ async function generatePoster() {
 			ctx.drawImage(logoImg, padding, titleCenterY - logoH / 2, logoW, logoH);
 		}
 
-		ctx.fillText(siteTitleText, siteTitleX, headerCenterY);
+		// 压在封面图上时补一层淡阴影，白字在白雪山峰上也能读清
+		if (headerOnCover) {
+			ctx.save();
+			ctx.shadowColor = "rgba(0, 0, 0, 0.45)";
+			ctx.shadowBlur = 6 * scale;
+			ctx.shadowOffsetY = 1 * scale;
+			ctx.fillText(siteTitleText, siteTitleX, headerCenterY);
+			ctx.restore();
+		} else {
+			ctx.fillText(siteTitleText, siteTitleX, headerCenterY);
+		}
 
 		// Reset Y for drawing
 		// 9:16 下内容常常撑不满，若标题紧贴封面会让空白全堆在底部。
