@@ -49,8 +49,8 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			enable: true,
 			// 组件位置
 			position: "top",
-			// 是否在文章详情页显示（文章页专注正文，仅保留文章目录）
-			showOnPostPage: false,
+			// 是否在文章详情页显示
+			showOnPostPage: true,
 		},
 		{
 			// 组件类型：公告组件
@@ -70,7 +70,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			// 组件位置
 			position: "top",
 			// 是否在文章详情页显示
-			showOnPostPage: false,
+			showOnPostPage: true,
 		},
 		{
 			// 组件类型：最新动态组件（原在右侧栏，因改为单侧布局移到这里）
