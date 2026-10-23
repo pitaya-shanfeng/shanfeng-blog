@@ -173,7 +173,8 @@ const indexOf = (anchor: string) =>
         <div class="main-text">
         {/* kicker 是类别小字（产品判断 / 增长黑客），与书名各司其职 */}
         {book.kicker && <p class="kick">{book.kicker}</p>}
-        <h1>{displayTitle}</h1>
+        {/* 这两本是有版权的出版物，标题按书名加书名号 */}
+        <h1>《{displayTitle}》</h1>
         <p class="claim">{book.lead}</p>
         <p class="desc">{book.description}</p>
 

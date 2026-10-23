@@ -85,8 +85,9 @@ const CONTENT_GROUPS: ContentGroupConfig[] = [
 		// 两本书：一本已成书，一本在写。一级项必须至少两个子项，
 		// 否则 resolveNavMenuLinks 会把子项提到一级、吃掉「写作」这个名字。
 		topics: [
-			{ name: "见山：产品判断力", book: "见山" },
-			{ name: "道、法、术：增长黑客方法论", book: "道、法、术：增长黑客方法论" },
+			// name 只是显示名，book 字段才是匹配书页的依据
+			{ name: "《见山：产品判断力》", book: "见山" },
+			{ name: "《道、法、术：增长黑客方法论》", book: "道、法、术：增长黑客方法论" },
 		],
 	},
 	{
