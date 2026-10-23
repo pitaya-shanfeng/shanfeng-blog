@@ -368,15 +368,26 @@ html[data-has-wallpaper] #navbar[data-transparent-mode="semi"].navbar-sticky-sha
 }
 
 /*
- * 工具区：搜索框 + 音乐 + 主题 + 头像，四个等距排开。
+ * 工具区：搜索框 + 音乐 + 主题 + 头像。
  *
- * 间距统一 10px。注意搜索框自带母版的 `mr-2`（8px），会和 gap 叠加成 18px，
- * 所以这里把它归零 —— 否则四个元素里只有第一个间距是宽的。
+ * ⚠️ 这里对齐的是「视觉间隙」，不是「盒子间距」。
+ * 44px 的图标按钮内部只放 20px 图标，两侧各留 12px 空白；搜索框和头像没有这层空白。
+ * 若只让盒子等距（gap 10），实际看起来会是：
+ *   搜索→音乐 22px ｜ 音乐→主题 34px ｜ 主题→头像 22px   ← 明显不匀
+ *
+ * 所以：gap 收到 4px，再给搜索框右侧、头像左侧各补 12px，
+ * 三档视觉间隙都落在 28px：
+ *   搜索→音乐 = 4 + 12(mr) + 12(按钮留白) = 28
+ *   音乐→主题 = 12 + 4 + 12                = 28
+ *   主题→头像 = 12 + 4 + 12(ml)            = 28
  */
 #navbar .col-start-3 {
-  gap: 10px;
+  gap: 4px;
   align-items: center;
 }
 #navbar #search-bar {
-  margin-right: 0;
+  margin-right: 12px;
+}
+#navbar .nav-avatar {
+  margin-left: 12px;
 }
