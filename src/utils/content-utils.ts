@@ -322,16 +322,31 @@ export async function getRelatedPosts(
 	 */
 	const seriesName = (currentPost.data as { series?: string }).series;
 	if (seriesName) {
-		const siblings = await getSeriesPostsOf(seriesName);
-		const ordered = siblings
-			.filter((p) => p.id !== currentPost.id && !p.data.password)
+		const siblings = (await getSeriesPostsOf(seriesName))
+			.filter((p) => !p.data.password)
 			.sort(
 				(a, b) =>
 					(a.data.seriesOrder ?? 0) - (b.data.seriesOrder ?? 0),
-			)
-			.slice(0, maxCount);
-		if (ordered.length > 0) {
-			return ordered.map((p) => ({ id: p.id, data: p.data }));
+			);
+
+		const idx = siblings.findIndex((p) => p.id === currentPost.id);
+		if (idx >= 0 && siblings.length > 1) {
+			// 就近推荐：以当前章为中心，前后各取一半；
+			// 靠近开头/结尾时窗口不够，就往另一端补，始终凑满 maxCount
+			const half = Math.floor(maxCount / 2);
+			let lo = Math.max(0, idx - half);
+			let hi = Math.min(siblings.length - 1, idx + half);
+			while (hi - lo < maxCount && (lo > 0 || hi < siblings.length - 1)) {
+				if (lo > 0) lo -= 1;
+				if (hi - lo < maxCount && hi < siblings.length - 1) hi += 1;
+			}
+			const picked = siblings
+				.slice(lo, hi + 1)
+				.filter((p) => p.id !== currentPost.id)
+				.slice(0, maxCount);
+			if (picked.length > 0) {
+				return picked.map((p) => ({ id: p.id, data: p.data }));
+			}
 		}
 	}
 
