@@ -82,12 +82,12 @@ interface ContentGroupConfig {
 const CONTENT_GROUPS: ContentGroupConfig[] = [
 	{
 		name: "写作",
+		// 两本书：一本已成书，一本在写。一级项必须至少两个子项，
+		// 否则 resolveNavMenuLinks 会把子项提到一级、吃掉「写作」这个名字。
 		topics: [
-			{ name: "见山", book: "见山" },
-			// 「全部著作」＝按文章列表看这一书（分类「著书立说」即这 24 章）
-			{ name: "全部著作", category: "著书立说" },
-			// 《增长三部曲》还在写，菜单先留位
-			{ name: "增长三部曲", tag: "增长三部曲" },
+			{ name: "见山：产品判断力", book: "见山" },
+			// 第二本还在写，菜单先留位；写完后给文章打「增长黑客方法论」标签即可自动归入
+			{ name: "道、法、术：增长黑客方法论", tag: "增长黑客方法论" },
 		],
 	},
 	{
