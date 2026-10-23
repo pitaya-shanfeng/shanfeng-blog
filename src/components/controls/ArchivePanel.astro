@@ -72,6 +72,12 @@ const foldOnFilter = collapseAllButFirst;
     </div>
   </div>
 
+  {/* 筛选后一条都不剩时的空态（母版没有，筛选会留下整页空白） */}
+  <div id="archive-empty-state" class="hidden py-16 text-center">
+    <p class="text-base text-75">这一类还在写，内容上线后会出现在这里。</p>
+    <p class="mt-2 text-sm text-50">可以先看看 <a href={tagsBaseUrl} class="text-(--primary) hover:underline">其他内容</a>。</p>
+  </div>
+
   {groups.map((group, groupIndex) => {
     const collapsed = collapseAllButFirst && groupIndex > 0;
     return (
@@ -247,6 +253,11 @@ const foldOnFilter = collapseAllButFirst;
         const shouldCollapse = foldOnFilter && index > 0;
         this.setBlockCollapsed(block, shouldCollapse);
       });
+
+      // 一条都不剩时给出空态，别留下整页空白
+      // （必须放在可见数累加完之后）
+      const emptyState = this.querySelector("#archive-empty-state");
+      if (emptyState) emptyState.classList.toggle("hidden", totalVisible > 0);
 
       // 填充并显示筛选头部
       this.renderFilterHeader(tags, categories, uncategorized, totalVisible);
