@@ -17,6 +17,7 @@ import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import type { NavBarLink } from "@/types/config";
 import { getFallbackFormat, getImageFormats } from "@/utils/image-utils";
+import { booksConfig } from "@/config";
 import { isHomePage } from "@/utils/layout-utils";
 import { resolveNavMenuLinks } from "@/utils/nav-menu-utils";
 import { url } from "@/utils/url-utils";
@@ -70,6 +71,45 @@ const hasDisplaySettings =
 
 // 解析导航栏链接（按 siteConfig.pages 过滤 + i18n 名称），桌面下拉与移动抽屉共用
 const links: NavBarLink[] = resolveNavMenuLinks();
+
+/**
+ * 当前页高亮的**静态**匹配信息。
+ *
+ * ⚠️ 为什么不在服务端判定「当前页」：
+ * Astro 5 的 `Astro.url` 在构建时是固定的站点 URL，dev 下也不带 query
+ * （实测 search 恒为 ""），所以 /archive/?tag=xxx 这类筛选页在服务端无从判断。
+ * 这里只输出每一栏「能命中哪些地址」，判定交给客户端脚本 markNavCurrent，
+ * 它读 window.location 与文章页的 data-nav-post。
+ */
+const navMatchOf = (link: NavBarLink) => {
+	const urls: string[] = [];
+	const books: string[] = [];
+	const tags: string[] = [];
+	const pushUrl = (href?: string) => {
+		if (!href || href === "#") return;
+		const [rawPath, rawQuery] = href.split("#")[0].split("?");
+		const path = rawPath.replace(/\/+$/, "") || "/";
+		const query = rawQuery
+			? rawQuery
+					.split("&")
+					.map((pair) => {
+						const [k, v = ""] = pair.split("=");
+						return `${k}=${decodeURIComponent(v)}`;
+					})
+					.join("&")
+			: "";
+		urls.push(query ? `${path}?${query}` : path);
+	};
+	pushUrl(link.url);
+	for (const child of link.children ?? []) {
+		pushUrl(child.url);
+		const matched = child.url?.match(/[?&]tag=([^&]+)/);
+		if (matched) tags.push(decodeURIComponent(matched[1]));
+		const book = booksConfig.find((b) => child.url === `/books/${b.id}/`);
+		if (book) books.push(book.title);
+	}
+	return { urls, books, tags };
+};
 
 // 处理导航栏 Logo 图片，image / url 类型支持亮暗色分别设置
 const logoConfig = siteConfig.navbar.logo;
@@ -160,7 +200,7 @@ const logoVariants = await Promise.all(
     </script>
     <div class:list={[
         className,
-        "overflow-visible! h-18 px-4"
+        "overflow-visible! h-17 px-4"
     ]}>
         <div class="mx-auto h-full w-full max-w-(--page-width) grid grid-cols-[auto_minmax(0,1fr)_auto] items-center">
             <a href={url('/')} class="btn-plain scale-animation rounded-lg h-13 px-3 md:px-5 font-bold active:scale-95">
@@ -200,14 +240,21 @@ const logoVariants = await Promise.all(
             {/* 断点用 xl（1280）而不是模板原来的 lg（1024）：
                 菜单改成 6 个四字标签后，1024–1279 这段桌面导航放不下，会挤到折行，
                 所以这段宽度交给汉堡菜单（见下方 nav-menu-switch 的 xl:hidden!）。 */}
-            <div class:list={[
-                "hidden xl:flex items-center space-x-1 col-start-2",
+            <div
+                id="nav-items"
+                class:list={[
+                "hidden xl:flex items-center gap-1.5 col-start-2",
                 isNavbarMenuCentered
                     ? "justify-center"
                     : "justify-start pl-2"
             ]}>
+                {/* 竖分隔线：把「品牌」和「目录」分成两段 */}
+                <span
+                    class="h-5 w-px shrink-0 mr-2 bg-black/12 dark:bg-white/15"
+                    aria-hidden="true"
+                />
                 {links.map((l) => {
-                    return <DropdownMenu link={l} />;
+                    return <DropdownMenu link={l} navMatch={navMatchOf(l)} />;
                 })}
             </div>
             <div class="flex col-start-3 justify-self-end">
@@ -254,6 +301,57 @@ const logoVariants = await Promise.all(
 </div>
 
 <script>
+/**
+ * 标记导航栏的当前栏（实心主色块）。
+ *
+ * 判定依据：
+ *  1. 当前地址命中该栏的某个入口 URL（精确匹配，含 query）；
+ *  2. 当前是某本书的一篇文章 → 按书名命中（文章页 /posts/xxx 与书页 /books/xxx/ 是两个地址）；
+ *  3. 当前是散篇 → 按标签命中（该栏的 tag 入口与文章标签有交集）。
+ */
+function markNavCurrent() {
+    const host = document.getElementById("nav-items");
+    if (!host) return;
+
+    const path = location.pathname.replace(/\/+$/, "") || "/";
+    const rawSearch = location.search.replace(/^\?/, "");
+    let search = "";
+    try {
+        search = rawSearch ? decodeURIComponent(rawSearch).replace(/\+/g, " ") : "";
+    } catch {
+        search = rawSearch;
+    }
+    const current = search ? `${path}?${search}` : path;
+
+    // 文章页在主内容区输出这两个值（换页后也能读到新的）
+    const post = document.querySelector("[data-nav-post]");
+    const series = post?.getAttribute("data-series") || "";
+    const tags = (post?.getAttribute("data-tags") || "")
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean);
+
+    for (const item of host.querySelectorAll("[data-nav-match]")) {
+        let match = { urls: [], books: [], tags: [] };
+        try {
+            match = JSON.parse(item.getAttribute("data-nav-match") || "{}");
+        } catch {
+            /* 忽略非法 JSON */
+        }
+        let hit = (match.urls || []).includes(current);
+        if (!hit && series && (match.books || []).includes(series)) hit = true;
+        if (!hit && tags.length > 0 && (match.tags || []).some((t) => tags.includes(t))) {
+            hit = true;
+        }
+        item.classList.toggle("is-current", hit);
+        const trigger = item.querySelector(".dropdown-trigger");
+        if (trigger) {
+            if (hit) trigger.setAttribute("aria-current", "page");
+            else trigger.removeAttribute("aria-current");
+        }
+    }
+}
+
 function loadButtonScript() {
     let settingBtn = document.getElementById("display-settings-switch");
     if (settingBtn) {
@@ -358,6 +456,19 @@ function loadButtonScript() {
 }
 
 loadButtonScript();
+
+// 当前栏高亮：首屏 + 换页后都要重算
+markNavCurrent();
+document.addEventListener("astro:page-load", markNavCurrent);
+document.addEventListener("swup:contentReplaced", markNavCurrent);
+document.addEventListener("swup:page:view", markNavCurrent);
+// 兜底：主内容区被替换后（文章页的 data-nav-post 会变）也重算
+let navCurrentTimer;
+const navObserver = new MutationObserver(() => {
+    clearTimeout(navCurrentTimer);
+    navCurrentTimer = setTimeout(markNavCurrent, 60);
+});
+navObserver.observe(document.body, { childList: true, subtree: true });
 
 // 为semifull模式添加滚动检测逻辑
 function initSemifullScrollDetection() {

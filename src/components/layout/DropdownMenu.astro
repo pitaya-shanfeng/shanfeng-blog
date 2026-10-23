@@ -8,9 +8,15 @@ import { url } from "@/utils/url-utils";
 interface Props {
 	link: NavBarLink;
 	class?: string;
+	/**
+	 * 静态匹配信息：这一栏能命中哪些地址（URL 列表 / 书名 / 标签）。
+	 * 服务端判断不了"当前页"（Astro.url 不带 query），真正的判定在客户端脚本里做，
+	 * 它给命中的这一栏加 .is-current。
+	 */
+	navMatch?: { urls: string[]; books: string[]; tags: string[] };
 }
 
-const { link, class: className } = Astro.props;
+const { link, class: className, navMatch } = Astro.props;
 
 // 检查 link 是否存在
 if (!link) {
@@ -22,16 +28,19 @@ const processedLink = link;
 const hasChildren = processedLink.children && processedLink.children.length > 0;
 ---
 
-<div class:list={["dropdown-container", className]} data-dropdown>
+<div
+	class:list={["dropdown-container", className]}
+	data-dropdown
+	data-nav-match={JSON.stringify(navMatch ?? { urls: [], books: [], tags: [] })}
+>
 	{hasChildren ? (
-		<button 
-			class="btn-plain scale-animation rounded-lg h-10 font-bold px-4 pr-8 active:scale-95 dropdown-trigger relative"
+		<button
+			class="btn-plain scale-animation rounded-[9px] h-9 px-4 pr-7 active:scale-95 dropdown-trigger relative"
 			aria-expanded="false"
 			aria-haspopup="true"
 			data-dropdown-trigger
 		>
-			<div class="flex items-center gap-1.5">
-				{processedLink.icon && <Icon name={processedLink.icon} class="text-[1.1rem] mr-1.5 navbar-icon" />}
+			<div class="flex items-center gap-1">
 				{processedLink.name}
 			</div>
 			<Icon name="material-symbols:keyboard-arrow-down-rounded" class="text-[1.2rem] transition-transform duration-200 dropdown-arrow absolute right-2.5 top-1/2 -translate-y-1/2" />
@@ -55,14 +64,13 @@ const hasChildren = processedLink.children && processedLink.children.length > 0;
 			</DropdownPanel>
 		</div>
 	) : (
-		<a 
-			aria-label={processedLink.name} 
-			href={processedLink.external ? processedLink.url : url(processedLink.url)} 
+		<a
+			aria-label={processedLink.name}
+			href={processedLink.external ? processedLink.url : url(processedLink.url)}
 			target={processedLink.external ? "_blank" : null}
-			class="btn-plain scale-animation rounded-lg h-10 font-bold px-4 active:scale-95"
+			class="btn-plain scale-animation rounded-[9px] h-9 px-4 active:scale-95 dropdown-trigger"
 		>
-			<div class="flex items-center gap-1.5">
-				{processedLink.icon && <Icon name={processedLink.icon} class="text-[1.1rem] mr-1.5 navbar-icon" />}
+			<div class="flex items-center gap-1">
 				{processedLink.name}
 				{processedLink.external && <Icon name="fa7-solid:arrow-up-right-from-square" class="text-[0.875rem] transition -translate-y-px ml-1 text-black/20 dark:text-white/20" />}
 			</div>
@@ -94,11 +102,42 @@ const hasChildren = processedLink.children && processedLink.children.length > 0;
 	.dropdown-trigger {
 		@apply whitespace-nowrap text-black/80 dark:text-white/80;
 		flex: 0 0 auto;
-		font-size: 0.9375rem;
-		font-weight: 600;
+		/* 字阶取自 --fs-nav（type-scale.css），不要在这里写裸 px */
+		font-size: var(--fs-nav);
+		font-weight: 500;
 		letter-spacing: 0.02em;
-		padding-left: 0.875rem;
-		padding-right: 1.625rem;
+		transition:
+			background-color 0.15s ease,
+			color 0.15s ease;
+	}
+
+	/* 悬停：浅底，不改字重 */
+	.dropdown-trigger:hover {
+		background: rgba(0, 0, 0, 0.05);
+	}
+	:global(.dark) .dropdown-trigger:hover {
+		background: rgba(255, 255, 255, 0.07);
+	}
+
+	/*
+	 * 当前页：实心主色块。
+	 * 浅色用 --btn-content（深绿 rgb(0,135,96)），白字 4.53:1 —— 达 AA。
+	 * 深色下 --btn-content 是浅绿，白字只有 2.4:1（不达标），
+	 * 所以深色改用 --primary 亮绿底 + 近黑字。
+	 */
+	.dropdown-container.is-current .dropdown-trigger {
+		background: var(--btn-content);
+		color: #fff;
+	}
+	:global(.dark) .dropdown-container.is-current .dropdown-trigger {
+		background: var(--primary);
+		color: #0d0f10;
+	}
+	.dropdown-container.is-current .dropdown-trigger:hover {
+		background: var(--btn-content);
+	}
+	:global(.dark) .dropdown-container.is-current .dropdown-trigger:hover {
+		background: var(--primary);
 	}
 
 	/* 图标与文字的间距交给 flex 的 gap-1.5，避免 margin 再叠一层（原来共 10px，偏散） */
@@ -111,6 +150,9 @@ const hasChildren = processedLink.children && processedLink.children.length > 0;
 		font-size: 0.875rem;
 		right: 0.5rem;
 		opacity: 0.45;
+	}
+	.dropdown-container.is-current .dropdown-trigger .dropdown-arrow {
+		opacity: 0.9;
 	}
 
 	@media (max-width: 1400px) {

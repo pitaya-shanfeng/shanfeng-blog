@@ -249,6 +249,18 @@ const seriesData = await getSeriesPosts(entry);
   bannerPostMeta={bannerPostMeta}
   relatedPostList={relatedPosts}
 >
+    <!--
+      导航栏的当前栏判定要用到这个（客户端脚本读它）：
+      文章属于哪本书（series）与带哪些标签。放在 swup 容器内，
+      换页后客户端能读到新页面的值。
+    -->
+    <div
+      hidden
+      data-nav-post
+      data-series={(entry.data as { series?: string }).series ?? ""}
+      data-tags={(entry.data.tags ?? []).join(",")}
+    ></div>
+
   <!-- KaTeX 按需加载 - 仅在文章页面 -->
   <KatexManager slot="head" />
 

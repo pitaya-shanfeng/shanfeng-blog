@@ -74,36 +74,36 @@ interface TopicRef {
 
 interface ContentGroupConfig {
 	name: string;
-	icon: string;
+	/** 一级项图标：块状语汇里不用图标，留空即可 */
+	icon?: string;
 	topics: TopicRef[];
 }
 
 const CONTENT_GROUPS: ContentGroupConfig[] = [
 	{
 		name: "写作",
-		icon: "material-symbols:menu-book",
 		topics: [
 			{ name: "见山", book: "见山" },
-			// 「全部著作」＝按文章列表看这一书（分类「著书立说」即这 24 章）
-			{ name: "全部著作", category: "著书立说" },
+			// 「书章列表」＝按文章列表看这一书（分类「著书立说」即这 24 章）
+			{ name: "书章列表", category: "著书立说" },
 			// 《增长三部曲》还在写，菜单先留位
 			{ name: "增长三部曲", tag: "增长三部曲" },
 		],
 	},
 	{
 		name: "方法",
-		icon: "material-symbols:handyman",
+		// 显示名与标签解耦：原来的「产品架构」「商业增长」与《见山》三、四篇完全同名，
+		// 读者按篇名找却点出一堆散章 —— 显示名改成主题域的说法，URL 仍走原标签。
 		topics: [
-			{ name: "产品思维", tag: "产品思维" },
-			{ name: "产品方法", tag: "产品方法" },
-			{ name: "产品架构", tag: "产品架构" },
-			{ name: "商业增长", tag: "商业增长" },
-			{ name: "组织协作", tag: "组织协作" },
+			{ name: "认知与判断", tag: "产品思维" },
+			{ name: "需求与方案", tag: "产品方法" },
+			{ name: "建模与架构", tag: "产品架构" },
+			{ name: "商业与增长", tag: "商业增长" },
+			{ name: "组织与协作", tag: "组织协作" },
 		],
 	},
 	{
 		name: "案例",
-		icon: "material-symbols:fact-check",
 		// 这一栏是内容规划，实战类文章还在写，菜单先留位
 		topics: [
 			{ name: "项目复盘", tag: "项目复盘" },
@@ -114,7 +114,6 @@ const CONTENT_GROUPS: ContentGroupConfig[] = [
 	},
 	{
 		name: "拾遗",
-		icon: "material-symbols:school",
 		topics: [
 			{ name: "论文阅读", tag: "论文阅读" },
 			{ name: "认知与设计", tag: "认知与设计" },
@@ -150,7 +149,6 @@ const buildContentGroup = (group: ContentGroupConfig): NavBarLink => ({
 const ABOUT_GROUP: NavBarLink = {
 	name: "关于",
 	url: "#",
-	icon: "material-symbols:person",
 	children: [
 		{ name: "个人介绍", url: "/about/" },
 		{ name: "版权声明", url: "/privacy/" },
@@ -201,7 +199,6 @@ export const LinkPresets: Record<string, NavBarLink> = {
 	Home: {
 		name: "主页",
 		url: "/",
-		icon: "material-symbols:home",
 	},
 	Archive: {
 		name: "归档",
