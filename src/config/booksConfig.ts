@@ -260,9 +260,11 @@ export const booksConfig: BookConfig[] = [
 	},
 	{
 		id: "zengzhang",
-		title: "道、法、术：增长黑客方法论",
-		// title 已是全名，fullTitle 可省；kicker 是类别标签
-		kicker: "增长黑客",
+		// title 是系列名（要和文章 series 一致，也用于卡片上的「写作/xx」），所以用短名；
+		// 书名全称放 fullTitle，供 h1 与分享海报使用
+		title: "增长黑客",
+		fullTitle: "道、法、术：增长黑客方法论",
+		kicker: "增长方法论",
 		lead: "先判断这是不是真增长，再谈怎么增长。",
 		description:
 			"这本书把增长拆成三层：道是判断——什么才算真增长；法是路径——从方向确认到实验设计怎么走；术是动作——电商链路里每个环节具体怎么改。十七篇从认知一直落到选品、转化、履约、复购与裂变，反复回答同一个问题：眼前这个增长，站不站得住。",
