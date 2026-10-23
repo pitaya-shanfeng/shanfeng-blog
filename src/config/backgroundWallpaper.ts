@@ -163,7 +163,9 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 			transparentMode: "semi",
 			// 毛玻璃模糊度，0 即关闭导航栏的毛玻璃
 			// 注意：导航栏子菜单与浮动面板始终保留毛玻璃，模糊度跟随此项但有最小值
-			blur: 12,
+			// 28 而不是模板默认的 12：12px 在浅色壁纸上几乎看不出玻璃质感，
+			// 只剩一层白纱，文字与背景细节互相干扰。28px 才能让壁纸真正「化开」。
+			blur: 28,
 		},
 	},
 	// 覆盖透明覆盖模式特有配置

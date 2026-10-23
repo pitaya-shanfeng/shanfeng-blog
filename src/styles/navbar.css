@@ -97,12 +97,21 @@ html[data-has-wallpaper] #navbar[data-transparent-mode="semifull"]:not(.scrolled
  * ============================================ */
 @media (min-width: 1024px) {
 
-    /* "semi" */
+    /* "semi"
+     *
+     * 玻璃三层（缺一层就会「糊」）：
+     *   1. 模糊   —— 在 ::before 上，半径由 --navbar-glass-blur 驱动（配置里 28px）
+     *   2. 底色   —— 卡片色 54%；原来是 45%，压不住浅色壁纸，字会发灰
+     *   3. 边界   —— 顶部内高光 + 底部发丝线 + 向下投影，缺了它整条就融进壁纸
+     */
     html[data-has-wallpaper] #navbar[data-transparent-mode="semi"]>div {
         --navbar-surface-blur: var(--navbar-glass-blur, 20px) !important;
-        background: color-mix(in oklch, var(--card-bg) calc(var(--opacity-45) * 100%), transparent) !important;
+        background: color-mix(in oklch, var(--card-bg) 54%, transparent) !important;
         border-radius: 0 0 0.75rem 0.75rem !important;
-        box-shadow: inset 0 1px 0 var(--navbar-glass-highlight), 0 1px 0 var(--navbar-glass-hairline) !important;
+        box-shadow:
+            inset 0 1px 0 var(--navbar-glass-highlight),
+            0 1px 0 var(--navbar-glass-hairline),
+            0 3px 14px -4px rgba(0, 0, 0, 0.14) !important;
     }
 
     /* "semifull" (static) */
@@ -341,6 +350,14 @@ html[data-has-wallpaper] #navbar[data-transparent-mode="semi"].navbar-sticky-sha
 }
 #navbar #search-input-desktop:focus {
   width: 15rem;
+}
+
+/* 收起时只剩放大镜：占位文字在 44px 里会被挤成一个字，聚焦展开后再显示 */
+#navbar #search-input-desktop::placeholder {
+  color: transparent;
+}
+#navbar #search-input-desktop:focus::placeholder {
+  color: inherit;
 }
 #navbar #search-bar {
   margin-right: 0.25rem;
