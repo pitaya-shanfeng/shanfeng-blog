@@ -45,6 +45,16 @@ const posts = await getSeriesPostsOf(book.title);
  */
 const coverTitle = book.title.split(/[:：]/)[0].trim() || book.title;
 
+/**
+ * 书页大标题用完整书名；书名本身已带副标题（含冒号）时不再显示 kicker。
+ *
+ * 不能判「书名是否包含 kicker」——「道、法、术：增长黑客方法论」并不包含
+ * 连续的「增长方法论」（中间夹着"黑客"），字符串判断为 false，kicker 照样重复。
+ * 用「有没有副书名」这个结构性事实来判断才稳。
+ */
+const displayTitle = book.fullTitle || book.title;
+const showKicker = !/[:：]/.test(displayTitle);
+
 // 支持区块：分享的是「这本书的合集页」，不是某一章
 const showShare = siteConfig.post.share !== false;
 const showSponsorButton = sponsorConfig.showButtonInPost;
@@ -168,8 +178,11 @@ const indexOf = (anchor: string) =>
 
       <div class="main">
         <div class="main-text">
-        <p class="kick">{book.kicker}</p>
-        <h1>{book.title}</h1>
+        {/* 书名用完整书名（含副书名）。
+            kicker 是书名上方的小字，若它本来就是书名的一部分就不要再标一遍，
+            否则会出现「产品判断力 / 见山：产品判断力」这种重复。 */}
+        {showKicker && <p class="kick">{book.kicker}</p>}
+        <h1>{displayTitle}</h1>
         <p class="claim">{book.lead}</p>
         <p class="desc">{book.description}</p>
 
