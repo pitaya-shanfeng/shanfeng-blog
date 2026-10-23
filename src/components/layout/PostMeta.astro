@@ -10,6 +10,8 @@ export interface Props {
 	published: Date;
 	updated?: Date;
 	category?: string;
+	/** 系列名（书）：有值时分类显示成「一级/二级」，与文章卡片的胶囊一致 */
+	series?: string;
 	tags?: string[];
 	hideUpdateDate?: boolean;
 	hideTagsForMobile?: boolean;
@@ -35,6 +37,7 @@ const {
 	published,
 	updated,
 	category,
+	series,
 	tags,
 	hideUpdateDate,
 	hideTagsForMobile,
@@ -128,7 +131,7 @@ const visibleTags =
             class="link-lg transition text-50 text-sm font-medium
               hover:text-(--primary) dark:hover:text-(--primary) whitespace-nowrap"
           >
-            {category || i18n(I18nKey.uncategorized)}
+            {category || i18n(I18nKey.uncategorized)}{series ? ` / ${series}` : ""}
           </a>
         </div>
       </div>

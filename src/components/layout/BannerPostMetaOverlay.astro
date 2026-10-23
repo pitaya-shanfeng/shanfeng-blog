@@ -72,7 +72,12 @@ const {
                                         name="material-symbols:book-2-outline-rounded"
                                         class="text-[1.05em]"
                                     />
-                                    <span>{bannerPostMeta.category}</span>
+                                    {/* 一级分类 / 二级系列，与文章卡片的「写作/见山」对齐 */}
+                                    <span>
+                                        {bannerPostMeta.category}{bannerPostMeta.series
+                                            ? ` / ${bannerPostMeta.series}`
+                                            : ""}
+                                    </span>
                                 </a>
                             )}
                             {bannerPostMeta.tags && bannerPostMeta.tags.length > 0 && (

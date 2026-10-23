@@ -11,6 +11,8 @@ export interface BannerPostMeta {
 	words?: number;
 	minutes?: number;
 	category?: string;
+	/** 系列名：和 category 一起显示成「一级 / 二级」 */
+	series?: string;
 	tags?: string[];
 }
 

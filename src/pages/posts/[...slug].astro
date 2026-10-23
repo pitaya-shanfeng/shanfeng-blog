@@ -98,6 +98,7 @@ const bannerPostMeta = {
 	words: postWords,
 	minutes: postMinutes,
 	category: entry.data.category || undefined,
+	series: (entry.data as { series?: string }).series || undefined,
 	tags: entry.data.tags,
 };
 
@@ -352,6 +353,7 @@ const seriesData = await getSeriesPosts(entry);
                 published={entry.data.published}
                 updated={entry.data.updated}
                 category={entry.data.category || undefined}
+                series={entry.data.series || undefined}
                 tags={entry.data.tags}
                 id={entry.id}
               />
@@ -444,6 +446,7 @@ const seriesData = await getSeriesPosts(entry);
               updated={entry.data.updated}
               tags={entry.data.tags}
               category={entry.data.category || undefined}
+              series={entry.data.series || undefined}
               id={entry.id}
             />
             {
