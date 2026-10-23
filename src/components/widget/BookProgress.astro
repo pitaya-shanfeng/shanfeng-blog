@@ -101,3 +101,17 @@ if (book.afterword) {
   class={className}
   style={style}
 />
+
+<style>
+  /*
+   * 书页的「本书目录」放宽高度上限。
+   *
+   * SidebarTOC 原本用 calc(100vh - 21rem)，是为了和右栏「相关文章」齐平；
+   * 书页只有左栏、没有右栏，不存在这个对齐需求。按原值，17 条只能显示到约 14 条，
+   * 后面几条要靠卡片内滚动才看得到，看起来就像「目录没更新」。
+   * 只对 mode="link"（书页专用的跨页目录）生效，文章页的页内目录不受影响。
+   */
+  :global(.toc-scroll-container[data-toc-mode="link"]) {
+    max-height: calc(100vh - 12rem);
+  }
+</style>
