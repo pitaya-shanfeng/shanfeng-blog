@@ -276,7 +276,7 @@ async function generatePoster() {
 
 		// Cover
 		// 封面占高比：3:4 下封面占约 40%，正文与底部刚好接上，不留大片空白
-		const coverHeight = (coverImg ? 220 : 76) * scale;
+		const coverHeight = (coverImg ? 250 : 76) * scale;
 		currentY += coverHeight;
 		currentY += padding; // Gap after cover
 
@@ -293,8 +293,8 @@ async function generatePoster() {
 		if (description) {
 			ctx.font = `${14 * scale}px 'Roboto', sans-serif`;
 			const descLines = getLines(ctx, description, contentWidth - 16 * scale); // minus border width and gap
-			// Limit to 6 lines
-			const maxDescLines = 6;
+			// 最多 5 行：再多会把作者区往下推，描述与作者之间空出一大块
+			const maxDescLines = 5;
 			const displayDescLines = descLines.slice(0, maxDescLines);
 			const descLineHeight = 25 * scale; // 1.8 line-height approx
 			descHeight = displayDescLines.length * descLineHeight;
@@ -398,76 +398,6 @@ async function generatePoster() {
 			ctx.restore();
 		}
 
-		// 封面区排版：遮罩 + 副书名 + 书名 + 金句
-		// 参考的是出版物封面那种「图压暗、书名浮上来」的做法，让海报像一页书而不是卡片
-		if (coverImg && coverTitle) {
-			// 遮罩：底部加深，给书名和金句让出对比
-			const shroud = ctx.createLinearGradient(0, 0, 0, coverHeight);
-			shroud.addColorStop(0, "rgba(8, 12, 16, 0.30)");
-			shroud.addColorStop(0.42, "rgba(8, 12, 16, 0.46)");
-			shroud.addColorStop(1, "rgba(8, 12, 16, 0.88)");
-			ctx.fillStyle = shroud;
-			ctx.fillRect(0, 0, width, coverHeight);
-
-			ctx.textAlign = "center";
-
-			// 金句（书名下方，最多两行）
-			const quoteFont = `${13 * scale}px 'Roboto', 'PingFang SC', sans-serif`;
-			ctx.font = quoteFont;
-			ctx.fillStyle = "rgba(255, 255, 255, 0.78)";
-			const quoteLines: string[] = [];
-			if (coverQuote) {
-				let line = "";
-				for (const ch of coverQuote) {
-					if (ctx.measureText(line + ch).width > width - padding * 4) {
-						quoteLines.push(line);
-						line = ch;
-						if (quoteLines.length === 2) break;
-					} else {
-						line += ch;
-					}
-				}
-				if (quoteLines.length < 2 && line) quoteLines.push(line);
-			}
-			const quoteLineH = 20 * scale;
-			const quoteTop = coverHeight - 26 * scale - quoteLines.length * quoteLineH;
-			quoteLines.forEach((l, i) => {
-				ctx.fillText(l, width / 2, quoteTop + (i + 1) * quoteLineH - 3 * scale);
-			});
-
-			// 书名：金色衬线大字
-			const titleSize = 62 * scale;
-			ctx.font = `700 ${titleSize}px "Songti SC", "Noto Serif SC", "STSong", serif`;
-			ctx.fillStyle = "#d8b56b";
-			ctx.shadowColor = "rgba(0, 0, 0, 0.45)";
-			ctx.shadowBlur = 12 * scale;
-			const titleY = quoteTop - 18 * scale;
-			ctx.fillText(coverTitle, width / 2, titleY);
-			ctx.shadowBlur = 0;
-
-			// 副书名：书名上方的小字，字距拉开
-			if (coverSubtitle) {
-				const subSize = 14 * scale;
-				ctx.font = `500 ${subSize}px 'Roboto', 'PingFang SC', sans-serif`;
-				ctx.fillStyle = "rgba(255, 255, 255, 0.80)";
-				const chars = [...coverSubtitle];
-				const gap = 6 * scale;
-				const totalW =
-					chars.reduce((w, c) => w + ctx.measureText(c).width, 0) +
-					gap * (chars.length - 1);
-				let cx = width / 2 - totalW / 2;
-				const subY = titleY - titleSize * 0.92;
-				for (const c of chars) {
-					const cw = ctx.measureText(c).width;
-					ctx.fillText(c, cx + cw / 2, subY);
-					cx += cw + gap;
-				}
-			}
-
-			// 恢复默认对齐，后续正文照旧靠左
-			ctx.textAlign = "left";
-		}
-
 		// Draw Header（不铺背景条、不显示日期；配色已在加载资源前定好）
 		const headerHeight = (coverImg ? 44 : 64) * scale;
 		const headerCenterY = headerHeight / 2;
@@ -567,15 +497,10 @@ async function generatePoster() {
 		}
 
 		// Draw Footer Divider
-		// footer 贴底：9:16 下内容通常撑不满，让作者/二维码沉到底部，
-		// 中段自然留白，比在底部堆一坨空白好看。
-		const footerBlockH = 80 * scale;
-		const footerBottomGap = 12 * scale;
-		const naturalFooterY = drawY + 16 * scale; // 原本的 8 + 8
-		const footerY = Math.max(
-			naturalFooterY,
-			canvas.height - footerBlockH - footerBottomGap,
-		);
+		// 作者区紧跟正文，不再贴底：
+		// 贴底会把空白全挤到「描述」和「作者」之间，看起来像漏排了一块；
+		// 跟随内容排则空白落在海报最下方，和出版物内页一样。
+		const footerY = drawY + 16 * scale;
 
 		ctx.beginPath();
 		ctx.strokeStyle = "#f3f4f6";
