@@ -244,21 +244,13 @@ async function generatePoster() {
 			coverImageSelector,
 		);
 		const resolvedAvatar = resolveImageSource(avatar, avatarSelector);
-		// 页眉不再铺白条：有封面时直接压在图上（用白 logo + 白字），无封面时落在白底（深色）
-		const headerOnCover = !!resolvedCoverImage;
-		const headerTextColor = headerOnCover ? "#ffffff" : "#1f2937";
-		const resolvedSiteLogo = resolveSiteLogoSource(
-			headerTextColor,
-			logoBox,
-			headerOnCover,
-		);
-		const [qrImg, coverImg, avatarImg, logoImg] = await Promise.all([
+		// 页眉（站名 + logo）已从海报移除，因此也不再加载 logo 图片
+		const [qrImg, coverImg, avatarImg] = await Promise.all([
 			loadImage(qrCodeUrl),
 			resolvedCoverImage
 				? loadImage(resolvedCoverImage)
 				: Promise.resolve(null),
 			resolvedAvatar ? loadImage(resolvedAvatar) : Promise.resolve(null),
-			resolvedSiteLogo ? loadImage(resolvedSiteLogo) : Promise.resolve(null),
 		]);
 
 		// 2. Setup Canvas for measuring
@@ -424,56 +416,8 @@ async function generatePoster() {
 			ctx.textAlign = "left";
 		}
 
-		// Draw Header（不铺背景条，配色已在加载资源前定好）
-		const headerHeight = (coverImg ? 44 : 64) * scale;
-		const headerCenterY = headerHeight / 2;
-
-		ctx.textAlign = "left";
-		ctx.fillStyle = headerTextColor;
-		ctx.font = `700 ${16 * scale}px 'Roboto', sans-serif`;
-
-		// 站点 Logo，效果对齐导航栏：Logo 在前，标题紧随其后
-		const logoGap = 8 * scale;
-		let logoW = 0;
-		let logoH = 0;
-		if (logoImg) {
-			const ratio =
-				logoImg.width && logoImg.height ? logoImg.width / logoImg.height : 1;
-			logoW = ratio >= 1 ? logoBox : logoBox * ratio;
-			logoH = ratio >= 1 ? logoBox / ratio : logoBox;
-		}
-		const siteTitleX = logoImg ? padding + logoW + logoGap : padding;
-
-		// 日期已去掉，站名可以用满剩余宽度
-		const siteTitleText = fitText(
-			ctx,
-			siteTitle,
-			contentWidth - (siteTitleX - padding),
-		);
-
-		if (logoImg) {
-			// 以标题文字的实际字形高度作为居中基准，避免字体行高导致的视觉错位
-			const metrics = ctx.measureText(siteTitleText);
-			const ascent = metrics.actualBoundingBoxAscent;
-			const descent = metrics.actualBoundingBoxDescent;
-			const titleCenterY =
-				Number.isFinite(ascent) && Number.isFinite(descent)
-					? headerCenterY + (descent - ascent) / 2
-					: headerCenterY;
-			ctx.drawImage(logoImg, padding, titleCenterY - logoH / 2, logoW, logoH);
-		}
-
-		// 压在封面图上时补一层淡阴影，白字在白雪山峰上也能读清
-		if (headerOnCover) {
-			ctx.save();
-			ctx.shadowColor = "rgba(0, 0, 0, 0.45)";
-			ctx.shadowBlur = 6 * scale;
-			ctx.shadowOffsetY = 1 * scale;
-			ctx.fillText(siteTitleText, siteTitleX, headerCenterY);
-			ctx.restore();
-		} else {
-			ctx.fillText(siteTitleText, siteTitleX, headerCenterY);
-		}
+		// 页眉已移除：海报上不再显示「站名 + logo」，
+		// 封面图从顶部开始，信息从标题起。
 
 		// Reset Y for drawing
 		// 9:16 下内容常常撑不满，若标题紧贴封面会让空白全堆在底部。
@@ -538,9 +482,8 @@ async function generatePoster() {
 		// Draw Footer Content
 		// 四段横排：头像 + 作者 ｜ 二维码 + 扫码阅读 ｜ 分享 / 复制链接
 		// 最后一段是海报上的引导文案（不可点），对齐下面真实存在的「复制链接」按钮
-		const shareBlockW = 62 * scale;
-		const qrSize = 58 * scale;
-		const qrX = width - padding - shareBlockW - 22 * scale - qrSize;
+		const qrSize = 62 * scale;
+		const qrX = width - padding - qrSize;
 		const authorY = footerY + 8 * scale;
 
 		// Left: Author
@@ -632,16 +575,6 @@ async function generatePoster() {
 			qrX + qrSize / 2,
 			footerY + qrSize + 6 * scale,
 		);
-
-		// Right-most: 分享 / 复制链接（引导文案）
-		ctx.textAlign = "right";
-		ctx.textBaseline = "top";
-		ctx.fillStyle = themeColor;
-		ctx.font = `600 ${13 * scale}px 'Roboto', 'PingFang SC', sans-serif`;
-		ctx.fillText("分享", width - padding, footerY + 12 * scale);
-		ctx.fillStyle = "#9ca3af";
-		ctx.font = `${10 * scale}px 'Roboto', 'PingFang SC', sans-serif`;
-		ctx.fillText("复制链接", width - padding, footerY + 32 * scale);
 
 		// Finalize
 		posterImage = canvas.toDataURL("image/png");
