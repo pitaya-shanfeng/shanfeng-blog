@@ -35,7 +35,7 @@ const hasChildren = processedLink.children && processedLink.children.length > 0;
 >
 	{hasChildren ? (
 		<button
-			class="btn-plain scale-animation rounded-[9px] h-9 px-4 pr-7 active:scale-95 dropdown-trigger relative"
+			class="btn-plain scale-animation rounded-lg h-9 px-[18px] pr-[30px] active:scale-95 dropdown-trigger relative"
 			aria-expanded="false"
 			aria-haspopup="true"
 			data-dropdown-trigger
@@ -68,7 +68,7 @@ const hasChildren = processedLink.children && processedLink.children.length > 0;
 			aria-label={processedLink.name}
 			href={processedLink.external ? processedLink.url : url(processedLink.url)}
 			target={processedLink.external ? "_blank" : null}
-			class="btn-plain scale-animation rounded-[9px] h-9 px-4 active:scale-95 dropdown-trigger"
+			class="btn-plain scale-animation rounded-lg h-9 px-[18px] active:scale-95 dropdown-trigger"
 		>
 			<div class="flex items-center gap-1">
 				{processedLink.name}
@@ -102,9 +102,9 @@ const hasChildren = processedLink.children && processedLink.children.length > 0;
 	.dropdown-trigger {
 		@apply whitespace-nowrap text-black/80 dark:text-white/80;
 		flex: 0 0 auto;
-		/* 字阶取自 --fs-nav（type-scale.css），不要在这里写裸 px */
-		font-size: var(--fs-nav);
-		font-weight: 500;
+		/* 15px / 600 —— 规范 §02「导航项」：--fs-ui */
+		font-size: var(--fs-ui);
+		font-weight: 600;
 		letter-spacing: 0.02em;
 		transition:
 			background-color 0.15s ease,
@@ -145,7 +145,7 @@ const hasChildren = processedLink.children && processedLink.children.length > 0;
 	/* 下拉箭头：收小到 14px、压到 45% 对比，别和文字抢注意力 */
 	.dropdown-arrow {
 		font-size: 0.875rem;
-		right: 0.5rem;
+		right: 0.625rem;
 		opacity: 0.45;
 	}
 	.dropdown-container.is-current .dropdown-trigger .dropdown-arrow {

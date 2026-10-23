@@ -344,8 +344,8 @@ html[data-has-wallpaper] #navbar[data-transparent-mode="semi"].navbar-sticky-sha
  * 图片走 ImageWrapper（与侧栏作者卡同一套），这里只管形状与描边。
  */
 #navbar .nav-avatar {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 999px;
   overflow: hidden;
   flex: 0 0 auto;
@@ -364,4 +364,18 @@ html[data-has-wallpaper] #navbar[data-transparent-mode="semi"].navbar-sticky-sha
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+/*
+ * 工具区：搜索框 + 音乐 + 主题 + 头像，四个等距排开。
+ *
+ * 间距统一 10px。注意搜索框自带母版的 `mr-2`（8px），会和 gap 叠加成 18px，
+ * 所以这里把它归零 —— 否则四个元素里只有第一个间距是宽的。
+ */
+#navbar .col-start-3 {
+  gap: 10px;
+  align-items: center;
+}
+#navbar #search-bar {
+  margin-right: 0;
 }

@@ -248,7 +248,7 @@ const logoVariants = await Promise.all(
             <div
                 id="nav-items"
                 class:list={[
-                "hidden xl:flex items-center gap-1.5 col-start-2",
+                "hidden xl:flex items-center gap-2 col-start-2",
                 isNavbarMenuCentered
                     ? "justify-center"
                     : "justify-start pl-8"
@@ -291,7 +291,7 @@ const logoVariants = await Promise.all(
                     href={url("/about/")}
                     aria-label="个人介绍"
                     title="个人介绍"
-                    class="nav-avatar ml-1"
+                    class="nav-avatar"
                 >
                     {profileConfig.avatar ? (
                         <ImageWrapper
