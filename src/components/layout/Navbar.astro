@@ -17,7 +17,9 @@ import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import type { NavBarLink } from "@/types/config";
 import { getFallbackFormat, getImageFormats } from "@/utils/image-utils";
+import ImageWrapper from "@/components/common/ImageWrapper.astro";
 import { booksConfig } from "@/config";
+import { profileConfig } from "@/config/profileConfig";
 import { isHomePage } from "@/utils/layout-utils";
 import { resolveNavMenuLinks } from "@/utils/nav-menu-utils";
 import { url } from "@/utils/url-utils";
@@ -56,8 +58,6 @@ const navbarTitle = siteConfig.navbar.title || siteConfig.title;
 // 获取导航栏副标题（显示在标题下方的小字），未设置则不渲染
 const navbarSubtitle = siteConfig.navbar.subtitle || "";
 
-// logo 右侧的品牌主张（站点副标题），未设置则不渲染
-const navTagline = siteConfig.subtitle || "";
 
 // 获取导航栏宽度配置
 const navbarWidthFull = siteConfig.navbar.widthFull ?? false;
@@ -241,12 +241,6 @@ const logoVariants = await Promise.all(
                     </div>
                 </div>
             </a>
-                {/* 品牌主张：坐在 logo 右侧 */}
-                {navTagline && (
-                    <span class="nav-tagline hidden md:inline-flex items-center">
-                        {navTagline}
-                    </span>
-                )}
             </div>
             {/* 断点用 xl（1280）而不是模板原来的 lg（1024）：
                 菜单改成 6 个四字标签后，1024–1279 这段桌面导航放不下，会挤到折行，
@@ -292,6 +286,30 @@ const logoVariants = await Promise.all(
                 )}
                 {/* @ts-ignore */}
                 <LightDarkSwitch client:load></LightDarkSwitch>
+                {/* 头像：直达个人介绍页。36px，比 44px 的功能按钮小一档 */}
+                <a
+                    href={url("/about/")}
+                    aria-label="个人介绍"
+                    title="个人介绍"
+                    class="nav-avatar ml-1"
+                >
+                    {profileConfig.avatar ? (
+                        <ImageWrapper
+                            src={profileConfig.avatar}
+                            alt="山风的头像"
+                            loading="eager"
+                            widths={[72]}
+                            sizes="36px"
+                        />
+                    ) : (
+                        <span
+                            class="grid h-full w-full place-items-center text-[0.875rem] font-bold text-white"
+                            style="background: linear-gradient(145deg, oklch(0.72 0.1 165), oklch(0.5 0.12 170))"
+                        >
+                            山
+                        </span>
+                    )}
+                </a>
                 <button aria-label="Menu" aria-controls="nav-menu-panel" aria-expanded="false" name="Nav Menu" class="btn-plain scale-animation rounded-lg w-11 h-11 active:scale-90 xl:hidden!" id="nav-menu-switch">
                     <Icon name="material-symbols:menu-rounded" class="text-[1.25rem]"></Icon>
                 </button>

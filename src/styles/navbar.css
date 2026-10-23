@@ -335,59 +335,33 @@ html[data-has-wallpaper] #navbar[data-transparent-mode="semi"].navbar-sticky-sha
     box-shadow: inset 0 1px 0 var(--navbar-glass-highlight), 0 1px 0 var(--navbar-glass-hairline) !important;
 }
 
-/*
- * 导航栏搜索框：紧凑模式。
- *
- * 母版默认是一个常驻的 160px 输入框（w-40），比旁边三个功能按钮加起来还宽，
- * 挤掉了导航的中段空间。这里默认收成 44px 的图标钮（只剩放大镜），
- * 聚焦时再展开到 240px。
- * 选择器用 ID 提高特异性，压过组件里的 `w-40 / focus:w-60`。
- */
-#navbar #search-input-desktop {
-  width: 2.75rem;
-  padding-left: 2.25rem;
-  transition: width 0.2s ease;
-}
-#navbar #search-input-desktop:focus {
-  width: 15rem;
-}
-
-/* 收起时只剩放大镜：占位文字在 44px 里会被挤成一个字，聚焦展开后再显示 */
-#navbar #search-input-desktop::placeholder {
-  color: transparent;
-}
-#navbar #search-input-desktop:focus::placeholder {
-  color: inherit;
-}
-#navbar #search-bar {
-  margin-right: 0.25rem;
-}
+/* 搜索框走母版默认：w-40 常驻展开，聚焦到 w-60。不做额外压缩。 */
 
 /*
- * 品牌主张（logo 右侧那行小字）。
+ * 导航栏头像：直达「关于」。
  *
- * 它不属于菜单，是品牌的一部分：左对齐菜单之后，它坐在 logo 与目录之间，
- * 让左侧这一段有内容，而不是一条光秃秃的 logo。
- * 用 --btn-content（rgb(0,135,96)）：浅底 4.53:1 达 AA。
+ * 36px 圆 + 1.5px 白描边，比 44px 的功能按钮小一档 —— 它不是工具，是人。
+ * 图片走 ImageWrapper（与侧栏作者卡同一套），这里只管形状与描边。
  */
-#navbar .nav-tagline {
-  margin-left: 22px;
-  padding-left: 20px;
-  border-left: 1px solid rgba(0, 0, 0, 0.12);
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.01em;
-  color: var(--btn-content);
-  line-height: 1.2;
-  white-space: nowrap;
+#navbar .nav-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  overflow: hidden;
+  flex: 0 0 auto;
+  border: 1.5px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.16);
+  transition: box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
 }
-.dark #navbar .nav-tagline {
-  border-left-color: rgba(255, 255, 255, 0.16);
-  color: var(--primary);
+#navbar .nav-avatar:hover {
+  box-shadow:
+    0 0 0 3px color-mix(in oklab, var(--primary) 24%, transparent),
+    0 1px 4px rgba(0, 0, 0, 0.16);
 }
-@media (max-width: 1100px) {
-  /* 中等宽度先收掉，避免和菜单抢地方 */
-  #navbar .nav-tagline {
-    display: none;
-  }
+#navbar .nav-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
