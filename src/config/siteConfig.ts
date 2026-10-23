@@ -129,7 +129,7 @@ export const siteConfig: SiteConfig = {
 		// 全宽导航栏，导航栏是否占满屏幕宽度
 		widthFull: false,
 		// 导航菜单对齐方式，left：左对齐，center：居中
-		menuAlign: "center",
+		menuAlign: "left",
 		// 导航栏图标和标题是否跟随主题色
 		followTheme: false,
 		// 导航栏模式navbarMode：

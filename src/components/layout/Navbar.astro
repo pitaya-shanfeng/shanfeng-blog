@@ -56,6 +56,9 @@ const navbarTitle = siteConfig.navbar.title || siteConfig.title;
 // 获取导航栏副标题（显示在标题下方的小字），未设置则不渲染
 const navbarSubtitle = siteConfig.navbar.subtitle || "";
 
+// logo 右侧的品牌主张（站点副标题），未设置则不渲染
+const navTagline = siteConfig.subtitle || "";
+
 // 获取导航栏宽度配置
 const navbarWidthFull = siteConfig.navbar.widthFull ?? false;
 const navbarMenuAlign = siteConfig.navbar.menuAlign ?? "center";
@@ -203,7 +206,8 @@ const logoVariants = await Promise.all(
         "overflow-visible! h-17 px-4"
     ]}>
         <div class="mx-auto h-full w-full max-w-(--page-width) grid grid-cols-[auto_minmax(0,1fr)_auto] items-center">
-            <a href={url('/')} class="btn-plain scale-animation rounded-lg h-13 px-3 md:px-5 font-bold active:scale-95">
+                        <div class="flex items-center shrink-0">
+                <a href={url('/')} class="btn-plain scale-animation rounded-lg h-13 px-3 md:px-5 font-bold active:scale-95">
                 <div class:list={[
                     "flex flex-row items-center text-md",
                     siteConfig.navbar.followTheme ? "text-(--primary)" : "dark:text-white text-black"
@@ -237,6 +241,13 @@ const logoVariants = await Promise.all(
                     </div>
                 </div>
             </a>
+                {/* 品牌主张：坐在 logo 右侧 */}
+                {navTagline && (
+                    <span class="nav-tagline hidden md:inline-flex items-center">
+                        {navTagline}
+                    </span>
+                )}
+            </div>
             {/* 断点用 xl（1280）而不是模板原来的 lg（1024）：
                 菜单改成 6 个四字标签后，1024–1279 这段桌面导航放不下，会挤到折行，
                 所以这段宽度交给汉堡菜单（见下方 nav-menu-switch 的 xl:hidden!）。 */}
@@ -246,13 +257,8 @@ const logoVariants = await Promise.all(
                 "hidden xl:flex items-center gap-1.5 col-start-2",
                 isNavbarMenuCentered
                     ? "justify-center"
-                    : "justify-start pl-2"
+                    : "justify-start pl-8"
             ]}>
-                {/* 竖分隔线：把「品牌」和「目录」分成两段 */}
-                <span
-                    class="h-5 w-px shrink-0 mr-2 bg-black/12 dark:bg-white/15"
-                    aria-hidden="true"
-                />
                 {links.map((l) => {
                     return <DropdownMenu link={l} navMatch={navMatchOf(l)} />;
                 })}
