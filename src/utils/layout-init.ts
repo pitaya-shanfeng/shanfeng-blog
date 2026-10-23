@@ -15,6 +15,7 @@ import {
 	updateMainGridCols,
 	updateSidebarComponentsVisibility,
 } from "@/utils/grid-layout-utils";
+import { initBookProgressTracker } from "@/utils/book-progress-utils";
 import { initIconLoader } from "@/utils/icon-loader";
 import { initImageLoadFadeIn } from "@/utils/lqip-utils";
 import { initScroll } from "@/utils/scroll-utils";
@@ -57,6 +58,7 @@ export function initLayout(): void {
 	// 滚动路径不再读取布局；先在初始化时填充侧边栏 top 容器可见性缓存
 	refreshSidebarStickyState();
 	initScroll();
+	initBookProgressTracker();
 	initTouchCodeCopyReveal();
 
 	// 页面加载完成后初始化banner和内容溢出容器

@@ -6,7 +6,7 @@ import {
 	computeGridColumns,
 	gridColumnVarsToStyle,
 } from "@/utils/responsive-utils";
-import { isArticleDetailPage } from "@/utils/url-utils";
+import { isArticleDetailPage, isBookPage } from "@/utils/url-utils";
 
 const sidebarStickyState: Record<
 	"left" | "right",
@@ -99,6 +99,14 @@ export function updateSidebarComponentsVisibility(): void {
 	// 处理 hideOnNonPostPage === true 的组件
 	document.querySelectorAll(".widget-hide-on-non-post").forEach((widget) => {
 		!isPostPage
+			? widget.classList.add("hidden")
+			: widget.classList.remove("hidden");
+	});
+
+	// 处理只在书籍合集页显示的组件
+	const isBook = isBookPage(window.location.pathname);
+	document.querySelectorAll(".widget-hide-on-non-book").forEach((widget) => {
+		!isBook
 			? widget.classList.add("hidden")
 			: widget.classList.remove("hidden");
 	});

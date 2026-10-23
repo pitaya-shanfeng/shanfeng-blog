@@ -7,8 +7,36 @@ import { i18n } from "@/i18n/translation";
 import type { WidgetComponentConfig } from "@/types/config";
 import { computeTocItems } from "@/utils/toc-shared";
 
+/** 外部传入的目录项（跨页链接时用），字段与页内目录保持同一套渲染结构 */
+export interface TocLinkItem {
+	/** 徽章文本：数字序号 / 「序」/「附」/「后记」 */
+	badge: string;
+	/** 条目文字 */
+	text: string;
+	/** 链接地址 */
+	href: string;
+	/** 层级：1 = 篇，2 = 章 */
+	depthLevel?: number;
+	/** 徽章类型：index = 数字徽章，dot = 圆点 */
+	badgeKind?: "index" | "dot";
+	/** 文字是否为主色（深色） */
+	labelPrimary?: boolean;
+	/** 是否为当前项 */
+	isActive?: boolean;
+	/** 锚点标识（外链目录用，客户端据此标记当前项） */
+	anchor?: string;
+}
+
 interface Props {
-	headings: MarkdownHeading[];
+	headings?: MarkdownHeading[];
+	/** 传入 items 时按外链目录渲染（不做页内 scrollspy） */
+	items?: TocLinkItem[];
+	/** anchor = 页内目录（默认）；link = 跨页目录 */
+	mode?: "anchor" | "link";
+	/** 覆盖组件标题 */
+	title?: string;
+	/** 内容容器 id（同一页面可能出现两个目录） */
+	contentId?: string;
 	encrypted?: boolean;
 	class?: string;
 	style?: string;
@@ -17,6 +45,10 @@ interface Props {
 
 const {
 	headings = [],
+	items: linkItems,
+	mode = "anchor",
+	title,
+	contentId = "sidebar-toc-content",
 	encrypted = false,
 	class: className,
 	style,
@@ -26,33 +58,41 @@ const {
 const showTitle = widgetConfig?.showTitle !== false;
 
 // 加密文章不在服务端渲染目录（避免标题泄露），交由客户端解密后生成
-const items = encrypted ? [] : computeTocItems(headings, { maxLevel: 3 });
+const items = encrypted
+	? []
+	: mode === "link"
+		? (linkItems ?? [])
+		: computeTocItems(headings, { maxLevel: 3 });
 ---
 
 <WidgetLayout
-  name={i18n(I18nKey.tableOfContents)}
+  name={title ?? i18n(I18nKey.tableOfContents)}
   showTitle={showTitle}
   id="sidebar-toc"
   class={className}
   style={style}
 >
-  <div class="toc-scroll-container custom-scrollbar">
+  <div class="toc-scroll-container custom-scrollbar" data-toc-mode={mode}>
     <div
       class="toc-content"
-      id="sidebar-toc-content"
+      id={contentId}
     >
       {!encrypted && items.length > 0 && (
         <>
           {items.map((item) => (
             <a
               href={item.href}
-              class={`toc-item toc-level-${item.depthLevel}`}
-              data-heading-id={item.headingId}
+              class={`toc-item toc-level-${item.depthLevel ?? 2}${item.isActive ? " toc-item-active" : ""}`}
+              data-heading-id={item.headingId ?? item.href}
+              data-anchor={item.anchor}
               aria-label={item.text}
               title={item.text}
+              aria-current={item.isActive ? "true" : undefined}
             >
               <div class={`toc-badge ${item.badgeKind === "index" ? "toc-badge-index" : ""}`}>
-                {item.badgeKind === "index" ? (
+                {mode === "link" ? (
+                  item.badge
+                ) : item.badgeKind === "index" ? (
                   item.badgeIndex
                 ) : item.badgeKind === "dot" ? (
                   <span class="toc-badge-dot"></span>
@@ -106,6 +146,13 @@ const items = encrypted ? [] : computeTocItems(headings, { maxLevel: 3 });
   function initSidebarTOC() {
     const tocContent = document.getElementById("sidebar-toc-content");
     if (!tocContent) return;
+    // 外链目录（书页的本书目录）不做页内 scrollspy：
+    // 它的条目指向其他页面，没有可观察的页内锚点。
+    // ⚠️ 只能判断「当前要初始化的这一个容器」——侧栏是静态容器，
+    // 书页那套 link 容器站内跳转后也一直留在 DOM 里，
+    // 用全局 querySelector 会让所有页面的目录都失去客户端重建能力。
+    const scroll = tocContent.closest(".toc-scroll-container");
+    if (scroll?.dataset.tocMode === "link") return;
 
     try {
       // 清理旧实例

@@ -7,7 +7,7 @@ import PostMetadata from "@/components/layout/PostMeta.astro";
 import PostStats from "@/components/layout/PostStats.astro";
 import { siteConfig } from "@/config";
 import { getApiUrlList, processCoverImageSync } from "@/utils/image-utils";
-import { getFileDirFromPath, getTagUrl } from "@/utils/url-utils";
+import { getCategoryUrl, getFileDirFromPath, getTagUrl } from "@/utils/url-utils";
 
 interface Props {
 	class?: string;
@@ -25,6 +25,21 @@ interface Props {
 	password?: boolean;
 	style: string;
 	loading?: "lazy" | "eager";
+	/**
+	 * 分类挪到底部与标签同行（书籍合集页用）。
+	 * 开启后 meta 行不再显示分类，底部第一个位置放「分类/系列」胶囊。
+	 */
+	categoryInBottom?: boolean;
+	/**
+	 * 覆盖站点级 meta 显示配置（postListLayout.meta）。
+	 * 书页用它把「字数 + 阅读时长」显示出来，让书卷的总字数可被逐章核对。
+	 */
+	metaOverride?: Partial<{
+		published: boolean;
+		words: boolean;
+		readingTime: boolean;
+		tags: boolean;
+	}>;
 }
 const {
 	entry,
@@ -39,6 +54,8 @@ const {
 	password,
 	style,
 	loading = "lazy",
+	categoryInBottom = false,
+	metaOverride,
 } = Astro.props;
 const className = Astro.props.class;
 
@@ -69,9 +86,9 @@ const metaTagCount =
 	metaConfig.tagCount !== undefined
 		? Math.max(0, Math.trunc(metaConfig.tagCount))
 		: 1;
-const metaShowWords = metaConfig.showWords ?? true;
-const metaShowReadingTime = metaConfig.showReadingTime ?? true;
-const metaShowPublished = metaConfig.showPublished ?? true;
+const metaShowWords = metaOverride?.words ?? metaConfig.showWords ?? true;
+const metaShowReadingTime = metaOverride?.readingTime ?? metaConfig.showReadingTime ?? true;
+const metaShowPublished = metaOverride?.published ?? metaConfig.showPublished ?? true;
 
 // PostStats 配置
 const statsConfig = siteConfig.postListLayout.stats ?? {};
@@ -94,6 +111,17 @@ const tagList = tags ?? [];
 const bottomTags = metaTagCount > 0 ? tagList.slice(0, metaTagCount) : tagList;
 const hiddenTags = tagList.slice(bottomTags.length);
 const hiddenTagCount = hiddenTags.length;
+
+// 书籍合集页的「分类/系列」胶囊：分类 + 系列（如「著书立说/见山」）
+const seriesLabel = (entry.data as { series?: string }).series;
+
+// 分类挪到底部后，meta 行可能什么都不剩 —— 那就整行不渲染，别留一条空行
+const hasOtherMeta =
+  pinned ||
+  metaShowPublished ||
+  metaShowWords ||
+  metaShowReadingTime ||
+  (metaShowTags && (tags?.length ?? 0) > 0);
 
 const { remarkPluginFrontmatter } = await render(entry);
 const descriptionText = description || remarkPluginFrontmatter.excerpt || "";
@@ -145,11 +173,12 @@ const minutes = entry.data.minutes ?? remarkPluginFrontmatter.minutes;
     </a>
 
     <!-- metadata -->
+    {(!categoryInBottom || hasOtherMeta) && (
     <PostMetadata
       published={published}
       tags={tags}
       showPublished={metaShowPublished}
-      showCategory={showCategory}
+      showCategory={showCategory && !categoryInBottom}
       showTags={showTagsInMeta}
       maxTags={metaTagCount > 0 ? metaTagCount : undefined}
       showNoTags={true}
@@ -162,6 +191,7 @@ const minutes = entry.data.minutes ?? remarkPluginFrontmatter.minutes;
       showReadingTime={metaShowReadingTime}
       className="mb-4 post-meta card-header-meta"
     />
+    )}
 
     <!-- description -->
     <div
@@ -175,13 +205,24 @@ const minutes = entry.data.minutes ?? remarkPluginFrontmatter.minutes;
     </div>
 
     <!-- bottom tags（与 stats 二选一） -->
-    {showTagsAtBottom && bottomTags.length > 0 && (
+    {showTagsAtBottom && (bottomTags.length > 0 || (categoryInBottom && category)) && (
       <div
         class:list={[
           "post-card-bottom-tags flex flex-wrap items-center mt-auto pt-3",
           bottomTagsAsText ? "gap-x-3 gap-y-1" : "gap-1.5",
         ]}
       >
+        {categoryInBottom && category && (
+          <a
+            href={getCategoryUrl(category)}
+            class="post-card-category-chip"
+            aria-label={`查看分类 ${category}`}
+          >
+            <Icon name="material-symbols:folder-rounded" class="text-xs" />
+            {category}
+            {seriesLabel ? `/${seriesLabel}` : ""}
+          </a>
+        )}
         {bottomTags.map((tag) => (
           <a
             href={getTagUrl(tag)}
@@ -414,6 +455,32 @@ const minutes = entry.data.minutes ?? remarkPluginFrontmatter.minutes;
     :global(.list-mode) .post-card-enter-btn {
       display: flex !important;
     }
+  }
+
+  /* 分类胶囊（categoryInBottom）：与标签同族，但用描边区分「归属」与「关键词」 */
+  .post-card-category-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.625rem;
+    border-radius: 9999px;
+    border: 1px solid color-mix(in srgb, var(--btn-content) 12%, transparent);
+    background: var(--btn-regular-bg);
+    color: var(--btn-content);
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.5;
+    transition:
+      background-color 0.15s,
+      border-color 0.15s;
+  }
+  .post-card-category-chip:hover {
+    background: var(--btn-regular-bg-hover);
+    border-color: color-mix(in srgb, var(--btn-content) 24%, transparent);
+  }
+  .post-card-category-chip :global(svg) {
+    width: 0.875rem;
+    height: 0.875rem;
   }
 
   /* === Grid Mode Styles === */

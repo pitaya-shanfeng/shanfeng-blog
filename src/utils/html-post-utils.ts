@@ -19,7 +19,7 @@ import { toHtml } from "hast-util-to-html";
 import { toText } from "hast-util-to-text";
 import postcss from "postcss";
 import selectorParser from "postcss-selector-parser";
-import getReadingTime from "reading-time";
+import { measure } from "@/plugins/word-count.mjs";
 import { visit } from "unist-util-visit";
 
 /** 收集到的文章元信息（未填的交给集合 schema 的默认值） */
@@ -46,6 +46,7 @@ export interface HtmlPostParseResult {
 	/** 供侧栏目录使用的标题列表，结构与 md 文章 render() 返回的 headings 一致 */
 	headings: Array<{ depth: number; slug: string; text: string }>;
 	words: number;
+	chars: number;
 	minutes: number;
 	excerpt: string;
 	quote: string;
@@ -299,7 +300,7 @@ export function parseHtmlPost(
 	})();
 
 	const plainText = toText({ type: "root", children: contentChildren } as never);
-	const reading = getReadingTime(plainText);
+	const reading = measure(plainText);
 
 	const published =
 		parseDate(String(fm.published ?? fm.date ?? "")) ??
@@ -328,7 +329,8 @@ export function parseHtmlPost(
 		css: cssParts.join("\n"),
 		headings,
 		words: reading.words,
-		minutes: Math.max(1, Math.round(reading.minutes)),
+		chars: reading.chars,
+		minutes: reading.minutes,
 		excerpt: clamp(firstParagraph || meta.description || ""),
 		quote: clamp(firstQuote, 200),
 	};

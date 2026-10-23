@@ -26,6 +26,13 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 	noSidebarContentWidth: 0.6,
 
 	// 左侧边栏组件配置列表
+	//
+	// 2026-10-22：公告 / 音乐 / 最新动态 / 分类 / 标签 五块全部关闭（enable: false）。
+	// 理由：这五块在本站要么是模板演示内容（公告还是示例文案、音乐是演示曲、动态是 2026-07 的占位），
+	// 要么与内容体系对不上（分类只剩「论文阅读 / 认知与设计」，标签 24 个全是论文技术词，
+	// 与导航那套业务主题是两套体系）。关掉后非文章页左栏只剩作者卡。
+	// 要恢复某一项：把它自己的 enable 改回 true 即可，配置项都还留着。
+
 	// 组件的渲染顺序完全取决于它们在配置数组中出现的顺序，但top的组件会优先于sticky位置的组件渲染
 	// type 组件类型
 	// enable 是否启用该组件
@@ -49,7 +56,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			// 组件类型：公告组件
 			type: "announcement",
 			// 是否启用该组件
-			enable: true,
+			enable: false,
 			// 组件位置
 			position: "top",
 			// 是否在文章详情页显示
@@ -69,7 +76,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			// 组件类型：最新动态组件（原在右侧栏，因改为单侧布局移到这里）
 			type: "dynamic",
 			// 是否启用该组件
-			enable: true,
+			enable: false,
 			// 组件位置
 			position: "top",
 			// 是否在文章详情页显示
@@ -86,7 +93,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			// 组件类型：分类组件
 			type: "categories",
 			// 是否启用该组件
-			enable: true,
+			enable: false,
 			// 组件位置
 			position: "sticky",
 			// 是否在文章详情页显示
@@ -101,7 +108,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			// 组件类型：标签组件
 			type: "tags",
 			// 是否启用该组件
-			enable: true,
+			enable: false,
 			// 组件位置
 			position: "sticky",
 			// 是否在文章详情页显示
@@ -111,6 +118,16 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 				// 折叠阈值：当标签数量超过>10个时自动折叠
 				collapseThreshold: 10,
 			},
+		},
+		{
+			// 组件类型：本书阅读进度尺（书籍合集页专属）
+			type: "bookProgress",
+			// 是否启用该组件
+			enable: true,
+			// 组件位置
+			position: "sticky",
+			// 只在书籍合集页（/books/…）显示
+			hideOnNonBookPage: true,
 		},
 		{
 			// 组件类型：侧边栏目录组件（文章页左侧）
@@ -254,7 +271,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 		},
 	],
 
-	// 移动端底部组件配置列表
+	// 移动端底部组件配置列表（与桌面端保持一致：同样关掉公告 / 分类 / 标签 / 动态）
 	// 这些组件只在移动端(<768px)显示在页面底部，独立于左右侧边栏配置
 	mobileBottomComponents: [
 		{
@@ -269,7 +286,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			// 组件类型：公告组件
 			type: "announcement",
 			// 是否启用该组件
-			enable: true,
+			enable: false,
 			// 是否在文章详情页显示
 			showOnPostPage: false,
 		},
@@ -277,7 +294,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			// 组件类型：分类组件
 			type: "categories",
 			// 是否启用该组件
-			enable: true,
+			enable: false,
 			// 是否在文章详情页显示
 			showOnPostPage: false,
 			// 组件专属配置
@@ -290,7 +307,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			// 组件类型：标签组件
 			type: "tags",
 			// 是否启用该组件
-			enable: true,
+			enable: false,
 			// 是否在文章详情页显示
 			showOnPostPage: false,
 			// 组件专属配置
@@ -303,7 +320,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			// 组件类型：最新动态组件
 			type: "dynamic",
 			// 是否启用该组件
-			enable: true,
+			enable: false,
 			// 是否在文章详情页显示
 			showOnPostPage: false,
 			// 组件专属配置

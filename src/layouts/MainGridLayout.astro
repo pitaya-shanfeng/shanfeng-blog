@@ -52,6 +52,10 @@ interface Props {
 		tags?: string[];
 	};
 	heading?: string;
+	/** 本页不要侧栏（书页这类自带整幅版式的页面） */
+	hideSidebar?: boolean;
+	/** banner 只当背景，不显示页面标题（书页把书名放回正文里） */
+	hideBannerTitle?: boolean;
 }
 
 const backgroundImages = getBackgroundImages();
@@ -72,6 +76,8 @@ const {
 	relatedPostList = [],
 	bannerPostMeta,
 	heading,
+	hideSidebar = false,
+	hideBannerTitle = false,
 } = Astro.props;
 
 const isHomePageCheck = isHomePage(Astro.url.pathname);
@@ -85,7 +91,12 @@ const banner = getBannerVisibilityState({
 	title,
 	bannerPostMeta,
 });
-const sidebar = getEffectiveSidebarState({ isPostPage });
+// 书页这类页面：banner 只当背景，书名由正文自己交代
+if (hideBannerTitle) banner.showBannerPageTitle = false;
+
+const sidebar = getEffectiveSidebarState({ isPostPage, hideSidebar });
+// 单页隐藏侧栏时，连侧栏 DOM 也不必渲染
+const sidebarEnabled = sidebarLayoutConfig.enable && !hideSidebar;
 
 const { hasWallpaper } = banner;
 const {
@@ -121,7 +132,7 @@ const {
             <SidebarColumn
                 side="left"
                 position={sidebarLayoutConfig.position}
-                enable={sidebarLayoutConfig.enable}
+                enable={sidebarEnabled}
                 hideSidebarOnPostPage={hideSidebarOnPostPage}
                 hasLeftComponents={hasLeftComponents}
                 hasRightComponents={hasRightComponents}

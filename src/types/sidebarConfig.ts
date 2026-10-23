@@ -11,7 +11,8 @@ export type WidgetComponentType =
 	| "music"
 	| "siteInfo"
 	| "dynamic"
-	| "relatedPosts";
+	| "relatedPosts"
+	| "bookProgress";
 
 export type WidgetComponentConfig = {
 	type: WidgetComponentType; // 组件类型
@@ -24,6 +25,8 @@ export type WidgetComponentConfig = {
 	position: "top" | "sticky" | "bottom";
 	showOnPostPage?: boolean; // 是否在文章详情页显示
 	hideOnNonPostPage?: boolean; // 是否在非文章详情页隐藏
+	/** 是否只在书籍合集页（/books/…）显示 */
+	hideOnNonBookPage?: boolean;
 	specificConfig?: WidgetSpecificConfig;
 	customProps?: Record<string, unknown>; // 自定义属性，用于扩展组件功能
 };

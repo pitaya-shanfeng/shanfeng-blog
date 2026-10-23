@@ -113,3 +113,8 @@ const CONTENT_DETAIL_PATH_PATTERNS = [
 export function isArticleDetailPage(pathname: string): boolean {
 	return CONTENT_DETAIL_PATH_PATTERNS.some((re) => re.test(pathname));
 }
+
+/** 书籍合集页：/books/<book>/ */
+export function isBookPage(pathname: string): boolean {
+	return /^\/books\/[^/]+\/?$/.test(pathname);
+}

@@ -1,0 +1,93 @@
+---
+/**
+ * 本书目录（书籍合集页侧栏）
+ *
+ * 直接复用母版的 SidebarTOC 组件与它的全部样式（.toc-item / .toc-badge / .toc-label），
+ * 只把内容换成书页的章节，并走「外链目录」模式：
+ *   - 徽章沿用母版的圆形序号（章=数字、篇=圆点、序/后记=文字）
+ *   - 层级：篇 = 1，章 = 2
+ *   - 条目指向各章文章（跨页），因此不做页内 scrollspy；
+ *     「读到哪」的当前项由 book-progress-utils 在客户端标记
+ */
+import SidebarTOC from "@/components/widget/SidebarTOC.astro";
+import { booksConfig } from "@/config";
+import { getSeriesPostsOf } from "@/utils/content-utils";
+import { getPostUrlBySlug } from "@/utils/url-utils";
+
+interface Props {
+	class?: string;
+	style?: string;
+}
+
+const { class: className, style } = Astro.props;
+
+const book = booksConfig[0];
+const posts = await getSeriesPostsOf(book.title);
+const byOrder = new Map(posts.map((post) => [post.data.seriesOrder ?? 0, post]));
+
+/** 目录连续编号：序是 01，第 1 章是 02，依次顺延 */
+const nextBadge = () => String(items.length + 1).padStart(2, "0");
+
+const items: {
+	badge: string;
+	text: string;
+	href: string;
+	depthLevel: number;
+	badgeKind: "index" | "dot";
+	anchor: string;
+}[] = [];
+
+if (book.preface) {
+	const post = byOrder.get(book.preface.order);
+	if (post) {
+		items.push({
+			badge: nextBadge(),
+			text: post.data.title,
+			href: getPostUrlBySlug(post.id),
+			depthLevel: 1,
+			badgeKind: "index",
+			anchor: `ch-${post.id}`,
+		});
+	}
+}
+
+for (const part of book.parts) {
+	for (const entry of part.entries) {
+		// 「附」是上一篇的附属，不是一章，不进目录
+		if (entry.label.includes("附")) continue;
+		const post = byOrder.get(entry.order);
+		if (!post) continue;
+		items.push({
+			badge: nextBadge(),
+			text: post.data.title,
+			href: getPostUrlBySlug(post.id),
+			depthLevel: 2,
+			badgeKind: "index",
+			anchor: `ch-${post.id}`,
+		});
+	}
+}
+
+if (book.afterword) {
+	const post = byOrder.get(book.afterword.order);
+	if (post) {
+		items.push({
+			badge: nextBadge(),
+			text: post.data.title,
+			href: getPostUrlBySlug(post.id),
+			depthLevel: 1,
+			badgeKind: "index",
+			anchor: `ch-${post.id}`,
+		});
+	}
+}
+---
+
+<SidebarTOC
+  items={items}
+  mode="link"
+  title="本书目录"
+  contentId="book-toc-content"
+  class={className}
+  style={style}
+/>

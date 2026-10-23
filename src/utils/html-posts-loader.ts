@@ -70,6 +70,7 @@ export function htmlPostsLoader(options: { base: string }): Loader {
 							format: "html",
 							// 阅读时长 / 字数与 md 文章口径一致（同一个 reading-time 实现）
 							words: parsed.words,
+							chars: parsed.chars,
 							minutes: parsed.minutes,
 						},
 						filePath,
@@ -96,6 +97,7 @@ export function htmlPostsLoader(options: { base: string }): Loader {
 							headings: parsed.headings,
 							metadata: {
 								words: parsed.words,
+							chars: parsed.chars,
 								minutes: parsed.minutes,
 								excerpt: parsed.excerpt,
 								quote: parsed.quote,

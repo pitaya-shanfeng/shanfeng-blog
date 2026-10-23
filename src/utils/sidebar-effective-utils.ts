@@ -7,6 +7,11 @@ import {
 
 export interface EffectiveSidebarContext {
 	isPostPage: boolean;
+	/**
+	 * 整页不要侧栏（书页这类自带整幅版式的页面）。
+	 * 与 `sidebarLayoutConfig.enable` 的区别：那是全站开关，这是单页。
+	 */
+	hideSidebar?: boolean;
 }
 
 export interface EffectiveSidebarState {
@@ -27,7 +32,10 @@ export interface EffectiveSidebarState {
 export function getEffectiveSidebarState(
 	ctx: EffectiveSidebarContext,
 ): EffectiveSidebarState {
-	const { isPostPage } = ctx;
+	const { isPostPage, hideSidebar = false } = ctx;
+
+	// 单页隐藏侧栏 = 当作整站禁用处理：既不占列，也不按比例收窄内容（铺满给页面自己约束宽度）
+	const sidebarEnabled = sidebarLayoutConfig.enable && !hideSidebar;
 
 	const sidebarConfig = getResponsiveSidebarConfig();
 
@@ -35,7 +43,7 @@ export function getEffectiveSidebarState(
 		sidebarLayoutConfig.hideSidebarOnPostPage === true;
 
 	const gridColumnVars = computeGridColumns({
-		enabled: sidebarLayoutConfig.enable,
+		enabled: sidebarEnabled,
 		position: sidebarLayoutConfig.position,
 		tabletSidebar: sidebarConfig.tabletSidebar,
 		hideSidebarOnPostPage,
@@ -60,7 +68,7 @@ export function getEffectiveSidebarState(
 		staticBarClass: "min-w-0 overflow-x-clip overflow-y-visible",
 		gridColumnStyle: gridColumnVarsToStyle(gridColumnVars),
 		gridDataAttrs: {
-			"data-sidebar-enable": sidebarLayoutConfig.enable ? "true" : "false",
+			"data-sidebar-enable": sidebarEnabled ? "true" : "false",
 			"data-grid-hide-sidebar-on-post": hideSidebarOnPostPage
 				? "true"
 				: "false",

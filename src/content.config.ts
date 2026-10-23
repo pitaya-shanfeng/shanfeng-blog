@@ -94,7 +94,11 @@ const postSchema = z.object({
 	 * HTML 文章没有 markdown 渲染流程，由 loader 在这里给出（口径同为 reading-time）。
 	 */
 	words: z.number().optional(),
+	/** 总字符数（飞书口径）。目前只入库、不在页面展示 */
+	chars: z.number().optional(),
 	minutes: z.number().optional(),
+	/** 金句：从原文摘的一句话，渲染在正文引言的引用块里 */
+	quote: z.string().optional(),
 
 	/* For internal use */
 	prevTitle: z.string().default(""),

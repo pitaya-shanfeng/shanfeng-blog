@@ -3,6 +3,7 @@ import type { MarkdownHeading } from "astro";
 import Advertisement from "@/components/widget/Advertisement.astro";
 import Announcement from "@/components/widget/Announcement.astro";
 import Calendar from "@/components/widget/Calendar.astro";
+import BookProgress from "@/components/widget/BookProgress.astro";
 import Categories from "@/components/widget/Categories.astro";
 import Dynamic from "@/components/widget/Dynamic.astro";
 import Music from "@/components/widget/Music.astro";
@@ -19,7 +20,7 @@ import type {
 } from "@/types/config";
 import { isWidgetVisibleOnPageType } from "@/utils/responsive-utils";
 import type { PostForList } from "@/utils/content-utils";
-import { isArticleDetailPage } from "@/utils/url-utils";
+import { isArticleDetailPage, isBookPage } from "@/utils/url-utils";
 
 interface Props {
 	class?: string;
@@ -61,6 +62,7 @@ const componentMap = {
 	siteInfo: SiteInfo,
 	dynamic: Dynamic,
 	relatedPosts: RelatedPosts,
+	bookProgress: BookProgress,
 };
 
 // 获取侧边栏位置
@@ -145,6 +147,13 @@ const getComponentProps = (
 	if ("hideOnNonPostPage" in config && config.hideOnNonPostPage === true) {
 		baseProps.class = `${baseProps.class} widget-hide-on-non-post`;
 		if (!isPostPage) {
+			baseProps.class = `${baseProps.class} hidden`;
+		}
+	}
+	// 只在书籍合集页显示的组件（如本书阅读进度尺）
+	if ("hideOnNonBookPage" in config && config.hideOnNonBookPage === true) {
+		baseProps.class = `${baseProps.class} widget-hide-on-non-book`;
+		if (!isBookPage(Astro.url.pathname)) {
 			baseProps.class = `${baseProps.class} hidden`;
 		}
 	}
