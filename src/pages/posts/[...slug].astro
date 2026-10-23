@@ -69,7 +69,21 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content, headings } = await render(entry);
+const { Content, headings: rawHeadings } = await render(entry);
+
+/**
+ * 目录用的标题列表：排除脚注区。
+ * markdown 的脚注会被渲染成一个 `<h2>Footnotes</h2>` + 引用列表，
+ * Astro 的 headings 把它一起收进来，于是「Footnotes」会当成第 7 章出现在目录里。
+ * 它不是正文章节，不该出现在导航里。
+ */
+const headings = rawHeadings.filter((h) => {
+	const text = (h.text || "").trim();
+	const slug = h.slug || "";
+	if (/^footnotes?$/i.test(text)) return false;
+	if (/footnote/i.test(slug)) return false;
+	return true;
+});
 
 const { remarkPluginFrontmatter } = await render(entry);
 

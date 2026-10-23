@@ -60,7 +60,17 @@ export class TOCManager {
 		}
 		return Array.from(
 			contentContainer.querySelectorAll("h1, h2, h3, h4, h5, h6, [data-toc-heading]"),
-		);
+		).filter((el) => {
+			// 脚注区不是正文章节，不进目录。
+			// markdown 脚注会渲染成 <h2 id="footnote-label">Footnotes</h2> + 引用列表，
+			// 若不过滤，它会作为最后一项混进目录。
+			if (el.closest("[data-footnotes], .footnotes, section[role='doc-endnotes']")) {
+				return false;
+			}
+			if (el.id === "footnote-label") return false;
+			const text = (el.textContent || "").trim();
+			return !/^footnotes?$/i.test(text);
+		});
 	}
 
 	/**
