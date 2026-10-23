@@ -21,7 +21,15 @@ interface Props {
 
 const { class: className, style } = Astro.props;
 
-const book = booksConfig[0];
+/**
+ * 当前是哪本书：从路径 /books/<id>/ 取。
+ * 不能写死 booksConfig[0] —— 站里已经有两本书，写死会让第二本书的侧栏
+ * 显示第一本的目录。
+ * Astro.url.pathname 在 SSG 下是当前页面的路径（只有 query 会丢，pathname 是准的）。
+ */
+const currentBookId = Astro.url.pathname.match(/^\/books\/([^/]+)\/?$/)?.[1];
+const book =
+	booksConfig.find((item) => item.id === currentBookId) ?? booksConfig[0];
 const posts = await getSeriesPostsOf(book.title);
 const byOrder = new Map(posts.map((post) => [post.data.seriesOrder ?? 0, post]));
 

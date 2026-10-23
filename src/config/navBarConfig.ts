@@ -86,8 +86,7 @@ const CONTENT_GROUPS: ContentGroupConfig[] = [
 		// 否则 resolveNavMenuLinks 会把子项提到一级、吃掉「写作」这个名字。
 		topics: [
 			{ name: "见山：产品判断力", book: "见山" },
-			// 第二本还在写，菜单先留位；写完后给文章打「增长黑客方法论」标签即可自动归入
-			{ name: "道、法、术：增长黑客方法论", tag: "增长黑客方法论" },
+			{ name: "道、法、术：增长黑客方法论", book: "道、法、术：增长黑客方法论" },
 		],
 	},
 	{

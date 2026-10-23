@@ -38,6 +38,13 @@ const { book } = Astro.props;
 
 const posts = await getSeriesPostsOf(book.title);
 
+/**
+ * 排版封面上的书名取「：」之前的部分。
+ * 竖排封面只有 200×267，长书名（如「道、法、术：增长黑客方法论」）折成两列后
+ * 阅读顺序会被标点打乱；短主标题竖排才清爽，全名由右侧 h1 承担。
+ */
+const coverTitle = book.title.split(/[:：]/)[0].trim() || book.title;
+
 // 支持区块：分享的是「这本书的合集页」，不是某一章
 const showShare = siteConfig.post.share !== false;
 const showSponsorButton = sponsorConfig.showButtonInPost;
@@ -75,6 +82,9 @@ const chapterCount = book.parts.reduce(
 /** 篇首语：取 spec 条目、渲染 */
 const intros = new Map<string, { Content: any }>();
 for (const part of book.parts) {
+	// 还没写篇首语的书（introId 为空串）直接跳过：
+	// getEntry 不接受空标识，会抛 UnknownContentCollectionError
+	if (!part.introId) continue;
 	const entry = await getEntry("spec", part.introId);
 	if (!entry) continue;
 	const rendered = await render(entry);
@@ -134,7 +144,17 @@ const indexOf = (anchor: string) =>
             <img src={book.cover} alt={`《${book.title}》封面`} loading="eager" />
           ) : (
             <div class="plate" aria-hidden="true">
-              <span class="cv-title">{book.title}</span>
+              {/* 竖排书名按字数缩字号：200×267 的封面，32px 只放得下四五个字 */}
+              <span
+                class="cv-title"
+                style={[
+                    coverTitle.length > 6 ? "font-size: 1.25rem" : "",
+                  ]
+                    .filter(Boolean)
+                    .join("; ") || undefined}
+              >
+                {coverTitle}
+              </span>
               <span class="cv-bottom">山风 著</span>
             </div>
           )
@@ -152,8 +172,17 @@ const indexOf = (anchor: string) =>
           <b>{book.parts.length}</b> 篇
           <span class="sep"></span>
           <b>{chapterCount}</b> 章
-          <span class="sep"></span>
-          序与后记
+          {/* 序 / 后记按实际有无显示，没有就不占位 */}
+          {(book.preface || book.afterword) && (
+            <>
+              <span class="sep"></span>
+              {book.preface && book.afterword
+                ? "序与后记"
+                : book.preface
+                  ? "序"
+                  : "后记"}
+            </>
+          )}
           <span class="sep"></span>
           约 <b>{totalWan}</b> 万字
           <span class="sep"></span>
