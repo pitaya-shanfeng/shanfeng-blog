@@ -254,7 +254,8 @@ async function generatePoster() {
 		let currentY = 0;
 
 		// Cover
-		const coverHeight = (coverImg ? 200 : 64) * scale;
+		// 封面占高比：9:16 的海报竖向空间大，封面太小会让中段空一大块
+		const coverHeight = (coverImg ? 300 : 96) * scale;
 		currentY += coverHeight;
 		currentY += padding; // Gap after cover
 
@@ -289,8 +290,11 @@ async function generatePoster() {
 		currentY += footerHeight;
 		currentY += 12 * scale; // Bottom padding
 
-		// 4. Resize Canvas to fit content
-		canvas.height = currentY;
+		// 4. 画布高度锁定 9:16（宽:高）—— 适配手机竖屏分享
+		//    内容不足时以比例为准（底部留白由 footer 贴底吸收）；
+		//    内容超高时以内容为准，避免裁掉信息。
+		const posterHeight = Math.round(width * (16 / 9));
+		canvas.height = Math.max(currentY, posterHeight);
 
 		// 5. Draw Content
 		// Fill Background
@@ -429,7 +433,10 @@ async function generatePoster() {
 		ctx.fillText(siteTitleText, siteTitleX, headerCenterY);
 
 		// Reset Y for drawing
-		let drawY = coverHeight + padding;
+		// 9:16 下内容常常撑不满，若标题紧贴封面会让空白全堆在底部。
+		// 这里把富余空间的一部分让给标题上方，空白上下分散，看着更像排版而不是漏填。
+		const spareSpace = Math.max(0, canvas.height - currentY);
+		let drawY = coverHeight + padding + spareSpace * 0.32;
 
 		// Draw Title
 		ctx.textBaseline = "top";
@@ -473,17 +480,24 @@ async function generatePoster() {
 		}
 
 		// Draw Footer Divider
-		drawY += 8 * scale; // Spacing before line
+		// footer 贴底：9:16 下内容通常撑不满，让作者/二维码沉到底部，
+		// 中段自然留白，比在底部堆一坨空白好看。
+		const footerBlockH = 80 * scale;
+		const footerBottomGap = 12 * scale;
+		const naturalFooterY = drawY + 16 * scale; // 原本的 8 + 8
+		const footerY = Math.max(
+			naturalFooterY,
+			canvas.height - footerBlockH - footerBottomGap,
+		);
+
 		ctx.beginPath();
 		ctx.strokeStyle = "#f3f4f6";
 		ctx.lineWidth = 1 * scale;
-		ctx.moveTo(padding, drawY);
-		ctx.lineTo(width - padding, drawY);
+		ctx.moveTo(padding, footerY - 8 * scale);
+		ctx.lineTo(width - padding, footerY - 8 * scale);
 		ctx.stroke();
-		drawY += 8 * scale; // Spacing after line
 
 		// Draw Footer Content
-		const footerY = drawY;
 		const qrSize = 64 * scale;
 		const qrX = width - padding - qrSize;
 		const authorY = footerY + 8 * scale;
