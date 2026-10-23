@@ -58,8 +58,30 @@ const showSupportBlock = showShare || showSponsorButton;
  * （「道、法、术：增长黑客方法论」+「增长方法论」= 书名出现两遍）。
  */
 const bookShareTitle = book.fullTitle || book.title;
-// 分享海报上的日期：书没有单独的出版日，取分享当天的日期
-const bookShareDate = new Date().toISOString().slice(0, 10);
+/**
+ * 分享海报上的日期：取这本书的发布月份，而不是分享当天。
+ * 海报上的日期是「这本书何时面世」的版面信息（参考出版物内页），
+ * 用当天的日期会随着每次分享变化，失去这个含义。
+ * 书没有单独的出版字段，取全书最早一篇文章的 published。
+ */
+const bookShareDate = (() => {
+	// published 是 Date 对象（zod 转过），要先 toISOString 才能截出 YYYY-MM-DD；
+	// 直接 String(date) 会得到 "Thu Jan 01 1970…"，被下面的正则全部过滤掉。
+	const iso = (v: unknown): string => {
+		if (v instanceof Date && !Number.isNaN(v.getTime())) {
+			return v.toISOString().slice(0, 10);
+		}
+		return String(v ?? "").slice(0, 10);
+	};
+	const dates = posts
+		.map((p) => iso(p.data.published))
+		.filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d))
+		.sort();
+	const earliest = dates[0];
+	// 1970 是占位数据（《见山》24 篇都是），宁可不显示日期，也不印一个错的年份
+	if (!earliest || earliest < "2020-01-01") return "";
+	return earliest;
+})();
 const byOrder = new Map(posts.map((post) => [post.data.seriesOrder ?? 0, post]));
 
 /**

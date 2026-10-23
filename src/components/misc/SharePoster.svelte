@@ -398,7 +398,28 @@ async function generatePoster() {
 			ctx.restore();
 		}
 
-		// Draw Header（不铺背景条、不显示日期；配色已在加载资源前定好）
+		// 日期：贴在封面左下角
+		// 之前删过（用户说「时间可以不要了」），但参考图把它当作版面元素放在封面底部，
+		// 这里按同样的位置放回来：小字、浅色、贴底，不抢书名。
+		if (coverImg && dateObj) {
+			ctx.save();
+			ctx.textAlign = "left";
+			ctx.textBaseline = "alphabetic";
+			ctx.font = `500 ${11 * scale}px 'Roboto', 'PingFang SC', sans-serif`;
+			ctx.fillStyle = "rgba(255, 255, 255, 0.72)";
+			ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+			ctx.shadowBlur = 8 * scale;
+			ctx.fillText(
+				`${dateObj.year}.${dateObj.month}`,
+				padding,
+				coverHeight - 16 * scale,
+			);
+			ctx.restore();
+			ctx.textBaseline = "top";
+			ctx.textAlign = "left";
+		}
+
+		// Draw Header（不铺背景条，配色已在加载资源前定好）
 		const headerHeight = (coverImg ? 44 : 64) * scale;
 		const headerCenterY = headerHeight / 2;
 
