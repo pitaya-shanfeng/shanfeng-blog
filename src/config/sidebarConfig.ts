@@ -141,15 +141,8 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			// 是否在非文章详情页隐藏
 			hideOnNonPostPage: true,
 		},
-	],
-
-	// 右侧边栏组件配置列表
-	// 文章页：左＝文章目录，右＝相关文章，两块都粘性吸顶
-	// 模板自带的 stats / siteInfo / calendar 已停用 —— 它们 showOnPostPage 为 false，
-	// 若保持启用会在**非文章页**冒出右栏（首页等也变成两列），而这里只想要文章页两列
-	rightComponents: [
 		{
-			// 组件类型：相关文章组件（文章页右侧；数据由文章页计算后透传）
+			// 组件类型：相关文章组件（与文章目录同栏，排在目录之后；数据由文章页计算后透传）
 			type: "relatedPosts",
 			// 是否启用该组件
 			enable: true,
@@ -167,6 +160,13 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 				},
 			},
 		},
+	],
+
+	// 右侧边栏组件配置列表
+	// 文章页：左＝文章目录，右＝相关文章，两块都粘性吸顶
+	// 模板自带的 stats / siteInfo / calendar 已停用 —— 它们 showOnPostPage 为 false，
+	// 若保持启用会在**非文章页**冒出右栏（首页等也变成两列），而这里只想要文章页两列
+	rightComponents: [
 		{
 			// 组件类型：站点统计组件（模板自带，已停用）
 			type: "stats",
