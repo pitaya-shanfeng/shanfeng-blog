@@ -536,8 +536,11 @@ async function generatePoster() {
 		ctx.stroke();
 
 		// Draw Footer Content
-		const qrSize = 64 * scale;
-		const qrX = width - padding - qrSize;
+		// 四段横排：头像 + 作者 ｜ 二维码 + 扫码阅读 ｜ 分享 / 复制链接
+		// 最后一段是海报上的引导文案（不可点），对齐下面真实存在的「复制链接」按钮
+		const shareBlockW = 62 * scale;
+		const qrSize = 58 * scale;
+		const qrX = width - padding - shareBlockW - 22 * scale - qrSize;
 		const authorY = footerY + 8 * scale;
 
 		// Left: Author
@@ -623,11 +626,22 @@ async function generatePoster() {
 		ctx.textBaseline = "top";
 		ctx.fillStyle = "#9ca3af";
 		ctx.font = `${10 * scale}px 'Roboto', sans-serif`;
+		// 宽度给到二维码的 1.9 倍：6 个汉字比二维码宽，按二维码宽度裁会被截成「扫码阅…」
 		ctx.fillText(
-			fitText(ctx, i18n(I18nKey.scanToRead), qrSize),
+			fitText(ctx, i18n(I18nKey.scanToRead), qrSize * 1.9),
 			qrX + qrSize / 2,
 			footerY + qrSize + 6 * scale,
 		);
+
+		// Right-most: 分享 / 复制链接（引导文案）
+		ctx.textAlign = "right";
+		ctx.textBaseline = "top";
+		ctx.fillStyle = themeColor;
+		ctx.font = `600 ${13 * scale}px 'Roboto', 'PingFang SC', sans-serif`;
+		ctx.fillText("分享", width - padding, footerY + 12 * scale);
+		ctx.fillStyle = "#9ca3af";
+		ctx.font = `${10 * scale}px 'Roboto', 'PingFang SC', sans-serif`;
+		ctx.fillText("复制链接", width - padding, footerY + 32 * scale);
 
 		// Finalize
 		posterImage = canvas.toDataURL("image/png");

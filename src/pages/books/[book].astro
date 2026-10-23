@@ -241,6 +241,10 @@ const indexOf = (anchor: string) =>
                   url={Astro.url.href}
                   siteTitle={siteConfig.title}
                   avatar={profileConfig.avatar ?? null}
+                  {/* 头像走侧栏作者卡里已经优化过的图片：
+                      profileConfig.avatar 是相对路径（assets/…），直接当 src 会 404，
+                      而 getDirectImageUrl 对非 / 开头的路径返回 null。 */}}
+                  avatarSelector=".profile-avatar-image img"
                 />
               )}
               {showSponsorButton && (
