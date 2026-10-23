@@ -14,7 +14,7 @@ import { booksConfig } from "./booksConfig";
 // 结构按内容体系组织：
 //
 //   主页
-//   ├── 写作 → 见山
+//   ├── 写作 → 见山 / 全部著作
 //   ├── 方法 → 产品思维 / 产品方法 / 产品架构 / 商业增长 / 组织协作
 //   ├── 拾遗 → 论文阅读 / 认知与设计
 //   └── 关于 → 个人介绍 / 版权声明 / 书签导航 / 联系合作
@@ -31,12 +31,17 @@ import { booksConfig } from "./booksConfig";
  * 内容分组：一级 = 内容来源，四栏互斥；二级 = 该栏的索引项。
  *
  *   首页
- *   ├── 写作   → 见山                        我写的书
+ *   ├── 写作   → 见山 / 全部著作             我写的书
  *   ├── 方法   → 产品思维 / 产品方法 / …     可复用的做法
  *   ├── 拾遗   → 论文阅读 / 认知与设计        外部的输入
  *   └── 关于   → 个人介绍 / 版权声明 / …      我是谁
  *
  * 只放**已经点得出内容**的项；还没内容的空位先撤掉，等有货再加回来。
+ *
+ * ⚠️ 母版的一条硬约束：`resolveNavMenuLinks` 里
+ * 「一级项只剩一个子项时，直接把子项提到一级」（父项名消失）。
+ * 所以每个一级项**至少要有两个子项**，否则一级名根本显示不出来。
+ * 「写作」因此配了「见山 + 全部著作」两项。
  *
  * 二级项一律**只按 tag 筛**（`/archive/?tag=xxx`），不按 category：
  * 站里文章的 category 是「著书立说 / 论文阅读 / 认知与设计」三种，
@@ -49,11 +54,17 @@ import { booksConfig } from "./booksConfig";
 const archiveByTag = (tag: string): string =>
 	`/archive/?${new URLSearchParams({ tag }).toString()}`;
 
+/** 归档页按分类筛选（用于「全部著作」——《见山》24 章的 category 就是「著书立说」） */
+const archiveByCategory = (category: string): string =>
+	`/archive/?${new URLSearchParams({ category }).toString()}`;
+
 /** 二级项：书名走书页，主题走标签筛选 */
 interface TopicRef {
 	name: string;
-	/** 标签（与标签筛选二选一） */
+	/** 标签（与分类筛选二选一） */
 	tag?: string;
+	/** 分类（与标签筛选二选一） */
+	category?: string;
 	/** 对应 booksConfig 里的书（直接进书页） */
 	book?: string;
 }
@@ -68,7 +79,11 @@ const CONTENT_GROUPS: ContentGroupConfig[] = [
 	{
 		name: "写作",
 		icon: "material-symbols:menu-book",
-		topics: [{ name: "见山", book: "见山" }],
+		topics: [
+			{ name: "见山", book: "见山" },
+			// 「全部著作」＝按文章列表看这一书（分类「著书立说」即这 24 章）
+			{ name: "全部著作", category: "著书立说" },
+		],
 	},
 	{
 		name: "方法",
@@ -105,7 +120,11 @@ const buildContentGroup = (group: ContentGroupConfig): NavBarLink => ({
 			: undefined;
 		return {
 			name: topic.name,
-			url: book ? `/books/${book.id}/` : archiveByTag(topic.tag ?? topic.name),
+			url: book
+				? `/books/${book.id}/`
+				: topic.category
+					? archiveByCategory(topic.category)
+					: archiveByTag(topic.tag ?? topic.name),
 		};
 	}),
 });
