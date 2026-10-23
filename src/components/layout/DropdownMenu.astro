@@ -162,13 +162,21 @@ const hasChildren = processedLink.children && processedLink.children.length > 0;
 		@apply absolute top-full left-0 pt-2 pointer-events-none z-50;
 	}
 
+	/*
+	 * 展开条件：悬停，或键盘焦点落在这里。
+	 *
+	 * 原来第二条件是 :focus-within —— 但鼠标点过「写作」之后焦点会留在它的按钮上，
+	 * 此后悬停「方法」时，「写作」的 :focus-within 仍然命中，两个下拉会同时打开。
+	 * 换成 :has(:focus-visible) 后，只有键盘（Tab）进来才用焦点展开，
+	 * 鼠标点击不再触发，两个菜单也就不会并存。
+	 */
 	.dropdown-container:hover .dropdown-menu,
-	.dropdown-container:focus-within .dropdown-menu {
+	.dropdown-container:has(:focus-visible) .dropdown-menu {
 		@apply pointer-events-auto;
 	}
 
 	.dropdown-container:hover .dropdown-arrow,
-	.dropdown-container:focus-within .dropdown-arrow {
+	.dropdown-container:has(:focus-visible) .dropdown-arrow {
 		@apply rotate-180;
 	}
 
