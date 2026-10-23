@@ -313,6 +313,29 @@ export async function getRelatedPosts(
 	currentPost: Pick<CollectionEntry<"posts">, "id" | "data">,
 	maxCount = 5,
 ): Promise<PostForList[]> {
+	/**
+	 * 合集内的文章：按篇章顺序推荐同书的其它章。
+	 *
+	 * 丛书章节被 getRawSortedPosts 排除在候选池之外（它给的是"列表视角"，过滤了丛书），
+	 * 所以按标签打分会把《见山》的章节推去跟散篇配对。合集本身就有确定的阅读顺序，
+	 * 比标签相似度更该作为第一优先级。
+	 */
+	const seriesName = (currentPost.data as { series?: string }).series;
+	if (seriesName) {
+		const siblings = await getSeriesPostsOf(seriesName);
+		const ordered = siblings
+			.filter((p) => p.id !== currentPost.id && !p.data.password)
+			.sort(
+				(a, b) =>
+					(a.data.seriesOrder ?? 0) - (b.data.seriesOrder ?? 0),
+			)
+			.slice(0, maxCount);
+		if (ordered.length > 0) {
+			return ordered.map((p) => ({ id: p.id, data: p.data }));
+		}
+	}
+
+	// 非合集文章：沿用标签 / 标题 / 时效的相似度打分
 	// 候选池用合并后的列表，HTML 文章同样能被推荐 / 参与推荐
 	const allPosts = await getRawSortedPosts();
 
