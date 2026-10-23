@@ -120,10 +120,10 @@ const hasChildren = processedLink.children && processedLink.children.length > 0;
 	}
 
 	/*
-	 * 当前页：主色字 + 下方 2px 短线（不再用实心块）。
+	 * 当前页：主色字 + 600 字重，不加装饰线、不用底色块。
 	 *
-	 * 方案 C「玻璃边」的选择：导航底色本身只有 54%，是一层半透玻璃，
-	 * 实心色块压上去会显得「贴纸贴在玻璃上」；改成字色 + 细线更贴材质。
+	 * 方案 C「玻璃边」的选择：导航底色只有 54%，是一层半透玻璃，
+	 * 实心色块压上去会显得「贴纸贴在玻璃上」；字色 + 字重是更贴材质的做法。
 	 * 颜色仍用 --btn-content：浅色下 rgb(0,135,96) 白底 4.53:1 达 AA。
 	 */
 	.dropdown-container.is-current .dropdown-trigger {
@@ -135,17 +135,7 @@ const hasChildren = processedLink.children && processedLink.children.length > 0;
 		background: transparent;
 		color: var(--primary);
 	}
-	/* 短线：左右各让 13px，落在文字下方 8px 处 */
-	.dropdown-container.is-current .dropdown-trigger::after {
-		content: "";
-		position: absolute;
-		left: 13px;
-		right: 13px;
-		bottom: 8px;
-		height: 2px;
-		border-radius: 2px;
-		background: currentColor;
-	}
+	/* 不加下划线：当前项只靠「主色 + 600 字重」两重差异区分 */
 
 	/* 图标与文字的间距交给 flex 的 gap-1.5，避免 margin 再叠一层（原来共 10px，偏散） */
 	.dropdown-trigger .navbar-icon {
