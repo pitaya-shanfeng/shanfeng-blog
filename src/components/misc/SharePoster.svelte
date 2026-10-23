@@ -401,14 +401,19 @@ async function generatePoster() {
 		// 日期：贴在封面左下角
 		// 之前删过（用户说「时间可以不要了」），但参考图把它当作版面元素放在封面底部，
 		// 这里按同样的位置放回来：小字、浅色、贴底，不抢书名。
-		if (coverImg && dateObj) {
+		if (dateObj) {
 			ctx.save();
 			ctx.textAlign = "left";
 			ctx.textBaseline = "alphabetic";
 			ctx.font = `500 ${11 * scale}px 'Roboto', 'PingFang SC', sans-serif`;
-			ctx.fillStyle = "rgba(255, 255, 255, 0.72)";
-			ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
-			ctx.shadowBlur = 8 * scale;
+			// 有封面时压在图上用浅色 + 投影；没封面时落在浅色装饰块上用深色
+			ctx.fillStyle = coverImg
+				? "rgba(255, 255, 255, 0.72)"
+				: "rgba(0, 0, 0, 0.45)";
+			if (coverImg) {
+				ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+				ctx.shadowBlur = 8 * scale;
+			}
 			ctx.fillText(
 				`${dateObj.year}.${dateObj.month}`,
 				padding,
