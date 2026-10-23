@@ -44,7 +44,8 @@ if (book.preface) {
 			badge: nextBadge(),
 			text: post.data.title,
 			href: getPostUrlBySlug(post.id),
-			depthLevel: 1,
+			// 目录是 01–23 的扁平清单，序 / 章 / 后记同级；用 1 会缩进 8.6px 导致整列错开
+			depthLevel: 2,
 			badgeKind: "index",
 			anchor: `ch-${post.id}`,
 		});
@@ -75,7 +76,8 @@ if (book.afterword) {
 			badge: nextBadge(),
 			text: post.data.title,
 			href: getPostUrlBySlug(post.id),
-			depthLevel: 1,
+			// 同序言：与章节同级，保证徽章与文字左右都对齐
+			depthLevel: 2,
 			badgeKind: "index",
 			anchor: `ch-${post.id}`,
 		});
