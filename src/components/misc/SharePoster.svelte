@@ -254,8 +254,8 @@ async function generatePoster() {
 		let currentY = 0;
 
 		// Cover
-		// 封面占高比：9:16 的海报竖向空间大，封面太小会让中段空一大块
-		const coverHeight = (coverImg ? 300 : 96) * scale;
+		// 封面占高比：3:4 下封面占约 40%，正文与底部刚好接上，不留大片空白
+		const coverHeight = (coverImg ? 220 : 76) * scale;
 		currentY += coverHeight;
 		currentY += padding; // Gap after cover
 
@@ -290,10 +290,12 @@ async function generatePoster() {
 		currentY += footerHeight;
 		currentY += 12 * scale; // Bottom padding
 
-		// 4. 画布高度锁定 9:16（宽:高）—— 适配手机竖屏分享
-		//    内容不足时以比例为准（底部留白由 footer 贴底吸收）；
+		// 4. 画布高度锁定 3:4（宽:高）
+		//    3:4 是竖版卡片的主流体型（小红书原生、微信/朋友圈预览接近），
+		//    而 9:16 的那截竖长空间内容撑不满，只能靠留白填，看着空。
+		//    内容不足时以比例为准（footer 贴底吸收底部空白）；
 		//    内容超高时以内容为准，避免裁掉信息。
-		const posterHeight = Math.round(width * (16 / 9));
+		const posterHeight = Math.round(width * (4 / 3));
 		canvas.height = Math.max(currentY, posterHeight);
 
 		// 5. Draw Content
@@ -436,7 +438,7 @@ async function generatePoster() {
 		// 9:16 下内容常常撑不满，若标题紧贴封面会让空白全堆在底部。
 		// 这里把富余空间的一部分让给标题上方，空白上下分散，看着更像排版而不是漏填。
 		const spareSpace = Math.max(0, canvas.height - currentY);
-		let drawY = coverHeight + padding + spareSpace * 0.32;
+		let drawY = coverHeight + padding + spareSpace * 0.2;
 
 		// Draw Title
 		ctx.textBaseline = "top";
