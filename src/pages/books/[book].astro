@@ -49,7 +49,12 @@ const coverTitle = book.title.split(/[:：]/)[0].trim() || book.title;
 const showShare = siteConfig.post.share !== false;
 const showSponsorButton = sponsorConfig.showButtonInPost;
 const showSupportBlock = showShare || showSponsorButton;
-const bookShareTitle = `${book.title}：${book.kicker}`;
+/**
+ * 海报标题取完整书名。
+ * 原来拼 `${title}：${kicker}` 会重复——kicker 有时就是副书名的一部分
+ * （「道、法、术：增长黑客方法论」+「增长方法论」= 书名出现两遍）。
+ */
+const bookShareTitle = book.fullTitle || book.title;
 // 分享海报上的日期：书没有单独的出版日，取分享当天的日期
 const bookShareDate = new Date().toISOString().slice(0, 10);
 const byOrder = new Map(posts.map((post) => [post.data.seriesOrder ?? 0, post]));

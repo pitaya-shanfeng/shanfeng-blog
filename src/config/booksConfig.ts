@@ -39,7 +39,13 @@ export interface BookPart {
 export interface BookConfig {
 	/** 路由用：/books/<id>/ */
 	id: string;
+	/** 内部标识与匹配用：文章的 series 字段要和它一致 */
 	title: string;
+	/**
+	 * 完整书名（含副书名），用于分享海报、分享文案这类「要写全名」的场合。
+	 * 不填则等于 title。书页 h1 仍用 title + kicker 分层显示，不读这个字段。
+	 */
+	fullTitle?: string;
 	/** 书名字上方那行小字 */
 	kicker: string;
 	/** 一句话定位（大字） */
@@ -57,6 +63,8 @@ export const booksConfig: BookConfig[] = [
 	{
 		id: "jianshan",
 		title: "见山",
+		// 分享海报等场合要写全名；title 保持「见山」以匹配文章 series
+		fullTitle: "见山：产品判断力",
 		kicker: "产品判断力",
 		lead: "在复杂之后，重新看见问题本身。",
 		description:
@@ -253,6 +261,7 @@ export const booksConfig: BookConfig[] = [
 	{
 		id: "zengzhang",
 		title: "道、法、术：增长黑客方法论",
+		// title 已是全名，fullTitle 可省；kicker 是类别标签，不再拼进书名
 		kicker: "增长方法论",
 		lead: "先判断这是不是真增长，再谈怎么增长。",
 		description:
