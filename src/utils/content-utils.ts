@@ -85,8 +85,18 @@ export type PostForList = {
 	id: string;
 	data: CollectionEntry<"posts">["data"];
 };
-export async function getSortedPostsList(): Promise<PostForList[]> {
-	const sortedFullPosts = await getRawSortedPosts();
+/**
+ * 列表页用的文章列表。
+ *
+ * @param includeSeries 是否包含丛书（《见山》24 章）。
+ *   默认 false —— 首页是「最新」流，丛书是长线内容，不混在一起；
+ *   归档页、分类栏、相关文章传 true，因为它们是**索引**，必须能查到全部内容，
+ *   否则按标签筛选《见山》的方法章会一条都筛不出来。
+ */
+export async function getSortedPostsList(includeSeries = false): Promise<PostForList[]> {
+	const sortedFullPosts = includeSeries
+		? await getMergedSortedPosts()
+		: await getRawSortedPosts();
 
 	// delete post.body
 	const sortedPostsList = sortedFullPosts.map((post) => ({

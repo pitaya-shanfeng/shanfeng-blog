@@ -12,7 +12,7 @@ interface Props {
 const { currentPostCategory } = Astro.props as Props;
 
 const categories = await getCategoryList();
-const totalPosts = (await getSortedPostsList()).length;
+const totalPosts = (await getSortedPostsList(true)).length;
 const homeUrl = url("/");
 const archiveUrl = url("/archive/");
 

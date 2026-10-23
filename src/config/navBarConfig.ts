@@ -14,11 +14,10 @@ import { booksConfig } from "./booksConfig";
 // 结构按内容体系组织：
 //
 //   主页
-//   ├── 著书立说 → 见山 / 增长三部曲
-//   ├── 方法沉淀 → 全部方法 / 数据分析 / 用户调研 / 需求分析 / 项目管控 / 团队管理
-//   ├── 实战复盘 → 全部复盘 / 项目复盘 / 调研报告 / 数据案例 / 原型设计
-//   ├── 学海拾遗 → 全部拾遗 / 转载精选 / 学习笔记 / 读书报告 / 行业报告
-//   └── 关于山风 → 个人介绍 / 版权声明 / 书签导航 / 联系合作
+//   ├── 写作 → 见山
+//   ├── 方法 → 产品思维 / 产品方法 / 产品架构 / 商业增长 / 组织协作
+//   ├── 拾遗 → 论文阅读 / 认知与设计
+//   └── 关于 → 个人介绍 / 版权声明 / 书签导航 / 联系合作
 //
 // 二级项为什么指向 /archive/?category=&tag= ：
 // 模板的分类没有独立页面（`getCategoryUrl` 同样指向归档页的筛选），而归档页的筛选支持
@@ -28,81 +27,92 @@ import { booksConfig } from "./booksConfig";
 //   数据分析 → /archive/?category=方法沉淀&tag=数据分析
 // 这也意味着发文章时：**category 填一级桶名，tags 里带上对应的二级主题名**，导航才对得上。
 
-/** 归档页筛选链接（category 与 tag 同时给出时取交集） */
-const archiveFilter = ({ category, tag }: { category?: string; tag?: string }): string => {
-	const params = new URLSearchParams();
-	if (category) params.set("category", category);
-	if (tag) params.set("tag", tag);
-	return `/archive/?${params.toString()}`;
-};
+/**
+ * 内容分组：一级 = 内容来源，四栏互斥；二级 = 该栏的索引项。
+ *
+ *   首页
+ *   ├── 写作   → 见山                        我写的书
+ *   ├── 方法   → 产品思维 / 产品方法 / …     可复用的做法
+ *   ├── 拾遗   → 论文阅读 / 认知与设计        外部的输入
+ *   └── 关于   → 个人介绍 / 版权声明 / …      我是谁
+ *
+ * 只放**已经点得出内容**的项；还没内容的空位先撤掉，等有货再加回来。
+ *
+ * 二级项一律**只按 tag 筛**（`/archive/?tag=xxx`），不按 category：
+ * 站里文章的 category 是「著书立说 / 论文阅读 / 认知与设计」三种，
+ * 与栏目不是一一对应；而 tag 才是稳定的索引维度。
+ * 归档页的 category 与 tag 同时给出时取交集（见 ArchivePanel 的 applyFilter），
+ * 这里只给 tag，避免筛出空列表。
+ */
 
-/** 内容分组：category = 一级桶，topics = 二级主题（存成标签） */
+/** 归档页按标签筛选（只给 tag，避开 category 的交集） */
+const archiveByTag = (tag: string): string =>
+	`/archive/?${new URLSearchParams({ tag }).toString()}`;
+
+/** 二级项：书名走书页，主题走标签筛选 */
+interface TopicRef {
+	name: string;
+	/** 标签（与标签筛选二选一） */
+	tag?: string;
+	/** 对应 booksConfig 里的书（直接进书页） */
+	book?: string;
+}
+
 interface ContentGroupConfig {
 	name: string;
 	icon: string;
-	category: string;
-	/** 「全部 XX」入口的文案；不填则不生成该入口（如「著书立说」下都是具体的书） */
-	allLabel?: string;
-	topics: string[];
+	topics: TopicRef[];
 }
 
 const CONTENT_GROUPS: ContentGroupConfig[] = [
 	{
-		name: "著书立说",
+		name: "写作",
 		icon: "material-symbols:menu-book",
-		category: "著书立说",
-		// 见山 / 增长三部曲 是「书」，先按标签落；将来若要做「篇 / 章」两层，
-		// 需要单独改 series 机制（模板的 series 只有一层扁平集合）
-		topics: ["见山", "增长三部曲"],
+		topics: [{ name: "见山", book: "见山" }],
 	},
 	{
-		name: "方法沉淀",
+		name: "方法",
 		icon: "material-symbols:handyman",
-		category: "方法沉淀",
-		allLabel: "全部方法",
-		topics: ["数据分析", "用户调研", "需求分析", "项目管控", "团队管理"],
+		topics: [
+			{ name: "产品思维", tag: "产品思维" },
+			{ name: "产品方法", tag: "产品方法" },
+			{ name: "产品架构", tag: "产品架构" },
+			{ name: "商业增长", tag: "商业增长" },
+			{ name: "组织协作", tag: "组织协作" },
+		],
 	},
+	// 「案例」栏先撤掉 —— 还没有实战类文章，挂着空栏目比没有更伤；
+	// 等真写了项目复盘一类的内容，再把这一栏加回来。
 	{
-		name: "实战复盘",
-		icon: "material-symbols:fact-check",
-		category: "实战复盘",
-		allLabel: "全部复盘",
-		topics: ["项目复盘", "调研报告", "数据案例", "原型设计"],
-	},
-	{
-		name: "学海拾遗",
+		name: "拾遗",
 		icon: "material-symbols:school",
-		category: "学海拾遗",
-		allLabel: "全部拾遗",
-		topics: ["转载精选", "学习笔记", "读书报告", "行业报告"],
+		topics: [
+			{ name: "论文阅读", tag: "论文阅读" },
+			{ name: "认知与设计", tag: "认知与设计" },
+		],
 	},
 ];
 
-/** 内容分组 → 导航项（一级 = 分组，二级 =「全部」+ 各主题） */
+/** 内容分组 → 导航项（一级 = 分组，二级 = 各索引项） */
 const buildContentGroup = (group: ContentGroupConfig): NavBarLink => ({
 	name: group.name,
 	url: "#",
 	icon: group.icon,
-	children: [
-		...(group.allLabel
-			? [{ name: group.allLabel, url: archiveFilter({ category: group.category }) }]
-			: []),
-		...group.topics.map((topic) => {
-			// 二级项如果对应一本已配置的书，直接进书页；否则退回归档筛选
-			const book = booksConfig.find((item) => item.title === topic);
-			return {
-				name: topic,
-				url: book
-					? `/books/${book.id}/`
-					: archiveFilter({ category: group.category, tag: topic }),
-			};
-		}),
-	],
+	children: group.topics.map((topic) => {
+		// 二级项如果对应一本已配置的书，直接进书页；否则按标签退回归档筛选
+		const book = topic.book
+			? booksConfig.find((item) => item.title === topic.book)
+			: undefined;
+		return {
+			name: topic.name,
+			url: book ? `/books/${book.id}/` : archiveByTag(topic.tag ?? topic.name),
+		};
+	}),
 });
 
 /** 关于分组 */
 const ABOUT_GROUP: NavBarLink = {
-	name: "关于山风",
+	name: "关于",
 	url: "#",
 	icon: "material-symbols:person",
 	children: [

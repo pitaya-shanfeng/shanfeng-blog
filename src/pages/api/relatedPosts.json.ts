@@ -10,7 +10,7 @@ import { getRelatedPosts, getSortedPostsList } from "@/utils/content-utils";
  */
 export async function GET(): Promise<Response> {
 	// 合并后的列表（含 HTML 文章），草稿过滤与排序规则与其他页面一致
-	const posts = await getSortedPostsList();
+	const posts = await getSortedPostsList(true);
 
 	const map: Record<string, string[]> = {};
 	for (const post of posts) {
