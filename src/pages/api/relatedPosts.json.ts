@@ -23,6 +23,12 @@ export async function GET(): Promise<Response> {
 	return new Response(JSON.stringify(map), {
 		headers: {
 			"Content-Type": "application/json; charset=utf-8",
+			// 开发期禁用缓存：改过推荐逻辑后，浏览器若沿用旧映射，
+			// 页面会一直显示上一次的结果（表现为「相关文章」空或没变化）。
+			// 线上由构建产物 + CDN 控制，这里给一个短缓存。
+			"Cache-Control": import.meta.env.DEV
+				? "no-store"
+				: "public, max-age=600",
 		},
 	});
 }
