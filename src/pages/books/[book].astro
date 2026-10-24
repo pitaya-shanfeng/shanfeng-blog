@@ -678,6 +678,16 @@ const indexOf = (anchor: string) =>
     line-height: 1.85;
     color: var(--content-meta);
   }
+  /*
+   * 篇首语 md 的开头带「# 第一篇 认知篇」和「## 先把…说清楚」两个标题
+   * （本地稿原文如此，不能删）。但卡片头部 .group-head / .gintro-lead
+   * 已经把这两行显示过了，正文里再出现一次就是重复。
+   * 只在渲染层隐藏这两个，md 保持与本地稿逐字一致。
+   */
+  .pi-body :global(h1),
+  .pi-body :global(h2:first-of-type) {
+    display: none;
+  }
   .pi-body :global(p) {
     margin: 0;
   }
