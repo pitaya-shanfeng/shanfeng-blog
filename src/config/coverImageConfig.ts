@@ -19,7 +19,8 @@ import type { CoverImageConfig } from "../types/coverImageConfig";
  */
 export const coverImageConfig: CoverImageConfig = {
 	// 是否在文章详情页显示封面图
-	enableInPost: true,
+	// 关掉：章的封面图只用于「卡片 + 分享海报」，不铺在正文顶部 —— 正文第一屏应该是标题和文字
+	enableInPost: false,
 
 	// 是否使用标题和元数据叠加在封面上的布局
 	enableInPostOverlay: false,
