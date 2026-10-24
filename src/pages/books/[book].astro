@@ -778,6 +778,8 @@ const indexOf = (anchor: string) =>
     right: 16px !important;
     transform: none;
     border-radius: 8px !important;
+    /* 章封面都是深色底，contain 留出的两侧边用同色系填充，看不出接缝 */
+    background: #0c1420;
   }
   /* 悬停：整体轻微放大 + 阴影。
      母版对内部 img 有 scale-110，但容器 overflow:hidden 把它裁掉了，
@@ -788,5 +790,16 @@ const indexOf = (anchor: string) =>
   }
   .book-part .book-list.list-mode .book-item .post-card-wrapper.has-cover .post-card-image img {
     border-radius: 8px !important;
+    /* 1.9:1 的图放进 1.57:1 的框，cover 会裁掉左右各约 8.8%，
+       而章封面的标题是贴在边上的（「为什么叫《见山》」的"为"离边不到 9%），
+       一裁就切字。改用 contain 完整显示，两侧余量由容器的深色底补上。 */
+    /* 关键：img 本身被 w-full h-full 写死成 320×204，contain 只在"元素盒子内"缩放内容，
+       结果内容仍按填满绘制。把 width/height 放开成按比例，图才会真的完整显示 */
+    width: auto !important;
+    height: auto !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    margin: auto;
+    display: block;
   }
 </style>
