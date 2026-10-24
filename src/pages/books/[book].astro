@@ -783,9 +783,11 @@ const indexOf = (anchor: string) =>
        上下自然留白。之前按"与文字块等高"撑满，反而喧宾夺主。 */
     top: 50% !important;
     bottom: auto !important;
-    /* 2:1 定死高度（319×160）。原图 1.9:1，左右各裁 2.6%，肉眼无感 */
-    height: 160px !important;
-    aspect-ratio: 2 / 1;
+    /* 16:9：319×179，占卡片高度 76%（原来 2:1 只有 68%，上下空得慌）。
+       原图 1.9:1 裁到 16:9 损失左右各 3%，标题仍完整。
+       以后新做章封面直接按 16:9 出图，这条以后就不用裁。 */
+    height: auto !important;
+    aspect-ratio: 16 / 9 !important;
     right: 16px !important;
     transform: translateY(-50%);
     border-radius: 8px !important;
@@ -800,11 +802,12 @@ const indexOf = (anchor: string) =>
   }
   .book-part .book-list.list-mode .book-item .post-card-wrapper.has-cover .post-card-image img {
     border-radius: 8px !important;
-    /* 1.9:1 的图放进 1.57:1 的框，cover 会裁掉左右各约 8.8%，
-       而章封面的标题是贴在边上的（「为什么叫《见山》」的"为"离边不到 9%），
-       一裁就切字。改用 contain 完整显示，两侧余量由容器的深色底补上。 */
-    /* 容器比例（36% 宽 × 等高）现在是 1.88:1，与原图 1.90:1 基本一致，
-       直接 cover 即可，既不裁字也不用补边 */
+    /* 绝对定位填满容器，容器高度才能被 aspect-ratio: 16/9 决定；
+       否则高度会被图片自身的 1.9:1 撑开，aspect-ratio 形同虚设 */
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
     object-fit: cover !important;
   }
 </style>
