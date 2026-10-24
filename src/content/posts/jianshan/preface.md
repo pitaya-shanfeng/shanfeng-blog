@@ -7,7 +7,7 @@ category: 写作
 series: 见山
 seriesOrder: 0
 slug: jianshan-preface
-banner: /assets/images/jianshan-banner-preface.webp
+image: /assets/images/jianshan-preface-cover.webp
 ---
 
 # 序言
