@@ -369,7 +369,10 @@ async function generatePoster() {
 				sWidth = coverImg.width;
 				sHeight = sWidth / targetRatio;
 				sx = 0;
-				sy = (coverImg.height - sHeight) / 2;
+				// 竖向裁切的重心：海报封面区是 1.7:1 的横框，竖版书封（3:4）放进去
+				// 上下要各裁掉约 55%，居中裁会把书名拦腰切断。
+				// 往下偏一点（0.62）让书名与作者名落进可见区，代价是顶部少露一点。
+				sy = (coverImg.height - sHeight) * 0.62;
 			}
 			ctx.drawImage(
 				coverImg,
