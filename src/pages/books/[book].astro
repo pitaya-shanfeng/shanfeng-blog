@@ -783,7 +783,8 @@ const indexOf = (anchor: string) =>
        上下自然留白。之前按"与文字块等高"撑满，反而喧宾夺主。 */
     top: 50% !important;
     bottom: auto !important;
-    height: auto !important;
+    /* 2:1 定死高度（319×160）。原图 1.9:1，左右各裁 2.6%，肉眼无感 */
+    height: 160px !important;
     aspect-ratio: 2 / 1;
     right: 16px !important;
     transform: translateY(-50%);
