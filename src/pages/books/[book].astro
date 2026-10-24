@@ -757,24 +757,34 @@ const indexOf = (anchor: string) =>
     scroll-margin-top: 5rem;
   }
 
-  @media (max-width: 639px) {
-    .book-page {
-      gap: 16px;
-    }
-    .scroll {
-      padding: 20px;
-    }
-    .cover {
-      max-width: 168px;
-    }
-    .main h1 {
-      font-size: var(--fs-h2);
-    }
-    .claim {
-      font-size: var(--fs-body);
-    }
-    .gsub {
-      display: none;
-    }
+</style>
+
+<style is:global>
+  /*
+   * 书页章卡右侧的封面图：缩到 176×88 并固定 2:1。
+   *
+   * 用 is:global + 0,6,0 的特异性 —— 目标元素在 PostCard 子组件里，而它自己的规则
+   * :global(.list-mode) .has-cover .post-card-image 会因为 scoped 属性实际达到 0,5,0。
+   * 0,4,0 的写法一条都命中不了，必须先把前缀堆到 0,6,0 才压得住。
+   * 选择器限定在 .book-list.list-mode 内，不影响首页/归档的卡片。
+   */
+  .book-part .book-list.list-mode .book-item .post-card-wrapper.has-cover .post-card-image {
+    width: 176px !important;
+    height: 88px !important;
+    top: 50% !important;
+    bottom: auto !important;
+    right: 16px !important;
+    transform: translateY(-50%);
+    border-radius: 8px !important;
+  }
+  /* 悬停：整体轻微放大 + 阴影。
+     母版对内部 img 有 scale-110，但容器 overflow:hidden 把它裁掉了，
+     视觉上看不出放大；这里让容器自己放大 4%，才有「浮起来」的感觉 */
+  .book-part .book-list.list-mode .book-item .post-card-wrapper.has-cover .post-card-image:hover {
+    transform: translateY(-50%) scale(1.04) !important;
+    box-shadow: 0 8px 22px rgb(0 0 0 / 0.16);
+  }
+  .book-part .book-list.list-mode .book-item .post-card-wrapper.has-cover .post-card-image img {
+    border-radius: 8px !important;
   }
 </style>
