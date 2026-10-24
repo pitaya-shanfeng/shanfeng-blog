@@ -774,7 +774,8 @@ const indexOf = (anchor: string) =>
     top: 16px !important;
     bottom: 16px !important;
     height: auto !important;
-    width: 320px !important;
+    /* 宽度交给 PostCard 的 --coverWidth（现在是 36%），这里不要再写死像素，
+       否则一改比例就对不上 */
     right: 16px !important;
     transform: none;
     border-radius: 8px !important;
@@ -793,13 +794,8 @@ const indexOf = (anchor: string) =>
     /* 1.9:1 的图放进 1.57:1 的框，cover 会裁掉左右各约 8.8%，
        而章封面的标题是贴在边上的（「为什么叫《见山》」的"为"离边不到 9%），
        一裁就切字。改用 contain 完整显示，两侧余量由容器的深色底补上。 */
-    /* 关键：img 本身被 w-full h-full 写死成 320×204，contain 只在"元素盒子内"缩放内容，
-       结果内容仍按填满绘制。把 width/height 放开成按比例，图才会真的完整显示 */
-    width: auto !important;
-    height: auto !important;
-    max-width: 100% !important;
-    max-height: 100% !important;
-    margin: auto;
-    display: block;
+    /* 容器比例（36% 宽 × 等高）现在是 1.88:1，与原图 1.90:1 基本一致，
+       直接 cover 即可，既不裁字也不用补边 */
+    object-fit: cover !important;
   }
 </style>

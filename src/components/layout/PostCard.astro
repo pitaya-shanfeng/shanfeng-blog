@@ -67,7 +67,10 @@ const hasCover =
 	processedImage !== null &&
 	processedImage !== "";
 
-const coverWidth = "30%";
+// 封面占卡片宽度的比例。30% 在书页里只有 320px，图被压成 1.57:1 后
+// 和章封面的 1.9:1 差太多，只能靠裁切或补边硬凑；36% 时图 383×204 ≈ 1.88:1，
+// 与原图几乎一致，不用裁也不用补边。
+const coverWidth = "36%";
 
 // 网格模式封面是否撑满卡片贴边，false 则按卡片内容区的内边距内缩（间距随断点变化）
 const gridCoverFullWidth =
