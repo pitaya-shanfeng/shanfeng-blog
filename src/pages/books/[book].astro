@@ -769,19 +769,21 @@ const indexOf = (anchor: string) =>
    * 选择器限定在 .book-list.list-mode 内，不影响首页/归档的卡片。
    */
   .book-part .book-list.list-mode .book-item .post-card-wrapper.has-cover .post-card-image {
-    width: 288px !important;
-    height: 144px !important;
-    top: 50% !important;
-    bottom: auto !important;
+    /* 上下各留 16px，高度由 top/bottom 撑开 —— 这样图的高度就和左侧文字块对齐了，
+       不再是一个固定 144px 的小方块 */
+    top: 16px !important;
+    bottom: 16px !important;
+    height: auto !important;
+    width: 320px !important;
     right: 16px !important;
-    transform: translateY(-50%);
+    transform: none;
     border-radius: 8px !important;
   }
   /* 悬停：整体轻微放大 + 阴影。
      母版对内部 img 有 scale-110，但容器 overflow:hidden 把它裁掉了，
      视觉上看不出放大；这里让容器自己放大 4%，才有「浮起来」的感觉 */
   .book-part .book-list.list-mode .book-item .post-card-wrapper.has-cover .post-card-image:hover {
-    transform: translateY(-50%) scale(1.04) !important;
+    transform: scale(1.02) !important;
     box-shadow: 0 8px 22px rgb(0 0 0 / 0.16);
   }
   .book-part .book-list.list-mode .book-item .post-card-wrapper.has-cover .post-card-image img {
