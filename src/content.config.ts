@@ -73,6 +73,8 @@ const postSchema = z.object({
 	draft: z.boolean().optional().default(false),
 	description: z.string().optional().default(""),
 	image: z.string().optional().default(""),
+	/** 文章自己的 banner 壁纸（覆盖全局）。给某章单独做一张横幅时用 */
+	banner: z.string().optional().default(""),
 	tags: z.array(z.string()).optional().default([]),
 	category: z.string().optional().nullable().default(""),
 	lang: z.string().optional().default(""),

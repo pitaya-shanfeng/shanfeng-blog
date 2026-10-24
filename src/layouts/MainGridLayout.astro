@@ -56,9 +56,12 @@ interface Props {
 	hideSidebar?: boolean;
 	/** banner 只当背景，不显示页面标题（书页把书名放回正文里） */
 	hideBannerTitle?: boolean;
+	/** 文章自己的 banner 图（frontmatter 的 banner），给了就覆盖全局壁纸 */
+	postBanner?: string;
 }
 
-const backgroundImages = getBackgroundImages();
+// 文章级 banner：文章页传了 postBanner 就用它，否则回落全局壁纸
+const backgroundImages = getBackgroundImages(Astro.props.postBanner);
 
 const {
 	title,

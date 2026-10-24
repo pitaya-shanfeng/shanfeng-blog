@@ -262,6 +262,7 @@ const seriesData = await getSeriesPosts(entry);
   headings={headings}
   encrypted={!!entry.data.password}
   bannerPostMeta={bannerPostMeta}
+  postBanner={(entry.data as { banner?: string }).banner || undefined}
   relatedPostList={relatedPosts}
 >
     <!--
