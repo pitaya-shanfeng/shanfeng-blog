@@ -67,8 +67,9 @@ const hasCover =
 	processedImage !== null &&
 	processedImage !== "";
 
-// 封面占卡片宽度的比例
-const coverWidth = "30%";
+// 封面占卡片宽度的比例。35% 时图约 372×196，占卡片高度 83%，
+// 与参照的原博客列表（封面约占卡片高 4/5）一致
+const coverWidth = "35%";
 
 // 网格模式封面是否撑满卡片贴边，false 则按卡片内容区的内边距内缩（间距随断点变化）
 const gridCoverFullWidth =
