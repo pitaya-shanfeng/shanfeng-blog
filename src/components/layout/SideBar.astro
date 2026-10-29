@@ -4,6 +4,7 @@ import Advertisement from "@/components/widget/Advertisement.astro";
 import Announcement from "@/components/widget/Announcement.astro";
 import Calendar from "@/components/widget/Calendar.astro";
 import BookProgress from "@/components/widget/BookProgress.astro";
+import HotnewsIndex from "@/components/widget/HotnewsIndex.astro";
 import Categories from "@/components/widget/Categories.astro";
 import Dynamic from "@/components/widget/Dynamic.astro";
 import Music from "@/components/widget/Music.astro";
@@ -29,6 +30,8 @@ interface Props {
 	side?: "left" | "right" | "bottom";
 	/** 相关文章数据，由文章页计算后传入（侧栏只负责展示） */
 	relatedPostList?: PostForList[];
+	/** 当前文章分类。相关文章组件按配置里的 excludeCategories 决定要不要显形 */
+	postCategory?: string;
 }
 
 // 侧边栏位置常量
@@ -63,6 +66,7 @@ const componentMap = {
 	dynamic: Dynamic,
 	relatedPosts: RelatedPosts,
 	bookProgress: BookProgress,
+	hotnewsIndex: HotnewsIndex,
 };
 
 // 获取侧边栏位置
@@ -169,9 +173,23 @@ const getComponentProps = (
 
 	// 特殊处理相关文章组件（数据由文章页计算后透传，侧栏不做推荐逻辑）
 	if (config.type === "relatedPosts") {
+		// 有些分类不该出「相关文章」（行业动态：每天一期，推荐列表会稀释「最新」）。
+		// 分类名单写在 sidebarConfig 的 specificConfig 里，这里只做判定与初始显隐——
+		// 初始就带 hidden，避免首屏先画出列表再消失。
+		const excludeCategories =
+			config.specificConfig?.relatedPosts?.excludeCategories ?? [];
+		const currentCategory = (Astro.props.postCategory || "").trim();
+		const hideHere =
+			!!currentCategory && excludeCategories.includes(currentCategory);
 		return {
 			...baseProps,
+			// 不能复用 Tailwind 的 hidden：grid-layout-utils 会按 showOnPostPage /
+			// hideOnNonPostPage 对 .hidden 做 add/remove，文章页上正好 remove，
+			// 会把这里的隐藏一起撤掉。所以另开一个专用类。
+			class: `${baseProps.class}${hideHere ? " widget-hide-by-category" : ""}`,
 			posts: Astro.props.relatedPostList || [],
+			// 名单要传到 DOM：客户端在 swup 切页后自己再判一次
+			excludeCategories,
 		};
 	}
 

@@ -1,4 +1,5 @@
 ---
+import type { MarkdownHeading } from "astro";
 import { render } from "astro:content";
 import Comment from "@components/comment/index.astro";
 import Markdown from "@components/common/Markdown.astro";
@@ -34,6 +35,8 @@ import SponsorModal from "@/components/misc/SponsorModal.astro";
 import { coverImageConfig } from "@/config/coverImageConfig";
 import { licenseConfig } from "@/config/licenseConfig";
 import { profileConfig } from "@/config/profileConfig";
+import { bannerForCategory } from "@/config/sectionBanners";
+import pdfTocs from "@/constants/pdf-tocs.json";
 import { siteConfig } from "@/config/siteConfig";
 import { sponsorConfig } from "@/config/sponsorConfig";
 import { formatDateToYYYYMMDD } from "@/utils/date-utils";
@@ -84,6 +87,20 @@ const headings = rawHeadings.filter((h) => {
 	if (/footnote/i.test(slug)) return false;
 	return true;
 });
+
+/**
+ * 文档流文章（PDF 按页转 webp 内嵌）正文没有标题，侧栏目录会是空的。
+ * 这类文章的目录由 scripts/gen_pdf_toc.py 从 PDF 字体层级提取，按 slug 登记在
+ * constants/pdf-tocs.json；这里只做兜底，正常 md 文章的目录不受影响。
+ * 页图锚点（id / data-toc-heading / data-subtitles）由 remark-document-page-anchors
+ * 在编译期打上，两端同源。
+ */
+if (headings.length === 0) {
+	const pdfToc = (pdfTocs as Record<string, MarkdownHeading[]>)[entry.id];
+	if (pdfToc?.length) {
+		headings.push(...pdfToc);
+	}
+}
 
 const { remarkPluginFrontmatter } = await render(entry);
 
@@ -255,6 +272,17 @@ const posterDate =
 		? ""
 		: formatDateToYYYYMMDD(entry.data.published);
 const seriesData = await getSeriesPosts(entry);
+
+/**
+ * 详情页顶部 banner：frontmatter 的 banner 优先，没写就按分类取栏目兜底图。
+ * 不加这一层的话，栏目文章只要漏写一篇，那篇就回落到全局壁纸，
+ * 夹在同类文章中间明显是断的。
+ * 分类按 `/` 拆段匹配，所以 `拾遗/学习笔记` 这种路径式写法同样命中。
+ */
+const postBanner =
+	(entry.data as { banner?: string }).banner ||
+	bannerForCategory(entry.data.category) ||
+	undefined;
 ---
 
 <MainGridLayout
@@ -271,7 +299,7 @@ const seriesData = await getSeriesPosts(entry);
   headings={headings}
   encrypted={!!entry.data.password}
   bannerPostMeta={bannerPostMeta}
-  postBanner={(entry.data as { banner?: string }).banner || undefined}
+  postBanner={postBanner}
   relatedPostList={relatedPosts}
 >
     <!--
@@ -314,11 +342,14 @@ const seriesData = await getSeriesPosts(entry);
   />
   {/* data-post-page：供客户端判断当前是否为文章详情页（分类栏在文章页隐藏）。
       data-post-id：供侧栏「相关文章」在站内跳转后识别当前文章、重建列表。
+      data-post-category：侧栏是 swup 静态容器，切页不重渲染，所以当前文章的分类
+      必须由这层（在 swup 容器内、每次替换）给出，相关文章才能判断该不该显形。
       id="post-card-wrapper"：沉浸阅读模式用它锁定「只留文章卡片」。 */}
   <div
     id="post-card-wrapper"
     data-post-page="true"
     data-post-id={entry.id}
+    data-post-category={entry.data.category || ""}
     class="flex w-full rounded-(--radius-large) overflow-hidden relative mb-4"
   >
     <div

@@ -14,6 +14,12 @@ export let pubDate: string;
 export let coverImage: string | null = null;
 export let coverImageSelector: string | null = null;
 /**
+ * 竖版封面在海报横框里的裁切重心（0 = 顶部，1 = 底部）。
+ * 每本书只能取一个值：书名在底部的（见山）用 0.72，在顶部的（增长黑客）用 0，
+ * 由 booksConfig 的 posterFocus 传进来。文章页封面是 16:9，走裁宽度那条分支，不受影响。
+ */
+export let coverFocus = 0.72;
+/**
  * 封面区内嵌的书名 / 副书名 / 金句。
  * 只有「书」的分享海报会传：传了就在封面图上压一层遮罩并排书名，
  * 不传（文章页）保持原来的「图 + 白底文字」结构。
@@ -29,6 +35,12 @@ export let avatarSelector: string | null = null;
 let showModal = false;
 let posterImage: string | null = null;
 let generating = false;
+/**
+ * 生成失败要有个落点。
+ * 原来 catch 里只 console.error，界面继续转圈 —— 看着像「一直在生成」，
+ * 实际早就失败了（例如 dev 下 qrcode 依赖重新预构建导致的 504）。
+ */
+let posterError = false;
 let themeColor = "#558e88"; // Default blue
 // 站点名称与 Logo 的颜色不再固定：页眉压在封面图上时用白，落在白底时用深。
 // 见 generatePoster 里的 headerTextColor。
@@ -225,6 +237,7 @@ async function generatePoster() {
 	if (posterImage) return;
 
 	generating = true;
+	posterError = false;
 	try {
 		// 按需加载 qrcode（仅生成分享海报时才需要），避免拖慢每篇博文的首屏 JS
 		const { default: QRCode } = await import("qrcode");
@@ -370,9 +383,11 @@ async function generatePoster() {
 				sHeight = sWidth / targetRatio;
 				sx = 0;
 				// 竖向裁切的重心：海报封面区是 1.7:1 的横框，竖版书封（3:4）放进去
-				// 上下要各裁掉约 55%，居中裁会把书名拦腰切断。
-				// 往下偏一点（0.62）让书名与作者名落进可见区，代价是顶部少露一点。
-				sy = (coverImg.height - sHeight) * 0.62;
+				// 上下要各裁掉一半多，居中裁会把书名拦腰切断。
+				// 重心由 coverFocus 给（见山的书名在底部取 0.72，增长黑客的在顶部取 0），
+				// 统一取一个值必然有一本书名被裁掉。
+				// 这段只在封面比画框更高（竖版）时生效，横版封面走的是裁宽度那条分支。
+				sy = (coverImg.height - sHeight) * coverFocus;
 			}
 			ctx.drawImage(
 				coverImg,
@@ -587,6 +602,7 @@ async function generatePoster() {
 	} catch (error) {
 		console.error("Failed to generate poster:", error);
 		generating = false;
+		posterError = true;
 	}
 }
 
@@ -646,6 +662,16 @@ function portal(node: HTMLElement) {
       <div class="p-6 flex justify-center bg-gray-50 dark:bg-gray-900 min-h-[200px] items-center">
         {#if posterImage}
           <img src={posterImage} alt="Poster" class="max-w-full h-auto shadow-lg rounded-lg" />
+        {:else if posterError}
+          <div class="flex flex-col items-center gap-3">
+            <span class="text-sm text-gray-500">{i18n(I18nKey.posterFailed)}</span>
+            <button
+              class="px-4 py-2 text-sm rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
+              on:click={generatePoster}
+            >
+              {i18n(I18nKey.retry)}
+            </button>
+          </div>
         {:else}
            <div class="flex flex-col items-center gap-3">
              <div class="w-8 h-8 border-2 border-gray-200 rounded-full animate-spin" style="border-top-color: {themeColor}"></div>

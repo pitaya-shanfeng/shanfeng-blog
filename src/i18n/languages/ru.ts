@@ -496,6 +496,8 @@ export const ru: Translation = {
 
 	[Key.shareArticle]: "Поделиться",
 	[Key.generatingPoster]: "Создание постера...",
+	[Key.posterFailed]: "Не удалось создать постер",
+	[Key.retry]: "Повторить",
 	[Key.copied]: "Скопировано",
 	[Key.copyLink]: "Копировать ссылку",
 	[Key.savePoster]: "Сохранить постер",

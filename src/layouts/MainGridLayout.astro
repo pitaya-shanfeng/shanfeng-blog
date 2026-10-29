@@ -1,4 +1,5 @@
 ---
+import "@/styles/banner-layout.css";
 import Live2DWidget from "@components/features/Live2DWidget.astro";
 
 import SpineModel from "@components/features/SpineModel.astro";
@@ -118,7 +119,7 @@ const {
 <slot slot="head" name="head" />
 <HeaderTopRow navbarMode={navbarMode} navbarWidthFull={navbarWidthFull} />
 
-<WallpaperSection state={banner} backgroundImages={backgroundImages} title={title} bannerPostMeta={bannerPostMeta} />
+<WallpaperSection customBanner={!!Astro.props.postBanner} state={banner} backgroundImages={backgroundImages} title={title} bannerPostMeta={bannerPostMeta} />
 
 <!-- Main content -->
 <div id="content-panel" class="content-panel absolute w-full z-30 pointer-events-none">
@@ -143,6 +144,7 @@ const {
                 headings={headings}
                 encrypted={encrypted}
                 relatedPostList={relatedPostList}
+                postCategory={postCategory}
             />
                     
             {/* 主内容区包装器 - 包含静态栏位和swup容器，作为单个grid item */}
@@ -172,7 +174,13 @@ const {
                 {/* 移动端底部组件：<768px 时 #main-grid 是 display:block，必须排在页脚之前 */}
                 {sidebarLayoutConfig.mobileBottomComponents && sidebarLayoutConfig.mobileBottomComponents.length > 0 && (
                     <div id="mobile-bottom-sidebar" class="block md:hidden mt-4">
-                        <SideBar side="bottom" headings={headings} encrypted={encrypted} relatedPostList={relatedPostList}></SideBar>
+                        <SideBar
+                            side="bottom"
+                            headings={headings}
+                            encrypted={encrypted}
+                            relatedPostList={relatedPostList}
+                            postCategory={postCategory}
+                        />
                     </div>
                 )}
             </div>
@@ -188,6 +196,7 @@ const {
                 headings={headings}
                 encrypted={encrypted}
                 relatedPostList={relatedPostList}
+                postCategory={postCategory}
             />
 
         </div>

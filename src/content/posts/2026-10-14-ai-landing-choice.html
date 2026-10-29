@@ -1,0 +1,465 @@
+---
+title: AI 需求怎么选落地方式
+published: 2026-10-14
+description: 过完四道闸门、确认值得做之后，选型到底在选什么：提示词、RAG、Agent、微调，按什么顺序加。
+category: 拾遗/学习笔记
+tags:
+  - 选型
+  - RAG
+  - Agent
+  - 微调
+  - 认知与设计
+draft: false
+---
+
+<!DOCTYPE html>
+<html data-page-node-id="Gd4AFk3fPfbIX6ui92MFPG" lang="zh-CN">
+<head data-page-node-id="6xp5w7pGUC7uKMAD49wv9J">
+<script data-page-node-id="bC98RW08IUMwFoIF173SXt" src="/page/page_comm/inject.js"></script>
+<meta data-page-node-id="uemZ9mSTA2cBd6QuNltULA" charset="UTF-8">
+<meta data-page-node-id="kABLMnhAuGHyvCHqkoWIPq" content="width=device-width, initial-scale=1.0" name="viewport">
+<title data-page-node-id="kkS619MzUinSnZ8SkcHFTU" data-pnid-children="EqeKmHhAyGv6mcc3pBcLZI">认知与设计 · AI 需求怎么选落地方式</title>
+<style data-page-node-id="hINHmUX8hLznSlbEw19q4Z" data-pnid-children="yxOFUyHaOTFwzQeFq5kBy1">
+  :root{
+    --ink:#1f2937; --sub:#6b7f76; --line:#e3ede7; --accent:#10b981; --accent2:#0e7490;
+    --accent-soft:#ecfdf5; --key-bg:#f2fbf6; --quote:#065f46; --page:#f3f7f5;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; padding:36px 16px 64px; background:var(--page); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    font-size:17px; line-height:1.92; -webkit-font-smoothing:antialiased;
+  }
+  .reader{max-width:760px; margin:0 auto; background:#fff; border-radius:14px; overflow:hidden;
+    box-shadow:0 1px 3px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06);}
+  /* 封面标题区 */
+  .hero{position:relative; background:linear-gradient(135deg,#0e7490 0%,#0d9488 52%,#34d399 100%); color:#fff; padding:56px 40px 44px;}
+  .hero .kicker{font-size:13px; letter-spacing:2px; color:rgba(255,255,255,.82); margin:0 0 12px; font-weight:600;}
+  .hero h1{font-size:30px; line-height:1.4; margin:0; font-weight:700; letter-spacing:.5px; color:#fff;}
+  .hero .tagline{margin-top:16px; font-size:15px; color:rgba(255,255,255,.92); line-height:1.7;
+    border-top:1px solid rgba(255,255,255,.28); padding-top:14px;}
+  /* 品牌标识（右上角） */
+  .brand{position:absolute; top:22px; right:30px; display:flex; align-items:center; gap:9px;}
+  .brand img{width:36px; height:36px; mix-blend-mode:screen; border-radius:8px;}
+  .brand span{font-size:12.5px; font-weight:600; color:#fff; letter-spacing:1px;}
+  .inner{padding:0 40px 8px;}
+  /* 导读 */
+  .tldr{background:linear-gradient(135deg,#ecfdf5,#f0fdfa); border-radius:10px; padding:20px 22px; margin:32px 0 6px;
+    border:1px solid #d7f3e7;}
+  .tldr h4{margin:0 0 10px; color:var(--accent); font-size:13px; letter-spacing:1.5px; font-weight:700;}
+  .tldr ol{margin:0; padding-left:20px;}
+  .tldr li{margin:7px 0; font-size:15px; line-height:1.7;}
+  /* 章节 */
+  h2.sec{display:flex; align-items:baseline; gap:12px; font-size:21px; font-weight:700;
+    margin:46px 0 14px; padding:0;}
+  h2.sec .num{color:#fff; font-size:13px; font-weight:700; letter-spacing:1px;
+    background:linear-gradient(135deg,var(--accent2),var(--accent)); padding:3px 10px; border-radius:6px; flex:none;}
+  h3{font-size:17px; margin:26px 0 10px; color:#0f766e;}
+  p{margin:12px 0;}
+  /* 高亮卡 */
+  .key{background:var(--key-bg); border-left:4px solid var(--accent); border-radius:0 8px 8px 0;
+    padding:15px 18px; margin:16px 0; font-size:16px; line-height:1.8;}
+  /* 引用 */
+  .pull{font-size:19px; line-height:1.75; color:var(--quote); border-left:4px solid var(--accent2);
+    padding:4px 0 4px 20px; margin:24px 0; font-weight:500;}
+  /* 表格 */
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:14.5px; line-height:1.7;}
+  th{background:#f4faf7; font-weight:600; text-align:left; padding:10px 12px; border:1px solid var(--line); color:#334155;}
+  td{padding:10px 12px; border:1px solid var(--line); vertical-align:top;}
+  td:first-child, th:first-child{white-space:nowrap;}
+  table.judge td:nth-child(2), table.judge th:nth-child(2){white-space:nowrap; text-align:center; font-weight:700;}
+  tr:nth-child(even) td{background:#fafdfb;}
+  /* 工作流图示 */
+  .diagram{background:linear-gradient(135deg,#f0fdfa,#ecfdf5); border:1px solid #d7f3e7; border-radius:12px; padding:16px 16px 14px; margin:18px 0;}
+  .diagram .cap{text-align:center; font-size:14.5px; color:#0f766e; font-weight:700; margin:2px 0 12px; letter-spacing:.5px;}
+  .diagram svg{display:block; width:100%; height:auto; max-width:680px; margin:0 auto;}
+  .diagram .wf-desc{font-size:14px; color:#334155; line-height:1.75; max-width:620px; margin:4px auto 14px; text-align:left;}
+  .diagram .note{font-size:13.5px; color:#475569; line-height:1.65; margin:12px auto 2px; max-width:620px;}
+  /* 来源一行（弱化） */
+  .src{font-size:12.5px; color:#94a3b8; margin:10px auto 0; max-width:620px;}
+  /* 页脚 */
+  .foot{margin:40px 40px 0; padding-top:16px; border-top:1px solid var(--line);
+    color:var(--sub); font-size:13px; text-align:center;}
+  @media (max-width:640px){
+    body{padding:0; font-size:16px;}
+    .reader{border-radius:0; box-shadow:none;}
+    .hero{padding:40px 22px 34px;}
+    .hero h1{font-size:25px;}
+    .inner{padding:0 22px;}
+    .brand{top:16px; right:18px;}
+    .brand img{width:30px; height:30px;}
+    .foot{margin:32px 22px 0;}
+  }
+</style>
+</head>
+<body data-page-node-id="Bzmd4JRFw0cSimFK4avrce">
+<div data-page-node-id="Ac0KFR56MGvziJxZevZEzu" class="reader">
+
+  <div data-page-node-id="FNxHjAWr96idVl6Iz3wV4W" class="hero">
+    <div data-page-node-id="Nci9gWBhlLwK5sgzhLIXcR" class="brand"><img data-page-node-id="99JSBeyPjA2S32ayYxzY8j" alt="logo" src="data:image/png;base64,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"><span data-page-node-id="cPViLqGd6jA7VE78BgyJu1"><!--pnid:IbsP4Dh25rzBDXHBxdvQf7-->做个靠谱的产品经理</span></div>
+    <div data-page-node-id="bofnuV57x1rYeDKYWVI7V7" class="kicker"><!--pnid:p2lUlQspAiUpHpKo0f8N0A-->认知与设计</div>
+    <h1 data-page-node-id="b6Pl27DvGO4llyBNigYrN1"><!--pnid:PrFxCJvFjLPTr3725ZCLby-->AI 需求怎么选落地方式</h1>
+    <div data-page-node-id="CtgP9nq73eU6uPiENLxEer" class="tagline"><!--pnid:b5ZQ2dmy3RbXXZELz84p6r-->过完四道闸门、确认值得做之后，选型到底在选什么：提示词、RAG、Agent、微调，按什么顺序加。</div>
+  </div>
+
+  <div data-page-node-id="fy1ul3njj8iOODvQlC8RTV" class="inner">
+
+    <div data-page-node-id="MlH3pgwi045S2VKoCxVHh2" class="tldr">
+      <ol data-page-node-id="GBNqUkYBzYZPjdr8AHnVxX">
+        <li data-page-node-id="ZciYa46zloHIArqhgKwvSm"><!--pnid:Blzu4oMAv4gSzzZ4I4qzwi-->落地选型从最简单的开始：最便宜够用优先，上一层只在下一层不够时才上。</li>
+        <li data-page-node-id="wZfA6pgztPGLU26B3KpHEs"><!--pnid:jEonKS2weOARkocUrBkdyi-->Anthropic 的五种工作流（提示链 Prompt chaining、路由 Routing、并行 Parallelization、编排-工人 Orchestrator-workers、评估-迭代 Evaluator-optimizer）都是「预定义控制流」，仍属工作流层，不是自主 Agent。</li>
+        <li data-page-node-id="tPuL8P8n0zxLixoRyeBD8S"><!--pnid:9ySevjigPiqlaATBe3uljb-->商详页 = Routing + Prompt chaining 的组合，不是自主 Agent，恰好印证「够用即停」。</li>
+      </ol>
+    </div>
+
+    <h2 data-page-node-id="Ge0tQU3dJodSWYhPeQQIMR" class="sec"><span data-page-node-id="hZpwHS3IQwBjSbwRq3YLq5" class="num"><!--pnid:qwwIHn35DetK24TM4YKqFN-->01</span><!--pnid:GtrjAKUXlFDqWGrgHAqIYl-->AI 落地方式的全景图：五种工作流与选型判断</h2>
+
+    <h3 data-page-node-id="zXSTQZ5glTDUKUEjs51brv"><!--pnid:XGd8cZB7KPOcApbDY1AvRP-->核心论点</h3>
+    <p data-page-node-id="qIEO4C6PuNxdeq24gUAqD4"><!--pnid:wUWOu1E1VLg2WRA093NpjL-->核心原则一句话：「找到最简单的可行方案，只在确实需要时才增加复杂度。」 对许多应用，靠检索加上下文示例优化单次 LLM 调用就已经足够；Agent 系统是用延迟与成本换取任务表现，要先想清楚这笔权衡划不划算。工作流对定义清晰的任务提供<b data-page-node-id="u5K8P6lXSRmYfBncjUoQYa"><!--pnid:KXPKa2lB1MFDNrBVHM8isS-->可预测性与一致性</b><!--pnid:PHGToLR6b0v1rlOFe5UmHr-->，Agent 则在需要灵活性与模型自主决策时更合适。</p>
+
+    <div data-page-node-id="xVYAuRHnwP9Wiu6hIuDTZm" class="key"><!--pnid:xpx91YTEVDLHyuqITO0bew-->关键分界：<b data-page-node-id="B7BkAzrEspy0KldjDJ75gV"><!--pnid:CWeguXxXlXflGHeb3vMHqF-->工作流</b><!--pnid:B6D6fyw0eKLTxETPkag7CZ--> = LLM 与工具通过<b data-page-node-id="D5PSwkilddJqVnu3dYUXid"><!--pnid:TAFIZT3J9EmmlCIHoV2mxa-->预定义代码路径</b><!--pnid:weRPp9h96tjB4tRQsM70ty-->编排（控制流写在代码里）；<b data-page-node-id="wDMDSDaOLpgz1GHEMrQ131"><!--pnid:UAHJCqLKHdJPycwQrpWCB0-->Agent</b><!--pnid:dr1Haj4Tp2kNPTQCkCJXlt--> = LLM <b data-page-node-id="HXvR43Ls2V3R7omWsA5Hew"><!--pnid:XRybtNGu9Bin1fkRmYFjIu-->动态主导</b><!--pnid:1y3ewcJCU7XprOkfxxCMJY-->自己的流程与工具使用（控制流在模型手里）。这个分界是后面五种模式都还属于「工作流层」的根本原因。</div>
+
+    <h3 data-page-node-id="MqfnOIgRo6ayk6jvHliKe1"><!--pnid:o1hluD47DNSUWLd1OjNYAj-->五种工作流</h3>
+
+      <p data-page-node-id="y3cBpV1El3TOVE9mhc819E"><!--pnid:UqXGz21GUev4CyYdjN8yWI-->五种工作流逐个过，每个都把定义、适用场景、例子和控制流图放在一起（绿色块＝LLM 节点，灰块＝输入输出，箭头＝数据流向）：</p>
+
+      <div data-page-node-id="X9DrNHazXcBsGoUFAZLEaw" class="diagram">
+        <div data-page-node-id="m5BLJdlAbgKp9KLWcdNgfS" class="cap"><!--pnid:juv9O1gRuc7etCFeWXpRoO-->图 1 · Prompt chaining 提示链：任务拆成固定步骤，上一步输出喂给下一步</div>
+        <p data-page-node-id="ipZN7wAnIUgMs3bViam7Cw" class="wf-desc"><b data-page-node-id="RQNo6jl2cNUyeB3yF4rSQU"><!--pnid:8sKr8NkdwMCg29iEljt1H0-->怎么做</b><!--pnid:O9BJtQyl6ebkvtWOJFc8Q8-->：把任务拆成顺序步骤，每步 LLM 调用处理上一步的输出。<b data-page-node-id="jR5Xi054U8uDKXaUReIoOP"><!--pnid:etkZ0OK1M47ttQP6w9qRQj-->何时用</b><!--pnid:TqX8Avid1dJ4aat38BDz5X-->：任务能干净地拆成固定子任务，用分步降低单步难度、换准确率。典型例子：写大纲 → 检查是否符合标准 → 按大纲写文档；生成营销文案 → 翻译。</p>
+        <svg data-page-node-id="hyfMn53sfxbj3g4oO7VWGJ" aria-label="Prompt chaining 提示链示意" role="img" viewBox="0 0 680 230">
+          <defs data-page-node-id="OQqEf8tFiC04COZMf8TbrP">
+            <linearGradient data-page-node-id="ssOKheReJsZeKAFMraM9gZ" id="g1" x1="0" x2="1" y1="0" y2="1"><stop data-page-node-id="COeW5Y41hBPieUEfJTthCH" offset="0" stop-color="#0d9488"/><stop data-page-node-id="UtSsDZcuDIsYuH0u1iXzpV" offset="1" stop-color="#10b981"/></linearGradient>
+            <marker data-page-node-id="iLG54uHXsh5x5kv2qjTKgy" id="a1" markerHeight="9" markerWidth="9" orient="auto" refX="7" refY="3"><path data-page-node-id="XoTf8yez92AWv0vyuKgD5g" d="M0,0 L7,3 L0,6 Z" fill="#64748b"/></marker>
+          </defs>
+          <rect data-page-node-id="oq4BBBaLhB4OZDNU0Ad3Qe" fill="#e3ede7" height="38" rx="7" stroke="#cbd5e1" width="70" x="15" y="96"/><text data-page-node-id="Fc4RBU6IPxGqTZlRTdGt2h" fill="#334155" font-size="13" text-anchor="middle" x="50" y="119"><!--pnid:Rbg8PljTrvLE2MNuzidDZg-->输入</text>
+          <line data-page-node-id="1buMugBPFrXQs7Q5VINbq2" marker-end="url(#a1)" stroke="#64748b" stroke-width="2" x1="85" x2="106" y1="115" y2="115"/>
+          <rect data-page-node-id="TTyeJ3kS748XioMV3QqpOv" fill="url(#g1)" height="50" rx="10" width="86" x="106" y="90"/><text data-page-node-id="uPV24NUCxBSL2A83Dwuofg" fill="#fff" font-size="15" font-weight="600" text-anchor="middle" x="149" y="119"><!--pnid:Kt5WbyPrPiAaZ4Wq6eINIs-->LLM ①</text>
+          <line data-page-node-id="puUiIihS0hNvkNXwp5nqIf" marker-end="url(#a1)" stroke="#64748b" stroke-width="2" x1="192" x2="215" y1="115" y2="115"/>
+          <rect data-page-node-id="TstNVqnRWPfo3AQ4EecFD6" fill="#e3ede7" height="38" rx="7" stroke="#cbd5e1" width="74" x="215" y="96"/><text data-page-node-id="XgztpiIFoJwq6jasIQdR3H" fill="#334155" font-size="11.5" text-anchor="middle" x="252" y="119"><!--pnid:K628LpGg9BtEMOHxHJi35g-->步骤①结果</text>
+          <line data-page-node-id="6JE2z8PdbWWzXtl97c3mjX" marker-end="url(#a1)" stroke="#64748b" stroke-width="2" x1="289" x2="312" y1="115" y2="115"/>
+          <rect data-page-node-id="cLGr0s8AmjK7ATMBAnvtAa" fill="url(#g1)" height="50" rx="10" width="86" x="312" y="90"/><text data-page-node-id="3VPk4bUyx1vQpTtkZ57G6S" fill="#fff" font-size="15" font-weight="600" text-anchor="middle" x="355" y="119"><!--pnid:2ql67bpMos0Gw3z2SfeBTd-->LLM ②</text>
+          <line data-page-node-id="rFmuAJi9VAm2uzfG8uszJj" marker-end="url(#a1)" stroke="#64748b" stroke-width="2" x1="398" x2="421" y1="115" y2="115"/>
+          <rect data-page-node-id="4BlBfBjI5VsGSDka5WNafp" fill="#e3ede7" height="38" rx="7" stroke="#cbd5e1" width="74" x="421" y="96"/><text data-page-node-id="Lep6z22PwKJD7tATtc48dx" fill="#334155" font-size="11.5" text-anchor="middle" x="458" y="119"><!--pnid:aO6V2ELloGhNAmWPIotWzA-->步骤②结果</text>
+          <line data-page-node-id="fwy5JsChDL0uxZJ9Yttm5m" marker-end="url(#a1)" stroke="#64748b" stroke-width="2" x1="495" x2="518" y1="115" y2="115"/>
+          <rect data-page-node-id="2fQEU6PKe1UbZXne9L9IxU" fill="url(#g1)" height="50" rx="10" width="86" x="518" y="90"/><text data-page-node-id="N1aGlsiIrO5vw4vNnR6xdR" fill="#fff" font-size="15" font-weight="600" text-anchor="middle" x="561" y="119"><!--pnid:1zeWelGORzAj1f1j1CM8cx-->LLM ③</text>
+          <line data-page-node-id="QrcWPF134jfSPQ6B7AwX8W" marker-end="url(#a1)" stroke="#64748b" stroke-width="2" x1="604" x2="625" y1="115" y2="115"/>
+          <rect data-page-node-id="rWBi5krW81AMD7ujC1vtme" fill="#e3ede7" height="38" rx="7" stroke="#cbd5e1" width="55" x="625" y="96"/><text data-page-node-id="fZZ6HUnSVvkTSOXxEyRDYM" fill="#334155" font-size="13" text-anchor="middle" x="652" y="119"><!--pnid:2MLsEW8NBTHMifdo5rW3jn-->输出</text>
+        </svg>
+        <div data-page-node-id="PrxRxjeJf7LOLfdJdyVE4V" class="note"><!--pnid:jnOelsxXjj1oqw6bnEgxEA-->每一步是一个 LLM 调用，可在中间步骤加程序化「关卡」检查上一步是否满足标准，不满足就停下或重来。</div>
+      </div>
+
+      <div data-page-node-id="tcukDDWTBq8Ds7W6LDhibg" class="diagram">
+        <div data-page-node-id="wwDSoVkCVanFDKVq5ZVuqj" class="cap"><!--pnid:VZyLDFlwZDkld8DkX0yfmy-->图 2 · Routing 路由：先分类，再按类别把输入导到不同分支</div>
+        <p data-page-node-id="PrfupF2stH5l6QGJpP4d88" class="wf-desc"><b data-page-node-id="NXYjSXR0gs96x372QpQsvf"><!--pnid:cAYtDnYHysKnTlbNXjywXS-->怎么做</b><!--pnid:PaqQZr3bDQY4hnUIoLgFka-->：对输入分类，再导向专门的后续任务、提示或工具。<b data-page-node-id="RZlQ4ObKrqgxDrtarX0FYP"><!--pnid:plrim7kelxGFbmrgVuGYJD-->何时用</b><!--pnid:7cOCyOtc4GKW6bRPMbSugI-->：有不同类别需分别处理，且分类能准确完成（LLM 或传统分类器都行）。典型例子：客服问题分流到普通 / 退款 / 技术支持三条流程；简单问题给小模型、难题给强模型。</p>
+        <svg data-page-node-id="Ldu0RDyAXqBK5UtzapuY0z" aria-label="Routing 路由示意" role="img" viewBox="0 0 560 230">
+          <defs data-page-node-id="WtIAcfKzb0fJatFM5yT1TR">
+            <linearGradient data-page-node-id="WF7k05m3S20gRIuR8FDsEy" id="g2" x1="0" x2="1" y1="0" y2="1"><stop data-page-node-id="FP8nyiIap0jtMJAaNxOHXX" offset="0" stop-color="#0d9488"/><stop data-page-node-id="lr2E1Eu4rp0gS9Dvs7INtW" offset="1" stop-color="#10b981"/></linearGradient>
+            <marker data-page-node-id="p6v4MMKiRXoOAmywwi77pO" id="a2" markerHeight="9" markerWidth="9" orient="auto" refX="7" refY="3"><path data-page-node-id="zq68mZdZ0xXAw3Nl7EF3h2" d="M0,0 L7,3 L0,6 Z" fill="#64748b"/></marker>
+          </defs>
+          <rect data-page-node-id="KHhBYF0ICcFZjlr9VO4Dd3" fill="#e3ede7" height="38" rx="7" stroke="#cbd5e1" width="66" x="15" y="100"/><text data-page-node-id="ZMMMdsGXZ2o4i2S419PdLM" fill="#334155" font-size="13" text-anchor="middle" x="48" y="123"><!--pnid:E7X8YdMSaV64qfS7irdQvA-->输入</text>
+          <line data-page-node-id="rOcn4MWcIi94j8yuXDwf2k" marker-end="url(#a2)" stroke="#64748b" stroke-width="2" x1="81" x2="104" y1="119" y2="119"/>
+          <rect data-page-node-id="hdiRkAICpE2mlHxG21scrW" fill="url(#g2)" height="52" rx="10" width="100" x="104" y="94"/><text data-page-node-id="8V8YYMfH7RksqVVFeIETF7" fill="#fff" font-size="14" font-weight="600" text-anchor="middle" x="154" y="125"><!--pnid:Btmv4fWWpnxjP9ZOX0E8xY-->分类 LLM</text>
+          <line data-page-node-id="vnl3G2HFbFxsKgLuMoPH7P" marker-end="url(#a2)" stroke="#64748b" stroke-width="2" x1="204" x2="298" y1="119" y2="47"/>
+          <line data-page-node-id="w0cmX3aT93JwoxGOk6QaZj" marker-end="url(#a2)" stroke="#64748b" stroke-width="2" x1="204" x2="298" y1="119" y2="119"/>
+          <line data-page-node-id="l0Cd7NGgiFUvhvZmEO1vvz" marker-end="url(#a2)" stroke="#64748b" stroke-width="2" x1="204" x2="298" y1="119" y2="191"/>
+          <rect data-page-node-id="Z3IxU0dbsHw3hM1Eiibum2" fill="#f2fbf6" height="42" rx="8" stroke="#94d3b6" width="200" x="298" y="26"/><text data-page-node-id="Q2Yror782Xi8ZR73V4ebbZ" fill="#0f766e" font-size="13.5" font-weight="600" x="310" y="47"><!--pnid:pYybRrjf3DlTWXjwlMxwY3-->路径 A</text><text data-page-node-id="1j1UzpP6DJUwMmsxDo9Xxd" fill="#64748b" font-size="11.5" x="310" y="63"><!--pnid:2crgq36CzcYTZViCkMJbVF-->简单问题 → 小模型</text>
+          <rect data-page-node-id="7hsddB9miEazIKqF3pQ5Vw" fill="#f2fbf6" height="42" rx="8" stroke="#94d3b6" width="200" x="298" y="98"/><text data-page-node-id="p5HzA3vWRP9x1ZRRNUobvt" fill="#0f766e" font-size="13.5" font-weight="600" x="310" y="119"><!--pnid:u5LEF3Ifw4IDyMmm2ewRx9-->路径 B</text><text data-page-node-id="Hy9xUeNG5jAE0QxOk7I9E3" fill="#64748b" font-size="11.5" x="310" y="135"><!--pnid:384temPd1T1Jh1v2q6WR0v-->退款 → 专用流程</text>
+          <rect data-page-node-id="L77z09UJiKKvri997LGNKx" fill="#f2fbf6" height="42" rx="8" stroke="#94d3b6" width="200" x="298" y="170"/><text data-page-node-id="gmPhKmUxByqN2RhcOpUHoE" fill="#0f766e" font-size="13.5" font-weight="600" x="310" y="191"><!--pnid:Y9TRyEouFpw0H4drsXxvGy-->路径 C</text><text data-page-node-id="JS6ZiIHcBRHVhFsbTndItP" fill="#64748b" font-size="11.5" x="310" y="207"><!--pnid:8WkzH38uYBOUiOknVyxjPB-->技术支持 → 专家</text>
+        </svg>
+        <div data-page-node-id="zbJbERK4kHcgmYKRZA080C" class="note"><!--pnid:ucdktrDo53pNSSgbsm5BZH-->分支数量随业务而定（客服分流、按难度派给不同模型都是同一套路），关键在「先判类、后分发」。</div>
+      </div>
+
+      <div data-page-node-id="Ny6SpgMVrzBjB7x9gAOrZU" class="diagram">
+        <div data-page-node-id="kKaLhnEPZn8nFSChafxC7W" class="cap"><!--pnid:vsJGvgo7CFQKq35Q7qabVe-->图 3 · Parallelization 并行：同一输入同时跑多个 LLM，结果程序化聚合</div>
+        <p data-page-node-id="wUVW7iHSfrs5CzdzZ4yY1s" class="wf-desc"><b data-page-node-id="RmbFi0EfpU615MteFPFrVd"><!--pnid:3ouPvrpFu48zIBBF0267ux-->怎么做</b><!--pnid:RqNZfGz8UE6pHHCUmImFOr-->：多个 LLM 同时工作，输出由程序聚合。<b data-page-node-id="o2af8cR2TJiTUdpp59ZZRk"><!--pnid:9Zqz6NBr18wzqr60uCk3Wa-->何时用</b><!--pnid:tryxR9mRWbYDVlt03Ezkqq-->：子任务可并行提速，或要多视角、多次尝试提升置信度。典型例子：一个实例处理查询、另一个筛查不当内容（护栏）；多 prompt 审代码漏洞投票表决。</p>
+        <svg data-page-node-id="oR3Mlwtwwq4F1nDB2W6MIh" aria-label="Parallelization 并行示意" role="img" viewBox="0 0 640 230">
+          <defs data-page-node-id="N8RZ7kCz37OTvTc7hjUj1U">
+            <linearGradient data-page-node-id="f0dKu8ki4gKaXVy9p9djxM" id="g3" x1="0" x2="1" y1="0" y2="1"><stop data-page-node-id="06k3PGIKLD9SxH7eChKbuQ" offset="0" stop-color="#0d9488"/><stop data-page-node-id="V8RGNKtLZoQHDm5730KgWp" offset="1" stop-color="#10b981"/></linearGradient>
+            <marker data-page-node-id="O7gaMuPK4bjqtPm0mUffD1" id="a3" markerHeight="9" markerWidth="9" orient="auto" refX="7" refY="3"><path data-page-node-id="BYiKrINPmjyyfyZfJvlEQo" d="M0,0 L7,3 L0,6 Z" fill="#64748b"/></marker>
+          </defs>
+          <rect data-page-node-id="7ZH9lhgrtgZSYoPsTnLVjD" fill="#e3ede7" height="38" rx="7" stroke="#cbd5e1" width="66" x="15" y="106"/><text data-page-node-id="QvIB8H4I6kub4ivKI48Dk4" fill="#334155" font-size="13" text-anchor="middle" x="48" y="129"><!--pnid:FXSq0JElY8wFqigdOlwV16-->输入</text>
+          <line data-page-node-id="v7hs9Ua0euVn21rqig8WGf" marker-end="url(#a3)" stroke="#64748b" stroke-width="2" x1="81" x2="128" y1="125" y2="64"/>
+          <line data-page-node-id="K2ir7jN0JJnCrZ1p1p2yg1" marker-end="url(#a3)" stroke="#64748b" stroke-width="2" x1="81" x2="128" y1="125" y2="186"/>
+          <rect data-page-node-id="mahQWs69hJCOHfQQtYWNHk" fill="url(#g3)" height="48" rx="10" width="86" x="128" y="40"/><text data-page-node-id="wFDYgl6f8HHviFgDv3hG4d" fill="#fff" font-size="14" font-weight="600" text-anchor="middle" x="171" y="69"><!--pnid:kpwIYbPW3r407ZDMbInxoE-->LLM ①</text>
+          <rect data-page-node-id="PxnrqL0j8hWW30T0NaicfX" fill="url(#g3)" height="48" rx="10" width="86" x="128" y="162"/><text data-page-node-id="z4ghwbhVtt5nJTtE8UmQH6" fill="#fff" font-size="14" font-weight="600" text-anchor="middle" x="171" y="191"><!--pnid:6TJ2r2o6eAKNYG5G97p8tP-->LLM ②</text>
+          <line data-page-node-id="iQ7WWk0JRuBvK0Nx4LxBSS" marker-end="url(#a3)" stroke="#64748b" stroke-width="2" x1="214" x2="328" y1="64" y2="125"/>
+          <line data-page-node-id="fbMcGHhaMRqgcIFknw2bdo" marker-end="url(#a3)" stroke="#64748b" stroke-width="2" x1="214" x2="328" y1="186" y2="125"/>
+          <rect data-page-node-id="9v5OKPf638jXAGYzyMZXCd" fill="#0e7490" height="56" rx="10" width="120" x="328" y="98"/><text data-page-node-id="kYjQD7Hmdwaw1QZCZQ3Xnb" fill="#fff" font-size="14" font-weight="600" text-anchor="middle" x="388" y="124"><!--pnid:uF4cdZHpPKYFnHqIgfdMeh-->聚合 / 汇总</text><text data-page-node-id="Sv364Wjet5J2Qp7xJ7hqu8" fill="#cffafe" font-size="10.5" text-anchor="middle" x="388" y="142"><!--pnid:M54H1uWWeQWSGbPTYbdodo-->并行结果统一</text>
+          <line data-page-node-id="Mik4ho9obJ7aNwq3fQtSr4" marker-end="url(#a3)" stroke="#64748b" stroke-width="2" x1="448" x2="538" y1="126" y2="126"/>
+          <rect data-page-node-id="1a2txkFPi4v35dXKpsLM9o" fill="#e3ede7" height="38" rx="7" stroke="#cbd5e1" width="82" x="538" y="106"/><text data-page-node-id="j9MtwoGhSbOhdfTCXgWa03" fill="#334155" font-size="13" text-anchor="middle" x="579" y="129"><!--pnid:8qoI6GQcEK6ztLbMk0nd4F-->输出</text>
+        </svg>
+        <div data-page-node-id="1gQAtXSQevASbIQMWAiKgH" class="note"><!--pnid:5A5KXuyKUWkiQ3ydZHyBW4-->两种变体：分段（Sectioning，拆成互不依赖的子任务并行提速）与投票表决（Voting，同一任务多次跑取多样输出再表决）。</div>
+      </div>
+
+      <div data-page-node-id="FcYValjyRgJxWP0JoTxW4E" class="diagram">
+        <div data-page-node-id="FOYfbejvk8c7HZwtkZFshY" class="cap"><!--pnid:kF9KDq5fulNwb8SWeuhyyp-->图 4 · Orchestrator-workers 编排-工人：中央 LLM 动态拆任务、派给工人、再综合</div>
+        <p data-page-node-id="ddJ2o3W3fXWwGnh5mVo6pQ" class="wf-desc"><b data-page-node-id="SEqVF2dYHU1RjVJKqjhaud"><!--pnid:UZ7EVUpKxLKPG6w2CjMdOe-->怎么做</b><!--pnid:THv2U4iOlto7yXcdqhJRQ5-->：中央 LLM 动态拆任务、委派给 worker LLM、综合结果。<b data-page-node-id="p2KFWyrCLryklxiGzK84vq"><!--pnid:ZVRDc4gftUauW9TOuUrNKI-->何时用</b><!--pnid:mGDppQ2YfjK1jUp4xGqBYM-->：无法预知子任务的复杂任务，子任务要按输入现场决定。典型例子：改动多个文件的编码产品；多源信息搜集分析。</p>
+        <svg data-page-node-id="JsRkdhSn738T7s0a5yTc7N" aria-label="Orchestrator-workers 编排工人示意" role="img" viewBox="0 0 680 230">
+          <defs data-page-node-id="YDa5qTduk2GM11Zr8mjPNM">
+            <linearGradient data-page-node-id="WBhwZ87dBkU0s320kWNqu9" id="g4" x1="0" x2="1" y1="0" y2="1"><stop data-page-node-id="v1ibL4eDEeJku03PJvEogj" offset="0" stop-color="#0d9488"/><stop data-page-node-id="k0KWXTz438cNCBCq1Bfnup" offset="1" stop-color="#10b981"/></linearGradient>
+            <marker data-page-node-id="liZLuggeGkdw8fuCawrI3I" id="a4" markerHeight="9" markerWidth="9" orient="auto" refX="7" refY="3"><path data-page-node-id="DseN4EOmkVtapmccevR9CF" d="M0,0 L7,3 L0,6 Z" fill="#64748b"/></marker>
+          </defs>
+          <rect data-page-node-id="fu8UMwbfLk9GSGUdVaqMEb" fill="#e3ede7" height="38" rx="7" stroke="#cbd5e1" width="64" x="15" y="106"/><text data-page-node-id="8q7cCuICEbsdjTw9DLef3M" fill="#334155" font-size="13" text-anchor="middle" x="47" y="129"><!--pnid:l7lk7ZIAQUlvIGZxuyW8PU-->输入</text>
+          <line data-page-node-id="Jh3GMKvnGtjMxoqY94SerY" marker-end="url(#a4)" stroke="#64748b" stroke-width="2" x1="79" x2="100" y1="125" y2="125"/>
+          <rect data-page-node-id="oDxNjze6c1tjeA7MkaQzCv" fill="url(#g4)" height="58" rx="10" width="108" x="100" y="86"/><text data-page-node-id="rfFWVd9CHvpbfdSNfBjb8F" fill="#fff" font-size="13" font-weight="600" text-anchor="middle" x="154" y="112"><!--pnid:77vuQyhL5FpbkWQuOAghzi-->Orchestrator</text><text data-page-node-id="9CtuuLdLK7FvfpPMx5UkdB" fill="#cffafe" font-size="11" text-anchor="middle" x="154" y="131"><!--pnid:qQMNohJTzo4jt8CQdcXPKj-->中央 LLM</text>
+          <line data-page-node-id="LV8DbS6HSJ4AUyeLUJMwbx" marker-end="url(#a4)" stroke="#64748b" stroke-width="2" x1="208" x2="298" y1="115" y2="41"/>
+          <line data-page-node-id="qa5th4uqhcltCZX6T5XqV8" marker-end="url(#a4)" stroke="#64748b" stroke-width="2" x1="208" x2="298" y1="115" y2="115"/>
+          <line data-page-node-id="jAa7Rxk1h3sD8lPISMcLwn" marker-end="url(#a4)" stroke="#64748b" stroke-width="2" x1="208" x2="298" y1="115" y2="189"/>
+          <rect data-page-node-id="qjK7NQgmntxjVXlMNxsNF5" fill="#f2fbf6" height="42" rx="8" stroke="#94d3b6" width="122" x="298" y="20"/><text data-page-node-id="BRaGDTWTLALpylVkpIOfuh" fill="#0f766e" font-size="13.5" font-weight="600" x="309" y="46"><!--pnid:BHrOzwhxf0NU7gSzNt7LhL-->Worker ①</text>
+          <rect data-page-node-id="9wnGW0AKTosNG5XWh60svO" fill="#f2fbf6" height="42" rx="8" stroke="#94d3b6" width="122" x="298" y="94"/><text data-page-node-id="G8tYywgmnH60E40ZTtyGpE" fill="#0f766e" font-size="13.5" font-weight="600" x="309" y="120"><!--pnid:rCkQpwqaxqpYehzjfZ7oHr-->Worker ②</text>
+          <rect data-page-node-id="qp7FN28wjc7KPELWac2pVw" fill="#f2fbf6" height="42" rx="8" stroke="#94d3b6" width="122" x="298" y="168"/><text data-page-node-id="ySnGwiPIlAmEholAO5QUSL" fill="#0f766e" font-size="13.5" font-weight="600" x="309" y="194"><!--pnid:kmNLW6mAXbI8xa9pEpcvBv-->Worker ③</text>
+          <line data-page-node-id="hEoaloHHpYgnQfJ2H8enRr" marker-end="url(#a4)" stroke="#64748b" stroke-width="2" x1="420" x2="488" y1="41" y2="121"/>
+          <line data-page-node-id="YWdsbohhOEqBjNqq3Z9YPe" marker-end="url(#a4)" stroke="#64748b" stroke-width="2" x1="420" x2="488" y1="115" y2="121"/>
+          <line data-page-node-id="t8i9VL7zES3LS8RfGqFeFM" marker-end="url(#a4)" stroke="#64748b" stroke-width="2" x1="420" x2="488" y1="189" y2="121"/>
+          <rect data-page-node-id="4mcorhjOD0ZR8CtDgsoBGV" fill="#0e7490" height="50" rx="10" width="100" x="488" y="96"/><text data-page-node-id="5YatyACFKcv4smz1dqZwDy" fill="#fff" font-size="13.5" font-weight="600" text-anchor="middle" x="538" y="125"><!--pnid:Hdbs1muOtLVfgjCAMBdsDY-->综合结果</text>
+          <line data-page-node-id="D6IKHoiB01okcIJwDiFxSQ" marker-end="url(#a4)" stroke="#64748b" stroke-width="2" x1="588" x2="600" y1="121" y2="121"/>
+          <rect data-page-node-id="ug6kMHwN0UOt1vzzIY9Dsj" fill="#e3ede7" height="38" rx="7" stroke="#cbd5e1" width="70" x="600" y="102"/><text data-page-node-id="khypWY4KSw17znIISxq4rB" fill="#334155" font-size="13" text-anchor="middle" x="635" y="125"><!--pnid:7uZBepzDefUJeISngwO63q-->输出</text>
+        </svg>
+        <div data-page-node-id="N9GKwDx9oDLX9McgUZWfjS" class="note"><!--pnid:kDQqdikPu8RC9cgVa7lwTF-->与 Routing 的区别：子任务不是预先写死，而是由 Orchestrator 按输入现场决定要不要派、派几个。</div>
+      </div>
+
+      <div data-page-node-id="y7FkvNMy0GVRwDZeR9AwsX" class="diagram">
+        <div data-page-node-id="oXdfABl6g6wm5vqWjOGQZS" class="cap"><!--pnid:NaPtJfbkiIbUujOw26O5Kt-->图 5 · Evaluator-optimizer 评估-迭代：生成与评估互搏，直到达标</div>
+        <p data-page-node-id="hpd56wpn198sxiQzxj6HcJ" class="wf-desc"><b data-page-node-id="Gf3XzqkZHXAQhwAgLbWyQG"><!--pnid:s3TPrtQhZEuiftbIy2Dc52-->怎么做</b><!--pnid:7C9J5d1RpYNZm1LObKcwnD-->：一个 LLM 调用生成响应，另一个在循环中评估、给反馈，直至达标。<b data-page-node-id="QF666xI8Ti0zM1xt92q0OT"><!--pnid:JmWxSE5D6GBm5swYDtSz6i-->何时用</b><!--pnid:w3MA04zBeF6cI1mop8vknF-->：有清晰评估标准、且迭代精炼能带来可衡量价值。典型例子：文学翻译质量循环改进；复杂搜索的多轮优化。</p>
+        <svg data-page-node-id="P6e1yDfCjl7tuihKfpS4Ud" aria-label="Evaluator-optimizer 评估迭代示意" role="img" viewBox="0 0 680 230">
+          <defs data-page-node-id="tXRuiYLVWSUKvM6cNqJQVZ">
+            <linearGradient data-page-node-id="skiUhq6S1ssaOt23GRIbNX" id="g5" x1="0" x2="1" y1="0" y2="1"><stop data-page-node-id="BsUiQEjEJtX4BC1RHPnSG4" offset="0" stop-color="#0d9488"/><stop data-page-node-id="1x9LbRDrqOlVBkmSNfMECS" offset="1" stop-color="#10b981"/></linearGradient>
+            <marker data-page-node-id="y976aYNGAsNYjKXJ1zm5KT" id="a5" markerHeight="9" markerWidth="9" orient="auto" refX="7" refY="3"><path data-page-node-id="WoY65nrDXwU1zWKt0NsHsw" d="M0,0 L7,3 L0,6 Z" fill="#64748b"/></marker>
+            <marker data-page-node-id="i68KoIXmr2XiYKcyr7MjUh" id="a5b" markerHeight="9" markerWidth="9" orient="auto" refX="7" refY="3"><path data-page-node-id="EPlMV2zqICwPnqUnmb2k8L" d="M0,0 L7,3 L0,6 Z" fill="#0e7490"/></marker>
+          </defs>
+          <rect data-page-node-id="YlSqniqGN5QdAvCnGMhVee" fill="#e3ede7" height="38" rx="7" stroke="#cbd5e1" width="64" x="15" y="100"/><text data-page-node-id="ouLcb86U7pCcpWlY6JK9Zn" fill="#334155" font-size="13" text-anchor="middle" x="47" y="123"><!--pnid:6FopwMFt0A0NWhSbbFvCaC-->输入</text>
+          <line data-page-node-id="3VHSJIqbsHlvlodinlxZ4u" marker-end="url(#a5)" stroke="#64748b" stroke-width="2" x1="79" x2="100" y1="119" y2="119"/>
+          <rect data-page-node-id="KD4b6s6IlDtICM51XENbn8" fill="url(#g5)" height="50" rx="10" width="86" x="100" y="88"/><text data-page-node-id="oSjeON9p3QSNgoJQlZukKv" fill="#fff" font-size="14" font-weight="600" text-anchor="middle" x="143" y="117"><!--pnid:SLXjBXTLxqkaxBBBRkUKjS-->生成 LLM</text>
+          <line data-page-node-id="pVXdGg2CtXLdSXofKrrTAW" marker-end="url(#a5)" stroke="#64748b" stroke-width="2" x1="186" x2="210" y1="119" y2="119"/>
+          <rect data-page-node-id="pFvjJQ1zPVMML9ABklZ0Qt" fill="#e3ede7" height="38" rx="7" stroke="#cbd5e1" width="70" x="210" y="100"/><text data-page-node-id="NNB7eQgFq3QBRBJlC2ocrk" fill="#334155" font-size="13" text-anchor="middle" x="245" y="123"><!--pnid:GuWtTE4pFYf8cCmgLSemkP-->响应</text>
+          <line data-page-node-id="VA6WiLEXVQy7UrQg6DdbYQ" marker-end="url(#a5)" stroke="#64748b" stroke-width="2" x1="280" x2="310" y1="119" y2="119"/>
+          <rect data-page-node-id="lLUjxNcWhsCsXPZfUDYg1y" fill="url(#g5)" height="50" rx="10" width="86" x="310" y="88"/><text data-page-node-id="y0dAMIbpe2pxHgGC39g6jG" fill="#fff" font-size="14" font-weight="600" text-anchor="middle" x="353" y="117"><!--pnid:phuTqe0BmmddJX4oRrsA7c-->评估 LLM</text>
+          <line data-page-node-id="s88Er72usJzBon4QtWspD9" marker-end="url(#a5)" stroke="#64748b" stroke-width="2" x1="396" x2="520" y1="119" y2="119"/>
+          <rect data-page-node-id="uCtgOu0p0LUqAy9FlofHAK" fill="#e3ede7" height="38" rx="7" stroke="#cbd5e1" width="64" x="520" y="100"/><text data-page-node-id="8lrdjy59M9zWa5M2e8oeno" fill="#334155" font-size="13" text-anchor="middle" x="552" y="123"><!--pnid:4PS7iwTj074LUxnbFxIwpo-->输出</text>
+          <path data-page-node-id="4ABtCFYeqiRcN4kcIxn1qb" d="M353,139 V186 H143 V139" fill="none" marker-end="url(#a5b)" stroke="#0e7490" stroke-width="2"/>
+          <text data-page-node-id="1Sqx2QoPuLItnBSAGywuMv" fill="#0e7490" font-size="12.5" font-weight="600" text-anchor="middle" x="200" y="205"><!--pnid:aDKi2i15DiGB6CjERFLnho-->反馈 / 迭代优化（未达标则回到生成 LLM 重做）</text>
+        </svg>
+        <div data-page-node-id="PI3flrLbWR3qHycfbZnx0M" class="note"><!--pnid:WUvffmWOyhD2ZJlMS1OCnM-->一个 LLM 负责「写」，另一个负责「挑毛病给反馈」，循环往复，直到评估方认为通过。</div>
+      </div>
+
+      <h3 data-page-node-id="QtOffZX3DaOAgypMBXRr3t"><!--pnid:nnMafpKhIZxUs13CbuhC2W-->微调 vs RAG：一条分叉判断</h3>
+      <p data-page-node-id="9jJgO49pgR7lrZjnAktM5n"><!--pnid:SLmu6E5XW4r2dtqprnbUZd-->在「要不要微调」这件事上，业界的共识高度一致，落到选型上就是一条分叉判断。</p>
+      <div data-page-node-id="apfxg7trrDlTmYCJ4CjY3T" class="key"><!--pnid:KWe8rGslDETy9SjvKAx90Y-->两条判断主线：①<b data-page-node-id="2LwtpWOtmJL5N0mRk4ToHX"><!--pnid:HuO2vbdHGfLT4iDa6Q5LJQ-->知识是否频繁变动</b><!--pnid:Vu3s55jgz53PQbIYwPRgxl-->：常变（价格、库存、最新政策）就走 RAG，把它当「外挂知识」热更新，别烤进权重；②<b data-page-node-id="tuVJyz6HOtAyghIh18splL"><!--pnid:SImIoNFWY3KWcYalOI1EOO-->要改的是「知识」还是「能力／风格」</b><!--pnid:6jTiqczOiTu4W3dtpDChec-->：要让模型记住新事实用 RAG，要让模型学会新格式／新语气／新任务模式才考虑微调。</div>
+
+      <div data-page-node-id="d4QhwmWUT2FNLdDeERD8Yc" class="diagram">
+        <div data-page-node-id="Gc6fEkRtccHE7KcjjMpm77" class="cap"><!--pnid:SSNYNZLzv4jfGhcKJeAuNv-->图 6 · 微调 vs RAG 决策树：先问改风格还是补知识，再问知识常不常变</div>
+        <svg data-page-node-id="rK82WpE6vbfod9hkVzk2ow" aria-label="微调 vs RAG 决策树示意" role="img" viewBox="0 0 660 360">
+          <defs data-page-node-id="bISS3D6dMRXAlrBIh5KV49">
+            <linearGradient data-page-node-id="AwXYE5hM677kRCrvFh6frG" id="gD" x1="0" x2="1" y1="0" y2="1"><stop data-page-node-id="egxrWCvrsKt94OhWz4rZIA" offset="0" stop-color="#0d9488"/><stop data-page-node-id="5BzdagFgZW3uBffrScbK31" offset="1" stop-color="#10b981"/></linearGradient>
+            <marker data-page-node-id="y9Z8s1bqK9SZdyBNtEtyft" id="aD" markerHeight="9" markerWidth="9" orient="auto" refX="7" refY="3"><path data-page-node-id="Z9jdsF40NHPT4qwHRv69gU" d="M0,0 L7,3 L0,6 Z" fill="#64748b"/></marker>
+          </defs>
+          <rect data-page-node-id="6saKMSikV5VFcmmdrmDFD9" fill="#e3ede7" height="46" rx="9" stroke="#cbd5e1" width="130" x="20" y="150"/>
+          <text data-page-node-id="efEnbYslRteiRHce18vdX6" fill="#334155" font-size="13" text-anchor="middle" x="85" y="168"><!--pnid:wA82uqnqO2xs1iHLz1bC39-->要模型做什么</text>
+          <text data-page-node-id="RRgrB88FNbIV9TjnpAxb8e" fill="#334155" font-size="13" text-anchor="middle" x="85" y="186"><!--pnid:7gOKsbCJ7eXic7SJR0SWDv-->（选型目标）</text>
+          <line data-page-node-id="aTxa2j5J77LfcU4Flb3Ww2" marker-end="url(#aD)" stroke="#64748b" stroke-width="2" x1="150" x2="192" y1="173" y2="135"/>
+          <polygon data-page-node-id="BAXFpCdwUMPcUJcBnMIJck" fill="#ecfdf5" points="250,95 308,135 250,175 192,135" stroke="#10b981"/>
+          <text data-page-node-id="zRycfz4RS7WBOzc7jwZFNy" fill="#0f766e" font-size="12.5" font-weight="600" text-anchor="middle" x="250" y="129"><!--pnid:489wknLG8QG7aICok8iOfn-->要改风格／</text>
+          <text data-page-node-id="w50DPwdYo8y0HaR0cvDvN1" fill="#0f766e" font-size="12.5" font-weight="600" text-anchor="middle" x="250" y="147"><!--pnid:ZqEKMirWBF0Z5gnMOWJbBS-->格式／能力？</text>
+          <line data-page-node-id="hwF2QxfwKvbXISXlpKa0ke" marker-end="url(#aD)" stroke="#64748b" stroke-width="2" x1="308" x2="466" y1="135" y2="135"/>
+          <text data-page-node-id="da9LrbGx4Dr0jctpcACmRS" fill="#64748b" font-size="11.5" text-anchor="middle" x="386" y="120"><!--pnid:wtm2ID6zlSmuoOY2kgwQtp-->是</text>
+          <line data-page-node-id="ze4HuKEqFcBKvUaawwZ3mP" marker-end="url(#aD)" stroke="#64748b" stroke-width="2" x1="250" x2="250" y1="175" y2="223"/>
+          <text data-page-node-id="TEGecB9eVDQS7WdFFkcq4L" fill="#64748b" font-size="11.5" x="258" y="205"><!--pnid:w2CcodrJtf85X4G3EJFJnk-->否</text>
+          <polygon data-page-node-id="qcWNfwlklRVDhF8D7vJVZv" fill="#ecfdf5" points="250,225 308,265 250,305 192,265" stroke="#10b981"/>
+          <text data-page-node-id="UW44MJVrDNiZlrrjonjGCf" fill="#0f766e" font-size="12.5" font-weight="600" text-anchor="middle" x="250" y="261"><!--pnid:iruRFJ1pec5RhAeC9SuM9Y-->知识常变动？</text>
+          <line data-page-node-id="MWSBcAzY3ap4QAHKC2DLyF" marker-end="url(#aD)" stroke="#64748b" stroke-width="2" x1="308" x2="466" y1="265" y2="265"/>
+          <text data-page-node-id="qbPEAN3mKov3y5xChO2Sw3" fill="#64748b" font-size="11.5" text-anchor="middle" x="386" y="250"><!--pnid:n5le1ILBONfOqKoYSYRatP-->是</text>
+          <line data-page-node-id="whqtOPaCOOq2KO7dFPNYDC" marker-end="url(#aD)" stroke="#64748b" stroke-width="2" x1="308" x2="466" y1="305" y2="325"/>
+          <text data-page-node-id="scPQNQiUqyX8SdtHRK8A4p" fill="#64748b" font-size="11.5" text-anchor="middle" x="386" y="318"><!--pnid:v8lFbSd1rvPOPcAvkZ4QpA-->否</text>
+          <rect data-page-node-id="RvRpo2wt8XU3krlUGBA82q" fill="url(#gD)" height="44" rx="9" width="124" x="466" y="113"/><text data-page-node-id="1o2lexktQqfJzCmYNfcfgP" fill="#fff" font-size="14" font-weight="600" text-anchor="middle" x="528" y="140"><!--pnid:Zu3KaCK2Vljwvm3fZUHwLz-->微调 Fine-tune</text>
+          <rect data-page-node-id="5VlfSHOxrRcR7FWaqQ88mE" fill="#0e7490" height="44" rx="9" width="124" x="466" y="243"/><text data-page-node-id="i2cZbz27MG0ZCHsUrigxwX" fill="#fff" font-size="14" font-weight="600" text-anchor="middle" x="528" y="270"><!--pnid:0zBZPU1fntWw5QSXR4AJK1-->RAG</text>
+          <rect data-page-node-id="chHNadQnOJW4aNosqaQWDJ" fill="#e3ede7" height="44" rx="9" stroke="#cbd5e1" width="124" x="466" y="303"/><text data-page-node-id="RaDhU7oUFNsgOjuBru1GpB" fill="#334155" font-size="14" font-weight="600" text-anchor="middle" x="528" y="330"><!--pnid:LTSf8PzVrykSIYKBObD77j-->提示词 Prompt</text>
+        </svg>
+        <div data-page-node-id="IR2hw9sCKZsu1EoCXy1lhN" class="note"><!--pnid:dHMIOPHLJmQ0oIAbxjWMjB-->判定顺序：先看「是不是要改模型本身的能力／风格」：是就微调；不是（只是用知识回答），再看「知识常不常变」：常变用 RAG，不常变直接提示词。</div>
+      </div>
+      <div data-page-node-id="j5thVfU7LUQLXogCP5ATmh" class="key"><!--pnid:enAArLUl8ZuPGZqsqCN375-->落到商详页：参数、价格、库存都是高频变动、且答案就在商品知识库里（外在幻觉可治），典型 RAG 场景；没有任何「让模型换一种说话／写作风格」的诉求，所以微调不在选项内。</div>
+
+      <h3 data-page-node-id="dT4pjA1YRcR5s9bQReEWVv"><!--pnid:Y59b6RJnoIoesUdsEJibZ7-->四种方式的成本对比</h3>
+      <p data-page-node-id="dsuCPBk01jPjQk8eoLrGSV"><!--pnid:cvbmtkzQ2cvV34IRTkbPwm-->把提示词、RAG、Agent、微调放在同一张表里比，结论很一致：越往右成本与复杂度越高，能不往上走就不走。</p>
+      <table data-page-node-id="j6Svus7Fk0S24pADl0WeTq">
+        <tr data-page-node-id="yHKbuEaJVkqNyH45cVCXG1"><th data-page-node-id="P9aj6ggYAd8gogNkLSmrzz"><!--pnid:7OeNDzLsb3XQ0WhJfSPzqq-->维度</th><th data-page-node-id="Pvl6zJJUAOJceE4RQXhsUK"><!--pnid:EZ6kR1c7V4RWmUimQzKHBU-->提示词 Prompt</th><th data-page-node-id="T5WhemqTUCPuyZjXV54Res"><!--pnid:nkc0zLsGCYDe4qOZxKGK93-->RAG</th><th data-page-node-id="FHhvr90O1Ox8c1CkE6HQUc"><!--pnid:cYjx14F5plOf2w1ekyFHJl-->Agent</th><th data-page-node-id="OW7rRP0966kEhUyn433bbJ"><!--pnid:DHHviQi2ScJbaNU1jdkiLC-->微调 Fine-tune</th></tr>
+        <tr data-page-node-id="CaDRYrYXe2oNQ4dfgJ6YMK"><td data-page-node-id="PFgIgRLAyVBrro0RFLaOxT"><!--pnid:Vp5TRJi5ZjMPHofjTFlum6-->开发成本</td><td data-page-node-id="p84SBxC3J3UG5TLxRk5mui"><!--pnid:JJ1caflXSiQ61AB1zIzygn-->低</td><td data-page-node-id="kYAQ1ZYjo5gYcv72I2wAyk"><!--pnid:L8yT99SBbwyA1isrfQU8Zu-->中（需检索基建）</td><td data-page-node-id="v1CIS4QOfpUwMuLOJOEB86"><!--pnid:r74hRV6mJQwvzHUlXeWb0n-->高（编排／状态管理）</td><td data-page-node-id="mtBnODs7ykP4XF5bOSBtzC"><!--pnid:vLWpkCrb0bEkyRQw7JaQVd-->高（数据准备＋训练）</td></tr>
+        <tr data-page-node-id="mvZ5mSOLFJ1Ev2QnTW5HBh"><td data-page-node-id="Qx8nzyxXEtfreu2cy69cjH"><!--pnid:rhgwImtR02CAoDzryPD60w-->推理成本</td><td data-page-node-id="Nz23hx4rGjntswTC1yJAIv"><!--pnid:84nxDXtOd6lP3oALzVslPw-->最低</td><td data-page-node-id="DXISSeYbTNkuesZdLtcAaJ"><!--pnid:W7oJt4y65NQiZIdaMgPUIb-->低＋检索开销</td><td data-page-node-id="axRQA8nJSbawv541sC8t5g"><!--pnid:g1Js5V0kM4x7S8yZAVsaTg-->高（多轮 LLM 调用）</td><td data-page-node-id="fsROnW1kfvyijLvMYK8sNc"><!--pnid:LUzz8MZwGSYKgsDPlWuZLI-->中（单次但常需大模型）</td></tr>
+        <tr data-page-node-id="4JWIekHVb5vw0HZ6lB08IW"><td data-page-node-id="4lKHmGtIsh3ac4wQonzHMw"><!--pnid:bbyavTnOLEtcTJ9e1geoBu-->知识更新</td><td data-page-node-id="yQJWX9UxlQvUhbyEds2Mpc"><!--pnid:KT9rJrGjL2nwuFefD0IAdn-->改 prompt</td><td data-page-node-id="0AKuTJe07Y9sXjLTfgOeYH"><!--pnid:BaiiGAa0hIx5NnyA7142Iu-->热更新知识库</td><td data-page-node-id="PAyCu5fqh4mXHG8t7ai2Ix"><!--pnid:fbaysgHMudPsOUo6Di3Cnw-->热更新知识库</td><td data-page-node-id="OSCGEMBI03fUJpZPaJb99K"><!--pnid:lUNpqy9cekrRDj0dhwcvPB-->需重新训练</td></tr>
+        <tr data-page-node-id="EkFOO3RCCfJrtFs3LzkZaw"><td data-page-node-id="caOvW8SpKYSoWVZjc5X1ya"><!--pnid:sKf7mB7xNl0ZYTU2pfshtq-->可控性</td><td data-page-node-id="QgjeJIMWUPBowk7aTtmACY"><!--pnid:q4k8tbOjG6Iwl1YgciA7AS-->高</td><td data-page-node-id="mSEuOBu7SnOPeLBpFteUUo"><!--pnid:eRvyFN4cVvUCTxHne7zKBX-->高</td><td data-page-node-id="ctdpM3GQr9gOq4RDFJXl4p"><!--pnid:CvDymXHBF1Aek2L7HTbzCN-->中（模型自主决策）</td><td data-page-node-id="xCSkoY0KSkICoBK0PGXHmW"><!--pnid:5UQvKPkhKqlZk9dE8DFeEY-->低（行为难精准调）</td></tr>
+        <tr data-page-node-id="E5Z2JT4HXE1EU9hFtntzPy"><td data-page-node-id="PVlO9ens0eWT5AnbZxSoEf"><!--pnid:ViKxFcxfaRUxHQjtmraTHW-->最适合</td><td data-page-node-id="NXA2TlCRn01fh1LkC55vwq"><!--pnid:tcBeVTTAaXJhoj6HoXOnQC-->目标明确的单步任务</td><td data-page-node-id="PUgYScapu7I6NZ9NBprLkL"><!--pnid:wkXFM9kxYq84GgCaS9gGes-->知识频繁变动的问答</td><td data-page-node-id="5yTYjvvJZjlhKwL7GFhijQ"><!--pnid:GMVUPmFFiwSV5EWtJ7fZAb-->多步／动态拆解的任务</td><td data-page-node-id="ZJO85ng0KUQCk7iHy0u0JS"><!--pnid:HNSv6LC88AymvGSSfjtooI-->固定风格／格式／能力内化</td></tr>
+      </table>
+      <div data-page-node-id="aNlTm1zWWFtbwmBLkzLqKb" class="key"><!--pnid:peRDEsQ3S4JVMejQZdYgTv-->落到商详页：按「够用即停」，Prompt＋RAG 已经命中需求，不需要 Agent 的编排开销，也不需要微调的训练／重训成本。</div>
+
+      <h3 data-page-node-id="a67RuPs6dOfbDI7GTXT744"><!--pnid:icEL3VFYoewX7EFXwaTJIm-->回到选型主线</h3>
+    <p data-page-node-id="DFsvMUTgSkb4Ru5fPFxmNe"><!--pnid:HqX6qP03GSK7gLicMfHgD5-->这五种模式全部是「预定义控制流」，落到路线图里仍属工作流层（L1–L2）的编排范畴，<b data-page-node-id="CimTU5ui4eQrvuDs2nLSbE"><!--pnid:HXtgwf6ZEXvK9HxgVGS8lC-->没有一种等于自主 Agent（L3）</b><!--pnid:h8r4iv0wRG8OLrII1HpyEp-->。这直接支撑「够用即停」的主线：</p>
+    <div data-page-node-id="eFTtVabXKh6K5kxU5S7byK" class="key"><!--pnid:s5a5XZNlAQjqxYu8xMTClU-->商详页的解法 = <b data-page-node-id="AMGTjzDB2LF4T5cdEZHwrp"><!--pnid:Jo3KLlblS7n3WNAWYVpMC7-->Routing</b><!--pnid:OBZqsZEThW7pQf3Pt6kp6P-->（答得了 → 参数解读；答不了 → 分流到评价区）+ <b data-page-node-id="ZKvfp8vKppyX60KPi0C9l7"><!--pnid:zA9gaXQTvr69Zixg2NAPQu-->Prompt chaining</b><!--pnid:UqdAl5ciRtSX9i0WNUcDw1-->（抽字段 → 拼成人话）。这是两个工作流的组合，<b data-page-node-id="D3kUKNoHfU9KJb3VMREHKJ"><!--pnid:0TZFEMxJKt2znQ1jtZ4324-->不是自主 Agent</b><!--pnid:lzwaRcHs6yrjl2QJs8rre8-->，更不需要微调。「对许多应用，优化单次 LLM 调用加检索就够」，这个判断在商详页再次成立。</div>
+
+    <h2 data-page-node-id="WtdzxfKFFqUlxrvoRCQlcv" class="sec"><span data-page-node-id="ORP35CAfGFuCNJCf8kvJRU" class="num"><!--pnid:1sMW3mRPLYbh2OEeOlkOTr-->02</span><!--pnid:vRLt6YD3R4ttlg39Fka0Bs-->案例 · 商详页的落地方式选择</h2>
+
+    <p data-page-node-id="XicBbyR1Av7nNsUl6WHU1R"><!--pnid:ArlQ2cEuhfBwk7hBGJYSgt-->用一条最贴近电商的场景，把四种方式「该用 / 不该用」逐一落锤：商品详情页的 AI 问答（用户问价格、参数、库存、以旧换新、分期免息）。</p>
+
+    <h3 data-page-node-id="jRPZV9zjOfMFTulRpCCwGs"><!--pnid:JUmuuMmkhiXiyk8n9GoTZ1-->业务现状</h3>
+    <ul data-page-node-id="esNFrT1BCvGpPCEFMKRbG2">
+      <li data-page-node-id="XGLUiaSPj8VqGLGX3gP1Id"><!--pnid:3qRngXy7CpWlPMbv99f9cM-->用户问题高度集中：价格 / 库存 / 参数 / 活动，90% 的答案能在商品知识库（SPU 字段、价格表、活动规则）里找到。</li>
+      <li data-page-node-id="npEL7MeDaKZcOPAoNHkVhR"><!--pnid:7pwz2ilqkNL3rlwg7JjVRv-->这些知识<b data-page-node-id="S0UVBy33iJREUNlXDGysTq"><!--pnid:udjLeBtdmOhazSmzjw4wzI-->每日变动</b><!--pnid:x1yGqs9JBt8fXGbjO49ZAe-->：价格随促销跳、库存随下单减，不能当写死事实。</li>
+      <li data-page-node-id="7FqGyhWMxhVheIfIiUowJt"><!--pnid:mdBqiPdJ8eNZjZNhvCNh4Z-->单次咨询结构固定：<b data-page-node-id="KP7B7sRq3XQzi6IreXfZBD"><!--pnid:kb8cADhSx947Gg59RhQiN6-->识别意图 → 拉知识 → 组织话术</b><!--pnid:h1Ofo2Yst9spDa6RuYHOHv-->，没有跨系统、多步自主编排。</li>
+      <li data-page-node-id="66GHhqMFz6MAfI8aPOWXbY"><!--pnid:xyGVxXaTnbzGYmCDHLzM9W-->客服口径要统一（同一问题不能几种答法），<b data-page-node-id="yuT1c0Y7wPdQlEsOrsImvv"><!--pnid:UaBhQmLrw9vC3KD0ladLWv-->可控性要求高</b><!--pnid:9PhebF4JdwGjTGDLVWdEeh-->。</li>
+    </ul>
+
+    <h3 data-page-node-id="zI4w2ZhLw1qs48pkx1Rzsw"><!--pnid:Yly4kN4FoHvDzohSJh8sjD-->四种方式逐一过一遍</h3>
+    <table data-page-node-id="yHIaWrvnxJCmAhU3Ob8daW" class="judge">
+      <tr data-page-node-id="C0M4ZRyTsDEzpZs83341fM"><th data-page-node-id="POW93c8JOzEmuWLlWR1QR3"><!--pnid:SZmXzYx2XHNDuDnGT60QGI-->方式</th><th data-page-node-id="JI7zQ7JYbFSWgYCeqefNDv"><!--pnid:1IL018vMJpgFQRSQKcKL5V-->判</th><th data-page-node-id="xsWqSZZZ9mjlbIXllU9rQp"><!--pnid:467EWZ52zymCrbK7IHHxUI-->事实依据</th><th data-page-node-id="bLShOJhXkBdT8WnvCtWJU0"><!--pnid:U1AyU0Yxf3QoVp4KxsrxNJ-->归因</th></tr>
+      <tr data-page-node-id="Rnhx4tIWKAoQCzzua4fUHu">
+        <td data-page-node-id="eprrvr65yTC0vX09x3MZEB"><b data-page-node-id="UhRso9p9y57a2pgSAFVJ7B"><!--pnid:eK12c1yh3ZdTXSO7czeem0-->Prompt 提示词</b></td><td data-page-node-id="jPvUpbvqqR5qNZHGr4JlWJ"><b data-page-node-id="pooppcF5qKGkRtk0VqV2jf" style="color:#0f766e"><!--pnid:ktTXQm1dCar0vvKY0MtKEO-->用</b></td>
+        <td data-page-node-id="UgxfW24hYmxqe7MIRA0UWa"><!--pnid:tuz7Ru6QaIItvY7sdsURQh-->输出要统一口径：价格怎么报、活动怎么讲有固定套路，话术结构可预定义。</td>
+        <td data-page-node-id="2UCq9JhnsPQ8VA6nG5a5AR"><!--pnid:994H7AWbr7WCeBfX3U5L5v-->单步、目标明确的任务，用最低成本约束输出结构与话术，不必上更复杂机制。</td>
+      </tr>
+      <tr data-page-node-id="vJSHGowpOMPxoPjw5EGk8O">
+        <td data-page-node-id="rXdoRYUTJou3z4LLCPXeuc"><b data-page-node-id="vLBsF0D6Lc0UZYX7My6MZM"><!--pnid:uP8cE4kiwiAfpHwUcEn31n-->RAG 检索增强</b></td><td data-page-node-id="LlSfWQs2wrS9u0buRrL3u1"><b data-page-node-id="1NOl5MtzGUZ4v10bmn5C3d" style="color:#0f766e"><!--pnid:F8b4XgXzuDAKHCEDF1d8MG-->用</b></td>
+        <td data-page-node-id="kTOPdIZVKHOXlEus9SVqU2"><!--pnid:CoAKbQWrKaU7YgrpEJToNY-->答案在商品知识库里且每日变动，属于「外在幻觉可治」：答案就在输入侧。</td>
+        <td data-page-node-id="5Z29kplHr3W2NresXYRq8w"><!--pnid:Wz7FJ2CcUNdzVlxRmkAnfM-->热更新知识库即可，不用改模型；命中典型 RAG 场景，与决策树（图 6）一致。</td>
+      </tr>
+      <tr data-page-node-id="jrmiFVOyx9uX9DHoN3ozGz">
+        <td data-page-node-id="dLKVL7unaEn9CuRVZKAQZW"><b data-page-node-id="BOitStr0mBAOBxeSWLZLwL"><!--pnid:bln1MFgFtG572MTmE2B9Sn-->Agent 自主编排</b></td><td data-page-node-id="ljVC3eZHifGkfVsAr5BLw8"><b data-page-node-id="86hnttuBuKPg2yzi5RoymO" style="color:#b91c1c"><!--pnid:1jNxq7ceGOmD69BxFH3SJS-->不用</b></td>
+        <td data-page-node-id="e78wnqW5k5IRMFSfDirCIW"><!--pnid:rzHTcOS4fJdkVDEjiAQZOv-->单次咨询是单分支：识别意图→取知识→答，没有跨工具多步决策。</td>
+        <td data-page-node-id="vZypscJvLxELuYCTSNifBf"><!--pnid:SBB9rSLiiXZXGYmtx28hen-->上 Agent 把决策权交给模型，可控性降、答非所问风险升、成本升，收益不抵代价。</td>
+      </tr>
+      <tr data-page-node-id="yTilCv8f1TruHiK3i6JEHL">
+        <td data-page-node-id="FvewKLSz8lF63tm7DEfaaB"><b data-page-node-id="9Nn89EHj2a5UonyJMxeUDI"><!--pnid:YnLv6DxxxG09OuhAQUfKLC-->微调 Fine-tune</b></td><td data-page-node-id="uqWtsSsKxqq0NTZOAYk21N"><b data-page-node-id="J03sTtOmXhF7HFh8cFOfBR" style="color:#b91c1c"><!--pnid:m4AFfA1eYiiypvyt0SOFW1-->不用</b></td>
+        <td data-page-node-id="dPnYcJxipnscJwiIo2YK8R"><!--pnid:ARfRJdEjm8jgRb3D6fFXM9-->价格 / 库存高频变（不该烤进权重）；且没有任何「换模型风格 / 能力」诉求。</td>
+        <td data-page-node-id="n248rgXq0NtNRYLXPFFOVq"><!--pnid:KDkycARepDZDgVDz570lnM-->改的是「知识」不是「能力」，又属高频变动，RAG 更合适，微调反而让知识永远滞后。</td>
+      </tr>
+    </table>
+
+    <div data-page-node-id="PEc8Po6VdnFO8xA75B4DhB" class="diagram">
+      <div data-page-node-id="0XIF1a9RtQfjeLuLPjotNY" class="cap"><!--pnid:c9b9AqfYaxkXtoas7RXEiA-->图 7 · 商详页真实问答链路：Routing + RAG + Prompt chaining 的组合（非自主 Agent）</div>
+      <svg data-page-node-id="Ev3o43XYT8re8azHa3LPNg" aria-label="商详页问答链路示意" role="img" viewBox="0 0 700 270">
+        <defs data-page-node-id="ErUjhplvAaZedY9Q7cZpf1">
+          <linearGradient data-page-node-id="y4dJ4UIJQZwXzaaQpHaf66" id="g7" x1="0" x2="1" y1="0" y2="1"><stop data-page-node-id="4WaXmdzpNfGYUroncpHKZ3" offset="0" stop-color="#0d9488"/><stop data-page-node-id="Nwi5h7BVgH0nhx1wgzTHiy" offset="1" stop-color="#10b981"/></linearGradient>
+          <marker data-page-node-id="VQVSM2mIM38iNJfqb12wMJ" id="a7" markerHeight="9" markerWidth="9" orient="auto" refX="7" refY="3"><path data-page-node-id="C7iCcIMsLzdroWg2DRJ50t" d="M0,0 L7,3 L0,6 Z" fill="#64748b"/></marker>
+          <marker data-page-node-id="lv2aqHBwaljFyUckd6mF50" id="a7b" markerHeight="9" markerWidth="9" orient="auto" refX="7" refY="3"><path data-page-node-id="klV0TEV9cfvNPZpBfvFtBY" d="M0,0 L7,3 L0,6 Z" fill="#0e7490"/></marker>
+        </defs>
+        <rect data-page-node-id="jOJSvZFhgyBnevXCABZYm8" fill="#e3ede7" height="38" rx="7" stroke="#cbd5e1" width="62" x="15" y="116"/><text data-page-node-id="uMq1zMgP8lOq8rGWGv5GEp" fill="#334155" font-size="13" text-anchor="middle" x="46" y="139"><!--pnid:iWd9hTeZhZwV2DK2yHwXQ8-->输入</text>
+        <line data-page-node-id="HkeMkfR8orqj1J8ckiQQmA" marker-end="url(#a7)" stroke="#64748b" stroke-width="2" x1="77" x2="100" y1="135" y2="130"/>
+        <rect data-page-node-id="pOqU3qrtY7ScLQrh6C5bQU" fill="url(#g7)" height="58" rx="10" width="108" x="100" y="104"/><text data-page-node-id="aE27P8KCrnwjQpYvjo8J09" fill="#fff" font-size="14" font-weight="600" text-anchor="middle" x="154" y="128"><!--pnid:zyPpqO6aibOiHUOT9vgeCn-->分类 LLM</text><text data-page-node-id="y3axUYbMZBcRLDrFFMDA0x" fill="#cffafe" font-size="11.5" text-anchor="middle" x="154" y="147"><!--pnid:Arwq3mWdZxoxwNB76j7Xvt-->Routing</text>
+        <line data-page-node-id="LLrj7MzPGpjT7kjREybVie" marker-end="url(#a7)" stroke="#64748b" stroke-width="2" x1="208" x2="250" y1="120" y2="107"/>
+        <rect data-page-node-id="BVPFe9PZZ9JXClQ6E9RHpT" fill="#0e7490" height="54" rx="10" width="112" x="250" y="80"/><text data-page-node-id="YlGy2kblF6IXRXXBdPVaOK" fill="#fff" font-size="13.5" font-weight="600" text-anchor="middle" x="306" y="102"><!--pnid:NZLkAbLqJUs7aWaqzcrJJ4-->RAG 取知识</text><text data-page-node-id="JVm5y4dFvETJtTEl20bkST" fill="#cffafe" font-size="10.5" text-anchor="middle" x="306" y="121"><!--pnid:UjrOn6dgXa6ytuxLfVnPW7-->参数·价格·库存</text>
+        <line data-page-node-id="ftol2bGwDo7TofwMFkp6jE" marker-end="url(#a7)" stroke="#64748b" stroke-width="2" x1="362" x2="402" y1="107" y2="107"/>
+        <rect data-page-node-id="LthZzOSPCSFGiP7H6WA9BZ" fill="url(#g7)" height="54" rx="10" width="112" x="402" y="80"/><text data-page-node-id="x23hfuAmqizJs9Xv57GN05" fill="#fff" font-size="13.5" font-weight="600" text-anchor="middle" x="458" y="102"><!--pnid:dFtUTAc1htFXNGPgHXw2Yo-->Prompt 组织</text><text data-page-node-id="5kbOYiClNLDkFuRHwLiMPh" fill="#cffafe" font-size="10.5" text-anchor="middle" x="458" y="121"><!--pnid:debfNEbOSZ12itYnZ3f8WZ-->抽字段→拼话术</text>
+        <line data-page-node-id="duCXEdBMHHmsOvSjOMknYJ" marker-end="url(#a7)" stroke="#64748b" stroke-width="2" x1="514" x2="556" y1="107" y2="107"/>
+        <rect data-page-node-id="T2GE04zSFiy05LzqB8AHd8" fill="#e3ede7" height="38" rx="7" stroke="#cbd5e1" width="62" x="556" y="88"/><text data-page-node-id="C4wmcGoFuIu57A0NoMx53C" fill="#334155" font-size="13" text-anchor="middle" x="587" y="111"><!--pnid:VkNdondLb8TANcrVI0cSB1-->输出</text>
+        <line data-page-node-id="EmbEhPmMLny8JmjG9D43nP" marker-end="url(#a7)" stroke="#64748b" stroke-width="2" x1="154" x2="185" y1="162" y2="190"/>
+        <rect data-page-node-id="FYawFBdW5s5uwUNgGWiWEP" fill="#f2fbf6" height="46" rx="8" stroke="#94d3b6" width="150" x="110" y="190"/><text data-page-node-id="gzNbczzgDsMYwApgBOn8Ko" fill="#0f766e" font-size="12.5" font-weight="600" text-anchor="middle" x="185" y="210"><!--pnid:s3HWsTcTYX5JkAOhmjBwc8-->答不了 → 分流</text><text data-page-node-id="aFuyXI2H8UYVnikXvP1jBJ" fill="#64748b" font-size="11" text-anchor="middle" x="185" y="227"><!--pnid:4ayQvzHtnx0OKurKDCyek4-->评价区 / 转人工</text>
+        <rect data-page-node-id="YScSw339j056tByETvCovJ" fill="#fff" height="34" rx="7" stroke="#94d3b6" stroke-dasharray="5,4" width="112" x="250" y="150"/><text data-page-node-id="GSrXsMg78FYAKUszOAVd4P" fill="#0f766e" font-size="11" text-anchor="middle" x="306" y="171"><!--pnid:9l4n42AV9NyBcqdcIbHlrv-->商品知识库（热更新）</text>
+        <line data-page-node-id="bo1EP0JUWndWsSSnUXuQJW" marker-end="url(#a7b)" stroke="#0e7490" stroke-width="2" x1="306" x2="306" y1="150" y2="134"/>
+      </svg>
+      <div data-page-node-id="gsDWSaB7EzRVlJJum4p26x" class="note"><!--pnid:yapTu1UykOBVWT22ExSjY3-->主链路是单分支的「识别→取知识→组织话术」，只在「答不了」时向下分流；全程控制流写在代码里（Routing + 固定两步），不是模型自主决策，所以不是 Agent。</div>
+    </div>
+
+    <h3 data-page-node-id="NY0wrs4b3fRmEjqLeuMX9p"><!--pnid:oGU9G4lepeisBKYibAyxkJ-->换个业务还成立吗？</h3>
+    <div data-page-node-id="SRsvHFxwhobAYzb9PcxZsU" class="key"><b data-page-node-id="qq0MhzAYS6b5nSq1Tdple9"><!--pnid:97nv6h2bUS3U5tJUTkh1kC-->迁移 1 · 售后 / 退换货政策咨询</b><!--pnid:LokuZrOWJZw5hdNWf9J2HV-->：政策也常变、答案仍在知识库、仍是单步问答 → Prompt + RAG 同样成立。印证「单步 + 知识常变就够用即停」不是商详页特例。</div>
+    <div data-page-node-id="WmdPq5pJ72UpexN8JzDGXq" class="key"><b data-page-node-id="davYMLQ8nVmJfYEUHLntEK"><!--pnid:yKOssDZEdmTOxi1KjnDZ3D-->迁移 2 · 平台级智能助手（查物流 / 申请退款 / 下单）</b><!--pnid:aQDhAUD08NkS4EIeOxFiT9-->：任务变成多步编排、要跨订单 / 物流 / 支付自主决策 → 这里 <b data-page-node-id="VsMQwc3DjfSkOPZ0iIHUko"><!--pnid:8GwD089qwjHaymteGun0WN-->Agent 该上</b><!--pnid:7uIWCMzQuqFHOLgw3yVNXl-->。说明「商详页不用 Agent」是场景判断、不是铁律；选型锚点是「任务要不要多步自主」，而非「电商就一律不上 Agent」。</div>
+    <div data-page-node-id="ge9rv7ro9AmuuhJegbSxyG" class="key"><b data-page-node-id="j0cpt8yVdcUqJHgj7Esw0G"><!--pnid:z38NIYZVnJbY4bhKhrEu2u-->反例警示</b><!--pnid:rCTb03XN5HZpCt4XpuwRsH-->：把商详页硬上 Agent → 多轮跑偏、同一问题不同答法、运维成本升；硬上微调 → 价格一变就要重训，知识永远滞后。两者都指向同一条：<b data-page-node-id="kSW2JXlMNHcg2pMcscbREJ"><!--pnid:PXzISEWSczQC9eyF8ruzj1-->超出任务需要的复杂度，是成本不是能力</b><!--pnid:BdS2MoDZRU0PFudkgSTpuM-->。</div>
+
+    <h2 data-page-node-id="TvPwEHKfDLPNBXleH9vOfR" class="sec"><span data-page-node-id="wqCkDgng6EH2aqbG3DIWFE" class="num"><!--pnid:WsfQRsQdlqxhVSR6vOCWFT-->03</span><!--pnid:uIyYRfaCSmUxN2ZBgfGhd4-->三条选型判据</h2>
+
+    <p data-page-node-id="DzES6nohgPT7XDUpoYhQyh"><!--pnid:zNpY872xUHlTc2qRTHJ069-->三条正交的选型判据，互不重叠，合起来就是一张选型 Checklist。</p>
+
+    <h3 data-page-node-id="IyP4BogSfUfi6o9KrqumPd"><!--pnid:3PL4Uj6O5kbfBkemZaBcQ2-->① 底座够用即停 / 倒序选型</h3>
+    <p data-page-node-id="9imhuLOFw9qHghnAl5Ysfl"><!--pnid:TAOr9A2sjUqdcP6bAeixdl-->不盲上最复杂的方案；按实际业务场景与需求，选「够用」的底座即可。操作上，在 Prompt → RAG → 规则 这条线上，从最便宜能解决的那头起用，不提前上更重的机制。</p>
+
+    <h3 data-page-node-id="Ui2iSLoQCdTXB5FlrOwroh"><!--pnid:1pA1091J2DSs7cFUPBopTE-->② 确定性判断前置（规则 / 工具前置，LLM 收尾）</h3>
+    <p data-page-node-id="carSRgY0bQXmkId9ZOD6n9"><!--pnid:EHBEP3xLuDFYtWUjc6fRhs-->凡是能由规则、数据库、接口<b data-page-node-id="p1Z7tLrhKor52W8ErU76sh"><!--pnid:PazZhmlOfQcFCNzltsGtuL-->确定性算清</b><!--pnid:kmIkfctx9lEJNBtyo79JdB-->的判断（资格、价格、库存、是否参与活动），放在 <b data-page-node-id="ltxAMRqzkRhHn7vL16V2aP"><!--pnid:7KbXdEyKJx4pXj5ez8Vhxm-->LLM 之前</b><!--pnid:7tkiAcEzsehhMiYygE8fPV-->处理；LLM 只承接那部分<b data-page-node-id="7bultgmR1LUmjFb5OoFphn"><!--pnid:w4uZeA74GO8Luj9wflD0s1-->不可约的语言组织与主观表达</b><!--pnid:e5GTO8T0P6EoM2tgb77Ybs-->。作用是把 LLM 的出错面压到最小，不合格路径直接拦在 LLM 外，既降错又省推理成本。</p>
+
+    <h3 data-page-node-id="Rwhh1TZRmbtLpzctZNzJDC"><!--pnid:OsWzGsopZvAxvGjJkWpbfU-->③ Agent 触发条件（编排层闸门）</h3>
+    <p data-page-node-id="3yXerMaERIsUbFFROs04Ji"><!--pnid:rvWPXqnJfmtw9YDRkOCntk-->先按「够用即停」选底座，再问一句：<b data-page-node-id="9BiliTGeLnyA5N1uaHzlc9"><!--pnid:coPUH7F5xZBH62RFQaKK5c-->任务需不需要运行时动态多步 + 循环</b><!--pnid:AJjoW6GLkpUZyb803X1S5N-->？ 需要，才在底座之上加 Agent 这层编排；不需要，就停在 Prompt / RAG / 规则。关键认知：<b data-page-node-id="nlnhRRdUYNjyBY8BH5wUw2"><!--pnid:rF3Qp0EPQjPhW7XnH17p0A-->Agent 不是与这三者平级的「第四种方式」，而是它们的编排层</b><!--pnid:Jq6G8QiQ8lrWfgFFjrMShK-->。</p>
+
+    <div data-page-node-id="X8qOalmewVYXLBXnE2dkHL" class="diagram">
+      <div data-page-node-id="Frv5HjIJG22UrQ6Ls1yQMX" class="cap"><!--pnid:ZFgP5CWJxSHvrGM9PaXQUs-->图 8 · 三条判据决策流：先选底座深度，再排组合顺序，最后问要不要加编排层</div>
+      <svg data-page-node-id="My33N3JJPd1ICGiz9aBRlp" aria-label="三条选型判据决策流" role="img" viewBox="0 0 700 390">
+        <defs data-page-node-id="uF1MyH4X9rW4D8WgNLmzl8">
+          <linearGradient data-page-node-id="kSsIJ1N8PMLJtdHXCxWSsN" id="g8" x1="0" x2="1" y1="0" y2="1"><stop data-page-node-id="NeBRz1ESTNDsbI9V9RLSEV" offset="0" stop-color="#0d9488"/><stop data-page-node-id="oz5VB5WTDn0l6oZcW0n7dZ" offset="1" stop-color="#10b981"/></linearGradient>
+          <marker data-page-node-id="jvfbYR2NHwD18cFHOBEjJ4" id="a8" markerHeight="9" markerWidth="9" orient="auto" refX="7" refY="3"><path data-page-node-id="PVtB6nWbAgkIPaBPRCVHHt" d="M0,0 L7,3 L0,6 Z" fill="#64748b"/></marker>
+          <marker data-page-node-id="os0VACxtd3oZC0xReI0fmB" id="a8r" markerHeight="9" markerWidth="9" orient="auto" refX="7" refY="3"><path data-page-node-id="A1mgLwdPorVAQImHKZV1pk" d="M0,0 L7,3 L0,6 Z" fill="#b91c1c"/></marker>
+        </defs>
+        <rect data-page-node-id="KTouFgIYjjyb6Qk42i73Gp" fill="#e3ede7" height="42" rx="9" stroke="#cbd5e1" width="200" x="250" y="12"/><text data-page-node-id="4vTXaJ6Xx2UxukV6qlQ5Vq" fill="#334155" font-size="14" font-weight="600" text-anchor="middle" x="350" y="39"><!--pnid:mUh7PDfgb5KoyMoVGuKQa7-->接到一个 AI 需求</text>
+        <line data-page-node-id="PNWd3D3rp4ZzCcyC4B5PZf" marker-end="url(#a8)" stroke="#64748b" stroke-width="2" x1="350" x2="350" y1="54" y2="80"/>
+        <rect data-page-node-id="wkQ5S55Pi4wd4NSRWJVoeZ" fill="url(#g8)" height="48" rx="9" width="240" x="210" y="80"/><text data-page-node-id="H3wkT1mmUYfQkFnP94wnGo" fill="#fff" font-size="13.5" font-weight="600" text-anchor="middle" x="330" y="102"><!--pnid:0hxTqN6l42qPUr58PVMCTp-->① 选底座深度</text><text data-page-node-id="howMq7HIP8oiZQigTpQppn" fill="#cffafe" font-size="11" text-anchor="middle" x="330" y="119"><!--pnid:VnUarUMfhJKnWl97382QEq-->Prompt → RAG → 规则，够用即停</text>
+        <line data-page-node-id="QPkhX76BN83W3AgMKH90W0" marker-end="url(#a8)" stroke="#64748b" stroke-width="2" x1="330" x2="330" y1="128" y2="154"/>
+        <rect data-page-node-id="61vrJLmWSuQBvEigCU3kI0" fill="url(#g8)" height="48" rx="9" width="240" x="210" y="154"/><text data-page-node-id="6P9Rx2pxp8FjsQtAUIdu8K" fill="#fff" font-size="13.5" font-weight="600" text-anchor="middle" x="330" y="176"><!--pnid:Cfn1bTRDMZUJC53SjM6D6b-->② 组合顺序</text><text data-page-node-id="YXoGxzD5zxC1YqR8lsw1t2" fill="#cffafe" font-size="11" text-anchor="middle" x="330" y="193"><!--pnid:ib6dR0QDcikBdyTxGVwNJq-->确定性判断前置，LLM 收尾</text>
+        <line data-page-node-id="KSGoITM53hD10j1TzBHE95" marker-end="url(#a8)" stroke="#64748b" stroke-width="2" x1="330" x2="330" y1="202" y2="226"/>
+        <polygon data-page-node-id="19heTOSrwN5YbPzNXIO5Lx" fill="#ecfdf5" points="330,226 450,260 330,294 210,260" stroke="#10b981"/>
+        <text data-page-node-id="z6Hrzzo1JzvPlz445eIpLB" fill="#0f766e" font-size="12" font-weight="600" text-anchor="middle" x="330" y="255"><!--pnid:xtFRngsPJcaZBSk2NxH4nV-->需运行时动态</text>
+        <text data-page-node-id="31gULWbA0fT4LrQhKcHlrV" fill="#0f766e" font-size="12" font-weight="600" text-anchor="middle" x="330" y="271"><!--pnid:dAMeaEbUI96rAkkG3VzbTq-->多步 + 循环？</text>
+        <line data-page-node-id="aHHlDk1WtSIzshLO1jWSAw" marker-end="url(#a8)" stroke="#64748b" stroke-width="2" x1="450" x2="560" y1="260" y2="260"/>
+        <text data-page-node-id="YWjmV6xgSjqtYp1seSKFO0" fill="#64748b" font-size="11" text-anchor="middle" x="500" y="252"><!--pnid:1kAhIDOR2GQJw1jFRV3Jrm-->否</text>
+        <rect data-page-node-id="yMpfnpg0VZCiPWNhJDH969" fill="#e3ede7" height="48" rx="9" stroke="#cbd5e1" width="120" x="560" y="236"/><text data-page-node-id="7tHKRWl6wRnVDDpKy2pfdv" fill="#334155" font-size="13" font-weight="600" text-anchor="middle" x="620" y="265"><!--pnid:wHOW0LCSuc71aEebMjjmmX-->停在底座</text>
+        <line data-page-node-id="qhwTB4lZLZfqkHCqPxiZIw" marker-end="url(#a8r)" stroke="#b91c1c" stroke-width="2" x1="330" x2="330" y1="294" y2="320"/>
+        <text data-page-node-id="1lFG3LqqX1tHeczgnBU2LL" fill="#b91c1c" font-size="11" x="342" y="312"><!--pnid:F5SS8gJIKKCfaPXn740ZXi-->是</text>
+        <rect data-page-node-id="fIYDdQ1nnTpRgqIToyQi4M" fill="#0e7490" height="46" rx="9" width="150" x="255" y="320"/><text data-page-node-id="wYTzXX1uRD6o5hFZEHbxAk" fill="#fff" font-size="13" font-weight="600" text-anchor="middle" x="330" y="348"><!--pnid:KwAEuPI6qDPWAqkpSnfYEs-->加 Agent 编排层</text>
+      </svg>
+      <div data-page-node-id="asI7wBoCZjG2lliLULzB9G" class="note"><!--pnid:AierGis9QdCpJAT37fjqvz-->三条判据正交：① 管「选多深」（底座深度轴），② 管「怎么排」（组合顺序轴），③ 管「加不加编排层」（Agent 闸门轴）。</div>
+    </div>
+
+    <h2 data-page-node-id="vN0frQyVr40ADOSkjoOGSw" class="sec"><span data-page-node-id="2ejmlIA0OiGb3WLTOqNX1U" class="num"><!--pnid:Zm34etIyxDPvufnuXNvsRI-->04</span><!--pnid:GrrPYiVMll7btpVGsQqzVA-->场景检验 · AI 导购 + 反例清单</h2>
+
+    <p data-page-node-id="K0jka4hOV7gJiMIXVI334W"><!--pnid:6fHYB3lfVMbAaxvFJ8x4gU-->拿一个真实需求把三条判据走一遍：某传统零售电商 App 的「AI 导购」（用户说「我想给妈妈买个 50 岁生日礼物，预算 2000 以内，她喜欢拍照」，机器人要追问澄清、挑候选、解释推荐、比两款、给建议。与商详页对拍：同样电商、同样查商品库，但是开放式多轮。</p>
+
+    <h3 data-page-node-id="QOtbFIvwEqqf1FXzkHF5H6"><!--pnid:mCuW00oZpZ41nnqVLDZQHZ-->三条判据过一遍</h3>
+    <div data-page-node-id="UBZFmRHkfXEk3EEw0hNWmb" class="key"><b data-page-node-id="1nrc9jZdKuoOTYBEHhzkB8"><!--pnid:FcSiQLQWW8YXLCEgClCO7V-->① 底座</b><!--pnid:uV0XGcl1uhO8pBg1f0jL4s-->：顶层 Routing + Prompt 意图识别；RAG 从商品库召回候选；规则过滤预算 / 类目 / 库存 / 性别；算法（相似度 + 综合 + 销量权重）排序。没上最重的方案。</div>
+    <div data-page-node-id="xehr1vhMdYovt9vNCniskg" class="key"><b data-page-node-id="NO7983ox5u20xjdwD7Jzel"><!--pnid:qhMFfwQixFZYeBYOGT5sPn-->② 确定性前置</b><!--pnid:OHsp92AhAIDxrsRsoLZdI3-->：预算（超预算砍）、类目（生日礼物排除生鲜 / 日用品 / 家具，靠商品标签）、库存（无货不推）、性别（妈妈→女性向，性别错配硬过滤）。全在 LLM 之前用规则 / DB 算清。</div>
+    <div data-page-node-id="3KjrO6KDSs24SJNMstqZ7i" class="key"><b data-page-node-id="JWXgU0rDLF5zocfZcsBt0y"><!--pnid:4GG3d8AUtmJJeqBvGghzHS-->③ Agent 闸门</b><!--pnid:SPwgCoIaxGavd7kvXqWdxl-->：判「上」。场景是开放式多轮：追问澄清、比完 A/B 可能要比 B/C、「解释」和「建议」之间可能插「有没有更便宜的」，命中「运行时动态多步 + 循环」，线性链接不住。</div>
+
+    <div data-page-node-id="Vendqk7TWrKGb8oJFPqE3S" class="diagram">
+      <div data-page-node-id="r3p1m4gVgdfOSSwx8ExFa6" class="cap"><!--pnid:xsVbycOxSPJONlcxPeZhi5-->图 9 · 导购架构：Agent 是架在底座之上的编排层，调 RAG / 规则 / 接口，LLM 只做解释·比较·建议</div>
+      <svg data-page-node-id="Ran6hTt3VYLCGUXmPo6EA0" aria-label="AI 导购架构示意" role="img" viewBox="0 0 700 300">
+        <defs data-page-node-id="zWlLmLCRok85tuSFRVFO3Y">
+          <linearGradient data-page-node-id="HxP4jg6zbD1ih1jAd5GBEW" id="g9" x1="0" x2="1" y1="0" y2="1"><stop data-page-node-id="uUJjAKEz5sBIUgeYYrSfIm" offset="0" stop-color="#0d9488"/><stop data-page-node-id="KHPh4dzHcGUsiYhKEojXoG" offset="1" stop-color="#10b981"/></linearGradient>
+          <marker data-page-node-id="BYYAOY0uJ052Nltj1dQDmz" id="a9" markerHeight="9" markerWidth="9" orient="auto" refX="7" refY="3"><path data-page-node-id="4MsP3l6s3ku6atNUK7e95G" d="M0,0 L7,3 L0,6 Z" fill="#64748b"/></marker>
+          <marker data-page-node-id="pZAHiTT75V8y5wHUxe7U07" id="a9t" markerHeight="9" markerWidth="9" orient="auto" refX="7" refY="3"><path data-page-node-id="AAUndyPzqVA5QLYMSx6ppx" d="M0,0 L7,3 L0,6 Z" fill="#0e7490"/></marker>
+        </defs>
+        <rect data-page-node-id="igxKi1DfZCElJAe826dv0v" fill="#e3ede7" height="40" rx="9" stroke="#cbd5e1" width="200" x="250" y="12"/><text data-page-node-id="ouKaP8TcDa0ZXKyjrEoq5W" fill="#334155" font-size="13.5" font-weight="600" text-anchor="middle" x="350" y="37"><!--pnid:D7hDqAuDJeiF7O4MgdhUhs-->用户多轮对话</text>
+        <line data-page-node-id="ufqNeLt5hHLAM163M1v4Qw" marker-end="url(#a9)" stroke="#64748b" stroke-width="2" x1="350" x2="350" y1="52" y2="80"/>
+        <rect data-page-node-id="uVR9MqJtl38RgE1Vv8AtSc" fill="#0e7490" height="50" rx="10" width="236" x="232" y="80"/><text data-page-node-id="pPcXxkR7D5WlcXIOhm8oiu" fill="#fff" font-size="14" font-weight="600" text-anchor="middle" x="350" y="104"><!--pnid:tahRUaXnesjCUOgu8YDJIo-->Agent 编排层</text><text data-page-node-id="2LhgHd5AzCUqbfrobxixJV" fill="#cffafe" font-size="10.5" text-anchor="middle" x="350" y="121"><!--pnid:62Um7Wc8jRbDpldLFO6CpK-->动态决定调谁·按什么顺序·循环</text>
+        <line data-page-node-id="qo3SaKkW2VMM4o88iNxDFh" marker-end="url(#a9)" stroke="#64748b" stroke-width="2" x1="232" x2="120" y1="105" y2="160"/>
+        <line data-page-node-id="Yrph2Tq20xDFzLAUNXQxJQ" marker-end="url(#a9)" stroke="#64748b" stroke-width="2" x1="350" x2="350" y1="130" y2="160"/>
+        <line data-page-node-id="rQ7IImRNhPePFzz3CKypqE" marker-end="url(#a9)" stroke="#64748b" stroke-width="2" x1="468" x2="580" y1="105" y2="160"/>
+        <rect data-page-node-id="lCUn8hw0z0rjFdOnqt17UO" fill="#f2fbf6" height="46" rx="9" stroke="#94d3b6" width="160" x="40" y="160"/><text data-page-node-id="yzsX1APOdXAxW3ONG01deH" fill="#0f766e" font-size="12.5" font-weight="600" text-anchor="middle" x="120" y="183"><!--pnid:kI6phTZRQRqdK8xQZmDmIY-->RAG 召回</text><text data-page-node-id="baVgryqVE1l6qJhKxpOD1D" fill="#64748b" font-size="10" text-anchor="middle" x="120" y="199"><!--pnid:ZONEnj8CT8or1Fy8X4dOdm-->商品库语义召回</text>
+        <rect data-page-node-id="3LoORucbATfOJFvTNQWmC0" fill="#f2fbf6" height="46" rx="9" stroke="#94d3b6" width="160" x="270" y="160"/><text data-page-node-id="XtvTTpByEOOBS2Pqzna67g" fill="#0f766e" font-size="12.5" font-weight="600" text-anchor="middle" x="350" y="183"><!--pnid:UjowAIZPRXGsVOnHV2FsYa-->规则 / DB</text><text data-page-node-id="O5nSj69AMlpEnKaMZbJaEy" fill="#64748b" font-size="10" text-anchor="middle" x="350" y="199"><!--pnid:xjbnL8UFlaI7gNAUkMyj5l-->预算·类目·库存·性别</text>
+        <rect data-page-node-id="i69eb7MTxyOAeXApMXVhrj" fill="#f2fbf6" height="46" rx="9" stroke="#94d3b6" width="160" x="500" y="160"/><text data-page-node-id="oKdCGehqkMVd8aMGk9VWIr" fill="#0f766e" font-size="12.5" font-weight="600" text-anchor="middle" x="580" y="183"><!--pnid:EIawDbJBfJqlr5BJ37DrCM-->接口 / 工具</text><text data-page-node-id="XyvRH9OQmDX5n2pHcHdVhT" fill="#64748b" font-size="10" text-anchor="middle" x="580" y="199"><!--pnid:J2iWFx6OWUttU3iNSIzHjx-->价格·库存实时</text>
+        <line data-page-node-id="KXewFcIjyUNWNOmBZ2Olcc" marker-end="url(#a9t)" stroke="#0e7490" stroke-width="2" x1="120" x2="120" y1="206" y2="238"/>
+        <line data-page-node-id="NxH4coTE7IOIQVbYrcqQOw" marker-end="url(#a9t)" stroke="#0e7490" stroke-width="2" x1="350" x2="350" y1="206" y2="238"/>
+        <line data-page-node-id="WtnE8CrqzJBpbscmeQqPYT" marker-end="url(#a9t)" stroke="#0e7490" stroke-width="2" x1="580" x2="580" y1="206" y2="238"/>
+        <rect data-page-node-id="capo7ZGw3VwYSLk5wdaEqj" fill="url(#g9)" height="46" rx="10" width="320" x="190" y="238"/><text data-page-node-id="AY0wGevCvz5AtQgq6q9y13" fill="#fff" font-size="13.5" font-weight="600" text-anchor="middle" x="350" y="262"><!--pnid:dBXfSaaY3QKefiS6SA6T95-->LLM 解释 · 比较 · 建议</text><text data-page-node-id="cJrhG48Z8aaalmtofmfloe" fill="#cffafe" font-size="10.5" text-anchor="middle" x="350" y="279"><!--pnid:WNcOUHsdffis0QDiVfW4I2-->只组织已对齐的事实，不编</text>
+      </svg>
+      <div data-page-node-id="eEpptAqJBj3wyXYYABHsJN" class="note"><!--pnid:OZNrFh1bnrbsZyF9ykErxD-->Agent 管的是「流程编排」，不解决「事实真假」。事实真假由 ①（RAG grounding）+ ②（规则前置）管，这正是下一节「幻觉追问」的落点。</div>
+    </div>
+
+    <h3 data-page-node-id="kzGMKmncOQGWQZoddyNNHI"><!--pnid:X5YAUK8g3INhwByFmJmoxy-->幻觉追问：导购的 LLM 解释 / 比较 / 建议 会不会乱编？</h3>
+    <p data-page-node-id="FeI9LJofcCOfvBfZX5KnSt"><!--pnid:qBFAZjIhfDJH7xRz5FYdWT-->不会，因为 LLM 在这里是<b data-page-node-id="npRrMbiUUdP4pniUIlumzH"><!--pnid:NjNF7w0VFpJwsPpA0U61im-->「组织器」不是「知识源」</b><!--pnid:E9drmyup1utcdqJxqyCqYP-->，候选商品、价格、参数都由 RAG / 接口真实注入 prompt，LLM 只把结构化事实翻译成人话。这正是「外在幻觉」：答案在输入侧，可治。关键澄清：<b data-page-node-id="PIWFamC1aUDq8wZIYmx51F"><!--pnid:c2ApkwnYoR1H5K2beij3e1-->「上 Agent（③）」与「幻觉治理（① grounding + ② 前置）」是两个独立维度</b><!--pnid:A8y5T9HkNaWpkvU1guLx21-->，前者管编排复杂度，后者管事实真假。</p>
+    <div data-page-node-id="edjemHPFzNrhlhYxlwGn5W" class="key"><!--pnid:IB4y5SobE9pCrt4TQhc4IZ-->防幻觉手段：① 事实全 grounding（价格 / 参数 / 库存经 RAG + 接口注入，LLM 不回忆）；② 规则前置（不符商品不进 LLM 视野）；工具调用（Agent 调接口拿真实价格再让 LLM 组织）；输出带依据 / 溯源；超纲就澄清或中性兜底，不硬答。</div>
+
+    <h3 data-page-node-id="HWcbaP5LTZl1D5Xhev2nBZ"><!--pnid:4mpQbjad98pRAI9PDTYzFK-->反例清单（护栏）</h3>
+    <table data-page-node-id="fTa8L6UfEFDAV5ewqol7GL">
+      <tr data-page-node-id="hw0n3MfYzPLXNB2OPQq8tF"><th data-page-node-id="1jOuNBS4UcJkMtB4T8km0z"><!--pnid:x8WT0Lt2Ee53DBSjPNtEmx-->反例</th><th data-page-node-id="ZbeXazhE8l2ZbAzu3K75aq"><!--pnid:ogBkX4oejIG0361v7PpyMW-->违反</th><th data-page-node-id="mLYoLwhIWyQ4NetteQn0kC"><!--pnid:qhJqCPI4kxAtSpoE9jPnft-->后果</th></tr>
+      <tr data-page-node-id="AIQNgkvMJbxyJsrCUXJ0rK"><td data-page-node-id="vc2uRwSZQChoODd1PAEuFg"><!--pnid:noK4CRdmLJR1bYDYq3Dgr4-->简单参数问答也堆 RAG + Agent</td><td data-page-node-id="tJh1k2fTwxMEG1GIKHruYg"><!--pnid:9rbP0jHJyFdCyS7S9Hmard-->① 底座过深</td><td data-page-node-id="PYe0vCjGtm1lIhqThO5AFj"><!--pnid:leCsEkmr61sadMfKD9mLe3-->成本不抵收益，复杂度空转</td></tr>
+      <tr data-page-node-id="4LPridmhvc62ABmr0CVmsh"><td data-page-node-id="28shKWqgItDKRCtuwjEvGd"><!--pnid:GBzz66321UMwxM3RBdxgrF-->预算 / 库存 / 性别交给 LLM 编而非规则前置</td><td data-page-node-id="4cZcGYUBDzTZ1DRfMzlZth"><!--pnid:7leLTV6KjoZcvQZygOTXhM-->② 确定性错配</td><td data-page-node-id="QAmPaLqYWoYu5ZaoU66xes"><!--pnid:hN3VYYkZHKPlnePvhIEEpi-->超预算推荐、无库存推荐、性别错配</td></tr>
+      <tr data-page-node-id="mAWeKRczoNCldrm6gv5dy4"><td data-page-node-id="ALGZupMSjmV8Tqpx3gr9wR"><!--pnid:ey5t6qozKLeaNYUosb7ay2-->商详页硬上 Agent</td><td data-page-node-id="CEzQSDO70dSPCqhCyoOzJ7"><!--pnid:tkzdDV6RaueAi29kkQq9RK-->③ 单分支不需编排</td><td data-page-node-id="hrHuN79FCyvkeWstlrgoOo"><!--pnid:PcubBk6cyoMttclJaz83il-->多轮跑偏、口径不一、成本升</td></tr>
+      <tr data-page-node-id="T68r26KDSObibVuxMv01z7"><td data-page-node-id="zUVYsaRCnNRscltIHTnVhC"><!--pnid:hiQREkhLcGmdP4UrD7Hsej-->导购做成固定线性链不上 Agent</td><td data-page-node-id="Jb7AMI6H6EqL3kBA5GYovd"><!--pnid:1XAWZlIjreg2aGqUHqjEEH-->③ 动态多步被忽略</td><td data-page-node-id="wRfO0g35AphIZMm2nFXFR9"><!--pnid:WMvbUVFwer1hNTTR38hdVG-->答不了「和刚才那款比」、追问写死</td></tr>
+      <tr data-page-node-id="wDTILid7j69XcPd3SWENIg"><td data-page-node-id="4YLMR8vOlfhvRNSkxKIEyB"><!--pnid:BDd6VEhbqKanGU993aouMT-->高频变动知识用微调</td><td data-page-node-id="jcNdM72C6zkhj38jDnUsnc"><!--pnid:CyZnKL31VqlkrZSwy7Xz07-->① + ②</td><td data-page-node-id="sStkWecLYCuTYEm2FWfJ5Z"><!--pnid:4eMWN8i99CXFUyNxStHfcH-->价格一变要重训，知识永远滞后</td></tr>
+      <tr data-page-node-id="xC6S7dpbBLsCEXrVmtuz7C"><td data-page-node-id="iLdf8SlMZkG2oF7sXjc9nG"><!--pnid:Zjr00Mta6EjP2xEL6iJ183-->让 LLM 凭自身记忆报价格 / 参数</td><td data-page-node-id="hFrgY4crkUEamjM3DM85CE"><!--pnid:1ELu2PNr6ffziqYigKynXT-->① grounding 缺失</td><td data-page-node-id="ouTVjANpZF3WzMvrrftFlo"><!--pnid:5VDkPrK8mZZmIzmm2iWLH4-->外在幻觉爆发，编出不存在的规格</td></tr>
+    </table>
+
+    <h2 data-page-node-id="4asjRj8WYDuZTYK7F7XFsV" class="sec"><span data-page-node-id="yA3woGiYZHaFXdp4f9vxeo" class="num"><!--pnid:xd2LdwiA9M3M6ulDu20nst-->05</span><!--pnid:p1Bg7LMiSEyXtEVhjv3UT9-->一个还没想清楚的问题</h2>
+    <p data-page-node-id="gqGLRVHOdsUae6Tkn9vdLy"><!--pnid:PWQt7xxQrGunuKH8wTSW5c-->这套判据里，Agent 的触发条件最硬：运行时需要动态多步加循环，就上；单分支固定流程，就不上。RAG 的分叉也干脆：知识常变、答案在库里有，就检索。唯独微调，只拿到了半条判据。</p>
+    <p data-page-node-id="VnPJCk8CHoqahC87FGPjwn"><!--pnid:bR8xobFuYyeGMozBgwp31M-->成本对比给了它位置（最贵、最靠右），微调 vs RAG 的分叉排除了「知识频繁变动」的场景，但这些都是排除法。正面的问题一直没答：什么时候 prompt 是真的写不动了、必须微调？让模型稳定吐严格 JSON、口气贴合品牌、学会一套私有格式，这类「能力和格式」的需求检索解决不了，可它们也没有一条像「运行时循环」那样一测便知的硬条件。</p>
+    <div data-page-node-id="SICriiaDiFZY8stnpzDAPO" class="key"><!--pnid:fjSoxVfDSD22Bb0kIYTAIV-->没想清楚的是：微调的触发判据长什么样。只靠「prompt 试过了不太行」这种体感，微调会被高估（一遇难处就想到重训）或被低估（一直凑合写 prompt）。这个问题目前没有定论。</div>
+
+    <h2 data-page-node-id="PEP6yv8wDuAE6M0gMOt0sA" class="sec"><span data-page-node-id="Q1SI6cwM3cM2XnYlPu8txW" class="num"><!--pnid:221ntaXX6MTeo1dZqIVV5N-->06</span><!--pnid:4wC0DTqK4JXabFBifFpH1V-->一句话总结</h2>
+    <div data-page-node-id="yGNH8o56bcdvamQmEj5p1y" class="pull"><!--pnid:Xc2F6BRWgZf1wb69zisGaM-->选型不是挑最强的方案，是买最少的复杂度：确定性交给规则，事实交给检索，语言交给 LLM，编排交给 Agent，每一层都要拿真实需求来换。</div>
+
+
+  </div>
+</div>
+</body>
+</html>

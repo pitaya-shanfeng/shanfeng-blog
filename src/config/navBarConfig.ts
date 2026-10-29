@@ -14,28 +14,36 @@ import { booksConfig } from "./booksConfig";
 // 结构按内容体系组织：
 //
 //   主页
-//   ├── 写作 → 见山 / 全部著作 / 增长三部曲
-//   ├── 方法 → 产品思维 / 产品方法 / 产品架构 / 商业增长 / 组织协作
-//   ├── 案例 → 项目复盘 / 调研报告 / 数据案例 / 原型设计
-//   ├── 拾遗 → 论文阅读 / 认知与设计 / 学习笔记 / 读书报告
+//   ├── 写作 → 见山 / 增长黑客
+//   ├── 方法 → 需求洞察 / 产品设计 / 商业增长
+//   ├── 实战 → 调研报告 / 方案设计 / 项目复盘
+//   ├── 拾遗 → 行业动态 / 学习笔记 / 转载精选
 //   └── 关于 → 个人介绍 / 版权声明 / 书签导航 / 联系合作
 //
-// 二级项为什么指向 /archive/?category=&tag= ：
-// 模板的分类没有独立页面（`getCategoryUrl` 同样指向归档页的筛选），而归档页的筛选支持
-// `?category=` 与 `?tag=` **同时给出、取交集**（见 ArchivePanel 的 applyFilter）。
-// 所以「分类当一级桶（如 方法沉淀）+ 标签当二级主题（如 数据分析）」就能精确落到子项：
-//   全部方法 → /archive/?category=方法沉淀
-//   数据分析 → /archive/?category=方法沉淀&tag=数据分析
-// 这也意味着发文章时：**category 填一级桶名，tags 里带上对应的二级主题名**，导航才对得上。
+// 二级项的落点有三种，取决于这一栏的内容形态：
+//   1. 成书的（写作）→ 直接进书页 /books/<id>/
+//   2. 已在做合集页的（拾遗三栏）→ 进自建页 /hotnews/ /notes/ /picks/
+//   3. 还没做页面的（方法 / 实战）→ 先用归档页的分类筛选兜住：
+//        /archive/?category=方法/需求洞察
+//      归档页的 category 筛选是**精确匹配**，所以文章的 category 必须
+//      逐字写成「一级/二级」两级，导航才对得上。
+//
+// 发文约定（2026-10-29 定）：**每一个二级菜单就是一个分类**，
+// category 一律两级写法 —— `方法/需求洞察`、`实战/项目复盘`、`拾遗/学习笔记`。
+// 卡片上的「写作/见山」「拾遗 / 学习笔记」就是这同一个东西拼出来的，
+// 没有第二套分类概念。
+//
+// 以后每个二级分类单独做「见山式」合集页时，只需把该项从 `category:` 换成
+// `url:`（指向新页面），导航与分类栏会自动跟着走，不用改别处。
 
 /**
  * 内容分组：一级 = 内容来源，四栏互斥；二级 = 该栏的索引项。
  *
  *   首页
- *   ├── 写作   → 见山 / 全部著作 / 增长三部曲   我写的书
- *   ├── 方法   → 产品思维 / 产品方法 / …     可复用的做法
- *   ├── 案例   → 项目复盘 / 调研报告 / …     做过的项目
- *   ├── 拾遗   → 论文阅读 / 认知与设计 / …   外部的输入
+ *   ├── 写作   → 见山 / 增长黑客            我写的书
+ *   ├── 方法   → 需求洞察 / 产品设计 / …     可复用的做法
+ *   ├── 实战   → 调研报告 / 方案设计 / …     做过的项目
+ *   ├── 拾遗   → 行业动态 / 学习笔记 / …     外部的输入
  *   └── 关于   → 个人介绍 / 版权声明 / …      我是谁
  *
  * 菜单是**内容规划**：条目代表打算写的方向，即使内容还没写出来也先留位，
@@ -44,20 +52,13 @@ import { booksConfig } from "./booksConfig";
  * ⚠️ 母版的一条硬约束：`resolveNavMenuLinks` 里
  * 「一级项只剩一个子项时，直接把子项提到一级」（父项名消失）。
  * 所以每个一级项**至少要有两个子项**，否则一级名根本显示不出来。
- * 「写作」因此配了「见山 + 全部著作」两项。
- *
- * 二级项一律**只按 tag 筛**（`/archive/?tag=xxx`），不按 category：
- * 站里文章的 category 是「著书立说 / 论文阅读 / 认知与设计」三种，
- * 与栏目不是一一对应；而 tag 才是稳定的索引维度。
- * 归档页的 category 与 tag 同时给出时取交集（见 ArchivePanel 的 applyFilter），
- * 这里只给 tag，避免筛出空列表。
  */
 
 /** 归档页按标签筛选（只给 tag，避开 category 的交集） */
 const archiveByTag = (tag: string): string =>
 	`/archive/?${new URLSearchParams({ tag }).toString()}`;
 
-/** 归档页按分类筛选（用于「全部著作」——《见山》24 章的 category 就是「著书立说」） */
+/** 归档页按分类筛选（方法 / 实战两栏在做出合集页之前用它兜底） */
 const archiveByCategory = (category: string): string =>
 	`/archive/?${new URLSearchParams({ category }).toString()}`;
 
@@ -70,6 +71,12 @@ interface TopicRef {
 	category?: string;
 	/** 对应 booksConfig 里的书（直接进书页） */
 	book?: string;
+	/**
+	 * 直接给一个自建页面（优先级最高）。
+	 * 用于「有独立合集页、但不该走归档筛选」的栏目，比如 /hotnews/ 这种时间线页
+	 * —— 归档筛选只能按 tag/category 取交集，表达不了「按时间倒序的合集」。
+	 */
+	url?: string;
 }
 
 interface ContentGroupConfig {
@@ -92,55 +99,88 @@ const CONTENT_GROUPS: ContentGroupConfig[] = [
 	},
 	{
 		name: "方法",
+		// 每个二级 = 一个分类（category 两级写法）。暂时没有合集页，落归档筛选。
 		topics: [
-			{ name: "产品思维", tag: "产品思维" },
-			{ name: "产品方法", tag: "产品方法" },
-			{ name: "产品架构", tag: "产品架构" },
-			{ name: "商业增长", tag: "商业增长" },
-			{ name: "组织协作", tag: "组织协作" },
+			{ name: "需求洞察", category: "方法/需求洞察" },
+			{ name: "产品设计", category: "方法/产品设计" },
+			{ name: "商业增长", category: "方法/商业增长" },
 		],
 	},
 	{
-		name: "案例",
-		// 这一栏是内容规划，实战类文章还在写，菜单先留位
+		name: "实战",
+		// 同上：这一栏还是内容规划，实战类文章在写，菜单先留位。
 		topics: [
-			{ name: "项目复盘", tag: "项目复盘" },
-			{ name: "调研报告", tag: "调研报告" },
-			{ name: "数据案例", tag: "数据案例" },
-			{ name: "原型设计", tag: "原型设计" },
+			{ name: "调研报告", category: "实战/调研报告" },
+			{ name: "方案设计", category: "实战/方案设计" },
+			{ name: "项目复盘", category: "实战/项目复盘" },
 		],
 	},
 	{
 		name: "拾遗",
+		// 三项各自有独立页面，不走归档筛选：
+		// 归档只能表达「按 tag 筛」，表达不了「栏目刊头 + 按时间倒序的列表」。
+		// 除行业动态是时间线（src/pages/hotnews.astro）外，其余两页版式同源，
+		// 共用 src/components/collection/CollectionPage.astro。
+		// 没有内容的栏目进去是空态，属预期，不是链接坏了。
 		topics: [
-			{ name: "论文阅读", tag: "论文阅读" },
-			{ name: "认知与设计", tag: "认知与设计" },
-			// 以下两类还在写，菜单先留位
-			{ name: "学习笔记", tag: "学习笔记" },
-			{ name: "读书报告", tag: "读书报告" },
+			{ name: "行业动态", tag: "行业动态", url: "/hotnews/" },
+			{ name: "学习笔记", tag: "学习笔记", url: "/notes/" },
+			{ name: "转载精选", tag: "转载精选", url: "/picks/" },
 		],
 	},
 ];
+
+/**
+ * 二级项落点解析：书 → 书页；给了自建页面 → 直接用；否则退回归档筛选。
+ * 导航菜单与分类栏共用这一处，避免两边算出不同的地址。
+ */
+const resolveTopicUrl = (topic: TopicRef): string => {
+	// 二级项如果对应一本已配置的书，直接进书页；否则按标签退回归档筛选
+	const book = topic.book
+		? booksConfig.find((item) => item.title === topic.book)
+		: undefined;
+	if (topic.url) return topic.url;
+	if (book) return `/books/${book.id}/`;
+	if (topic.category) return archiveByCategory(topic.category);
+	return archiveByTag(topic.tag ?? topic.name);
+};
+
+/**
+ * 内容分类的扁平结构：一级是「栏」，二级是「栏目」。
+ *
+ * 导航菜单与首页分类栏都从这里取，**一份配置两处消费**。
+ * 文章侧与它对齐的方式是 category 写成两级（`方法/需求洞察`），
+ * 所以文章的 category 就是分类本身，导航是它的索引，两者不是两套东西。
+ */
+export interface NavCategoryItem {
+	name: string;
+	url: string;
+}
+
+export interface NavCategoryGroup {
+	name: string;
+	items: NavCategoryItem[];
+}
+
+export const navCategoryGroups: NavCategoryGroup[] = CONTENT_GROUPS.map(
+	(group) => ({
+		name: group.name,
+		items: group.topics.map((topic) => ({
+			name: topic.name,
+			url: resolveTopicUrl(topic),
+		})),
+	}),
+);
 
 /** 内容分组 → 导航项（一级 = 分组，二级 = 各索引项） */
 const buildContentGroup = (group: ContentGroupConfig): NavBarLink => ({
 	name: group.name,
 	url: "#",
 	icon: group.icon,
-	children: group.topics.map((topic) => {
-		// 二级项如果对应一本已配置的书，直接进书页；否则按标签退回归档筛选
-		const book = topic.book
-			? booksConfig.find((item) => item.title === topic.book)
-			: undefined;
-		return {
-			name: topic.name,
-			url: book
-				? `/books/${book.id}/`
-				: topic.category
-					? archiveByCategory(topic.category)
-					: archiveByTag(topic.tag ?? topic.name),
-		};
-	}),
+	children: group.topics.map((topic) => ({
+		name: topic.name,
+		url: resolveTopicUrl(topic),
+	})),
 });
 
 /** 关于分组 */

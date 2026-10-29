@@ -1,0 +1,29 @@
+---
+/**
+ * 转载精选合集页：/picks/
+ *
+ * 这一栏的正文不是自己写的，所以刊头必须把准入标准摆出来，
+ * 否则读者没法判断「精选」到底精在哪。
+ * 版式与取数在 src/components/collection/CollectionPage.astro。
+ */
+
+import CollectionPage from "@/components/collection/CollectionPage.astro";
+import { bannerQuotes } from "@/utils/banner-quotes-data";
+
+const LEAD = "转一篇，至少自己复核过一遍。";
+const DESC =
+	"只转经得起复核的东西：观点有具体做法支撑、数据能追到源头、作者在一线做过。每篇前面写一句为什么值得转——是补了我不懂的，还是把我说不清的说清楚了。不转观点合集、不转情绪、不转标题党。";
+const EMPTY_HINT = "还在挑。标准是：观点有做法支撑、数据能追到源头、作者在一线做过。";
+---
+
+<CollectionPage
+	path="/picks/"
+	category="转载精选"
+	lead={LEAD}
+	desc={DESC}
+	banner="/assets/images/picks-banner.webp"
+	quotes={bannerQuotes}
+	emptyHint={EMPTY_HINT}
+	icon="material-symbols:bookmarks-rounded"
+	unit="篇"
+/>

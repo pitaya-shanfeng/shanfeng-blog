@@ -492,6 +492,8 @@ export const ko: Translation = {
 
 	[Key.shareArticle]: "공유",
 	[Key.generatingPoster]: "포스터 생성 중...",
+	[Key.posterFailed]: "포스터 생성 실패",
+	[Key.retry]: "다시 시도",
 	[Key.copied]: "복사됨",
 	[Key.copyLink]: "링크 복사",
 	[Key.savePoster]: "포스터 저장",

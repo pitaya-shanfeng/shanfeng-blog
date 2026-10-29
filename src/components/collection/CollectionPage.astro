@@ -1,0 +1,599 @@
+---
+/**
+ * 栏目合集页（拾遗各栏共用）
+ *
+ * 版式照见山合集页（books/[book].astro）搬，但这是一页**栏目**而不是一本书：
+ * - 刊头：kicker → 刊名 → 一句话定位 → 说明 → 底部盘口，右侧分享 / 打赏。
+ *   结构与见山书卷卡（.scroll）同源，差别只有一处——没有封面图。
+ *   栏目没有实体封面，空出 200px 封面列只会让这块板缺一块，所以文字占满整行；
+ *   高度用 min-height 对齐那张卡（封面 200×267 + 上下 28px padding）。
+ * - 列表：平铺，不分组。见山的「篇」是书的固有结构，栏目没有这层；
+ *   按时间倒序一条条排下去即可。
+ * - 卡片直接用母版 PostCard（list 模式），与见山章节卡同一套尺寸和封面规则：
+ *   高 190、封面 16:9 挂右侧、标题 24px、底部「分类 / 标签」同行。
+ *
+ * 抽成组件的理由：拾遗下各栏目版式完全一致（行业动态另有独立时间线页），
+ * 复制多份 500 行 CSS 迟早会漂。这里只留版式与取数，栏目自己的名字、
+ * 定位语、说明、banner、空态文案由调用页传入。
+ *
+ * 取数认两处：category 或 tags 里有栏目名。
+ * 导航把栏目挂在「拾遗」下，按 navBarConfig 的约定 category 填一级桶、
+ * tags 带二级主题，但也可能有人直接把 category 写成栏目名，两种都收。
+ * HTML 文章（htmlPosts 集合）一并合并，写法不受限。
+ */
+
+import { getCollection, render } from "astro:content";
+import { Icon } from "astro-icon/components";
+import PostCard from "@/components/layout/PostCard.astro";
+import SharePoster from "@/components/misc/SharePoster.svelte";
+import SponsorModal from "@/components/misc/SponsorModal.astro";
+import { siteConfig } from "@/config";
+import { navBarConfig } from "@/config/navBarConfig";
+import { profileConfig } from "@/config/profileConfig";
+import { sponsorConfig } from "@/config/sponsorConfig";
+import I18nKey from "@/i18n/i18nKey";
+import { i18n } from "@/i18n/translation";
+import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import { getPostUrlBySlug } from "@/utils/url-utils";
+import type { BannerQuote } from "@/utils/banner-quotes-data";
+// 霞鹜文楷按 unicode-range 切成 97 片，浏览器只会拉当前文案命中的那几片。
+// 只在这个组件里 import，字体 CSS 就只进合集页的样式表，首页不受影响。
+import "@/styles/lxgw-wenkai.css";
+
+interface Props {
+	/** 本页路由，用来在导航里定位栏目（名称与上级归属都从导航取，不另存一份） */
+	path: string;
+	/** 数据筛选键；不传则用导航里的栏目名 */
+	category?: string;
+	/** 一句话定位：与见山书卷卡的 lead 同位，一行就够，不承担解释 */
+	lead: string;
+	/** 说明段：只讲这一页能替读者做什么，不讲栏目愿景 */
+	desc: string;
+	/** 合集页 banner；不传则回落全局壁纸 */
+	banner?: string;
+	/** 空态标题 */
+	emptyTitle?: string;
+	/** 空态说明 */
+	emptyHint: string;
+	/** 空态图标 */
+	icon?: string;
+	/** 盘口计数单位：份 / 篇 */
+	unit?: string;
+	/** banner 上逐字打出的金句；不传则文字层不出现 */
+	quotes?: BannerQuote[];
+}
+
+const {
+	path,
+	category,
+	lead: LEAD,
+	desc: DESC,
+	banner: BANNER,
+	emptyTitle,
+	emptyHint,
+	icon = "material-symbols:auto-stories-rounded",
+	unit = "篇",
+	quotes = [],
+} = Astro.props;
+
+const navEntry = navBarConfig.links
+	.map((parent) => ({
+		parent,
+		child: parent.children?.find((item) => item.url === path),
+	}))
+	.find((pair) => pair.child);
+/** 栏目名（导航二级项） */
+const CATEGORY = navEntry?.child?.name ?? category ?? "";
+/** 栏目归属（导航一级项）：拾遗 */
+const GROUP_NAME = navEntry?.parent.name ?? "";
+const KICKER = GROUP_NAME ? `${GROUP_NAME} · ${CATEGORY}` : CATEGORY;
+
+/** 数据筛选键：优先用调用方给的，否则与栏目名一致 */
+const POST_CATEGORY = category ?? CATEGORY;
+
+/**
+ * 归类命中判定：等值 / 路径拆段 / tags 三种都收。
+ *
+ * 等值是本项目的原始约定（见山那批用 category: 写作，二级主题走 tags）。
+ * 但实际写稿时，很自然会照着导航「拾遗 → 学习笔记」两级把归类写成
+ * 路径式 category: 拾遗/学习笔记 —— 这个写法有信息量（卡片底部能看出
+ * 归属），却会让等值匹配一条都收不到，栏目页白白空着。
+ * 所以按「/」拆段后任一段相等即算命中，两种写法都能进，不必回头改稿。
+ * 拆段而非取末段：将来写成「拾遗/学习笔记/Prompt」也照样命中。
+ */
+const inCategory = ({
+	data,
+}: {
+	data: { draft?: boolean; category?: string | null; tags?: string[] };
+}) => {
+	if (data.draft || !POST_CATEGORY) return false;
+	if ((data.tags ?? []).includes(POST_CATEGORY)) return true;
+	const category = data.category?.trim();
+	if (!category) return false;
+	return category
+		.split("/")
+		.some((segment) => segment.trim() === POST_CATEGORY);
+};
+
+const mdPosts = await getCollection("posts", inCategory);
+const htmlPosts = await getCollection("htmlPosts", inCategory);
+
+/**
+ * 两个集合合并：HTML 文章与 md 文章在列表里应当无差别。
+ * htmlPosts 的 entry 类型与 posts 不同，但 loader 写出的 data 形状一致
+ * （content.config.ts 里两个 collection 共用 postSchema），这里 cast 一次。
+ */
+const posts = [
+	...mdPosts,
+	...(htmlPosts as unknown as typeof mdPosts),
+].sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
+
+/**
+ * 字数 / 阅读时长：优先取 data 上的值（HTML 文章由 loader 写入）。
+ * md 文章要跑一次 render 才能拿到 remark 插件算出的值；口径与卡片一致，
+ * 否则盘口的总字数会和每张卡上的数字对不上。
+ */
+async function statsOf(post: (typeof posts)[number]) {
+	let words = post.data.words ?? 0;
+	let minutes = post.data.minutes ?? 0;
+	if (words > 0) return { words, minutes };
+	try {
+		const { remarkPluginFrontmatter } = await render(post as never);
+		words = remarkPluginFrontmatter.words ?? 0;
+		minutes = remarkPluginFrontmatter.minutes ?? 0;
+	} catch {
+		/* HTML 文章没有 markdown 渲染流程，保持 data 里的值 */
+	}
+	return { words, minutes };
+}
+
+let totalWords = 0;
+let totalMinutes = 0;
+for (const post of posts) {
+	const stats = await statsOf(post);
+	totalWords += stats.words;
+	totalMinutes += stats.minutes;
+}
+
+/**
+ * 盘口的字数与时长按量级换单位。
+ * 固定用「万字 / 小时」在栏目刚起步时会显示「约 0.0 万字 · 读完约 1 小时」——
+ * 一位数的字数和四舍五入出的 1 小时都没有信息量，读者只会觉得这页没做完。
+ * 不足万换千字，不足一小时换分钟，再少就整段不显示（只留篇数与更新时间）。
+ */
+const wordStat =
+	totalWords >= 10000
+		? { n: (totalWords / 10000).toFixed(1), u: "万字" }
+		: totalWords >= 1000
+			? { n: String(Math.round(totalWords / 1000)), u: "千字" }
+			: null;
+const timeStat =
+	totalMinutes >= 60
+		? { n: String(Math.round(totalMinutes / 60)), u: "小时" }
+		: totalMinutes > 0
+			? { n: String(Math.max(1, Math.round(totalMinutes))), u: "分钟" }
+			: null;
+
+const mmdd = (d: Date) =>
+	`${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+const latest = posts[0];
+
+// 支持区块：分享的是「这个合集」，不是某一篇
+const showShare = siteConfig.post.share !== false;
+const showSponsorButton = sponsorConfig.showButtonInPost;
+const showSupportBlock = showShare || showSponsorButton;
+const shareDate = latest ? latest.data.published.toISOString().slice(0, 10) : "";
+---
+
+<MainGridLayout
+    title={CATEGORY}
+    description={DESC}
+    postBanner={BANNER || undefined}
+    heading={`${CATEGORY}合集`}
+    hideBannerTitle
+>
+    {/* 只有这一页有自己的 banner 才挂金句：没传 BANNER 的栏目回落的是全局壁纸
+        （动漫插画），白字压上去既不干净也不像这个栏目该有的样子。
+        等这两个栏目出了自己的图，金句会自动出现，不用再改这里。 */}
+    <div
+        class="col-page onload-animation"
+        data-no-category-bar
+        data-quotes={BANNER && quotes.length > 0
+            ? JSON.stringify(quotes)
+            : undefined}
+    >
+
+        <!-- ============ 刊头 ============
+             照见山书卷卡（/books/jianshan/ 的 .scroll）：kicker → 刊名 →
+             一句话定位 → 说明 → 底部盘口，右侧分享 / 打赏。
+             没有封面列，文字占满整行；高度用 min-height 对齐那张卡，
+             盘口靠 margin-top:auto 贴底。 -->
+        <section class="col-board card-base" data-quote-anchor aria-label="栏目概况">
+            <div class="col-main">
+                <div class="col-text">
+                    <p class="col-kicker">{KICKER}</p>
+                    {/* 母版已经渲染了一个 sr-only 的 h1（heading || title），
+                        这块是视觉主标题，语义上降到 h2，别和它撞 */}
+                    <h2 class="col-title">{CATEGORY}</h2>
+                    <p class="col-claim">{LEAD}</p>
+                    <p class="col-desc">{DESC}</p>
+
+                    <p class="col-facts">
+                        {
+                            posts.length > 0 ? (
+                                <>
+                                    <b>{posts.length}</b> {unit}
+                                    {wordStat && (
+                                        <>
+                                            <span class="sep" />
+                                            约 <b>{wordStat.n}</b> {wordStat.u}
+                                        </>
+                                    )}
+                                    {timeStat && (
+                                        <>
+                                            <span class="sep" />
+                                            读完约 <b>{timeStat.n}</b> {timeStat.u}
+                                        </>
+                                    )}
+                                    <span class="sep"></span>
+                                    更新至 <b>{mmdd(latest.data.published)}</b>
+                                </>
+                            ) : (
+                                "待第一篇"
+                            )
+                        }
+                    </p>
+                </div>
+
+                {
+                    showSupportBlock && (
+                        <aside class="col-support" aria-label={i18n(I18nKey.sponsorButton)}>
+                            {showShare && (
+                                <SharePoster
+                                    client:load
+                                    title={CATEGORY}
+                                    author={profileConfig.name}
+                                    description={DESC}
+                                    pubDate={shareDate}
+                                    coverImage={BANNER || null}
+                                    url={Astro.url.href}
+                                    siteTitle={siteConfig.title}
+                                    avatarSelector=".profile-avatar-image img"
+                                />
+                            )}
+                            {showSponsorButton && (
+                                <button type="button" data-sponsor-open class="col-reward">
+                                    <span>{i18n(I18nKey.sponsor)}</span>
+                                    <Icon name="material-symbols:favorite-rounded" class="text-sm" />
+                                </button>
+                            )}
+                        </aside>
+                    )
+                }
+            </div>
+        </section>
+
+        <!-- ============ 文章列表 ============
+             平铺，不分组。卡片交给母版 PostCard，本页只补封面尺寸与间距，
+             其余（标题、元信息、底部标签）与见山合集页逐像素一致。 -->
+        {
+            posts.length > 0 ? (
+                <div class="col-list list-mode">
+                    {posts.map((post) => (
+                        <div class="col-item">
+                            <PostCard
+                                entry={post}
+                                title={post.data.title}
+                                tags={post.data.tags.filter(
+                                    (t) => t !== post.data.category,
+                                )}
+                                category={post.data.category}
+                                categoryLabel={
+                                    GROUP_NAME ? `${GROUP_NAME} / ${CATEGORY}` : CATEGORY
+                                }
+                                published={post.data.published}
+                                updated={post.data.updated}
+                                url={getPostUrlBySlug(post.id)}
+                                image={post.data.image}
+                                description={post.data.description}
+                                draft={post.data.draft}
+                                pinned={post.data.pinned}
+                                password={!!post.data.password}
+                                style=""
+                                categoryInBottom
+                                metaOverride={{ words: true, readingTime: true }}
+                                loading="lazy"
+                            />
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <div class="col-empty card-base">
+                    <Icon name={icon} class="ico" />
+                    <p class="t">{emptyTitle ?? "还没有第一篇"}</p>
+                    <p class="d">{emptyHint}</p>
+                </div>
+            )
+        }
+    </div>
+
+    {showSponsorButton && <SponsorModal />}
+</MainGridLayout>
+
+<style>
+    @reference "../../styles/main.css";
+
+    .col-page {
+        @apply text-neutral-900 dark:text-neutral-100;
+        display: flex;
+        flex-direction: column;
+        /* 与母版列表容器一致：#post-list-container 是 gap-4 */
+        gap: 16px;
+    }
+
+    /* ---------- 刊头 ----------
+       结构照抄见山书卷卡：kicker → 刊名 → 一句话定位 → 说明 → 盘口，
+       右侧分享 / 打赏；没有封面列，卡片高度用 min-height 对齐。 */
+    .col-board {
+        display: flex;
+        padding: 22px;
+        /* 顶部一层极淡的主题色：纯白卡片托不住一块刊头，需要一点底色纵深 */
+        background-image: linear-gradient(
+            176deg,
+            color-mix(in oklab, var(--primary) 7%, transparent) 0%,
+            transparent 44%
+        );
+    }
+    @media (min-width: 1024px) {
+        .col-board {
+            padding: 28px 30px;
+            /* 与见山 .scroll 等高：封面 200×267 撑出的高度 + 上下 28px padding。
+               没有封面后内容不足这么高，靠 min-height 兜住；
+               盘口再用 margin-top:auto 贴底，否则整块板会缩在顶部、下面空一大块。 */
+            min-height: calc(200px * 4 / 3 + 56px);
+        }
+    }
+    :global(.dark) .col-board {
+        background-image: linear-gradient(
+            176deg,
+            color-mix(in oklab, var(--primary) 8%, transparent) 0%,
+            transparent 44%
+        );
+    }
+
+    /* 正文在左、分享打赏在右：与见山 .main 同一套 flex 关系。
+       用 stretch 而不是 flex-start —— 见山靠封面把卡片撑到 267px，
+       这块没有封面，文字列不撑满则 margin-top:auto 推不动盘口。 */
+    .col-main {
+        display: flex;
+        align-items: stretch;
+        gap: 24px;
+        width: 100%;
+        min-width: 0;
+    }
+    .col-text {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    /* 四个层级的字号与间距全部对齐见山：12 / 32 / 18 / 14，段间距 10px */
+    .col-kicker {
+        font-size: var(--fs-label);
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        color: var(--btn-content);
+    }
+    .col-title {
+        margin: 10px 0 0;
+        font-size: var(--fs-h1);
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: 0.04em;
+        color: currentColor;
+    }
+    .col-claim {
+        margin: 10px 0 0;
+        font-size: var(--fs-item);
+        line-height: 1.75;
+        color: color-mix(in oklab, currentColor 82%, transparent);
+    }
+    .col-desc {
+        margin: 10px 0 0;
+        font-size: var(--fs-sub);
+        line-height: 1.95;
+        color: var(--content-meta);
+        /* 与见山同宽：行长过 620px 就开始难读 */
+        max-width: 620px;
+    }
+
+    .col-support {
+        flex: 0 0 auto;
+        align-self: center;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    /* 打赏按钮：与文章页 / 见山书卷卡同款（主色实心 + 48px 高） */
+    .col-reward {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        height: 48px;
+        padding: 0 22px;
+        border-radius: 8px;
+        background: var(--primary);
+        color: #fff;
+        font-size: var(--fs-sub);
+        font-weight: 500;
+        white-space: nowrap;
+        cursor: pointer;
+        transition:
+            background 150ms cubic-bezier(0.4, 0, 0.2, 1),
+            transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    :global(.dark) .col-reward {
+        color: rgb(0 0 0 / 0.7);
+    }
+    .col-reward:hover {
+        background: color-mix(in oklab, var(--primary) 80%, transparent);
+        transform: scale(1.04);
+    }
+    .col-reward:active {
+        transform: scale(0.96);
+    }
+
+    /* 盘口：一行流水，同见山「5 篇 | 21 章 | 23.8 万字」的写法。
+       margin-top:auto 把它推到底部——没有封面撑高度时，这是唯一能
+       让卡片保持「文字在上、数字在下」的办法。 */
+    .col-facts {
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: auto 0 0;
+        padding-top: 20px;
+        font-size: var(--fs-meta);
+        color: color-mix(in oklab, var(--content-meta) 88%, transparent);
+    }
+    .col-facts b {
+        font-size: var(--fs-body);
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        color: currentColor;
+    }
+    .col-facts .sep {
+        width: 1px;
+        height: 11px;
+        background: var(--line-divider);
+        align-self: center;
+        margin: 0 6px;
+    }
+
+    /* ---------- 列表 ----------
+       与见山 .book-list 同参数：flex 单列 + 16px 间距，卡片本体零覆盖。 */
+    .col-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+    .col-item {
+        scroll-margin-top: 5rem;
+    }
+
+    /* ---------- 空态 ---------- */
+    .col-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 56px 24px;
+        text-align: center;
+    }
+    .col-empty .ico {
+        width: 48px;
+        height: 48px;
+        color: color-mix(in oklab, var(--content-meta) 70%, transparent);
+    }
+    .col-empty .t {
+        margin-top: 8px;
+        font-size: var(--fs-item);
+        font-weight: 700;
+        color: currentColor;
+    }
+    .col-empty .d {
+        max-width: 460px;
+        font-size: var(--fs-sub);
+        line-height: 1.8;
+        color: var(--content-meta);
+    }
+
+    /* ---------- 窄屏 ----------
+       与见山书卷卡同一套降级：单列、正文在上、支持块落到下面靠左 */
+    @media (max-width: 1023px) {
+        .col-main {
+            flex-direction: column;
+            gap: 18px;
+        }
+        .col-support {
+            align-self: flex-start;
+        }
+    }
+    @media (max-width: 860px) {
+        .col-board {
+            padding: 20px 18px 18px;
+        }
+    }
+    @media (max-width: 460px) {
+        .col-board {
+            padding: 18px 16px 16px;
+        }
+        /* 窄屏把刊名降到 fs-h2：32px 在 320~390 宽下会把四字栏目名逼到换行 */
+        .col-title {
+            font-size: var(--fs-h2);
+        }
+    }
+</style>
+
+<style is:global>
+    /*
+     * 卡片右侧的封面：与见山章节卡**真正生效**的那套几何对齐。
+     *
+     * 注意别照 [book].astro 里那段 is:global 抄 —— 它写的是 30% / right 16 / 圆角 8，
+     * 但被 styles/book-list-covers.css 按更高的特异性盖掉了（见山实际渲染是
+     * 25% / 上限 280 / right 20 / 圆角 12，997 宽下为 249×140）。
+     * 这里是后者，两边卡片才逐像素一致。
+     *
+     * 用 is:global + 高特异性：目标元素在 PostCard 子组件里，母版自己的规则
+     * :global(.list-mode) .has-cover .post-card-image 带 scoped 属性后达到 0,5,0，
+     * 0,4,0 的写法一条都命中不了。选择器限定在 .col-page .col-list 内，
+     * 不影响首页、归档页与见山合集页。
+     */
+    /* 基线（含窄屏）：见山在窄屏下封面仍是 16:9，靠的就是这一层不带媒体查询的覆盖
+       —— [book].astro 里那段 is:global 没有媒体查询，所以 375 宽的屏幕上
+       母版的 aspect-2/1 也照样被改成 16/9。少了它，封面会按图片自身比例撑高，
+       一张竖版书封能把卡片拉到 158px 高，标题只剩两行。
+       宽度这一层不动，沿用母版 list 模式的 9rem。 */
+    .col-page .col-list.list-mode .col-item .post-card-wrapper.has-cover .post-card-image {
+        top: 50% !important;
+        bottom: auto !important;
+        right: 16px !important;
+        height: auto !important;
+        aspect-ratio: 16 / 9 !important;
+        transform: translateY(-50%);
+        border-radius: 8px !important;
+        background: #0c1420;
+    }
+    .col-page .col-list.list-mode .col-item .post-card-wrapper.has-cover .post-card-image:hover {
+        transform: translateY(-50%) scale(1.03) !important;
+        box-shadow: 0 8px 22px rgb(0 0 0 / 0.16);
+    }
+    .col-page .col-list.list-mode .col-item .post-card-wrapper.has-cover .post-card-image img {
+        border-radius: inherit !important;
+        /* 绝对定位填满容器，容器高度才能被 aspect-ratio 决定；
+           否则高度会被图片自身比例撑开，aspect-ratio 形同虚设 */
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+    }
+
+    /* 宽屏再叠一层：见山实际渲染的 25% / 上限 280 / right 20 / 圆角 12 */
+    @media (min-width: 768px) {
+        .col-page .col-list.list-mode .col-item .post-card-wrapper.has-cover .post-card-image {
+            right: 20px !important;
+            width: min(25%, 280px) !important;
+            border-radius: 12px !important;
+        }
+        /* 正文区宽度扣掉封面与两侧留白，长标题才会在封面左边折行而不是被压住 */
+        .col-page .col-list.list-mode .col-item .post-card-wrapper.has-cover .post-card-content {
+            width: calc(100% - min(25%, 280px) - 36px) !important;
+        }
+    }
+
+</style>
+

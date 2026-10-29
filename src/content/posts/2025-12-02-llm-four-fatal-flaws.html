@@ -1,0 +1,244 @@
+---
+title: 大模型四大致命伤
+published: 2025-12-02
+description: 做 AI 产品，先认清模型什么做不了。幻觉、记忆受限、时效与私有数据、不可控与延迟，四个致命伤对应四道产品闸门。
+category: 拾遗/学习笔记
+tags:
+  - 大模型
+  - AI产品
+  - 风险治理
+draft: false
+---
+
+<!DOCTYPE html>
+<html data-page-node-id="rfWCK3yxJTvJ8BZgbhv5Lx" lang="zh-CN">
+<head data-page-node-id="4smIZoRhumY12hLAipxza3">
+<script data-page-node-id="zFZURYagn9LVCshtJMTKtP" src="/page/page_comm/inject.js"></script>
+<meta data-page-node-id="q9oq0YfYAL2Vai6WfFE6CG" charset="UTF-8">
+<meta data-page-node-id="wFXvTbN1PA4maupFNNHS8G" content="width=device-width, initial-scale=1.0" name="viewport">
+<title data-page-node-id="kPNF3zWUt4LOZr64MYf5zx" data-pnid-children="1n8xYW2q8PBYU7fzv0yuVP">认知与设计 · 大模型四大致命伤</title>
+<style data-page-node-id="Uxg6UATu9c84Hz6GOxulko" data-pnid-children="GEKAJvPzFc67WHqf5bjKsY">
+  :root{
+    --ink:#1f2937; --sub:#6b7f76; --line:#e3ede7; --accent:#10b981; --accent2:#0e7490;
+    --accent-soft:#ecfdf5; --key-bg:#f2fbf6; --quote:#065f46; --page:#f3f7f5;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; padding:36px 16px 64px; background:var(--page); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    font-size:17px; line-height:1.92; -webkit-font-smoothing:antialiased;
+  }
+  .reader{max-width:760px; margin:0 auto; background:#fff; border-radius:14px; overflow:hidden;
+    box-shadow:0 1px 3px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06);}
+  /* 封面标题区 */
+  .hero{position:relative; background:linear-gradient(135deg,#0e7490 0%,#0d9488 52%,#34d399 100%); color:#fff; padding:56px 40px 44px;}
+  .hero .kicker{font-size:13px; letter-spacing:2px; color:rgba(255,255,255,.82); margin:0 0 12px; font-weight:600;}
+  .hero h1{font-size:30px; line-height:1.4; margin:0; font-weight:700; letter-spacing:.5px; color:#fff;}
+  .hero .meta{margin-top:14px; font-size:13.5px; color:rgba(255,255,255,.8); font-style:italic;}
+  .hero .tagline{margin-top:16px; font-size:15px; color:rgba(255,255,255,.92); line-height:1.7;
+    border-top:1px solid rgba(255,255,255,.28); padding-top:14px;}
+  /* 品牌标识（右上角） */
+  .brand{position:absolute; top:22px; right:30px; display:flex; align-items:center; gap:9px;}
+  .brand img{width:36px; height:36px; mix-blend-mode:screen; border-radius:8px;}
+  .brand span{font-size:12.5px; font-weight:600; color:#fff; letter-spacing:1px;}
+  .inner{padding:0 40px 8px;}
+  /* 导读 */
+  .tldr{background:linear-gradient(135deg,#ecfdf5,#f0fdfa); border-radius:10px; padding:20px 22px; margin:32px 0 6px;
+    border:1px solid #d7f3e7;}
+  .tldr h4{margin:0 0 10px; color:var(--accent); font-size:13px; letter-spacing:1.5px; font-weight:700;}
+  .tldr ol{margin:0; padding-left:20px;}
+  .tldr li{margin:7px 0; font-size:15px; line-height:1.7;}
+  /* 章节 */
+  h2.sec{display:flex; align-items:baseline; gap:12px; font-size:21px; font-weight:700;
+    margin:46px 0 14px; padding:0;}
+  h2.sec .num{color:#fff; font-size:14px; font-weight:700; letter-spacing:1px;
+    background:linear-gradient(135deg,var(--accent2),var(--accent)); padding:4px 10px; border-radius:6px; flex:none;
+    box-shadow:0 1px 3px rgba(13,148,136,.25);}
+  h3{font-size:17px; font-weight:600; margin:26px 0 8px; color:#111827;}
+  p{margin:11px 0;}
+  ul,ol{padding-left:22px; margin:11px 0;}
+  li{margin:7px 0;}
+  strong{font-weight:700; color:#0f172a;}
+  /* 关键判断高亮 */
+  .key{background:var(--key-bg); border-left:4px solid; border-image:linear-gradient(var(--accent2),var(--accent)) 1;
+    border-radius:0 8px 8px 0; padding:15px 18px; margin:16px 0; font-size:16px; line-height:1.8;}
+  .key b{color:var(--accent);}
+  /* 金句引文 */
+  .pull{font-size:19px; line-height:1.75; color:var(--quote); border-left:4px solid;
+    border-image:linear-gradient(var(--accent2),var(--accent)) 1; padding:4px 0 4px 20px; margin:24px 0; font-weight:500;}
+  /* 表格 */
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:14.5px; line-height:1.6;}
+  th,td{border:1px solid var(--line); padding:11px 13px; text-align:left; vertical-align:top;}
+  th{background:#f4faf7; font-weight:600; white-space:nowrap; color:#334155;}
+  tr:nth-child(even) td{background:#fafbfd;}
+    .foot{margin:40px 40px 0; padding-top:16px; border-top:1px solid var(--line);
+    color:var(--sub); font-size:13px; text-align:center;}
+  /* 四大致命伤速览 */
+  .flaws-intro{margin:30px 0 4px; font-size:14px; color:var(--sub); letter-spacing:.5px;}
+  .flaws{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0 4px;}
+  .flaws .f{background:#fff; border:1px solid var(--line); border-radius:10px;
+    padding:15px 16px; border-top:3px solid; border-image:linear-gradient(90deg,var(--accent2),var(--accent)) 1;}
+  .flaws .f h4{margin:0 0 7px; font-size:15px; color:var(--ink); font-weight:700;}
+  .flaws .f p{margin:0; font-size:13.5px; color:var(--sub); line-height:1.65;}
+  .flaws .f .en{color:var(--accent); font-size:12px; font-weight:600; letter-spacing:.5px;}
+  @media (max-width:640px){
+    body{padding:0; font-size:16px;}
+    .reader{border-radius:0; box-shadow:none;}
+    .hero{padding:48px 22px 34px;}
+    .hero h1{font-size:25px;}
+    .brand{top:16px; right:18px;}
+    .brand img{width:30px; height:30px;}
+    .brand span{font-size:11.5px;}
+    .inner{padding:0 22px;}
+    .foot{margin:32px 22px 0;}
+    .flaws{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body data-page-node-id="ZfEwxqEQGbkb0MJmcjl3kQ">
+<div data-page-node-id="ErVUbp5cTe8YkEZ1QPwJvU" class="reader">
+
+  <div data-page-node-id="CnUwGsv0R4gSfA5NE3FoQr" class="hero">
+    <div data-page-node-id="3gSrMqQwryOy4Ai6YElARI" class="brand"><img data-page-node-id="IxeVpIEDk7Bh6c3vMXexoT" alt="logo" src="data:image/png;base64,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"><span data-page-node-id="ARKWtb0U8h43kUCYozayJI"><!--pnid:Kw05IFoynWTjzuT9zdsx2b-->做个靠谱的产品经理</span></div>
+    <div data-page-node-id="fIV0L8mFZqXLjm4eboi4QH" class="kicker"><!--pnid:ZpYZJIzTsZy69WIptMFaCw-->认知与设计</div>
+    <h1 data-page-node-id="WpdlT0yhynsdSat2tsaMnt"><!--pnid:2biSYRZl4jnmGnjjp9Jb4l-->大模型四大致命伤</h1>
+    <div data-page-node-id="T1Gmb8eBVxLgdq5QjXdFn3" class="tagline"><!--pnid:uvmWdOf4a0940O5Wj2jkDh-->做 AI 产品，先认清模型什么做不了。四个致命伤不是四个独立问题，是同一套注意力机制在四种条件下的四种表现。</div>
+  </div>
+
+  <div data-page-node-id="X8NPTRaQYviHeLphSk34Qy" class="inner">
+
+    <div data-page-node-id="L048392tLKZTf7se2gpARh" class="flaws-intro"><!--pnid:rF6CB5NopBMUgalUf6VuzE-->先说清楚：大模型四大致命伤是哪四个</div>
+    <div data-page-node-id="y8y7Hl54HlyO8t0GVFV6b2" class="flaws">
+      <div data-page-node-id="Rvy9k9BJtmjfPmuz9SDqxh" class="f">
+        <h4 data-page-node-id="s9nCoWkNnXGtP59rnAWm80"><!--pnid:fVkPT6CuYp46UiVB9KL2Zr-->① 幻觉 <span data-page-node-id="TwV8pJLWvcJNC15heBkh0W" class="en"><!--pnid:oUxEoHNg76BpuQhLjl1o8s-->Hallucination</span></h4>
+        <p data-page-node-id="5Jh7qlI2QM7C2Gqa98u7Jg"><!--pnid:vdSkdbr7rTUb69elxWuFsm-->生成看似合理、却没有依据的内容。这是最常被提及、也最容易被低估的一条。</p>
+      </div>
+      <div data-page-node-id="7ry8cDwETaZVEHU6rV9HWh" class="f">
+        <h4 data-page-node-id="wQTJM8VJIxFoC0JeiQGFB5"><!--pnid:wmXRx0HrkFzpTGzr6KVQWC-->② 记忆受限 <span data-page-node-id="Ui6HzWnZ1ocECp5krlntaI" class="en"><!--pnid:ZU2z5qRO8INDaoKZkpaAif-->Limited Memory</span></h4>
+        <p data-page-node-id="d4Ey6SNQHtO4thjBLxaiXC"><!--pnid:Kj2JH0xydgWSRUB9ZFo7Lx-->上下文窗口与注意力预算有限，长上下文里某些信息会被「忘记」或忽略。</p>
+      </div>
+      <div data-page-node-id="s29LxnOz143bs8XWIx8439" class="f">
+        <h4 data-page-node-id="FkRtqllwcqEm8uEW0FgvSD"><!--pnid:U5yn6oLnAh5t8NFR5eBrT3-->③ 时效性与私有数据 <span data-page-node-id="sw0Fku56NGLcBr4CiB4CdV" class="en"><!--pnid:VWsgLwoMAtL0V1fLfPYnMg-->Staleness &amp; Private Data</span></h4>
+        <p data-page-node-id="WzzBeSNXGBeRCiq1G9KuZF"><!--pnid:nHoE5NxdopsBtHANRSkbNi-->训练数据有截止日，企业私有数据不在训练里。模型既不知道最新，也不知道内部事实。</p>
+      </div>
+      <div data-page-node-id="4nXMXhd0FoXAf20hBHICBn" class="f">
+        <h4 data-page-node-id="JT6wXWhrTNDrFFkK0onpUH"><!--pnid:ZPj5yjWonM8d4Nk4rTdVX2-->④ 不可控性与延迟 <span data-page-node-id="qoW0QeKT7aV8RZfp8nQ5nE" class="en"><!--pnid:3HkBuqUBvkckflkiWy4f3X-->Uncontrollability &amp; Latency</span></h4>
+        <p data-page-node-id="JdzsclisWuwCYbj8ATA0D2"><!--pnid:iW85UFXfp7SxnnQWn1VhFp-->输出难以精确约束，响应有延迟。既要护栏，也要为交互节奏留余量。</p>
+      </div>
+    </div>
+
+    <div data-page-node-id="NSpmXWQz2Ne538dHJ3WBWd" class="tldr">
+      <h4 data-page-node-id="8F6ddTXPr0daR98C4zFisf"><!--pnid:R0oJ1GcsBQXkVY0Lz2pSWi-->读完这篇你能带走三句话</h4>
+      <ol data-page-node-id="vwxzE2nTTutIjyggxG46UI">
+        <li data-page-node-id="0VToXyIrCc8MJGNA3Ee7H3"><!--pnid:j6053o2l35DlGmtM5yZaea-->窗口变大不等于模型能做的事变多。上下文腐烂让「把资料全塞进上下文」本身就是错的。</li>
+        <li data-page-node-id="YnCOK0rijHBgFYMTkURszU"><!--pnid:lDxlAZJJPpobLEFngUUBzM-->RAG 只治内在幻觉；外在幻觉（暖不暖、值不值）靠检索救不了，只能预先算好写进库或闭嘴。</li>
+        <li data-page-node-id="kQ9eEDG3jTrh7CsrKedyDC"><!--pnid:F0p6k3mSeX3bd4Dy8EYChG-->每个致命伤对应一道产品闸门；闸门是一次性判据，产品是持续性义务。</li>
+      </ol>
+    </div>
+
+    <h2 data-page-node-id="BT8eiI5u9DlCNOHBq1QOPG" class="sec"><span data-page-node-id="bn9edvD4L2WiWX8txmBJ9G" class="num"><!--pnid:XOZDeCQUPG0jvTW8Y6cI6I-->01</span><!--pnid:An8LpKR78DCMzW6ReT5sXP-->学到了什么</h2>
+
+    <h3 data-page-node-id="FzpTOm1YwqZCwdP3FD25c3"><!--pnid:0hhwILzKodZ3UbEHdSX0kA-->1.1 四大致命伤的机制层，而非现象层</h3>
+    <p data-page-node-id="JrT7oidV5TcKX3UNqaqWEs"><!--pnid:naPV6qp3zw6zCV77jNZCCo-->四个致命伤（幻觉 / 记忆受限 / 时效性与私有数据 / 不可控性与延迟）里，最容易被误解的是记忆受限，因为只有它看起来能用外部硬件扩充。但窗口变大只解决容量，不解决质量。</p>
+    <ul data-page-node-id="bn5v5MhUg73G3NehR31FMo">
+      <li data-page-node-id="d8ITkGUFn8JtMzFe6PUBhE"><strong data-page-node-id="dfnmvkxZrNfDcHnUImNNhM"><!--pnid:6ZYvH3yU4oZ8G5lx1Gpt04-->上下文腐烂（context rot）</strong><!--pnid:EcuugTEgpnbIAn49lOK6cf-->：上下文变长，模型回忆能力不是均匀下降，而是某些区域陡降。结论是「把资料都塞进上下文」本身就是错的，窗口越大越需要检索层把对的东西挑出来，而不是等更大的窗口。</li>
+      <li data-page-node-id="gKc1WxPDWu8eH1cF1XLKzD"><strong data-page-node-id="sutPT7iZ3O97YdSpt0TF64"><!--pnid:DPberL0fkVlDv7R366gpXU-->记忆受限的真正归因</strong><!--pnid:cGslT5GwO0IYSRsLy93LUS-->：它来自 Transformer 的注意力预算有限，不是单纯算力不够。硬件会涨、架构难改、人类工作记忆也有同样的注意力漂移局限，所以这一条比「等显存变大」更 durable。</li>
+      <li data-page-node-id="gIgHimJEf7M6Cg5iLlZ5ow"><strong data-page-node-id="zKF4GbsSoaXZM30zyGPR6L"><!--pnid:vPOfp7xI0bba07eAFaLM1a-->幻觉分两类</strong><!--pnid:3h7OWQbYBC5Kn6yZYAQ8V1-->：内在幻觉（生成内容与给定输入矛盾，答案就在输入里，RAG 能治）；外在幻觉（输入里根本没有依据，模型靠训练知识生成，RAG 救不了，因为库里没有那个信息）。</li>
+      <li data-page-node-id="panLiuojmV3hhSDvZaFoSo"><strong data-page-node-id="83GJYqX7Cjkb9x5aIWKH7L"><!--pnid:TXAyzQDV1r4ONKEbsuFaRl-->时效闸的正确解法</strong><!--pnid:Kw2OnCWSNOXsIeDyumN0zN-->：外置知识 + 版本管理，不是「等下一代模型」。私有数据不该进模型。进模型意味着规则一改就得全量重训，有周期、有成本、有遗忘；RAG 把知识放在模型外面按需取，改一条规则是改知识库一条记录。</li>
+    </ul>
+
+    <h3 data-page-node-id="qUvjycLPSixC9NHmwGPdka"><!--pnid:pCiU3y6OPy9YdDVxKj6OZ7-->1.2 成本结构：从能通过评测集的最小模型开始</h3>
+    <p data-page-node-id="ZGzaSdhBVz5xbgbvTUlUa1"><!--pnid:g8VX2nMt6KuDcqC8iUgpSQ-->输出比输入贵 3–5 倍，省回答长度比省提示词更省得出钱；旗舰与经济档价差可达 60 倍，同一任务质量差距有时为零；缓存命中输入约一折；路由实测约 60% 经济档 / 30% 中档 / 10% 旗舰。默认策略是从能通过评测集的最小模型开始，没有评测集就无法判断小模型够不够用。</p>
+
+    <h2 data-page-node-id="Y0unwhFlaI3trpQGu9a9V1" class="sec"><span data-page-node-id="mstqyoU3MwsipBwQY2x75u" class="num"><!--pnid:OukUnaGBTgM3nVcHFBy3Rf-->02</span><!--pnid:mgNJPOFeLPpLVpNb3MLTE6-->三个常见误解</h2>
+
+    <h3 data-page-node-id="bLcY9ZfqkpZIT7NFZDZSrh"><!--pnid:rR6XMp5qNbVE1bRpWvF2Zz-->2.1 误解一：记忆受限是算力问题，等硬件就行</h3>
+    <p data-page-node-id="TlMTloODM6Qn7n9wsuGCKF"><!--pnid:A1VnWOoon4uPnPQSxgfJZa-->常见的理解是把记忆受限归因成「算力不够 + 显存不足」。上下文太大算不过来，硬件涨上去自然解决。实际机制是 Transformer 的注意力预算有限：上下文变长时，模型回忆能力不是均匀下降，而是某些区域陡降（上下文腐烂）。算得过来，但用不好。两个归因的推论完全不同：前者推出「等窗口变大」，后者推出「不管窗口多大都会局部失灵，所以要去检索、去压缩、去隔离」。注意力预算这层更站得住，因为它经得起时间。硬件会涨、架构难改，人类的工作记忆也有同样的注意力局限。</p>
+
+    <h3 data-page-node-id="LAqiFHlprLD4IpjmDukQiO"><!--pnid:f5pQ9pIXK3hnX2URAS3iTn-->2.2 误解二：幻觉是单一问题，加了 RAG 就基本解决</h3>
+    <p data-page-node-id="iSMQbABAcwbqX2DnTxizBj"><!--pnid:9XUoFjbLCf3t4b3LxjetP7-->幻觉其实分两类：内在幻觉（生成内容与给定输入矛盾，答案就在输入里）和外在幻觉（输入里根本没有依据，模型靠训练知识生成）。RAG 只治内在一类。外在幻觉所需的信息库里根本没有，塞再满也检索不出来。所以判断一个问答场景能不能靠 RAG 兜住，先看答案在不在输入里：在，检索能治；不在，要么预先把结论算好写进库，要么闭嘴。</p>
+
+    <h3 data-page-node-id="QvcXW30M8pbTanVrdCsWdu"><!--pnid:zHZYba9mFC1o9jReryNPsd-->2.3 误解三：加个兜底转人工，客服 AI 就能上线</h3>
+    <p data-page-node-id="acirbJWmYO9g59qYOsFUR3"><!--pnid:HUEZvRzkPTUY7osnd3mfpg-->常见的上线思路是「提示词强约束 + 转人工兜底」，听起来稳了。行业现实是大量复读机加少量危险品，还多了一项人工背锅成本。AI 激怒用户后的差评落到人工头上。其中最狠的一类失败不是幻觉（知识错），是迎合倾向（立场错）：AI 天生倾向取悦人类，被稍加引导就做出超权限承诺。幻觉靠检索和引用约束，迎合靠规则护栏、权限隔离、高危操作二次确认，用错解法两边都解决不了。做得好的商家，真实定位是「分流重复问题的首问」，不是替掉人。</p>
+
+    <h2 data-page-node-id="3aHkO8WE6w65rEfNMG6QEJ" class="sec"><span data-page-node-id="hYxINJxUotindzAWAjrK4O" class="num"><!--pnid:q8LKqRU4adY3e1GcrhoDNc-->03</span><!--pnid:NakV2grfSg7bV73v3MewwP-->案例：商详页「问 AI」入口</h2>
+
+    <h3 data-page-node-id="6BB1Dn44Ki24tHfkRUYJvT"><!--pnid:zPTnriE78tyZFL5CqXDR5A-->3.1 发生了什么</h3>
+    <p data-page-node-id="T9BTXLceep5siVJC1anF6q"><!--pnid:24qbNOIBFcPf75nkI7aLc4-->传统零售电商，在商详页加一个「问 AI」入口。用户输入「这床被子冬天盖够不够暖」「敏感肌能用吗」，AI 基于商详页已有参数与知识库素材作答。</p>
+
+    <h3 data-page-node-id="K7PRiGKiFAZZxQmSyLBHTq"><!--pnid:pwgb12XEtGWoraRjr1TlAm-->3.2 这个需求的本质</h3>
+    <p data-page-node-id="OIowJ6uUUUKfWTRxUJbNdW"><!--pnid:D8g4GVX9w4EciwzKXSUTxB-->购买决策辅助。用户在商详页时永远处于「决策中」状态，这个状态不随 AI 怎么介入而改变。</p>
+
+    <h3 data-page-node-id="Jych0UelFqNAiTGoS6k2vj"><!--pnid:e7IyprLazl04htEpDwpREw-->3.3 四道闸门的判断</h3>
+    <table data-page-node-id="nt2YYxGI6FF0EnKrxWii7J">
+      <thead data-page-node-id="ya9P3wHCjTFoBBtkV4Krve">
+        <tr data-page-node-id="1NMeeXYKnc0IYywpqbHiZk"><th data-page-node-id="OTXfi3qrSKvPRRAPYUO9AK"><!--pnid:XjPzg6LrTMu80NW3uXvfd5-->闸门</th><th data-page-node-id="dhKBejbRqzwGf4QXX6dQHK"><!--pnid:umiWn32yHeDJXtWdp44ngl-->判断</th><th data-page-node-id="2MBZvsukUfBjkChtmIIFby"><!--pnid:AcgiQtvLbHUsJbGf9UN9nq-->理由</th></tr>
+      </thead>
+      <tbody data-page-node-id="MZ28SpJg7bJbuA6GeukUey">
+        <tr data-page-node-id="GuR3dNkZcP0Qowi8bJtLSf"><td data-page-node-id="LKaxVk4tKrhbjn0lz3vUhE"><!--pnid:4qYi2492DpkrWEhQAPHRSA-->幻觉闸</td><td data-page-node-id="y5BBjo8TZtNqgDrUjB4QAA"><!--pnid:8s9li9lc8B9V7fCjtTEiSN-->部分过</td><td data-page-node-id="HhSn4aXeVjMBeZqcLkxyts"><!--pnid:s59YXEpkE5hCi2CpGRJ4Kb-->查参数（填充物克重、含绒量）有出处不会编；推结论（够不够暖、值不值得买）库里没有，只能靠模型内部知识补，检索救不了</td></tr>
+        <tr data-page-node-id="2NrRfN3N3EYaft9I4aS66f"><td data-page-node-id="h6VfIN3OHEUvIFZHWZD8kG"><!--pnid:TsGpMJEXVEMlBYAkm3Xsv3-->记忆闸</td><td data-page-node-id="eT5zOCJvv9mYlXoEbvdf6t"><!--pnid:UncBbSvRNfRZEdfapy4dyK-->不过</td><td data-page-node-id="g8iwkYVoojxiE6bKzbw70S"><!--pnid:3oRk88nqpgOIO3cEbRe1oD-->商详页数十个字段 + SKU 差异 + 材质说明，全塞容易串味（三床同款不同克重）</td></tr>
+        <tr data-page-node-id="r6cQzIF5tJ9cTZPxHvi1JQ"><td data-page-node-id="PwhneSmywoprwVQ78rEM8p"><!--pnid:oyJmtN2nSd48rm9qqve5Qf-->时效闸</td><td data-page-node-id="MjVftMuGqgol7OIWTA1J4W"><!--pnid:z9KHNDGBZupQSjprGQ04ae-->不过</td><td data-page-node-id="C3UsEhORkW7dmbzeBCJFso"><!--pnid:0gg59KYtFsUkOy0KBmGz4i-->「敏感肌能用吗」要看成分表和最新批次，模型拿的是哪一版，靠外置知识 + 版本管理</td></tr>
+        <tr data-page-node-id="U8TCMNeWem5UJTGza2Jv3H"><td data-page-node-id="abkriW95pc3YpIgXdpdFPr"><!--pnid:7gUxRCxwBKnS78YaIbiGiG-->体验闸</td><td data-page-node-id="71uY0o9UnhnQ166PrcWpLa"><!--pnid:vOOPB76BNUhCxdvg8Hl8ll-->视上一票</td><td data-page-node-id="jZTlp66odK7444VVvTPK02"><!--pnid:1iCKVVRXP8mS7rxs4Q8GKg-->用户分辨不出真假时，读得越流畅越危险</td></tr>
+      </tbody>
+    </table>
+
+    <h3 data-page-node-id="FdtG1g6yc2UiTWUGpoTuyN"><!--pnid:b6fhAcGs6kDki8UkBjpV3J-->3.4 结论</h3>
+    <p data-page-node-id="ZuE13ApPTgmXsC960bzBRN"><!--pnid:S4QzeS6y3OTt623fzyKhuR-->不做「问 AI」，做<strong data-page-node-id="Z0Ubh57r6DtavhiAxnqnaq"><!--pnid:Y0Ec2bz85b4OqXBCT7xApG-->参数解读器 + 分流</strong><!--pnid:Y9B0bbFiI18TRR7GHVe2Bb-->。两半缺一不可：</p>
+    <p data-page-node-id="SJjnj3DoNHlcG4QsGZGFdH"><strong data-page-node-id="3FE6Q0qRCojzvA5geFLHO2"><!--pnid:XtGWGQms9atUuXyXxNQ1Ac-->规则明确的区间，做参数解读器</strong><!--pnid:RDqPIfJM0R6dnW8snJVGbl-->。不回答问题，只把相关字段挑出来拼成人话。参数表几十个字段人懒得翻，AI 的价值是按问题把散在字段里的信息重新组织一遍，它不产出新知识，做的是组织。边界判据是「规则明确」四个字：可枚举、可查证、可直接引用的区间 AI 才安全发挥。</p>
+    <p data-page-node-id="noQqbh7gz21ROkS9TbXxAS"><strong data-page-node-id="3vkwPKCtwit74Uniovj0OZ"><!--pnid:P0pJW1z0dDBRnkNQtwm79R-->答不了的区间，做分流</strong><!--pnid:A0Po223YlKOjYn5T8R3kOj-->。暖不暖、值不值这类结论问题，AI 不该现场编，但「闭嘴」不是终点：把用户引到有答案的地方去（评价区、真实买家反馈）。这正是行业里做得好的商家的真实定位。AI 的价值不是替掉人、也不是硬答，是<strong data-page-node-id="TVuHE73UgCNG19YnSrj9F6"><!--pnid:2iGJycCWFdB2kkngHxGlxl-->把重复问题的首问接过来，答得了的直接答，答不了的分流出去</strong><!--pnid:UG5BRT7VTWMKRB8U8EZQ89-->。</p>
+    <div data-page-node-id="P6DdGRZ3cFh1LVF01L8Etk" class="key"><!--pnid:oh9WrYRv4h2JeUtoSZhv8t-->这个结论背后是一次定位调整：需求的本质是「<b data-page-node-id="ZHwFzlPmU9U4nOKD9CIoUT"><!--pnid:qutiNeiTsMcrEvBlTgZQlT-->购买决策辅助</b><!--pnid:Oc5RNQwo45H93lLyCLZRi8-->」，恒定不变；变的是定位。从「回答」收缩成「解读 + 分流」。定位收缩不等于能力降级：外在幻觉硬答只会往决策里灌错误信息、破坏信任，退到分流反而让「辅助决策」这个本质真正成立。<b data-page-node-id="lR4bJxUZ2YJzifPP97V1tI"><!--pnid:30y7scgFIHNK2W66i0cJYh-->定位收缩，本质更稳。</b></div>
+
+    <h3 data-page-node-id="21IMsr80bxTLk5VTt3zDGv"><!--pnid:Gr45hFDfBB1EnzoO57RIZI-->3.5 换个业务还成立吗</h3>
+    <p data-page-node-id="MfSp3N8zGxhFSb6XpR94sR"><!--pnid:n9RRDxhFjgZTnsQVd6Uqrw-->成立。社群团购的智能答疑、新零售的导购，本质都是「用户在决策」，结论都收敛到「直接回答退化成分流」。差异在分流指向哪个节点（商详页引评价区，社群团购引团长），本质不变。</p>
+
+    <h2 data-page-node-id="UQa2NFQUZe6emQAicS2UDr" class="sec"><span data-page-node-id="2qbR0KfrynWAARZciT9bvl" class="num"><!--pnid:1EoJhDw280JcifJ3XpzwrS-->04</span><!--pnid:mBSM72ZpveNQIxXNMEKK7u-->三条判断</h2>
+    <div data-page-node-id="vti9l7rqJIvqAsUFxXH7XK" class="key"><b data-page-node-id="YQkZ67gDM0aSoMY1n9NyRn"><!--pnid:jKDcEcPlsRi2uemffaBh6c-->① 本质与定位分离</b><!--pnid:Iay0tOWKIYD2rd2qY2vWx5-->：遇到 AI 需求，先拆两行。本质（为什么做）与定位（怎么做）。本质恒定，定位可调整；定位试错不代表需求不成立。很多 AI 项目死在把一次做法失败误判成需求不成立。</div>
+    <div data-page-node-id="vU4q4zkSZ0X67eFXIDLHWw" class="key"><b data-page-node-id="ox9XnpgnQi32iv21QXg4dN"><!--pnid:8eVIHZBspaqrFRcIR1ryVh-->② 致命伤映射到产品判据</b><!--pnid:8OttVNWKEUrEWfTPIi9QQa-->：每个模型能力缺陷，对应一个上线前必须回答的产品问题（四道闸门）。闸门是一次性判据，产品是持续性义务。数据每天变，闸门要反复答。</div>
+    <div data-page-node-id="vMX7eXUSuugcVNFlVlkYTK" class="key"><b data-page-node-id="d7zznRgvqjHCv2j8XT3moo"><!--pnid:QM3Kmq1LU2g8STsiElmZUk-->③ 外在 / 内在幻觉决定 RAG 能不能用</b><!--pnid:Lr1cFdVdmnilFoP98CoEqn-->：判断一个问答场景能否上 RAG，先看问题落哪类幻觉。答案在输入里有依据的是内在幻觉，RAG 能治；答案在输入里没依据的是外在幻觉，RAG 救不了，只能预先算好写进知识库或闭嘴。</div>
+
+    <h2 data-page-node-id="OGpgw64xlxbGQXfx22SDlO" class="sec"><span data-page-node-id="5XgI9orfduE4p8MSiDf2Lh" class="num"><!--pnid:lGjg9TXT36smaTspliEvTR-->05</span><!--pnid:rkvB2SRmA9tdobYnxXdS9f-->拿真实需求练手：社群团购智能答疑</h2>
+
+    <h3 data-page-node-id="lI6iMVOSQrDXvMNGv7jHOf"><!--pnid:U1wr3zmXDFTrCg3caElps5-->5.1 场景</h3>
+    <p data-page-node-id="z64i7DAAFctBhYu4bFxLqC"><!--pnid:nXQTqLL6MVCn0bs5KduM9r-->社交电商，群主或团员在团购群里问：「这个团的车厘子甜不甜」「几斤装划算」「孕妇能吃吗」。</p>
+
+    <h3 data-page-node-id="uf6s8Y9zOrnwZo6l0NgmgE"><!--pnid:MX2d7wnKNFWYKz5HoeA1H9-->5.2 用三条判据过</h3>
+    <ul data-page-node-id="25UeznymB0s4fURF9msEkb">
+      <li data-page-node-id="thoalnK8KGhlITGJEU9jDz"><strong data-page-node-id="1HoBFGsYDYVXHU5SDWgzNB"><!--pnid:JhdW6ePbEHvI92plvRVsHP-->本质与定位分离</strong><!--pnid:QDn3C71jeUUJZIFIoDp1Lg-->：本质是社群团购购买决策辅助（与商详页同构），定位从直接回答退化成分流。验证可迁移。</li>
+      <li data-page-node-id="ixnDYcx1sGqNVCMW72m0J5"><strong data-page-node-id="YiNX3jaTgU269nvmUo8FZI"><!--pnid:Ty5I67yNarSEi3hoPMSEne-->四道闸门</strong><!--pnid:WHWAtr91dviUHwlEtYvmmF-->：幻觉闸不过（甜不甜、划算、孕妇能吃一般不在企业知识库，LLM 编造形成外在幻觉）；时效闸不过（团购价、库存、成团状态每天变，且是私有实时数据）；记忆闸不过（一个群多 SKU、多团并行，必须带团 ID + SKU 做检索隔离）；体验闸不过（群聊要秒回短答，AI 长篇大论没人看）。四道闸全不过，收敛为「分流 + 外置实时数据 + 高频外在结论预写库」。</li>
+      <li data-page-node-id="5xRERPtDl4zJYLVcrT8jnf"><strong data-page-node-id="yFxw6vzxUWc3py4ymli7ol"><!--pnid:YXja9vXV3TV2CrgRXRNpRM-->外在 / 内在幻觉</strong><!--pnid:Olo8W955Qsq1VM5c1YPKRx-->：「甜不甜」若知识库有甜度评级就是内在，没有就是外在；「几斤装」规格是内在，但「划算」价格维度可算是内在、主观价值维度是外在；「孕妇能吃吗」同理。同一个问题因解读角度不同会落不同类别。产品动作是把高频的外在结论预先算好写进库，转不了的（主观划算）闭嘴或分流到团长。</li>
+    </ul>
+
+    <h3 data-page-node-id="6iVmqbV61Yf2XGWnjw4zAs"><!--pnid:RcBLm16B36qwiYWIqACLgX-->5.3 MVP 切法</h3>
+    <p data-page-node-id="s20k6AfbnSSevqYpMpPk66"><!--pnid:BHn9btRMUvrfflRcvinGWG-->库有的（参数、商品详情、食用报告）→ 直接答或发参数表；库没有的 → 引导咨询团长、社群经销商。优先做分流和知识库完善，暂不做外部知识解答和人工核对。比商详页多走的一步：社群天然有团长这个角色，分流目标更明确。</p>
+
+    <h3 data-page-node-id="tnrZIc2WyOgKtFFDQCqTIj"><!--pnid:EHjD6sUzAEHMjboitTRFT2-->5.4 反例清单</h3>
+    <table data-page-node-id="cpqP73dzby2CxXW6HQlSgg">
+      <thead data-page-node-id="wzHKkxKbsNqtrMRcbcLSnK">
+        <tr data-page-node-id="xg7ShrMGbv31Biq6ZRc5B2"><th data-page-node-id="YqVm9xVmmmMm6VZiyEYdyd"><!--pnid:fHwCGY8LQQhpNzqiHCgNhj-->判据</th><th data-page-node-id="eocVMXMusjsI31YAODNLNC"><!--pnid:8BkAZ0mRH1tPW1NbdH3m8G-->反例场景</th><th data-page-node-id="MpmqmjT2SQ6pFQmWTwSwhW"><!--pnid:tJ0Bl4Oj36lSAQWX8X4IKX-->失效条件</th></tr>
+      </thead>
+      <tbody data-page-node-id="qIPnFjYMQ9Qv8wTaOFVk4w">
+        <tr data-page-node-id="ZftTkfIRcwlt4f1wbeGNv4"><td data-page-node-id="SEYLyCTEKTbhVFA8ZcnzdM"><!--pnid:UCIycV8W3aRmS1AkdHxqr1-->本质与定位分离</td><td data-page-node-id="vjfAbfOZ2hONMFMq9Se0wn"><!--pnid:SiM9NowXQnzEhaQOYWObDP-->探索期产品，本质模糊</td><td data-page-node-id="1kbftN1HBRAMG2pkiMOWga"><!--pnid:S4ohm0I5Xx96k8zzAbSBwD-->本质未锁定时分离动作做不了，没有稳定的本质可分离</td></tr>
+        <tr data-page-node-id="lE00H1oxWAVabXbLMX8x2g"><td data-page-node-id="CKgS6nGCOHMqJiTDEJXbZ7"><!--pnid:Iy6nNQmK62TrrbrzQOsLIx-->致命伤 → 闸门</td><td data-page-node-id="AnR3Qz7H4g9PL0PiMZ4K00"><!--pnid:Fz6JgaTFtO47ERyRhX9QFS-->MVP 探针，明知不过仍上</td><td data-page-node-id="THUqYZxnVjdz4uihWDLxJ0"><!--pnid:omzOC1RPMc7Pbj6GvXQiDl-->闸门是探索门槛而非上线门槛时局部可用</td></tr>
+        <tr data-page-node-id="WBpiidKCKu0sWk4kt5fCCY"><td data-page-node-id="NMTq3u4C5lYeB6OTKeZG5Q"><!--pnid:WBw2NB3tjm7Tx0bnsk8wam-->外在 / 内在决定 RAG</td><td data-page-node-id="OabYCx8wgckiWynzHJbcpl"><!--pnid:IL8qnv5uIcM8KEo11I2QoP-->封闭 FAQ，知识全在库</td><td data-page-node-id="RJmky5v7TV33FNIttj1qdo"><!--pnid:e1MUWy9UHiWMnShu9nqfw2-->外在幻觉不存在时「只治内在」失效</td></tr>
+      </tbody>
+    </table>
+
+    <h2 data-page-node-id="DTgq9kRIPZgKtAJIrFsbNl" class="sec"><span data-page-node-id="fAdTSS8Ief03UAhvPiuRsd" class="num"><!--pnid:BUAWfAZaRhUvDDYhC6cl0v-->06</span><!--pnid:RWrF3qgr66zxOAylhuwzfd-->一个还没想清楚的问题</h2>
+    <p data-page-node-id="lalFZrTudPIk5HiXzKU5TO"><!--pnid:GrxKHXoAuvDNeOUzSgTQcW-->这个问题用商详页的例子最容易讲清。</p>
+    <p data-page-node-id="Nn4qfVd1ZjtE6vmyr5RSPS"><!--pnid:bydO9KvVWh2Pwc8O1y3QpZ-->商详页上线前，四道闸门判过了：幻觉闸部分过、记忆闸靠检索隔离、时效闸靠外置知识 + 版本管理、体验闸换交互。验收归档，项目结束。</p>
+    <div data-page-node-id="5tLgAaJrRXKgJtJwpjYOtJ" class="key"><b data-page-node-id="Jwu06sGSre54H9UhJy2h2c"><!--pnid:mcCQcTlSDb1oSjPPSdcmKs-->问题出在「验收归档」这四个字上。</b><!--pnid:MYr2R3CdNGgiKprF6TXwnl-->闸门判「过」依赖的是判据当时的原料。知识库条目、成分表、价格、库存。这些原料每天在变。上线时「敏感肌能用吗」靠成分表最新批次答对了，半年后成分表换版、没人同步，这道闸实际上已经不过了，但没有任何机制会告诉你。</div>
+    <p data-page-node-id="onIcKAGQNJ7iyqNXx1uIi9"><!--pnid:2slK4qKpkDVUqKYlYIYupQ-->所以缺的可能不是第五道闸门，是「闸门要反复答」这件事本身。落到产品形态上，这意味着两件事：</p>
+    <ol data-page-node-id="8lkFrXkFHATpM813LKfS5W">
+      <li data-page-node-id="QCC90v2uUhjQ6Kqvgs1qY5"><strong data-page-node-id="ogTCS1UlNJGlf9vpYrhZ5v"><!--pnid:kom7jariDbPS9DoTDo1Pif-->交付物不是「一个知识库」，是「知识库 + 谁在什么周期内更新它」。</strong><!--pnid:4u8dG9R9eWfjlfEhrlvrkJ-->只建库、不定更新责任人和更新节奏，库会静默腐烂，闸门跟着失效。</li>
+      <li data-page-node-id="tK33Jv5VyK8qmBTd5sI3Sh"><strong data-page-node-id="om7NNWPMNbemnufhpL9pEs"><!--pnid:JuiRqY8fXhb66TCMV7yEGx-->评估方案不该是一次性验收，该是一个常设角色。</strong><!--pnid:JFZiSY8hEhtyK2mhFrkKSC-->每道闸门都要持续答，就得有人持续答。类似「AI 客服训练师」这种岗位：盯数据变化、复核回答质量、维护知识库。</li>
+    </ol>
+    <p data-page-node-id="zOpJwC4eCqGYSWCIk8s5hU"><strong data-page-node-id="fhjm1pcA2Pu3x2X3sysWT7"><!--pnid:6KbL0RBORKJxtf4uxht1n2-->没想清楚的是</strong><!--pnid:gYouUiaMntUUmV53N7v43e-->：这个常设角色谁来当（业务运营、客服团队还是算法团队）、算谁的成本、考核怎么定。四道闸门解决了「能不能上线」，没解决「上线之后谁养」。后者目前仍没有答案。</p>
+
+    <h2 data-page-node-id="RQFa0Gepr32ntK8JevAzfY" class="sec"><span data-page-node-id="QvlVhuXyMS1GeenXwjXpkb" class="num"><!--pnid:vMUWs1Am81WQRg4ZYY08Rp-->07</span><!--pnid:jY7v1iwCFpwCsRLKOGPxQM-->一句话总结</h2>
+    <div data-page-node-id="vKM73ZMC8NQYMEu1cFefem" class="pull"><!--pnid:gleYM9b2GocnYRLlK5PLm7-->窗口变大不等于模型能做的事变多。上下文大小和注意力焦点之间有天然的紧张关系。这个道理不止于上下文：闸门是一次性判据，产品是持续性义务。</div>
+
+  </div>
+
+</div>
+</body>
+</html>

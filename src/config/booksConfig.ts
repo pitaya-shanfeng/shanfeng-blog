@@ -55,6 +55,13 @@ export interface BookConfig {
 	/** 封面图；留空则用排版封面（竖排书名） */
 	cover?: string;
 	/**
+	 * 分享海报里竖版书封的裁切重心（0 = 顶部，1 = 底部），默认 0.72。
+	 * 海报封面区是 1.7:1 的横框，3:4 的书封放进去要上下裁掉一半多，
+	 * 只能让「书名所在的那一段」落在框里：见山的书名在底部，用 0.72；
+	 * 增长黑客的名字在顶部，用 0。
+	 */
+	posterFocus?: number;
+	/**
 	 * 书页顶部的背景横幅；留空则用全局壁纸。
 	 * 只影响这一本书的书页，不影响首页、文章页或其他书。
 	 */
@@ -69,14 +76,14 @@ export const booksConfig: BookConfig[] = [
 		id: "jianshan",
 		title: "见山",
 		// 分享海报等场合要写全名；title 保持「见山」以匹配文章 series
-		fullTitle: "见山：产品判断力",
+		fullTitle: "见山 · 产品判断力",
 		kicker: "产品判断",
 		lead: "在复杂之后，重新看见问题本身。",
 		description:
 			"这本书讲的是产品经理的判断力——在信息不完整、目标还在变化的时候，怎么把问题看清楚，又怎么把判断变成可复用的方法。二十一章从认知、需求、用户，走到架构、商业、增长与组织，拆的是判断的各个面向。",
 		// 出版稿 PDF 首页（雪山封面），已按 3:4 裁切；放 public 才能直接当 src 用
 		cover: "/assets/images/jianshan-cover.webp",
-		banner: "/assets/images/jianshan-collection-banner.webp",
+		banner: "/assets/images/jianshan-collection-banner-display.webp",
 		preface: {
 			order: 0,
 			label: "序",
@@ -269,13 +276,19 @@ export const booksConfig: BookConfig[] = [
 		// title 是系列名（要和文章 series 一致，也用于卡片上的「写作/xx」），所以用短名；
 		// 书名全称放 fullTitle，供 h1 与分享海报使用
 		title: "增长黑客",
-		fullTitle: "道、法、术：增长黑客方法论",
+		fullTitle: "增长黑客 · 道、法、术",
 		kicker: "增长方法论",
 		lead: "先判断这是不是真增长，再谈怎么增长。",
 		description:
-			"这本书把增长拆成三层：道是判断——什么才算真增长；法是路径——从方向确认到实验设计怎么走；术是动作——电商链路里每个环节具体怎么改。十七篇从认知一直落到选品、转化、履约、复购与裂变，反复回答同一个问题：眼前这个增长，站不站得住。",
-		// 暂无书封，用排版封面（竖排书名）兜底
-		cover: "",
+			"全书十七章。前六章谈道：用户为什么不动手，一次增长过去留下了什么，哪些问题不该靠放大解决。中间六章谈法，从定方向、拆问题、找发力点，走到实验设计和结果判断为止。最后五章谈术，电商链路里的选品、价格、履约、复购与裂变，各说清该改哪里。",
+		// 正式书封：800×1067（3:4），与 .cover 的画框比例一致，不裁切
+		cover: "/assets/images/zengzhang-cover.webp",
+		// 书名压在书封顶部（增长黑客 / 术 / 法 / 道 依次向右下），
+		// 海报裁切从顶部起，才框得住书名与「术」那一段
+		posterFocus: 0,
+		// 书卷页顶部横幅：墨绿的纸。原先没有这张图，页面回落的是全局动漫壁纸，
+		// 白字压上去既不像一本书，也没法沿用合集页那套 banner 金句
+		banner: "/assets/images/zengzhang-banner.webp",
 		parts: [
 			{
 				name: "第一篇",

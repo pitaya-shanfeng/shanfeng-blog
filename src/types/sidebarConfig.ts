@@ -12,7 +12,8 @@ export type WidgetComponentType =
 	| "siteInfo"
 	| "dynamic"
 	| "relatedPosts"
-	| "bookProgress";
+	| "bookProgress"
+	| "hotnewsIndex";
 
 export type WidgetComponentConfig = {
 	type: WidgetComponentType; // 组件类型
@@ -53,6 +54,13 @@ export type WidgetSpecificConfig = {
 
 export type RelatedPostsWidgetConfig = {
 	limit?: number; // 最多显示多少篇，默认 10
+	/**
+	 * 这些分类下的文章详情页不显示「相关文章」整块。
+	 * 例：["行业动态"] —— 日报是当天的事，串成推荐列表反而把「最新」稀释掉。
+	 * 服务端据此给组件加 hidden（避免闪），客户端按 `[data-post-page]` 的分类再校一次
+	 * （侧栏是 swup 静态容器，切页不重渲染，只靠服务端会残留）。
+	 */
+	excludeCategories?: string[];
 };
 
 export type DynamicWidgetConfig = {

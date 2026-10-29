@@ -1,0 +1,146 @@
+---
+/**
+ * 往期目录（行业动态合集页侧栏）
+ *
+ * 直接复用母版 SidebarTOC 的 link 模式：与见山书页的「本书目录」同一套
+ * 渲染结构与样式（.toc-item / .toc-badge / .toc-label），不另写一套列表。
+ *
+ * 与书页目录的差别只有一处：书页条目指向别的文章（跨页），这里指向本页的
+ * 期卡锚点（#hn-<slug>）。所以仍然用 link 模式——link 模式本来就不做页内
+ * scrollspy，跳转交给浏览器原生的 hash 行为。
+ *
+ * **只该出现在 /hotnews/**，但控制方式不是 SSR 条件渲染：
+ * 左栏是 swup 的静态容器（SidebarColumn.astro 里 staticShown = position === "both"，
+ * 本站就是 both），站内跳转时整列不替换。按路径少渲染的结果是双向出错——
+ *   从 /hotnews/ 点进任意页面，往期卡会一直挂在左栏里（用户实际遇到的就是这个）；
+ *   反过来从别的页面刷新进入，往期卡永远长不出来（静态列不重建）。
+ * 所以改成「所有页面都渲染 + 客户端按路由显示/隐藏」，见文件后面的脚本块。
+ * display:none 不参与 flex 布局，也不会留下 gap 空隙。
+ */
+import { getCollection } from "astro:content";
+import SidebarTOC from "@/components/widget/SidebarTOC.astro";
+
+interface Props {
+	class?: string;
+	style?: string;
+}
+
+const { class: className, style } = Astro.props;
+
+/** 与 hotnews.astro 的 SERIES_URL 同一个值 */
+const isHotnews = Astro.url.pathname.replace(/\/+$/, "") === "/hotnews";
+
+const posts = (
+	await getCollection("posts", ({ data }) => data.category === "行业动态" && !data.draft)
+).sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
+
+const mmdd = (d: Date) =>
+	`${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
+/** 与 hotnews.astro 的 Entry.anchor 同一套规则：hn-YYYY-MM-DD */
+const anchorOf = (d: Date) =>
+	`hn-${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
+const items = posts.map((post) => {
+	const anchor = anchorOf(post.data.published);
+	return {
+		// 日期做徽章：侧栏在 1082 视口只有 160px 宽，
+		// 日期写在文字里会吃掉一半宽度，标题就只剩五六个字
+		badge: mmdd(post.data.published),
+		text: post.data.title,
+		href: `#${anchor}`,
+		// depthLevel 1 而不是 2：少一层左缩进，窄侧栏里这点宽度很值钱
+		depthLevel: 1,
+		badgeKind: "index" as const,
+		anchor,
+	};
+});
+
+/** 首屏就按当前路由定好显隐，避免在别的页面闪一下再消失 */
+const cardClass = `hotnews-index-card${isHotnews ? "" : " hotnews-index-off"}`;
+---
+
+<SidebarTOC
+	items={items}
+	mode="link"
+	title="往期"
+	contentId="hotnews-index-content"
+	class={`${className ?? ""} ${cardClass}`.trim()}
+	style={style}
+/>
+
+<script>
+	// 路由变化后重新判定。swup 切页不会重跑组件脚本，这里靠事件监听，
+	// 监听器在首次加载时注册一次，此后常驻。
+	const HOTNEWS = "/hotnews";
+
+	const syncHotnewsIndex = () => {
+		const path = location.pathname.replace(/\/+$/, "");
+		const on = path === HOTNEWS;
+		document.querySelectorAll(".hotnews-index-card").forEach((el) => {
+			el.classList.toggle("hotnews-index-off", !on);
+		});
+	};
+
+	syncHotnewsIndex();
+
+	// 主路径：swup 的两个生命周期事件（不同版本事件名不一样，都挂）。
+	document.addEventListener("swup:page:view", syncHotnewsIndex);
+	document.addEventListener("swup:contentReplaced", syncHotnewsIndex);
+	document.addEventListener("swup:content:replace", syncHotnewsIndex);
+	window.addEventListener("popstate", syncHotnewsIndex);
+
+	// 兜底：不依赖 swup 的 API。侧栏在 swup 容器之外，容器内容一旦被替换
+	// 就说明发生了站内跳转，重算一次。这样即使 swup 模块加载失败、
+	// 或被换成别的前端导航实现，显隐判断依然跟着 URL 走。
+	const container = document.getElementById("swup-container");
+	if (container) {
+		new MutationObserver(syncHotnewsIndex).observe(container, {
+			childList: true,
+		});
+	}
+</script>
+
+<style is:global>
+	/* 母版徽章是 1.35rem 的圆角方块，装不下「10-27」，这里放宽成胶囊。
+	   选择器限定在 #hotnews-index-content 下 —— 见山书页的目录用的是同一套
+	   .toc-badge / .toc-label，不能跟着一起改。
+
+	   样式标签必须写在模板顶层：放进 {条件 && (<>…</>)} 里不会被 Astro 提取，
+	   表现是样式完全不生效（曾经以为是 HMR 没刷新）。
+	   注释里也别直接写出标签名 —— Astro 的解析器会把它当成真的开标签，
+	   解析错位后整块脚本被切成一个句号，dep 预构建报 PARSE_ERROR。
+
+	   整块用 is:global 而不是逐条 :global()：纯 class 选择器的
+	   :global(.hotnews-index-card.hotnews-index-off) 会被 Astro 的 scope 处理静默丢弃，
+	   document.styleSheets 里查不到这条规则，元素上挂着 class 却照样显示。
+	   （同文件里 :global(#id .x) 那几条是保留的，所以很难一眼看出来。） */
+	.hotnews-index-card.hotnews-index-off {
+		display: none !important;
+	}
+
+	#hotnews-index-content .toc-badge {
+		width: auto;
+		min-width: 2.7rem;
+		padding: 0 0.26rem;
+		/* 不设 nowrap，「10-27」会被折成「10-」/「27」两行 */
+		white-space: nowrap;
+		font-variant-numeric: tabular-nums;
+		font-size: 0.62rem;
+	}
+	/* 母版是单行 nowrap + 省略号。侧栏正文区只有约 190px，日报标题十几个字
+	   一行装不下，「利差、流量、风控，同一天被收放」会截成「利差、流量、风控，同…」。
+	   改成两行截断：既能读全，卡片也不会长到把音乐卡挤没。 */
+	#hotnews-index-content .toc-label {
+		max-width: calc(100% - 3.4rem);
+		white-space: normal;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+		line-height: 1.35;
+	}
+	#hotnews-index-content .toc-item {
+		gap: 0.45rem;
+	}
+</style>

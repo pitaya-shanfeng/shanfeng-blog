@@ -1,0 +1,148 @@
+/* ==========================================================================
+   banner 右侧的金句：逐字打出
+   --------------------------------------------------------------------------
+   放在全局样式表里，而不是合集页组件的 <style> 里。
+   金句要出现在所有带 banner 的合集页上——拾遗四栏（共用 CollectionPage）、
+   行业动态（hotnews.astro）、书卷页（books/[book].astro）三套模板互不引用，
+   组件级样式只会跟着渲染它的那个页面走，换个模板就没样式了。
+
+   照片上不铺任何压暗层。曾经用径向暗晕、后来又换成线性压暗，都是在照片上
+   盖一块半透明的灰——哪怕压到 0.34，右侧仍然整体比左侧暗，一眼看得出
+   「这里被人为处理过」。现在字直接落在画面上，对比度全靠字自己的描边阴影。
+
+   文字层挂在 #banner-overlay-container 上、由脚本创建：
+   壁纸区在 swup 容器之外、切页不重建，SSR 无法预知首屏是不是合集页。
+   ========================================================================== */
+#col-quote-stage {
+  position: absolute;
+  /* 按底边定位，不按顶边：金句 2~3 行字数不等，顶边固定会让整块随句长上下跳。
+     贴底之后，无论几句，落款都停在同一条线上。
+     88px 是离 banner 下沿的距离，正好压在画面里那只手的位置 */
+  bottom: 5.5rem;
+  /* 脚本按实测的卡片右边缘覆盖（再左让 72px），这里的值只是兜底 */
+  right: 9rem;
+  /* 默认行宽，也是加宽的起点：两行放得下的句子就用这个宽度，
+     放不下的由脚本往左长，右边缘不动 */
+  width: min(24rem, 32vw);
+  text-align: right;
+  z-index: 2;
+  pointer-events: none;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.42s ease;
+}
+
+#col-quote-stage.is-on {
+  opacity: 1;
+}
+
+#col-quote-stage .col-quote-line {
+  margin: 0;
+  font-family: 'LXGW WenKai', var(--font-serif, 'Songti SC', serif);
+  /* 22px 是基准。宽度不写死在样式里：脚本按实际断行量一次，两行装得下就用
+     上面的默认宽度（384），装不下就往左加宽到刚好两行——字号和字数都不动，
+     所以长句不会缩成 20px 那样的碎字，也不会被截断加省略号。
+     24px 时同一句要更宽才放得下两行，会横穿画面主体；再小则撑不住 */
+  font-size: 1.375rem;
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+  text-wrap: pretty;
+  /* 背后没有压暗了，全部对比度都靠这圈阴影。
+     第一层不带位移、模糊半径极小：它在笔画周围收出一圈紧贴的暗边，
+     碰上照片里的白纸、浅色键盘这类亮块时才咬得住；深色底上因为底本来就暗，
+     这一圈几乎看不见，不会把字弄脏。第二层压中景，第三层柔化落点。 */
+  text-shadow:
+    0 0 2px rgb(0 0 0 / 0.62),
+    0 1px 3px rgb(0 0 0 / 0.5),
+    0 2px 7px rgb(0 0 0 / 0.45),
+    0 8px 26px rgb(0 0 0 / 0.35);
+}
+
+/* 逐字打出：每个字都先占好位置（opacity 0），所以右对齐的行宽和断行
+   从头到尾不变，字是一个个亮起来，不是把后面的字往右挤 */
+#col-quote-stage .qch {
+  position: relative;
+  opacity: 0;
+  transition: opacity 0.16s ease;
+}
+
+#col-quote-stage .qch.is-on {
+  opacity: 1;
+}
+
+/* 光标挂在上一个打出字的右缘：绝对定位、不占布局，
+   跟着走的时候不会把整行顶动 2px */
+#col-quote-stage .qch.is-caret::after {
+  content: '';
+  position: absolute;
+  top: 0.18em;
+  bottom: 0.18em;
+  right: -0.09em;
+  width: 2px;
+  border-radius: 1px;
+  background: currentColor;
+  animation: col-quote-blink 1.05s steps(1, end) infinite;
+}
+
+@keyframes col-quote-blink {
+  0%,
+  55% {
+    opacity: 0.7;
+  }
+
+  56%,
+  100% {
+    opacity: 0;
+  }
+}
+
+#col-quote-stage .col-quote-sign {
+  /* 14px 的间距在 1.8 行高下看着还是贴在一起，放到 18 才断开 */
+  margin-top: 1.125rem;
+  font-family: 'LXGW WenKai', var(--font-serif, 'Songti SC', serif);
+  /* 正文 22px 时落款 15px（约 0.68 倍），再小就撑不住 */
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  letter-spacing: 0.14em;
+  /* 字距在最后一个字后面也会加上，右对齐时整体会往左缩进半个字距；
+     补回来，落款的右边缘才和正文齐平 */
+  margin-right: -0.14em;
+  color: #fff;
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+  /* 15px 的楷体笔画很细，散阴影会把笔画糊成灰的，所以只贴边收一圈；
+     但背后没有压暗了，一圈不够，补第二层薄一点的柔化 */
+  text-shadow:
+    0 1px 2px rgb(0 0 0 / 0.6),
+    0 3px 10px rgb(0 0 0 / 0.35);
+}
+
+#col-quote-stage .col-quote-sign.is-on {
+  opacity: 1;
+  transform: none;
+}
+
+/* 窄一点的桌面：行宽收到 20rem，别让字压到画面中间那台平板上 */
+@media (max-width: 1279px) {
+  #col-quote-stage {
+    width: min(20rem, 40vw);
+  }
+
+  #col-quote-stage .col-quote-line {
+    font-size: 1.25rem;
+  }
+}
+
+/* 降级：不动画。字全亮、光标不闪，脚本那边也不再逐字推进 */
+@media (prefers-reduced-motion: reduce) {
+  #col-quote-stage .qch {
+    opacity: 1;
+  }
+
+  #col-quote-stage .qch.is-caret::after {
+    display: none;
+  }
+}

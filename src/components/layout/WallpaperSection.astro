@@ -12,13 +12,14 @@ import type {
 import type { BackgroundImages } from "@/utils/layout-utils";
 
 interface Props {
+	customBanner?: boolean;
 	state: BannerVisibilityState;
 	backgroundImages: BackgroundImages;
 	title?: string;
 	bannerPostMeta?: BannerPostMeta;
 }
 
-const { state, backgroundImages, title, bannerPostMeta } = Astro.props;
+const { customBanner = false, state, backgroundImages, title, bannerPostMeta } = Astro.props;
 const wallpaperPosition = state.isFullscreenMode
 	? (backgroundWallpaper.fullscreen?.position ??
 		backgroundWallpaper.banner?.position)
@@ -28,10 +29,28 @@ const wallpaperPosition = state.isFullscreenMode
 <!-- Wallpaper - 如果允许切换则始终渲染，否则只渲染当前模式 -->
 {(state.isWallpaperSwitchable || state.isBannerMode || state.isFullscreenMode || state.isOverlayMode) && (
 <div id="wallpaper-wrapper" class="absolute z-10 w-full overflow-hidden" style="--overlay-opacity: ${backgroundWallpaper.overlay?.opacity ?? 0.8}; --overlay-z-index: ${backgroundWallpaper.overlay?.zIndex ?? -1}; --overlay-blur: ${backgroundWallpaper.overlay?.blur ?? 0}px;">
+    <div id="banner-images-container" class="relative h-full w-full"
+         data-custom-banner={customBanner ? "true" : undefined}
+         data-carousel-enabled={state.bannerCarouselEnabledDefault}
+         data-carousel-switchable={state.bannerCarouselSwitchable}
+         data-carousel-interval={state.bannerCarouselInterval}
+         data-carousel-effect={state.bannerCarouselEffect}>
 <!-- 背景图片显示 -->
-    {state.hasMultipleImages ? (
+    {customBanner ? (
+    <div class="relative h-full w-full">
+        <ImageWrapper
+            src={backgroundImages.desktop[0]}
+            alt="本页专属横幅"
+            class="h-full w-full"
+            position={wallpaperPosition}
+            loading="eager"
+            fetchpriority="high"
+            fadeIn={false}
+        />
+    </div>
+    ) : state.hasMultipleImages ? (
     /* 轮播模式：渲染所有图片为 slide-item */
-    <div class:list={["relative h-full w-full bg-(--page-bg)", `effect-${state.bannerCarouselEffect}`]} id="banner-images-container"
+    <div class:list={["relative h-full w-full bg-(--page-bg)", `effect-${state.bannerCarouselEffect}`]} 
          style={`z-index: 5; --carousel-interval: ${state.bannerCarouselInterval}ms`}
          data-carousel-enabled={state.bannerCarouselEnabledDefault}
          data-carousel-switchable={state.bannerCarouselSwitchable}
@@ -111,7 +130,7 @@ const wallpaperPosition = state.isFullscreenMode
     </div>
     ) : (
     /* 单图模式 */
-    <div class="relative h-full w-full" id="banner-images-container">
+    <div class="relative h-full w-full" >
         {/* 两侧都放在 <template> 里，由下面的脚本按 matchMedia 只实例化匹配的那一侧，
             避免桌面端白下一张手机图（display:none 挡不住 loading="eager"） */}
         {backgroundImages.mobile.length > 0 && (
@@ -187,12 +206,27 @@ const wallpaperPosition = state.isFullscreenMode
     </div>
     )}
 
+    {customBanner && (
+    <script is:inline>
+        // 单图直接由 HTML 加载，只需停止上一页的轮播。
+        if (window.__cleanupBannerImages) window.__cleanupBannerImages();
+    </script>
+    )}
+
     <!-- 壁纸轮播脚本（基于 CSS transition） -->
-    {state.hasMultipleImages && (
-    <script is:inline data-swup-ignore-script>
+    {!customBanner && state.hasMultipleImages && (
+    <script is:inline>
         (function initBannerCarousel() {
+            // Swup 替换图片后清理上一页的轮播和监听器，再绑定新容器。
+            if (window.__cleanupBannerImages) window.__cleanupBannerImages();
+            var controller = new AbortController();
             var container = document.getElementById('banner-images-container');
             if (!container) return;
+
+            window.__cleanupBannerImages = function () {
+                controller.abort();
+                stopAutoPlay();
+            };
 
             var WALLPAPER_BANNER = 'banner';
             var interval = parseInt(container.dataset.carouselInterval || '5000', 10);
@@ -368,6 +402,8 @@ const wallpaperPosition = state.isFullscreenMode
                 }
             }
 
+            var listenerOptions = { signal: controller.signal };
+
             // 键盘控制
             document.addEventListener('keydown', function(e) {
                 if (!isBannerWallpaperMode() || !isCarouselEnabled()) return;
@@ -381,12 +417,12 @@ const wallpaperPosition = state.isFullscreenMode
                     e.preventDefault();
                     appState.isPlaying ? stopAutoPlay() : startAutoPlay();
                 }
-            });
+            }, listenerOptions);
 
             // 触屏滑动
             document.addEventListener('touchstart', function(e) {
                 appState.touchStartX = e.changedTouches[0].screenX;
-            }, { passive: true });
+            }, { passive: true, signal: controller.signal });
             document.addEventListener('touchend', function(e) {
                 if (!isBannerWallpaperMode() || !isCarouselEnabled()) return;
                 appState.touchEndX = e.changedTouches[0].screenX;
@@ -396,19 +432,19 @@ const wallpaperPosition = state.isFullscreenMode
                     if (diff > 0) changeToSlide(getCurrentIndex(slides) - 1);
                     else changeToSlide(getCurrentIndex(slides) + 1);
                 }
-            }, { passive: true });
+            }, { passive: true, signal: controller.signal });
 
             // 事件监听
             window.addEventListener('bannerCarouselChange', function(e) {
                 e.detail && e.detail.enabled ? startAutoPlay() : stopAutoPlay();
-            });
+            }, listenerOptions);
             window.addEventListener('wallpaperModeChange', function(e) {
                 if (e.detail && (e.detail.mode === 'banner' || e.detail.mode === 'fullscreen')) {
                     if (isCarouselEnabled()) startAutoPlay();
                 } else {
                     stopAutoPlay();
                 }
-            });
+            }, listenerOptions);
 
             // 随机首张：只有被抽中的这一张会真的下载，其余仍留在 <template> 里
             var slides = getVisibleSlides();
@@ -445,18 +481,21 @@ const wallpaperPosition = state.isFullscreenMode
                     materialize(s[idx], false);
                     if (isCarouselEnabled()) materializeAhead(s, idx);
                 };
-                if (lgQuery.addEventListener) lgQuery.addEventListener('change', onBreakpointChange);
-                else if (lgQuery.addListener) lgQuery.addListener(onBreakpointChange);
+                if (lgQuery.addEventListener) lgQuery.addEventListener('change', onBreakpointChange, { signal: controller.signal });
+                else if (lgQuery.addListener) {
+                    lgQuery.addListener(onBreakpointChange);
+                    controller.signal.addEventListener('abort', function () { lgQuery.removeListener(onBreakpointChange); });
+                }
             }
 
             // 空闲时预取下一张（轮播关掉时其余图片永远不会显示，一张都不下）
             if (isCarouselEnabled()) {
                 var schedulePrefetch = function () {
                     var idle = window.requestIdleCallback || function (cb) { return setTimeout(cb, 1500); };
-                    idle(function () { materializeAhead(getVisibleSlides(), startIdx); });
+                    idle(function () { if (!controller.signal.aborted) materializeAhead(getVisibleSlides(), startIdx); });
                 };
                 if (document.readyState === 'complete') schedulePrefetch();
-                else window.addEventListener('load', schedulePrefetch, { once: true });
+                else window.addEventListener('load', schedulePrefetch, { once: true, signal: controller.signal });
             }
 
             // 启动
@@ -468,11 +507,16 @@ const wallpaperPosition = state.isFullscreenMode
     )}
 
     <!-- 单图模式：只实例化当前断点匹配的那一侧 -->
-    {!state.hasMultipleImages && (
-    <script is:inline data-swup-ignore-script>
+    {!customBanner && !state.hasMultipleImages && (
+    <script is:inline>
         (function initBannerSingle() {
+            // Swup 替换图片后清理上一页的轮播和监听器，再绑定新容器。
+            if (window.__cleanupBannerImages) window.__cleanupBannerImages();
+            var controller = new AbortController();
             var container = document.getElementById('banner-images-container');
             if (!container) return;
+
+            window.__cleanupBannerImages = function () { controller.abort(); };
 
             function materialize(slot, high) {
                 var tpl = slot.querySelector('template');
@@ -522,13 +566,18 @@ const wallpaperPosition = state.isFullscreenMode
 
             if (window.matchMedia) {
                 var lgQuery = window.matchMedia('(min-width: 1024px)');
-                if (lgQuery.addEventListener) lgQuery.addEventListener('change', sync);
-                else if (lgQuery.addListener) lgQuery.addListener(sync);
+                if (lgQuery.addEventListener) lgQuery.addEventListener('change', sync, { signal: controller.signal });
+                else if (lgQuery.addListener) {
+                    lgQuery.addListener(sync);
+                    controller.signal.addEventListener('abort', function () { lgQuery.removeListener(sync); });
+                }
             }
         })();
     </script>
     )}
     
+    </div>
+
     {backgroundWallpaper.playerEnable && typeof backgroundWallpaper.src === "object" && !Array.isArray(backgroundWallpaper.src) && backgroundWallpaper.src.playerUrl && (
         <BackgroundPlayer playerUrl={backgroundWallpaper.src.playerUrl} playerMode={backgroundWallpaper.common?.playerMode ?? "order"} />
     )}
@@ -629,6 +678,7 @@ const wallpaperPosition = state.isFullscreenMode
 {/* 当壁纸未渲染时，添加空的 Swup 占位容器，避免 Swup 找不到容器而回退为整页加载 */}
 {!(state.isWallpaperSwitchable || state.isBannerMode || state.isFullscreenMode || state.isOverlayMode) && (
 <>
+    <div id="banner-images-container" class="hidden"></div>
     <div id="banner-overlay-container" class="hidden"></div>
     <div id="banner-dim-container" class="hidden"></div>
 </>

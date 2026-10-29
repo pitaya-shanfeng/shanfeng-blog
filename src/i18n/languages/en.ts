@@ -495,6 +495,8 @@ export const en: Translation = {
 
 	[Key.shareArticle]: "Share",
 	[Key.generatingPoster]: "Generating Poster...",
+	[Key.posterFailed]: "Failed to generate poster",
+	[Key.retry]: "Retry",
 	[Key.copied]: "Copied",
 	[Key.copyLink]: "Copy Link",
 	[Key.savePoster]: "Save Poster",

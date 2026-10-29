@@ -31,6 +31,12 @@ interface Props {
 	 */
 	categoryInBottom?: boolean;
 	/**
+	 * 底部分类胶囊的显示文案，覆盖 category。
+	 * 用于「分类归属还有上一级」的栏目：行业动态挂在导航的「拾遗」下，
+	 * 胶囊要显示成「拾遗 / 行业动态」，而筛选与链接仍按 category 走。
+	 */
+	categoryLabel?: string;
+	/**
 	 * 覆盖站点级 meta 显示配置（postListLayout.meta）。
 	 * 书页用它把「字数 + 阅读时长」显示出来，让书卷的总字数可被逐章核对。
 	 */
@@ -55,6 +61,7 @@ const {
 	style,
 	loading = "lazy",
 	categoryInBottom = false,
+	categoryLabel,
 	metaOverride,
 } = Astro.props;
 const className = Astro.props.class;
@@ -194,16 +201,24 @@ const minutes = entry.data.minutes ?? remarkPluginFrontmatter.minutes;
     />
     )}
 
-    <!-- description -->
-    <div
-      class:list={[
-        "transition text-75 md:pr-4 description grow",
-        { "description-clamped": shouldClampDescription },
-      ]}
-      title={descriptionText}
-    >
-      {descriptionText}
-    </div>
+    <!-- description：卡片自己排版简介；调用方改用自己的内容时（用默认插槽替代），
+        这块不渲染——注意不能只靠传空 description 判断，
+        descriptionText 会用 excerpt 兜底，空串照样会渲染出摘要 -->
+    {descriptionText && !Astro.slots.has("default") && (
+      <div
+        class:list={[
+          "transition text-75 md:pr-4 description grow",
+          { "description-clamped": shouldClampDescription },
+        ]}
+        title={descriptionText}
+      >
+        {descriptionText}
+      </div>
+    )}
+
+    <!-- 自定义主体：行业动态这类合集页要把「判断句列表」放进卡片，
+         标题、元信息（字数 / 阅读时长 / 分类 / 标签）仍由本组件统一渲染 -->
+    <slot />
 
     <!-- bottom tags（与 stats 二选一） -->
     {showTagsAtBottom && (bottomTags.length > 0 || (categoryInBottom && category)) && (
@@ -217,10 +232,10 @@ const minutes = entry.data.minutes ?? remarkPluginFrontmatter.minutes;
           <a
             href={getCategoryUrl(category)}
             class="post-card-category-chip"
-            aria-label={`查看分类 ${category}`}
+            aria-label={`查看分类 ${categoryLabel ?? category}`}
           >
             <Icon name="material-symbols:folder-rounded" class="text-xs" />
-            {category}
+            {categoryLabel ?? category}
             {seriesLabel ? `/${seriesLabel}` : ""}
           </a>
         )}

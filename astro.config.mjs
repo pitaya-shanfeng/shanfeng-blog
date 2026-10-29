@@ -47,6 +47,7 @@ import rehypeImageReferrerPolicy from "./src/plugins/rehype-image-referrerpolicy
 import { rehypeMermaid } from "./src/plugins/rehype-mermaid.mjs";
 import { rehypePlantuml } from "./src/plugins/rehype-plantuml.mjs";
 import { parseDirectiveNode } from "./src/plugins/remark-directive-rehype.js";
+import { remarkDocumentPageAnchors } from "./src/plugins/remark-document-page-anchors.mjs";
 import { remarkExcerpt } from "./src/plugins/remark-excerpt.js";
 import { remarkImageGrid } from "./src/plugins/remark-image-grid.js";
 import { remarkMermaid } from "./src/plugins/remark-mermaid.js";
@@ -123,6 +124,7 @@ export default defineConfig({
 			// the default value `transition-` cause transition delay
 			// when the Tailwind class `transition-all` is used
 			containers: [
+				"#banner-images-container",
 				"#banner-overlay-container",
 				"#banner-dim-container",
 				"#swup-container",
@@ -298,6 +300,7 @@ export default defineConfig({
 				remarkDirective,
 				remarkSectionize,
 				parseDirectiveNode,
+				remarkDocumentPageAnchors,
 				remarkMermaid,
 				[remarkPlantuml, plantumlConfig],
 			],
@@ -352,6 +355,15 @@ export default defineConfig({
 	},
 	vite: {
 		plugins: [tailwindcss()],
+		/**
+		 * qrcode 只在点「分享」时才 `await import()`。
+		 * 不在 include 里的话，dev 下第一次点分享才触发依赖发现 → Vite 重新预构建
+		 * → 页面手里那份旧的 `deps/qrcode.js?v=<旧hash>` 立刻 504（Outdated Optimize Dep）
+		 * → 动态 import 直接失败，海报卡在「海报生成中…」。启动时预构建即可避开。
+		 */
+		optimizeDeps: {
+			include: ["qrcode"],
+		},
 		server: {
 			watch: {
 				ignored: ["**/package/**", "**/Firefly-docs/**"],

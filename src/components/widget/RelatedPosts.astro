@@ -13,9 +13,17 @@ interface Props {
 	widgetConfig?: WidgetComponentConfig;
 	/** 由文章页计算后经布局层传入，侧栏不做推荐逻辑 */
 	posts?: PostForList[];
+	/** 这些分类的文章不显示本组件（来自 sidebarConfig 的 specificConfig） */
+	excludeCategories?: string[];
 }
 
-const { class: className, style, widgetConfig, posts = [] } = Astro.props;
+const {
+	class: className,
+	style,
+	widgetConfig,
+	posts = [],
+	excludeCategories = [],
+} = Astro.props;
 
 const showTitle = widgetConfig?.showTitle !== false;
 const configuredLimit = widgetConfig?.specificConfig?.relatedPosts?.limit ?? 10;
@@ -38,6 +46,7 @@ const emptyText = i18n(I18nKey.noRelatedPosts);
 		data-related-api={url("/api/relatedPosts.json")}
 		data-meta-api={url("/api/allPostMeta.json")}
 		data-empty-text={emptyText}
+		data-exclude-categories={JSON.stringify(excludeCategories)}
 		class="flex flex-col px-4 pb-3 -mt-1"
 	>
 		{
@@ -83,16 +92,56 @@ const emptyText = i18n(I18nKey.noRelatedPosts);
 	</div>
 </WidgetLayout>
 
+<style is:global>
+	/*
+	 * 某些分类不显示「相关文章」时的隐藏规则。
+	 * 用 is:global 是因为类名由 SideBar 在服务端拼进组件根节点，
+	 * 组件自己的 scoped 样式挂不上；选择器里带上独有的类名，
+	 * 对站内其他元素没有影响。
+	 */
+	widget-layout.widget-hide-by-category {
+		display: none !important;
+	}
+</style>
+
 <script>
 	// 侧栏在 swup 容器之外，站内无刷新跳转时 DOM 不会被替换。
 	// 「相关文章」与当前文章绑定，所以跳转后必须自己重建——
 	// 数据来自构建期预生成的映射（/api/relatedPosts.json），
 	// 保证与 SSR 用的是同一套推荐结果，不在客户端重复实现推荐逻辑。
 	const WIDGET_SELECTOR = 'widget-layout[data-id="related-posts-widget"]';
+	/**
+	 * 分类排除用的专用类。
+	 * 这里不能借用 Tailwind 的 hidden —— 侧栏每次切页都会跑
+	 * grid-layout-utils 的 showOnPostPage / hideOnNonPostPage 逻辑，
+	 * 它对 .hidden 做 add/remove，文章页上正好 remove，会把本组件的隐藏一起撤掉。
+	 */
+	const EXCLUDE_CLASS = "widget-hide-by-category";
 
 	function getCurrentPostId(): string {
 		const el = document.querySelector("[data-post-page]");
 		return el?.getAttribute("data-post-id") || "";
+	}
+
+	/**
+	 * 当前文章的分类。
+	 * 只能读 `[data-post-page]` —— 它在 swup 容器内，每次换页都会换成新文章的属性。
+	 * 不能读 `#swup-container` 的 data-current-post-category：那是 swup 容器自身，
+	 * 切页只替换内容，属性不会更新。
+	 */
+	function getCurrentPostCategory(): string {
+		const el = document.querySelector("[data-post-page]");
+		return (el?.getAttribute("data-post-category") || "").trim();
+	}
+
+	/** 不该出相关文章的分类名单（服务端写在 data 上，配置改一处即可） */
+	function readExcludedCategories(root: HTMLElement): string[] {
+		try {
+			const parsed: unknown = JSON.parse(root.dataset.excludeCategories || "[]");
+			return Array.isArray(parsed) ? parsed.map((item) => String(item).trim()) : [];
+		} catch {
+			return [];
+		}
 	}
 
 	function buildItem(
@@ -188,6 +237,16 @@ const emptyText = i18n(I18nKey.noRelatedPosts);
 			w.__relatedPostsRenderedFor = "";
 			return;
 		}
+
+		// 这些分类整块不出现（行业动态：每天一期，推荐列表会稀释「最新」）。
+		// 侧栏是静态容器，切页不重渲染，只靠服务端那一次判定会残留，所以每次都在这里判。
+		const category = getCurrentPostCategory();
+		if (category && readExcludedCategories(root).includes(category)) {
+			layout.classList.add(EXCLUDE_CLASS);
+			w.__relatedPostsRenderedFor = "";
+			return;
+		}
+		layout.classList.remove(EXCLUDE_CLASS);
 		layout.classList.remove("hidden");
 
 		// 首次执行时，DOM 就是服务端为当前文章渲染的，无需重建

@@ -1,4 +1,5 @@
 ---
+import "@/styles/book-list-covers.css";
 /**
  * 书籍落地页：/books/<book>/
  *
@@ -24,6 +25,8 @@ import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
 import PostCard from "@/components/layout/PostCard.astro";
+import "@/styles/lxgw-wenkai.css";
+import { bannerQuotes } from "@/utils/banner-quotes-data";
 import { getSeriesPostsOf } from "@/utils/content-utils";
 import { getPostUrlBySlug } from "@/utils/url-utils";
 
@@ -40,7 +43,7 @@ const posts = await getSeriesPostsOf(book.title);
 
 /**
  * 排版封面上的书名取「：」之前的部分。
- * 竖排封面只有 200×267，长书名（如「道、法、术：增长黑客方法论」）折成两列后
+ * 竖排封面只有 200×267，带副书名的长标题折成两列后
  * 阅读顺序会被标点打乱；短主标题竖排才清爽，全名由右侧 h1 承担。
  */
 const coverTitle = book.title.split(/[:：]/)[0].trim() || book.title;
@@ -55,7 +58,7 @@ const showSupportBlock = showShare || showSponsorButton;
 /**
  * 海报标题取完整书名。
  * 原来拼 `${title}：${kicker}` 会重复——kicker 有时就是副书名的一部分
- * （「道、法、术：增长黑客方法论」+「增长方法论」= 书名出现两遍）。
+ * （书名里已经含「增长方法论」，再加一次 = 出现两遍）。
  */
 const bookShareTitle = book.fullTitle || book.title;
 /**
@@ -157,7 +160,12 @@ const indexOf = (anchor: string) =>
   postBanner={book.banner}
   hideBannerTitle
 >
-  <div class="book-page onload-animation" data-no-category-bar>
+  <div
+    class="book-page onload-animation"
+    data-book-id={book.id}
+    data-no-category-bar
+    data-quotes={book.banner ? JSON.stringify(bannerQuotes) : undefined}
+  >
     <!-- 章节元数据：供侧栏进度尺读取 -->
     <script
       type="application/json"
@@ -168,11 +176,11 @@ const indexOf = (anchor: string) =>
     />
 
     <!-- 书卷：封面 + 书名 + 定位 + 盘口 -->
-    <header class="scroll card-base">
+    <header class="scroll card-base" data-quote-anchor>
       <div class="cover">
         {
           book.cover ? (
-            <img src={book.cover} alt={`《${book.title}》封面`} loading="eager" />
+            <img src={book.cover} alt={`${book.title}封面`} loading="eager" />
           ) : (
             <div class="plate" aria-hidden="true">
               {/* 竖排书名按字数缩字号：200×267 的封面，32px 只放得下四五个字 */}
@@ -196,8 +204,8 @@ const indexOf = (anchor: string) =>
         <div class="main-text">
         {/* kicker 是类别小字（产品判断 / 增长黑客），与书名各司其职 */}
         {book.kicker && <p class="kick">{book.kicker}</p>}
-        {/* 这两本是有版权的出版物，标题按书名加书名号 */}
-        <h1>《{displayTitle}》</h1>
+        {/* 书名自带间隔号（见山 · 产品判断力），不再套书名号 */}
+        <h1>{displayTitle}</h1>
         <p class="claim">{book.lead}</p>
         <p class="desc">{book.description}</p>
 
@@ -236,6 +244,7 @@ const indexOf = (anchor: string) =>
                   description={book.description}
                   pubDate={bookShareDate}
                   coverImage={book.cover ?? null}
+                  coverFocus={book.posterFocus ?? 0.72}
                   coverTitle={book.title}
                   coverSubtitle={book.kicker}
                   coverQuote={book.lead}
@@ -581,11 +590,14 @@ const indexOf = (anchor: string) =>
     font-weight: 700;
     line-height: 1.2;
     letter-spacing: 0.04em;
+    /* 书名在 1280 这类窄列里会折行，不均衡就会把「术》」单独甩到第二行 */
+    text-wrap: balance;
   }
   .claim {
     margin: 10px 0 0;
     font-size: var(--fs-item);
     line-height: 1.75;
+    text-wrap: balance;
     color: color-mix(in oklab, currentColor 82%, transparent);
   }
   .desc {

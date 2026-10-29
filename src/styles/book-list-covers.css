@@ -1,0 +1,38 @@
+/* 书卷合集（见山、增长黑客）的序言、章节、后记共用紧凑缩略图，保留正文空间。 */
+
+/*
+ * 手机端：母版给封面内层留了 min-height: 150px，而外框只有 126×71。
+ * 图会被按 126×150 缩放后横向裁掉两侧（章节封面右侧的标题面板正好被切掉），
+ * 再被外框 overflow 截掉下半。把内层压回外框高度，图才按 16:9 完整铺满。
+ */
+@media (max-width: 767px) {
+	.book-page:is([data-book-id="jianshan"], [data-book-id="zengzhang"]) .book-list.list-mode .book-item .post-card-wrapper.has-cover .post-card-image > div {
+		min-height: 0 !important;
+		height: 100% !important;
+	}
+}
+
+@media (min-width: 768px) {
+	.book-page:is([data-book-id="jianshan"], [data-book-id="zengzhang"]) .book-list.list-mode .book-item .post-card-wrapper.has-cover .post-card-image {
+		top: 50% !important;
+		bottom: auto !important;
+		right: 20px !important;
+		width: min(25%, 280px) !important;
+		height: auto !important;
+		aspect-ratio: 16 / 9 !important;
+		transform: translateY(-50%);
+		border-radius: 12px !important;
+	}
+
+	.book-page:is([data-book-id="jianshan"], [data-book-id="zengzhang"]) .book-list.list-mode .book-item .post-card-wrapper.has-cover .post-card-content {
+		width: calc(100% - min(25%, 280px) - 36px) !important;
+	}
+
+	.book-page:is([data-book-id="jianshan"], [data-book-id="zengzhang"]) .book-list.list-mode .book-item .post-card-wrapper.has-cover .post-card-image img {
+		position: absolute !important;
+		inset: 0 !important;
+		width: 100% !important;
+		height: 100% !important;
+		object-fit: cover !important;
+	}
+}

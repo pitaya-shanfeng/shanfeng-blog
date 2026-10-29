@@ -1,0 +1,859 @@
+---
+/**
+ * 行业动态合集页：/hotnews/
+ *
+ * 版式（对齐 outputs/hotspot-collection-prototype.html 的定稿）：
+ * - 横幅只当门头，不放任何文字（传 hideBannerTitle）：纯图负责识别和氛围，
+ *   信息全部下放到数据板，两件事分开做。
+ * - 主列 = 刊头 → 按月分组 → 时间轴条目。
+ * - 不放筛选行：日报每期都覆盖 AI / 金融 / 电商三条线，按行业筛不出差异。
+ * - 刊头的结构与见山书卷卡（books/[book].astro 的 .scroll）一脉相承：
+ *   kicker → 刊名 → 一句话定位 → 说明 → 底部盘口，右侧分享/打赏，
+ *   卡片高度也与之对齐。差别只有一处：没有封面图，文字占满整行。
+ *
+ * 判断句不折叠：一期就 5 条，每条一两行，收起后读者还得再点一次才看到全部，
+ * 而这一页存在的理由就是让人一次看完当天的判断。
+ *
+ * 判断句不额外加元数据：日报写作规范本身就把「今日总览」写成
+ * `**判断：** 依据` 的段落，构建期按这个形状拆即可。
+ */
+import { getCollection } from "astro:content";
+import { Icon } from "astro-icon/components";
+import PostCard from "@/components/layout/PostCard.astro";
+import SharePoster from "@/components/misc/SharePoster.svelte";
+import SponsorModal from "@/components/misc/SponsorModal.astro";
+import { siteConfig } from "@/config";
+import { navBarConfig } from "@/config/navBarConfig";
+import { profileConfig } from "@/config/profileConfig";
+import { sponsorConfig } from "@/config/sponsorConfig";
+import I18nKey from "@/i18n/i18nKey";
+import { i18n } from "@/i18n/translation";
+import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import "@/styles/lxgw-wenkai.css";
+import { bannerQuotes } from "@/utils/banner-quotes-data";
+import { getPostUrlBySlug } from "@/utils/url-utils";
+
+/** 本页在导航里的位置 —— 栏目名、上级归属都从这里取，不另存一份命名 */
+const SERIES_URL = "/hotnews/";
+/** 数据筛选键：日报稿 frontmatter 的 category 写的就是这个，与显示名无关 */
+const POST_CATEGORY = "行业动态";
+
+const navEntry = navBarConfig.links
+	.map((parent) => ({
+		parent,
+		child: parent.children?.find((item) => item.url === SERIES_URL),
+	}))
+	.find((pair) => pair.child);
+/** 栏目名（导航二级项） */
+const CATEGORY = navEntry?.child?.name ?? POST_CATEGORY;
+/** 栏目归属（导航一级项）：拾遗 */
+const GROUP_NAME = navEntry?.parent.name ?? "";
+/** 底部分类胶囊：把归属一起写出来，「拾遗 / 行业动态」 */
+const CATEGORY_LABEL = GROUP_NAME ? `${GROUP_NAME} / ${CATEGORY}` : CATEGORY;
+const BANNER = "/assets/images/hotnews-banner.webp";
+/** 一句话定位：与见山书卷卡的 lead 同位，一行就够，不承担解释 */
+const LEAD = "一天一份，只留判断和动作。";
+const DESC =
+	"AI、电商、金融三条线上值得记的事，每天压成几句判断。细则、数据、原文链接都在每期正文里——这一页只负责让你在三十秒内知道昨天发生了什么。";
+
+const posts = (
+	await getCollection(
+		"posts",
+		({ data }) => data.category === POST_CATEGORY && !data.draft,
+	)
+).sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
+
+const weekday = ["日", "一", "二", "三", "四", "五", "六"];
+
+/** 一篇文章里有多少条：日报的每一条都是一个三级标题 */
+const countItems = (body: string | undefined): number =>
+	(body?.match(/^### /gm) ?? []).length;
+
+/**
+ * 今日总览 → 判断句。
+ *
+ * 形状是 `**标题：** 依据`，标题里的冒号可能落在加粗内，所以冒号写成
+ * 中英两种、并把「：」放进加粗组的末尾捕获。
+ * 以「落到你的工作上」开头的那条是行动项，单独拎出来常驻显示：
+ * 它通常排在最后一条，跟着折叠就永远看不见，而这恰恰是最该被看到的内容。
+ */
+const ACTION_LEAD = "落到你的工作上";
+
+interface Brief {
+	title: string;
+	text: string;
+}
+
+function briefsOf(body: string | undefined): { briefs: Brief[]; action: Brief | null } {
+	const empty = { briefs: [], action: null };
+	if (!body) return empty;
+
+	const head = body.indexOf("## 今日总览");
+	if (head < 0) return empty;
+	// 从标题行之后开始，切到下一个二级标题（通常是「一、产品发布 / 更新」）为止
+	const lineEnd = body.indexOf("\n", head);
+	const rest = body.slice(lineEnd < 0 ? body.length : lineEnd + 1);
+	const nextH2 = rest.search(/\n##\s/);
+	const section = nextH2 < 0 ? rest : rest.slice(0, nextH2);
+
+	const all = section
+		.split(/\n\s*\n/)
+		.map((p) => p.trim())
+		.filter((p) => p.startsWith("**"))
+		.map((p) => {
+			const m = p.match(/^\*\*(.+?)[：:]\*\*\s*([\s\S]*)$/);
+			if (!m) return null;
+			const title = m[1].trim();
+			const text = m[2].replace(/\s+/g, " ").trim();
+			if (!title) return null;
+			return { title, text };
+		})
+		.filter((x): x is Brief => x !== null);
+
+	const action = all.find((b) => b.title.startsWith(ACTION_LEAD)) ?? null;
+	return { briefs: all.filter((b) => b !== action), action };
+}
+
+/**
+ * 行业归属统计已经撤掉：一期本来就覆盖三条线，
+ * 「本期覆盖 AI 行业 3 · 金融行业 2 · 电商行业 3」这行对读者没有信息增量，
+ * 只是重复正文标题里已经写过的行业名。
+ */
+
+interface Entry {
+	post: (typeof posts)[number];
+	id: string;
+	url: string;
+	/** 侧栏目录跳转用的锚点 id（不含 #） */
+	anchor: string;
+	monthKey: string;
+	monthLabel: string;
+	mmdd: string;
+	wd: string;
+	items: number;
+	briefs: Brief[];
+	action: Brief | null;
+}
+
+const entries: Entry[] = posts.map((post) => {
+	const d = post.data.published;
+	const { briefs, action } = briefsOf(post.body);
+	return {
+		post,
+		id: post.id,
+		url: getPostUrlBySlug(post.id),
+		/** 侧栏「往期」目录跳到这一期的锚点。用日期而不是 slug：
+		    frontmatter 的 slug 不在 PostData 的类型里，日期本身也是唯一的。 */
+		anchor: `hn-${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`,
+		monthKey: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`,
+		monthLabel: `${d.getFullYear()} 年 ${d.getMonth() + 1} 月`,
+		mmdd: `${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`,
+		wd: weekday[d.getDay()],
+		items: countItems(post.body),
+		briefs,
+		action,
+	};
+});
+
+/** 按月分组：日报是天天有的内容，线性时间轴几个月后会长到几十屏 */
+const months = (() => {
+	const map = new Map<string, { label: string; entries: Entry[] }>();
+	for (const e of entries) {
+		const bucket = map.get(e.monthKey);
+		if (bucket) bucket.entries.push(e);
+		else map.set(e.monthKey, { label: e.monthLabel, entries: [e] });
+	}
+	return [...map.entries()].map(([key, v]) => ({
+		key,
+		label: v.label,
+		count: v.entries.length,
+		items: v.entries.reduce((s, e) => s + e.items, 0),
+		entries: v.entries,
+	}));
+})();
+
+const totalItems = entries.reduce((s, e) => s + e.items, 0);
+/**
+ * 每期条数，不是每期阅读时长。
+ *
+ * 时长口径属于母版（remark 按 150 词/分算，英文语速），一期 3500 中文字的日报
+ * 会显示成 28 分钟——期卡上已经这么写了，刊头再跟一遍，等于用「30 分钟」劝退
+ * 「三十秒知道昨天发生了什么」的定位。条数没有这层误差，也更能说明一天的密度。
+ */
+const avgItems = entries.length ? Math.round(totalItems / entries.length) : 0;
+const latest = entries[0];
+
+// 支持区块：分享的是「这个合集」，不是某一期
+const showShare = siteConfig.post.share !== false;
+const showSponsorButton = sponsorConfig.showButtonInPost;
+const showSupportBlock = showShare || showSponsorButton;
+const shareDate = latest
+	? latest.post.data.published.toISOString().slice(0, 10)
+	: "";
+---
+
+<MainGridLayout
+    title={CATEGORY}
+    description={DESC}
+    postBanner={BANNER}
+    heading={`${CATEGORY} · 行业日报合集`}
+    hideBannerTitle
+>
+    <div
+        class="hotnews-page onload-animation"
+        data-no-category-bar
+        data-quotes={JSON.stringify(bannerQuotes)}
+    >
+
+        <!-- ============ 刊头 ============
+             结构与见山书卷卡（/books/jianshan/ 的 .scroll）一致：
+             kicker → 刊名 → 一句话定位 → 说明 → 底部一行盘口，右侧分享/打赏。
+             唯一差别是没有封面图：日报没有实体封面，空出一个 200px 的封面列
+             只会让这块板看着缺一块，所以文字直接占满整行。
+             高度用 min-height 对齐见山那张卡（封面 200×267 + 上下 28px padding），
+             盘口靠 margin-top:auto 贴到底，删掉封面后版面才不会塌在顶部。 -->
+        <section class="hn-board card-base" data-quote-anchor aria-label="栏目概况">
+            <div class="hn-main">
+                <div class="hn-text">
+                    <p class="hn-kicker">拾遗 · 行业日报</p>
+                    {/* 母版已经渲染了一个 sr-only 的 h1（heading || title），
+                        这块是视觉主标题，语义上降到 h2，别和它撞 */}
+                    <h2 class="hn-title">{CATEGORY}</h2>
+                    <p class="hn-claim">{LEAD}</p>
+                    <p class="hn-desc">{DESC}</p>
+
+                    <p class="hn-facts">
+                        <b>{posts.length}</b> 期
+                        <span class="sep"></span>
+                        <b>{totalItems}</b> 条
+                        <span class="sep"></span>
+                        每期约 <b>{avgItems}</b> 条
+                        <span class="sep"></span>
+                        更新至 <b>{latest?.mmdd ?? "—"}</b>
+                    </p>
+                </div>
+
+                {
+                    showSupportBlock && (
+                        <aside
+                            class="hn-support"
+                            aria-label={i18n(I18nKey.sponsorButton)}
+                        >
+                            {showShare && (
+                                <SharePoster
+                                    client:load
+                                    title={CATEGORY}
+                                    author={profileConfig.name}
+                                    description={DESC}
+                                    pubDate={shareDate}
+                                    coverImage={BANNER}
+                                    url={Astro.url.href}
+                                    siteTitle={siteConfig.title}
+                                    avatarSelector=".profile-avatar-image img"
+                                />
+                            )}
+                            {showSponsorButton && (
+                                <button
+                                    type="button"
+                                    data-sponsor-open
+                                    class="hn-reward"
+                                >
+                                    <span>{i18n(I18nKey.sponsor)}</span>
+                                    <Icon
+                                        name="material-symbols:favorite-rounded"
+                                        class="text-sm"
+                                    />
+                                </button>
+                            )}
+                        </aside>
+                    )
+                }
+            </div>
+        </section>
+
+        <!-- ============ 按月分组的时间轴 ============
+             分组头已经承担了索引功能，不再单独放筛选行：
+             日报每期都覆盖 AI / 金融 / 电商三条线，按行业筛不出差异，
+             那一行只会占掉一屏里最贵的位置。 -->
+        {
+            months.length > 0 ? (
+                months.map((month) => (
+                    <section class="hn-month" id={`m-${month.key}`}>
+                        <div class="hn-month-head card-base">
+                            <span class="hn-mno">{month.key.slice(5)}</span>
+                            {/* 月份是刊头下面的子级分组，用 h3：
+                                刊头标题占 h2，母版占 h1，层级刚好连续 */}
+                            <h3>{month.label}</h3>
+                            <span class="hn-mmeta">
+                                {month.count} 期 · {month.items} 条
+                            </span>
+                        </div>
+
+                        <div class="hn-timeline">
+                            {month.entries.map((entry, i) => {
+                                const isLast = i === month.entries.length - 1;
+                                return (
+                                    <div
+                                        class="hn-entry"
+                                        id={entry.anchor}
+                                    >
+                                        <div class="hn-date">
+                                            <div class="d">{entry.mmdd}</div>
+                                            <div class="w">周{entry.wd}</div>
+                                        </div>
+
+                                        <div class="hn-axis">
+                                            <span class="dot" />
+                                            {!isLast && <span class="line" />}
+                                        </div>
+
+                                        {/* 期卡直接复用母版 PostCard：
+                                            标题、字数、阅读时长、分类、标签的取值与排版
+                                            与见山合集页的文章列表同源，不另写一套。
+                                            判断句、折叠、行动条从默认插槽进去。
+                                            tags 里若有与分类同名的那一个要去掉，
+                                            传下去会和底部的分类胶囊说同一句话。
+                                            （日报现在 tags 写的是「行业日报」，这条只是兜底） */}
+                                        <div class="list-mode hn-post">
+                                            <PostCard
+                                                entry={entry.post}
+                                                title={entry.post.data.title}
+                                                tags={entry.post.data.tags.filter(
+                                                    (t) => t !== entry.post.data.category,
+                                                )}
+                                                category={entry.post.data.category}
+                                                categoryLabel={CATEGORY_LABEL}
+                                                published={entry.post.data.published}
+                                                updated={entry.post.data.updated}
+                                                url={entry.url}
+                                                image=""
+                                                description=""
+                                                draft={entry.post.data.draft}
+                                                style=""
+                                                categoryInBottom
+                                                metaOverride={{
+                                                    words: true,
+                                                    readingTime: true,
+                                                }}
+                                                loading="lazy"
+                                            >
+                                                {/* 去正文的入口：这张卡没有封面、也没有母版的竖条按钮，
+                                                    整张卡里只有标题是链接，读者看不出「点哪儿看全文」。
+                                                    放在标题行右端，标题用 padding-right 让开位置。 */}
+                                                <a
+                                                    class="hn-more"
+                                                    href={entry.url}
+                                                    aria-label={`阅读全文：${entry.post.data.title}`}
+                                                >
+                                                    <span class="t">阅读全文</span>
+                                                    <Icon
+                                                        name="material-symbols:arrow-forward-rounded"
+                                                        class="i"
+                                                        aria-hidden="true"
+                                                    />
+                                                </a>
+
+                                                {entry.briefs.length > 0 && (
+                                                    <div class="hn-briefs">
+                                                        {entry.briefs.map(
+                                                            (b, i) => (
+                                                                <p class="hn-brief">
+                                                                    {/* 序号在渲染层加，md 正文保持与本地稿逐字一致 */}
+                                                                    <span class="n">
+                                                                        {i + 1}、
+                                                                    </span>
+                                                                    {/* 原稿的冒号在加粗组内、被正则吃掉了，这里补回来：
+                                                                        缺了它，判断句标题会和后面的依据黏成一句 */}
+                                                                    <span class="b">
+                                                                        {b.title}：
+                                                                    </span>
+                                                                    {b.text}
+                                                                </p>
+                                                            ),
+                                                        )}
+                                                    </div>
+                                                )}
+
+                                                {entry.action && (
+                                                    <p class="hn-action">
+                                                        <span class="tag">
+                                                            落到你的工作上
+                                                        </span>
+                                                        {entry.action.text}
+                                                    </p>
+                                                )}
+                                            </PostCard>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </section>
+                ))
+            ) : (
+                <div class="card-base px-8 py-12 text-center">
+                    <Icon
+                        name="material-symbols:newspaper-rounded"
+                        class="text-5xl text-30 mx-auto mb-4"
+                    />
+                    <p class="text-30">{CATEGORY}还没有内容</p>
+                </div>
+            )
+        }
+    </div>
+
+    {showSponsorButton && <SponsorModal />}
+</MainGridLayout>
+
+<style>
+    @reference "../styles/main.css";
+
+    .hotnews-page {
+        @apply text-neutral-900 dark:text-neutral-100;
+        display: flex;
+        flex-direction: column;
+        /* 与母版列表容器一致：#post-list-container 是 gap-4 */
+        gap: 16px;
+    }
+
+    /* ---------- 刊头 ----------
+       结构照抄见山书卷卡（books/[book].astro 的 .scroll）：
+       kicker → 刊名 → 一句话定位 → 说明 → 底部一行盘口，右侧分享/打赏。
+       差别只有一处：没有封面图，也就没有 200px 的封面列，文字直接占满整行；
+       卡片高度用 min-height 对齐那张卡。 */
+    .hn-board {
+        display: flex;
+        padding: 22px;
+        /* 顶部一层极淡的主题色：纯白卡片托不住一块刊头，需要一点底色纵深 */
+        background-image: linear-gradient(
+            176deg,
+            color-mix(in oklab, var(--primary) 7%, transparent) 0%,
+            transparent 44%
+        );
+    }
+    @media (min-width: 1024px) {
+        .hn-board {
+            padding: 28px 30px;
+            /* 与见山 .scroll 等高：封面 200×267 撑出的高度 + 上下 28px padding。
+               没有封面后内容不足这么高，靠 min-height 兜住；
+               盘口再用 margin-top:auto 贴底，否则整块板会缩在顶部、下面空一大块。
+               只在桌面生效——窄屏单列后按钮落到盘口下面，按内容高度走更自然。 */
+            min-height: calc(200px * 4 / 3 + 56px);
+        }
+    }
+    :global(.dark) .hn-board {
+        background-image: linear-gradient(
+            176deg,
+            color-mix(in oklab, var(--primary) 8%, transparent) 0%,
+            transparent 44%
+        );
+    }
+
+    /* 正文在左、分享打赏在右：与见山 .main 同一套 flex 关系。
+       这里用 stretch 而不是见山的 flex-start —— 见山的封面把卡片撑到 267px，
+       正文只有 244px，盘口天然贴不到底；这块没有封面，文字列若不撑满，
+       盘口的 margin-top:auto 就没有可推的空间，卡片底部会空出七八十像素。 */
+    .hn-main {
+        display: flex;
+        align-items: stretch;
+        gap: 24px;
+        width: 100%;
+        min-width: 0;
+    }
+    /* 纵向 flex 是「盘口贴底」的前提：没有它，margin-top:auto 无处可推 */
+    .hn-text {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    /* 四个层级的字号与间距全部对齐见山：12 / 32 / 18 / 14，段间距 10px */
+    .hn-kicker {
+        font-size: var(--fs-label);
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        color: var(--btn-content);
+    }
+    .hn-title {
+        margin: 10px 0 0;
+        font-size: var(--fs-h1);
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: 0.04em;
+        color: currentColor;
+    }
+    .hn-claim {
+        margin: 10px 0 0;
+        font-size: var(--fs-item);
+        line-height: 1.75;
+        color: color-mix(in oklab, currentColor 82%, transparent);
+    }
+    .hn-desc {
+        margin: 10px 0 0;
+        font-size: var(--fs-sub);
+        line-height: 1.95;
+        color: var(--content-meta);
+        /* 与见山同宽：行长过 620px 就开始难读 */
+        max-width: 620px;
+    }
+
+    /* 分享 / 打赏：右侧一列，相对刊头垂直居中，与见山 .support 一致。
+       不做卡片外壳——刊头本身就是一张卡，里面再套一层浅底块会显得脏。 */
+    .hn-support {
+        flex: 0 0 auto;
+        align-self: center;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    /* 打赏按钮：与文章页 / 见山书卷卡同款（主色实心 + 48px 高） */
+    .hn-reward {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        /* 与旁边 SharePoster 的分享按钮同高（那边 px-6 py-3 = 48px） */
+        height: 48px;
+        padding: 0 22px;
+        border-radius: 8px;
+        background: var(--primary);
+        color: #fff;
+        font-size: var(--fs-sub);
+        font-weight: 500;
+        white-space: nowrap;
+        cursor: pointer;
+        transition:
+            background 150ms cubic-bezier(0.4, 0, 0.2, 1),
+            transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    :global(.dark) .hn-reward {
+        color: rgb(0 0 0 / 0.7);
+    }
+    .hn-reward:hover {
+        background: color-mix(in oklab, var(--primary) 80%, transparent);
+        transform: scale(1.04);
+    }
+    .hn-reward:active {
+        transform: scale(0.96);
+    }
+
+    /* 盘口：一行流水，和见山「5 篇 | 21 章 | 23.8 万字」同一写法。
+       margin-top:auto 把它推到底部——没有封面撑高度时，这是唯一能
+       让卡片保持「文字在上、数字在下」的办法。 */
+    .hn-facts {
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: auto 0 0;
+        padding-top: 20px;
+        font-size: var(--fs-meta);
+        color: color-mix(in oklab, var(--content-meta) 88%, transparent);
+    }
+    .hn-facts b {
+        font-size: var(--fs-body);
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        color: currentColor;
+    }
+    .hn-facts .sep {
+        width: 1px;
+        height: 11px;
+        background: var(--line-divider);
+        align-self: center;
+        margin: 0 6px;
+    }
+
+    /* ---------- 月份分组 ---------- */
+    .hn-month {
+        scroll-margin-top: 5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+    .hn-month-head {
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 6px 12px;
+        padding: 14px 20px;
+    }
+    .hn-mno {
+        font-size: var(--fs-label);
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        color: var(--btn-content);
+        font-variant-numeric: tabular-nums;
+    }
+    .hn-month-head h3 {
+        margin: 0;
+        font-size: var(--fs-h2);
+        font-weight: 700;
+        line-height: 1.4;
+        color: currentColor;
+    }
+    .hn-mmeta {
+        margin-left: auto;
+        font-size: var(--fs-meta);
+        color: var(--content-meta);
+        font-variant-numeric: tabular-nums;
+    }
+
+    /* ---------- 时间轴 ----------
+       竖线用 grid 中间列 + flex-1 撑开，不用 absolute：
+       中间列是 grid 项，会跟着行高拉伸，圆点之后的线才能一直连到下一行。 */
+    .hn-timeline {
+        display: flex;
+        flex-direction: column;
+        /* 期与期之间必须露出背景色。两张白卡直接贴住时，上卡的圆角下沿会和
+           下卡的圆角上沿咬在一起，看起来像一张卡压着另一张（曾经就被当成重叠）。 */
+        gap: 32px;
+    }
+    .hn-entry {
+        display: grid;
+        grid-template-columns: 3.4rem 0.75rem minmax(0, 1fr);
+        gap: 0 14px;
+        /* 侧栏「往期」目录按 #hn-<slug> 跳过来时，别让固定导航栏盖住卡顶 */
+        scroll-margin-top: 6rem;
+    }
+    @media (min-width: 768px) {
+        .hn-entry {
+            grid-template-columns: 4.5rem 0.75rem minmax(0, 1fr);
+            gap: 0 20px;
+        }
+    }
+
+    /* 日期列：裸文字，不做底色。
+       试过白底小牌、也试过撑满整期等高，都比裸文字重，撤掉。 */
+    .hn-date {
+        padding-top: 16px;
+        text-align: right;
+    }
+    .hn-date .d {
+        font-size: var(--fs-item);
+        font-weight: 700;
+        line-height: 1.1;
+        color: var(--deep-text);
+        font-variant-numeric: tabular-nums;
+        /* 日期不折行：「10-27」被拆成两行会让时间轴错位 */
+        white-space: nowrap;
+    }
+    :global(.dark) .hn-date .d {
+        color: rgb(255 255 255 / 0.9);
+    }
+    .hn-date .w {
+        margin-top: 4px;
+        font-size: var(--fs-label);
+        line-height: 1;
+        color: var(--content-meta);
+    }
+
+    .hn-axis {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 19px;
+    }
+    .hn-axis .dot {
+        flex: none;
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        border: 2px solid var(--primary);
+        background: var(--page-bg);
+    }
+    .hn-axis .line {
+        flex: 1;
+        width: 1px;
+        margin-top: 4px;
+        /* 抵消 .hn-timeline 的 gap：线要穿过卡与卡之间的空隙才连得上下一颗圆点
+           （改 gap 时这两个数要一起改） */
+        margin-bottom: -32px;
+        /* 用 20% 的 meta-divider 而不是 8% 的 line-divider：
+           后者在深色卡片上几乎看不见，时间轴看起来是断的 */
+        background: var(--meta-divider);
+    }
+
+    /* ---------- 期卡 ----------
+       卡片本体交给母版 PostCard（自带 card-base、内边距、标题装饰条、
+       元信息、底部分类与标签），这里只做两件事。 */
+    .hn-post {
+        min-width: 0;
+    }
+
+    /* 去正文的入口：标题行右端一枚胶囊。
+       绝对定位挂在 .post-card-content（母版自带 relative）的右上，
+       标题靠 padding-right 让开，长标题也不会压到按钮上。 */
+    .hn-more {
+        position: absolute;
+        top: 26px;
+        /* content 的右内边是 36px（见下方 .post-card-content 覆盖），
+           按钮贴着同一条线，才与标题、正文的右边界对得上 */
+        right: 36px;
+        z-index: 2;
+        display: inline-flex;
+        align-items: center;
+        gap: 1px;
+        padding: 5px 9px 5px 12px;
+        /* 用 20% 的 meta-divider 而不是 8% 的 line-divider：
+           深色卡片上后者几乎描不出轮廓，按钮会像一段孤立文字 */
+        border: 1px solid var(--meta-divider);
+        border-radius: 999px;
+        font-size: var(--fs-label);
+        font-weight: 600;
+        line-height: 1.4;
+        color: var(--btn-content);
+        white-space: nowrap;
+        transition:
+            color 180ms,
+            border-color 180ms,
+            background-color 180ms;
+    }
+    .hn-more:hover {
+        color: var(--primary);
+        border-color: color-mix(in oklab, var(--primary) 45%, transparent);
+        background: color-mix(in oklab, var(--primary) 6%, transparent);
+    }
+    .hn-more .i {
+        width: 1rem;
+        height: 1rem;
+        transition: transform 180ms;
+    }
+    .hn-more:hover .i {
+        transform: translateX(2px);
+    }
+    .hotnews-page .hn-post :global(.post-card-title) {
+        padding-right: 104px;
+    }
+    @media (max-width: 767px) {
+        .hn-more {
+            top: 16px;
+            right: 16px;
+        }
+        /* 窄屏只留箭头：标题本来就换行，再加「阅读全文」四个字会把标题挤成三行 */
+        .hn-more .t {
+            display: none;
+        }
+        .hotnews-page .hn-post :global(.post-card-title) {
+            padding-right: 34px;
+        }
+    }
+
+    /* 一、不要母版给无封面卡准备的右侧进入按钮。
+       它占掉 52px（窄屏 64px）正文宽度，而这张卡里全是文字，
+       宽度比一个箭头更值钱；标题本身就是链接，底部分类和标签也能点。 */
+    .hotnews-page .hn-post :global(.post-card-wrapper .post-card-enter-btn) {
+        display: none !important;
+    }
+    .hotnews-page .hn-post :global(.post-card-wrapper .post-card-content) {
+        width: 100% !important;
+        /* 母版给无封面卡的右侧内边只有 8px（md:pr-2），因为那边本来站着
+           52px 的进入按钮；按钮被隐藏后，这 8px 就成了「右边贴边、左边缩进
+           36px」的不对称。这里把右内边补到与左内边同值。 */
+        padding-right: 36px !important;
+    }
+    @media (max-width: 767px) {
+        .hotnews-page .hn-post :global(.post-card-wrapper .post-card-content) {
+            /* 窄屏母版是 pl-4 / pr-4（16px），本来就对称，不用补 */
+            padding-right: 16px !important;
+        }
+    }
+
+    /* 判断句单列到底，占满卡片可用宽度：不设 max-width，也不分栏。
+       字号与行高对齐见山章节卡的 description（16px / 24px），
+       间距对齐 markdown 正文的段落（1em）——这一页的判断句就是正文，
+       不该比别处小一号。 */
+    .hn-briefs {
+        display: block;
+        /* meta 行自带 mb-4（16px），与见山卡「元信息 → 简介」的间距同值 */
+        margin-top: 0;
+    }
+    .hn-brief {
+        margin: 0 0 1em;
+        font-size: var(--fs-body);
+        line-height: 1.5;
+        /* 与 .text-75（见山卡 description 用的类）同值 */
+        color: rgb(0 0 0 / 0.75);
+    }
+    :global(.dark) .hn-brief {
+        color: rgb(255 255 255 / 0.75);
+    }
+    .hn-brief:last-child {
+        margin-bottom: 0;
+    }
+    /* 序号在渲染层加，正文原稿里没有，所以 md 不受影响。
+       用比正文淡一档的颜色、等宽数字，让它是「行标」而不是内容。 */
+    .hn-brief .n {
+        margin-right: 2px;
+        color: var(--content-meta);
+        font-variant-numeric: tabular-nums;
+    }
+    /* 判断句标题：只做字重和颜色的统一，不靠加粗强调。
+       一段一句、句首带序号、标题后跟冒号，边界已经足够清楚。 */
+    .hn-brief .b {
+        margin-right: 2px;
+    }
+
+    /* 落到你的工作上：单独一块底色，别再折进判断句的栏里 */
+    .hn-action {
+        margin: 1em 0 0;
+        padding: 10px 12px;
+        border-radius: 6px;
+        font-size: var(--fs-body);
+        line-height: 1.5;
+        color: rgb(0 0 0 / 0.75);
+        background: color-mix(in oklab, var(--primary) 8%, transparent);
+        border-left: 3px solid color-mix(in oklab, var(--primary) 55%, transparent);
+    }
+    :global(.dark) .hn-action {
+        color: rgb(255 255 255 / 0.75);
+    }
+    .hn-action .tag {
+        display: inline-block;
+        margin-right: 6px;
+        font-weight: 700;
+        color: oklch(0.46 0.12 165);
+    }
+    :global(.dark) .hn-action .tag {
+        color: oklch(0.8 0.11 165);
+    }
+
+    /* ---------- 窄屏 ----------
+       与见山书卷卡同一套降级：单列、正文在上、支持块落到下面靠左 */
+    @media (max-width: 1023px) {
+        .hn-main {
+            flex-direction: column;
+            gap: 18px;
+        }
+        .hn-support {
+            align-self: flex-start;
+        }
+    }
+    @media (max-width: 860px) {
+        .hn-board {
+            padding: 20px 18px 18px;
+        }
+    }
+    @media (max-width: 767px) {
+        /* 窄屏卡本来就矮，期距和线的补偿一起收窄 */
+        .hn-timeline {
+            gap: 22px;
+        }
+        .hn-axis .line {
+            margin-bottom: -22px;
+        }
+    }
+    @media (max-width: 460px) {
+        .hn-board {
+            padding: 18px 16px 16px;
+        }
+        /* 窄屏把刊名降到 fs-h2：32px 在 320~390 宽下会把「行业动态」逼到换行 */
+        .hn-title {
+            font-size: var(--fs-h2);
+        }
+        .hn-date .d {
+            font-size: var(--fs-sub);
+        }
+    }
+</style>

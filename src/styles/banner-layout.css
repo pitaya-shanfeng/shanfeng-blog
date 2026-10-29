@@ -1,0 +1,27 @@
+/* 桌面横幅统一沿用分类页的高度和内容起点，所有页面共享同一组变量。 */
+@media (min-width: 1024px) {
+	html[data-wallpaper-mode="banner"] #wallpaper-wrapper {
+		top: 0;
+		height: var(--banner-height-non-home) !important;
+		transform: none !important;
+	}
+
+	html[data-wallpaper-mode="banner"] .content-panel {
+		--content-top: calc(var(--banner-height-non-home) - 3.5rem);
+	}
+
+	html[data-wallpaper-mode="banner"] #top-row {
+		height: calc(var(--banner-height-non-home) - 4.5rem);
+	}
+
+	html[data-wallpaper-mode="banner"] #banner-overlay-container .banner-home-text-overlay,
+	html[data-wallpaper-mode="banner"] #banner-overlay-container .banner-post-meta-overlay,
+	html[data-wallpaper-mode="banner"] #banner-overlay-container .banner-page-title-overlay {
+		transform: none !important;
+	}
+
+	/* 专属插画保留顶部构图，图片引用仍由各页面分别决定。 */
+	html[data-wallpaper-mode="banner"] #banner-images-container[data-custom-banner="true"] img {
+		object-position: center top !important;
+	}
+}

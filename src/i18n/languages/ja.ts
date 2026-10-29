@@ -492,6 +492,8 @@ export const ja: Translation = {
 
 	[Key.shareArticle]: "共有",
 	[Key.generatingPoster]: "ポスター生成中...",
+	[Key.posterFailed]: "ポスターの生成に失敗しました",
+	[Key.retry]: "再試行",
 	[Key.copied]: "コピーしました",
 	[Key.copyLink]: "リンクをコピー",
 	[Key.savePoster]: "ポスターを保存",

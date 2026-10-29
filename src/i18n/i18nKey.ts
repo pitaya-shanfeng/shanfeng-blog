@@ -478,6 +478,8 @@ enum I18nKey {
 
 	shareArticle = "shareArticle",
 	generatingPoster = "generatingPoster",
+	posterFailed = "posterFailed",
+	retry = "retry",
 	copied = "copied",
 	copyLink = "copyLink",
 	savePoster = "savePoster",

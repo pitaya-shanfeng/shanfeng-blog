@@ -73,6 +73,28 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			showOnPostPage: true,
 		},
 		{
+			// 组件类型：往期目录（行业动态合集页的期卡锚点索引）
+			//
+			// 位置：音乐卡之后（用户指定顺序：个人卡 → 音乐卡 → 往期目录）。
+			//
+			// 页面范围不靠这里的配置控制，也不靠 SSR 条件渲染 —— 左栏是 swup 的
+			// **静态容器**（SidebarColumn.astro: staticShown = position === "both"），
+			// 站内跳转时整列不替换。按路径做 SSR 判断的结果是：从 /hotnews/ 点进
+			// 别的页面，往期卡会一直跟着；反过来别的页面刷新进来又永远长不出来。
+			// 所以改为「所有页面都渲染 + 客户端按路由显示/隐藏」，
+			// 逻辑在 HotnewsIndex.astro 里。
+			type: "hotnewsIndex",
+			// 是否启用该组件
+			enable: true,
+			// 组件位置
+			// sticky：卡片本身就在「个人卡 414 + 音乐卡 187」之后，top 位 y≈1063，
+			// 1082 视口首屏只剩 19px 露头。用 sticky 至少往下滚一点就吸附在
+			// 顶部跟着走，翻到后面的期卡时还能点。
+			position: "sticky",
+			// 是否在文章详情页显示
+			showOnPostPage: false,
+		},
+		{
 			// 组件类型：最新动态组件（原在右侧栏，因改为单侧布局移到这里）
 			type: "dynamic",
 			// 是否启用该组件
@@ -157,6 +179,10 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 				relatedPosts: {
 					// 最多显示多少篇
 					limit: 10,
+					// 这些分类的文章详情页不放「相关文章」。
+					// 行业动态是每日一期的事，串成推荐列表会把「最新」这件事稀释掉；
+					// 以后想放回来，把这个分类从数组里删掉即可，不用改组件。
+					excludeCategories: ["行业动态"],
 				},
 			},
 		},

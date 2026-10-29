@@ -584,6 +584,9 @@ const ogImageAlt = propsOgImageAlt ?? pageTitle;
 
 
 <script>
+  import { initBannerQuotes } from "@/utils/banner-quotes";
   import { initLayout } from "@/utils/layout-init";
   initLayout();
+  // 合集页 banner 金句：必须从这里装载，组件内的脚本在 swup 切页时不执行
+  initBannerQuotes();
 </script>

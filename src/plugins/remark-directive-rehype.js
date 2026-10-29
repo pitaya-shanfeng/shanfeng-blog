@@ -40,6 +40,22 @@ export function parseDirectiveNode() {
 			) {
 				const name = node.name ? node.name.toLowerCase() : "";
 
+				// remark-directive 的 name 语法允许数字开头，于是正文里任何「HH:MM」
+				// 都会被切成 textDirective：`10-27 08:22（2 小时前）` 里的 `:22`
+				// 变成 name="22"，再走下面的 else 分支转成 <22></22>，浏览器当成
+				// 未知空标签渲染 —— 时间就显示成「08<22>（2 小时前）」，少了后半截。
+				// 同理「转化率 30:70」「比例 3:1」也会中招。
+				// 组件名不可能以数字开头，这一类一律还原成普通文本。
+				// 带 label 的（`:00[内容]`）不在还原范围内，保持原逻辑，避免吞内容。
+				if (/^\d/.test(name) && !node.children?.length) {
+					node.type = "text";
+					node.value = `:${node.name}`;
+					delete node.name;
+					delete node.attributes;
+					delete node.data;
+					return;
+				}
+
 				// 检查是否是 Admonition 类型
 				// 仅对 containerDirective 进行 Admonition 转换
 				if (
