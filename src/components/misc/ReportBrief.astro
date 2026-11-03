@@ -1,0 +1,184 @@
+---
+/**
+ * 报告速览卡（文章详情页正文之前）
+ *
+ * 转载 / 收录类文章不是自己写的，读者第一眼要判断的是「这份值不值得读」，
+ * 而正文要么是几十页的页图、要么是外站链接，翻完才知道讲什么。
+ * 所以在这类文章最前面放一张卡：来源、发布时间、篇幅，加上 3~6 条带具体
+ * 数字的事实，最后一句说清楚为什么收它。
+ *
+ * 数据来自 frontmatter 的 `report` 字段（见 content.config.ts 的 schema）：
+ * 组件只管版式，判断句与数字都在文章里写。没有该字段的文章不渲染任何东西，
+ * 其它 80 多篇文章不受影响。
+ */
+import type { ReportBriefData } from "@/types/report";
+
+interface Props {
+	report?: ReportBriefData;
+}
+
+const { report } = Astro.props;
+const facts = report?.facts ?? [];
+const meta = [report?.source, report?.released, report?.pages ? `${report.pages} 页` : ""]
+	.filter(Boolean)
+	.join(" · ");
+---
+
+{
+	report && (
+		<section class="report-brief onload-animation" aria-label="报告速览">
+			<header class="rb-head">
+				<span class="rb-kicker">报告速览</span>
+				{report.type && <span class="rb-type">{report.type}</span>}
+			</header>
+
+			{facts.length > 0 && (
+				<dl class="rb-facts">
+					{facts.map((fact) => (
+						<div class="rb-fact">
+							<dt>{fact.value}</dt>
+							<dd>{fact.label}</dd>
+						</div>
+					))}
+				</dl>
+			)}
+
+			{report.why && (
+				<p class="rb-why">
+					<span class="rb-why-label">为什么收它</span>
+					{report.why}
+				</p>
+			)}
+
+			{meta && (
+				<footer class="rb-foot">
+					<span>{meta}</span>
+					{report.href && (
+						<a href={report.href} target="_blank" rel="noopener noreferrer">
+							原文
+						</a>
+					)}
+				</footer>
+			)}
+		</section>
+	)
+}
+
+<style>
+	.report-brief {
+		margin: 0 0 2rem;
+		padding: 1.25rem 1.375rem 1.125rem;
+		border: 1px solid var(--line-divider);
+		border-left: 3px solid var(--primary);
+		border-radius: var(--radius-large);
+		background: var(--license-block-bg);
+	}
+
+	.rb-head {
+		display: flex;
+		align-items: center;
+		gap: 0.625rem;
+		margin-bottom: 0.875rem;
+	}
+
+	.rb-kicker {
+		font-size: var(--fs-label);
+		letter-spacing: 0.12em;
+		color: var(--primary);
+	}
+
+	.rb-type {
+		font-size: var(--fs-label);
+		line-height: 1.6;
+		padding: 0.0625rem 0.5rem;
+		border-radius: 999px;
+		color: var(--content-meta);
+		background: var(--btn-regular-bg);
+	}
+
+	/* 事实列表：数值一列定宽，说明一列吃掉剩余宽度。
+	   数值用等宽数字，几行的小数点才对得齐 */
+	.rb-facts {
+		display: grid;
+		grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+		gap: 0.5rem 1.125rem;
+		margin: 0 0 0.875rem;
+	}
+
+	.rb-fact {
+		display: contents;
+	}
+
+	.rb-facts dt {
+		font-size: var(--fs-body);
+		font-weight: 600;
+		line-height: 1.5;
+		color: var(--deep-text);
+		font-variant-numeric: tabular-nums;
+		white-space: nowrap;
+	}
+
+	.rb-facts dd {
+		margin: 0;
+		font-size: var(--fs-sub);
+		line-height: 1.65;
+		color: var(--content-meta);
+	}
+
+	.rb-why {
+		margin: 0;
+		padding-top: 0.875rem;
+		border-top: 1px dashed var(--line-divider);
+		font-size: var(--fs-sub);
+		line-height: 1.75;
+		color: var(--content-meta);
+	}
+
+	.rb-why-label {
+		margin-right: 0.5rem;
+		font-size: var(--fs-label);
+		letter-spacing: 0.08em;
+		color: var(--primary);
+	}
+
+	.rb-foot {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem 0.75rem;
+		margin-top: 0.75rem;
+		font-size: var(--fs-meta);
+		color: var(--content-meta);
+	}
+
+	.rb-foot a {
+		color: var(--primary);
+		text-decoration: none;
+		border-bottom: 1px solid transparent;
+		transition: border-color 0.2s ease;
+	}
+
+	.rb-foot a:hover {
+		border-bottom-color: var(--primary);
+	}
+
+	/* 窄屏：数值与说明改成上下两行，避免长数值把说明挤成窄条 */
+	@media (max-width: 767px) {
+		.report-brief {
+			padding: 1rem 1rem 0.875rem;
+		}
+
+		.rb-facts {
+			grid-template-columns: minmax(0, 1fr);
+			gap: 0.625rem;
+		}
+
+		.rb-fact {
+			display: block;
+		}
+
+		.rb-facts dd {
+			margin-top: 0.0625rem;
+		}
+	}
+</style>

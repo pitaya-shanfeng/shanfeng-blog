@@ -585,8 +585,11 @@ const ogImageAlt = propsOgImageAlt ?? pageTitle;
 
 <script>
   import { initBannerQuotes } from "@/utils/banner-quotes";
+  import { initEmbedReader } from "@/utils/embed-reader";
   import { initLayout } from "@/utils/layout-init";
   initLayout();
   // 合集页 banner 金句：必须从这里装载，组件内的脚本在 swup 切页时不执行
   initBannerQuotes();
+  // 转载文章的站内阅读器（刷新 / 全屏），同上
+  initEmbedReader();
 </script>

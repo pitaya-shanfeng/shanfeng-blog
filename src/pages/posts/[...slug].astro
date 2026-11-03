@@ -29,6 +29,8 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import CoverImage from "@/components/common/CoverImage.astro";
 import PostMetadata from "@/components/layout/PostMeta.astro";
+import EmbedReader from "@/components/misc/EmbedReader.astro";
+import ReportBrief from "@/components/misc/ReportBrief.astro";
 import SeriesNav from "@/components/misc/SeriesNav.astro";
 import SharePoster from "@/components/misc/SharePoster.svelte";
 import SponsorModal from "@/components/misc/SponsorModal.astro";
@@ -622,9 +624,22 @@ const postBanner =
         </EncryptedPost>
       ) : (
         <>
+          {/* 转载类文章：正文之前先给「报告速览」。
+              这类文章正文是页图或外站链接，读者翻完才知道讲什么，
+              关键数字与「为什么收它」必须放在第一屏。 */}
+          <ReportBrief report={entry.data.report} />
+
           <Markdown class={markdownClass}>
             <Content />
           </Markdown>
+
+          {/* 外链型转载：正文之后挂内置阅读器，让读者不必离站 */}
+          {entry.data.report?.embed && entry.data.report.href && (
+            <EmbedReader
+              href={entry.data.report.href}
+              source={entry.data.report.source}
+            />
+          )}
 
           {/* 打赏按钮 & 分享按钮（正文末尾） */}
           {

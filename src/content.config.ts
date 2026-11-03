@@ -24,6 +24,8 @@ type PostData = {
 	passwordHint: string;
 	series: string;
 	seriesOrder?: number;
+	/** 转载类文章的报告速览（见 src/types/report.ts） */
+	report?: import("./types/report").ReportBriefData;
 	/** 文章格式：md 为默认；.html 文件由 htmlPosts loader 标记为 html */
 	format?: "md" | "html";
 	/** 字数 / 阅读时长：md 文章走 remark 插件（不落 data），HTML 文章由 loader 写入 */
@@ -101,6 +103,27 @@ const postSchema = z.object({
 	minutes: z.number().optional(),
 	/** 金句：从原文摘的一句话，渲染在正文引言的引用块里 */
 	quote: z.string().optional(),
+
+	/**
+	 * 转载 / 收录类文章的「报告速览」：文章详情页正文之前那张关键信息卡。
+	 * 形状与 src/types/report.ts 一致，改字段两边一起改。
+	 * 没有该字段的文章不渲染任何东西。
+	 */
+	report: z
+		.object({
+			source: z.string().optional().default(""),
+			type: z.string().optional().default(""),
+			released: z.string().optional().default(""),
+			pages: z.number().optional(),
+			href: z.string().optional().default(""),
+			facts: z
+				.array(z.object({ value: z.string(), label: z.string() }))
+				.optional()
+				.default([]),
+			why: z.string().optional().default(""),
+			embed: z.boolean().optional().default(false),
+		})
+		.optional(),
 
 	/* For internal use */
 	prevTitle: z.string().default(""),
