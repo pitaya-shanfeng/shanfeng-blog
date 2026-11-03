@@ -29,11 +29,21 @@ const jsonLd = buildProfilePage({
 ---
 <MainGridLayout title={i18n(I18nKey.about)} description={i18n(I18nKey.about)}>
     <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-    <div class="flex w-full rounded-(--radius-large) overflow-hidden relative min-h-32">
-        <div class="card-base z-10 px-9 py-6 relative w-full ">
-            <Markdown class="mt-2">
+    <div class="flex w-full rounded-(--radius-large) overflow-hidden relative min-h-32" data-about-page data-no-category-bar>
+        <div class="about-card card-base z-10 relative w-full">
+            <Markdown class="mb-6 markdown-content about-prose">
                 <Content />
             </Markdown>
         </div>
     </div>
 </MainGridLayout>
+
+<style>
+    :global(#content-column:has([data-about-page]) > #category-bar-wrapper) {
+        display: none;
+    }
+
+    .about-card {
+        padding: clamp(1.5rem, 4vw, 3.5rem);
+    }
+</style>

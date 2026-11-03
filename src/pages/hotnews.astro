@@ -115,6 +115,20 @@ function briefsOf(body: string | undefined): { briefs: Brief[]; action: Brief | 
 }
 
 /**
+ * 判断句按纯文本渲染，原稿里的 `**1.25%**` 会漏出两个星号。
+ * 这里先转义、再只放行「成对加粗」一种标记，其余落单的星号直接去掉：
+ * 卡片里的正文来自我们自己写的 md，转义后也只有 <strong> 是可注入的。
+ */
+function briefHtml(text: string): string {
+	return text
+		.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;")
+		.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+		.replace(/\*/g, "");
+}
+
+/**
  * 行业归属统计已经撤掉：一期本来就覆盖三条线，
  * 「本期覆盖 AI 行业 3 · 金融行业 2 · 电商行业 3」这行对读者没有信息增量，
  * 只是重复正文标题里已经写过的行业名。
@@ -367,7 +381,7 @@ const shareDate = latest
                                                                     <span class="b">
                                                                         {b.title}：
                                                                     </span>
-                                                                    {b.text}
+                                                                    <Fragment set:html={briefHtml(b.text)} />
                                                                 </p>
                                                             ),
                                                         )}
@@ -379,7 +393,7 @@ const shareDate = latest
                                                         <span class="tag">
                                                             落到你的工作上
                                                         </span>
-                                                        {entry.action.text}
+                                                        <Fragment set:html={briefHtml(entry.action.text)} />
                                                     </p>
                                                 )}
                                             </PostCard>
@@ -793,6 +807,17 @@ const shareDate = latest
        一段一句、句首带序号、标题后跟冒号，边界已经足够清楚。 */
     .hn-brief .b {
         margin-right: 2px;
+    }
+    /* 原稿里对关键数字做的 `**加粗**`：保留强调，但别比判断句标题还重。
+       set:html 注入的节点没有作用域属性，只能用 :global 选。 */
+    .hn-brief :global(strong),
+    .hn-action :global(strong) {
+        font-weight: 600;
+        color: rgb(0 0 0 / 0.88);
+    }
+    :global(.dark) .hn-brief :global(strong),
+    :global(.dark) .hn-action :global(strong) {
+        color: rgb(255 255 255 / 0.88);
     }
 
     /* 落到你的工作上：单独一块底色，别再折进判断句的栏里 */

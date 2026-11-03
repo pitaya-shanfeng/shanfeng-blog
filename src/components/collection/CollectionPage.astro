@@ -552,6 +552,18 @@ const shareDate = latest ? latest.data.published.toISOString().slice(0, 10) : ""
      * 0,4,0 的写法一条都命中不了。选择器限定在 .col-page .col-list 内，
      * 不影响首页、归档页与见山合集页。
      */
+    /* 无封面的卡片：母版那个「进入」按钮是 absolute right-3 top-3 bottom-3，
+       本来贴在封面右侧，当装饰用；卡片没有封面时它变成一条 52px 宽的浅绿竖条，
+       占着右边一整列却什么都不显示。这类卡去掉按钮，正文区同时放宽，
+       否则右边会白留 64px（母版给按钮留的宽度）。 */
+    .col-page .col-list.list-mode .col-item .post-card-wrapper.no-cover .post-card-enter-btn {
+        display: none !important;
+    }
+    .col-page .col-list.list-mode .col-item .post-card-wrapper.no-cover .post-card-content {
+        width: 100% !important;
+        padding-right: 20px !important;
+    }
+
     /* 基线（含窄屏）：见山在窄屏下封面仍是 16:9，靠的就是这一层不带媒体查询的覆盖
        —— [book].astro 里那段 is:global 没有媒体查询，所以 375 宽的屏幕上
        母版的 aspect-2/1 也照样被改成 16/9。少了它，封面会按图片自身比例撑高，
