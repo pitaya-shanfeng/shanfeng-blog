@@ -48,7 +48,9 @@ export const siteConfig: SiteConfig = {
 	subtitle: "做个靠谱的产品经理",
 
 	// 站点 URL
-	site_url: "https://shanfengpm.com",
+	// 用带 www 的地址：顶域 shanfengpm.com 没有 A 记录，只有 www 有 CNAME。
+	// canonical、RSS、sitemap、OG 卡片都从这里取，写成 apex 会产出一堆打不开的链接。
+	site_url: "https://www.shanfengpm.com",
 
 	// 站点描述（用于 SEO 与社交分享卡片）
 	description:

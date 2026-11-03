@@ -47,3 +47,7 @@ package/
 .codex*
 .claude
 .mimocode
+
+# 本地一次性调试脚本与临时产出，不进仓库
+repro*.mjs
+outputs/
