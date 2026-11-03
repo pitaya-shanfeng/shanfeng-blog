@@ -1,0 +1,403 @@
+---
+title: 反思机制
+published: "2026-11-03 11:30"
+description: 不更新任何参数，把失败写成一段文字存进记忆，下一次带着这段文字再试。编程任务首次生成成功率 91%，比当时最好成绩高 11 个点；消融显示自生成测试的贡献比反思本身更大。
+category: 拾遗/学习笔记
+tags:
+  - 反思机制
+  - 智能体
+  - 大模型推理
+  - 认知与设计
+draft: false
+---
+
+<!DOCTYPE html>
+<html data-page-node-id="ZqIxwWc1RdUYHcRiJiZJdX" lang="zh-CN"><head data-page-node-id="wFGDAMVQdULriTvsldjUvg">
+<script data-page-node-id="KO1B6SZItazmnwEh3zbvIf" src="/page/page_comm/inject.js"></script>
+<meta data-page-node-id="02n9XrEM4J785xBlNvGgjS" charset="UTF-8">
+<meta name="blog-remove" content="bar">
+<meta name="blog-heading" content="tag:2">
+<meta data-page-node-id="6FJsJOyxtWp0eOHpMvMgER" content="width=device-width,initial-scale=1" name="viewport">
+<title data-page-node-id="9AaY3zkyIVJ4jePPEC9hDs" data-pnid-children="ltsLUJ9PapJPRxYB1uX0Cm">幻觉透镜 HalluLens · LLM 幻觉评测基准 · 论文阅读</title>
+<style data-page-node-id="s80sxb5ojO7532Dj3BUBZZ" data-pnid-children="lHeER4iFy3Z9tWzU5kOydn">
+:root{
+  --page:#eef0f3; --card:#ffffff; --sunken:#f6f7f9; --sunken-2:#edf0f3;
+  --ink:#12141a; --ink-2:#48505a; --ink-3:#8b929c; --line:#e2e5ea;
+  --accent:#1f5fd0; --todo:#c02626; --ok:#15803d; --warn:#b45309;
+  --accent-bg:#eaf1fd; --todo-bg:#fdeeee; --ok-bg:#ebf7ef; --warn-bg:#fdf4e7;
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --mono:"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.75;padding:40px 24px 80px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto}
+.block{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:34px 40px 38px;margin:0 0 20px;box-shadow:0 1px 2px rgba(16,24,40,.045)}
+.tag{display:inline-block;background:var(--accent-bg);color:var(--accent);font-size:14px;font-weight:600;padding:4px 12px;border-radius:6px;margin-bottom:18px;align-self:flex-start}
+.claim{font-size:32px;line-height:1.45;font-weight:700;margin-bottom:22px;letter-spacing:-.01em}
+p{margin:0 0 16px;color:var(--ink-2)}
+p.lead{color:var(--ink);font-size:17px}
+strong{color:var(--ink);font-weight:600}
+em{font-style:normal;background:linear-gradient(transparent 62%,#ffe9a8 62%);padding:0 2px}
+.fig{margin:24px 0 8px;background:var(--sunken);border:1px solid var(--line);border-radius:12px;padding:28px 24px 20px}
+.fig svg{width:100%;height:auto;display:block}
+.fig-c{font-size:13px;line-height:1.7;color:var(--ink-3);margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:15px;background:var(--sunken);border-radius:10px;overflow:hidden}
+th{background:var(--sunken-2);color:var(--ink);font-weight:600;text-align:left;padding:12px 16px;font-size:14px;border-bottom:1px solid var(--line)}
+td{padding:12px 16px;color:var(--ink-2);border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.bnd{border-left:3px solid var(--warn);background:var(--warn-bg);border-radius:0 8px 8px 0;padding:16px 20px;margin:20px 0}
+.bnd-t{font-size:13px;font-weight:600;color:var(--warn);letter-spacing:.06em;margin-bottom:8px}
+.bnd p{margin:0;color:var(--ink-2)}
+.age{border-left:3px solid var(--line);padding:14px 20px;margin:18px 0}
+.age-t{font-size:13px;font-weight:600;color:var(--ink-3);letter-spacing:.06em;margin-bottom:8px}
+.age p{margin:0;color:var(--ink-3);font-size:15px}
+.quote{border-left:3px solid var(--accent);background:var(--accent-bg);padding:16px 20px;border-radius:0 8px 8px 0;margin:18px 0;color:var(--ink);font-size:15px;line-height:1.7}
+.meta{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:34px 40px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(16,24,40,.045)}
+.meta-t{font-size:40px;line-height:1.2;font-weight:700;margin-bottom:10px;letter-spacing:-.02em}
+.meta-sub{font-size:20px;color:var(--ink-2);margin-bottom:14px;font-weight:500}
+.meta-a{font-size:15px;color:var(--ink-2);margin-bottom:18px;line-height:1.6}
+.guide{border-top:1px solid var(--line);margin-top:24px;padding-top:20px;display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.guide-i{min-width:0}
+.guide-l{font-size:13px;font-weight:600;color:var(--ink-3);letter-spacing:.06em;margin-bottom:8px}
+.guide-v{font-size:15px;color:var(--ink-2);line-height:1.7}
+.guide-v em{font-weight:600}
+.idbar{border-top:1px solid var(--line);margin-top:26px;padding-top:18px;font-size:14px;color:var(--ink-3);font-weight:600;letter-spacing:.02em}
+.gap{margin:0 0 26px}
+.gap:last-child{margin-bottom:0}
+.gap-h{font-size:19px;line-height:1.5;font-weight:600;color:var(--ink);margin-bottom:10px}
+.gap p{margin-bottom:12px}
+.bar{position:sticky;top:0;z-index:20;background:var(--page);border-bottom:1px solid var(--line);padding:10px 0;margin:-40px -24px 24px;padding-left:24px;padding-right:24px;display:flex;justify-content:flex-end;gap:12px;align-items:center}
+.toggle{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 8px;display:flex;gap:2px}
+.tg{border:0;background:transparent;font-family:inherit;font-size:13px;color:var(--ink-2);padding:6px 14px;border-radius:6px;cursor:pointer;transition:.12s}
+.tg.on{background:var(--accent);color:#fff;font-weight:600}
+.hint{font-size:12px;color:var(--ink-3)}
+details>summary{cursor:pointer;font-size:14px;color:var(--ink-2);padding:12px 0;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary:before{content:"＋";color:var(--accent);font-weight:600;width:16px;flex-shrink:0}
+details[open]>summary:before{content:"－"}
+body.present .wrap{max-width:1280px}
+body.present .claim{font-size:44px;line-height:1.3;margin-bottom:30px}
+body.present p{font-size:19px;line-height:1.8}
+body.present .meta-t{font-size:56px}
+body.present .meta-sub{font-size:26px}
+body.present .guide-v{font-size:18px}
+body.present .guide-l{font-size:15px}
+body.present .guide{grid-template-columns:1fr;gap:26px}
+body.present .block,body.present .meta{padding:48px 56px 52px;margin-bottom:32px}
+body.present .fig{padding:40px 40px 30px}
+body.present .fig-c{font-size:16px}
+body.present .bnd p{font-size:18px}
+body.present .age p{font-size:17px}
+body.present .bnd-t,body.present .age-t{font-size:15px}
+body.present table{font-size:17px}
+body.present th{font-size:16px;padding:16px 20px}
+body.present td{padding:16px 20px}
+body.present .gap-h{font-size:22px}
+body.present .gap p{font-size:18px;line-height:1.8}
+@media print{body{background:#fff;padding:0}.bar{display:none}details{open:true}}
+@media (max-width:760px){.meta-t{font-size:28px}.claim{font-size:22px}.guide{grid-template-columns:1fr}.block,.meta{padding:24px 22px}.tag{align-self:flex-start}}
+</style>
+<style data-page-node-id="wNEMt5rwoQPFlYcxIHbHSB" data-pnid-children="jRU1sa6ohme8qZAoxoBwvt" id="__dm_no_drag_style__">* { -webkit-user-drag: none !important; }</style><style data-page-node-id="4MNUo5UDuyJb9ocsskLjZx" data-pnid-children="9hQBMMgvTvbyn3p8lu9pVN" id="__dm_bindable_badge_style__">[data-sp-bindable="database"]{outline:1px dashed #0088ff;outline-offset:2px;border-radius:4px;}[data-sp-bindable="database"] *{pointer-events:none !important;transition:none !important;animation:none !important;}[data-sp-bindable="database"]{transition:none !important;animation:none !important;}</style></head>
+
+<div data-page-node-id="MYPghwuRTDT6T2PZhonxLg" class="bar"><span data-page-node-id="8YgPt9GucyWxU1jC3xlouG" class="hint" id="hint"><!--pnid:rQBdexSFTKLqeqLuuWWxTx-->阅读态：表格与细节完整展开</span><div data-page-node-id="DmI0Ce1poj4smTkjZod4Nd" class="toggle"><button data-page-node-id="eoPPAlPwsRONrOvxe2DXkd" class="tg on" id="bRead" onclick="setM('read')"><!--pnid:Eo7y5CLyJuxhNrhjOQhoVv-->阅读</button><button data-page-node-id="OWvIqBgBsBLl8Ao4KpGdVq" class="tg" id="bPres" onclick="setM('pres')"><!--pnid:qMBFtayELQ92nuGXEgdXYg-->投屏</button></div></div>
+<div data-page-node-id="xn5ISSmBmU9J7oHY7ZtZJJ" class="wrap">
+
+<div data-page-node-id="rk1Nb6VIRp5iIG1WtCpAzk" class="meta">
+  <div data-page-node-id="KSPnskLuqNeJm46fc8jWDD" class="meta-t"><!--pnid:wipzJV7qlVHcitATvfi9p2-->反思机制</div>
+  <div data-page-node-id="fPCPOQg3QwZoAKhybo2jpV" class="meta-sub"><!--pnid:lJk5T1RcZiEjcXOMdk5KO6-->Reflexion: Language Agents with Verbal Reinforcement Learning</div>
+  <div data-page-node-id="xLwuUi1nAMPTOTP3qFdvvu" class="meta-a"><!--pnid:E2cWI8oLWARhDQ2cKpxWnc-->Noah Shinn、Federico Cassano、Edward Berman 等　·　东北大学　·　2023 年 10 月</div>
+  <div data-page-node-id="smINQf6e1GI1JEGKYD5dmL" class="guide">
+    <div data-page-node-id="c1XW8xvMIGBz3d04fCOWu7" class="guide-i"><div data-page-node-id="QLz55RxdxyFfCiOWx8wUMv" class="guide-l"><!--pnid:ONBiNpmRpUDSvB7Lw5JVHB-->主线</div><div data-page-node-id="HnA9OhvAIMpkKR15TJ8tPZ" class="guide-v"><!--pnid:xZmzrdlS1sRdyUOxALgHWH-->大模型做智能体时试错学得很慢，因为传统的强化学习要更新权重，代价高。这篇的改法是不更新任何参数，而是<em data-page-node-id="BMME8s5IGPy1ep3uLHHelT"><!--pnid:c3nNWbdyb9tpa0VVoQ0qCi-->让模型把失败写成一段文字，下一次带着这段文字再试</em><!--pnid:DyUt1PHocBLjtE89wcmKwX-->。编程任务上首次生成的成功率是 91%，超过了当时最好的模型（80%）。</div></div>
+    <div data-page-node-id="RoTSwX2LqtqSgnUXpAYKMX" class="guide-i"><div data-page-node-id="ZXNkdEUIRtbDhVg58IVLKE" class="guide-l"><!--pnid:UIGrGGx5sUEzK5I8eQoEYH-->内核</div><div data-page-node-id="XoTgcDWkZ0nCinbUMvSpKn" class="guide-v"><!--pnid:YFgaOCtKXDfM7uJtItSr45-->反馈不需要是数字。传统强化学习用标量奖励，但<em data-page-node-id="cen41VFyQQN68Nok5hiVhn"><!--pnid:gyHzxE5GbwMgz5JVJDkHS6-->标量丢掉了「错在哪」这个信息</em><!--pnid:4tG6D0QkI4GLgMIabgPbi5-->。这篇把二元或数值反馈翻译成一段自然语言的反思，存进记忆。这段文字是下一次尝试的输入，相当于一个用语言表示的梯度。</div></div>
+  </div>
+</div>
+
+<div data-page-node-id="L4xfNBouaSct4gZ75en8iO" class="block">
+  <div data-page-node-id="t4NKSgNFr3UuTe6f1CPrgU" class="tag"><!--pnid:l1xcjxi8JYRqvTLxGJyVzs-->方法</div>
+  <div data-page-node-id="xwRraeubcVslU3KhyJmGk3" class="claim"><!--pnid:lMSo2lt4CKy8E9m1sEzcEV-->难在哪，作者说清楚了</div>
+  <p data-page-node-id="ipafvLj14Jm9JD2JDcFs5u" class="lead"><!--pnid:q8nZJKp8GZM5ecA70cV2Ls-->作者在讲做法之前先点明了这件事的难点，这段是全文的前提。</p>
+  <div data-page-node-id="ZcnviAKPDGnlxpBFKsZVz0" class="fig">
+  <svg data-page-node-id="KKtWRQFZ9VDiumsN82jULs" aria-label="信用分配问题与三路反馈信号" role="img" viewBox="0 0 1000 340">
+    <rect data-page-node-id="zFu5ecsX9xkE0AIpHmi8HJ" fill="#fff4d6" height="62" rx="8" stroke="#b45309" stroke-width="1.2" width="960" x="20" y="14"></rect>
+    <text data-page-node-id="EJt8HnnQNdVXVSp2x85t1b" fill="#412402" font-family="-apple-system,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="500" y="42"><!--pnid:94w66VjR9aRSkbYhE6nAA0-->生成有用的反思，作者点明要求两件事</text>
+    <text data-page-node-id="cRKZItV1tsb26xGTlNRhQG" fill="#8a5a20" font-family="-apple-system,sans-serif" font-size="14" text-anchor="middle" x="270" y="66"><!--pnid:43TZ434rwhg0NMRhGXUxYN-->知道模型错在哪</text>
+    <text data-page-node-id="e8FnSbpBDEsAIcTwai9BGC" fill="#8a5a20" font-family="-apple-system,sans-serif" font-size="1" x="270" y="70"> </text>
+    <text data-page-node-id="ZG1hrXnDqHLIXZLGbWejSf" fill="#8a5a20" font-family="-apple-system,sans-serif" font-size="14" text-anchor="middle" x="730" y="66"><!--pnid:LrSSgKnm98AtHNi6j1tdgB-->写出可执行的改进摘要</text>
+
+    <rect data-page-node-id="bW0tdmPiOwSvIJwRh4pun8" fill="#fdeeee" height="70" rx="8" stroke="#c02626" stroke-width="1" width="464" x="20" y="90"></rect>
+    <text data-page-node-id="HLS5Dlxj0LEcZ2sJTo4AtC" fill="#7f1d1d" font-family="-apple-system,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="252" y="118"><!--pnid:8SYt54jKGKhCzEUUTJwDQ1-->信用分配问题</text>
+    <text data-page-node-id="hLn2sRPBSaZdfepyAowWeO" fill="#991b1b" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="252" y="144"><!--pnid:ad2xj9J11uencyqUnM1iFi-->一串动作里哪一步出的错</text>
+
+    <rect data-page-node-id="7czGzgboteRBkaIjLZfYiM" fill="#eef0f3" height="70" rx="8" stroke="#e2e5ea" stroke-width="0.8" width="464" x="516" y="90"></rect>
+    <text data-page-node-id="Xhv2MiCPFjpiSwosPBE2lS" fill="#12141a" font-family="-apple-system,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="748" y="118"><!--pnid:WxYa6dtTMw4ns2y5y6em8x-->把「错了」翻译成「下次该怎么做」</text>
+    <text data-page-node-id="esZOZkSpwWKNPD0nv03hzs" fill="#48505a" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="748" y="144"><!--pnid:YXK71U0i3RW4ohm71a4VHu-->这是序列决策里公认的老大难</text>
+
+    <text data-page-node-id="FTHD6kP3Y15aYU3R34bgiN" fill="#12141a" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="500" y="192"><!--pnid:QzXc1JXEPqO8nxFcF8GaMZ-->作者把反馈分成三路，共同点是最后都要「放大」成一段话</text>
+
+    <rect data-page-node-id="PnFSTVpRYPe9Bwmyp4nuG7" fill="#e6f1fb" height="72" rx="8" stroke="#185FA5" stroke-width="0.8" width="308" x="20" y="210"></rect>
+    <text data-page-node-id="c9hqXu5dGeBFJKzmOPexzD" fill="#042c53" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="174" y="236"><!--pnid:m7xY0NUhNZumjOmmJg8FZ2-->环境的二元反馈</text>
+    <text data-page-node-id="Mz4nBszhtBnJvVJDAEPwzx" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="174" y="262"><!--pnid:ZN61qm0T63DJdw37GI89yY-->任务完成与否，环境直接给</text>
+
+    <rect data-page-node-id="WwMaObGHH4rsJodF6jHkwJ" fill="#e6f1fb" height="72" rx="8" stroke="#185FA5" stroke-width="0.8" width="308" x="346" y="210"></rect>
+    <text data-page-node-id="kLKkBFZDTWl4ex9wX6hGQP" fill="#042c53" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="500" y="236"><!--pnid:oQqM852IS3xYf6XdUkbB60-->预设的启发式规则</text>
+    <text data-page-node-id="29wLtZe25zQIEZ8cjrxKHr" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="500" y="262"><!--pnid:dPSgLF3ZHpqSlnbjj6bDdu-->常见失败模式，人写规则去匹配</text>
+
+    <rect data-page-node-id="gb2Han1WOgkRDUrZJEFXAm" fill="#ebf7ef" height="72" rx="8" stroke="#15803d" stroke-width="1" width="308" x="672" y="210"></rect>
+    <text data-page-node-id="pc4SmyrDkaSKLwoTNyOcge" fill="#14532d" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="826" y="236"><!--pnid:pcDiwxKnGesO9LDiKcwmMv-->模型自评</text>
+    <text data-page-node-id="QCiJva16pBKpfEbz6o7Muf" fill="#15803d" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="826" y="262"><!--pnid:jZjLIsa9WVecuqVJ5ELb8D-->用大模型做二元分类，或自写单元测试</text>
+
+    <text data-page-node-id="Wm4jFDTTYc37Q2fUQZ45K3" fill="#48505a" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="500" y="308"><!--pnid:MkQtE69GznVAJ4qTSNRhjb-->三路的共同点：评估信号最后都要放大成一段自然语言的经验总结，存进长期记忆</text>
+  </svg>
+  <div data-page-node-id="zy4jLCeKgHqfsn8wsjVcmC" class="fig-c"><!--pnid:ob14vgVpHvkEI3TXN9dFZs-->「放大」这个词用得准：环境给的是 0 或 1，反思要变成一句可读的话。</div>
+  </div>
+  <p data-page-node-id="aw9k5dSCDv60JIxaduPuzu"><strong data-page-node-id="J84M7dhjeBfoaly2JanVbU"><!--pnid:O5P5DHQFZX3KOoQQBKfkwh-->作者同时列了四条优势和两个缺点，这段话比方法本身更能说明这个方法的位置。</strong></p>
+  <table data-page-node-id="1DU1dtpCUFJdPG00pu9U3d"><thead data-page-node-id="wcjO1VwFtd3PIv4y34rcCh"><tr data-page-node-id="CTTE5FYNwHtDYcIWzVMsnR"><th data-page-node-id="PrvVN7Slf88AScpWnHSPJK" style="width:18%"><!--pnid:hPulxfLKRJIMEkEKnT1aFc-->四条优势</th><th data-page-node-id="D6zqYSqd8zSrETESJ0lXb1"><!--pnid:JrB7TYkeowoD3MXR1rRbZe-->说的是什么</th></tr></thead><tbody data-page-node-id="nofPXg7ymRVq30MIW2SQrl">
+    <tr data-page-node-id="uvDwVZx77K3QX78v7hC6xe"><td data-page-node-id="4jzDgdRTJt9atoiT8YwbnF"><!--pnid:DEpq8umbh4sbmRYhYSZhhY-->1</td><td data-page-node-id="yMXN2fCUuE5c0qGBOEuw8l"><strong data-page-node-id="1r2uKiqTp6iEhMvL9mStR4"><!--pnid:nqbqN4bzBF5NiYHzX7FLKX-->轻量，不需要微调模型</strong></td></tr>
+    <tr data-page-node-id="3RMSVTXGQ7lPviIlVa1vGs"><td data-page-node-id="c50JnUdBQxGsX436dVgCzg"><!--pnid:wJ9piQ9vEvNPUeh8LfIVWg-->2</td><td data-page-node-id="JbBH524ZsIiwhuaot9nyUY"><strong data-page-node-id="5McVYZMGlvaWPQSepSK3Uw"><!--pnid:hDJXJrj16ldUSBhR0bubzl-->反馈形式可以更细</strong><!--pnid:VbqIOhKyvVaWBHpHsETQu1-->（比如指出动作要怎么改），而标量或向量奖励做不到准确的信用分配</td></tr>
+    <tr data-page-node-id="424F5XH3UKvC7ghoVNlkw9"><td data-page-node-id="0PLGs7YtFKbSvkiW6azjWr"><!--pnid:4Vddk22DKvzYrsrCtJUNsq-->3</td><td data-page-node-id="uSNIjzbzpPUKH4N8ZoJ2kC"><!--pnid:h0YH011gPMzaVyZG39KslI-->记忆更明确、更可解释</td></tr>
+    <tr data-page-node-id="tWi5TNKzDlXNmYszr7mc0V"><td data-page-node-id="KbZSTtYeaxxTTRj928XqQB"><!--pnid:XUJ5ISUrgstnyKiJUsV65y-->4</td><td data-page-node-id="MXIeaokxgPeUbLJwiCeedh"><!--pnid:d9kTtKVciFM27B0LCcZZ8c-->给未来几轮的行动提示更明确</td></tr>
+  </tbody></table>
+  <table data-page-node-id="pNwLsM0wFBeZgK3diSDMuN"><thead data-page-node-id="4myx608EBVhAp0S3RncIDv"><tr data-page-node-id="0hcMS8Us194Zr3oBaaIlLv"><th data-page-node-id="zZ7T4k5AytuKjs36sJvy8e" style="width:18%"><!--pnid:MqNLk9RizjwUPOKSyPxILg-->两个缺点（作者自己说的）</th><th data-page-node-id="p68np3Gxwr6xWyptzUSxz1"><!--pnid:wyzb5WoN1z53j9YcXXpyyB-->说的是什么</th></tr></thead><tbody data-page-node-id="nSygZGwTRjAdQOFn26Cwl8">
+    <tr data-page-node-id="E3Qns6jy2cUQPn4tGxS1HI"><td data-page-node-id="7nDcOVFs7U4KluISIrJDTH"><!--pnid:443d7qZoDBH1LyhUfJOELK-->1</td><td data-page-node-id="wDwNHoioC3jkaIHupPWO63"><strong data-page-node-id="Uc3bl2kiteRho3eYpo8ATo"><!--pnid:lLrHHBQoXf6yRauxi6VUGn-->依赖模型自我评估（或启发式规则）的能力</strong></td></tr>
+    <tr data-page-node-id="TgtFGScv9LYHZzxhlSy27K"><td data-page-node-id="vfrXN0HL5Ws8sTqs4TjNSE"><!--pnid:dsvWBcYXpxHcSU167FXKjq-->2</td><td data-page-node-id="G4kw5enQQ9F1pCzt3psuQX"><strong data-page-node-id="vlpPDWrLVQaIwS9AwXAZi1"><!--pnid:ZS2KetomtmxbEWyEGsHiuN-->没有成功的形式保证</strong></td></tr>
+  </tbody></table>
+  <div data-page-node-id="hTCPDKeATn8oI6FVtbS7F3" class="bnd"><div data-page-node-id="2aDxc2XePVtAnxRJCIxNLo" class="bnd-t"><!--pnid:BgdBRVtnCh5fRAdr5CD3pA-->前后呼应</div><h3 data-page-node-id="pwAQWyCgbsk034WooUJth1" style="font-size:20px; line-height:1.5; font-weight:600; color:var(--ink); margin:34px 0 12px"><!--pnid:j86LGSzZkyCyLa8QgBbOZH-->推理时一次完整的循环</h3>
+  <p data-page-node-id="Xeh0XPldfIuduB2ymahRH1" class="lead"><!--pnid:2paVyS4rrNlMTwagfWZW00-->这里有个容易被忽略的设计：<strong data-page-node-id="QDnQ133t1pY4OWbmCX5VHl"><!--pnid:5vlbGONED3LqgGniXEeagA-->记忆只在试错之间传递，不在任务之间传递。</strong><!--pnid:cgb0b8W3wJpPAAWPHrDWga-->每换一个任务，记忆从头开始。反思机制攒的是「这个任务上试过什么」，不是「这类任务的通用经验」。</p>
+  <table data-page-node-id="h4bDMDqmlcJEzldvmuzOJ2"><thead data-page-node-id="OxPWs1A3AmBD1EYZKZhbX5"><tr data-page-node-id="eHD9My3ExGQJB3JQAwWr20"><th data-page-node-id="QK3U9yKipVPkL0HFizHXiM" style="width:12%"><!--pnid:iEVOmxsmGyH6TXiJEGVS0x-->步</th><th data-page-node-id="7taShWheYd2Md3FykBZdri"><!--pnid:nGcPAcMegE9VhymckG9yoE-->做什么</th></tr></thead><tbody data-page-node-id="LktHlOeCOZzgEswIS4VUmO">
+    <tr data-page-node-id="zEboEnLLBHNL91hmOtVyvK"><td data-page-node-id="CKw0EDPT5OXuGowTPyxmD1"><!--pnid:eGwVrKvQMuWrmVKYUYYPmE-->1</td><td data-page-node-id="EVdoeBAmALZre4pcrS2EP4"><!--pnid:u2l4O5n2zMPEbCBfiNsuji-->行动者照着当前的记忆跑一遍，产出一条完整轨迹（一串动作与观察）</td></tr>
+    <tr data-page-node-id="puCjZXjoO6uybBImDnPdSi"><td data-page-node-id="XeFRdDmqeCuDc7ExyRKmIh"><!--pnid:rJj2FlbMZagu2VutMxFRNl-->2</td><td data-page-node-id="bDfhz8HL4x58I2JAXoscIn"><!--pnid:KNbqKuvgwjAw1wIWrTJsKS-->评测者给这条轨迹打分</td></tr>
+    <tr data-page-node-id="LhUl4lq6DpeMi6DIyztm6z"><td data-page-node-id="viUr1N9qQhu33Opwq3cMuu"><!--pnid:MU0rFsmdLfSgRYMFDxkmzE-->3</td><td data-page-node-id="Ey9UBGcCwdg8ntm53oPWkI"><!--pnid:UiX5VErHFp1ccNgljV6aWn-->反思模型根据轨迹与分数写一段反思，追加进长期记忆</td></tr>
+    <tr data-page-node-id="lwUNWQiyVfV9t9yWOKBppR"><td data-page-node-id="Po0CrZoYrYjDhpmQeLdUBi"><!--pnid:5V8ah4dD9SyKE9AGZIaof4-->4</td><td data-page-node-id="gACJn4x0qTsffpbUSqZePH"><!--pnid:fGER3dU9cuMdvDwp2rYC6m-->回到第 1 步，带着新记忆再跑一遍</td></tr>
+  </tbody></table>
+  <p data-page-node-id="odSw3jYPVmDDe4z5dGP9Qe"><strong data-page-node-id="rcdK6uzbE30zB7LaftcQLV"><!--pnid:fkL4gF8mlf8wXzoYRctaKr-->终止条件有两个</strong><!--pnid:YNGnvAZfOXDHL6bdtn0v9F-->：评测者判定通过，或者达到最大尝试次数。也就是说，<strong data-page-node-id="QKxJsaCBwlqD3KjUo5jVGu"><!--pnid:Oq8kXzEFuYEf6lCGha48Ev-->反思机制不保证一定成功，只保证每次失败会留下点什么。</strong></p>
+  <p data-page-node-id="5MHHh2DImIQJEGxgNMg8wl"><strong data-page-node-id="EH5ZR2y8NrvQaWXHQOO949"><!--pnid:U62lFBaVzGiSqM5HyY0tLF-->这两条缺点正好对应后面两个缺口</strong><!--pnid:IFxN0p1KaDeYvxuLGSP9WT-->：第 1 条对应「评测者本身可能出错，论文没量化」，第 2 条对应「本质上还是试错，只是记忆更长」。原文是先承认弱点、再用实验去试，最后在局限里认账，这条脉络也是前后呼应的。</p></div>
+</div>
+
+<div data-page-node-id="nlM07iSPKS8zgOyJkNBOW3" class="block">
+  <div data-page-node-id="yw7H0ZW2KbE36wUbIb44M3" class="tag"><!--pnid:IsfKpFz4waLn0m7whfsLYc-->论证链</div>
+  <div data-page-node-id="0IbjlKfwX1DHetk3Xi7fNl" class="claim"><!--pnid:1Egh7u5wrd3iDaZVNpf2bY-->为什么反馈要用文字表达</div>
+  <p data-page-node-id="ELbddd4usEKbZX87Af9EuB" class="lead"><!--pnid:m7lySF2YX7n5vlORfgFwbF-->作者先指出智能体学得慢的两个原因，再给出绕过办法。</p>
+  <table data-page-node-id="O4K5sW3kDx9FJtgP7rtNUH"><thead data-page-node-id="5NUgU7dHgaydgiynSOi3Zk"><tr data-page-node-id="rANTxTLd3NTyWsOAzzGNnO"><th data-page-node-id="Yoyf74xdAYb0XWJ4gqNvKQ" style="width:40%"><!--pnid:EIVbJ3GHWhxRTjz85EVvUt-->传统做法的问题</th><th data-page-node-id="cueR4VZpGGVbdcjYm79zYb"><!--pnid:T3rWRHAwdsAC7ZIuUb902f-->代价</th></tr></thead><tbody data-page-node-id="HRvOUBMrxUxVcKeM32dAAG">
+    <tr data-page-node-id="zAmMtNJMwi89TI4APfnWw3"><td data-page-node-id="E2XqD7vtmJTTupfrZBNxRa"><!--pnid:j15uGF5WtwagEGcDwZpLmN-->更新模型权重</td><td data-page-node-id="yPoB89BeUdRBQgXXnfOe3v"><strong data-page-node-id="1HRdyfa2KyAixnTcpkaCY2"><!--pnid:ixRTaVvOEVCaP5tgaI17mN-->要大量训练样本，代价高</strong></td></tr>
+    <tr data-page-node-id="PYgbu5mpFFhv492NxoZVH7"><td data-page-node-id="C8wDCdsnXzUL2DWvmkt2a4"><!--pnid:QTU3gsBjKgeFxHG3lKKnPS-->无梯度方法（树上搜索、自我一致性）</td><td data-page-node-id="XO2PVELH6oBLM6wHNswuTy"><strong data-page-node-id="5Gwqln4kWN2sGJerFr2yD4"><!--pnid:7S6oXZ3qdP1fdLFEVw7enq-->不跨回合记忆</strong><!--pnid:sBkWHYSRvz0jovvftkABSG-->，同一个错误会反复犯</td></tr>
+  </tbody></table>
+  <p data-page-node-id="aoXBenIc6ahTxq3nyKM9pr"><!--pnid:5GYjapLiVFvzfYvwDJHGj6-->第二点更关键。已有的自我改进方法都是在<strong data-page-node-id="ARG6J2mxz93BenhmVXvGPR"><!--pnid:xS9UroaILE9grcPp4mPAD0-->一次任务内部</strong><!--pnid:AT9SIXCipI9er37ujeu6sT-->反复试，试完就忘。<strong data-page-node-id="7IlToxq1xoWazsXS3OAqGQ"><!--pnid:bBukCVgRuPOA8b3IO4kwxn-->任务失败的教训不会带到下一个任务。</strong><!--pnid:hG56olcLGgmdWA8xg4Ww4A-->作者把这叫做盲目的试错，没有记忆的试错等于每次从零开始。</p>
+  <div data-page-node-id="HQIbVvOj3LXHQTEcUk2QFH" class="fig">
+  <svg data-page-node-id="pGOJgyfd5IAoa92hmT1kko" aria-label="标量反馈到语言反馈的转换，以及反馈如何放大为可执行的反思" role="img" viewBox="0 0 1000 300">
+    <rect data-page-node-id="aH4l3QLTlcKBg2qsRSbo7g" fill="#fdeeee" height="110" rx="8" stroke="#c02626" stroke-width="1" width="270" x="20" y="20"></rect>
+    <text data-page-node-id="AJtXxdlAqsHlYd1cKw1RTZ" fill="#7f1d1d" font-family="-apple-system,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="155" y="46"><!--pnid:pT2XXB8E4iIczQp62NVUyE-->传统强化学习</text>
+    <rect data-page-node-id="QcZDSQi2L4yUGugOnz6AMs" fill="#f8d7d7" height="30" rx="6" stroke="#c02626" stroke-width="0.8" width="200" x="55" y="62"></rect>
+    <text data-page-node-id="VAnK2GBzOPHkyisLemC4ep" fill="#991b1b" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="155" y="82"><!--pnid:xeBsLc3YOceRECXFUpb9FB-->标量奖励：对 1 分、错 0 分</text>
+    <text data-page-node-id="PBFhkMwEKkuoonZPUI9YX4" fill="#991b1b" font-family="-apple-system,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="155" y="114"><!--pnid:GMRzSf6LpzlaIbCYtPoEvU-->丢掉了「错在哪」这个信息</text>
+
+    <path data-page-node-id="l7Dqi2LLyeEW83rmWhQgjr" d="M300 75 L360 75" fill="none" stroke="#1f5fd0" stroke-width="1.8"></path>
+    <path data-page-node-id="wD1kJE0J96hnzFjs5KPni4" d="M352 69 L362 75 L352 81" fill="none" stroke="#1f5fd0" stroke-width="1.8"></path>
+
+    <rect data-page-node-id="wkw55mTTdmVAiSnSKpWmJU" fill="#eaf1fd" height="110" rx="8" stroke="#1f5fd0" stroke-width="1.2" width="270" x="372" y="20"></rect>
+    <text data-page-node-id="Po1vFAWXRhwHlXOvfYSJfQ" fill="#042c53" font-family="-apple-system,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="507" y="46"><!--pnid:n55uzRyePM5qSh5jZSODZQ-->反思机制</text>
+    <rect data-page-node-id="YTT5SO0QogJeQwOhT0y59L" fill="#d6e4fa" height="30" rx="6" stroke="#1f5fd0" stroke-width="0.8" width="200" x="407" y="62"></rect>
+    <text data-page-node-id="AZgV5yYc0coEK97ZFsq8j3" fill="#042c53" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="507" y="82"><!--pnid:c03zByQSBKPHfjZU6BYM62-->一段自然语言的反思</text>
+    <text data-page-node-id="yY61FuV1IVZupjCYpzZ2zA" fill="#042c53" font-family="-apple-system,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="507" y="114"><!--pnid:XBXjFEiu2UIbGwdXPRU7Do-->相当于一个语义梯度</text>
+
+    <path data-page-node-id="6eoIscBLwZH8VETrHAiYBo" d="M652 75 L712 75" fill="none" stroke="#15803d" stroke-width="1.8"></path>
+    <path data-page-node-id="Kqgi1qSllBukb4kI0VkZM3" d="M704 69 L714 75 L704 81" fill="none" stroke="#15803d" stroke-width="1.8"></path>
+
+    <rect data-page-node-id="Q0lemqZOhSUVPc8nKf5hN3" fill="#ebf7ef" height="110" rx="8" stroke="#15803d" stroke-width="1" width="256" x="724" y="20"></rect>
+    <text data-page-node-id="bE7FlB5owhHslBAV68ei7u" fill="#14532d" font-family="-apple-system,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="852" y="46"><!--pnid:jn3SRhXlZdDYt39rwn9mo1-->下一次尝试</text>
+    <rect data-page-node-id="em7yrIDacxT2hlPtYYGFgO" fill="#ccebdb" height="30" rx="6" stroke="#15803d" stroke-width="0.8" width="186" x="759" y="62"></rect>
+    <text data-page-node-id="oPbawOLl2n2DmL6R2KhzVJ" fill="#14532d" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="852" y="82"><!--pnid:2JeLyNpHtoRoMyoMBZ513R-->反思文字进入提示词</text>
+    <text data-page-node-id="7kTpSVvDi8H8GJICcyWeEK" fill="#14532d" font-family="-apple-system,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="852" y="114"><!--pnid:ZrNT3fnoT9PQ55E8WyclYN-->不动任何参数</text>
+
+    <rect data-page-node-id="y07JcXKeR12wpFMyKgRiis" fill="#eef0f3" height="126" rx="8" stroke="#e2e5ea" stroke-width="0.8" width="960" x="20" y="154"></rect>
+    <text data-page-node-id="yycO12LnrrgUcSzhLceLOa" fill="#12141a" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="500" y="182"><!--pnid:BqNO512vTUhJSbYsUSGNlJ-->作者类比的场景：人类怎么学新技能</text>
+    <rect data-page-node-id="dRbBPIuC4gyDkFPVkQt6Fo" fill="#ffffff" height="52" rx="8" stroke="#c9ced6" stroke-width="0.8" width="290" x="180" y="202"></rect>
+    <text data-page-node-id="TnNkWNWICd5tUoatKREmNF" fill="#48505a" font-family="-apple-system,sans-serif" font-size="14" text-anchor="middle" x="325" y="226"><!--pnid:m6a5rXC0ZcZtqPxlOFN4b7-->这一次失败了</text>
+    <text data-page-node-id="TQ18TxuGL4mDauXKPlQHrS" fill="#8b929c" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="325" y="246"><!--pnid:FHKzHyYaSdjZSVbjzvFBW1-->只留下一个对或错的分数</text>
+    <path data-page-node-id="nB2MJ7u3fLHhGBeCG7KQRj" d="M480 228 L520 228" fill="none" stroke="#1f5fd0" stroke-width="1.6"></path>
+    <path data-page-node-id="Yit4NBS5YF56VDJNWiXxkm" d="M512 222 L522 228 L512 234" fill="none" stroke="#1f5fd0" stroke-width="1.6"></path>
+    <rect data-page-node-id="EjqsrSLXOY8w6vIpkoopNt" fill="#ffffff" height="52" rx="8" stroke="#c9ced6" stroke-width="0.8" width="290" x="530" y="202"></rect>
+    <text data-page-node-id="HT3PWXAgTi2cejri0jOM3D" fill="#48505a" font-family="-apple-system,sans-serif" font-size="14" text-anchor="middle" x="675" y="226"><!--pnid:jRTYhGxXyngl0aD7yYWSov-->反思上一次失败</text>
+    <text data-page-node-id="LzoQamBqjm15ygUONWTuWK" fill="#8b929c" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="675" y="246"><!--pnid:mTT6jROfnL0EImOnAX6r0q-->形成下一次的计划</text>
+  </svg>
+  <div data-page-node-id="g7SiSGdFfBKn47zDb8Zboy" class="fig-c"><!--pnid:OHEOdLS6AkVsKr0JtDVQWt-->这一句是全文的支点：作者把语言式的反馈类比成语义梯度，不是数值上的下降方向，而是文字上的改进方向。</div>
+  </div>
+  <p data-page-node-id="cCZEjFX5iezuGjIofF4Ov2"><!--pnid:XjqwHHxmwS3PGUGIkxcfUp-->解法是<strong data-page-node-id="8rZuEJhS3bBaEvuPwf2NI2"><!--pnid:r7WKMdCfuFjZQR8UOV8Vre-->把强化信号从数字换成文字</strong><!--pnid:RxwGFnfkc7DR2tcHJ7Pl5a-->。环境返回的反馈可能是标量（分数）、也可能是自然语言（编译器报错）。作者的做法是：用另一个语言模型把这个反馈翻译成一段反思，写进记忆，下次行动时把这段反思一起放进提示词。整个过程不动任何参数。</p>
+  <p data-page-node-id="CebteAf7ECtDgmv0q04HNn"><!--pnid:1mJ4JVxCfKmyfJevULbhjx-->这一句是全文的支点：作者把它类比成一个<strong data-page-node-id="5UobHyYUBKZDsOjCQKNW9I"><!--pnid:qhvgl8hb0zPMAMhz3sD7wr-->语义梯度</strong><!--pnid:9bC2LzJ70d6KFnREhtiBPB-->，不是数值上的下降方向，而是文字上的改进方向。人类学新技能也是这样，通过反思上一次的失败形成下一次的计划。</p>
+  <div data-page-node-id="bl0OQNqJVlaUPB88rOCtOS" class="bnd"><div data-page-node-id="RVlEK3uAuXxEZ78TJyNWqy" class="bnd-t"><!--pnid:Obzn3qQxG0DKc2ce9Kmex1-->前提与边界</div><p data-page-node-id="jsXsIZByYNSAnPbPCb4S2K"><!--pnid:DjUa3jLtpxvbURayRxx4G9-->这套方法的前提是<strong data-page-node-id="qxuHjQOaNPCcH2yAdtYNN4"><!--pnid:W8l42uC6UVkkJNKaW5yVzj-->任务必须能给出可判断对错的反馈</strong><!--pnid:inV7R3Y1QY4hTKQKXjq4ch-->。开放式写作、没有标准答案的任务，这套循环没法运转：评测器给不出分，反思就无从写起。</p></div>
+</div>
+
+<div data-page-node-id="c8FCiV62CDpr7OtiwgdTxv" class="block">
+  <div data-page-node-id="evjZYH1a2dpwhlY4eBAATG" class="tag"><!--pnid:I9rSGLcatZkj05ytMZXTDU-->三组件</div>
+  <div data-page-node-id="gCNKumWzVfAAMG23gXnKFL" class="claim"><!--pnid:kDwLf8FVuH8Qenr4Qt1ZKQ-->三个模型，两种记忆</div>
+  <p data-page-node-id="UzHpPSN3YmuffCk7sa7Wgo" class="lead"><!--pnid:sZmbg35jDd7rbkcO4QmZRT-->框架由三个模型组成，职责分得很干净。</p>
+  <table data-page-node-id="OabQ4pXgceYeHMNk2WLLas"><thead data-page-node-id="NZhjjvz1TVTk8JekdhQrK9"><tr data-page-node-id="D1fhvZmxzQLAxUjSuihtih"><th data-page-node-id="3pAzbovmxtEwIDJQon1iDT" style="width:22%"><!--pnid:WH2q41JNuNyqNDRstihMXR-->组件</th><th data-page-node-id="U5wmivGfsTBJuaL8dW2hBc"><!--pnid:eu1B7oMV8A8ysHdSvMVGMU-->职责</th></tr></thead><tbody data-page-node-id="MJ7HLBmqMrzoHhs5MliTrE">
+    <tr data-page-node-id="Uvl62nIz2M9ONPlYoSQdf3"><td data-page-node-id="TwMIFy2rFtiLj3HjUTOfyx"><strong data-page-node-id="y3s7MJPVIdFrkrzHxBDbO5"><!--pnid:pPfUW03PfHvZPakCgEsnu8-->行动者</strong></td><td data-page-node-id="JiptNkxfzgQTOui62fLaXK"><!--pnid:Z0WCTpjmybdzSsbJsMGJmP-->根据当前状态和记忆，生成文字和动作。可以是思维链，也可以是别的行动生成方式</td></tr>
+    <tr data-page-node-id="LidS2wzYjYgoNDIQBG5c0k"><td data-page-node-id="UeXFmR06v78xRf6yQRgZyP"><strong data-page-node-id="CIujVCS660E09UFEH8eOoN"><!--pnid:EeeNjbm7dETkRNhwgKKYve-->评测者</strong></td><td data-page-node-id="UXo8rEkvT10T22JWJWox4Q"><!--pnid:EXOjvGtTgohkQoJQ57re07-->给这一轮的表现打分，作者试了几种：精确匹配、任务特定的启发式规则、用另一个语言模型来判断</td></tr>
+    <tr data-page-node-id="i9wcpR06VuUejNMtOGCuQz"><td data-page-node-id="r99tQ4RMvoJXCRIPZasmZj"><strong data-page-node-id="WfLeMCVXMUaJP0dLT42Rhq"><!--pnid:qJCfSb5QulV48ek9zQDMPs-->自我反思</strong></td><td data-page-node-id="Rw2bcxj4lGBarTQjoAmasX"><!--pnid:vZvUmyZ6QpZTWoisIp14pS-->根据轨迹和评测结果，写出一段自然语言的反思</td></tr>
+  </tbody></table>
+  <p data-page-node-id="HVUaMsNGCeqOSBHY5mB8ty"><strong data-page-node-id="ITQchwdLT7zJGTxf66h5YB"><!--pnid:llOPbMg1nzjT6bcCGumfJn-->评测者这一环是整套方法能用起来的前提，但也是最容易被忽略的一环。</strong><!--pnid:MCpwZ7zo1VSG8YKb1DCB3G-->作者自己承认，在语义空间里定义好的价值函数很难，所以试了多个变体。换句话说，「怎么判断这次做得对不对」这件事，这篇是带着问题一起做的，<strong data-page-node-id="S0OJrs7kVtgWqBJeTQeK8A"><!--pnid:eyabPy5t3r4q5j0PAR75uS-->没有给出通用解</strong><!--pnid:M2hfswjlknUBa7Tc3xYxLo-->。</p>
+  <div data-page-node-id="jLSTpMKHU2gcXevmhQ3kec" class="fig">
+  <svg data-page-node-id="H2uJFSnWciCUNiH9Sn0LB3" aria-label="反思机制的试错闭环与两种记忆的分工" role="img" viewBox="0 0 1000 320">
+    <rect data-page-node-id="KfVsGCHoQxEaIsdhwKKoGe" fill="#eaf1fd" height="46" rx="8" stroke="#1f5fd0" stroke-width="1.2" width="340" x="330" y="14"></rect>
+    <text data-page-node-id="F8WAkpCYharr6IiqTyrygq" fill="#042c53" font-family="-apple-system,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="500" y="42"><!--pnid:7bqcmSypJtj7tspqxhPjY4-->行动者根据状态和记忆生成动作</text>
+    <path data-page-node-id="kU7dAmrUdBONp8Us896F66" d="M400 62 L260 96" fill="none" stroke="#185FA5" stroke-width="1.6"></path>
+    <path data-page-node-id="sMcMqN3wAvii1HbGiidmOs" d="M262 84 L258 98 L272 96" fill="none" stroke="#185FA5" stroke-width="1.6"></path>
+    <rect data-page-node-id="ujc1ueGA3Rksb1RsAP4Z0D" fill="#e6f1fb" height="46" rx="8" stroke="#185FA5" stroke-width="0.8" width="180" x="80" y="96"></rect>
+    <text data-page-node-id="kNzR2j6FgeT0tuByESIPU6" fill="#042c53" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="170" y="124"><!--pnid:rMGjiKjblGfndqZq8mk5Mn-->环境</text>
+    <path data-page-node-id="GOQZmG8qBJkPOBIBkPayzm" d="M260 119 L396 119" fill="none" stroke="#185FA5" stroke-width="1.6"></path>
+    <path data-page-node-id="GyxCNhiYkKbIHK4Q4t6ZZw" d="M394 113 L406 119 L394 125" fill="none" stroke="#185FA5" stroke-width="1.6"></path>
+    <rect data-page-node-id="BL2O3zJjECsUcta890iqWq" fill="#fff4d6" height="46" rx="8" stroke="#b45309" stroke-width="1" width="260" x="410" y="96"></rect>
+    <text data-page-node-id="UsRQQ6xy49Ihd4yxvGfjAY" fill="#412402" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="540" y="124"><!--pnid:ykElMHYh8MfEkZ0ygGa0ur-->评测者打分</text>
+    <path data-page-node-id="jQiARRR4z0RnVvCHN1Daup" d="M540 144 L540 186" fill="none" stroke="#b45309" stroke-width="1.6"></path>
+    <path data-page-node-id="Asl8VecpUtooP9d8rGwF1c" d="M534 184 L540 196 L546 184" fill="none" stroke="#b45309" stroke-width="1.6"></path>
+    <rect data-page-node-id="1o2zGnzbtqCZvlMAPPGGTo" fill="#ebf7ef" height="46" rx="8" stroke="#15803d" stroke-width="1" width="260" x="410" y="196"></rect>
+    <text data-page-node-id="dqzRAWsyX77iuJVW86z9zG" fill="#14532d" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="540" y="224"><!--pnid:8DtldMlzTK7H3206nh7AGN-->自我反思写一段文字</text>
+    <path data-page-node-id="WfD846xKCvXGHogfYGdxmE" d="M408 219 L220 219" fill="none" stroke="#15803d" stroke-width="1.6"></path>
+    <path data-page-node-id="2pSL3SVnrzlfSfqWDtcdJk" d="M232 213 L218 219 L232 225" fill="none" stroke="#15803d" stroke-width="1.6"></path>
+    <rect data-page-node-id="Jx89iNGQrk8HrIXE8pDkxH" fill="#ebf7ef" height="46" rx="8" stroke="#15803d" stroke-width="1" width="138" x="80" y="196"></rect>
+    <text data-page-node-id="lG1GGDpRoDZyWeoEb0SPfG" fill="#14532d" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="149" y="217"><!--pnid:fqWybLPZWEjXPW4iCSQt6i-->长期记忆</text>
+    <text data-page-node-id="lc59mqHqdj0UcQks0mUrg7" fill="#166534" font-family="-apple-system,sans-serif" font-size="11" text-anchor="middle" x="149" y="234"><!--pnid:6Ogtcr4s5mzuqi7Fu02cJf-->存反思，滑动的窗口</text>
+    <path data-page-node-id="GTebXoamvs1zhnlbqKcJJP" d="M170 196 L170 60 L326 60" fill="none" stroke="#15803d" stroke-width="1.6"></path>
+    <path data-page-node-id="ulNh75hFBgDQonsH9OX5sc" d="M324 54 L336 60 L324 66" fill="none" stroke="#15803d" stroke-width="1.6"></path>
+
+    <rect data-page-node-id="9EKijXYdLx1VQyfKHUCVVk" fill="#eef0f3" height="146" rx="8" stroke="#e2e5ea" stroke-width="0.8" width="230" x="690" y="96"></rect>
+    <text data-page-node-id="3d8wGFqkS9hJ1YyAoyStSC" fill="#12141a" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="805" y="124"><!--pnid:e5sUALonq9Kk6vckI29W2w-->两种记忆的分工</text>
+    <text data-page-node-id="zARf4KMzGAPr4JUqnPqiAz" fill="#48505a" font-family="-apple-system,sans-serif" font-size="13" x="715" y="156"><!--pnid:AZQwsL9dRq6qKYG1djvB6U-->短期：这一轮的完整轨迹</text>
+    <text data-page-node-id="n1joowII97y39JOHhmZPGX" fill="#48505a" font-family="-apple-system,sans-serif" font-size="13" x="715" y="182"><!--pnid:E1SrMsxauFxByZj2CfqYWr-->长期：提炼过的经验</text>
+    <text data-page-node-id="4ap3x0qquS52JfhWzIf283" fill="#8b929c" font-family="-apple-system,sans-serif" font-size="12" text-anchor="middle" x="805" y="216"><!--pnid:Rgkh9E6VtvLf7aZzkJLkhM-->决策任务最多 3 条</text>
+    <text data-page-node-id="5pWTTHZPNBLToL92Z6RmNo" fill="#8b929c" font-family="-apple-system,sans-serif" font-size="12" text-anchor="middle" x="805" y="234"><!--pnid:nNW8Nlpw7OyGzsNNZ72V6H-->编程任务只存 1 条</text>
+  </svg>
+  <div data-page-node-id="1H2uwmUjkhKE2hLMpGx3su" class="fig-c"><!--pnid:l1KtwpEMuOv3n4PonncqKr-->作者的类比是：这对应人类「记得最近的细节，同时回想提炼过的重要经验」。</div>
+  </div>
+  <p data-page-node-id="ma4526v8dOLC5lq71jjCRa"><strong data-page-node-id="qaZf6PnqM1OBxZKqL9rkT8"><!--pnid:ux0W8bGV3alA4NjIuyQ1AA-->两种记忆的分工</strong><!--pnid:OMJYgHijHvASkNTYV2wxWj-->：短期记忆存这一轮的完整轨迹（动作、观察、奖励），长期记忆存反思文字。长期记忆的容量是滑动的窗口，不是无限增长的，决策任务上最多存 3 条经验，编程任务上只存 1 条。</p>
+  <p data-page-node-id="RggIrbUWOOoX9cxxzguNZ3"><strong data-page-node-id="KASpJGGOeQGKlJ39rcG8uh"><!--pnid:mvZDPGvF1I5iNkfkv19LhA-->整个循环的终止条件是「评测者判定通过」或「达到最大尝试次数」。</strong><!--pnid:EqE0SGzMp9CZK4BVZ5OaZe-->也就是说，<strong data-page-node-id="yMY42bgwMUa0RLWdVAX5ds"><!--pnid:Puayqms9dhldEOmEr4VEQm-->反思机制不保证一定成功，只保证每次失败会留下点什么。</strong></p>
+  <div data-page-node-id="TR9zJOubmmYMvlXzOdOfmS" class="bnd"><div data-page-node-id="ZXK9m8ZmqxW528Uair77QA" class="bnd-t"><!--pnid:ZJ2zxO17rM4DqZdMoG4Gqa-->前提与边界</div><p data-page-node-id="zmoGiJPHbrJ6KEcRn48dwJ"><!--pnid:grCdGrhClFPHxLLhIae52j-->记忆容量被作者设成了很小的值（1 到 3 条）。这个数字是调出来的还是试出来的，论文没有交代。而经验上限直接决定了一个任务最多能积累多少教训。</p></div>
+</div>
+
+<div data-page-node-id="lqigum27E3QwaN4E1JyDLh" class="block">
+  <div data-page-node-id="c1EAV4droxii3jc6VUa7lw" class="tag"><!--pnid:nWanJxrpzs39TTTVsJYjRg-->实验</div>
+  <div data-page-node-id="M5rBryke52uglD6OSxQ2Tl" class="claim"><!--pnid:sfIi643tGvTp37BTg8wsFj-->三类任务，三种反馈</div>
+  <p data-page-node-id="XQ8foofTpRBB9kQqItNpB3" class="lead"><!--pnid:J3TFUWDseONnaeIjiunZCR-->作者在三类任务上验证，每类的反馈信号都不同。这是这篇的设计要点：<strong data-page-node-id="QMw8ojlasdoFXMlVOyJsiw"><!--pnid:zy5HaHjreVvV6X038cvuLB-->框架不变，换的是反馈来源。</strong></p>
+  <table data-page-node-id="DhWL8FNj9zyGTDfIM9HdWQ"><thead data-page-node-id="wq3B2VUQ3Q4gupFAc5HXjZ"><tr data-page-node-id="eh60QkWc9KRXqhrSeom95N"><th data-page-node-id="Cm4xrBdbO5D82BnWft5CJQ" style="width:26%"><!--pnid:M2J1jVcJztFnbLQd5PZvTu-->任务类型</th><th data-page-node-id="jRFitMvhiYpA5FD6lGHhxz" style="width:26%"><!--pnid:xRWoDKR4oNKtM4Zcrx4X0f-->反馈从哪来</th><th data-page-node-id="1A6Eid1Ty8twYv1HhVPY6u"><!--pnid:bSsOL8iM3FQpaFV718z9u6-->结果</th></tr></thead><tbody data-page-node-id="Cxm9OYmDlNKGc1BQBHGk8X">
+    <tr data-page-node-id="5yc4TPM6og8tpQBNxV8WKZ"><td data-page-node-id="LdcAkb8bBZxIDVomHd5413"><strong data-page-node-id="4BPgUUqZ1TRJkBd2AxCPza"><!--pnid:i8Ni6tVlYqAhYWdy0ZHJbc-->程序生成</strong></td><td data-page-node-id="2Wb7fWsAQsVCB6hqIIE5ZJ"><!--pnid:mUmLJ4KxdZr4hCd0nSxC2W-->环境给的<strong data-page-node-id="ZSHjLbgYbEDU13vB6Q5WzB"><!--pnid:X1MDJxaFSlAK5RZ9ySSMzF-->外部反馈</strong><!--pnid:WmWnNchWI2hcvRhqGdQzvH-->：编译器报错、单元测试结果</td><td data-page-node-id="uqvSfRvP67nMgIheW6FpLH"><!--pnid:OrNwj5Ha3HSu02EUYF2YjV-->编程基准上 91%，超过此前最好的 80%</td></tr>
+    <tr data-page-node-id="rVOuTVp7pEDLOVK5iBM57n"><td data-page-node-id="TFhMa7CGpWAtK6D0N2T1RC"><strong data-page-node-id="bUQSuKHmtcE6262GYoXpPB"><!--pnid:HjKkKCKG5NkkpMpgHCfw2C-->决策任务</strong><!--pnid:kq2whDzXrieSUGtrZrM3iZ-->（家居环境）</td><td data-page-node-id="rmm1h20GYG3NgAGjfqqQym"><!--pnid:I6kcxjCnhn0W8hJSRblZVf-->环境给的<strong data-page-node-id="Jf6f07vq1RrLc4lgH3MaB5"><!--pnid:juYZxqB4FVQVVOtIhI5AWK-->外部反馈</strong><!--pnid:lPJ6NqUa7oc1TtvmXfRcdi-->：任务完成与否</td><td data-page-node-id="eNfcKWcSIkXjLLGsaBUdna"><!--pnid:uTiug1idLENJpOmRG3ON0S-->134 个环境里完成 130 个</td></tr>
+    <tr data-page-node-id="31tUNalg61nts5i6JK2Wid"><td data-page-node-id="x3PTdJuSuWmLB4KYXGe2PF"><strong data-page-node-id="ApdsTpnXbaWadG9ngpblpY"><!--pnid:1p4ItkvmEgN28OIdAJSl70-->推理任务</strong><!--pnid:y7li07QsFme2hb84cJejWq-->（多跳问答）</td><td data-page-node-id="uqe75On9xxVnXtjL8M6JUa"><!--pnid:m99FOQmZBkBr0bZpjxLtng-->环境给的<strong data-page-node-id="e2uQgO4oRqL2JAl3GwxbSi"><!--pnid:U0xAPfvWtu1AICWL87Uwod-->外部反馈</strong><!--pnid:lDjFpNBanMsI6KWmFa2JLp-->：答案对不对</td><td data-page-node-id="6qdWAUvGGTwH0S3MDBBag1"><!--pnid:MeKuvAlny6FdKzZPYJkXzc-->提升 20%</td></tr>
+  </tbody></table>
+  <p data-page-node-id="mzjpIfk5p1kQhBybiN6soT"><!--pnid:FGc8WiO1WcXwekMHjxyf9C-->编程任务上的关键设计值得单独说：<strong data-page-node-id="VJKlYRpSHjCaKeKAaJ68Nv"><!--pnid:F8TTP2mMFdVYpGnNVNlWsn-->模型自己生成测试用例，然后跑测试，用测试结果当反馈。</strong><!--pnid:WNnHCxTumNrFG1LQuXJP9i-->生成测试用的是思维链提示，生成的测试会先过一遍语法树构建，滤掉无效的，最多留 6 个。这一步把「模型觉得自己对不对」换成了「代码实际跑不跑得过」，反馈因此变得可信。</p>
+  <div data-page-node-id="ry6gnLidQOCeoC2XWS5yw5" class="fig">
+  <svg data-page-node-id="R4MW0kBPdSP8WuAO9cEcBn" aria-label="编程任务里自生成测试如何把主观判断换成可执行的反馈" role="img" viewBox="0 0 1000 260">
+    <rect data-page-node-id="u1YcWpFD7xKroehv50ONqf" fill="#fdeeee" height="88" rx="8" stroke="#c02626" stroke-width="1" width="290" x="20" y="14"></rect>
+    <text data-page-node-id="MZA7OhLKtd2Xu0scjExNB8" fill="#7f1d1d" font-family="-apple-system,sans-serif" font-size="14" font-weight="700" text-anchor="middle" x="165" y="40"><!--pnid:GPJSiYp2eyEndMAgfEWDbr-->不可信的反馈</text>
+    <text data-page-node-id="TBMVbWXuOMsvqWcZWP7dOb" fill="#991b1b" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="165" y="66"><!--pnid:mkHvWukIwZjpDaMW2RVFqe-->模型自己判断这段代码对不对</text>
+    <text data-page-node-id="qMTWgR4raGwq3rjNLLUqUQ" fill="#991b1b" font-family="-apple-system,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="165" y="88"><!--pnid:QET0m2cuozehAt1AgDL05K-->错了也不知道错在哪</text>
+
+    <path data-page-node-id="babUnFc2KPoTWvEIL3dkc7" d="M320 58 L378 58" fill="none" stroke="#1f5fd0" stroke-width="1.8"></path>
+    <path data-page-node-id="maIOr1VtM0uyUKwVcPmmer" d="M370 52 L380 58 L370 64" fill="none" stroke="#1f5fd0" stroke-width="1.8"></path>
+
+    <rect data-page-node-id="WedMHqAXjPD4cMYZzxOVv1" fill="#eaf1fd" height="88" rx="8" stroke="#1f5fd0" stroke-width="1.2" width="220" x="390" y="14"></rect>
+    <text data-page-node-id="jbRke1s8QzvHI9kj88Q0Cl" fill="#042c53" font-family="-apple-system,sans-serif" font-size="14" font-weight="700" text-anchor="middle" x="500" y="40"><!--pnid:lUuOSUSGSEulh4BCAhgotk-->自生成测试用例</text>
+    <text data-page-node-id="W3BdIqZxydyY4g8CCCScPg" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="500" y="66"><!--pnid:UNRgY0pfvxaT8oM5AoYQnL-->语法树构建滤掉无效的</text>
+    <text data-page-node-id="Q73b1CGy6UcFUOpZhZ3dMH" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="12" text-anchor="middle" x="500" y="88"><!--pnid:B8EwdLKksDCREUY9e9QsaC-->最多留 6 个</text>
+
+    <path data-page-node-id="ofMYp8ohcNkTDgu9gNfqrd" d="M620 58 L678 58" fill="none" stroke="#15803d" stroke-width="1.8"></path>
+    <path data-page-node-id="jcUaMAcAlxHnWevrY29zQI" d="M670 52 L680 58 L670 64" fill="none" stroke="#15803d" stroke-width="1.8"></path>
+
+    <rect data-page-node-id="T3VR9dV6nAeJtTJSTAoIjJ" fill="#ebf7ef" height="88" rx="8" stroke="#15803d" stroke-width="1" width="290" x="690" y="14"></rect>
+    <text data-page-node-id="I0df6nmdNvOjeX69nV1StM" fill="#14532d" font-family="-apple-system,sans-serif" font-size="14" font-weight="700" text-anchor="middle" x="835" y="40"><!--pnid:Gmy0VY8ZCbT1ggqWky7P6W-->可信的反馈</text>
+    <text data-page-node-id="FAj2Ekywq4I5uTVP83eziu" fill="#15803d" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="835" y="66"><!--pnid:96M9MZGs9Xeu2wubtnOYWB-->代码实际跑不跑得过</text>
+    <text data-page-node-id="YfoCbx17Iv86EkGdYmpB3Y" fill="#14532d" font-family="-apple-system,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="835" y="88"><!--pnid:poDF00DkiNwEcqVDTGXsQU-->错在哪一目了然</text>
+
+    <rect data-page-node-id="gO8ueSX8rtOP9XFwPQdv1P" fill="#eef0f3" height="118" rx="8" stroke="#e2e5ea" stroke-width="0.8" width="470" x="20" y="122"></rect>
+    <text data-page-node-id="glB0pWEMHPCOdU8s3jDDC6" fill="#12141a" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="255" y="150"><!--pnid:Z7KaXrPvWLmw01ShIMiCZJ-->推理任务上的对照设计</text>
+    <text data-page-node-id="jN0hhqvvkxJf9uDVRm946N" fill="#48505a" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="255" y="178"><!--pnid:E4KakfRBxUxzJ7oQZXWeLH-->给一个能看见标准答案的基线</text>
+    <text data-page-node-id="Ss9uL5BFch8IUR0wu7RXg9" fill="#48505a" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="255" y="202"><!--pnid:bac7FFiWw2CUCLw4gETtuF-->它的准确率更高，但仍有 39% 答不对</text>
+    <text data-page-node-id="x59EbsGl10XakbDlEY3XRL" fill="#1f5fd0" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="255" y="228"><!--pnid:3npvnCg5VxRObq2B9qgOM9-->反思在不给答案的情况下提升了 14%</text>
+
+    <rect data-page-node-id="anzHLBHSZAjfdYPJd5hInR" fill="#fff4d6" height="118" rx="8" stroke="#b45309" stroke-width="1" width="470" x="510" y="122"></rect>
+    <text data-page-node-id="TYXLjoCVsI4fWaYT5qAMKP" fill="#412402" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="745" y="150"><!--pnid:cnzMcxk0hWX8bgT6ZxzKCJ-->家居任务里最常见的错误</text>
+    <text data-page-node-id="HN5wRwrpvp3IbwhZBoSoOh" fill="#8a5a20" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="745" y="178"><!--pnid:AhygKIXRrdCZcFOx1ca6eI-->智能体以为自己拿到了某个物品，实际没有</text>
+    <text data-page-node-id="5rNsiG9n00KH4yP5suJ3ST" fill="#8a5a20" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="745" y="202"><!--pnid:NHJMAJ3sVThdpz7G76jke6-->然后沿一条长轨迹继续走</text>
+    <text data-page-node-id="my9m23yAJJVXCzNZ5yMoWY" fill="#b45309" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="745" y="228"><!--pnid:f1ZTLkD9yzbJYGdCfQVHYY-->途中没有任何回头机制</text>
+  </svg>
+  <div data-page-node-id="M01eyW4PoqYANqEUusGwt6" class="fig-c"><!--pnid:inUeMbs3j9AbRA1jMLHDZr-->反思机制解决的正是这个：记住「我以为拿到了但没有」，下一次先确认。</div>
+  </div>
+  <p data-page-node-id="1F1DqUJgNfoZ316l1ioyfC"><strong data-page-node-id="bC9ki51MJp6raMoBYtfi6x"><!--pnid:4N5QWi4HYqSL4znbwsbygE-->实验里有一个设计得很好的对照。</strong><!--pnid:wPOpSqMt8EBu5CIumMmNxN-->推理任务上，作者加了一个能看见标准答案的基线。结果这个「作弊」的基线准确率更高，<strong data-page-node-id="2aAcMmmgBt59GvwJHIKs8l"><!--pnid:YuXoydM4d10BICZsIobfu8-->但仍有 39% 的题答不对</strong><!--pnid:ZLRnOMstLRukwLGxjMJLha-->。而反思机制<strong data-page-node-id="g4GFG1lRICjOakChdArqCM"><!--pnid:DkDBa48KRYGIUSExvD3Dh8-->在不给标准答案的情况下把准确率提升了 14%</strong><!--pnid:VCcVeotgNvoDM31V8Thfc2-->。这个对照说明：反思的作用不是提供信息，而是<strong data-page-node-id="Iii2uXbWk1EipFNRJ7xofs"><!--pnid:X8EO0WWPeDuF8ANVt3LU4G-->让已有的信息被用起来</strong><!--pnid:Tyb3FYaZk8cnoyqJTsj1sD-->。</p>
+  <p data-page-node-id="POaIXBTpSpXp49Az2mdyti"><strong data-page-node-id="CObuThBgszrRE61AIHD3c4"><!--pnid:poIidUm7dQ1PDGwIiof2yn-->同一组实验里还有一个失败案例，作者自己交代了。</strong><!--pnid:nrnlSlB2m7REjMTkloAGVZ-->购物网站那类任务上，加了反思机制<strong data-page-node-id="VbLxHD0IY40OE6Jom3qA6g"><!--pnid:DfDpAaSzOSdPkZFwvgppQG-->没有显著超过不用反思的基线</strong><!--pnid:BfyKmRMmaJjCt7423rkg5m-->。作者的解释是：这类任务要求非常独特且多样的行为，而搜索空间不如维基百科那样多样。<strong data-page-node-id="1t5ZgBFJ9HWUts8MAyGORh"><!--pnid:UIMC8r2jjeHvHGSzCLtt9v-->反思在答案相对收敛的任务上有效，在需要探索非常规路径的任务上帮不上忙。</strong></p>
+  <p data-page-node-id="m8lHSPuNUGYH46ZuMepmrf"><!--pnid:KIHROhMwMI8abx4cU5FmpK-->另一处值得看的是失败模式分析。家居任务里最常见的错误是：智能体以为自己拿到了某个物品，但实际没有，然后沿着一条长轨迹继续走，<strong data-page-node-id="c5ZGsQqme1GQL6L5KLx3wD"><!--pnid:capfn8CbrCvvfpmdCsIjr7-->途中没有任何回头机制</strong><!--pnid:tl9WCthdpoks2sfuocXoRP-->。反思机制解决的正是这个：记住「我以为拿到了但没有」，下一次先确认。</p>
+  <div data-page-node-id="0Q5TTmsj8eo9gKZ9rn9WOW" class="bnd"><div data-page-node-id="gGwZ56OhAAdYBUzUAeMlhq" class="bnd-t"><!--pnid:xQXmbRaGHax5BFDnL0xtmK-->前提与边界</div><p data-page-node-id="QgI7J7cfkPuT6hP8R0Tsy9"><!--pnid:ptFfrkKQ9Dx6PpbYrW3cTx-->三个任务都是可以自动判分的环境。<strong data-page-node-id="diK0gjrccdEyk5Ne2VnfMf"><!--pnid:U3WMir1wov0hkIzgjRR5cq-->开放式任务（写一份报告、设计一个方案）无法自动判分，这套框架用不上。</strong><!--pnid:1HvKa81TWMASnLe9o1BnSk-->而这恰恰是这类方法最有想象力的方向。</p></div>
+</div>
+
+<div data-page-node-id="q4WXoKz1EMhYhLDZt5r2NG" class="block">
+  <div data-page-node-id="jQWNUfuTg9d4lVC9SQSJA6" class="tag"><!--pnid:nw4WBETAcIjfDw9PT0kVlD-->消融</div>
+  <div data-page-node-id="SJSUDYpDdmRIbHP1BZOsL7" class="claim"><!--pnid:kLYjtcBYpaJYCwBZj0YTIG-->哪一环都不能少</div>
+  <p data-page-node-id="eBpZlThSnLBv4Y7Q3VDKtf" class="lead"><!--pnid:XAdKmiwN9OISzFktc1ODZT-->作者在编程任务上做了拆分测试，看四个组件各贡献多少。用的题目是最难的 50 道 Rust 题。</p>
+  <table data-page-node-id="CMi77jTu7hGgQTcWOg9lK7"><thead data-page-node-id="5Bz21QRMS8FJbtF6o09J9Z"><tr data-page-node-id="KwMoAuJpFR3Ydd21cAcxzq"><th data-page-node-id="MgaB3nq8z3NshEvZVDZX8c" style="width:40%"><!--pnid:9GbjGtKTggsLBIutpFcBkR-->去掉哪一环</th><th data-page-node-id="6o1v92RwoLkDiiFGhAAgcv"><!--pnid:LQk6VG9YokyNk1jp9A4Fxi-->成功率</th></tr></thead><tbody data-page-node-id="Ly7ICYIySgFEED11BBAjSo">
+    <tr data-page-node-id="Mxo8nQKK851UCzr6aNzlpd"><td data-page-node-id="18AZLNn0EXrwRkB6fzR3xP"><strong data-page-node-id="Wk0JtvLHsB5sRI7GsJ5yQz"><!--pnid:GKZPl4Edshl0sKSzgbnYrU-->完整方法</strong></td><td data-page-node-id="zRDSApd4sd19Ga3Zp1D3HT"><strong data-page-node-id="98oEvQS1A0SyzEgqmLJZib"><!--pnid:EVKNss4MFArrKSrrGNXIWQ-->68%</strong></td></tr>
+    <tr data-page-node-id="NPkuNIsWcaYiI1mo0Jhvqm"><td data-page-node-id="gTWsEBidyxr3mPLDrHv4Of"><!--pnid:KpV90lss2GOSRCzwjaWpe4-->去掉自生成测试</td><td data-page-node-id="pRnacwzXjxxSx62iZAZ3RL"><!--pnid:lkhSC71zDsJwHRlJwcr2ya-->52%</td></tr>
+    <tr data-page-node-id="FNERibXuxqcOxGIJhvLKBh"><td data-page-node-id="gn14xCZIIqON4DPnaSeS35"><!--pnid:oPq2bIHuTXessZjzp0zy7n-->去掉自我反思（只保留测试）</td><td data-page-node-id="rkbG3NZ2bbQLS3EXWVnrED"><!--pnid:qDlpXoGA7KqDdxc6852Hge-->60%</td></tr>
+    <tr data-page-node-id="7Zx1qXhwxJ5yZJXXGsnv9t"><td data-page-node-id="f8mj8Eh3HGzipPGWKbImLP"><!--pnid:DH5Ztug23w1WbDFFPNTh0L-->只用基础模型（两环都去掉）</td><td data-page-node-id="rCK1Ahj8rlS6mtTHlxsQd8"><!--pnid:7yplzBq3uiy2KOI7WuqBnU-->60%</td></tr>
+  </tbody></table>
+  <div data-page-node-id="aQDqwraACq8Cn07qWYQ64t" class="fig">
+  <svg data-page-node-id="9liJqY2j5E2akRFoIWRSeC" aria-label="消融结果显示自生成测试的贡献大于自我反思" role="img" viewBox="0 0 1000 250">
+    <rect data-page-node-id="4TpJCbMnX4i1veoUx0shof" fill="#fdf4e7" height="46" rx="8" stroke="#b45309" stroke-width="1.2" width="960" x="20" y="14"></rect>
+    <text data-page-node-id="PiHKUQpEZZTIlB9wlfdAbE" fill="#412402" font-family="-apple-system,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="500" y="42"><!--pnid:5v344ZMrJs1NmdVTZjFHeS-->这份方法里「拿到可信反馈」比「反思」更关键</text>
+
+    <rect data-page-node-id="aD4roVeRlOUkTS0t9osRmq" fill="#eef0f3" height="34" rx="6" stroke="#e2e5ea" stroke-width="0.8" width="840" x="60" y="86"></rect>
+    <rect data-page-node-id="3s4jWWZba086AUokBf4TBL" fill="#ebf7ef" height="34" rx="6" stroke="#15803d" stroke-width="1" width="840" x="60" y="86"></rect>
+    <text data-page-node-id="EQHVu9XbF7jJHYnFzyvHI1" fill="#14532d" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" x="90" y="109"><!--pnid:qexiAoLKDVL5dmVMyA2Yeq-->完整方法</text>
+    <text data-page-node-id="AGv9OJf8k5JpRWEUGQpKtx" fill="#14532d" font-family="-apple-system,sans-serif" font-size="14" font-weight="700" text-anchor="end" x="880" y="109"><!--pnid:GDC2k6IKTnosorg98EL5yK-->68%</text>
+
+    <rect data-page-node-id="5ceJEEGpalyUmHspTKzQG6" fill="#eef0f3" height="34" rx="6" stroke="#e2e5ea" stroke-width="0.8" width="840" x="60" y="130"></rect>
+    <rect data-page-node-id="yWcHxKCjCqONFLZQjQ2jei" fill="#fdeeee" height="34" rx="6" stroke="#c02626" stroke-width="1" width="642" x="60" y="130"></rect>
+    <text data-page-node-id="Hvr33CGe05Shdji9baszrK" fill="#7f1d1d" font-family="-apple-system,sans-serif" font-size="13" x="90" y="153"><!--pnid:JeNnvfOCNcye4nke7xQXEr-->去掉自生成测试</text>
+    <text data-page-node-id="OXs2gZDLMdGgK8engOm6AD" fill="#7f1d1d" font-family="-apple-system,sans-serif" font-size="14" font-weight="700" text-anchor="end" x="880" y="153"><!--pnid:lhGDJr7xcdAwHzSvegbAE1-->52%</text>
+
+    <rect data-page-node-id="IZYUPnkBcgdixXcelmB9fB" fill="#eef0f3" height="34" rx="6" stroke="#e2e5ea" stroke-width="0.8" width="840" x="60" y="174"></rect>
+    <rect data-page-node-id="7igHAd7LallLJzemtZSr9y" fill="#fff4d6" height="34" rx="6" stroke="#b45309" stroke-width="1" width="740" x="60" y="174"></rect>
+    <text data-page-node-id="8dGxPrHqFgPGKCHRs6Ivx2" fill="#412402" font-family="-apple-system,sans-serif" font-size="13" x="90" y="197"><!--pnid:HjMCpGDzeptBMqwkdeZvds-->去掉自我反思</text>
+    <text data-page-node-id="ARG7t67I6AhRD2M2FaBQBO" fill="#412402" font-family="-apple-system,sans-serif" font-size="14" font-weight="700" text-anchor="end" x="880" y="197"><!--pnid:DT4Y2dB8ZHXgbvDMlXNneo-->60%</text>
+
+    <text data-page-node-id="IV4yJ8OhOju241euA7IQPr" fill="#48505a" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="500" y="238"><!--pnid:gTiBoYINkEu6pLbU0Z0KfY-->掉 16 个点是自生成测试，去掉自我反思只掉 8 个点</text>
+  </svg>
+  <div data-page-node-id="rWLMTwqFtkMFTExsPFeeOs" class="fig-c"><!--pnid:Pwc8ALbuDvj2caqOl4vJ1D-->作者据此说，近来那些不做自我反思的盲试错调试技术，在难任务上（像写复杂 Rust 程序）是无效的。</div>
+  </div>
+  <p data-page-node-id="cSXr6XO8VgNxvCYiLbdSat"><!--pnid:tUlTaZ76WoAQ6fqOPT9P8z-->这张表的结论很直接：<strong data-page-node-id="yKBddHytDj4Unj8r6IhiLL"><!--pnid:yyaoep8b1M5aO2SMCFx0i8-->自生成测试的贡献（68% 掉到 52%）比自我反思的贡献（68% 掉到 60%）大得多。</strong><!--pnid:ltC1wlasslndCisTZbYYfY-->也就是说，这套方法里<strong data-page-node-id="RCJqhH9c16LUA5LTtQCgcC"><!--pnid:qV7XiO0e7csMAv7Pnx2qYc-->拿到可信反馈比反思更关键</strong><!--pnid:MGk5uT0iuNVx72gCNASALn-->。</p>
+  <p data-page-node-id="6lcKEXnvdTqwRazBFlOIIB"><!--pnid:TYjWyJ8gzLhQ73S04TWCW0-->作者自己给了这个判断：近来的工作提出各种不做自我反思的盲试错调试技术，<strong data-page-node-id="lwnP7PvPtqt746ncf5KRGG"><!--pnid:xn348S4atLXNiIxZGAax3o-->这些在难任务上（像写复杂 Rust 程序）是无效的</strong><!--pnid:qM3WCv1mKcdxiHhC1PpTJM-->。这跟前面的消融数据是一致的。</p>
+  <div data-page-node-id="NvW5vl7QVCzGoMuh29D2Wu" class="bnd"><div data-page-node-id="KOnn6ZqwrUemitdb7Bcio6" class="bnd-t"><!--pnid:nLDHpzd7lpAyEnqRRTGeOA-->前提与边界</div><p data-page-node-id="8dLPbZKuVGnGfQd6FnlAim"><!--pnid:8RmF1clFkjMlmgrJ89tX9c-->消融只在一类任务、一个难度档位上做过。「自我反思贡献不大」这个结论，不能推广到所有任务。而且 Rust 是这批里最难的语言，换成 Python 或 JavaScript，排序可能变。</p></div>
+</div>
+
+<div data-page-node-id="Ogc8Yu8GlHoHF4aHd0ove3" class="block">
+  <div data-page-node-id="ocARG6wktxxNBbHy4rMiRL" class="tag"><!--pnid:3mzLuafAB1ZTLOpd0GSL6O-->缺口</div>
+  <div data-page-node-id="JbqsRRHbGsmZjPjbbGg69W" class="claim"><!--pnid:jRfzrS85d3BE5BD0rgcrgp-->这篇论文没回答什么</div>
+  <div data-page-node-id="KMuxSW642dyDwSsfkn21sN" class="gap"><div data-page-node-id="m4HY6cVfQrLq6Pe0fKmyit" class="gap-h"><!--pnid:TuMksBnIJvLlQNri7vm83C-->1. 只能解决能被自动判分的任务。</div>
+  <p data-page-node-id="GMai6G6Sgnr3xEcm8wZKpz"><!--pnid:voOB9NlvqOQoaR9AjUuuK0-->作者在开篇划的范围就是「与外部环境交互的智能体」，而环境必须能返回反馈。开放式生成任务、长期规划任务，这篇完全没有触及，而这恰恰是这类方法想象力最大的地方。</p></div>
+  <div data-page-node-id="xnDhJ8nnGK0ITrspMGsicj" class="gap"><div data-page-node-id="V67HTSXcIE5A8I4cVOWGzH" class="gap-h"><!--pnid:C3lhw3PmaCv5wfVSCtjzjC-->2. 记忆容量怎么定，没有交代。</div>
+  <p data-page-node-id="1TTR1e4taBdDvfdvnV6Fqj"><!--pnid:QHVeaObnWNOp3lEX385NP9-->决策任务 3 条、编程任务 1 条。这些数字是试出来的还是拍的，论文没写。<strong data-page-node-id="VAIpOeJYXvf3yX5quGyJKv"><!--pnid:BZ1eW3jwGYIAVPH0DpvyV2-->而容量直接决定一个任务最多能积累多少教训</strong><!--pnid:VjhYv6kOgHAg2B2VOa12cy-->：容量太小学不到东西，太大则超出上下文限制且可能引入干扰。</p></div>
+  <div data-page-node-id="qs9Zxc7pTdw4AdRI23inUg" class="gap"><div data-page-node-id="JdTu6gLJL2DZZtjvDcWBI7" class="gap-h"><!--pnid:gmQVXdhTJBCag2ttpUNdWU-->3. 试错的次数上限与成本，没有系统分析。</div>
+  <p data-page-node-id="xZyY6s7hHTqoEBxahTjW32"><!--pnid:tLQLkC84lErprJ1YC3q1EY-->算法里明确写着「达到最大尝试次数就停」，但这个次数是多少、成本是多少、和最终收益的关系是什么，论文没有给。</p></div>
+  <div data-page-node-id="8ijqDk06ILVTEf2l7c0s31" class="gap"><div data-page-node-id="fZYSP4x8VxfXAJrxEpJYoJ" class="gap-h"><!--pnid:9OcNVmxKgVu3q9sNvLrofb-->4. 本质上还是试错，只是记忆更长。</div>
+  <p data-page-node-id="e0KqSOusDKYBMSAWQJvtih"><!--pnid:2STgNELDTMxhsycfyBoeuO-->作者在局限里承认：策略优化仍可能陷入次优的局部解。<strong data-page-node-id="wrer7zvmZEuG0Sx6yXIoFd"><!--pnid:y6u0qVoJOcn9qXCm8wjp5v-->反思机制不保证能找到最优解，它只保证每次失败会留下痕迹</strong><!--pnid:gMBhPu1ikiT9j4du0b9ckc-->。这个局限是方法本身带进来的，靠改记忆结构（作者建议用向量库或数据库）能不能解决，论文没有验证。</p></div>
+  <div data-page-node-id="y66xatryUMi5IBbYslb2Ep" class="gap"><div data-page-node-id="b4nVk8PRodOASlDBFtU3lS" class="gap-h"><!--pnid:vffFwLSOtcNiFG5okgd0vw-->5. 「可解释性更好」是作者的判断，不是实验结论。</div>
+  <p data-page-node-id="UMESDm9b3xOh1cnn6Oepi3"><!--pnid:hVJeFqxlhjde0lVGxeWaI4-->论文提到语言式的强化可能让智能体更可解释、更可诊断，因为反思文字可以被人读。<strong data-page-node-id="elHGbjwIIRHU84gByCJt4c"><!--pnid:ZQCdFrmZLqr9fLGwab5tAv-->但全文没有任何一处实验去验证这个说法</strong><!--pnid:7odQd715pDdqda0htrcsl7-->。这是一个方向性判断，不是被证明的结论。</p></div>
+  <div data-page-node-id="JDnR6kYIbkU6ZXHSZA6dJE" class="gap"><div data-page-node-id="UpMGkNWCZB8tBrPTl5HjsG" class="gap-h"><!--pnid:7xa5XwoNQSC6RPNXNwhRaC-->6. 有一个失败案例被放在附录里，正文没提。</div>
+  <p data-page-node-id="XP6wVpHAejgSH3zYdKNpGf"><!--pnid:zlnKvPd43YfAYElM9FnoER-->购物网站任务上，反思机制没有显著超过基线，作者的解释是这个任务需要「非常独特且多样的行为」。<strong data-page-node-id="PbkoNP1r1NAuqdXb5eCMfD"><!--pnid:eFL23ANoGhERPpD6AylZFM-->论文把它放在附录而不是正文，这个位置选择值得注意。</strong></p></div>
+  <div data-page-node-id="6DuMyt8zgNrw04DbnUGZw2" class="gap"><div data-page-node-id="OfIpz3cZNopglZkXg2ids4" class="gap-h"><!--pnid:9fnYOAuvkZuSSqaqUDboRO-->7. 风险那一段只有一句话。</div>
+  <p data-page-node-id="eRkQRti3qRyZfkyrbONwni"><!--pnid:44nj4zTphc3estETVodTBg-->作者承认这套方法会放大智能体被误用的风险，说「这个方向需要在安全与伦理上花更多力气」，然后就结束了。具体是什么风险、怎么防，论文没有给。</p></div>
+</div>
+
+</div>
+
+
+<script data-page-node-id="J8jOaMqVk9dZUUjZLkeUvl" data-pnid-children="qpekPnty4F4gzJOY9yYwW2">
+function setM(m){
+  document.body.classList.toggle('present',m==='pres');
+  document.getElementById('bRead').classList.toggle('on',m==='read');
+  document.getElementById('bPres').classList.toggle('on',m==='pres');
+  document.getElementById('hint').textContent = m==='pres'
+    ? '投屏态：细节已折叠，一屏一个论点'
+    : '阅读态：表格与细节完整展开';
+  window.scrollTo({top:0,behavior:'instant'});
+}
+if(location.hash==='#pres')setM('pres');
+</script>
+</html>

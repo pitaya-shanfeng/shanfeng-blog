@@ -1,0 +1,331 @@
+---
+title: 思维链
+published: 2026-11-03
+description: 2022 年那篇 CoT 论文的精读。提示词里的示例从「问题 + 答案」换成「问题 + 推理 + 答案」，百亿参数以上的模型才真正学会推理；三组消融说明多给算力没用，用自然语言写中间步骤才有用。
+category: 拾遗/学习笔记
+tags:
+  - 思维链
+  - 提示词工程
+  - 大模型推理
+  - 认知与设计
+draft: false
+---
+
+<!DOCTYPE html>
+<html data-page-node-id="lgPLZEktxDcmL0ikpGEz5P" lang="zh-CN"><head data-page-node-id="VbX7Qga3kV3Sr6AOgTfO03">
+<script data-page-node-id="dkn9kU5HrcfdZjbASYIEXG" src="/page/page_comm/inject.js"></script>
+<meta data-page-node-id="yZBiCtqtwEzRncjA4sT8zu" charset="UTF-8">
+<meta name="blog-remove" content="bar">
+<meta name="blog-heading" content="tag:2">
+<meta data-page-node-id="1cnOd428GP7fMISNnB7KWf" content="width=device-width,initial-scale=1" name="viewport">
+<title data-page-node-id="lVFEVlGkGHHJFbLxxR8Zu9" data-pnid-children="fLzTG1nINy82N0j508csDD">幻觉透镜 HalluLens · LLM 幻觉评测基准 · 论文阅读</title>
+<style data-page-node-id="p8NsmTMhUlf8lST4DDrxHR" data-pnid-children="4OyWfKZL4dZlttcUSJ2QW8">
+:root{
+  --page:#eef0f3; --card:#ffffff; --sunken:#f6f7f9; --sunken-2:#edf0f3;
+  --ink:#12141a; --ink-2:#48505a; --ink-3:#8b929c; --line:#e2e5ea;
+  --accent:#1f5fd0; --todo:#c02626; --ok:#15803d; --warn:#b45309;
+  --accent-bg:#eaf1fd; --todo-bg:#fdeeee; --ok-bg:#ebf7ef; --warn-bg:#fdf4e7;
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --mono:"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.75;padding:40px 24px 80px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto}
+.block{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:34px 40px 38px;margin:0 0 20px;box-shadow:0 1px 2px rgba(16,24,40,.045)}
+.tag{display:inline-block;background:var(--accent-bg);color:var(--accent);font-size:14px;font-weight:600;padding:4px 12px;border-radius:6px;margin-bottom:18px;align-self:flex-start}
+.claim{font-size:32px;line-height:1.45;font-weight:700;margin-bottom:22px;letter-spacing:-.01em}
+p{margin:0 0 16px;color:var(--ink-2)}
+p.lead{color:var(--ink);font-size:17px}
+strong{color:var(--ink);font-weight:600}
+em{font-style:normal;background:linear-gradient(transparent 62%,#ffe9a8 62%);padding:0 2px}
+.fig{margin:24px 0 8px;background:var(--sunken);border:1px solid var(--line);border-radius:12px;padding:28px 24px 20px}
+.fig svg{width:100%;height:auto;display:block}
+.fig-c{font-size:13px;line-height:1.7;color:var(--ink-3);margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:15px;background:var(--sunken);border-radius:10px;overflow:hidden}
+th{background:var(--sunken-2);color:var(--ink);font-weight:600;text-align:left;padding:12px 16px;font-size:14px;border-bottom:1px solid var(--line)}
+td{padding:12px 16px;color:var(--ink-2);border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.bnd{border-left:3px solid var(--warn);background:var(--warn-bg);border-radius:0 8px 8px 0;padding:16px 20px;margin:20px 0}
+.bnd-t{font-size:13px;font-weight:600;color:var(--warn);letter-spacing:.06em;margin-bottom:8px}
+.bnd p{margin:0;color:var(--ink-2)}
+.age{border-left:3px solid var(--line);padding:14px 20px;margin:18px 0}
+.age-t{font-size:13px;font-weight:600;color:var(--ink-3);letter-spacing:.06em;margin-bottom:8px}
+.age p{margin:0;color:var(--ink-3);font-size:15px}
+.quote{border-left:3px solid var(--accent);background:var(--accent-bg);padding:16px 20px;border-radius:0 8px 8px 0;margin:18px 0;color:var(--ink);font-size:15px;line-height:1.7}
+.meta{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:34px 40px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(16,24,40,.045)}
+.meta-t{font-size:40px;line-height:1.2;font-weight:700;margin-bottom:10px;letter-spacing:-.02em}
+.meta-sub{font-size:20px;color:var(--ink-2);margin-bottom:14px;font-weight:500}
+.meta-a{font-size:15px;color:var(--ink-2);margin-bottom:18px;line-height:1.6}
+.guide{border-top:1px solid var(--line);margin-top:24px;padding-top:20px;display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.guide-i{min-width:0}
+.guide-l{font-size:13px;font-weight:600;color:var(--ink-3);letter-spacing:.06em;margin-bottom:8px}
+.guide-v{font-size:15px;color:var(--ink-2);line-height:1.7}
+.guide-v em{font-weight:600}
+.idbar{border-top:1px solid var(--line);margin-top:26px;padding-top:18px;font-size:14px;color:var(--ink-3);font-weight:600;letter-spacing:.02em}
+.gap{margin:0 0 26px}
+.gap:last-child{margin-bottom:0}
+.gap-h{font-size:19px;line-height:1.5;font-weight:600;color:var(--ink);margin-bottom:10px}
+.gap p{margin-bottom:12px}
+.bar{position:sticky;top:0;z-index:20;background:var(--page);border-bottom:1px solid var(--line);padding:10px 0;margin:-40px -24px 24px;padding-left:24px;padding-right:24px;display:flex;justify-content:flex-end;gap:12px;align-items:center}
+.toggle{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 8px;display:flex;gap:2px}
+.tg{border:0;background:transparent;font-family:inherit;font-size:13px;color:var(--ink-2);padding:6px 14px;border-radius:6px;cursor:pointer;transition:.12s}
+.tg.on{background:var(--accent);color:#fff;font-weight:600}
+.hint{font-size:12px;color:var(--ink-3)}
+details>summary{cursor:pointer;font-size:14px;color:var(--ink-2);padding:12px 0;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary:before{content:"＋";color:var(--accent);font-weight:600;width:16px;flex-shrink:0}
+details[open]>summary:before{content:"－"}
+body.present .wrap{max-width:1280px}
+body.present .claim{font-size:44px;line-height:1.3;margin-bottom:30px}
+body.present p{font-size:19px;line-height:1.8}
+body.present .meta-t{font-size:56px}
+body.present .meta-sub{font-size:26px}
+body.present .guide-v{font-size:18px}
+body.present .guide-l{font-size:15px}
+body.present .guide{grid-template-columns:1fr;gap:26px}
+body.present .block,body.present .meta{padding:48px 56px 52px;margin-bottom:32px}
+body.present .fig{padding:40px 40px 30px}
+body.present .fig-c{font-size:16px}
+body.present .bnd p{font-size:18px}
+body.present .age p{font-size:17px}
+body.present .bnd-t,body.present .age-t{font-size:15px}
+body.present table{font-size:17px}
+body.present th{font-size:16px;padding:16px 20px}
+body.present td{padding:16px 20px}
+body.present .gap-h{font-size:22px}
+body.present .gap p{font-size:18px;line-height:1.8}
+@media print{body{background:#fff;padding:0}.bar{display:none}details{open:true}}
+@media (max-width:760px){.meta-t{font-size:28px}.claim{font-size:22px}.guide{grid-template-columns:1fr}.block,.meta{padding:24px 22px}.tag{align-self:flex-start}}
+</style>
+</head>
+
+<div data-page-node-id="Q0NHgqbYTN2o89pVAXHJay" class="bar"><span data-page-node-id="RtnzTYk4SDSjggEbvhxNOk" class="hint" id="hint"><!--pnid:l3Xz9KBq8D6MuGCMaSZ5pY-->阅读态：表格与细节完整展开</span><div data-page-node-id="8noXOxNvNct3JVKwhVvfJS" class="toggle"><button data-page-node-id="SWjvKmFX0oo3GRnciRGP6q" class="tg on" id="bRead" onclick="setM('read')"><!--pnid:OHZIf77GNJiPK9ptGBmYhk-->阅读</button><button data-page-node-id="iDoe4KEY3xZlusp4uZZKp4" class="tg" id="bPres" onclick="setM('pres')"><!--pnid:x0kDIpQKi5qRsQvEVVo3zG-->投屏</button></div></div>
+<div data-page-node-id="ImbAtyqFh78rrBmwKS8kJ0" class="wrap">
+
+<div data-page-node-id="HKsXxhFQ3cXz9h1VPNIEBQ" class="meta">
+  <div data-page-node-id="EY811aBhRmLblo0NIqHYCz" class="meta-t"><!--pnid:MtBwu9LIRoDXb0USUPhEd9-->思维链</div>
+  <div data-page-node-id="Ghw6VVr2nIrHgJ0Po3d2Oz" class="meta-sub"><!--pnid:dD799ctRk836qFH7N6O591-->Chain-of-Thought Prompting Elicits Reasoning in Large Language Models</div>
+  <div data-page-node-id="HisWcP3e67f61sLGl7JXrT" class="meta-a"><!--pnid:yxJqG1c7FpwcCMm70Vj5SZ-->Jason Wei、Daniel Schuurmans 等　·　Google Research, Brain Team　·　2022 年 1 月</div>
+  <div data-page-node-id="PIkwwDs9ZG1XJCYfhrCsYu" class="guide">
+    <div data-page-node-id="osUKlTitwaPUkNRj5eyLny" class="guide-i"><div data-page-node-id="WB4ZDg0gEsW0TIJptDVi1D" class="guide-l"><!--pnid:G85sGEHyq1JzMR6OxlLa1t-->主线</div><div data-page-node-id="sE3KKCDDbbU2k7k7mT1mKM" class="guide-v"><!--pnid:uaCMECyhSHqvQbuPyVXqgI-->大模型在算术、常识、符号推理这些任务上表现不好，靠加大参数量已经不够了。这篇的做法是把提示词里的答案换成「一串中间推理步骤」：示范几道<strong>答案里不带推理</strong>的例题，模型反而学会了自己把步骤写出来。作者的原话是<em data-page-node-id="UCKRtVq2gHjLWNH6gShNZ3"><!--pnid:tLmd3LQIq3X4Gs7YjZ0ttg-->标准提示只给出了大模型能力的下界</em><!--pnid:xNoeH3AmF47Q6r9PjuTkiQ-->。</div></div>
+    <div data-page-node-id="Ni3K7gun1nNacXk6Zoe8BL" class="guide-i"><div data-page-node-id="shP6nKTnd8KEsW4Zj63RIp" class="guide-l"><!--pnid:uxWtKkFynCWDEwbuhfhmTA-->内核</div><div data-page-node-id="MySIN9tyVXcEpXNSrmMacB" class="guide-v"><!--pnid:CtfTK6ZGNOiZWGn4jhLGiD-->发现<em data-page-node-id="UM26gGGMh9wzSeYZSomTSu"><!--pnid:nxm6eHOST69N50rUsCx7hL-->推理能力是随模型规模长出来的，不是被教出来的</em><!--pnid:skVATsl8Kz7xrhGTUyHGuP-->。百亿参数以下，思维链不但没帮助，反而比标准提示更差；到了百亿量级才开始生效，而且是从「完全不会」直接跳到「超过被专门微调过的模型」。</div></div>
+  </div>
+</div>
+
+<div data-page-node-id="1xlf5fkR8QIJa563VbyWu3" class="block">
+  <div data-page-node-id="5IqLDggMx7dbStHzofkZ5z" class="tag"><!--pnid:TMRmrI0PCklhe0tvcaHqWR-->方法</div>
+  <div data-page-node-id="H4icmBn5nU2X0vEbc1LcKI" class="claim"><!--pnid:GDXA70d9MMghijHB99VxYL-->提示词里多放一段推理</div>
+  <p data-page-node-id="ROQiqjvPdWnHH4F1fpSDkp" class="lead"><!--pnid:kwnDVFv7UQXoIWEU4xdLUr-->做法只有一句话：<strong data-page-node-id="Jn0DH5syBPTnuZ17JAI0uZ"><!--pnid:gNKXQQBrTNsOtMyMk19wQK-->提示词里的示例，从「问题 + 答案」换成「问题 + 推理过程 + 答案」</strong><!--pnid:jGSsFouCsS62Yngvlu748s-->。论文第一页那张图画的是两件事，上下两半，这两半说的不是一回事。</p>
+  <div data-page-node-id="itspP633xT6RoWSUblkeqs" class="fig">
+  <svg data-page-node-id="IVQD7UBVMJhqB5XDPXVPyj" aria-label="标准提示的答案带推理过程，思维链的答案只有结论" role="img" viewBox="0 0 1000 330">
+    <rect data-page-node-id="K5lfoYVyJIUuYPlfGmG8UF" fill="#eef0f3" height="34" rx="8" stroke="#e2e5ea" stroke-width="0.8" width="920" x="40" y="14"></rect>
+    <text data-page-node-id="2QUD3xEEGrqhXFQ1TYNksn" fill="#12141a" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="500" y="36"><!--pnid:EO8JZ58vkWsZRdKM7bjq5O-->同一个问题，两种提示词，示范给模型看的答案写法不同</text>
+
+    <rect data-page-node-id="FdFufoLV7WKlfXdtbsy3fF" fill="#e6f1fb" height="46" rx="8" stroke="#185FA5" stroke-width="1" width="920" x="40" y="70"></rect>
+    <text data-page-node-id="0se2PQEm2rSDbWOpROW46z" fill="#042c53" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="500" y="99"><!--pnid:pxV4bOffpDyAtYBSIcdcDe-->问题　Roger 有 5 个网球，又买了 2 罐，每罐 3 个，有多少个？</text>
+
+    <rect data-page-node-id="oQvKhay9xF6m6OyP9M1Kfp" fill="#e6f1fb" height="128" rx="10" stroke="#185FA5" stroke-width="1.2" width="440" x="40" y="136"></rect>
+    <text data-page-node-id="qAMGbwwv4QmdcayyQDvW0S" fill="#042c53" font-family="-apple-system,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="260" y="164"><!--pnid:T1tTQpfdByguAOgM9jMKND-->标准提示</text>
+    <text data-page-node-id="OgMHY1t40Ld2y0AiKAwotu" fill="#0c4a6e" font-family="-apple-system,sans-serif" font-size="14" x="66" y="196"><!--pnid:DGYH9b09vRC08cMnalHQUF-->示范的答案：</text>
+    <rect data-page-node-id="pNW2L9i74oREUfKrVxONT0" fill="#ffffff" height="44" rx="6" stroke="#b9d5f0" stroke-width="0.8" width="400" x="60" y="208"></rect>
+    <text data-page-node-id="l4HljZWhDg8lyeppWYsBhL" fill="#042c53" font-family="-apple-system,sans-serif" font-size="13" x="76" y="228"><!--pnid:t0DMpu0d3tukJ2gPWk4Ysn-->原本 5 个球。2 罐共 6 个球。</text>
+    <text data-page-node-id="GM1sK3tpE7oVJKhsBUsiGj" fill="#042c53" font-family="-apple-system,sans-serif" font-size="13" x="76" y="246"><!--pnid:7eAQBSq1E9ZB8wppys0zFt-->5 + 6 = 11。答案是 11。</text>
+
+    <rect data-page-node-id="xYbP511tFmZNbza4uQLjoa" fill="#ebf7ef" height="128" rx="10" stroke="#15803d" stroke-width="1.2" width="440" x="520" y="136"></rect>
+    <text data-page-node-id="VIL4h65hWh3ejGmEryWRvp" fill="#14532d" font-family="-apple-system,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="740" y="164"><!--pnid:CS01LHalG24I9bGC98UuPw-->思维链</text>
+    <text data-page-node-id="lJFSiSkm2hWaCKJa6BMTui" fill="#166534" font-family="-apple-system,sans-serif" font-size="14" x="546" y="196"><!--pnid:CTEU5bJtLMo6wY0lVzjt21-->示范的答案：</text>
+    <rect data-page-node-id="o017tZ9qroYgXqmvQoMtqS" fill="#ffffff" height="44" rx="6" stroke="#a7d8bd" stroke-width="0.8" width="400" x="540" y="208"></rect>
+    <text data-page-node-id="kiKVDlUmWohCF8Cpd91jkj" fill="#15803d" font-family="-apple-system,sans-serif" font-size="15" font-weight="700" x="556" y="236"><!--pnid:2UBcxrSEOeFlqvJymbHOOC-->答案是 11。</text>
+
+    <rect data-page-node-id="T9gj8igHTObkZNp9b99QxR" fill="#fff4d6" height="36" rx="8" stroke="#b45309" stroke-width="1" width="920" x="40" y="284"></rect>
+    <text data-page-node-id="4eaOxnLLk7j1cTviPf1bHn" fill="#412402" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="500" y="307"><!--pnid:TSBsCLWN4tlq1UTZqAoDS3-->差别只有一个：示范的答案里带不带推理过程</text>
+  </svg>
+  <div data-page-node-id="y2V0sYmEpKL7igpXjyIg51" class="fig-c"><!--pnid:lt8qL5fPiP3NXoxzJ58atw-->这就是思维链与标准提示的全部差别，别的都不变。示范时把推理过程抽掉，模型输出时反而自己把步骤写出来。</div>
+  </div>
+  <p data-page-node-id="FIMvAKoajap9BrmKyGQ23G"><strong data-page-node-id="2bMKG1VWUpjMSboKws2cJS"><!--pnid:YlP6zNmU1WtJHbg0gUY6ua-->标准提示的示例里带着推理过程，思维链的示例里只有答案。</strong><!--pnid:imPk25RCEuFjS0h6ZYrGST-->这一点很反直觉：示范推理的那一组，示例里反而写得更详细。</p>
+  <p data-page-node-id="DfzioTI4DgjVYHPnoUBPAZ"><!--pnid:qgTzWA18dTBVfxxFONfXxN-->作者的解释是，标准提示给的是「陈述式的」推理（他告诉你答案是怎么算出来的），思维链要的是「问题分解式的」（先拆成可逐步执行的步骤）。<strong data-page-node-id="FPXx0Fo762r7HwnzlNfjjP"><!--pnid:0p5aQh6i4XyYJas1LNK8mR-->给模型的示范形态，决定了它输出时模仿哪种形态。</strong></p>
+  <p data-page-node-id="AICkYsMpQbCs7mnPpCQJUA"><!--pnid:aw9398nrrVddcel3nBoFpC-->作者还专门说明了为什么叫「思维链」而不是「解题过程」：这条链<strong data-page-node-id="QhK56KExhAwavMNOGJbIw1"><!--pnid:AUIeUek5P8ukLT6VAT4uxK-->模仿的是一步步思考的过程</strong><!--pnid:m85Fjmam5JTcf3aQC75iR1-->，而解题过程与解释通常放在答案<strong data-page-node-id="NREA0e3KoBthshhBPOZq0u"><!--pnid:JtNax7g2s6SuToJPYJdAEG-->后面</strong><!--pnid:YMgWNletwDL1kR0Ze8ZBEG-->，位置正好相反。</p>
+  <h3 data-page-node-id="Hw6UZTp8SYXNdSnq1F1DEg" style="font-size:20px; line-height:1.5; font-weight:600; color:var(--ink); margin:34px 0 12px"><!--pnid:1IOovFL9CzKqsKYr9aGidw-->推理时实际怎么跑</h3>
+  <p data-page-node-id="4oDk8W2LppPWVGuEVbbcF1" class="lead"><!--pnid:ntExWayRvVkl3enQfjucGT-->思维链的推理流程短得出奇，这也是它能被广泛采用的原因。</p>
+  <table data-page-node-id="x5IRKkhvacNkVnUUPVRlcG"><thead data-page-node-id="dyPZz1BBbBL6IyI3iq4TxC"><tr data-page-node-id="abSPDCKHRO8Kokx1tNDLtA"><th data-page-node-id="9j2s0KS6zIs33qW6XV2s4q" style="width:12%"><!--pnid:WYfvSL1eZ6pOWcIhIxk9zO-->步</th><th data-page-node-id="JvztkTXc0aO35u1GjkjN2l"><!--pnid:h2lQevwmusiupVS48IxrWE-->做什么</th></tr></thead><tbody data-page-node-id="bIr4lVtfak7hVcBK7yWP8s">
+    <tr data-page-node-id="6IQB4IhSMhmZPnOjGwxCs6"><td data-page-node-id="L8hrkb0BJpLY72RDBk938Q"><!--pnid:31qglRVo1m1S2L93w5bKER-->1</td><td data-page-node-id="J6oj1OI99C6PDhYCJFKtnH"><!--pnid:AdeQgt8BEePjFSWITvntUh-->把问题接到提示词末尾</td></tr>
+    <tr data-page-node-id="o7oCx4mZkQwDYEXErsmK6x"><td data-page-node-id="PfSCP5igSp2kbh88VYMwiH"><!--pnid:iJ3mdIHWhTcwXj8JN8d3Q8-->2</td><td data-page-node-id="3hFuWxjtCCqTFaOq3Ffz3U"><strong data-page-node-id="AYleYWVdeqW3iLAJd2LyQ6"><!--pnid:rRSOcfqRMEet6CFShhbzD9-->模型逐词生成</strong><!--pnid:0Cx0Junft9joNFMAjozXsK-->，每一步都把前面自己生成的内容当作上下文</td></tr>
+    <tr data-page-node-id="alF69srmWEyZtBm68D59zn"><td data-page-node-id="9e47OBw2X8694LyXFrnMdF"><!--pnid:yrkY4JnUI8MW1vetN4lK8w-->3</td><td data-page-node-id="GQHSSfvZi9GmMqHenV3lzv"><!--pnid:XJH0OBi0wKqzcKRCZkSGp7-->生成到句号时停下，答案就出来了</td></tr>
+  </tbody></table>
+  <p data-page-node-id="wo7b7YyZX8gp3ok6ZJapJV"><strong data-page-node-id="nVIpu1tVo3GdlvhVP1Coz5"><!--pnid:hVIPlbWQZZEpUdFrNSkYeR-->第 2 步是唯一的关键</strong><!--pnid:iHcVGXw53VsPP5tOUOZqiv-->：模型在生成「3 + 6 =」的时候，前文里已经有「原本 23 个，用掉 20 个还剩」，<strong data-page-node-id="VAVMgXKUqYs3oLPkWYhdbb"><!--pnid:dkiW0msnSz4k2kj3NUIegz-->它是在接着自己的话往下写</strong><!--pnid:3VZwJRVznvEfY9SgV7PaLg-->，不是在凭空猜答案。</p>
+  <p data-page-node-id="nekLtZrdMD7P7bCAT40agg"><strong data-page-node-id="MHMod7K0BXPWnr7iGhx56M"><!--pnid:0ShSKXpSJmPqzJ7Q2vbHb2-->这套流程没有任何额外组件</strong><!--pnid:YEivIbdx8ANFK7ex43Sv0w-->，不需要检索、不需要打分、不需要验证器。这也是它跟后面几篇最大的差别：思维树要加状态评估器和搜索算法，自我一致性要采样四十条，反思机制要评测者和记忆，思维链只要改提示词。</p>
+  <div data-page-node-id="yoB6zVj9FDctaFywZ5ROvX" class="bnd"><div data-page-node-id="L3l5oe77t84O8R9bSi8wev" class="bnd-t"><!--pnid:edxpB1gxWIy8bO6PRWFWWo-->前提与边界</div><p data-page-node-id="3a3A4m8sTeLm33F5mBXP1H"><!--pnid:NQd9tX2FqWWDRObCgjm5Co-->贪心解码（每步取概率最高的词）会让模型走进一条局部最优的路出不来，这是后续那几篇要解决的问题。这篇自己没有提这一点，它只报告了方法有效。</p></div>
+  <p data-page-node-id="tErWpLtfCAT5rvTbwNr1Ce"><strong data-page-node-id="165x1DIqviU7AbhhtaJ9gN"><!--pnid:aNWNPndOAfTw8ZcpTQGrRx-->示范不带推理，输出却带推理，这个反差就是方法生效的机制。</strong><!--pnid:HnfMFjS2l4N5h06dHiqzYv-->提示词里只给结论，模型要答对就只能自己把中间步骤推出来；提示词里给了推理，模型照抄一遍就行，不必自己走这条路。</p>
+  <p data-page-node-id="Ab5MG3s4mE92XX2xUQrxXw"><!--pnid:KmpT3gqKIfWGp0ua4z6cwe-->论文第一页那张图还记录了一次具体输出：对「食堂原本 23 个苹果，用 20 个做午饭，又买 6 个」这道题，<strong data-page-node-id="9BFcO8fa3VkPC1OWt3xci0"><!--pnid:tm1Kf73GdrrHL9mN3QqV9y-->思维链输了一次</strong><!--pnid:d2MUBUA27F0ox7BeO7Jm99-->，输在答了 27，标准提示答对了 9。<strong data-page-node-id="srA0tlUqVILdPesbtgGs3h"><!--pnid:wYN5L9GlPL3iS5uv5qQyrM-->思维链让模型做对的是它本来做不对的题，但它并不在每一道题上都赢</strong><!--pnid:M1gUNTU9nvXO88Sr8lcSF3-->，哪道赢哪道输取决于那道题的推理链条有多长。</p>
+  <div data-page-node-id="NoDLekHkOguE8VWTgSONfG" class="bnd"><div data-page-node-id="AY6ygM6MuTp9eiCQYMdN1a" class="bnd-t"><!--pnid:5si4nawkw0cdN3tfBMICFH-->前提与边界</div><p data-page-node-id="8kkONZixRHgPz6mTxETBqm"><!--pnid:hvqUoz2yoAsXuQ3z53hGUK-->论文记录的那次对照只有单次输出，没有给概率。<strong data-page-node-id="pb6D305KzSwbndOxvV8ORD"><!--pnid:aDCgKty6fd89eWd0RvgNGP-->单次输出说明不了方法的稳定性</strong><!--pnid:ZAgB92MkSFOUP0JGrwRCxp-->，方法层面的效果要看后面「涌现」与「三类任务」那两块的统计。</p></div>
+</div>
+
+<div data-page-node-id="I4q9HCvcO8jnePnPAtgaMi" class="block">
+  <div data-page-node-id="UIPsalHHm5EOMaLSpu2Xk1" class="tag"><!--pnid:h5LSdvG7aAHRsSgbEMybiC-->四条性质</div>
+  <div data-page-node-id="lIiU1Lf8EOnsTrX2aIh5Nh" class="claim"><!--pnid:VvaIISpdlvidz01t6s7yZw-->作者给这个方法列的四条</div>
+  <p data-page-node-id="kvVBeo3y0qSeRAreOQZfjL" class="lead"><!--pnid:GAw3Vq9riWUsAwuLjJxSMg-->作者在介绍方法之后单独列了四条，构成本篇的论证骨架。</p>
+  <table data-page-node-id="LMXDNL3pgFtkMKzSVAARIY"><thead data-page-node-id="I8Ek9dZl1KSxvrvU1kbSnD"><tr data-page-node-id="vvjSTtnOkc1qsw7eVp1tkf"><th data-page-node-id="B4LVRIx8BQCS9lBXEK4i4V" style="width:24%"><!--pnid:PQYwepHHVOziyVcQoVhOaY-->性质</th><th data-page-node-id="yFBn9PzI7wZdIDBlHussAR"><!--pnid:Zgx1LSFSWAQE20HLTu4zv6-->说的是什么</th></tr></thead><tbody data-page-node-id="T963yORD3BahO4CDA9fHRD">
+    <tr data-page-node-id="4rTX4jjjfeeLn5ChQ8vomd"><td data-page-node-id="fNTPTonKZ7qiGh5YGKbfYi"><strong data-page-node-id="Q1DM7VtTrHHOINzBlyOsUU"><!--pnid:TKhPm50cF2mEy2RWljB0O5-->算力可以按需分配</strong></td><td data-page-node-id="zG47IxIZunZyl8pwoPMIba"><!--pnid:Gwuxk7FJUCMkHCyMpYMoIz-->多步问题能被拆成中间步骤，需要更多推理的题目就多花算力</td></tr>
+    <tr data-page-node-id="Euu0MqBjFo86rNUyvA4NOz"><td data-page-node-id="IDNhf3PZgeii8RfTlmhAlq"><strong data-page-node-id="99NpcH5YB07dXIQqG3WNPN"><!--pnid:5bl04r1845WwEkxtDCfpil-->提供一个可解释的窗口</strong></td><td data-page-node-id="2BMRXmG4ySbF2pazMWBtco"><!--pnid:TKnyuV64ZXhgDHnE1oK8Ni-->能看出模型怎么走到这个答案，也能定位推理在哪一步错了</td></tr>
+    <tr data-page-node-id="93Mz8qqjCLTQUmMOpOyMqS"><td data-page-node-id="KTrC5pSwnpc97EGWFl6VuC"><strong data-page-node-id="1pdJrgBk1IMfmS1QVWCc63"><!--pnid:WE8trNJG2bCeSkPDZxQXKb-->适用面可能很宽</strong></td><td data-page-node-id="NcYORKHekf3r70zIKw92DR"><!--pnid:W5t0FPP8vkdoWsoQ5lvS7n-->原则上凡是人类能用语言解的任务都可能用得上</td></tr>
+    <tr data-page-node-id="SKeFfK71FVJs8AMTynd4Ji"><td data-page-node-id="rjbyI5dqiWlOr7n8anMl7u"><strong data-page-node-id="Swf1WYyhCHVMkBjfEFu7JC"><!--pnid:f74D9YefgSzGvnuzdCyDfZ-->不需要训练就能诱导出来</strong></td><td data-page-node-id="i2naGX68EbJjFKW3cCCDm8"><!--pnid:dupzaBpgf4S7AogLf5Zb9W-->只要在示例里放几个带推理过程的例子，足够大的模型就出来了</td></tr>
+  </tbody></table>
+  <p data-page-node-id="vBCf8Lz2xKQs7kkUsKZih8"><strong data-page-node-id="M6UJ2odnBZOgokC4Cvjf9p"><!--pnid:upgJYVqvPTv0NATMXSLlIN-->第 2 条作者留了个限定</strong><!--pnid:nVMWxx74ACZ2iBbhGxmvE0-->，值得原样记住：能看到推理链不代表能刻画模型的计算，「完整刻画一个模型支撑某个答案的计算过程仍是开放问题」。所以「可解释」这个词在这篇里是打了折的。</p>
+  <div data-page-node-id="pPK1yBVskuqN2RV9VVi4bg" class="bnd"><div data-page-node-id="A42NfqnKTRadue7OB3YCNB" class="bnd-t"><!--pnid:hAib5M4ds6Pz8IdAVgMrnF-->前后呼应</div><p data-page-node-id="DQVa33i6YYMSX3iei9J75c"><strong data-page-node-id="0XpzddohnujlNBqbm2S3LW"><!--pnid:NhMrNDLGMb4FGZhNs6XXaC-->第 1 条正是后面消融要检验的假设</strong><!--pnid:KXwV1Fol1rwyvf4VdCBwic-->，多花算力本身有没有用。<strong data-page-node-id="2BeqbqvLoWJaNcO8zm76gS"><!--pnid:yRR8qLLxikossZJUYWKwBI-->第 2 条又在「这篇没回答什么」里被反过来质疑</strong><!--pnid:s6yPPmdwKlnRSnQGsIcroR-->。原文这三处是前后呼应的：先提出性质，再用消融检验，最后承认没做到。</p></div>
+</div>
+
+<div data-page-node-id="E3Jb5oMt4lz9I9hyQP99N6" class="block">
+  <div data-page-node-id="Ptw4Rw9px12ZXkB14Lj0Gl" class="tag"><!--pnid:yxIUaPyrliAphQjYl1HPhU-->论证链</div>
+  <div data-page-node-id="je2ZgJRqiReWR9muJG1puk" class="claim"><!--pnid:Jt9vPKx9KIvmsvtEDWGHq8-->两个想法的合并</div>
+  <p data-page-node-id="kdggOhUncwtq4gUskAoHaR" class="lead"><!--pnid:0XUA7U1jcUXF3ACjW06dvb-->作者把两个已有想法拼在一起，各自补上了对方的短板。</p>
+  <div data-page-node-id="cQrsq9DjauJvLgfKEYFlXV" class="fig">
+  <svg data-page-node-id="0JHn1PBkQwFW8hBh9P77mj" aria-label="两条已有路线各自的短板与合并后的思维链提示" role="img" viewBox="0 0 1000 400">
+    <rect data-page-node-id="uFlVN58fSzoXb3v92AEa3N" fill="#e6f1fb" height="46" rx="8" stroke="#185FA5" stroke-width="0.8" width="380" x="30" y="20"></rect>
+    <text data-page-node-id="JsnRm7NBML1d8jmSZl6o0U" fill="#042c53" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="220" y="48"><!--pnid:nEcbvpzmrlVbfssg7cghJc-->自然语言中间步骤做算术推理</text>
+    <rect data-page-node-id="N7x7Ic7M7joMnb8KpsZ4vP" fill="#ebf7ef" height="76" rx="8" stroke="#15803d" stroke-width="0.8" width="380" x="30" y="110"></rect>
+    <text data-page-node-id="El7TPJ7p3pE5VNur6QG9th" fill="#14532d" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" x="50" y="134"><!--pnid:aYz9uYxpC07zpnPW5WdODs-->优点</text>
+    <text data-page-node-id="HtBCRimjLdiRJ4SxBVsKFo" fill="#166534" font-family="-apple-system,sans-serif" font-size="13" x="50" y="160"><!--pnid:CX58zdePyRbKp3ine16qCa-->步骤能引导到正确答案</text>
+    <rect data-page-node-id="vecN93sDJR173zOJuWX8aQ" fill="#fdeeee" height="76" rx="8" stroke="#c02626" stroke-width="0.8" width="380" x="30" y="196"></rect>
+    <text data-page-node-id="YxEKWEm3XQRkiMOAZ3QBkJ" fill="#7f1d1d" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" x="50" y="220"><!--pnid:Bs683bNLCYBjcD9cKesqxA-->短板</text>
+    <text data-page-node-id="QsRTOTPH6HiFypRSADKkiQ" fill="#991b1b" font-family="-apple-system,sans-serif" font-size="13" x="50" y="246"><!--pnid:WnMzNGWCrJurs2yEJlINCd-->需要高质量标注，从头训练成本高</text>
+
+    <rect data-page-node-id="uewZgeX76982RvyjGuCO4x" fill="#e6f1fb" height="46" rx="8" stroke="#185FA5" stroke-width="0.8" width="380" x="590" y="20"></rect>
+    <text data-page-node-id="6Qnx50BZtRYWk19akvaRXL" fill="#042c53" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="780" y="48"><!--pnid:mVaPl8c6TCNgnoUXEf8Awc-->传统少样本提示</text>
+    <rect data-page-node-id="LfQda3hGs7NFGmPItAzTNI" fill="#ebf7ef" height="76" rx="8" stroke="#15803d" stroke-width="0.8" width="380" x="590" y="110"></rect>
+    <text data-page-node-id="GtheUVjoox44cN5pkyZAsP" fill="#14532d" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" x="610" y="134"><!--pnid:p2RCwvRyXz4maGlFflI8wa-->优点</text>
+    <text data-page-node-id="KsMHo9a8c0wELOlZkusAwg" fill="#166534" font-family="-apple-system,sans-serif" font-size="13" x="610" y="160"><!--pnid:nZRGmd1u4BW1ZoMVp9oPJU-->不需要训练，改起来快</text>
+    <rect data-page-node-id="qbYq7yfHlvFoezAWOx1RX2" fill="#fdeeee" height="76" rx="8" stroke="#c02626" stroke-width="0.8" width="380" x="590" y="196"></rect>
+    <text data-page-node-id="yxBoGT3YxymcL7PbX1M7dI" fill="#7f1d1d" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" x="610" y="220"><!--pnid:Ahg6tnffk2txnAZSwRaHzH-->短板</text>
+    <text data-page-node-id="34y4s6fnKyLS8kgzaIENer" fill="#991b1b" font-family="-apple-system,sans-serif" font-size="13" x="610" y="246"><!--pnid:r8ADetxwc9MffGQXqjpRi8-->需要推理的任务上效果差，加大参数量也不见好转</text>
+
+    <path data-page-node-id="suNuCHFdvi0bfOjYtjljWm" d="M220 282 L220 320 L470 320 L470 348" fill="none" stroke="#15803d" stroke-width="1.6"></path>
+    <path data-page-node-id="TrsszltTDRl5rIZfsznU7A" d="M780 282 L780 320 L530 320 L530 348" fill="none" stroke="#15803d" stroke-width="1.6"></path>
+    <rect data-page-node-id="EGeCKhM10gAWHZg85rVRDe" fill="#eaf1fd" height="42" rx="8" stroke="#1f5fd0" stroke-width="1.2" width="420" x="290" y="348"></rect>
+    <text data-page-node-id="Wq9zvDnDhBGpMHJY7hYr4b" fill="#042c53" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="500" y="374"><!--pnid:FxbP8HuIGRoxoqDVKQBOHg-->思维链提示：用少样本的形态，承载中间步骤的能力</text>
+  </svg>
+  <div data-page-node-id="wA4b7rVzi3PlPSX5tcrFPb" class="fig-c"><!--pnid:O8G17Iv97PKPuBrPQTpTEF-->两条路线的短板在同一个方向上：要能力就得重训，不要能力就没法用。这篇把两者的长处接在一起，做法只是把提示词里的三元组从「问题 + 答案」换成「问题 + 推理过程 + 答案」。</div>
+  </div>
+  <p data-page-node-id="hkYdP9AvyQoqcfE7ZlFvXN"><!--pnid:0XiFyBfCKVqtf95A8yIICU-->这两个短板是同一个方向上的：<strong data-page-node-id="DsEXRMLBbwRGqZFZmUKCa8"><!--pnid:DYZM0VSnpj6e1U6QCgkM4Q-->要能力就得重训，不要能力就没法用</strong><!--pnid:1B3hOrlbmRPspa1BbjF1ss-->。这篇的贡献就是把两者的长处接在一起：<strong data-page-node-id="FBp4btRtkjXdXeFkAEZiTG"><!--pnid:Ik9w5xkwSw0EmqBBCiMcpK-->用少样本提示的形态承载需要中间步骤的推理能力</strong><!--pnid:0ZPbhpXbzRigZshGYX044A-->，且零训练成本。</p>
+  <p data-page-node-id="IqBeLRwB9AHonhyR8yXEU2"><strong data-page-node-id="HO9kuz6bHgMiFxrGWsG1dr"><!--pnid:U3UA3vlAN6gJEErWg7nMdy-->证据的重量集中在算术上</strong><!--pnid:sgGLGFFE1nMtQyV51J9Hxu-->。5400 亿参数的模型配八个思维链示例，在 GSM8K 这个小学应用题基准上达到了当时的最好成绩，<strong data-page-node-id="uCelQTcLhJBzDNXTm43mN4"><!--pnid:WwANTL17tAjF5Nq8S4CxY0-->超过了专门微调过的 GPT-3（还带验证器）</strong><!--pnid:CDn4cQwRfjiQZzlfHqR7KL-->。这个对比是关键：思维链没有训练任何参数，却在数学任务上超过了训练过的模型。</p>
+  <div data-page-node-id="WcrsuF99oe8DlFVbgBftBC" class="bnd"><div data-page-node-id="FwXjfiFYlx2XKij2gAArY8" class="bnd-t"><!--pnid:ZcgC7gpPtzMkKxQ5n5tZSb-->前提与边界</div><p data-page-node-id="GtIIWQWmNPTG7LaApDcO9R"><!--pnid:GJ4em1TQpFQuE6LECOULuY-->「标准提示不够用」这个前提，依赖的是当时的模型规模与任务设定。作者没有论证这个结论在今天的模型上还成不成立。后来的模型在标准提示下的表现已经大幅提高，这个对照的基准线变了。</p></div>
+</div>
+
+<div data-page-node-id="yqjw42gLlHXqT0HxXmLmUm" class="block">
+  <div data-page-node-id="0QxgZN70eD5ShmpZ8OAYio" class="tag"><!--pnid:7CU78cI2UYsnKW3qtPP2iI-->涌现</div>
+  <div data-page-node-id="z7zl2u5nrPvi7aVQpIYCAz" class="claim"><!--pnid:xJn1sgOFn75z91yrZF5k7d-->能力是规模长出来的，不是教出来的</div>
+  <p data-page-node-id="7GIVRfUe4pm2LaCmagLxjC" class="lead"><!--pnid:KBUo8oBIwM2JPtnQPsQbfb-->这是全文最要紧的一处发现，也是标题里「Elicits Reasoning」的真正含义。</p>
+  <div data-page-node-id="XiMSXXirbM7CYJPJZ2kbJc" class="fig">
+  <svg data-page-node-id="FWBpVAswS5NH6hR30Mr4j0" aria-label="思维链的效果随模型规模先有害后突然生效" role="img" viewBox="0 0 1000 340">
+    <rect data-page-node-id="fQCcYbc2CWa8rLZA6NVfE8" fill="#fdeeee" height="46" rx="8" stroke="#c02626" stroke-width="1" width="920" x="40" y="14"></rect>
+    <text data-page-node-id="uhyV80Y1kh7ogMgzCenkED" fill="#7f1d1d" font-family="-apple-system,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="500" y="42"><!--pnid:Pr0NB4XpX2jRVyxJT1yfm1-->百亿参数以下：思维链比标准提示更差</text>
+
+    <rect data-page-node-id="jLDxJjcpVrWjaT5SzeVXYd" fill="#e6f1fb" height="120" rx="8" stroke="#185FA5" stroke-width="0.8" width="450" x="40" y="78"></rect>
+    <text data-page-node-id="lsdlQTb0fuyGxzGOmUL4VS" fill="#042c53" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="265" y="104"><!--pnid:bI8YcpxcCv4Uy59hDRCYzs-->小模型的表现</text>
+    <text data-page-node-id="T6nKwwkOjVkYftWDE16fE4" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="265" y="132"><!--pnid:wKHDz1oJuw5aH0bkDRDkkA-->能写出通顺的推理链</text>
+    <text data-page-node-id="c7vFRnSEQDQaSWFxdvpAfo" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="265" y="156"><!--pnid:k3Yv6w4XhaojPPXTF2eFhX-->但内容不合逻辑</text>
+    <text data-page-node-id="oCd8NZqeUuUSYjmJeUg9o6" fill="#0c4a6e" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="265" y="180"><!--pnid:zVDarkoHDMzLNRQMEq7ZPp-->步子迈错时自己察觉不到</text>
+
+    <rect data-page-node-id="OAi7ggrc854PQcGtwDHwFw" fill="#ebf7ef" height="120" rx="8" stroke="#15803d" stroke-width="1" width="450" x="510" y="78"></rect>
+    <text data-page-node-id="6IBRm3Z7IqYnRPg8yWhGRT" fill="#14532d" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="735" y="104"><!--pnid:dlBllHlFzFpYW5qa2fqIEp-->百亿量级的表现</text>
+    <text data-page-node-id="mndre1HBql8VsjuNJPQeS3" fill="#15803d" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="735" y="132"><!--pnid:NA3h1Q0ngZYxqE9E2y0GDS-->部分任务达到最好成绩</text>
+    <text data-page-node-id="2bgKqEecH79j03aN16o9vj" fill="#15803d" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="735" y="156"><!--pnid:dTi4z5FgGe7ZgZIN6rSiOP-->从「完全不会」直接跳过去</text>
+    <text data-page-node-id="PeTqiigDILjB9NcOjvm9R1" fill="#14532d" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="735" y="180"><!--pnid:g077F8AYOHkwVZLP3ewJfL-->不是被诱导出来的</text>
+
+    <path data-page-node-id="nIFqDyeKDO4hKDsVyk4bqo" d="M490 138 L510 138" fill="none" stroke="#8b929c" stroke-width="1.4"></path>
+    <text data-page-node-id="9vSF0HxQElb9u61hS2Ry2q" fill="#8b929c" font-family="-apple-system,sans-serif" font-size="12" text-anchor="middle" x="500" y="222"><!--pnid:aKNpYKGj85LlujwIsJQ9XR-->← 模型规模 →</text>
+
+    <rect data-page-node-id="yz41E0ZnjyLwPLPYdGWSD3" fill="#eef0f3" height="100" rx="8" stroke="#e2e5ea" stroke-width="0.8" width="920" x="40" y="222"></rect>
+    <text data-page-node-id="uS5w1EYWm7SmO3vpXMjPib" fill="#12141a" font-family="-apple-system,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="500" y="250"><!--pnid:1mFRLDaFdVRCsAjS8HSeSB-->失败样本的手工归类（读了 62 亿参数模型的 45 个错误）</text>
+    <text data-page-node-id="eYv6pdNUZAFVvnST6Lbu2z" fill="#48505a" font-family="-apple-system,sans-serif" font-size="14" text-anchor="middle" x="220" y="282"><!--pnid:JEGbWoAaVj0154kom7JNiG-->语义理解错误 20</text>
+    <text data-page-node-id="mqOojeBAi2dPuvDESq34T3" fill="#48505a" font-family="-apple-system,sans-serif" font-size="14" text-anchor="middle" x="500" y="282"><!--pnid:pySo3yYOCkGrsrWUNYJAxT-->漏掉一步 18</text>
+    <text data-page-node-id="BA7gxZGhnbO6kykh0NExxa" fill="#48505a" font-family="-apple-system,sans-serif" font-size="14" text-anchor="middle" x="780" y="282"><!--pnid:CCreEvh8zIdnykhsu6tlKH-->其他 7</text>
+    <text data-page-node-id="hXnPtLiitv5cwAvCGyktCj" fill="#8b929c" font-family="-apple-system,sans-serif" font-size="12" text-anchor="middle" x="780" y="306"><!--pnid:jzc2hEAuLWlEfaJ3BiNE1l-->含幻觉、重复输出、符号映射错误</text>
+  </svg>
+  <div data-page-node-id="fDt8mkt9gP3KHNfLfSPGxt" class="fig-c"><!--pnid:4k89OAoGuKbhdG5HEN8Hm2-->效果不是单调变好的，而是先有害、后突然生效。「通顺但不逻辑」这个现象很关键：它说明模型不是在模仿推理的表面形式，而是在真的走一步算一步。</div>
+  </div>
+  <p data-page-node-id="5RI03HifcLNv7wEcnpp2Xt"><!--pnid:OFzxzIWnmK3WIuvh1jpEHO-->作者把小模型的失败做过一次手工归类，读了 PaLM 62 亿参数的 45 个错误，分成语义理解错误（20）、漏掉一步（18）、其他（7，含幻觉、重复输出、符号映射错误）。<strong data-page-node-id="L1hpL0xnWzuFwnnTFSrFjm"><!--pnid:sCZdcYHzrSIJMbuBUBx9uR-->「通顺但不逻辑」这个现象很关键</strong><!--pnid:Qy5KAMLu1ESr0HycCxsXnd-->：它说明模型不是在模仿推理的表面形式，而是在真的走一步算一步，只是步子迈错时自己察觉不到。</p>
+  <p data-page-node-id="yFzhhxaBAEFOd3U4iuC4zE"><!--pnid:sWTWtgPNH7yKwFqWES5pr6-->这个发现的连带含义比发现本身更重要：<strong data-page-node-id="NphBBvIOnUvTNiVR5g1Al5"><!--pnid:gdiGTXLZolj7BTnlk9zBPY-->标准提示下的平坦曲线，不等于模型没有这个能力。</strong><!--pnid:dIom8eeqNHpbtZh5EzHd2w-->作者的原话是「思维链提示似乎扩展了大模型能成功完成的任务集合，换句话说，我们的工作凸显了标准提示只提供了大模型能力的一个下界」。</p>
+  <div data-page-node-id="2w59dokajoAUJg7vo6B4Ml" class="bnd"><div data-page-node-id="gLNG7tUXK4nZiiIifxDDMg" class="bnd-t"><!--pnid:hTlYKWt1UGeqLgrjNXkAl1-->前提与边界</div><p data-page-node-id="IvwgJSxHsN7zaxP0cPMbQd"><!--pnid:I3xNnHYJaGhvXfehoPR2uh-->「涌现」这个词在后续研究里争议很大：有工作认为曲线之所以看起来是突变的，是因为评测指标用了离散档位，把连续变化量化成了跳变。这篇论文没有回应这个质疑，它只给出了曲线，没有解释为什么是那个形状。</p></div>
+</div>
+
+<div data-page-node-id="pmpPIGnotk3K9sv5B9Xzek" class="block">
+  <div data-page-node-id="Yj55ro5CBlAmUYgsI9zSV3" class="tag"><!--pnid:75NTjKBZkG6P1PkcqUwzoS-->消融</div>
+  <div data-page-node-id="xv68b9E2bmPrWmH8vt1YNu" class="claim"><!--pnid:UPsEjt3OaCFBYRGkYR2Kdo-->它到底为什么有效</div>
+  <p data-page-node-id="wBEHIT2SooRPanmlamafkZ" class="lead"><!--pnid:Nivcsy9bBCJSprM2pfDLpw-->作者做了三组对照，把「思维链有效」这件事拆成几个可能的原因，逐个排除。</p>
+  <table data-page-node-id="9US0yA44vSftkEMbcU3EMF"><thead data-page-node-id="UUcleYVQT0JG3pXStAF94j"><tr data-page-node-id="Gk7RFSBoyrjLwg98DSxC7N"><th data-page-node-id="lOojrx7WVDSiGH737FFzbv" style="width:24%"><!--pnid:csihMDwgIQhlX9CY4u3EWY-->假设</th><th data-page-node-id="wnFcyI1io8IeN2WjMkn8oV" style="width:42%"><!--pnid:IO7BDHcVlHksAD9khLrrqy-->检验方式</th><th data-page-node-id="bjg0cYvq9Wf2N2kToGXJf9"><!--pnid:SakxGCSch6VuKPYBiYC9tU-->结果</th></tr></thead><tbody data-page-node-id="6lgGOCWqHX1LPdJBd1n5Nc">
+    <tr data-page-node-id="3cYxDNukgOArOx5ASOHydi"><td data-page-node-id="yyZmRPF6O57yUVsyE87VPs"><strong data-page-node-id="vD4qKCUfSFbKhvYwRn5JXz"><!--pnid:wT9CmMmzLZuB5CNZ5Y6dvs-->只是多给了计算量</strong></td><td data-page-node-id="hmQmUr5PyrOqQjBFu5GQY0"><!--pnid:DOm7JLkJgvGxxqnEOCsGAx-->让模型输出一串点数，长度等于解题需要的算式字符数</td><td data-page-node-id="YuinVA0fMG5UzNWoXXHnVc"><!--pnid:g4V6VvNWUwLravpStwiUuy-->与标准提示基本持平。<strong data-page-node-id="M0paKVZqmH4Njh82ZpyJzg"><!--pnid:CX8FF0yT1taen3TlWJGlKp-->多花算力本身没用，用自然语言表达中间步骤才有用</strong></td></tr>
+    <tr data-page-node-id="d4mktN3REkZibrs2Zd9X8E"><td data-page-node-id="RdLVKY0ymyUADPhbcT6TVK"><strong data-page-node-id="M5v6hCcMvMLYepEBredhYY"><!--pnid:s6SxpenVqufsGkggFevdZc-->只是让模型更容易想起预训练里学过的知识</strong></td><td data-page-node-id="lZI3sUYsZroNP6E3PiePsd"><!--pnid:DWZTJbiV5FSA6C1ndCmhHD-->把推理过程放在答案<strong data-page-node-id="wHGzgw7pVC24BJNh4wkKiE"><!--pnid:uA6DzyTRsXFkbKV0wNVzZz-->之后</strong><!--pnid:M1VCkhGYKk2OA4aC6pNhuW-->，这样推理没能影响答案</td><td data-page-node-id="pKrxtXKTbtvWPpEYdHP166"><!--pnid:meoAuzToqlksPH0mINZbDk-->与标准提示基本持平。<strong data-page-node-id="2xRqaodHXNvBRScnZxY2zy"><!--pnid:xfQ2CSoPLPLMRx4drJs8eP-->说明模型确实依赖自己刚生成的那串推理，不是事后联想</strong></td></tr>
+    <tr data-page-node-id="xEseTPB5NlFpfkIYSM7Zqe"><td data-page-node-id="7116gCVgIiXCPL96hGWE4t"><strong data-page-node-id="21n3h8LXf3yGeWe8hUKBxA"><!--pnid:wSO9UvAAgFNfdmq6KZU3X7-->只是把题目翻译成算式</strong></td><td data-page-node-id="0qOWeiyjEWObGj3kiorCYW"><!--pnid:64EXH3rcG20AQ7Tgi3tlmB-->只要求输出算式，不写自然语言推理</td><td data-page-node-id="WpG1Mb5u99gjUaJxHqtgvf"><!--pnid:Z1iAQjJsiSodZ5hhqPNxtU-->应用题基准上几乎没提升。但一步两步的小题目上有效，<strong data-page-node-id="ogqNK3SmBHKFnCIFQBRHaV"><!--pnid:dTexCjqqqKfKSRSHLD10gf-->因为那种题确实能直接从题意翻成算式</strong></td></tr>
+  </tbody></table>
+  <p data-page-node-id="fEHwpH447fIqwNWOvOKan5"><!--pnid:FttYhottyazUSrTbizE0mT-->第三组结果最有意思。小学应用题基准上的题目语义复杂，<strong data-page-node-id="EzBiTGdlOG0wqvOkMbtDPk"><!--pnid:7uhUsgPcoMGbEJXapX9xed-->必须先用自然语言想一遍才能落成算式</strong><!--pnid:U0EG5KvL0JgJBOhcAl82jS-->；而简单应用题不用这层中间解释。所以「有效」不是全有全无，而是<strong data-page-node-id="NSYMCanVovDEU94f3Z6BLl"><!--pnid:Qk4QRkf6M15BnZKzv0fZDe-->取决于题目是否需要先理解题意</strong><!--pnid:yvBN1qwuttr5YCBePvevQG-->。</p>
+  <div data-page-node-id="tAgM6RMmVJrs3mAbEykIfz" class="bnd"><div data-page-node-id="Ry7do42IcxISPbs7cVwLNt" class="bnd-t"><!--pnid:cB5AhK02ea80AzCzC9WuPb-->前提与边界</div><p data-page-node-id="py6gf5AtTDC1y2YFJjRmvf"><!--pnid:QL5rH93SuXJMTzafe5vVuR-->三组消融都是在算术任务上做的。对常识与符号推理，中间步骤起作用的机制是否相同，论文没有验证。</p></div>
+</div>
+
+<div data-page-node-id="QsRwwt1g7XpI6czOExJtxL" class="block">
+  <div data-page-node-id="iIRaDCeE53bruNPSojiaG1" class="tag"><!--pnid:gSqbuloLHQH1xifrCt0JDH-->三类任务</div>
+  <div data-page-node-id="yueQo1L27pE7wcQ6nn4TNN" class="claim"><!--pnid:LzQ7M1srSrUG3ZkvxSOyTn-->同一个机制，三种用法</div>
+  <p data-page-node-id="MbY2TionWWGwUcNVloPidV" class="lead"><!--pnid:gvlpKbqnJAAsUwOsH4Rall-->作者在三类任务上验证，结论不是「思维链在哪都灵」，而是<strong data-page-node-id="k2rMr40ZOBW9jUyq5qsXAB"><!--pnid:9nevkeVDucRTXAptp0kS5t-->它的适用边界跟着任务的推理结构走</strong><!--pnid:n4yVCKRofwyaxKPf30Uvie-->。</p>
+  <div data-page-node-id="q5ylTLoRpTS8s47MYbzqbN" class="fig">
+  <svg data-page-node-id="9mgaU7OvrkP1wUcc9s5FQZ" aria-label="三类任务的推理结构与思维链的收益差异" role="img" viewBox="0 0 1000 260">
+    <rect data-page-node-id="fnq7PUUE9tP3udvKZMCrUo" fill="#e6f1fb" height="86" rx="8" stroke="#185FA5" stroke-width="0.8" width="300" x="30" y="14"></rect>
+    <text data-page-node-id="YZgz80qGuEF2A1j8A2bukO" fill="#042c53" font-family="-apple-system,sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="180" y="42"><!--pnid:frK3XaiLcNIYOSVQ0n67Tu-->算术</text>
+    <text data-page-node-id="50mjlBc4DWJWMbX2r7FDxZ" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="180" y="68"><!--pnid:WKLw5f0tzIL8n1BrKDoIGn-->多步应用题，每步因果明确</text>
+    <text data-page-node-id="Q6zfWYOQ3Xw7akMIfnA63j" fill="#0c4a6e" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="180" y="88"><!--pnid:FlnoflnYOiLoSlHahQFRPx-->收益最大</text>
+
+    <rect data-page-node-id="dRl7OjmJEY0VlC9LFUuM7Q" fill="#e6f1fb" height="86" rx="8" stroke="#185FA5" stroke-width="0.8" width="300" x="350" y="14"></rect>
+    <text data-page-node-id="xDUA6hNf9JzENQRMHG5cMR" fill="#042c53" font-family="-apple-system,sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="500" y="42"><!--pnid:QW9mob3WR17bnEziAzVOlL-->常识推理</text>
+    <text data-page-node-id="YrxwK3zCm5g85n7cQfjDrc" fill="#185FA5" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="500" y="68"><!--pnid:wP7jgfnqGJPN7vFJM2xyY0-->因为 A 所以 B 这类自然语言推断</text>
+    <text data-page-node-id="5iiy0nWNt0ceO3sqq7yk5z" fill="#0c4a6e" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="500" y="88"><!--pnid:9RJU7RXoh7OPYaUidQll1d-->语言性质天然契合</text>
+
+    <rect data-page-node-id="fgFTESURGUwvCtALzWG1b9" fill="#ebf7ef" height="86" rx="8" stroke="#15803d" stroke-width="1" width="300" x="670" y="14"></rect>
+    <text data-page-node-id="Rl8gf6VG3O2suaE8CYkyfp" fill="#14532d" font-family="-apple-system,sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="820" y="42"><!--pnid:KLbmXbmXNsWR457yocmqKw-->符号推理</text>
+    <text data-page-node-id="Y90QfU5OmZVmAxDp0Xpg6Y" fill="#15803d" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="820" y="68"><!--pnid:0gjpHEasCSN24LaPfAquCD-->取末字母、抛硬币后判断</text>
+    <text data-page-node-id="NkrhIauv6Zu1t3mnycVpGP" fill="#14532d" font-family="-apple-system,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="820" y="88"><!--pnid:DKm1x14EIp25dR06y23CC9-->唯一拓宽了能力边界</text>
+
+    <rect data-page-node-id="pCh5N5avZCUHrycDXzmnuL" fill="#fff4d6" height="52" rx="8" stroke="#b45309" stroke-width="1" width="940" x="30" y="122"></rect>
+    <text data-page-node-id="IBn4T6LSoCAOVIchGnwErH" fill="#412402" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="500" y="144"><!--pnid:X2mjS06rB86DySTwd2noAm-->符号推理带来的不只是「同任务做得更好」</text>
+    <text data-page-node-id="uQo3IEE15TmlHSNKvtsBIm" fill="#8a5a20" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="500" y="164"><!--pnid:sRYaDLlwMvWAHQcNXB3EQb-->还带来了长度上的分布外泛化：推理链比示例里更长的输入也能处理</text>
+
+    <rect data-page-node-id="1Hl19F3BjygbpIktOQtMDS" fill="#eef0f3" height="52" rx="8" stroke="#e2e5ea" stroke-width="0.8" width="940" x="30" y="196"></rect>
+    <text data-page-node-id="RHFgMaVil87N37eKgVcAxN" fill="#12141a" font-family="-apple-system,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="500" y="218"><!--pnid:Qa7baN7IPqySGVqT2TpTXn-->三项任务的评测都在短文本上做</text>
+    <text data-page-node-id="WOsgFmZhdoqDfmDVUv9uxt" fill="#48505a" font-family="-apple-system,sans-serif" font-size="13" text-anchor="middle" x="500" y="238"><!--pnid:WbKhNAu6U68dbGxLWITLsH-->长上下文、代码、多轮任务上还成不成立，这篇没有证据</text>
+  </svg>
+  <div data-page-node-id="48AEIN2XuarcYGfTHcY57U" class="fig-c"><!--pnid:iAbDrCiPhzzNpv6ELaEUQW-->三类任务的推理结构不同，思维链的收益来源也不同：算术是「别掉步」，常识是「本来就要语言解释」，符号推理是「能处理更长的链」。</div>
+  </div>
+  <p data-page-node-id="TucaP3p9ECIwvukgzNskPw"><strong data-page-node-id="9FCB2vaTD6IkEzS9BGMjgH"><!--pnid:Oegq3CeiKV2yJfzeSeIry8-->算术</strong><!--pnid:zyJgb4uSWD21wMjV8NiPjP-->是最典型的。多步应用题，每一步都有明确的因果，模型只要不掉步就能算对。这里思维链的收益最大。</p>
+  <p data-page-node-id="PFelMXDBNSO4K1y94ZILL8"><strong data-page-node-id="eLi8eZL0jQfwhw96x28hgR"><!--pnid:FSxmvclCLBBM9JmNhAlnyL-->常识推理</strong><!--pnid:k7EHLzcVBshOiehJcgnIKF-->（CSQA、StrategyQA、日期理解等五个数据集）用的是同一个提示，但推理形态完全不同：不是数值演算，是「因为 A 所以 B」这类自然语言推断。作者的判断是思维链的语言性质让它能覆盖这一类，<strong data-page-node-id="FnAGXcT0DrGWEcUDMLYKuq"><!--pnid:HVTJYnop2YfObFQVWpkksD-->因为常识推理要的本来就是语言化的中间解释</strong><!--pnid:4pejxQLcfYxZFtSVaBYnQ9-->。</p>
+  <p data-page-node-id="uV0I8TCwT93RUyAVBQ04ll"><strong data-page-node-id="t648XKW3wwjeGkefc8lG4X"><!--pnid:qwGxWblGOlzpxK79meLc0w-->符号推理</strong><!--pnid:xS3Qemvi8EL5jRrcxoQJ7S-->里有两个玩具任务：取人名末字母拼接、抛硬币后判断正反面。作者报告思维链不只让模型做对了这类任务，<strong data-page-node-id="w1NBU1qqla2hTUScXbDfp2"><!--pnid:40O1fIgLkGj7U7HK2y1t0s-->还带来了长度上的分布外泛化</strong><!--pnid:zECDwjwg23wStw8LB5PKYX-->，推理链比示例里更长的输入也能处理。这是三项里唯一一个「能力边界被拓宽」的证据，不只是「同任务做得更好」。</p>
+  <div data-page-node-id="uaAfoQmiEezXoZbSVHrIvn" class="bnd"><div data-page-node-id="08nvKfPUANN6u8OdrdOKB3" class="bnd-t"><!--pnid:JiN6SOVVtWpx4ecpXpteUg-->前提与边界</div><p data-page-node-id="PXKeLJtgh9FJfUbj1G33gL"><!--pnid:En35G2GgFhywdTnfGWwJkA-->三项任务的评测都在 2022 年的模型上做，题目都是短文本。这套方法在长上下文、代码、多轮任务上还成不成立，这篇没有证据。</p></div>
+</div>
+
+<div data-page-node-id="0xPzZynL8qSIxENd5NWOje" class="block">
+  <div data-page-node-id="dmw5YqDY4ajqIj8NH3ExPD" class="tag"><!--pnid:xH342Pgeb04AOnRjXzWsgZ-->缺口</div>
+  <div data-page-node-id="Hq5CpT3rOdpJCOUeCeqCMF" class="claim"><!--pnid:kSj1wN63evtV0NxwcOowd7-->这篇论文没回答什么</div>
+  <div data-page-node-id="frMTRBphXNDBURPi93qFse" class="gap"><div data-page-node-id="2tlrW6C7JFmI1rS9eSrcc1" class="gap-h"><!--pnid:6Q0ihAwnXUkFUbnyPFcReB-->1. 规模阈值为什么会出现在那个位置，没有解释。</div>
+  <p data-page-node-id="GPH3Sb5DYwTd7eEClK9aCs"><!--pnid:uVxDyuDLjBUSQqTDZUQNLd-->论文说了「百亿量级开始生效」，但没给机制。附录里那句「这个问题必然是多面的，我们只做了一次初步的错误分析」是作者的原话。他知道这只是猜测，没有当成结论。</p></div>
+  <div data-page-node-id="d0OMV86ppllEOw88ajhUlZ" class="gap"><div data-page-node-id="qps2MzzsRMEBMfpQIqtkxo" class="gap-h"><!--pnid:PJUGwhYaQcKXz3BTyoJVvD-->2. 推理过程对了，结论也可能错。</div>
+  <p data-page-node-id="KMzT5RWpt0C3PUW7haX6Da"><!--pnid:n6hrNM0SqNuakVCTNfRJ9Y-->作者自己列了这条：思维链不保证推理路径正确，<strong data-page-node-id="SZHCOGPIU31qaD5OmEqt3U"><!--pnid:DuenfVPVyCJkNnL7kjsGcp-->同一条错误的推理可能推出正确答案，也可能推出错误答案</strong><!--pnid:dK2fuKHQcCFz4SFWfZxUFg-->。论文提到当时有研究在用这个方向改进事实性生成，但这里没做。这一条最要紧：<strong data-page-node-id="QNJzQ2cWMFyzcffKMNpDI5"><!--pnid:X1MhIyanUQt9EBtP5XEfsr-->思维链提升的是「算对的机会」，不是「想对的保证」</strong><!--pnid:L9gGqnDBBoOYQlPjDQlxjf-->。</p></div>
+  <div data-page-node-id="817YHJGWttFRgqREMTHCw6" class="gap"><div data-page-node-id="jajfqzaZH7biOAtI6xd19h" class="gap-h"><!--pnid:9JEdWTXC2C3KB8noM0yHKT-->3. 是不是真的在「推理」，论文明确说不回答。</div>
+  <p data-page-node-id="K2YfAZcEF1b2Na3X2jwgat"><!--pnid:t8JUndOYGVqqBqFaygz9oN-->原文是「尽管思维链模仿了人类推理者的思维过程，但这并不能回答神经网络是否真的在推理，我们把这留作开放问题」。这句话放在今天看仍然成立。</p></div>
+  <div data-page-node-id="BxCm99zBv40s8wp1U1C9LW" class="gap"><div data-page-node-id="wlDr5AydnGcDn7E6NlBEvc" class="gap-h"><!--pnid:E0QbnS6GjYB5iqCTD2pWt7-->4. 成本方向反了。</div>
+  <p data-page-node-id="xwN1VHhVfBWWmkA2BadlXV"><!--pnid:kRutBmU49EXnHnYYHb0rHE-->少样本场景下手写思维链很便宜，但要做微调，这种标注成本就吃不消了。而思维链又只在超大模型上生效，也就是最贵的那批模型。作者把「怎么在小模型上诱导出推理」列为未来工作，没有给方案。</p></div>
+  <div data-page-node-id="M9lfUIgZhmlkH9xF6bdKfX" class="gap"><div data-page-node-id="9xmItRciRNOEDjg8EGteHK" class="gap-h"><!--pnid:6oFl5UvgbgqOHwLa6M7orM-->5. 评估的隐性前提没被检验。</div>
+  <p data-page-node-id="oEI69ApnbdfHVdRI0Uy9VJ"><!--pnid:3GZV3UINUS97GlCZ6Ue9Dl-->全文的评测都建立在「标准提示是合理的对照」这个前提上。如果对照本身偏弱，「思维链超越了被微调的模型」这个结论的强度就要打折。</p></div>
+</div>
+
+</div>
+
+
+<script data-page-node-id="RsTBNXopmfy2TAYkSHKJm0" data-pnid-children="Hui68fIFWOg3LiByd7jNxp">
+function setM(m){
+  document.body.classList.toggle('present',m==='pres');
+  document.getElementById('bRead').classList.toggle('on',m==='read');
+  document.getElementById('bPres').classList.toggle('on',m==='pres');
+  document.getElementById('hint').textContent = m==='pres'
+    ? '投屏态：细节已折叠，一屏一个论点'
+    : '阅读态：表格与细节完整展开';
+  window.scrollTo({top:0,behavior:'instant'});
+}
+if(location.hash==='#pres')setM('pres');
+</script>
+</html>

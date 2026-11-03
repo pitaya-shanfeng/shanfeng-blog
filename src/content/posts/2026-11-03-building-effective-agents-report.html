@@ -1,0 +1,727 @@
+---
+title: 构建高效智能体
+published: "2026-11-03 13:15"
+description: 先讲什么时候不该用智能体。五种工作流模式按路径确定性排成一条轴，加不加自主智能体只看一件事：下一步由谁决定。结尾三条原则比模式清单更耐用，附录里「优化工具花的时间比优化提示词更多」是全文最硬的一句。
+category: 拾遗/学习笔记
+tags:
+  - 智能体
+  - 工作流
+  - 大模型
+  - 读书报告
+draft: false
+---
+
+<!DOCTYPE html>
+<html data-page-node-id="IMUu2Rgk1cpPYHP6jQZA1G" lang="zh-CN"><head data-page-node-id="EdIFd3cy2eMzAcFrYbCG7S">
+<script data-page-node-id="LUD4BuzBfrTF4XzMMYrRUw" src="/page/page_comm/inject.js"></script>
+<meta data-page-node-id="aea5uhYbRLM7vbl7ujGlRV" charset="UTF-8">
+<meta name="blog-remove" content="bar">
+<meta name="blog-heading" content="tag:2">
+<meta data-page-node-id="jirHGLBrDWYqkkesP8rAbB" content="width=device-width,initial-scale=1" name="viewport">
+<title data-page-node-id="q4z7rDdMQIOcnzwRUo79Dm" data-pnid-children="vFxBm02VgNa0Akbqlu80db">构建高效智能体 · Building Effective Agents · 论文阅读</title>
+<style data-page-node-id="nQesZbtVWbtV8pr8eCpro1" data-pnid-children="RO7LfAWYD9xLJEeklN6is0">
+:root{
+  --page:#eef0f3; --card:#ffffff; --sunken:#f6f7f9; --sunken-2:#edf0f3;
+  --ink:#12141a; --ink-2:#48505a; --ink-3:#8b929c; --line:#e2e5ea;
+  --accent:#1f5fd0; --todo:#c02626; --ok:#15803d; --warn:#b45309;
+  --accent-bg:#eaf1fd; --todo-bg:#fdeeee; --ok-bg:#ebf7ef; --warn-bg:#fdf4e7;
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --mono:"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.75;padding:40px 24px 80px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto}
+.block{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:34px 40px 38px;margin:0 0 20px;box-shadow:0 1px 2px rgba(16,24,40,.045)}
+.tag{display:inline-block;background:var(--accent-bg);color:var(--accent);font-size:14px;font-weight:600;padding:4px 12px;border-radius:6px;margin-bottom:18px;align-self:flex-start}
+.claim{font-size:32px;line-height:1.45;font-weight:700;margin-bottom:22px;letter-spacing:-.01em}
+p{margin:0 0 16px;color:var(--ink-2)}
+p.lead{color:var(--ink);font-size:17px}
+strong{color:var(--ink);font-weight:600}
+em{font-style:normal;background:linear-gradient(transparent 62%,#ffe9a8 62%);padding:0 2px}
+.fig{margin:24px 0 8px;background:var(--sunken);border:1px solid var(--line);border-radius:12px;padding:28px 24px 20px}
+.fig svg{width:100%;height:auto;display:block}
+.fig-c{font-size:13px;line-height:1.7;color:var(--ink-3);margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:15px;background:var(--sunken);border-radius:10px;overflow:hidden}
+th{background:var(--sunken-2);color:var(--ink);font-weight:600;text-align:left;padding:12px 16px;font-size:14px;border-bottom:1px solid var(--line)}
+td{padding:12px 16px;color:var(--ink-2);border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.bnd{border-left:3px solid var(--warn);background:var(--warn-bg);border-radius:0 8px 8px 0;padding:16px 20px;margin:20px 0}
+.bnd-t{font-size:13px;font-weight:600;color:var(--warn);letter-spacing:.06em;margin-bottom:8px}
+.bnd p{margin:0;color:var(--ink-2)}
+.age{border-left:3px solid var(--line);padding:14px 20px;margin:18px 0}
+.age-t{font-size:13px;font-weight:600;color:var(--ink-3);letter-spacing:.06em;margin-bottom:8px}
+.age p{margin:0;color:var(--ink-3);font-size:15px}
+.quote{border-left:3px solid var(--accent);background:var(--accent-bg);padding:16px 20px;border-radius:0 8px 8px 0;margin:18px 0;color:var(--ink);font-size:15px;line-height:1.7}
+.meta{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:34px 40px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(16,24,40,.045)}
+.meta-t{font-size:40px;line-height:1.2;font-weight:700;margin-bottom:10px;letter-spacing:-.02em}
+.meta-sub{font-size:20px;color:var(--ink-2);margin-bottom:14px;font-weight:500}
+.meta-a{font-size:15px;color:var(--ink-2);margin-bottom:18px;line-height:1.6}
+.guide{border-top:1px solid var(--line);margin-top:24px;padding-top:20px;display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.guide-i{min-width:0}
+.guide-l{font-size:13px;font-weight:600;color:var(--ink-3);letter-spacing:.06em;margin-bottom:8px}
+.guide-v{font-size:15px;color:var(--ink-2);line-height:1.7}
+.guide-v em{font-weight:600}
+.idbar{border-top:1px solid var(--line);margin-top:26px;padding-top:18px;font-size:14px;color:var(--ink-3);font-weight:600;letter-spacing:.02em}
+.gap{margin:0 0 26px}
+.gap:last-child{margin-bottom:0}
+.gap-h{font-size:19px;line-height:1.5;font-weight:600;color:var(--ink);margin-bottom:10px}
+.gap p{margin-bottom:12px}
+.bar{position:sticky;top:0;z-index:20;background:var(--page);border-bottom:1px solid var(--line);padding:10px 0;margin:-40px -24px 24px;padding-left:24px;padding-right:24px;display:flex;justify-content:flex-end;gap:12px;align-items:center}
+.toggle{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 8px;display:flex;gap:2px}
+.tg{border:0;background:transparent;font-family:inherit;font-size:13px;color:var(--ink-2);padding:6px 14px;border-radius:6px;cursor:pointer;transition:.12s}
+.tg.on{background:var(--accent);color:#fff;font-weight:600}
+.hint{font-size:12px;color:var(--ink-3)}
+details>summary{cursor:pointer;font-size:14px;color:var(--ink-2);padding:12px 0;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary:before{content:"＋";color:var(--accent);font-weight:600;width:16px;flex-shrink:0}
+details[open]>summary:before{content:"－"}
+body.present .wrap{max-width:1280px}
+body.present .claim{font-size:44px;line-height:1.3;margin-bottom:30px}
+body.present p{font-size:19px;line-height:1.8}
+body.present .meta-t{font-size:56px}
+body.present .meta-sub{font-size:26px}
+body.present .guide-v{font-size:18px}
+body.present .guide-l{font-size:15px}
+body.present .guide{grid-template-columns:1fr;gap:26px}
+body.present .block,body.present .meta{padding:48px 56px 52px;margin-bottom:32px}
+body.present .fig{padding:40px 40px 30px}
+body.present .fig-c{font-size:16px}
+body.present .bnd p{font-size:18px}
+body.present .age p{font-size:17px}
+body.present .quote{font-size:18px}
+body.present .bnd-t,body.present .age-t{font-size:15px}
+body.present table{font-size:17px}
+body.present th{font-size:16px;padding:16px 20px}
+body.present td{padding:16px 20px}
+body.present .gap-h{font-size:22px}
+body.present .gap p{font-size:18px;line-height:1.8}
+@media print{body{background:#fff;padding:0}.bar{display:none}details{open:true}}
+@media (max-width:760px){.meta-t{font-size:28px}.claim{font-size:22px}.guide{grid-template-columns:1fr}.block,.meta{padding:24px 22px}.tag{align-self:flex-start}}
+</style>
+</head>
+
+<div data-page-node-id="6Cy3dJRyfH0fjdXHZU5S90" class="bar"><span data-page-node-id="ZiNXvXLQlpCxtSEvrUdbpv" class="hint" id="hint"><!--pnid:brbi6E2FcAYqfeD4p2SNNB-->阅读态：表格与细节完整展开</span><div data-page-node-id="6Kc3PsrO9y8hahBDGklkdF" class="toggle"><button data-page-node-id="PforxtKd4K5TEfRRxwiNTX" class="tg on" id="bRead" onclick="setM('read')"><!--pnid:FFMhPpXWWKX27YI52qiPuA-->阅读</button><button data-page-node-id="5U0VeIGcMnYhGKmfFhGifR" class="tg" id="bPres" onclick="setM('pres')"><!--pnid:A6jzaksiF6y4Fs7jAeGyjh-->投屏</button></div></div>
+<div data-page-node-id="22xdPaBx9sGHRuvLqPvbiC" class="wrap">
+
+<div data-page-node-id="UOLe3pQt9SV5sypsoHQDFU" class="meta">
+  <div data-page-node-id="CjHN7rRL0Ygjsl603zNG0K" class="meta-t"><!--pnid:51Pb0VwG95D03wL0PbAI5x-->构建高效智能体</div>
+  <div data-page-node-id="nsx0rwci9h55syzI2IjfYj" class="meta-sub"><!--pnid:8tNgje2sf9k7E4OhafHY5W-->Building Effective Agents</div>
+  <div data-page-node-id="BHGfgzrKyzJZ93gEMGj7oY" class="meta-a"><!--pnid:bbRkfKdP1Pn4bMH02dtNzy-->Erik Schluntz、Barry Zhang　·　Anthropic　·　2024 年 12 月</div>
+  <div data-page-node-id="qGnZxFMPT19uu1FwvRr9XT" class="guide">
+    <div data-page-node-id="gdKRZ9DGpVcZwzb6pzkOzz" class="guide-i"><div data-page-node-id="n9M2Bg54sOchrKDG1WEkRG" class="guide-l"><!--pnid:58lHKLMpyCn3KLQ0kfP0oc-->主线</div><div data-page-node-id="abZuX9H6Jy4aY75dIIKaPo" class="guide-v"><!--pnid:aCX8gYcVtuYau3Xhte7DTM-->面对一个待办的 LLM 任务，你究竟该停在单次调用、加一层编排，还是放出去让模型自己跑。文章用一条复杂度递增的单轴把答案铺开：先判断要不要做，再判断用不用框架，然后按路径确定性从高到低给出五种工作流模式与自主智能体，最后落到所有模式共用的地基——工具接口的工程。</div></div>
+    <div data-page-node-id="JZtUDCO6vlbK2I2153mbQj" class="guide-i"><div data-page-node-id="wEE1SXcEAIaqOMqVmeCYXq" class="guide-l"><!--pnid:8eecOFwMpd7UUXgUMuiJov-->内核</div><div data-page-node-id="hSVe1oXTYCvSU1h1s3sirC" class="guide-v"><!--pnid:QHrC6JHsDNeQ3DDh83VzPe-->「工作流」与「智能体」的分界不在于聪明程度，而在于<em data-page-node-id="8pCHOnbcDJmRSdWcF0wh07"><!--pnid:1CEASXUqfr97I4K3PF8knK-->下一步由谁决定</em><!--pnid:oZlb2buAjmXJESyPTTma4x-->：工作流由预写的代码路径决定，智能体由模型自己决定。这条分界线一旦明确，选模式的依据、复杂度取舍的准则、工具设计该花多少力，全都从这一刀长出来。</div></div>
+  </div>
+</div>
+
+<div data-page-node-id="TjatRgsWSuvDZSqSs0yUtA" class="block">
+  <div data-page-node-id="6T4lVRjgvwTD6sGy41Ixix" class="tag"><!--pnid:9pdrgv3KMH9BE05xADSgPd-->决策链</div>
+  <div data-page-node-id="NofDCTHqcXKg2oirb9uBTE" class="claim"><!--pnid:ApZca8GlSPRFvzPDzk7yBd-->这篇文章的顺序本身就是它的主张</div>
+  <p data-page-node-id="eDaHCOPX47CFvVXU5RHkDl" class="lead"><!--pnid:9y1KjaJ5m00359uAMzYJLG-->作者把整篇文章组织成一条自上而下的决策链，每一节都在回答「上一节的答案成立时才继续往下」。</p>
+  <p data-page-node-id="dRkXcygZGvevEtK1lpQywA"><!--pnid:Y7GSd6RNQcJDmVYK2EvOQT-->这条链的排列不是叙述方便，而是作者反复回到的同一个判断：<strong data-page-node-id="SqomesYVdIW6Rpm3YI9XyA"><!--pnid:7G1Q4snL4YfcXwqThIohM5-->复杂度只在可证明地改善结果时才加。</strong><!--pnid:cMDKgFcV4s74LR81YPkcUi-->开篇讲「找最简单的可行方案，必要时才增加复杂度」，中间讲框架时又说「它们会让人忍不住加复杂度，而简单设置本来够用」，结尾收在「成功不在于构建最精密的系统，而在于构建适合你需求的那个系统」。三处同义反复，构成这篇文章的骨架。</p>
+  <div data-page-node-id="4q6vccGH6VY6B1sHr9bfMh" class="fig"><svg data-page-node-id="UB64viLWMw0B8tuIc2j7YJ" aria-labelledby="f1t f1d" font-family="-apple-system, PingFang SC, sans-serif" role="img" viewBox="0 0 980 430" width="100%" xmlns="http://www.w3.org/2000/svg">
+    <title data-page-node-id="1UUSdCh1j28m27j6X3tEPk" data-pnid-children="lK26VOSNQCO96a9ZksKmsN" id="f1t">智能体系统的决策链</title>
+    <desc data-page-node-id="tiN2dUHewVMs0avNjABzaq" id="f1d"><!--pnid:UdEFGi5z1an0b0kna9fZ8G-->从要不要做智能体系统开始，经要不要用框架、路径由谁决定两个判断，落到工作流五种模式或自主智能体，最后指向工具接口的工程。</desc>
+    <defs data-page-node-id="PLi2tsH9ndRa8nwqTFeOuE">
+      <marker data-page-node-id="l1zyuZqcrw69luC3nNp3Zk" id="ar1" markerHeight="6" markerWidth="6" orient="auto-start-reverse" refX="8" refY="5" viewBox="0 0 10 10">
+        <path data-page-node-id="IAit5PAawDMsyzYfNHooR2" d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      </marker>
+    </defs>
+
+    <rect data-page-node-id="rtkGWtRvskZ0cvItqbjFnx" fill="#eaf1fd" height="46" rx="8" stroke="#1f5fd0" stroke-width="1" width="900" x="40" y="24"/>
+    <text data-page-node-id="bfNHblGW1zXfutypfKJsh3" dominant-baseline="central" fill="#0c447c" font-size="15" font-weight="500" x="58" y="41"><!--pnid:plADAtssiZmqo5TxkYL4GY-->要不要做智能体系统</text>
+    <text data-page-node-id="M7pj6nm2nhzt29zDJib0Op" dominant-baseline="central" fill="#1f5fd0" font-size="13" x="58" y="60"><!--pnid:wB2m01FrmouykCXMmNRBtY-->多数时候不用。智能体系统用延迟和成本换任务表现</text>
+    <text data-page-node-id="1Z5JzFITEmv1SyHU7EjH5z" dominant-baseline="central" fill="#1f5fd0" font-size="13" text-anchor="end" x="912" y="47"><!--pnid:A5QYH5DLf9IhuIsm6AeUeN-->第 1 环</text>
+
+    <path data-page-node-id="howCcjSfw5txfyj09F3NcX" d="M120 70 L120 96" fill="none" marker-end="url(#ar1)" stroke="#888780" stroke-width="1.5"/>
+    <path data-page-node-id="vXuNMtApFt6JpZ48uBFsPK" d="M880 70 L880 118" fill="none" marker-end="url(#ar1)" stroke="#888780" stroke-width="1.5"/>
+    <text data-page-node-id="b0e4BbuxoFhUxUhgn7qp6M" dominant-baseline="central" fill="#8b929c" font-size="12.5" x="134" y="84"><!--pnid:dbfFskntlWhuvwmQCUZqBb-->是</text>
+    <text data-page-node-id="RoVNAABKrOj8FqgPd8L5Qm" dominant-baseline="central" fill="#8b929c" font-size="12.5" x="894" y="94"><!--pnid:yIr8IU3VnmbAecJKCtAEXA-->否</text>
+
+    <rect data-page-node-id="6CjTz8nL7XtAl2EeksDvcQ" fill="#edf0f3" height="44" rx="8" stroke="#b4b2a9" stroke-width="1" width="240" x="700" y="120"/>
+    <text data-page-node-id="JwMkFER4dpYE0aSeVPfpMs" dominant-baseline="central" fill="#48505a" font-size="13.5" text-anchor="middle" x="820" y="142"><!--pnid:lQUsk1M2EBoEQ5a1g4DUUi-->停在单次调用 + 检索 + 示例</text>
+
+    <rect data-page-node-id="bnmGYxh60BKxaGATBhvl1f" fill="#eaf1fd" height="44" rx="8" stroke="#1f5fd0" stroke-width="1" width="520" x="40" y="120"/>
+    <text data-page-node-id="bQxT8BW1diDdv9vbtEAljp" dominant-baseline="central" fill="#0c447c" font-size="15" font-weight="500" x="58" y="142"><!--pnid:YruLinG76LnuAMg7xPNhUH-->要不要用框架</text>
+    <text data-page-node-id="xjgEAvduffDXW5zdInhPc9" dominant-baseline="central" fill="#1f5fd0" font-size="13" x="330" y="142"><!--pnid:eny2pyWgaKg9iWcTpPDChx-->先不用，直接调 API；用则须理解底层代码</text>
+
+    <path data-page-node-id="4i8JQt97F4aIH2ALvtPlzV" d="M120 164 L120 196" fill="none" marker-end="url(#ar1)" stroke="#888780" stroke-width="1.5"/>
+    <path data-page-node-id="nJX4Zf5YyHv1LbiZc3joEu" d="M300 164 L300 196" fill="none" marker-end="url(#ar1)" stroke="#888780" stroke-width="1.5"/>
+
+    <rect data-page-node-id="0G96lBEAMm5buuFIXFSRu7" fill="#e1f5ee" height="46" rx="8" stroke="#0f6e56" stroke-width="1" width="180" x="40" y="198"/>
+    <text data-page-node-id="918oNbW6wgxBdj8Z2xmVZh" dominant-baseline="central" fill="#085041" font-size="14" font-weight="500" x="58" y="216"><!--pnid:Jbg3hjC9Vi15xFTtgWGXOB-->代码路径预写</text>
+    <text data-page-node-id="SrhTrB2B8bvQdNC0qlYx7X" dominant-baseline="central" fill="#0f6e56" font-size="12.5" x="58" y="233"><!--pnid:cX8OPeVygGEuf9bj63rQkT-->工作流</text>
+
+    <rect data-page-node-id="o6rl0990eCbHOoWJ3V2pjz" fill="#fdf4e7" height="46" rx="8" stroke="#b45309" stroke-width="1" width="180" x="300" y="198"/>
+    <text data-page-node-id="bvzO7Y6brzmURsWkH3p47t" dominant-baseline="central" fill="#633806" font-size="14" font-weight="500" x="318" y="216"><!--pnid:NTRpdGKsSEaK3H0jJd7aiz-->模型自己决定</text>
+    <text data-page-node-id="yj3gDF7MGcmqKUmRopexZW" dominant-baseline="central" fill="#b45309" font-size="12.5" x="318" y="233"><!--pnid:1fTMYcMCXsRRDeaIso5xx0-->自主智能体</text>
+
+    <path data-page-node-id="MfJWf6yWO0ZW9WCm2UWYwj" d="M130 244 L130 276" fill="none" marker-end="url(#ar1)" stroke="#888780" stroke-width="1.5"/>
+    <path data-page-node-id="izirRDF6IfHYRE71rkqxa9" d="M390 244 L390 276" fill="none" marker-end="url(#ar1)" stroke="#888780" stroke-width="1.5"/>
+
+    <rect data-page-node-id="vo4cPhIZjwLzL8HubDZCoM" fill="#ffffff" height="128" rx="9" stroke="#0f6e56" stroke-width="1" width="180" x="40" y="278"/>
+    <text data-page-node-id="81slBr1FlsttY9Iyf5UGBd" dominant-baseline="central" fill="#085041" font-size="13" font-weight="500" x="56" y="297"><!--pnid:lUOntVccSfSrrzu1VKduSx-->五种工作流模式</text>
+    <g data-page-node-id="N6axTz6T36zPXjfrRywC3N" fill="#0f6e56" font-size="12.5">
+      <text data-page-node-id="MeeZQPNJoRj1p2RWD8KHMh" dominant-baseline="central" x="56" y="320"><!--pnid:97OLI1qGrltEOVgYzBeg7D-->提示链</text>
+      <text data-page-node-id="u3RVw0I74pPQo5vngmo888" dominant-baseline="central" x="56" y="342"><!--pnid:6TlJ0FVVJ4buWAZZHUCjgD-->路由</text>
+      <text data-page-node-id="D8eWg1FjfTNMd6K7bifrfz" dominant-baseline="central" x="56" y="364"><!--pnid:H1JA1mRV4rF37vYYqtFrvf-->并行</text>
+      <text data-page-node-id="mOHlUWiW0sEMTt0AkCuH4E" dominant-baseline="central" x="56" y="386"><!--pnid:uT1UmLO8rmAXcq94Cb6Q61-->编排者-工作者</text>
+      <text data-page-node-id="4vcSnPq7qI3Wtl2yKFi9dB" dominant-baseline="central" x="56" y="408"><!--pnid:RcwB9xobiQwMDAYgs7yrCH-->评估者-优化者</text>
+    </g>
+
+    <rect data-page-node-id="fOlwenTsXkDjMne7gWZ6gd" fill="#ffffff" height="128" rx="9" stroke="#b45309" stroke-width="1" width="180" x="300" y="278"/>
+    <text data-page-node-id="wRDL3tq92qhq3t4PAPBCIc" dominant-baseline="central" fill="#633806" font-size="13" font-weight="500" x="316" y="297"><!--pnid:LfoXo262KJRSQ7rXdqlnJI-->自主智能体</text>
+    <g data-page-node-id="y67qz3861WSwELIbWtMjep" fill="#b45309" font-size="12.5">
+      <text data-page-node-id="DaXEvqaves1h17pWuo6b7c" dominant-baseline="central" x="316" y="320"><!--pnid:6kzp7Rv5mDJOpYRPeBeKRJ-->规划</text>
+      <text data-page-node-id="afjjiybp2OLomEdJbERsSL" dominant-baseline="central" x="316" y="342"><!--pnid:8fkTbptnaLM5RXpFz21ZdP-->执行</text>
+      <text data-page-node-id="47Tt7gTlFG4JtFg4SUxjNE" dominant-baseline="central" x="316" y="364"><!--pnid:vOqwNSsiGJiYbSrOCp7UTn-->每步取环境反馈</text>
+      <text data-page-node-id="6Vg566iaeZ5MFVrTePQ5gi" dominant-baseline="central" x="316" y="386"><!--pnid:OQLvWlaa8AJMPrR4HQyVfc-->检查点</text>
+      <text data-page-node-id="A06G3szrzwScRDqIXumrJd" dominant-baseline="central" x="316" y="408"><!--pnid:PryllBw6pP7DMo3ogU08cH-->停止条件</text>
+    </g>
+
+    <path data-page-node-id="xakNzRRYdAIg8IcoiaNWbt" d="M490 342 L580 342" fill="none" marker-end="url(#ar1)" stroke="#888780" stroke-width="1.5"/>
+
+    <rect data-page-node-id="b1YX2SEVlifxKBXZIBRRl4" fill="#edf0f3" height="128" rx="9" stroke="#5f5e5a" stroke-width="1" width="340" x="600" y="278"/>
+    <text data-page-node-id="Y2j6KoKLhgoU7MNpzlSLMJ" dominant-baseline="central" fill="#2c2c2a" font-size="14" font-weight="500" x="618" y="299"><!--pnid:D9Kj30fXKrkmzwBJaJGxZ6-->无论选哪条，都落到工具接口的工程</text>
+    <text data-page-node-id="fgqJ8bZkqdmf2Y6Hd4mpqU" dominant-baseline="central" fill="#444441" font-size="13" x="618" y="324"><!--pnid:550SieN3RHtufkPne0LlJ5-->格式选择　三条建议</text>
+    <text data-page-node-id="VdVm1hi9hld0JPDYwg8i4D" dominant-baseline="central" fill="#444441" font-size="13" x="618" y="347"><!--pnid:wYoRGeSAleIbp1CID6IPjc-->像写人机接口一样认真对待</text>
+    <text data-page-node-id="GgS9cJ7q0nHDwg0bCCefP3" dominant-baseline="central" fill="#444441" font-size="13" x="618" y="370"><!--pnid:wNsHicP81S6uTc0Tsp7cGQ-->代入模型视角自查</text>
+    <text data-page-node-id="AxgGElZbU7QCQYpxlM5CjO" dominant-baseline="central" fill="#444441" font-size="13" x="618" y="393"><!--pnid:J617gWgKzCo6sDZxg7PLx7-->对工具做防错设计</text>
+  </svg><div data-page-node-id="hNTA3lFqDao7XOUNYvEqVN" class="fig-c"><!--pnid:2e37qrdCNF4t4yliqYMlYC-->决策链自上而下，每一环的答案决定是否进入下一环。复杂度只在可证明地改善结果时才加——这是全文被反复回到的那个判断。</div></div>
+  <table data-page-node-id="PFHZatj4yAuzgpUsnd1qB8"><thead data-page-node-id="U7mrby2xry1WRJRAuce2nN"><tr data-page-node-id="ZUzcb447fUqjXGpXU6D44r"><th data-page-node-id="RV0r3eVfFOtzl5oZmmQNyW" style="width:30%"><!--pnid:lBSMAezRPMWW1BfgRZeJsm-->决策点</th><th data-page-node-id="w57YJkYtv3lvLz1Qcnz5V4"><!--pnid:gpH1SUvZ7vFrn6qg2FSnT3-->作者的答案</th><th data-page-node-id="s5s1Wyt1MzoE5OHL9xersM"><!--pnid:QXPoGRwExxlfQwJduSYYlr-->依据的判断</th></tr></thead><tbody data-page-node-id="FVRZBkYu2HovMEFPvcwZoA">
+    <tr data-page-node-id="GPeG5Qw587VdKrCyL4NlQh"><td data-page-node-id="udkaoTOYoqFjQaPRBIKlUY"><strong data-page-node-id="8qFdnJ3lVpxsjVfP2dgJCu"><!--pnid:B9Uva0mFWsYyCBAUgp2hCw-->要不要做智能体系统</strong></td><td data-page-node-id="4OMFUVZrxVoNhpK2BnlkRt"><!--pnid:kutYWl257TeT4qno01BpJz-->多数时候不用</td><td data-page-node-id="jckXH3rdoDs5Sq4W0v8hJv"><!--pnid:UqpO8Q1ZGaEi2KyoN3uE6j-->智能体系统用延迟和成本换任务表现</td></tr>
+    <tr data-page-node-id="Z5S2VObKrbuuGYlvofl2bt"><td data-page-node-id="43M9oqSxfWmf2216NbDwEr"><strong data-page-node-id="In1CyauIwIqwFlEzUZbKkc"><!--pnid:2LmTaTeSMaY5TBTK8w6RBK-->要不要用框架</strong></td><td data-page-node-id="T0G6LUBEszuAOZlj8eUyGE"><!--pnid:AJK2KX25AbR7Yax9VJayzp-->先不用，直接调 API</td><td data-page-node-id="whN8STbP2xJkEn4Nns0nCO"><!--pnid:gviqyPLrLL7E4q8RP446af-->框架的抽象层遮蔽底层提示与响应，调试更难</td></tr>
+    <tr data-page-node-id="qB0c7Uw0JoqVcEocBhxwp4"><td data-page-node-id="KEUKQGM0CpHAgc1UzZVC0i"><strong data-page-node-id="MfuCdycyP1rK4XXeHB9bbm"><!--pnid:QYP4U6Ai16ZdEUY9emTCca-->用哪种工作流模式</strong></td><td data-page-node-id="QjLIzt6QKHk3fr0KZx4Z9s"><!--pnid:EkgUozla4uJn2i9G1QVZqI-->看子任务能否预知、能否并行、评估标准是否清晰</td><td data-page-node-id="UkyFC2wywtvYk32YDQOe0S"><!--pnid:Jx2kH4BDjriqoHWzxSCSga-->每种模式对应一类任务结构</td></tr>
+    <tr data-page-node-id="ZA6j6eWLLIJN8cJ1uG3VRD"><td data-page-node-id="oa5LkgYvNmr5nGYWJUiyji"><strong data-page-node-id="xvIrFXBnEoFswJQu9XA6VH"><!--pnid:3JNNOzL6ZVLtJTscg0KvAo-->什么时候放给智能体</strong></td><td data-page-node-id="930nTRPiYNXWu0JKvbHrc4"><!--pnid:6n20zGotCfcngoi4Q3icpS-->步数无法预测、无法硬编码路径时</td><td data-page-node-id="6unSS5cSZs5PMoWa5OKTFu"><!--pnid:s5GR3xCqAuEB9SAenwODBv-->且必须能信任它的决策</td></tr>
+    <tr data-page-node-id="yTMrRIk7frEAqzSyaH306H"><td data-page-node-id="sifA26DYbiV57Edw2d0eyy"><strong data-page-node-id="fBJC8rGOyN14EhkB12ZMsP"><!--pnid:MmZwMV7vgQr3s0sLIzDCsP-->工具怎么写</strong></td><td data-page-node-id="WXEvohnW6fAgmCtbgAUzWQ"><!--pnid:5dQESTcpVBVdeS6nPnClMN-->像给人写接口文档一样认真</td><td data-page-node-id="3vFibMLxsVrYGGVyHdIqrw"><!--pnid:L6QYlbzRx9NKpAMNkYB2cl-->工具错误会逐轮放大</td></tr>
+  </tbody></table>
+  <p data-page-node-id="X7QQkxfK0146BgEJhHU9TC"><!--pnid:p6fhwq4WN5nCmyhOwh4wWL-->值得注意的是，这条链上没有一节是正面讲「怎么把智能体做好」。通读全文会发现它的重心落在两端：最前面讲「什么时候不该用」，最后面讲「工具怎么设计」。中间那五种模式只是目录。</p>
+  <div data-page-node-id="EGsJBLGuPJZjGlCGIemDRb" class="bnd"><div data-page-node-id="dgDDKOZeGn0vXpFswlCKZp" class="bnd-t"><!--pnid:xDZQPqW6r1NWHazxsU9N4T-->前提与边界</div><p data-page-node-id="o4iIEOcFormby5lr54FRLU"><!--pnid:IBo3gvHJzi7S971FW3HrYk-->这条链预设了「你已经有明确的 LLM 能力基线」。文章对模型的判断能力、工具调用可靠性不做评估，直接假定前提成立。这在 2024 年底成立，但模型能力是这篇里唯一没有标注版本的东西，也是整条链最脆的一环。</p></div>
+</div>
+
+<div data-page-node-id="O38EgRFz46RmZ7dT7HxDpZ" class="block">
+  <div data-page-node-id="GVs3SHVqI2yzLrRqMZ3sVQ" class="tag"><!--pnid:03E38RSnL4icRLgGpEHsDe-->模式谱系</div>
+  <div data-page-node-id="7s3AzoVxwh6c32ItZxFyVr" class="claim"><!--pnid:X8gg1Tgmo1bM4LIjyjUlRW-->五种工作流模式与自主智能体</div>
+  <p data-page-node-id="jiHFL3QVjjSTOwvTurNnM9" class="lead"><!--pnid:FLzMM9yeXNPUq18Fn0mBjA-->从增广语言模型这个基座出发，逐级增加复杂度，铺出五种工作流模式，最后抵达自主智能体。</p>
+  <p data-page-node-id="uO26eh0AgckfTp2ESDpEPI"><!--pnid:AnqOMLvoZEBW2UTxmquhQU-->这个排列本身就是判据。每往下一级，路径的确定性就少一分，模型承担的决策就多一分。五种工作流模式之间不是并列可选的菜单，而是按「子任务能否预先知道」这一条轴排开的：能预先知道，就落在前四种里的某一种；不能预先知道且要动态拆解，用编排者-工作者；连拆解方式本身都难以预设，才轮到评估者-优化者与自主智能体。</p>
+  <div data-page-node-id="l5PdyucMvY3RnLCYIrL2AH" class="fig"><svg data-page-node-id="Ik6fDjmfbxva1S1VAP2N64" aria-labelledby="f2t f2d" font-family="-apple-system, PingFang SC, sans-serif" role="img" viewBox="0 0 980 180" width="100%" xmlns="http://www.w3.org/2000/svg">
+    <title data-page-node-id="4RKRrHHkj1hdiQ2ycoDj5D" data-pnid-children="uDtdWuoCbeFdfpEfDWakLP" id="f2t">六种模式的复杂度谱系</title>
+    <desc data-page-node-id="OnJUtSNNNuc03S6gF3Mv05" id="f2d"><!--pnid:jjSbEv90CN54n3KRfLugIW-->从增广语言模型到自主智能体，按路径确定性递减排列，五个工作流模式夹在基座与智能体之间。</desc>
+    <defs data-page-node-id="XAUt9zbIw2Epa3FfAWfRxu">
+      <linearGradient data-page-node-id="2KTjZAkcqOPIj1r9R2pf78" id="g2" x1="0" x2="1" y1="0" y2="0">
+        <stop data-page-node-id="cyKox8Rger01pA0lLFrrQ3" offset="0" stop-color="#eaf1fd"/>
+        <stop data-page-node-id="2BZhtgUp3ePh6FWXDancUS" offset="1" stop-color="#fdf4e7"/>
+      </linearGradient>
+    </defs>
+
+    <rect data-page-node-id="gmvU7tP5p0WNCHkMo8C9Yr" fill="url(#g2)" height="72" rx="9" stroke="#e2e5ea" stroke-width="1" width="900" x="40" y="60"/>
+
+    <g data-page-node-id="W32588sa66LoTW4EZKgiG3">
+      <rect data-page-node-id="8xW3kqYoVIJQbelsddxbJf" fill="#ffffff" height="30" rx="6" stroke="#1f5fd0" stroke-width="1" width="128" x="56" y="82"/>
+      <text data-page-node-id="bfWi3a0Q9sCuVajkWDUIJu" dominant-baseline="central" fill="#0c447c" font-size="13" font-weight="500" text-anchor="middle" x="120" y="97"><!--pnid:X6lDHgbxvOTBOYmXTuuSwm-->增广语言模型</text>
+
+      <rect data-page-node-id="2Lb8No3aIHmBbr8z1sxnDN" fill="#ffffff" height="30" rx="6" stroke="#0f6e56" stroke-width="1" width="106" x="200" y="82"/>
+      <text data-page-node-id="cIJzrNldjHd6LlzWzOQhPN" dominant-baseline="central" fill="#085041" font-size="13" text-anchor="middle" x="253" y="97"><!--pnid:9aJjsgXPVMnWCzHP00oWtg-->提示链</text>
+
+      <rect data-page-node-id="fs5Uy1Df04frsrtrQjtHf1" fill="#ffffff" height="30" rx="6" stroke="#0f6e56" stroke-width="1" width="82" x="322" y="82"/>
+      <text data-page-node-id="v2b8O92YZ1zx6GzCnjxnWZ" dominant-baseline="central" fill="#085041" font-size="13" text-anchor="middle" x="363" y="97"><!--pnid:kFiARY18BZjVcYQDapn5a2-->路由</text>
+
+      <rect data-page-node-id="QGqYkNyLgv3FnGSjk5t0cf" fill="#ffffff" height="30" rx="6" stroke="#0f6e56" stroke-width="1" width="82" x="420" y="82"/>
+      <text data-page-node-id="jPl7ZEd0wxAoI38t6GS69y" dominant-baseline="central" fill="#085041" font-size="13" text-anchor="middle" x="461" y="97"><!--pnid:zGR0LmiEdj9LXZXurnh9z4-->并行</text>
+
+      <rect data-page-node-id="ARod03tmESG7xFWZUP7Vsc" fill="#ffffff" height="30" rx="6" stroke="#0f6e56" stroke-width="1" width="132" x="518" y="82"/>
+      <text data-page-node-id="6Zra9vqqBhRinKoy7ZEULN" dominant-baseline="central" fill="#085041" font-size="13" text-anchor="middle" x="584" y="97"><!--pnid:mLCBs3fTrelpxWo5xraYnY-->编排者-工作者</text>
+
+      <rect data-page-node-id="Y9vUVGW9SHkAEFaPzRYIRl" fill="#ffffff" height="30" rx="6" stroke="#0f6e56" stroke-width="1" width="126" x="666" y="82"/>
+      <text data-page-node-id="YuAQK5GpyZd25QVatUbbTZ" dominant-baseline="central" fill="#085041" font-size="13" text-anchor="middle" x="729" y="97"><!--pnid:Hq7ZRVG4IyItIyGxysCalv-->评估者-优化者</text>
+
+      <rect data-page-node-id="0aeHt0xx9j8cCJQdxMfPYP" fill="#ffffff" height="30" rx="6" stroke="#b45309" stroke-width="1" width="116" x="808" y="82"/>
+      <text data-page-node-id="2Bo1SpIdVkb2kFMXXZ6KQR" dominant-baseline="central" fill="#633806" font-size="13" font-weight="500" text-anchor="middle" x="866" y="97"><!--pnid:iMrzhtYX9xoZcfNhj2bytL-->自主智能体</text>
+    </g>
+
+    <path data-page-node-id="9cNZJKYWkZ5pWvlujdRdEo" d="M56 130 L924 130" fill="none" stroke="#b4b2a9" stroke-width="1.5"/>
+    <path data-page-node-id="WNUbHrENX0TUtxeUWo698p" d="M924 130 L916 126 L916 134" fill="none" stroke="#b4b2a9" stroke-linecap="round" stroke-width="1.5"/>
+    <text data-page-node-id="aDxhp6qXtVYlLVz2gK503C" dominant-baseline="central" fill="#8b929c" font-size="13" x="56" y="150"><!--pnid:QsWnPHIMfnHrgGbzoAF5m0-->路径由代码写死，模型只执行</text>
+    <text data-page-node-id="uXldk7FRgBlN7nWwwcLjQ6" dominant-baseline="central" fill="#b45309" font-size="13" text-anchor="end" x="924" y="150"><!--pnid:xRtjMmf0SMeJlB2EqHGgG8-->路径由模型自己决定</text>
+
+    <text data-page-node-id="gJZ8qcj2ijmCCcGAODZdvE" dominant-baseline="central" fill="#12141a" font-size="13.5" font-weight="500" x="56" y="42"><!--pnid:DHEGl8ml9tSU75xJXKMwb4-->决策轴：下一步由谁决定</text>
+  </svg><div data-page-node-id="SegbUz4dqkvU296VSQSiJp" class="fig-c"><!--pnid:Vw4wp4eRajka6U8NbbLNja-->复杂度沿一条轴递增：路径的确定性递减，模型承担的决策递增。五种工作流模式按「子任务能否预先知道」排开，不是并列可选的菜单：能预先知道就落在前四种之一，不能但要动态拆解用编排者-工作者，连拆解方式都难以预设才轮到评估者-优化者与自主智能体。</div></div>
+  <table data-page-node-id="YVliiOP9Rodi9UYrs1poIx"><thead data-page-node-id="AVKYnTaKWxSBGe4kHE2Dwk"><tr data-page-node-id="L3xtZzIPDyPkg1SFhbwH9e"><th data-page-node-id="Mw6D6Qj0xMhfVZM4f1fHdv" style="width:20%"><!--pnid:OB6mnl9hMjQHixKylsLMGO-->模式</th><th data-page-node-id="FYcGZss2QI87i6MuDSv1rl" style="width:18%"><!--pnid:phamRypjkcUZx5UdHLJHQ1-->路径由谁定</th><th data-page-node-id="D7AEU5ifNVEotfRMf1aLra" style="width:26%"><!--pnid:ACqdYGRa19KwQgrjLhxsHe-->何时用</th><th data-page-node-id="orow96jSBZtyY5f9Ghzh8o"><!--pnid:rlRRNNDgeMkQIpaKvicQer-->结构</th></tr></thead><tbody data-page-node-id="DxfS32xRfikhVsdYW35NuB">
+    <tr data-page-node-id="Fg29ztYDEuKdfNw5n9N1nu"><td data-page-node-id="OZi4JffrBFDaTRayHJ1J9d"><strong data-page-node-id="UfqAKkzspFobCQHXMaZGWI"><!--pnid:g2Yvbz1cbCx3gzUspBPtNk-->提示链</strong></td><td data-page-node-id="4ueljR7qhBeEeeQQq1ulxv"><!--pnid:jFXNQUTd5O1aW9T3N4aSWL-->预写的固定序列</td><td data-page-node-id="qJUmOwtqaEBGboLgSgr7Fq"><!--pnid:yAS5yQNUXq5nQhi9iDW3Ea-->任务能干净地拆成固定子任务串联，每步可加程序化闸门</td><td data-page-node-id="ekmLZibEfkIPe9MzXDFfw2"><!--pnid:tBHplMymfjpPArRiZPybEk-->串联</td></tr>
+    <tr data-page-node-id="x5dcSIxnU8MB6d9n3gOY5x"><td data-page-node-id="ubbId1sLZsXIk7UbQf2AtU"><strong data-page-node-id="Yy7T2Stsz14VUlfoyQ057M"><!--pnid:GwAjt8XqAi3iHWdHskqWde-->路由</strong></td><td data-page-node-id="fkZuRv4cMpUoW78yMExeks"><!--pnid:SqPyEFrDFOjqvltDiqZjCH-->预写的分支</td><td data-page-node-id="r1vSr2VNDReFRRg9CmQAIF"><!--pnid:1RVWWJjo2k3G2XFGrJWKZy-->存在清晰类别，且分类能做准</td><td data-page-node-id="kGyiI5BSDrOOeOqdIDrivN"><!--pnid:BcaXMLDFpfL5S8HRjhapNx-->先分类再分流</td></tr>
+    <tr data-page-node-id="TV2RAr9afMyjgCKfuZuC6m"><td data-page-node-id="wz8GSbayzouAXoxSyvWFlt"><strong data-page-node-id="tr7uRJVUj0KHfnDp1J5L52"><!--pnid:Vn0UwWp5vksox3qmQp2La0-->并行</strong></td><td data-page-node-id="PBVITKc3TuNDvovLYHP7f5"><!--pnid:VKj8bK77eatzSyRUlkCGa2-->预写的多个分支</td><td data-page-node-id="28VJJm9LNSXuUpBLanad5x"><!--pnid:vkW7J2FZG2tOU5dTUllsTN-->子任务互相独立，或需要多视角分区或投票</td><td data-page-node-id="Utoh7AU0JPrvtOKHRVqjv1"><!--pnid:MkWYcs8WFRcHSZZUA20tO4-->分区或投票</td></tr>
+    <tr data-page-node-id="0hxI5BzvUDGuhzaVbiZePe"><td data-page-node-id="jDYMMfspSBLqwd4cBf460t"><strong data-page-node-id="28kHeMKYIo2BrOSoqLjaId"><!--pnid:9IIQgAP3RMS96eoytVglXh-->编排者-工作者</strong></td><td data-page-node-id="rz69HnmM8FGGXgejhh6q3Q"><!--pnid:HRPfmRJyxIVGLCSSitE00s-->编排者动态决定</td><td data-page-node-id="67s7e99KPOT5umPMm0XRfK"><!--pnid:fR4w5HGSiuGoK5WQGR1xNu-->子任务数量无法预先知道</td><td data-page-node-id="lnvmxTQb7m2ueoWhikGpBo"><!--pnid:4vE62earWoMVNTheQUjMBz-->中心拆解、派发、汇总</td></tr>
+    <tr data-page-node-id="juUJvsccmkpSlqCl15DdUd"><td data-page-node-id="ODNDqR9OihUBOZaEM70wOy"><strong data-page-node-id="ipM2LCrKs0sPV20X9KRbGM"><!--pnid:5L2HD2huTU0VQA6jjRmz4b-->评估者-优化者</strong></td><td data-page-node-id="8qic07maa5acmCdO9clhuB"><!--pnid:0ZVuPPNKHGqxAnVuF1k43R-->预写的双角色循环</td><td data-page-node-id="szZI3DszaBBSb1OZXsUnFI"><!--pnid:TTicMjSZXUGJNwfcZgANhB-->有清晰评估标准，且迭代确有价值</td><td data-page-node-id="1HurIsguNWwIh5MFOv9HpT"><!--pnid:YnVKVSDqZgMAYG2eMEmZLu-->生成与批评交替循环</td></tr>
+    <tr data-page-node-id="vYy2qGWaBDq0gf4R8Lf7Or"><td data-page-node-id="qYz7A1X4Ncu9sVbVGHXddy"><strong data-page-node-id="bN0OIIBe6fZW1bZAOJDLAA"><!--pnid:Z2bq25F7tXUYtJehL8inhh-->自主智能体</strong></td><td data-page-node-id="7O24mO6paR1MgAaIm9DK6x"><!--pnid:jypy4QViNDUC2dnYLKrs0y-->模型自己决定</td><td data-page-node-id="FQLtgKXgLZ3ri7Om7eO6w8"><!--pnid:H8HTnz1HAeyKY84OLRAwAs-->步数无法预测，无法硬编码路径</td><td data-page-node-id="vtm1bA1RNBWopKM2fLEJk9"><!--pnid:TxTeqOhjA84uCyetKLQx0o-->规划、执行、感知反馈、循环</td></tr>
+  </tbody></table>
+  <div data-page-node-id="EY0s71tmZg6CrtNcn5S1e2" class="bnd"><div data-page-node-id="olaPM53uB0oELeZGtMFryQ" class="bnd-t"><!--pnid:VJIJYetZY1DPdOEjWzaSS3-->前提与边界</div><p data-page-node-id="MHNtiFwtdRsMPpSowPuE7v"><!--pnid:ydFIpJeIQHt0jf5tqslLHS-->这张表是选型工具，不是流程图。五种模式都不含错误恢复与状态持久化。作者在这篇文章里完全没碰这两件事，而它们恰恰是工作流从演示走向生产时最先撞上的墙。</p></div>
+  <div data-page-node-id="xBvxk2nwbPq9iCDoZLAFB3" class="age"><div data-page-node-id="LGfbdj2Jm7X0acW3DyRECg" class="age-t"><!--pnid:xZ2zrg44pAXWyUEDFRp67G-->时代限定</div><p data-page-node-id="sNR0CC1j4oLTQIq7YOrE3f"><!--pnid:mpo4mQl4Xjq6qE6JJC4LNt-->原文发布于 2024 年 12 月，文章自己在开头挂了一条注：文中描述的工具生态此后已发生明显变化，指向 Claude Managed Agents 与相应文档。这意味着框架清单、模型版本、托管形态这三项已过期，但五种模式的划分逻辑不受影响。</p></div>
+</div>
+
+<div data-page-node-id="qZDZLJAvkD2Em96PfHBiaB" class="block">
+  <div data-page-node-id="ivFKcCzLQlyjKidwEludaB" class="tag"><!--pnid:Zx95hgjLVBqrcsQvSwKAFi-->提示链</div>
+  <div data-page-node-id="ckmZyjduGRMO2mjNOphoHv" class="claim"><!--pnid:d7V4vcmDDJSA0o5oQnPFkB-->能干净拆成固定子任务时，任务就该拆开，让每次调用只做一件更容易的事。</div>
+  <p data-page-node-id="4LYd7zX2fS9O1PuloBTJf3" class="lead"><!--pnid:b7AEGzoRdHiYpJ2FcG1OUg-->作者给这条模式的适用条件只有一句话：任务能被容易且干净地分解成固定子任务。目标是用延迟换更高的准确率，因为每个子任务更简单，模型出错的机会就少了。</p>
+  <p data-page-node-id="rxsflaVAtZLhHMhNo5dr5U"><!--pnid:67w08A2ZT2DQYFEvweqoQy-->它的关键设计是<strong data-page-node-id="y3HGvij9R2ABJ9lA2AHWAg"><!--pnid:KEwwXTzxWxA4FMYAVyax9n-->闸门</strong><!--pnid:BD0hnQwGtdZ3EBmZ7DoF3P-->：在任意中间步骤加程序化检查，确认流程还在轨道上。这个细节容易被略过，但它是提示链区别于「让模型一口气干完」的全部价值所在。闸门把错误拦在早期，而不是让它顺着链条一路传到底。典型用法有两类：先生成营销文案再翻译；先写文档提纲、检查提纲是否符合标准、再照着写正文。第二个用法的结构值得单独看——检查环节不是让模型自己满意，而是让程序按明确标准判断。</p>
+  <div data-page-node-id="EPhmzcO1ZlKpavAxwgdQzE" class="fig"><svg data-page-node-id="I4txlKSjjG6NbTW2vUfbSf" aria-labelledby="f3t f3d" font-family="-apple-system, PingFang SC, sans-serif" role="img" viewBox="0 0 980 260" width="100%" xmlns="http://www.w3.org/2000/svg">
+    <title data-page-node-id="pNTgFD8UQALNOZWzetIB2N" data-pnid-children="Fju4plDQX8iFoGqTcugfsl" id="f3t">提示链的闸门机制</title>
+    <desc data-page-node-id="zdR1wm2VUbxSe5jCWLgHRg" id="f3d"><!--pnid:k8wza6RzAK0tAb11aJIbBu-->任务先经生成提纲，再由程序闸门判断是否符合标准，符合则写正文，不符合则改写提纲后重来。</desc>
+    <defs data-page-node-id="jHZg5fcCotcaTqinPwVHsX">
+      <marker data-page-node-id="KRxZzBuQ0G4qolMDBuPcSZ" id="ar3" markerHeight="6" markerWidth="6" orient="auto-start-reverse" refX="8" refY="5" viewBox="0 0 10 10">
+        <path data-page-node-id="BxX2K3RKsK7v4iRaAorpjL" d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      </marker>
+    </defs>
+
+    <rect data-page-node-id="1QyLSPfXWtncOmouL68hXV" fill="#eaf1fd" height="44" rx="7" stroke="#1f5fd0" stroke-width="1" width="112" x="40" y="96"/>
+    <text data-page-node-id="MlwJKEmIVrHWBXPoMNVdFP" dominant-baseline="central" fill="#0c447c" font-size="14" text-anchor="middle" x="96" y="118"><!--pnid:HzPypSMR1POCywuVERG2yE-->输入</text>
+
+    <path data-page-node-id="HMNI0wNvDzlxjPmRGZ8Ce3" d="M152 118 L212 118" fill="none" marker-end="url(#ar3)" stroke="#888780" stroke-width="1.5"/>
+
+    <rect data-page-node-id="irm6jNTlvgAtJ6onIgfATT" fill="#ffffff" height="44" rx="7" stroke="#0f6e56" stroke-width="1" width="132" x="214" y="96"/>
+    <text data-page-node-id="xvrsNa5SJGiNdnmuzDaTuU" dominant-baseline="central" fill="#085041" font-size="14" text-anchor="middle" x="280" y="118"><!--pnid:BJlhpozcntbTW5CTTlcMR0-->生成提纲</text>
+
+    <path data-page-node-id="wGUWVZqzN67q2IUyaQfLHg" d="M346 118 L406 118" fill="none" marker-end="url(#ar3)" stroke="#888780" stroke-width="1.5"/>
+
+    <path data-page-node-id="Tem9Pre9QueSRk7loWTYkl" d="M440 96 L440 190" fill="none" stroke="#888780" stroke-width="1.5"/>
+    <path data-page-node-id="8vPtLryKjOVHYoha41VKtG" d="M440 190 L478 190" fill="none" marker-end="url(#ar3)" stroke="#888780" stroke-width="1.5"/>
+    <path data-page-node-id="9JFhbsoLVrzah1Z8jIpiRy" d="M440 96 L478 96" fill="none" marker-end="url(#ar3)" stroke="#888780" stroke-width="1.5"/>
+
+    <path data-page-node-id="RqPB7S6WLQBWvrFH5Yi68S" d="M408 96 L472 96 L472 190 L408 190 Z" fill="#fdf4e7" stroke="#b45309" stroke-width="1.2"/>
+    <text data-page-node-id="5ZQsHqRS7TaEw8EJzdmeQm" dominant-baseline="central" fill="#633806" font-size="13.5" font-weight="500" text-anchor="middle" x="440" y="128"><!--pnid:I71HrzxFjKTy3A9CvlZNA7-->闸门</text>
+    <text data-page-node-id="TieCg9s3jON7OtMxrQqn7n" dominant-baseline="central" fill="#b45309" font-size="12.5" text-anchor="middle" x="440" y="150"><!--pnid:ZcASKr0fG3IJMfwr5zZHyM-->符合标准？</text>
+    <text data-page-node-id="GnklaDWlik7Qifn5VIQj48" dominant-baseline="central" fill="#b45309" font-size="11.5" text-anchor="middle" x="440" y="172"><!--pnid:2T34r2RG6fQiGb3VojUeoS-->程序判定</text>
+
+    <text data-page-node-id="j1Eh6U2WKCHclP5i2dbC45" dominant-baseline="central" fill="#8b929c" font-size="12.5" x="492" y="96"><!--pnid:DxauZDwDbJChEuO4bn0Eff-->是</text>
+    <path data-page-node-id="3l8VYvBGMoSd90uB3Y1tzK" d="M540 96 L620 96" fill="none" marker-end="url(#ar3)" stroke="#888780" stroke-width="1.5"/>
+
+    <rect data-page-node-id="1FvtDFtrwd6MnDoFBcda3y" fill="#ffffff" height="44" rx="7" stroke="#0f6e56" stroke-width="1" width="132" x="622" y="74"/>
+    <text data-page-node-id="MLHDlpqUpfmII9pGl9kaeJ" dominant-baseline="central" fill="#085041" font-size="14" text-anchor="middle" x="688" y="96"><!--pnid:WsdRiKnQNMzJzDcbe6sScZ-->写正文</text>
+
+    <path data-page-node-id="jlAvxHsFUdsaxQF9EXAoGi" d="M754 96 L830 96" fill="none" marker-end="url(#ar3)" stroke="#888780" stroke-width="1.5"/>
+    <rect data-page-node-id="Ia4T3SDq695RathZHglxzg" fill="#e1f5ee" height="44" rx="7" stroke="#0f6e56" stroke-width="1" width="108" x="832" y="74"/>
+    <text data-page-node-id="FK02IUvzOfhQ4rZJBn83rd" dominant-baseline="central" fill="#085041" font-size="14" text-anchor="middle" x="886" y="96"><!--pnid:Hj1tqD9xQPR7LvpKZzBjzt-->输出</text>
+
+    <text data-page-node-id="fEyINKeo0XecqKortXsIXG" dominant-baseline="central" fill="#8b929c" font-size="12.5" x="492" y="190"><!--pnid:DAx8GMaHNTS06iUWgCA1Gg-->否</text>
+    <path data-page-node-id="8liWlwFZNQxYeGWcZSyPlk" d="M440 190 L300 190 L300 158" fill="none" marker-end="url(#ar3)" stroke="#888780" stroke-width="1.5"/>
+    <rect data-page-node-id="vWnxTrNgXxLq1VuylrtBdt" fill="#edf0f3" height="40" rx="7" stroke="#b4b2a9" stroke-width="1" width="132" x="214" y="212"/>
+    <text data-page-node-id="056W8Wk0cziKF3Qp0a4E7A" dominant-baseline="central" fill="#444441" font-size="13.5" text-anchor="middle" x="280" y="232"><!--pnid:UlepQHjFCfvpGGm8Ds1Ys7-->改写提纲</text>
+    <path data-page-node-id="UKydRlCadbRF0ydd3NebkR" d="M280 212 L280 140" fill="none" marker-end="url(#ar3)" stroke="#888780" stroke-width="1.5"/>
+
+    <text data-page-node-id="cPMx4qrbKeCbCdWekj4Yl8" dominant-baseline="central" fill="#12141a" font-size="13.5" font-weight="500" x="40" y="52"><!--pnid:6MxTsQjI4jewVOGMK4gJcc-->闸门把错误拦在早期，而不是让它顺着链条一路传到底</text>
+    <text data-page-node-id="WFqzKqkL6MGq3jja3BJLuj" dominant-baseline="central" fill="#8b929c" font-size="12.5" x="40" y="74"><!--pnid:f5uV3JJZRVsECE0BAMBYbH-->闸门只能守可判定的边界，「这段论述是否打动了读者」这种判断写不成代码</text>
+  </svg><div data-page-node-id="Iv5G17vcV2iRQlMTrn9B05" class="fig-c"><!--pnid:EXGkRNHyl51R6cgQf9mHJM-->提纲检查不是让模型自己满意，而是让程序按明确标准判断。「检查」与「生成」分成两步，是用结构换可靠性最朴素的办法。</div></div>
+  <div data-page-node-id="BmEuq84oJbLA01XVoQytvd" class="bnd"><div data-page-node-id="DNdyvp8ZiYGaBCQi8MCNPX" class="bnd-t"><!--pnid:cUmsLmTNJy3W3N31M1wlEB-->前提与边界</div><p data-page-node-id="hYTdiUem2HSPbXtXxlZ0vO"><!--pnid:EaMvLqWVhR5cxQvXKZU9l6-->成立的前提是拆解方式能预先写死。一旦子任务的数量或内容取决于具体输入，这个模式就失效了，那正是编排者-工作者的适用区间。另一个隐含前提是闸门的标准可以程序化判定：提纲是否符合某些标准可以写代码检查，但「这段论述是否打动了读者」不能。闸门只能守可判定的边界。</p></div>
+  <div data-page-node-id="Z3C8ZG41NNFmkdc6GMqXBX" class="quote"><!--pnid:Flv6Ez00JEHWmdy3bjIkmN-->作者用它说明一个容易被忽略的权衡：智能体系统整体是在用延迟和成本换任务表现，提示链是这条曲线上的一个具体位置，它换的是延迟，换来的是准确率。文章没有给出任何数字说明这个交换在什么规模上划算。</div>
+</div>
+
+<div data-page-node-id="GBA17qFdrq5L6EMRQfo1Fp" class="block">
+  <div data-page-node-id="UpfNcG1J6xwIM705QKERiw" class="tag"><!--pnid:wU786YC7IFBVDwcvpcp25s-->路由</div>
+  <div data-page-node-id="Azqw1ojfcW8Wqv59a7cV0p" class="claim"><!--pnid:n4dQdgc2mZtrf8AMGzZcc3-->用分类把输入分流到各自专门的流程。分流的收益在于每条分支能被单独优化，不分流的代价是为一种输入做的优化会损害其他输入。</div>
+  <p data-page-node-id="DG8KiavjYhH7L1qy2brxcS" class="lead"><!--pnid:HeBAOq1MMtvbvkfuPv0zBm-->路由解决的是一个具体的性能问题。客服场景里，通用咨询、退款请求、技术支持如果共用一套提示，调好其中一类就会让另一类变差。分类之后，各走各的提示、工具与流程，互不干扰。</p>
+  <p data-page-node-id="Pvo0VW5mqusQAYvxqh1olY"><!--pnid:7T7jx7SGznGzcGQfl8MleV-->作者举的第二种用法比第一种更有意思：把简单常见的问题路由到更小更便宜的模型（Haiku 4.5），把困难少见的路由到更强的模型（Sonnet 4.5），以成本换性能。这是把「模型选择」也当成路由的一个分支。<strong data-page-node-id="dCRkl8WZqQz54GN8gNjwWl"><!--pnid:ehergYl1pJO1DFx505TwuA-->路由器不只分发任务，也分发算力。</strong></p>
+  <div data-page-node-id="BHFCHFSGHYhM71jBG2LNMf" class="fig"><svg data-page-node-id="Ltzq2so8bKOqTuqbKykFYI" aria-labelledby="f4t f4d" font-family="-apple-system, PingFang SC, sans-serif" role="img" viewBox="0 0 980 300" width="100%" xmlns="http://www.w3.org/2000/svg">
+    <title data-page-node-id="sSvpVEyoEgHSMjzaY8qiJE" data-pnid-children="WYOoiSG1QNX7hCH7YKSG36" id="f4t">路由的分类分叉</title>
+    <desc data-page-node-id="9Y1jvvtwWmcYJ0fOkdcwPH" id="f4d"><!--pnid:ITrfHaJATlYBiojqx8bYHd-->输入经分类器分流到三条专门流程，分别配有专用提示与工具。分类器是单点故障。</desc>
+    <defs data-page-node-id="3vlvJw2XIz08Pw3jk6lVxc">
+      <marker data-page-node-id="FnYI1t93zhgOvI0inCfaWY" id="ar4" markerHeight="6" markerWidth="6" orient="auto-start-reverse" refX="8" refY="5" viewBox="0 0 10 10">
+        <path data-page-node-id="YWRiHKqHSd7AZf9J2xLQTC" d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      </marker>
+    </defs>
+
+    <rect data-page-node-id="IXhMVdZbeMh5L4o2TbgCGh" fill="#eaf1fd" height="46" rx="7" stroke="#1f5fd0" stroke-width="1" width="104" x="40" y="120"/>
+    <text data-page-node-id="oYI1p2FKqBMyMuhfjnquea" dominant-baseline="central" fill="#0c447c" font-size="14" text-anchor="middle" x="92" y="143"><!--pnid:75e3eOGeImUGiXVwnY6KPW-->输入</text>
+
+    <path data-page-node-id="627nI0CKKaQnqyrPV2XcfN" d="M144 143 L206 143" fill="none" marker-end="url(#ar4)" stroke="#888780" stroke-width="1.5"/>
+
+    <path data-page-node-id="k2HSASnIrMv5o11ygAJjsq" d="M330 118 L330 60 L392 60" fill="none" marker-end="url(#ar4)" stroke="#888780" stroke-width="1.5"/>
+    <path data-page-node-id="RBwP2qEHYGtFhvMY2pl6U9" d="M330 143 L392 143" fill="none" marker-end="url(#ar4)" stroke="#888780" stroke-width="1.5"/>
+    <path data-page-node-id="V3uQWVJrgX0ynkg6bQY0hG" d="M330 168 L330 226 L392 226" fill="none" marker-end="url(#ar4)" stroke="#888780" stroke-width="1.5"/>
+
+    <rect data-page-node-id="3X7SC3AJlsMsvqdNJjqv2a" fill="#fdf4e7" height="46" rx="7" stroke="#b45309" stroke-width="1.2" width="124" x="206" y="120"/>
+    <text data-page-node-id="lLGbiZbpxHvMd9UNen5SQ7" dominant-baseline="central" fill="#633806" font-size="14" font-weight="500" text-anchor="middle" x="268" y="135"><!--pnid:mnwJc622bGvZBJy8ImWMNy-->分类器</text>
+    <text data-page-node-id="WrCR93aZMOheHZlsIiLHtm" dominant-baseline="central" fill="#b45309" font-size="11" text-anchor="middle" x="268" y="155"><!--pnid:NbC1quQ40RUhk4GT2XTGl1-->单点故障</text>
+
+    <rect data-page-node-id="zt2Hy5sbBDjjrx8ysWcczV" fill="#ffffff" height="46" rx="7" stroke="#0f6e56" stroke-width="1" width="200" x="394" y="38"/>
+    <text data-page-node-id="5mjkzzJRU1hyo7f9SeXGyO" dominant-baseline="central" fill="#085041" font-size="14" text-anchor="middle" x="494" y="55"><!--pnid:sfD7xiE5vKTD5Xu96TvQQJ-->通用咨询</text>
+    <text data-page-node-id="KP4aPvGCJ09FM09zx2T3kZ" dominant-baseline="central" fill="#0f6e56" font-size="12" text-anchor="middle" x="494" y="73"><!--pnid:RvKZzfeBBdICr8z9lQGxgv-->专用提示 + 工具</text>
+
+    <rect data-page-node-id="7uCIiMGI5O64ALvnPzDidQ" fill="#ffffff" height="46" rx="7" stroke="#0f6e56" stroke-width="1" width="200" x="394" y="120"/>
+    <text data-page-node-id="m3o1V7DcoPxOF0VhZtiOop" dominant-baseline="central" fill="#085041" font-size="14" text-anchor="middle" x="494" y="137"><!--pnid:hupmY6W8UnZ5vmMMPzEmry-->退款请求</text>
+    <text data-page-node-id="yVl8IAIQbF2dzz4ROdwBQ7" dominant-baseline="central" fill="#0f6e56" font-size="12" text-anchor="middle" x="494" y="155"><!--pnid:rTD5WAOukrEDlaFUuOoOrS-->专用提示 + 工具</text>
+
+    <rect data-page-node-id="qFxsjyBwsuI0fSMDgzi7c0" fill="#ffffff" height="46" rx="7" stroke="#0f6e56" stroke-width="1" width="200" x="394" y="202"/>
+    <text data-page-node-id="QIDLHu9BOb5wZ80Qotu964" dominant-baseline="central" fill="#085041" font-size="14" text-anchor="middle" x="494" y="219"><!--pnid:QOQviEBRHHxLree6WEZ4VO-->技术支持</text>
+    <text data-page-node-id="7TRQelQ8ZXe4SHMRge59tt" dominant-baseline="central" fill="#0f6e56" font-size="12" text-anchor="middle" x="494" y="237"><!--pnid:kHLgfJoQ4VyWlNIOw5VGNT-->专用提示 + 工具</text>
+
+    <path data-page-node-id="ta0WTQuA5ChCLJSvybBs83" d="M594 60 L660 60" fill="none" marker-end="url(#ar4)" stroke="#888780" stroke-width="1.5"/>
+    <path data-page-node-id="4OMg2KsrkwAAqltP2N3qFB" d="M594 143 L660 143" fill="none" marker-end="url(#ar4)" stroke="#888780" stroke-width="1.5"/>
+    <path data-page-node-id="TJz5IUIwvkPnoEDc9SNMkE" d="M594 226 L660 226" fill="none" marker-end="url(#ar4)" stroke="#888780" stroke-width="1.5"/>
+
+    <rect data-page-node-id="tuHCUFGmgQF89H9o1QmLhB" fill="#e1f5ee" height="46" rx="7" stroke="#0f6e56" stroke-width="1" width="278" x="662" y="38"/>
+    <text data-page-node-id="xVeCtrALejcSWAiPLn3D9c" dominant-baseline="central" fill="#085041" font-size="13" text-anchor="middle" x="801" y="54"><!--pnid:aeiVOGq7oZFw1q4cBajbX5-->简单常见 → 更小更便宜的模型</text>
+    <text data-page-node-id="Lfy62VVsVPgEGqVnoLdmex" dominant-baseline="central" fill="#085041" font-size="13" text-anchor="middle" x="801" y="74"><!--pnid:PitAcUoXkG5n4PWcJX1VpJ-->困难少见 → 更强的模型</text>
+
+    <rect data-page-node-id="OOzAdPvwLPdmNq342Ortyn" fill="#edf0f3" height="46" rx="7" stroke="#b4b2a9" stroke-width="1" width="278" x="662" y="120"/>
+    <text data-page-node-id="eakPUYM6gZ8IBd2r3girXE" dominant-baseline="central" fill="#444441" font-size="13.5" text-anchor="middle" x="801" y="143"><!--pnid:azcATzmfvJt3GIYUPLwc3p-->模型选择也是路由的一个分支</text>
+
+    <rect data-page-node-id="7auHHLVcR1wOsjFRbpCByK" fill="#edf0f3" height="46" rx="7" stroke="#b4b2a9" stroke-width="1" width="278" x="662" y="202"/>
+    <text data-page-node-id="R9AqMbjMrwLxbfsbZc676C" dominant-baseline="central" fill="#444441" font-size="13.5" text-anchor="middle" x="801" y="225"><!--pnid:CxsyFRZK0KlyEfqGgoqsXb-->分类器出错比不分流更糟</text>
+
+    <text data-page-node-id="VxBUzzeGXpzaWg9fJfVB7w" dominant-baseline="central" fill="#8b929c" font-size="13" x="40" y="278"><!--pnid:ZCFtTuM06YuFEdnwfyLmHa-->分类可以由 LLM 做，也可以由传统分类模型或算法做，这一步不必然依赖大模型</text>
+  </svg><div data-page-node-id="Rm1wc7JfYUA6rTiXRb2E1s" class="fig-c"><!--pnid:bKOUjJacYuVgZpCI5sPcjx-->路由器不只分发任务，也分发算力。分类准确率是这个模式的隐形单点故障，而文章没给任何关于准确率门槛的说明。</div></div>
+  <div data-page-node-id="Euiaz1z7MaN2URhBtuRbZH" class="bnd"><div data-page-node-id="YEb6gyAj4BroGgCIcRvJbO" class="bnd-t"><!--pnid:4WKOKuE82ATbKWPvRx4er0-->前提与边界</div><p data-page-node-id="SQgLkDs7BOfJmJfYot4HXV"><!--pnid:e2KQ1zI4j550s1DVs829DU-->两个前提都得满足：类别之间确实有足够差异值得分开，以及分类本身能做准。第二点常被低估。分类器一旦出错，比不分流更糟，因为输入被送进了不适配的处理流程。作者明说分类可以由 LLM 做，也可以由传统分类模型或算法做，说明这不是必须依赖大模型的一步。分类准确率是这个模式的隐形单点故障，而文章没给任何关于准确率门槛的说明。</p></div>
+  <div data-page-node-id="wzHqHlZQjOFCpAoexojlV2" class="quote"><!--pnid:UXkjlsTQ4U6554J2UijHN9-->作者用了两个例子，客服分流与模型强弱分流，但都没有说明分类失败时会发生什么，也没提当类别本身会变时（新品类出现、用户问法变了）分类器如何维护。路由是这套模式里最需要持续投入维护的一个，而它恰恰是文章里讲得最轻的一个。</div>
+</div>
+
+<div data-page-node-id="TNCrW6xmwQeiRzMMoq3fzZ" class="block">
+  <div data-page-node-id="W4nRB92PgBdC74R1dQo4AB" class="tag"><!--pnid:mFBGOTReuty0BFxkHFTcnF-->并行</div>
+  <div data-page-node-id="7Ut8mG9RRZp2yQR27KWAOx" class="claim"><!--pnid:H5mu0Wz7farlPPcdAaL8Bi-->把互相独立的工作分给多次调用并行跑，结果程序化聚合。并行有两个变体，区别在于分的是不同子任务，还是同一任务的多次尝试。</div>
+  <p data-page-node-id="c7SlKOTn213jtNcmSo2Cx4" class="lead"><!--pnid:mDRwuUixuGLnXK5UAkvvRg-->作者把并行拆成两种变体。分区把任务拆成互不依赖的子任务并行处理，适用场景有两个：护栏与主响应分离，一个模型实例处理用户请求、另一个筛查不当内容；自动化评估，每次调用评估模型表现的一个不同方面。</p>
+  <p data-page-node-id="RnXK3h1UuvkHjsujCbNyvB"><!--pnid:CMtAhzSy2A4yfzRzEN378N-->投票是同一任务跑多遍拿到多样化的输出。适用场景是代码漏洞审查，多个不同提示各自审查并标记问题；内容合规评估，多个提示评估不同方面，或要求不同投票阈值以平衡假阳性与假阴性。投票不只是「多数决」——不同维度可以设不同阈值，某些维度严格些才算问题，某些宽松些。阈值可调意味着你可以按误报代价与漏报代价的不对称来分配严格度。</p>
+  <div data-page-node-id="MYDWgtDiawdcPCCVdno1cK" class="fig"><svg data-page-node-id="akrMJJKJF2feiIG26zfA2y" aria-labelledby="f5t f5d" font-family="-apple-system, PingFang SC, sans-serif" role="img" viewBox="0 0 980 320" width="100%" xmlns="http://www.w3.org/2000/svg">
+    <title data-page-node-id="At4ZFknZCgSbdHwYAiaqjL" data-pnid-children="rJSpPGrcPUX93hjCbPbbKI" id="f5t">并行的两种变体</title>
+    <desc data-page-node-id="Mjx9iO3kpnGK1bi5FLAhl1" id="f5d"><!--pnid:C1Rug1aPDpdwDBOtwzb4Ly-->左侧分区把任务拆成不同子任务并行后聚合，右侧投票把同一任务跑多遍后聚合，各维度可设不同阈值。</desc>
+    <defs data-page-node-id="s8vkPbucprx6w8tyyTqyZI">
+      <marker data-page-node-id="4koSDKs6zmLz1sacYrk4NZ" id="ar5" markerHeight="6" markerWidth="6" orient="auto-start-reverse" refX="8" refY="5" viewBox="0 0 10 10">
+        <path data-page-node-id="KrjNCCc4edCs1MRxcfc7oc" d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      </marker>
+    </defs>
+
+    <rect data-page-node-id="sRhoQcU4Nei3pW4GxLjLve" fill="#fbfaf7" height="270" rx="10" stroke="#e2e5ea" stroke-width="1" width="430" x="40" y="30"/>
+    <text data-page-node-id="LeWNpeLx6Yvy6xpZxN9J0H" dominant-baseline="central" fill="#12141a" font-size="14" font-weight="500" x="60" y="54"><!--pnid:QpTLPokT7B4tw98gYBsN6a-->分区 sectioning</text>
+    <text data-page-node-id="PGdaSe39CUfvWpvleQrKb7" dominant-baseline="central" fill="#8b929c" font-size="12.5" x="60" y="74"><!--pnid:A8uedFt8INQ1igXLb1Rzo9-->拆的是不同子任务</text>
+
+    <rect data-page-node-id="Rbo8QVumyMWVQAAQnZfpFi" fill="#eaf1fd" height="38" rx="6" stroke="#1f5fd0" stroke-width="1" width="90" x="60" y="96"/>
+    <text data-page-node-id="a1a8hrEFmce4Tg9LhVbazY" dominant-baseline="central" fill="#0c447c" font-size="12.5" text-anchor="middle" x="105" y="115"><!--pnid:8yMOuPV065m7SjTkhP5t4K-->任务</text>
+
+    <path data-page-node-id="OTdI2wOtEEXqwTlWKdtw50" d="M150 115 L186 96" fill="none" marker-end="url(#ar5)" stroke="#888780" stroke-width="1.5"/>
+    <path data-page-node-id="iN44BftgoSWd1bP6Pu1Ihp" d="M150 115 L186 140" fill="none" marker-end="url(#ar5)" stroke="#888780" stroke-width="1.5"/>
+    <path data-page-node-id="rpiXKqfPui8YXLQj9bWEOq" d="M150 115 L186 184" fill="none" marker-end="url(#ar5)" stroke="#888780" stroke-width="1.5"/>
+
+    <rect data-page-node-id="eoOSWh1pbrHMJ6EbNtqOSX" fill="#ffffff" height="36" rx="6" stroke="#0f6e56" stroke-width="1" width="130" x="188" y="78"/>
+    <text data-page-node-id="qmc9cL5udhriBSGFtwJwe2" dominant-baseline="central" fill="#085041" font-size="12.5" text-anchor="middle" x="253" y="96"><!--pnid:LSE3zn5XDfYmJ2vFp8LAGd-->主响应</text>
+    <rect data-page-node-id="rhSX6ipXvL9Qr1YNlQAxSJ" fill="#ffffff" height="36" rx="6" stroke="#0f6e56" stroke-width="1" width="130" x="188" y="122"/>
+    <text data-page-node-id="xz3tciiN8oAoAnl9s9fC3T" dominant-baseline="central" fill="#085041" font-size="12.5" text-anchor="middle" x="253" y="140"><!--pnid:oMhiD0vWsjL5hK5s3VAmcp-->护栏筛查</text>
+    <rect data-page-node-id="hiDaiJZM0LK3J2UKvSCIZY" fill="#ffffff" height="36" rx="6" stroke="#0f6e56" stroke-width="1" width="130" x="188" y="166"/>
+    <text data-page-node-id="ouBMHDGeVQstV6HogvASyr" dominant-baseline="central" fill="#085041" font-size="12.5" text-anchor="middle" x="253" y="184"><!--pnid:ytumuG0kIDNGDkDhNsGDQR-->分维度评估</text>
+
+    <path data-page-node-id="MI0OEqWs9ZJbl3sbonCLc7" d="M318 96 L356 130" fill="none" marker-end="url(#ar5)" stroke="#888780" stroke-width="1.5"/>
+    <path data-page-node-id="YdO3aSUoVdhuXHXfo9eJgy" d="M318 140 L356 140" fill="none" marker-end="url(#ar5)" stroke="#888780" stroke-width="1.5"/>
+    <path data-page-node-id="5YNoILAEBN93BEtWoEaYKY" d="M318 184 L356 150" fill="none" marker-end="url(#ar5)" stroke="#888780" stroke-width="1.5"/>
+
+    <rect data-page-node-id="qNh05RIIsFyiM4UpURHBtY" fill="#e1f5ee" height="52" rx="6" stroke="#0f6e56" stroke-width="1" width="92" x="358" y="114"/>
+    <text data-page-node-id="oUi4McuH0lauxVhWybVkpj" dominant-baseline="central" fill="#085041" font-size="12.5" text-anchor="middle" x="404" y="132"><!--pnid:V9aqIK858cOFJWR3apuFkk-->程序化</text>
+    <text data-page-node-id="hMEixlXm1RXUk1BGjkG2Hv" dominant-baseline="central" fill="#085041" font-size="12.5" text-anchor="middle" x="404" y="150"><!--pnid:fi0M7IHLGJoXquwDYZE6qX-->聚合</text>
+
+    <text data-page-node-id="WiTlNUeRhHMD4WzIts4EdY" dominant-baseline="central" fill="#8b929c" font-size="12.5" x="60" y="240"><!--pnid:FSQY3CcuuGIZLFykPLaXAw-->护栏与主响应分开处理，好于同一次调用兼顾两者</text>
+    <text data-page-node-id="SgPNT4CaWju6gM2zqN8lAA" dominant-baseline="central" fill="#8b929c" font-size="12.5" x="60" y="262"><!--pnid:YbM2eGlcT9lOEPNWNzTswh-->子任务若互相有先后约束，就不是并行而是提示链</text>
+    <text data-page-node-id="95ZjlE67Ag1DhV4XJU4UPD" dominant-baseline="central" fill="#8b929c" font-size="12.5" x="60" y="284"><!--pnid:0qKsAGojU4Nb5aSwHjuMXc-->多次尝试的失败模式若相同，投票只在放大同一个错</text>
+
+    <rect data-page-node-id="SDHLTsrOBX8aC2BOZ01ls8" fill="#fbfaf7" height="270" rx="10" stroke="#e2e5ea" stroke-width="1" width="450" x="490" y="30"/>
+    <text data-page-node-id="JZlxLVd9XW5D3BtHcGAeis" dominant-baseline="central" fill="#12141a" font-size="14" font-weight="500" x="510" y="54"><!--pnid:tj49IiTaOORU5SL8TAN2YW-->投票 voting</text>
+    <text data-page-node-id="gCOQIMR88FHS0rJ76OrTsu" dominant-baseline="central" fill="#8b929c" font-size="12.5" x="510" y="74"><!--pnid:hYNMqWdIVrR8N5VC5fK32Z-->同一任务跑多遍，阈值可按维度分别设定</text>
+
+    <rect data-page-node-id="c0yX64lfUojtQNIjfEApXH" fill="#eaf1fd" height="38" rx="6" stroke="#1f5fd0" stroke-width="1" width="90" x="510" y="96"/>
+    <text data-page-node-id="cHSpg2MEZRqC4LemHHGFA2" dominant-baseline="central" fill="#0c447c" font-size="12.5" text-anchor="middle" x="555" y="115"><!--pnid:It1hWxvHzZHxy7FJ95IUbr-->任务</text>
+
+    <path data-page-node-id="ytPk4N9vYLt8toPOxEVDr1" d="M600 115 L636 96" fill="none" marker-end="url(#ar5)" stroke="#888780" stroke-width="1.5"/>
+    <path data-page-node-id="2ixk0vVytlnNBMvm5fNc03" d="M600 115 L636 140" fill="none" marker-end="url(#ar5)" stroke="#888780" stroke-width="1.5"/>
+    <path data-page-node-id="V4lVjw2m0LSUB9FR8Yppw7" d="M600 115 L636 184" fill="none" marker-end="url(#ar5)" stroke="#888780" stroke-width="1.5"/>
+
+    <rect data-page-node-id="zsEMZ95QmcO1CEfZtFJLEd" fill="#ffffff" height="36" rx="6" stroke="#b45309" stroke-width="1" width="112" x="638" y="78"/>
+    <text data-page-node-id="sEuUiBTpkPCAFTUjiAKYaZ" dominant-baseline="central" fill="#633806" font-size="12.5" text-anchor="middle" x="694" y="96"><!--pnid:iJPyaW5pMZJuZ2v0WsvFIm-->提示 A</text>
+    <rect data-page-node-id="E53oFhtzKSseLNVRsmWKbM" fill="#ffffff" height="36" rx="6" stroke="#b45309" stroke-width="1" width="112" x="638" y="122"/>
+    <text data-page-node-id="ozeYF51qQWWeVxD0WxkMfs" dominant-baseline="central" fill="#633806" font-size="12.5" text-anchor="middle" x="694" y="140"><!--pnid:KvuOWLSCLNbaF0xxx5bfXi-->提示 B</text>
+    <rect data-page-node-id="0XwFhLPik7QJe6obzHjRPf" fill="#ffffff" height="36" rx="6" stroke="#b45309" stroke-width="1" width="112" x="638" y="166"/>
+    <text data-page-node-id="nVc9jWuCv9xJl3H07HdQxM" dominant-baseline="central" fill="#633806" font-size="12.5" text-anchor="middle" x="694" y="184"><!--pnid:BwOrtJBOrwmpdOm2OveVku-->提示 C</text>
+
+    <path data-page-node-id="8iSRwAkvBdeBRuHSmu3pn3" d="M750 96 L788 130" fill="none" marker-end="url(#ar5)" stroke="#888780" stroke-width="1.5"/>
+    <path data-page-node-id="9EElGdV2g7Jzln5avKBZwf" d="M750 140 L788 140" fill="none" marker-end="url(#ar5)" stroke="#888780" stroke-width="1.5"/>
+    <path data-page-node-id="ACBUfaJC4YDqq9ZnvUFaBI" d="M750 184 L788 150" fill="none" marker-end="url(#ar5)" stroke="#888780" stroke-width="1.5"/>
+
+    <rect data-page-node-id="KHO5KQqQxviNKEwngGC5zc" fill="#fdf4e7" height="52" rx="6" stroke="#b45309" stroke-width="1" width="130" x="790" y="114"/>
+    <text data-page-node-id="UCdGe6XJdVSjbettWoeYAW" dominant-baseline="central" fill="#633806" font-size="12.5" text-anchor="middle" x="855" y="132"><!--pnid:xiRBnnbuHxqm7J8YTSo4HR-->按维度</text>
+    <text data-page-node-id="tauTfurU6CyIv2FJQEIZmx" dominant-baseline="central" fill="#633806" font-size="12.5" text-anchor="middle" x="855" y="150"><!--pnid:ibdY0UIwrJti1w12o7SXYc-->设不同阈值</text>
+
+    <text data-page-node-id="zsnrgwkmssRF2ldcpbGtIj" dominant-baseline="central" fill="#8b929c" font-size="12.5" x="510" y="240"><!--pnid:jk81KOO7iy5wjjlvpaVlZH-->投票不只是多数决，阈值可按误报与漏报代价的不对称分配</text>
+    <text data-page-node-id="Fhpc8Sfg6xQWQbO9j5O4Ss" dominant-baseline="central" fill="#8b929c" font-size="12.5" x="510" y="262"><!--pnid:fFOnrdH8o3Jq1gSCinM8Dg-->上下文位置偏置会削弱投票效果</text>
+    <text data-page-node-id="XMmBrefoFU5Et0liCWyi5J" dominant-baseline="central" fill="#8b929c" font-size="12.5" x="510" y="284"><!--pnid:UmBhMy1iDUMpCTboKJuB2V-->文章没有讨论投票的边际收益何时饱和</text>
+  </svg><div data-page-node-id="dU0InLVuu7gvXDqLIDjLNl" class="fig-c"><!--pnid:9HyoFSWpdehlgH1ksCwg9Y-->并行的两种变体：分区拆的是不同子任务，投票跑的是同一任务的多遍。投票不只是多数决，各维度阈值可分别设定。</div></div>
+  <div data-page-node-id="ZzZmA21d4ntr53IS2sGRBZ" class="bnd"><div data-page-node-id="gomvdRhwUxuoeneACjwnYj" class="bnd-t"><!--pnid:TWhlWzckz8RhTQ5V8tZUFH-->前提与边界</div><p data-page-node-id="qlhb2DAv7H3fT7pq4nMr9d"><!--pnid:4Gy9pbIlPDw1coiokmebME-->分区的前提是子任务真的互不依赖，如果子任务之间有先后约束，就不是并行而是提示链。投票的前提是多次尝试的失败模式不同，如果每次调用犯的是同一个错，投票只是在放大同一个错误。上下文位置偏置也会削弱投票效果。文章没有讨论投票的边际收益何时饱和。</p></div>
+  <div data-page-node-id="xkC3g7ea53xzSULhQOfQlk" class="quote"><!--pnid:zn5rE7I5y7OHNAgDtwUt9z-->作者在并行这一模式里顺带给了一个更一般的观察：对于有多重考量因素的任务，把每个考量分配给独立调用，模型表现通常更好。这句话的适用范围比并行模式本身更宽。</div>
+</div>
+
+<div data-page-node-id="SAkSWrMyj3hUvQBFdl283g" class="block">
+  <div data-page-node-id="Pp67BZHHz5Ew4ituQlKO35" class="tag"><!--pnid:JnrMCXP5mJ5scick1bHpaG-->编排者-工作者</div>
+  <div data-page-node-id="l3gK9j4235gIQFPXFtQTS9" class="claim"><!--pnid:kDcX0dEqBpWBMrW9qOgmQv-->中心模型动态拆解任务、派发给工作者、汇总结果。它与并行的拓扑结构相同，差别全在子任务的来源。</div>
+  <p data-page-node-id="zmoDXuN9Di0XrQ8TKvGG13" class="lead"><!--pnid:p2nL13w95F1pofaFJeA07S-->适用场景的共性是子任务的数量和内容都不可预测。原文举的两个例子都指向这一点：编程产品每次要改的文件数量与改动性质取决于任务本身；搜索任务要从多个来源收集与分析信息，可能需要多少轮搜索事先不知道。</p>
+  <p data-page-node-id="I7KLtvrYVTWE4Az7kgd0Ll"><!--pnid:M5Y9mFvm9HgfdGWnRAIubm-->作者用「地形相似，但关键区别在于弹性」来描述它与并行的差别。并行的中心只是分发任务，编排者的中心还要做判断：判断该派什么活、派给谁、收到的结果怎么合。这比并行多了一层要求，代价是中心成了单点。编排者拆错了，所有下游都错。</p>
+  <div data-page-node-id="ytw3W9T0lmk3h1nAlsP4bi" class="fig"><svg data-page-node-id="ynvldoybDGEpK4EdsnIgo5" aria-labelledby="f6t f6d" font-family="-apple-system, PingFang SC, sans-serif" role="img" viewBox="0 0 980 300" width="100%" xmlns="http://www.w3.org/2000/svg">
+    <title data-page-node-id="LcKTMXlBz44pwb6okVKmZJ" data-pnid-children="IlS4qHRw5RZ2q3DFf8z3Yv" id="f6t">编排者与工作者</title>
+    <desc data-page-node-id="H6GAxHEKtgUeXiJ8AkWoU4" id="f6d"><!--pnid:5aE3Lx2UsixA2RVVERFrsJ-->中心编排者动态拆解任务并派发给多个工作者，再汇总结果，子任务由编排者当场决定而非预先定义。</desc>
+    <defs data-page-node-id="c94wmIvZfZhbnUwS6dUpe5">
+      <marker data-page-node-id="7VD2f6C8e8Os5FJI5M5mW6" id="ar6" markerHeight="6" markerWidth="6" orient="auto-start-reverse" refX="8" refY="5" viewBox="0 0 10 10">
+        <path data-page-node-id="FNvZtRbSiqZCuo2xUN4ONj" d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      </marker>
+    </defs>
+
+    <rect data-page-node-id="wjP5ETtKziWyPZpAWe67UX" fill="#eaf1fd" height="46" rx="7" stroke="#1f5fd0" stroke-width="1" width="108" x="40" y="120"/>
+    <text data-page-node-id="ywQzxC9DlW9KaY5QZGCcT5" dominant-baseline="central" fill="#0c447c" font-size="14" text-anchor="middle" x="94" y="143"><!--pnid:rlG4iqn83J8f6ru5A5tqkM-->输入</text>
+
+    <path data-page-node-id="iu9BRVbEMqfxox6QxRhGVd" d="M148 143 L212 143" fill="none" marker-end="url(#ar6)" stroke="#888780" stroke-width="1.5"/>
+
+    <rect data-page-node-id="dLGC8NJJqCx5tRJ6oE2nGR" fill="#fdf4e7" height="62" rx="8" stroke="#b45309" stroke-width="1.3" width="150" x="214" y="112"/>
+    <text data-page-node-id="aiMKjiZmT3JfJCThxQL4Le" dominant-baseline="central" fill="#633806" font-size="14.5" font-weight="500" text-anchor="middle" x="289" y="130"><!--pnid:S1IqU0xCetRFQMfFTtf5Dr-->编排者</text>
+    <text data-page-node-id="LT4srUFCGFX3IklouPn7f3" dominant-baseline="central" fill="#b45309" font-size="12" text-anchor="middle" x="289" y="152"><!--pnid:f8ReoeoUfMhsju40fpOUAw-->当场决定子任务</text>
+    <text data-page-node-id="uzMbQTr80Rf8YaACdd1Qgu" dominant-baseline="central" fill="#b45309" font-size="11" text-anchor="middle" x="289" y="168"><!--pnid:lQu71dNUiGAkKWUgWxyQlQ-->既是单点，也是判断所在</text>
+
+    <path data-page-node-id="G0mPLcxQPzrWEVzpJav8yd" d="M364 130 L436 76" fill="none" marker-end="url(#ar6)" stroke="#888780" stroke-width="1.5"/>
+    <path data-page-node-id="flnLe5EmCkjNaoSJrFXuhA" d="M364 143 L436 143" fill="none" marker-end="url(#ar6)" stroke="#888780" stroke-width="1.5"/>
+    <path data-page-node-id="kuyMXNnotwcsCSCsy1b4li" d="M364 156 L436 210" fill="none" marker-end="url(#ar6)" stroke="#888780" stroke-width="1.5"/>
+
+    <rect data-page-node-id="btH2KKOJ6TSmEzSD7uR9FH" fill="#ffffff" height="44" rx="7" stroke="#0f6e56" stroke-width="1" width="180" x="438" y="54"/>
+    <text data-page-node-id="wJkbK5D3XkrAdVMsnMf3Ju" dominant-baseline="central" fill="#085041" font-size="13.5" text-anchor="middle" x="528" y="70"><!--pnid:r4E51Gi8SoOjafoFNnZwqw-->工作者 1</text>
+    <text data-page-node-id="UzVdXjVH0oBr88SxACrKoL" dominant-baseline="central" fill="#0f6e56" font-size="12" text-anchor="middle" x="528" y="87"><!--pnid:tF1BW9KYs005YZJabypzVP-->改文件 A</text>
+
+    <rect data-page-node-id="5R8tqhuIBMAJFFqnkDedVZ" fill="#ffffff" height="44" rx="7" stroke="#0f6e56" stroke-width="1" width="180" x="438" y="121"/>
+    <text data-page-node-id="OoUJ0wjyst9A2XhooEIUya" dominant-baseline="central" fill="#085041" font-size="13.5" text-anchor="middle" x="528" y="137"><!--pnid:iltB1WOnpD9d8cGBoEP10E-->工作者 2</text>
+    <text data-page-node-id="o1m0v4NTg8yrZl2hhDgdFu" dominant-baseline="central" fill="#0f6e56" font-size="12" text-anchor="middle" x="528" y="154"><!--pnid:ufpFibhICSe8S3YjxyWORi-->搜来源 B</text>
+
+    <rect data-page-node-id="Rs4lH7VhHTOEHkaggQVNTU" fill="#ffffff" height="44" rx="7" stroke="#0f6e56" stroke-width="1" width="180" x="438" y="188"/>
+    <text data-page-node-id="2jo6NdlQNg55rcF5vDioiD" dominant-baseline="central" fill="#085041" font-size="13.5" text-anchor="middle" x="528" y="204"><!--pnid:5Z3rF5EasdnSLEauVb9bcs-->工作者 N</text>
+    <text data-page-node-id="AZMZURJJCl1cvCCqykF5g1" dominant-baseline="central" fill="#0f6e56" font-size="12" text-anchor="middle" x="528" y="221"><!--pnid:ZvP0eppq0M5n0BRn7NWLn8-->数量事先未知</text>
+
+    <path data-page-node-id="lY3BfUPYpFpRZWGFtliK1J" d="M618 76 L692 130" fill="none" marker-end="url(#ar6)" stroke="#888780" stroke-width="1.5"/>
+    <path data-page-node-id="xL4dW3xCosgcS3tstOaKNY" d="M618 143 L692 143" fill="none" marker-end="url(#ar6)" stroke="#888780" stroke-width="1.5"/>
+    <path data-page-node-id="OVnbk7QnP4o9r1LqhJ5THs" d="M618 210 L692 156" fill="none" marker-end="url(#ar6)" stroke="#888780" stroke-width="1.5"/>
+
+    <rect data-page-node-id="6agyjrE2JaOxdPg3YMBIj5" fill="#e1f5ee" height="62" rx="8" stroke="#0f6e56" stroke-width="1.2" width="150" x="694" y="112"/>
+    <text data-page-node-id="pXKsdy8NHKCkuorjgMK7zR" dominant-baseline="central" fill="#085041" font-size="14.5" font-weight="500" text-anchor="middle" x="769" y="132"><!--pnid:RJcuhGlKyqb8hqroju3Z7X-->汇总</text>
+    <text data-page-node-id="X76tiqDhZ2IY6BkdKK5AKx" dominant-baseline="central" fill="#0f6e56" font-size="12.5" text-anchor="middle" x="769" y="152"><!--pnid:C74EQiON71PoSFSi24KlIU-->编排者做判断</text>
+    <text data-page-node-id="rEcyqB1et0fA6WQjWuXv5t" dominant-baseline="central" fill="#0f6e56" font-size="11.5" text-anchor="middle" x="769" y="168"><!--pnid:e0GrliFft2gjoJ5nfEwWh5-->拆错则全盘皆错</text>
+
+    <path data-page-node-id="t5wSa9mOEOlxM2svP6XsOC" d="M844 143 L906 143" fill="none" marker-end="url(#ar6)" stroke="#888780" stroke-width="1.5"/>
+    <rect data-page-node-id="PTpeQifKnY5cDeCVOCSj2a" fill="#eaf1fd" height="46" rx="7" stroke="#1f5fd0" stroke-width="1" width="32" x="908" y="120"/>
+    <text data-page-node-id="B9m69uHoQS9Paj1ZXlGRSW" dominant-baseline="central" fill="#0c447c" font-size="12" text-anchor="middle" x="924" y="143"><!--pnid:qaXwhNhnGpq22wh65Pneqv-->出</text>
+
+    <text data-page-node-id="e7tkAn2JTFm0yadQc6KSHQ" dominant-baseline="central" fill="#8b929c" font-size="13" x="40" y="278"><!--pnid:ccjZoVRFYdPB7GDqKNTgr8-->与并行的拓扑结构相同，差别全在子任务从哪来：并行预先定义，编排者当场决定</text>
+  </svg><div data-page-node-id="QXFya8w6hyX3rF9O3j3tEt" class="fig-c"><!--pnid:CqJpFhiJ9dhepaaUD96eGp-->编排者比并行的中心多做一件事：判断该派什么活、派给谁、结果怎么合。这层要求让中心成了单点。</div></div>
+  <div data-page-node-id="mNKnfj1hpU7eHSTkmCPdSs" class="bnd"><div data-page-node-id="EOuJd49UhcsC2VmnnSO9Os" class="bnd-t"><!--pnid:1uGjJsVTCmwmruZUAIuNrE-->前提与边界</div><p data-page-node-id="TtpAjMPUo08URXV8IfUWiO"><!--pnid:Ypp4XXAcI6RnUZRoO22JE5-->前提是中心模型有足够能力做拆解和汇总。并行的中心只是分发，编排者的中心还要做判断。代价是中心成了单点：编排者拆错了，所有下游都错。原文没有讨论如何校验拆解质量，也没有给出拆解本身出错时的兜底。</p></div>
+  <div data-page-node-id="YGSOxfCYfHyoQmTu2jSmgp" class="quote"><!--pnid:G78Yu2DzAr38SI4Z8shDnl-->作者明确说这个模式适合编程类任务，因为「要改哪些文件、每个文件改成什么样，取决于任务本身」。这是全文对「子任务不可预知」最清晰的例证，比抽象描述好懂得多。</div>
+</div>
+
+<div data-page-node-id="fe1rdcyqIJy9aszrqN32TX" class="block">
+  <div data-page-node-id="6vW8QpK5OCfzU6wnuKNsiZ" class="tag"><!--pnid:CepxGMs7UYRfRXgK5KLzYv-->评估者-优化者</div>
+  <div data-page-node-id="WarhcA8zh2cagklrURcXcJ" class="claim"><!--pnid:JwqHkxb0gyQxXjkqSdzUrv-->一个调用负责生成，另一个负责评价与反馈，两者循环往复。这个循环能不能转起来，取决于两个信号同时出现。</div>
+  <p data-page-node-id="yWPIPVjga8Udj5056hIHa5" class="lead"><!--pnid:9T9Xyf0w9UqGPVuRYOmfe5-->这个模式的成立需要两个信号同时出现，作者把它们写得明确。第一，人把反馈讲清楚之后，模型的输出能确实变好。第二，模型自己能给出这种反馈。缺任何一个，循环就空转：模型批评得不准，或者批评了但改进方向对不上。</p>
+  <p data-page-node-id="4Bzb8p0dBHmBHpFDlq27Ul"><!--pnid:G04ah01PdDwxAm8Pt8rNhz-->作者拿人类写作者反复打磨文章的过程类比这个循环。这个类比用得准：写作者的第一稿确实需要第二双眼睛，而这双眼睛不必是另一个人的，也可以是模型。适用场景有两个：文学翻译，译者模型可能漏掉细微之处而评估模型能给出有用批评；需要多轮搜索与分析的复杂检索任务，评估者决定是否还需要继续搜。</p>
+  <div data-page-node-id="8RaiAvFw6y0cYrDdrgyCWx" class="fig"><svg data-page-node-id="ZRoL3zgxrlJPa1jiFnxF6a" aria-labelledby="f7t f7d" font-family="-apple-system, PingFang SC, sans-serif" role="img" viewBox="0 0 980 290" width="100%" xmlns="http://www.w3.org/2000/svg">
+    <title data-page-node-id="8iVL9ZJl3JBNIlyKE9Qiig" data-pnid-children="EL8ff4pkKsuTfyX4kcQY5f" id="f7t">评估者与优化者的闭环</title>
+    <desc data-page-node-id="JxFTMKuJk9j2oqanRNSg1P" id="f7d"><!--pnid:2uOJZX7nF9NGXo5p13j9B3-->生成产出草案交评估者判断，合格则输出，不合格则带反馈回到生成，形成闭环。</desc>
+    <defs data-page-node-id="MruZdfLKx5UKii76TnKtgn">
+      <marker data-page-node-id="1U6oNvcwtoqm5lvA9223Gv" id="ar7" markerHeight="6" markerWidth="6" orient="auto-start-reverse" refX="8" refY="5" viewBox="0 0 10 10">
+        <path data-page-node-id="0JFc6SmqBOlOEjiGrMmv2j" d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      </marker>
+    </defs>
+
+    <rect data-page-node-id="1pygcZugBYYe6qaQkVwEcS" fill="#eaf1fd" height="44" rx="7" stroke="#1f5fd0" stroke-width="1" width="104" x="40" y="52"/>
+    <text data-page-node-id="Zey1pm6YwRBIUzVhhEzIWz" dominant-baseline="central" fill="#0c447c" font-size="14" text-anchor="middle" x="92" y="74"><!--pnid:wUq66E1qyTSyBfO5yBb1OZ-->输入</text>
+
+    <path data-page-node-id="I9I6TUfk7LHE6ZA2fw8fMM" d="M144 74 L216 74" fill="none" marker-end="url(#ar7)" stroke="#888780" stroke-width="1.5"/>
+
+    <rect data-page-node-id="ND9v7RfCPybNFwIDrDcAmS" fill="#ffffff" height="44" rx="7" stroke="#0f6e56" stroke-width="1.2" width="150" x="218" y="52"/>
+    <text data-page-node-id="TObZIP0a6TYHycPniwmN0K" dominant-baseline="central" fill="#085041" font-size="14.5" font-weight="500" text-anchor="middle" x="293" y="68"><!--pnid:ZPzrU4AqTMms5aMAQvJD8i-->生成</text>
+    <text data-page-node-id="BNYKf04GwTkPXH7AlXd9p6" dominant-baseline="central" fill="#0f6e56" font-size="12" text-anchor="middle" x="293" y="85"><!--pnid:odspA6e1SKZisrl1hdi0IN-->产出草案</text>
+
+    <path data-page-node-id="eO6MnjeeDtxmDr0nPzKNYa" d="M368 74 L446 74" fill="none" marker-end="url(#ar7)" stroke="#888780" stroke-width="1.5"/>
+
+    <path data-page-node-id="YTl5MfPTVHNm5zBzrALrKM" d="M560 60 L560 176 L318 176 L318 96" fill="none" marker-end="url(#ar7)" stroke="#888780" stroke-width="1.5"/>
+    <text data-page-node-id="sMbp1z2Weaxxs9cvyI1p7u" dominant-baseline="central" fill="#8b929c" font-size="12.5" text-anchor="middle" x="440" y="192"><!--pnid:yLkqmO9eNhDjr7IPs4CRos-->不合格，带反馈回到生成</text>
+
+    <path data-page-node-id="A6rS4S3ZAeFjnYJnOgHmWo" d="M446 74 L466 74" fill="none" stroke="#888780" stroke-width="1.5"/>
+    <rect data-page-node-id="QmueptmPwuCGVAdRYVaDl3" fill="#fdf4e7" height="52" rx="7" stroke="#b45309" stroke-width="1.2" width="112" x="468" y="48"/>
+    <text data-page-node-id="y1ZtrI9K5aaGLA5xKSzmlq" dominant-baseline="central" fill="#633806" font-size="14" font-weight="500" text-anchor="middle" x="524" y="67"><!--pnid:CcH2NoXdfNTUxqf8An56Ms-->评估</text>
+    <text data-page-node-id="UKdVfzFX6yb9DQx07299nH" dominant-baseline="central" fill="#b45309" font-size="11.5" text-anchor="middle" x="524" y="86"><!--pnid:XSDtzZIvMeCVEoxx5Ge3OB-->判断是否合格</text>
+
+    <path data-page-node-id="XZxQLf5S9upXhVegjauhOO" d="M580 74 L640 74" fill="none" marker-end="url(#ar7)" stroke="#888780" stroke-width="1.5"/>
+    <text data-page-node-id="4eO65Z7Qoa5tjDtz630KuM" dominant-baseline="central" fill="#8b929c" font-size="12.5" text-anchor="middle" x="610" y="62"><!--pnid:8hVCwu49ATrDsVxpj3sH0D-->合格</text>
+
+    <rect data-page-node-id="1DISnD28rC9F4zNByTp72o" fill="#e1f5ee" height="44" rx="7" stroke="#0f6e56" stroke-width="1" width="120" x="642" y="52"/>
+    <text data-page-node-id="QoUMjOETEsk76VpYunisD4" dominant-baseline="central" fill="#085041" font-size="14" text-anchor="middle" x="702" y="74"><!--pnid:IKhjTArvs8Gv8aR3uTh63x-->输出</text>
+
+    <rect data-page-node-id="sxldGKcXZWs42zMOVD43cF" fill="#fbfaf7" height="58" rx="8" stroke="#e2e5ea" stroke-width="1" width="900" x="40" y="216"/>
+    <text data-page-node-id="AHMZSyIT02iTe6PwD9jMzm" dominant-baseline="central" fill="#12141a" font-size="13" font-weight="500" x="60" y="236"><!--pnid:MMbExoTzpbfIQcFezmldNy-->循环转起来的两个信号</text>
+    <text data-page-node-id="UAtmdav9pvJvtNQuEKmOwo" dominant-baseline="central" fill="#8b929c" font-size="12.5" x="60" y="258"><!--pnid:Z4xkFTkKEQlRPvxbR9220d-->人把反馈讲清楚后输出能确实变好　+　模型自己能给出这种反馈　　缺一个则空转</text>
+  </svg><div data-page-node-id="1jO05PcG5byP3CFtX7WPUH" class="fig-c"><!--pnid:a4R6dRRlfUgZgp7ZBdVP3V-->评估者不只是打分，它同时是循环的退出条件。但评估者判断错了，循环会停在不合格输出上，或者一直转下去。</div></div>
+  <div data-page-node-id="E1mVWNTAxopnsaSfYVodw2" class="bnd"><div data-page-node-id="RpdSaMsenLCCda1xM8zZ6U" class="bnd-t"><!--pnid:TdYN5ltkxpgj17o6uhgkDn-->前提与边界</div><p data-page-node-id="oY1OJaPpT111aebhsB8VEt"><!--pnid:nDZ57XzC0i9h9XLbt8ox7C-->前提是评估标准清晰且能被模型判断。「文学翻译的细微之处」这类判断依赖于评估者自己的品味标准，它的稳定性取决于模型在那个领域被训练得如何。文章提到评估者可以决定是否值得继续搜索，这是循环的退出条件，但同样的问题在这里出现：评估者判断错了，循环就会停在一个不合格的输出上，或者一直转下去。原文没有讲循环的最大轮数，也没讲怎么在评估不可靠时降级。</p></div>
+  <div data-page-node-id="wx7w9sO0nhYX9f0VG7awrX" class="quote"><!--pnid:NJL8FUwirq2oQvvGcOUBr4-->作者用人类写作者反复打磨文章的过程类比这个循环。这个类比用得准的地方在于它解释了「谁来做评估者」：不是更强的模型，而是承担不同角色的模型。原文举的两个场景被简化的部分是：真实场景里评估标准往往需要人来定，作者省掉了「谁来定标准」这一环。</div>
+</div>
+
+<div data-page-node-id="aqbS9St7xiCcAB0XOFYPIr" class="block">
+  <div data-page-node-id="ZdtNoI2Yd7Qb67Lu7sWyDd" class="tag"><!--pnid:hXBkQivxvz0qcGIqZXN18F-->自主智能体</div>
+  <div data-page-node-id="eXqPKCHRrWw8vFs2t8GkDv" class="claim"><!--pnid:pLOEI6bkO9aD5HMFNgPsgM-->步数无法预测、无法硬编码路径时，把路径的决定权交给模型，由它自己规划执行、靠环境反馈纠偏。</div>
+  <p data-page-node-id="sDavpdlOxnLHGBgHW3KHI2" class="lead"><!--pnid:f4Rk4dDnw5hBD5P9LeS9yl-->作者对智能体工作方式的描述非常朴素：它通常就是一个基于环境反馈循环使用工具的语言模型。所有让它显得复杂的机制——规划、暂停、执行、检查点，都是为了支撑这个循环。</p>
+  <p data-page-node-id="TXppbhl0Dg23xpcgJtrEEq"><!--pnid:ZsnVceus50S4IyN6KLSbpi-->运行机制的三个要素各司其职。<strong data-page-node-id="dQJGRdNQ0icW6VngpXMKU9"><!--pnid:oIEUudSbFBX7CErGF4dTsC-->规划与执行分离</strong><!--pnid:Q7tOUlsUxT27ubB1mP861L-->：任务明确后智能体独立规划和执行，必要时返回向人求助，起点必须是人给的命令或交互式对话，智能体不自己发明任务。<strong data-page-node-id="mIgCKlifmo5kiiAmjqi0BT"><!--pnid:kyoL0yQbufvQP23D3U0acL-->每一步都要拿到地面真相</strong><!--pnid:eNwmtDlAp7O8KMPjGy5B9v-->：工具调用结果、代码执行输出这类来自环境的真实反馈，是智能体判断进展的依据，没有它模型只能靠想象往下走。<strong data-page-node-id="gWq4nfpqrsva1Kmq2P9aio"><!--pnid:hXm6xCRSEatrRTRD7g1f9v-->检查点与停止条件</strong><!--pnid:4IBqeTwBoJ2nKsOOLB92KY-->：智能体可以在检查点或遇到阻塞时暂停等人介入，任务通常在完成时终止，但通常还要设停止条件来保持控制。作者特别强调：自主性适合在可信环境中做规模化任务，代价是更高成本与错误累积，因此建议在沙箱充分测试并配以护栏。</p>
+  <div data-page-node-id="wrIZdVsessNaRVTU8fa1Ff" class="fig"><svg data-page-node-id="AXBRPSULgpbVEZqRTfzcdp" aria-labelledby="f8t f8d" font-family="-apple-system, PingFang SC, sans-serif" role="img" viewBox="0 0 980 300" width="100%" xmlns="http://www.w3.org/2000/svg">
+    <title data-page-node-id="PBEpCU3VjOh4Crp9irCfDl" data-pnid-children="3r3HYHrWwRxtet8lJmnj5O" id="f8t">自主智能体的运行循环</title>
+    <desc data-page-node-id="dcMV2VROwRWB3Nf68NvVCP" id="f8d"><!--pnid:TVGTrHoEB1fcWg1BrIxWIO-->人在起点给定任务，智能体规划、执行、获取环境反馈并循环，检查点与停止条件提供控制。</desc>
+    <defs data-page-node-id="bfqHRphZxATqTTpAYnagHY">
+      <marker data-page-node-id="k1QFb7WK2TDQ7xwLPNTtKo" id="ar8" markerHeight="6" markerWidth="6" orient="auto-start-reverse" refX="8" refY="5" viewBox="0 0 10 10">
+        <path data-page-node-id="6vGIjIk19cW9wUvqddphdl" d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      </marker>
+    </defs>
+
+    <rect data-page-node-id="eZicSY3RvQTZQFEwLCUrKK" fill="#eaf1fd" height="52" rx="8" stroke="#1f5fd0" stroke-width="1.2" width="150" x="40" y="36"/>
+    <text data-page-node-id="4KkEQabCBUXMHmbqquY6te" dominant-baseline="central" fill="#0c447c" font-size="14" font-weight="500" text-anchor="middle" x="115" y="54"><!--pnid:L4Tmi9V5iLoZcG6qlyk6Ry-->人在起点给定任务</text>
+    <text data-page-node-id="70F4Ru8zbzobAHdrbzPUNd" dominant-baseline="central" fill="#1f5fd0" font-size="12" text-anchor="middle" x="115" y="74"><!--pnid:z2iBMivSiATO4qcrVGrwSS-->命令或交互式对话</text>
+
+    <path data-page-node-id="WgZq1Py9vGpPjIGQDvkMqp" d="M190 62 L252 62" fill="none" marker-end="url(#ar8)" stroke="#888780" stroke-width="1.5"/>
+
+    <rect data-page-node-id="OjaMVGJP0e9T1y3gkqgvjP" fill="#ffffff" height="52" rx="8" stroke="#b45309" stroke-width="1.2" width="140" x="254" y="36"/>
+    <text data-page-node-id="crR4Wv6I8KtPEiaFMmjQwU" dominant-baseline="central" fill="#633806" font-size="14.5" font-weight="500" text-anchor="middle" x="324" y="62"><!--pnid:za8MRTO8EedtVA4jH6p6IE-->规划</text>
+
+    <path data-page-node-id="lLdi2vi2iXAFD8lijgRPKi" d="M394 62 L456 62" fill="none" marker-end="url(#ar8)" stroke="#888780" stroke-width="1.5"/>
+
+    <rect data-page-node-id="Hq3AwK38XExYvrUeDG9Gvj" fill="#ffffff" height="52" rx="8" stroke="#b45309" stroke-width="1.2" width="140" x="458" y="36"/>
+    <text data-page-node-id="98biEtNfUIMdp788rPS2un" dominant-baseline="central" fill="#633806" font-size="14.5" font-weight="500" text-anchor="middle" x="528" y="62"><!--pnid:0IEQQsBj7UKSW6gX4rr9Xg-->执行</text>
+
+    <path data-page-node-id="Zv1KS9nwZOvdzkThkNGPTv" d="M528 88 L528 136" fill="none" marker-end="url(#ar8)" stroke="#888780" stroke-width="1.5"/>
+
+    <rect data-page-node-id="tWaTDBUthw236JsIKlamMi" fill="#e1f5ee" height="52" rx="8" stroke="#0f6e56" stroke-width="1.2" width="176" x="440" y="140"/>
+    <text data-page-node-id="pEPzhMaw4cf7j5XitdjQ4P" dominant-baseline="central" fill="#085041" font-size="14" font-weight="500" text-anchor="middle" x="528" y="157"><!--pnid:x2ClCDnWFHnsmuguX52sr0-->环境反馈</text>
+    <text data-page-node-id="J3VOM8z4Qu4YzFoHYmwrDg" dominant-baseline="central" fill="#0f6e56" font-size="11.5" text-anchor="middle" x="528" y="178"><!--pnid:OEYpyOGlCt6U0ZGsuUbwwy-->工具结果、代码执行输出</text>
+
+    <path data-page-node-id="L3qlFA0FSQ0XOroNfYueHS" d="M440 166 L330 166 L330 88" fill="none" marker-end="url(#ar8)" stroke="#888780" stroke-width="1.5"/>
+    <text data-page-node-id="x6SsuqmyP1lEPguAYs2RQW" dominant-baseline="central" fill="#8b929c" font-size="12" text-anchor="middle" x="248" y="208"><!--pnid:Si5CEQZU4asjGpv862z5XT-->没有它，模型只能靠想象往下走</text>
+
+    <path data-page-node-id="lfvXKIyfyNSjtPO23RbUCI" d="M616 62 L700 62" fill="none" marker-end="url(#ar8)" stroke="#888780" stroke-width="1.5"/>
+
+    <rect data-page-node-id="V64kLzDS6xaar9M29zZKMO" fill="#ffffff" height="52" rx="8" stroke="#0f6e56" stroke-width="1.2" width="238" x="702" y="36"/>
+    <text data-page-node-id="UT8SwVMOOKhc39k26g9N41" dominant-baseline="central" fill="#085041" font-size="14" font-weight="500" text-anchor="middle" x="821" y="54"><!--pnid:CfXe8IVRNSwo16jtx3rPk2-->检查点与停止条件</text>
+    <text data-page-node-id="Zb6ahT6yfAT6saPMNWsI3H" dominant-baseline="central" fill="#0f6e56" font-size="12" text-anchor="middle" x="821" y="74"><!--pnid:cmfj14gerPYQj5bAz8FiiO-->暂停等人介入，或以最大迭代次数收束</text>
+
+    <path data-page-node-id="dikhD0okQRG8DHVjZ7J6Ue" d="M821 88 L821 250 L254 250 L254 88" fill="none" stroke="#b4b2a9" stroke-dasharray="5 4" stroke-width="1.3"/>
+    <text data-page-node-id="DhB5e48TFPGuZPF8RVGcKM" dominant-baseline="central" fill="#8b929c" font-size="12.5" text-anchor="middle" x="540" y="268"><!--pnid:Uyh9nDocZCOTSRx26uKsEJ-->未完成则回到规划，构成循环</text>
+
+    <text data-page-node-id="Hz4jKI2es8Kmz5O790daoV" dominant-baseline="central" fill="#8b929c" font-size="13" x="40" y="124"><!--pnid:J2zkcUr38qacoooR2spTEN-->自主性适合在可信环境中做规模化任务</text>
+    <text data-page-node-id="LYmrQDxaxt9BjM0fVpqfkk" dominant-baseline="central" fill="#8b929c" font-size="13" x="40" y="146"><!--pnid:NQZXF9x0wDQ3sWZcVU1Xq7-->代价是更高成本与错误累积</text>
+  </svg><div data-page-node-id="cr5I7QHmz5TBCajFmjU8gP" class="fig-c"><!--pnid:0s8tJlcigw45fV2L6LtL6U-->智能体的三个运行要素各司其职。原文强调自主性适合在可信环境中做规模化任务，代价是成本与错误累积。</div></div>
+  <table data-page-node-id="cPhMKifqrXopngJXewQqrp"><thead data-page-node-id="FjxRKnsw0ZfDq2gWcHs0yX"><tr data-page-node-id="NpyIDiNAZaMeDGdsMQS2QK"><th data-page-node-id="CIFOOQeqFZdE6GFvMI8X90" style="width:26%"><!--pnid:V3hhNOxycQ8MHFdQ9aJweS-->要素</th><th data-page-node-id="piGQ4Ch8oP43tT5Ojh9pER" style="width:30%"><!--pnid:1U4MCMDDEurrGwOHXchXIn-->作用</th><th data-page-node-id="uvdZgfX2sP3ckH5pTSAsOf"><!--pnid:81s4Z5vicQY9rBcQUaTVs7-->缺了会怎样</th></tr></thead><tbody data-page-node-id="N29nd5q0dqqlqgcC5u03hP">
+    <tr data-page-node-id="7kh5RzpMzlaZnKBFPmKXcQ"><td data-page-node-id="WEpIUb9R8ymRygrwgNaJpU"><strong data-page-node-id="cUyNdfrvfKdgnimimJAyWl"><!--pnid:8UWcPyHgmRoBsyXU1vXXPN-->人在起点给定任务</strong></td><td data-page-node-id="FnxHQd2BaaxsVGY4c6dLFj"><!--pnid:iHVWwv9ZxjosgFwN38H3mt-->划定问题边界</td><td data-page-node-id="9BTzEdLfDYuw6w3xBEkux9"><!--pnid:lS2e5J5lFvGVHbVPVzZBZL-->智能体自己找活，方向不可控</td></tr>
+    <tr data-page-node-id="JaOu5Q5X8JoQYQBxT7sF9z"><td data-page-node-id="JvYKxwYywaVyBejlRcOf8t"><strong data-page-node-id="eFljfhQs15GTehtbatcKm8"><!--pnid:uwx4L0yKDQunKxvRxu3PYq-->每步获取环境反馈</strong></td><td data-page-node-id="j4ALOs7oGa82Qf5bTpRovi"><!--pnid:uUE6CrF223CSIpWhqPFEC0-->判断真实进展</td><td data-page-node-id="HvURjSThGQNHYbpGA6jvn6"><!--pnid:GzQLAtqHrmb01siqib1vrx-->靠想象推进，偏离累积</td></tr>
+    <tr data-page-node-id="Jwr7VMvY6o9Civ648o6fPI"><td data-page-node-id="f4T5CVZ6XGYtcEz7xiZrZy"><strong data-page-node-id="tnex2Ls4uTvnYufOUjcHN8"><!--pnid:ujkoWlwLr7AM0NTO4wA0SW-->检查点与停止条件</strong></td><td data-page-node-id="nYAnFef8qj9GQnV7dBoZWK"><!--pnid:UqaxJ4Z8TlzZFPs3QtPfKu-->保持人的控制权</td><td data-page-node-id="kK2NGW5LSPA0c2pscidl57"><!--pnid:mbNR7vOPhZMVwMkoK7YsFb-->失控循环或过早终止</td></tr>
+  </tbody></table>
+  <div data-page-node-id="uptl24PKm1nMAGLBeN0zw1" class="bnd"><div data-page-node-id="GX7mp78SG5cQIsNx6uobiI" class="bnd-t"><!--pnid:JDld9A7r98DL1nOaICdlGc-->前提与边界</div><p data-page-node-id="cV1jeSDJPhIfnpkDDEZoY9"><!--pnid:XiehLR8XsoJxF0j8oBwUgX-->三个前提，缺一不可：步数确实无法预测（能预测就该用工作流）、环境可信（错误会累积）、决策能力值得信任（作者说「你必须对它的决策有某种程度的信任」）。</p></div>
+  <div data-page-node-id="OSRmb7OB8OoUxpnqn70WV6" class="age"><div data-page-node-id="hT2l5YM4kQx2CtfByufdJS" class="age-t"><!--pnid:dD2RngiIUE6hQL2OZxNyQh-->时代限定</div><p data-page-node-id="9tIDIiFdU8i9z31LionSzP"><!--pnid:iKx8XBN1D2rPr2AjwoOZlV-->原文写于 2024 年 12 月，彼时「智能体正在生产环境中崭露头角」是现状描述而非展望。今天再看，这段里最不稳的是「模型能力成熟到让智能体可行」这个前提。原文把智能体的可用性挂在「理解复杂输入、进行推理与规划、可靠使用工具、从错误中恢复」四项能力成熟上，这四项的判断水位在两年间变化很大。</p></div>
+</div>
+
+<div data-page-node-id="Efr5GMyDSs7VuUqYoTyT9S" class="block">
+  <div data-page-node-id="rzdCmJ52ie8ImnHDstdGLJ" class="tag"><!--pnid:Snp2FZ5cel9LlEdhNFt92m-->工具接口</div>
+  <div data-page-node-id="8V4ZvEZKzmlNCGY4XQc3kg" class="claim"><!--pnid:6RpWT3IVWD83UHruWfjJYk-->工具定义与规格值得跟你写整体提示词同等的注意力，因为智能体与计算机之间的接口工程质量决定系统上限。</div>
+  <p data-page-node-id="w2hGW7QD9kbpklaWLh1KKI" class="lead"><!--pnid:TLBWxXWke1r6IZeaPvMSUU-->作者在正文中只留了一句重话，然后把它展开成附录。「构建 SWE-bench 智能体时，我们花在优化工具上的时间比优化整体提示词更多。」这句话是全文对工程优先级的最强表态——工具设计不是收尾工作，而是主要工作量。</p>
+  <p data-page-node-id="q3y8g5PVcXI4RFquUSh8Nt"><!--pnid:jZ4ck2YJlLZmystvOXQ1IO-->作者先指出一个容易被忽略的事实：同一个动作往往有多种描述方式。文件修改可以写成 diff，也可以重写整个文件；结构化输出可以把代码放在 markdown 里，也可以放在 JSON 里。在软件工程里这些差异是表面的、可无损互转，但对模型来说，有些格式明显更难写。写 diff 需要在写新代码之前就知道 chunk 头里要改多少行；把代码放进 JSON 相比 markdown 需要额外转义换行和引号。方法论层面的核心类比是：<strong data-page-node-id="hX4hgPBMcquyu6UePloDNd"><!--pnid:8IQLVDaRqhXkitZL09TMeN-->把智能体与计算机的接口当成人机接口来对待，投入同等认真的力气。</strong><!--pnid:0MirAg0q3cv0WuEkbfFPyU-->由此推出四条——把自己放到模型的位置上看工具是否显然可用、像给初级开发者写接口文档那样写、测试模型怎么用你的工具、对工具做防错设计（poka-yoke）。</p>
+  <div data-page-node-id="Q7G7o9QvEfWVN3Q0qsdu5a" class="fig"><svg data-page-node-id="C7SJx0Xx7ai1nWhxT7iuT5" aria-labelledby="f9t f9d" font-family="-apple-system, PingFang SC, sans-serif" role="img" viewBox="0 0 980 340" width="100%" xmlns="http://www.w3.org/2000/svg">
+    <title data-page-node-id="YroPpC064hHKinxl6iYDG1" data-pnid-children="Swdk0nP982qfDduq1PhI4x" id="f9t">工具格式的选择与防错设计</title>
+    <desc data-page-node-id="LUICGgz2OlZTF09MnHWw3N" id="f9d"><!--pnid:flEJB6AO7ZsgCXnooNXRH9-->同一个动作有三种描述方式，模型写难度不同；据此得出三条格式建议，再推到四条接口设计方法。</desc>
+    <defs data-page-node-id="azKCJHdP9nTde6ACSNncRL">
+      <marker data-page-node-id="QijgwponAxb2zVAWnfBFQ1" id="ar9" markerHeight="6" markerWidth="6" orient="auto-start-reverse" refX="8" refY="5" viewBox="0 0 10 10">
+        <path data-page-node-id="xSKN75rOsq3mp3H57UaaE3" d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      </marker>
+    </defs>
+
+    <text data-page-node-id="kb6JP8UI4LhtOpN8a1cyB2" dominant-baseline="central" fill="#12141a" font-size="13.5" font-weight="500" x="40" y="30"><!--pnid:cqcsK5peXo5RxPAJjdr6j4-->同一个动作，多种描述</text>
+
+    <rect data-page-node-id="SIOaF66JVtoHsv31GxIZ8C" fill="#ffffff" height="112" rx="9" stroke="#b4b2a9" stroke-width="1" width="286" x="40" y="52"/>
+    <text data-page-node-id="fTUwkA6esuUhTxllM8Lhua" dominant-baseline="central" fill="#444441" font-size="13" font-weight="500" x="58" y="72"><!--pnid:067OIKdXgG5krrABFXosRL-->diff 格式</text>
+    <text data-page-node-id="vuDlLazQ4EjwYvIpRblHBw" dominant-baseline="central" fill="#a32d2d" font-size="12.5" x="58" y="94"><!--pnid:DBglOzb2ardYARcqg5y4ZN-->需预先知道改动行数</text>
+    <text data-page-node-id="DJZO3RU3XX1RtY4TloExYY" dominant-baseline="central" fill="#a32d2d" font-size="12.5" x="58" y="116"><!--pnid:1ihP41cMdUEIzhEBw2f0JO-->模型难写</text>
+    <rect data-page-node-id="P6VuKLtlRTF0RgViKWZw49" fill="#fcebeb" height="20" rx="4" width="250" x="58" y="132"/>
+    <text data-page-node-id="QDoy1TZ716XYt9086at3ZM" dominant-baseline="central" fill="#a32d2d" font-size="11.5" text-anchor="middle" x="183" y="142"><!--pnid:CJOlSkIuK0VgfcH3cT2Qs5-->写之前就被格式卡住</text>
+
+    <rect data-page-node-id="qDXT4ZvRRZKub3lm9ug1Ae" fill="#ffffff" height="112" rx="9" stroke="#0f6e56" stroke-width="1.4" width="286" x="347" y="52"/>
+    <text data-page-node-id="1R9vQDnVgyPwdX2docQUpO" dominant-baseline="central" fill="#085041" font-size="13" font-weight="500" x="365" y="72"><!--pnid:jqonETF3uIqeNqGqEs6tiz-->全量重写</text>
+    <text data-page-node-id="dxPKiKUW9wNFpaEmYShZom" dominant-baseline="central" fill="#0f6e56" font-size="12.5" x="365" y="94"><!--pnid:IZeRkLxBNiAojr0HMf2xcM-->无格式开销</text>
+    <text data-page-node-id="M4fj8MbPIeTTJ8dGl9oI4T" dominant-baseline="central" fill="#0f6e56" font-size="12.5" x="365" y="116"><!--pnid:NDeqPDDuept0HxVgsd2BMn-->模型易写</text>
+    <rect data-page-node-id="Ts5l50RxvUos6qH6XpMXlU" fill="#e1f5ee" height="20" rx="4" width="250" x="365" y="132"/>
+    <text data-page-node-id="ucfZz0DrVGgMHcXKAb4eua" dominant-baseline="central" fill="#0f6e56" font-size="11.5" text-anchor="middle" x="490" y="142"><!--pnid:HFU3ogb4n7b6XtdZXSRHqP-->软件工程里无损互转，对模型不等价</text>
+
+    <rect data-page-node-id="jtTiYWPLSxK1BYUGUHfYL6" fill="#ffffff" height="112" rx="9" stroke="#b4b2a9" stroke-width="1" width="286" x="654" y="52"/>
+    <text data-page-node-id="tOJAYSvQvlQ54sbHAeGgvp" dominant-baseline="central" fill="#444441" font-size="13" font-weight="500" x="672" y="72"><!--pnid:oWRGjxlIxI4Hwx2cHvt94O-->JSON 包裹</text>
+    <text data-page-node-id="dAnMV9eAp2ESL1b40JALiG" dominant-baseline="central" fill="#a32d2d" font-size="12.5" x="672" y="94"><!--pnid:bod02GSxwuGKrBpsop9Aju-->需转义换行与引号</text>
+    <text data-page-node-id="TwarntXUZ1F1jVgG7s0ERS" dominant-baseline="central" fill="#a32d2d" font-size="12.5" x="672" y="116"><!--pnid:Q7W0BW8w3RyOXvHOzKpMX4-->模型难写</text>
+    <rect data-page-node-id="69jiO404medNYK4lde6WH2" fill="#fcebeb" height="20" rx="4" width="250" x="672" y="132"/>
+    <text data-page-node-id="tUo3sxDFJxKP7IcGn6RgZJ" dominant-baseline="central" fill="#a32d2d" font-size="11.5" text-anchor="middle" x="797" y="142"><!--pnid:VEtVVkWvsecKY7jR8V7UJa-->额外转义开销</text>
+
+    <path data-page-node-id="yzty7V8X8XS5tq4ijNKSrF" d="M490 164 L490 196" fill="none" marker-end="url(#ar9)" stroke="#888780" stroke-width="1.5"/>
+
+    <rect data-page-node-id="WecGItSxFvBn4hWRF9uGaE" fill="#fbfaf7" height="126" rx="9" stroke="#e2e5ea" stroke-width="1" width="440" x="40" y="198"/>
+    <text data-page-node-id="p8xGjnZIPYxh1CAA2pazyM" dominant-baseline="central" fill="#12141a" font-size="13" font-weight="500" x="58" y="220"><!--pnid:idfkOIIHpgmmXJKSn5o5zr-->三条格式建议</text>
+    <text data-page-node-id="u63WnQLUmL4viMOJtt7fwt" dominant-baseline="central" fill="#444441" font-size="12.5" x="58" y="246"><!--pnid:6sgYGaFShe9708TiqR6r68-->给模型足够的 token 去思考</text>
+    <text data-page-node-id="IXKXpVHgWSss4m8SqJdNKP" dominant-baseline="central" fill="#444441" font-size="12.5" x="58" y="270"><!--pnid:GIbkMcz1BrPivyx1IsTXFM-->格式贴近互联网上自然出现的形态</text>
+    <text data-page-node-id="k49drpJfhf9SLnHPP43clg" dominant-baseline="central" fill="#444441" font-size="12.5" x="58" y="294"><!--pnid:o9znqF2dsUDuyqXHXblPqj-->消除格式上的额外开销</text>
+
+    <rect data-page-node-id="ealiwzutkM9zJMTqtIIxgS" fill="#fbfaf7" height="126" rx="9" stroke="#e2e5ea" stroke-width="1" width="440" x="500" y="198"/>
+    <text data-page-node-id="OS4lHyZ82XUUoA83emefo6" dominant-baseline="central" fill="#12141a" font-size="13" font-weight="500" x="518" y="220"><!--pnid:MUmYLoQ8XZxpJx3TIXMHzU-->四条接口方法</text>
+    <text data-page-node-id="iLJ6fCaHaVzuJ1Vihzh8Ha" dominant-baseline="central" fill="#444441" font-size="12.5" x="518" y="244"><!--pnid:24TtsYP92R5u9qwOp1G3YD-->把自己放到模型的位置上看工具是否显然可用</text>
+    <text data-page-node-id="RZzKEmVP16qw22Fj1Eknvx" dominant-baseline="central" fill="#444441" font-size="12.5" x="518" y="266"><!--pnid:IXBoHSRtsHXCrieuCuMr7c-->像给初级开发者写一份优秀的接口文档</text>
+    <text data-page-node-id="C1tjqjwi9C81b8txQuiPuc" dominant-baseline="central" fill="#444441" font-size="12.5" x="518" y="288"><!--pnid:9uW2edILkN5MgWfe2WidKO-->测试模型怎么用你的工具，看它犯什么错</text>
+    <text data-page-node-id="9oFWZvztfwodCBkk1kcLwv" dominant-baseline="central" fill="#444441" font-size="12.5" x="518" y="310"><!--pnid:NEeb43qvirE9yEu47S9lC0-->对工具做防错设计，改参数让犯错更难</text>
+  </svg><div data-page-node-id="8uJeSvBO8o9VLDfayKYjDc" class="fig-c"><!--pnid:1CieSPMnUsVgpzn6i2NumK-->格式选择不是审美问题，是可写性问题。三条格式建议落到四条接口方法上，最后收敛到一个具体改动上。</div></div>
+  <p data-page-node-id="dqaZ6Xss86FK0RlL5FNxqn"><!--pnid:R5K9Jf5my8VjsA8yaXNxCY-->最后这条作者给了实测案例，也是全文最具体的一个工程细节：他们发现模型在使用相对路径的工具时会犯错，尤其是在智能体已经移出根目录之后。解决办法是把工具改成强制要求绝对路径，然后模型使用这个方法毫无差错。这个案例示范了防错设计的完整逻辑：错误是环境的结构性特征导致的，那就消除环境里的这个特征，而不是在提示词里反复叮嘱模型小心。</p>
+  <div data-page-node-id="2vsW1dMuY9s3OM3k1W73FT" class="bnd"><div data-page-node-id="XsidGIPMW7H9Rtz9x8uOnW" class="bnd-t"><!--pnid:KJvPMC2J8qDihNLmCDNZjC-->前提与边界</div><p data-page-node-id="f5NU5oP7x1fvbea9G9ixnB"><!--pnid:PKgrYWDsQf0CDpMntBC8Kw-->这套方法的前提是工具由你定义。用现成 SDK 的现成工具时，格式与描述不由你控制，能调的空间只剩参数命名与描述文本。另外「给模型足够 token 去思考」这条依赖模型能力与上下文窗口，在上下文紧张的场景里，这条建议与其他「消除格式开销」的建议会互相挤压，原文没有处理这个冲突。</p></div>
+  <div data-page-node-id="cCM6X1dL1Do4jYgSIOHC2n" class="age"><div data-page-node-id="LEROzKuidoLelZyAIqoGWP" class="age-t"><!--pnid:y017BTr52kjdD6M3CAyGLz-->时代限定</div><p data-page-node-id="2rcXBsYQOaJPxSYjozrJTq"><!--pnid:zzQLz3HbunP20IXs3YZDWG-->文章提到的具体形态（Claude API 的 tool use block、Model Context Protocol 作为工具接入方式）在两年间已明显演进，附录里点名的框架生态官方自己已声明过时。但「把工具当人机接口来设计」这个判断不依赖任何具体工具形态，它依赖的是模型与生俱来的弱点，先验于任何 API 版本。</p></div>
+  <div data-page-node-id="kMlKjTFUSPRrW7cpYrgr4z" class="quote"><!--pnid:swztfczeJiwWsY0XbuOi0y-->原文在正文中说工具设计详见附录，这个安排让附录承担了全文最具体的工程内容。作者自己的表述是「在这篇简短的附录里，我们讲讲怎么为你的工具做提示词工程」。「简短」这个自评与实际信息密度不符，这篇附录的内容比正文任何一个模式章节都更实操。</div>
+</div>
+
+<div data-page-node-id="MBLjpxAJjrjmd2TbQrJXlb" class="block">
+  <div data-page-node-id="rhZXel189eVOYb232mzz2R" class="tag"><!--pnid:iRXpcT8iKOT9vyKw4b7JiT-->核心原则</div>
+  <div data-page-node-id="4UgIXkoXfe87dCizJWwh46" class="claim"><!--pnid:EkUwbrIgmRES9zpqGaA1f3-->文章在结尾处给出了自己一直遵循的三条原则，这是全文少见的作者自述部分。</div>
+  <p data-page-node-id="sbmmViXUYUutFYDysMUz8V" class="lead"><!--pnid:pRflQ9AFA1ZudMNkILtCQq-->这三条与前面的决策链是同一件事的三个侧面。「保持简单」管的是不做什么，「优先透明」管的是让人看见它在做什么，「精心设计接口」管的是它做得对不对。</p>
+  <table data-page-node-id="QbIUn7nyqxQVnJWpwxMLJm"><thead data-page-node-id="b8Ud9yyS1h1F89Yl3AnWVQ"><tr data-page-node-id="uoADvPm1Qu69m6dJfa3Vb4"><th data-page-node-id="4Dg1zD6HtEXrdWMrQcdXru" style="width:22%"><!--pnid:6hanD6JidW8dYTW3HsgFWx-->原则</th><th data-page-node-id="nr0HHtcmjrQEw9Mt0DUCdv" style="width:30%"><!--pnid:ECse7xYxte5Q1UsjSjqVge-->内容与正文的关系</th><th data-page-node-id="rlffaJedzkSXxjZoBepSkJ"><!--pnid:QkPjk1BavysO56gi5M6lT7-->对应到哪一段</th></tr></thead><tbody data-page-node-id="RRxnS5g1iWM0FMPuOAoT4Q">
+    <tr data-page-node-id="3y3YmrDe7Xcy9xkq6Cy598"><td data-page-node-id="ajn3hI6Gy13FsvJlmp4o2W"><strong data-page-node-id="v9Y8QgqdBuI3Kqe1fcXQBs"><!--pnid:CFHwvBxkaEJsZuMlI3t7Aw-->保持简单</strong></td><td data-page-node-id="6yno9bcsZH6VxzDX8MlAbC"><!--pnid:4oz0LGznOROZKu4u6RhPyw-->设计上尽量简单</td><td data-page-node-id="2z0Kt6uZbP5RDb3d50HTY5"><!--pnid:RK0S6qJjokwM9KnvokhmJW-->对应「只在必要时加复杂度」</td></tr>
+    <tr data-page-node-id="MHnre98mvOLhyFAcRMb1G3"><td data-page-node-id="XF59fihMsG6f0O0NFXux6r"><strong data-page-node-id="7ttIKcRXSvd23AuI510Jum"><!--pnid:GKU4H7oLeHPRWj0BJ471SY-->优先透明</strong></td><td data-page-node-id="rEdYQpXhc7XJd9iOSd0YCk"><!--pnid:DYxiaTUJKY7a3dOy8Hx07V-->显式展示智能体的规划步骤</td><td data-page-node-id="aLkVZMwOPS5LteJdsbHUiK"><!--pnid:KzKtM196Yk0woEbb1i8UjE-->对应「地面真相」与检查点机制</td></tr>
+    <tr data-page-node-id="Tfb4qjFgqalQfw5H0V6fyd"><td data-page-node-id="uggTvCEFBTIHRE8DVUDXKC"><strong data-page-node-id="oarWxaODqIxzmozD85RxFE"><!--pnid:8JWU4wH1AdJeAzb79zfVxJ-->精心设计接口</strong></td><td data-page-node-id="mvumWVlx3BRvERwz6ttwfZ"><!--pnid:jvNBJWX4yUn7FlTFLyVp79-->智能体与计算机的接口</td><td data-page-node-id="RysLVMIjj7ZaHL7gckD2ys"><!--pnid:zsF7AR1MsDhbeOW2ivcimw-->对应工具接口设计卡的全部内容</td></tr>
+  </tbody></table>
+  <p data-page-node-id="XSGDpMF0uybFEA5Bbajqql"><!--pnid:eFwNC5IHc8XmMls36kyyGM-->关于框架，作者的最终建议是：框架能帮你快速起步，但不要犹豫减少抽象层、在走向生产时用基础组件构建。</p>
+  <div data-page-node-id="FswCYi6QgJZmlkybtRqY1p" class="bnd"><div data-page-node-id="sQKcCZng6jgawugBtqQaa4" class="bnd-t"><!--pnid:XWgPrW67KH0JLtDV0UXxLv-->前提与边界</div><p data-page-node-id="fR7dqBddjfZXPCLKgsQge2"><!--pnid:QrWoQahLrPKTLXAPuabq34-->需要留意的是，作者对「透明」的界定只落在展示规划步骤这一项上，即让人看见智能体打算做什么。它没有涉及另一类透明：结果可复现、决策可回溯、成本可归因。这三件事恰好是智能体进入生产环境后最常被追问的，而文章没有回答。</p></div>
+</div>
+
+<div data-page-node-id="oFU2HETKTM5lRxNiGCPWY4" class="block">
+  <div data-page-node-id="XF1xOIMMWQfcgilEsvTm9s" class="tag"><!--pnid:S7FLt3vTU0mI01amTMrb83-->系统性缺席</div>
+  <div data-page-node-id="v8yE00963y5SeAXMwrD6QZ" class="claim"><!--pnid:XjlG38YriC63ozo0q5eqTN-->这篇论文没回答什么</div>
+  <div data-page-node-id="JrvgBdQIgIn5epbm0DSo0J" class="gap"><div data-page-node-id="tHLqBvZgUnpyfqAQou9hYr" class="gap-h"><!--pnid:y2xewDyOPscO8oDvmSHENj-->1. 没有给出任何量化的成本与延迟数据。</div>
+  <p data-page-node-id="MaC7PslAodtRhKLmdcFThQ"><!--pnid:rSdAbTRHdcnywljVOiw3hs-->全文反复提到智能体系统用延迟和成本换任务表现、并行与投票更贵、智能体成本更高，但没有一个数字：没有模式之间的成本对比，没有「什么规模下哪种模式划算」的界线，没有多跑几轮投票的边际收益曲线。选型者只能凭直觉在「更贵」和「更准」之间取舍。作者给了足够的选择依据，唯独没给这个选择的分母。</p></div>
+  <div data-page-node-id="Xnm6Ie3ERO9Iqg6VyJOKkT" class="gap"><div data-page-node-id="uwLh7gwNfkG4RrAHw7rHnw" class="gap-h"><!--pnid:yxMfb4HPEDmpsAGkuxGJTc-->2. 完全没有触及状态持久化与错误恢复。</div>
+  <p data-page-node-id="aZkNbdvLDee0kAwywa1ju9"><!--pnid:NgVb0ggIn7zAEp0FbVObuC-->五种工作流模式与自主智能体，加起来描述了任务如何被拆解、路由、并行、评估，但没有一处说明任务中途失败怎么办。链式流程里第三个调用挂了，前两个的中间结果去哪了；派发给工作者的任务部分失败，编排者怎么知道哪部分没成；智能体跑了二十轮撞上限，之前的工作怎么留下。文章在提到智能体时说需要设置停止条件，但停止之后如何保留已有进展，一个字没提。这是模式谱系与生产系统之间最大的一段空白。</p></div>
+  <div data-page-node-id="1t7lLzEVbSvDZTOR2dP56b" class="gap"><div data-page-node-id="MJ21Qr6ftAb767G2GAfsT5" class="gap-h"><!--pnid:Xl4sFXCGz9OdcxgnTiOk8f-->3. 没有讨论多智能体协作。</div>
+  <p data-page-node-id="KVMJlERcLYKYv09h1vnVSK"><!--pnid:cpcB3urWrO8vFSdOVpH7xw-->全文的智能体都是单体自主决策，编排者-工作者模式里的工作者也是被派活的执行者，不与彼此协作。多个智能体之间如何分工、如何通信、冲突怎么解、如何避免互相等待，这套问题在 2024 年底已是行业热点，文章完全绕开了。绕开的方式值得注意：它没有论证「不需要」，而是根本没提。</p></div>
+  <div data-page-node-id="ZZpkJS6ppDMtfkCtmeh9L9" class="gap"><div data-page-node-id="7tmPk3fE9L2I7VWMBfursU" class="gap-h"><!--pnid:m7PyOTjXwD233dnJxJ6zbp-->4. 没有给出工具描述的量化标准。</div>
+  <p data-page-node-id="WHpgMMQjhfF0WbEONjOgR3"><!--pnid:KfapqgyD6mOC3fIo8vrJUS-->作者说「像给初级开发者写接口文档那样」，但这仍是类比而非标准。多长算够短、示例该给几个、边界情况该覆盖哪几类、参数描述写成什么结构才算合格，这些可以照着做的问题，文章都留在了经验层。唯一量化的建议是「给模型足够 token 去思考」，而「足够」是多少没给。</p></div>
+  <div data-page-node-id="uCAQeaJENMAxq1IA9d418M" class="gap"><div data-page-node-id="qXcspC1GIIG6kKcvcPlf6l" class="gap-h"><!--pnid:2endq8TrzC6DQ6qQOMI56L-->5. 回避了「何时不该用智能体」里的成本侧。</div>
+  <p data-page-node-id="v6JsGOtRt2XdCYmMD3STE0"><!--pnid:RE5QuTQUUEcj8709TzZUYV-->作者在「何时该用」一节里给出了任务结构上的判据（步数不可预测、需要模型驱动决策），但当一个任务既符合结构条件、又在成本敏感的场景里时该怎么办，没有回答。客服是文章举的正面案例，附录里也提到了按成功解决量计费的商业模式，这条按结果计费的路径为「什么时候该用」补上了一个文章没展开的答案：把风险共担写进商业模式。但作者没有把这层意思挑明。</p></div>
+  <div data-page-node-id="1A9aRzXxCo8oxl1eBg0vHg" class="gap"><div data-page-node-id="4ZtuyUj2SqB6qycTfiqOm9" class="gap-h"><!--pnid:99ZrAtuYpPPNQOkQRvWces-->6. 多步工作流的质量保证机制缺席。</div>
+  <p data-page-node-id="3tUoyaTb6roCgh7oc9JhEY"><!--pnid:jgIyRMzdGiPMmdEzDvOIVU-->智能体那部分说了沙箱测试加护栏，但工作流那五种模式一个字的测试策略都没写。提示链的闸门是运行时检查，评估者-优化者的循环也是运行时检查，开发阶段怎么验证一条五步链路的正确率，没有答案。对一个教人搭系统的文章来说，这是个反直觉的缺口。</p></div>
+</div>
+
+<div data-page-node-id="NLSQQGqQVyQrxziJYBPCdN" class="block">
+  <div data-page-node-id="IPeyr1QuWvVLZ8vDg4btxw" class="tag"><!--pnid:XwzJfkSBWPxr8QqoLk2EKs-->适用边界</div>
+  <div data-page-node-id="8bvh1DGyfIUEA78eubZJqh" class="claim"><!--pnid:4I6GMRToLU9PbPNZxr0NGV-->作者在哪些地方说错了或说窄了</div>
+  <div data-page-node-id="r7GPVFo9wIieIcTROjPglX" class="bnd"><div data-page-node-id="5fDGXUyj3g69plvJHivERw" class="bnd-t"><!--pnid:vLszQM2lBwSzb4fAIcfCdG-->框架观察有范围</div><p data-page-node-id="Pdy0v1nCB2TRUkWtBcANmJ"><!--pnid:kAREvT1O6j49EzbfxKhNBW-->「最成功的实现没有用复杂框架或专门的库」这个观察有范围。它说的是「我们合作过的几十个团队」，样本是 Anthropic 自己的客户。能用直接的 API 调用搭出系统，与能在自己团队外把这套东西交给几十个工程师维护，是两件事。文章确实在同一段里说了「如果用框架，要理解底下的代码」，这句话把问题指向了使用者的理解成本而不是框架本身，但读者拿到的行动建议仍然是「先别用框架」。</p></div>
+  <div data-page-node-id="zYHhgLgiWLOnJwdf135P5g" class="bnd"><div data-page-node-id="exvMAG83MR0Z2DI01w2oBC" class="bnd-t"><!--pnid:Z2oT8XWVyHVxwoKP59xGzP-->「适合你需求的系统」没有可操作性</div><p data-page-node-id="9DB77KX7nt9jWN6bn2XOku"><!--pnid:tWlmIzpFA7ho4nJc9zi7gu-->「成功在于构建适合你需求的系统」这句话没有可操作性。它作为原则无懈可击，作为决策规则则什么都没说：怎么知道哪个系统是「适合」的？作者的实践是「测量表现并迭代」，但没有给任何测量的方法或指标。判断「加复杂度是否值得」这件事，被留在了读者手里，而它恰恰是整篇文章声称要解决的问题。</p></div>
+  <div data-page-node-id="EVYAOPMNhKa87OrneVyeFS" class="bnd"><div data-page-node-id="12nDKCV6dYKWDILcAA2p6u" class="bnd-t"><!--pnid:J5mju2nMY5mm7tNgxAHwTT-->框架与直接 API 的取舍漏了一个变量</div><p data-page-node-id="xCW3bMAld2lwMULgugmsfQ"><!--pnid:6nYYx8z1AvZVtDVvIy0nWF-->漏了迁移成本。理解底层代码这个要求是对的，但当换模型、换供应商、换工具格式时会发生什么，文章没提。用 API 直接搭的系统，迁移成本是重写；用框架搭的系统，迁移成本可能是改配置。这个变量会实质改变「先别用框架」这个建议在企业环境里的分量。</p></div>
+</div>
+
+</div>
+
+<script data-page-node-id="AtjBNk21tduv8VYNzSSpO5" data-pnid-children="XVdOUgc6YW8wk6TGNJ1x1h">
+function setM(m){
+  document.body.classList.toggle('present',m==='pres');
+  document.getElementById('bRead').classList.toggle('on',m==='read');
+  document.getElementById('bPres').classList.toggle('on',m==='pres');
+  document.getElementById('hint').textContent = m==='pres'
+    ? '投屏态：细节已折叠，一屏一个论点'
+    : '阅读态：表格与细节完整展开';
+  window.scrollTo({top:0,behavior:'instant'});
+}
+if(location.hash==='#pres')setM('pres');
+</script>
+</html>

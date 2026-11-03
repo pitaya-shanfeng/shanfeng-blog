@@ -1,0 +1,1028 @@
+---
+title: RAG 怎么搭才不翻车
+published: "2026-11-03 13:20"
+description: 先分两层再谈优化：答案根本不在召回上下文里，属于知识库治理（版本冲突、覆盖缺失），调检索器救不了；答案在却答错，才轮到检索与生成。七类失败点归位，分块与 ANN 选型，检索前中后逐招拆开，实测数据把「混合检索不能无脑拼接」钉死。
+category: 拾遗/学习笔记
+tags:
+  - RAG
+  - 检索增强生成
+  - 知识库治理
+  - 认知与设计
+draft: false
+---
+
+<!DOCTYPE html>
+<html data-page-node-id="6Ao5pW3IeZPqjXU6Vt1dNK" lang="zh-CN">
+<head data-page-node-id="w59HFXpJaTxzsul5TQTPiH">
+<script data-page-node-id="6sXyznCqY0SwZf4EF0B8eq" src="/page/page_comm/inject.js"></script>
+<meta data-page-node-id="qS7D0gktSl7L3CigU4iI2T" charset="UTF-8">
+<meta data-page-node-id="T6tliFiDsMwOLX8gvgFpJN" content="width=device-width,initial-scale=1" name="viewport">
+<title data-page-node-id="2WUIkgoCS8Fj9wcJrJ4cvQ" data-pnid-children="T3Qenhole6WU8BEfajEBI2">认知与设计 · RAG 怎么搭才不翻车</title>
+<style data-page-node-id="gogQX3a9njej3ZSgYxuwK2" data-pnid-children="YAZS8ZGdSbtb2cu2TfeDrU">
+:root{
+  --ink:#1f2937; --ink2:#334155; --ink3:#6b7f76;
+  --teal:#0d9488; --teal2:#10b981; --teal-bg:#f2fbf6; --teal-line:#d7f3e7;
+  --amber:#b45309; --amber-bg:#fff7ed; --amber-line:#fed7aa;
+  --red:#be123c; --red-bg:#fff1f3;
+  --card:#fff; --line:#e3ede7; --bg:#f3f7f5;
+}
+*{box-sizing:border-box}
+body{margin:0;padding:36px 16px 64px;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;font-size:17px;line-height:1.92;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06)}
+.cover{position:relative;background:linear-gradient(135deg,#0e7490 0%,#0d9488 52%,#34d399 100%);color:#fff;padding:56px 40px 44px;overflow:hidden}
+.cover .kicker{display:inline-block;font-size:13px;letter-spacing:2px;color:rgba(255,255,255,.82);margin:0 0 12px;font-weight:600}
+.cover h1{font-size:30px;line-height:1.4;margin:0;font-weight:700;letter-spacing:.5px;color:#fff}
+.cover .tagline{margin-top:16px;font-size:15px;color:rgba(255,255,255,.92);line-height:1.7;border-top:1px solid rgba(255,255,255,.28);padding-top:14px;max-width:92%}
+.cover .topics{margin:18px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+.cover .topics li{background:rgba(255,255,255,.16);font-size:12.5px;padding:5px 11px;border-radius:14px;color:#fff}
+.brand{position:absolute;top:22px;right:30px;display:flex;align-items:center;gap:9px}
+.brand img{width:36px;height:36px;mix-blend-mode:screen;border-radius:8px}
+.brand span{font-size:12.5px;font-weight:600;color:#fff;letter-spacing:1px}
+.inner{padding:0 40px 8px}
+.wrap{counter-reset:secnum}
+.sec{margin:34px 0 0}
+.sec-h{display:flex;align-items:baseline;gap:12px;font-size:21px;font-weight:700;margin:46px 0 14px;padding:0;color:var(--ink);counter-increment:secnum}
+.sec-h::before{content:counter(secnum,decimal-leading-zero);color:#fff;font-size:13px;font-weight:700;letter-spacing:1px;background:linear-gradient(135deg,#0e7490,#0d9488);padding:4px 10px;border-radius:6px;flex:none;box-shadow:0 1px 3px rgba(13,148,136,.25)}
+.sec-sub{font-size:13px;color:var(--ink3);margin:0 0 16px}
+h3.sub{font-size:16.5px;color:#0f766e;margin:26px 0 8px;font-weight:700}
+.lead{background:var(--teal-bg);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:15px 18px;margin:16px 0;font-size:16px;line-height:1.8;color:var(--ink2)}
+.card{background:#fafdfb;border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:14px 0}
+.figcard{background:linear-gradient(135deg,#f0fdfa,#ecfdf5);border:1px solid var(--teal-line);border-radius:12px;padding:16px 16px 14px;margin:18px 0}
+.figcard .cap{text-align:center;font-size:14.5px;color:#0f766e;font-weight:700;margin:2px 0 12px;letter-spacing:.5px}
+.figcard svg{display:block;width:100%;height:auto;max-width:680px;margin:0 auto}
+.cap{font-size:13px;font-weight:600;color:var(--teal);letter-spacing:.04em;margin:0 0 8px}
+.note{font-size:13.5px;color:#475569;line-height:1.65;margin:12px auto 2px;max-width:640px}
+.pull{font-size:17.5px;line-height:1.75;color:#065f46;border-left:4px solid #0e7490;padding:4px 0 4px 20px;margin:22px 0;font-weight:500}
+.code{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:16px 18px;margin:16px 0;overflow-x:auto;white-space:pre-wrap;font-family:"SF Mono",Menlo,Consolas,monospace;font-size:12.5px;line-height:1.8}
+.code .c{color:#64748b}.code .g{color:#34d399}.code .y{color:#fbbf24}
+table.tbl{width:100%;border-collapse:collapse;margin:18px 0;font-size:14px;line-height:1.6;background:#fff}
+table.tbl th{background:#f4faf7;font-weight:600;text-align:left;padding:9px 11px;border:1px solid var(--line);color:var(--ink2);white-space:nowrap}
+table.tbl td{padding:9px 11px;border:1px solid var(--line);vertical-align:top;color:var(--ink2)}
+table.tbl tr:nth-child(even) td{background:#fafbfd}
+.kv{color:var(--ink);font-weight:600}
+.amber{background:var(--amber-bg);border:1px solid var(--amber-line)}
+.amber .cap{color:var(--amber)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tag{display:inline-block;font-size:11.5px;background:var(--teal-bg);color:var(--teal);border:1px solid var(--teal-line);border-radius:12px;padding:2px 9px;margin:2px 3px 2px 0}
+.pill{display:inline-block;font-size:11.5px;padding:2px 9px;border-radius:12px;background:#eef2ff;color:#4338ca}
+.danger{background:var(--red-bg);border:1px solid #fecdd3}
+.danger .cap{color:var(--red)}
+svg text{font-family:-apple-system,"PingFang SC",sans-serif}
+.axis{font-size:11px;fill:#64748b}
+.box{fill:#fff;stroke:#0d9488;stroke-width:1.5}
+.boxg{fill:#f1f5f9;stroke:#94a3b8;stroke-width:1.2}
+.box-a{fill:#fff;stroke:#b45309;stroke-width:1.5}
+.box-a2{fill:#fffbeb;stroke:#b45309;stroke-width:1.5}
+.box-r{fill:#fff;stroke:#be123c;stroke-width:1.5}
+.box-l{fill:#ecfdf5;stroke:#0d9488;stroke-width:1.5}
+.txt{fill:#1f2937;font-size:12.5px}
+.txtw{fill:#fff;font-size:12.5px;font-weight:600}
+.small{font-size:11px;fill:#64748b}
+.halo{paint-order:stroke;stroke:#f4fdf9;stroke-width:4px;stroke-linejoin:round}
+.flow{stroke:#72908a;stroke-width:1.5;fill:none;marker-end:url(#ar)}
+.end{margin:40px;padding-top:16px;border-top:1px solid var(--line);color:var(--ink3);font-size:13px;text-align:center}
+@media (max-width:640px){
+  body{padding:0;font-size:16px}
+  .wrap{border-radius:0;box-shadow:none}
+  .cover{padding:40px 22px 34px}
+  .cover h1{font-size:25px}
+  .inner{padding:0 22px}
+  .brand{top:16px;right:18px}
+  .brand img{width:30px;height:30px}
+  .brand span{font-size:11.5px}
+  .grid2{grid-template-columns:1fr}
+  table.tbl{table-layout:fixed;font-size:11px}
+  table.tbl th,table.tbl td{padding:7px 6px;word-break:break-word}
+}
+</style>
+</head>
+<body data-page-node-id="MxE6mpBynejwl0munoDNgP">
+<div data-page-node-id="nuTO4wkXTGfUd5EB7ZQFQz" class="wrap">
+
+<div data-page-node-id="b08EYPkyYAZSNMZFfdKqKQ" class="cover">
+  <span data-page-node-id="xqrRvGJ29AWMsnYPzhfz8r" class="kicker"><!--pnid:3Iz5PrAhjgGGXE3TcZVD1R-->认知与设计</span>
+  <h1 data-page-node-id="YZqx72AdAnBHLxmzgi5O4f"><!--pnid:UlkF1qkLoP58LOx82YurAl-->RAG 怎么搭才不翻车</h1>
+  <p data-page-node-id="BfUuqxwFbMUql9vFAg1PsI" class="tagline"><!--pnid:U3I3znN9i1YjIBQUhktGK2-->检索增强生成（RAG）把外部知识库接给大模型，用来压住幻觉、给出可溯源的答案。但它在工程里是一条多段链路。索引、检索、生成任何一段没处理好都会答非所问。本篇从链路结构、失败点、分块、检索算法、检索前中后优化，到评估与治理，给出一套能落地的完整判断。</p>
+  <ul data-page-node-id="EaVcg8wPRuB3X61Am4eYmC" class="topics">
+    <li data-page-node-id="mm3XP9PSC0tpAiQKCwmM5u"><!--pnid:duHcSoFquCJLt5lYXuFCbx-->原生 / 增强 RAG</li><li data-page-node-id="Kgk71cgrE415H0BN3dIEtP"><!--pnid:YamtlaWAUrDPHeb2ctIuFc-->七类翻车点</li><li data-page-node-id="Y6G7hULTiK0ib2pyRyta9u"><!--pnid:BnMcXFE3zBcRyYxPjVuGZV-->分块策略</li><li data-page-node-id="n8daW7OWaOPl2UBkTl7PA1"><!--pnid:UW45VW3PnHgdLm18VmwAIO-->向量检索算法</li>
+    <li data-page-node-id="VhRPsyL6KKSwnouf8sFbXo"><!--pnid:rSafvS1OcDz22SG8pb58Zo-->检索前中后优化</li><li data-page-node-id="tbUQZAITRjWzAbCZpImHX9"><!--pnid:pd1EZjpZO8hzpSY8i65n9X-->四指标评测</li><li data-page-node-id="WHSSrqMGy8pzPgh67iwGnJ"><!--pnid:FINMZTIJp4q5CC8nqPDnsl-->选型边界</li><li data-page-node-id="4DEgx6IRiLmdgnlATo6T5O"><!--pnid:bU6Ey2UATUBCVviKRTgt7C-->知识库治理</li><li data-page-node-id="NJFnGQ7yHqgUmPePlGtE22"><!--pnid:SveVy28fggJKjmAxwxY7bT-->真实案例归因</li>
+  </ul>
+  <div data-page-node-id="LNSb2UqPnD8GIa69xtC4Ll" class="brand"><img data-page-node-id="KYgbUTEjjAMRKdnorbBLVs" alt="logo" src="/assets/library/notes/rag-guide/logo.webp"><span data-page-node-id="x1KJi4bgrbR9jWDl2qw8z0"><!--pnid:FbriWLd6MU4l130L4y4rm3-->做个靠谱的产品经理</span></div>
+</div>
+
+  <div data-page-node-id="MHuHLbgJCc6IMp45xi9q7r" class="inner">
+
+<!--pnid:S7q4RSlG3A1F2k2Th0emI2--><!-- 01 概念界定 -->
+<section data-page-node-id="8wBcpF3o4cN7gOtTK9Y4k7" class="sec">
+  <h2 data-page-node-id="wUnzbUCwjAcyaPbvNEXtWJ" class="sec-h"><!--pnid:lAL0JosfOLLKWmNprHQX6I-->概念界定：原生 RAG 与增强 RAG</h2>
+  <p data-page-node-id="eJqsas6pqmWvlL7coFmSvi" class="sec-sub"><!--pnid:HQW80LLxV2qt82U5Zw3i2u-->先分清两种形态，后面所有优化都是「增强」在做的事</p>
+  <div data-page-node-id="iTk4Z8Li7IjvKmesvkXC4P" class="lead">
+    <strong data-page-node-id="5cpLlmefN1mhoVRFeuNTWp"><!--pnid:eZcrPERCvfrmhEwmvlaO0W-->原生 RAG（Naive RAG）</strong><!--pnid:BhHJE5LHhPdqZK5R5G2tcV-->是最朴素的链路：用户提问 → 向量检索出相关片段 → 拼进提示交给大模型生成。它快、好理解，但把「检索质量」「问题理解」「上下文整合」全交给最基础的向量相似度，翻车率很高。<br data-page-node-id="J4VA50CzzFuOz2jtUfMgpX">
+    <strong data-page-node-id="ozTHHAkQLblw5ExtslFy7H"><!--pnid:mX8nCRdGh25acs4bzlBRwT-->增强 RAG（Advanced RAG）</strong><!--pnid:ceBe8zoBKzCzjb9kz2KNBT-->重点仍聚焦检索阶段，但在「检索」之外增加了<strong data-page-node-id="7q5fXTJ3MB8tBXQgFjr8WZ"><!--pnid:aDE2NlkMRHHFA65W8Ltlcm-->检索前（Pre-Retrieval）</strong><!--pnid:LcJynyUdb2ymyzSc3IcRnD-->与<strong data-page-node-id="s3qTVxEnpA4kQwbiljL3Gt"><!--pnid:gNPHU3su8O3NFlUojn5YDS-->检索后（Post-Retrieval）</strong><!--pnid:yuOCVVg0Pr7Dr5DzobHoms-->两段处理：检索前优化索引结构与查询方式，检索后做重排与上下文压缩。这里讨论的痛点与解法，几乎都落在这两段里。
+  </div>
+
+  <div data-page-node-id="gH86wHK4uMzSzlS6E9pMMX" class="figcard">
+    <div data-page-node-id="w9JJClbHJYMSnkDPeaHQnd" class="cap"><!--pnid:lsWOk1gXsKGZdAFtHjh4JJ-->图 1 · RAG 全链路：索引侧 + 查询侧（橙色为增强 RAG 新增环节）</div>
+    <svg data-page-node-id="u13TE4mjpWUx2bphSywcWV" aria-label="RAG全链路结构" role="img" viewBox="0 0 680 296">
+      <defs data-page-node-id="ljNMWptYBr2fm8aUYGfne9">
+        <marker data-page-node-id="HlUXSBFlsXduluxCZXG10Q" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="ezhkchmOp1GIERqZle0Cmg" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker>
+      </defs>
+      <!--pnid:nzZunsZsFJTmPzP9yDTC5z--><!-- 索引侧泳道 -->
+      <rect data-page-node-id="I6uZuZhmiRsgUdDECNRJeU" fill="#f8fafc" height="66" rx="10" stroke="#e2e8f0" width="664" x="8" y="30"/>
+      <text data-page-node-id="d9PRHZ7QabxtmYb537F5vf" class="small" fill="#475569" font-weight="700" x="20" y="52"><!--pnid:9o2xybYgkEKHiJWVcBHSHP-->索引侧 · 离线构建</text>
+      <rect data-page-node-id="f1ov97nwMLo1SewHB29w5q" class="boxg" height="40" rx="8" width="80" x="120" y="46"/><text data-page-node-id="JNxGMZh0St7isJuILBweng" class="txt" text-anchor="middle" x="160" y="70"><!--pnid:YejL4Kcig3vYZOABvn9OlP-->文档库</text>
+      <path data-page-node-id="IoTXP2PriaeB2maGzutOf3" class="flow" d="M200,66 L222,66"/>
+      <rect data-page-node-id="k8zWFN8p6T0sbYzKTWhCXX" class="boxg" height="40" rx="8" width="92" x="224" y="46"/><text data-page-node-id="7fCnhX25XSKjmlCn11MIR1" class="txt" text-anchor="middle" x="270" y="64"><!--pnid:4XaT0Nr7ZSWPWmFQc39cgT-->解析·清洗</text><text data-page-node-id="YAmNuE5gQ1GnL9IbBPxvei" class="small" text-anchor="middle" x="270" y="79"><!--pnid:wEL70FtIsPGQXykYbxXzdw-->格式统一·去噪</text>
+      <path data-page-node-id="AllTsaai4aJA4UcwINkjjm" class="flow" d="M316,66 L338,66"/>
+      <rect data-page-node-id="oE88v5lGqZdF8KjlW1Xn2Y" class="box-a2" height="40" rx="8" width="72" x="340" y="46"/><text data-page-node-id="fzZ3khMUk2f7wxUC0dAfuv" class="txt" text-anchor="middle" x="376" y="64"><!--pnid:DyOsxoJJBpxlPLu7gZ7kNx-->切分</text><text data-page-node-id="SyWOzzLER2iLEQivwY5IYp" class="small" text-anchor="middle" x="376" y="79"><!--pnid:7PXW6hhq1QDSZkcMXwn1Kr-->分块策略</text>
+      <path data-page-node-id="02vCiiiLKMArRuoEnJJGyw" class="flow" d="M412,66 L434,66"/>
+      <rect data-page-node-id="5FSCVciI0GKTeyK8x6BzGc" class="boxg" height="40" rx="8" width="92" x="436" y="46"/><text data-page-node-id="M1FlYs6lh57aXnlQ1lzXuW" class="txt" text-anchor="middle" x="482" y="64"><!--pnid:BRcOGNcarUv724k54o1V9g-->向量化</text><text data-page-node-id="4Jma8f1FkrenSbmK6kcjzY" class="small" text-anchor="middle" x="482" y="79"><!--pnid:8PUio8X0miesKLAfHUyyOJ-->Embedding</text>
+      <path data-page-node-id="pkqjFNDBEK4d3PXPLnRtUZ" class="flow" d="M528,66 L550,66"/>
+      <rect data-page-node-id="xpcAhqD3vQS0sEQhhnn8GJ" class="box-l" height="40" rx="8" width="88" x="552" y="46"/><text data-page-node-id="PTSDVLvA3z9iTO1MVWuNnP" class="txt" fill="#0f766e" font-weight="600" text-anchor="middle" x="596" y="70"><!--pnid:DhCQGqFoCStRqqQLq0BisI-->向量知识库</text>
+      <!--pnid:fTGQIE4NDq1sDo7TyW8f2J--><!-- 向量库 -> 检索 -->
+      <path data-page-node-id="YU9Uu6vQjf9nA8yz4H0miY" class="flow" d="M596,86 L596,116 L272,116 L272,158"/>
+      <!--pnid:KzO1i7uBQnzWoskj9A3Fiy--><!-- 查询侧泳道 -->
+      <rect data-page-node-id="2UJZSKTyOKtsBVHFRCpxTs" fill="#fff" height="66" rx="10" stroke="#e2e8f0" width="664" x="8" y="142"/>
+      <text data-page-node-id="v2G0j3KjFP4VwohHDb5XSe" class="small" fill="#475569" font-weight="700" x="20" y="156"><!--pnid:h1ejf1cfSIK0HNBFGltXi8-->查询侧 · 在线应答</text>
+      <rect data-page-node-id="1ICBQCwuszW6NAHIuWQqLd" class="boxg" height="40" rx="8" width="80" x="16" y="162"/><text data-page-node-id="1YJUDxgrGE7Jg2V3PH4gnm" class="txt" text-anchor="middle" x="56" y="186"><!--pnid:PzcfUhjAdWhfErlyxXYQCI-->用户提问</text>
+      <path data-page-node-id="SX8R4t4Md4vD543vDEIVvK" class="flow" d="M96,182 L118,182"/>
+      <rect data-page-node-id="7pKFkC9YCvpzJPGadb4Z4I" class="box-a" height="40" rx="8" width="92" x="120" y="162"/><text data-page-node-id="p7CDTtpnVuY48HwD3iyIXc" class="txt" text-anchor="middle" x="166" y="180"><!--pnid:rmwulrzr70nYKoWEKElDJk-->查询优化</text><text data-page-node-id="aeJWusCEvrilieTkLMnEfh" class="small" text-anchor="middle" x="166" y="195"><!--pnid:Ko50JGYr2JdltSTMkmgEgU-->改写·多路·分解</text>
+      <path data-page-node-id="TdnsIpKETTlS9j5qOc17wH" class="flow" d="M212,182 L234,182"/>
+      <rect data-page-node-id="bsxFjtDmitjVz54j1Oaqll" class="box" height="40" rx="8" width="72" x="236" y="162"/><text data-page-node-id="yWmgyNqlMTgu0PiL9syFB2" class="txt" text-anchor="middle" x="272" y="186"><!--pnid:UnOELZcS0df749CBb8q9fg-->检索</text>
+      <path data-page-node-id="lbWKsfdYp7aexOY4AJ9323" class="flow" d="M308,182 L330,182"/>
+      <rect data-page-node-id="Kvd238ne0InIwLScsazafN" class="box-a" height="40" rx="8" width="92" x="332" y="162"/><text data-page-node-id="ZxwvtBbHHiNbJDp1q5jlvj" class="txt" text-anchor="middle" x="378" y="180"><!--pnid:TgCe55KJu6ig82mbiiTeif-->重排·压缩</text><text data-page-node-id="ny5f7sloZprep4UjqZUxOW" class="small" text-anchor="middle" x="378" y="195"><!--pnid:ToVThcO35tErE33dEVtdA2-->Rerank·过滤</text>
+      <path data-page-node-id="p90m2Z7EwCbAVN8zmhSXXg" class="flow" d="M424,182 L446,182"/>
+      <rect data-page-node-id="Qr9XAwGDCDP8eozUMZkiFu" fill="#10b981" height="40" rx="8" stroke="#059669" width="96" x="448" y="162"/><text data-page-node-id="OetwzG9CvCJjFO6QpCyAjb" class="txtw" text-anchor="middle" x="496" y="180"><!--pnid:6RynL9ZoAhtVokf4ymBaCY-->大模型生成</text><text data-page-node-id="GqFaiNCMRp2eo9vFI6uAWm" class="small" text-anchor="middle" x="496" y="195" style="fill:#fff; font-weight:600"><!--pnid:MAH3qt5sXdVB8RF08LjWGv-->上下文拼进提示</text>
+      <path data-page-node-id="WMCLZlOXXuZNRjyBZKbGTA" class="flow" d="M544,182 L566,182"/>
+      <rect data-page-node-id="BAXczgWmQ3aytfaPjG2bqe" class="boxg" height="40" rx="8" width="72" x="568" y="162"/><text data-page-node-id="266GIEqHJK4W6rmOXna4eo" class="txt" text-anchor="middle" x="604" y="186"><!--pnid:TTQETDEMsYwfrg6Qsw2jqJ-->答案</text>
+      <!--pnid:eRuT3aIbGYQuSLnLdPvoFM--><!-- 阶段标注 -->
+      <text data-page-node-id="bNcQ0VI5JgtnDK1UQl7HZc" class="small" fill="#b45309" text-anchor="middle" x="166" y="222"><!--pnid:TP9Ulz5ZFtQImDn3DRedVF-->Pre-Retrieval</text>
+      <text data-page-node-id="SnhepxwVG3WcOWPO62jOSJ" class="small" fill="#b45309" text-anchor="middle" x="378" y="222"><!--pnid:u1gDzhO2Q5z4fb2kuOWTaj-->Post-Retrieval</text>
+      <!--pnid:gxVnnuuceYnIwPC8yclikq--><!-- 图例 -->
+      <rect data-page-node-id="XEtzfxDhLlFIdCaDpj4yKR" class="boxg" height="14" rx="3" width="14" x="120" y="238"/><text data-page-node-id="SI5nvKghJTtpFfHi3e9BQc" class="small" x="140" y="249"><!--pnid:OONg7f0nZHOjSEVeXxbBeH-->原生 RAG 已有环节</text>
+      <rect data-page-node-id="MQ5IB1yxOcdQJeuJsDlLeB" class="box-a" height="14" rx="3" width="14" x="266" y="238"/><text data-page-node-id="q8NrDMdSs5SAD8t629sD1z" class="small" x="286" y="249"><!--pnid:7BTskcguU1bf2FfenaB0Ve-->增强 RAG 新增环节</text>
+      <rect data-page-node-id="rSUtP4qlnUZGvMjETOv6U8" fill="#10b981" height="14" rx="3" width="14" x="412" y="238"/><text data-page-node-id="MZs6B80Q7hrNNTlpBuYmEe" class="small" x="432" y="249"><!--pnid:EJPYNsk2S46ZEwffvHaY71-->生成</text>
+      <rect data-page-node-id="mik7K7iSzuJohx1LHeh1U9" class="box-l" height="14" rx="3" width="14" x="486" y="238"/><text data-page-node-id="lOu7gA6I4S2JCtjh5UNIAo" class="small" x="506" y="249"><!--pnid:OYTr6HzokwheVPJlgneZHk-->知识存储</text>
+      <text data-page-node-id="cKEt8wl0ynNOWBwoi7Ca38" class="small" text-anchor="middle" x="340" y="282"><!--pnid:LbcVMlGBVU4NNRM01crMrn-->原生 RAG 只走「提问 → 检索 → 生成」主链；增强 RAG 在检索前后各加一道处理，索引侧的切分同样可优化。</text>
+    </svg>
+    <div data-page-node-id="ALaXPDIljDcLyJWyTFyWIe" class="note"><!--pnid:GFvBZMqC5bS8xdqJ0jxURu-->一句话区分：原生「检索到了就直接用」，增强「检索前先理顺、检索后再提纯」。生产环境几乎都该用增强形态。后文所有招数都挂在橙色环节上。</div>
+  </div>
+</section>
+
+<!--pnid:UPkFlclBgmtMkDxJ9CAYz7--><!-- 02 失败点 -->
+<section data-page-node-id="2zreYtNKjQvwR5SwAqzrvc" class="sec">
+  <h2 data-page-node-id="yWWyIlti0ezHVyuJMNzkIF" class="sec-h"><!--pnid:fDf00wrwbVI1gnnk8pu8bG-->检索链路为何翻车：七类失败点</h2>
+  <p data-page-node-id="HphpqdodtnKiYbwCb8qnXX" class="sec-sub"><!--pnid:nWATii6CKvlhHy1WtEWjbl-->翻车的根因分两层。外层靠治理，内层靠检索与生成调优</p>
+  <div data-page-node-id="gwHEUeLTXIeLqqiTiXEksC" class="lead"><!--pnid:yOjUObgLQbZhSXLDkUi2ap-->
+    一篇被广泛引用的工程经验报告（Barnett 等，2024，arXiv:2401.05856）把 RAG 系统的失败点归纳为七类，并按「索引构建过程」与「检索增强过程」两段归位。把它们按根因再归一次类，会发现一个关键结论：<strong data-page-node-id="fngOmhe5jmP87PqfAfEpFR"><!--pnid:5jprptpNdLwuqPV5MnH664-->一部分翻车是知识库本身的问题（外在），RAG 检索再强也救不了；另一部分是链路处理的问题（内在），可以靠增强手段解决。</strong><!--pnid:i4f1w1gH1OemgYU40tUOjR-->这正好呼应「答案在输入里才治得了幻觉」的判断。
+  </div>
+
+  <div data-page-node-id="ANtMPvFApOyMDNCzHSRpc2" class="figcard">
+    <div data-page-node-id="X3F3Ot3xXTZLnzZgDgcTVl" class="cap"><!--pnid:KVeOzX6RHn5TyHR7yqbCio-->图 2 · 失败点在链路上的分布：索引构建过程 vs 检索增强过程</div>
+    <svg data-page-node-id="B9cnJtovdENYlvY1ETqdfu" aria-label="失败点分布" role="img" viewBox="0 0 680 322">
+      <rect data-page-node-id="KrIx3eSSYcbo6yKp2AFCKK" class="box-r" height="40" rx="8" width="120" x="16" y="40"/><text data-page-node-id="yVBG0DbWL748ntu4XacMrN" class="txt" fill="#be123c" text-anchor="middle" x="76" y="64"><!--pnid:AZOLrosgjaYGYVrjytw5gk-->知识库·治理</text>
+      <path data-page-node-id="I3RSrrQFhIVqihReDPVKDG" class="flow" d="M136,60 L172,60"/>
+      <rect data-page-node-id="mCU3uztK86zOahn7izfhtj" class="boxg" height="40" rx="8" width="130" x="176" y="40"/><text data-page-node-id="1ALMs1hseGSa7KFsvy7msA" class="txt" text-anchor="middle" x="241" y="58"><!--pnid:x4VyjyZc3tvAO91zSvc6T6-->索引构建</text><text data-page-node-id="vKZrsxtgMcpTJh1kyGn0nO" class="small" text-anchor="middle" x="241" y="73"><!--pnid:ZP104tNMFmMwcwqUF9hOwt-->加载 · 切分 · 向量化</text>
+      <path data-page-node-id="bicD2QD9qNaUK55UKZIXwr" class="flow" d="M306,60 L342,60"/>
+      <rect data-page-node-id="LpPXZsO3DJk4ExtyJJJogz" class="box" height="40" rx="8" width="100" x="346" y="40"/><text data-page-node-id="pLiM0WVmxGIFpSOeZUbAqY" class="txt" text-anchor="middle" x="396" y="64"><!--pnid:qVjyojnl9sFxKDe4CFNKAN-->检索</text>
+      <path data-page-node-id="CBVTfrvZjYvxjCl6vGC2uZ" class="flow" d="M446,60 L482,60"/>
+      <rect data-page-node-id="GTVQIXGjfxVwNZ9cfFUAjE" fill="#10b981" height="40" rx="8" stroke="#059669" width="110" x="486" y="40"/><text data-page-node-id="Vm60GtPyn90LN2oLwpKUKe" class="txtw" text-anchor="middle" x="541" y="64"><!--pnid:O1AOpzTN2qgavWDM7P40b2-->生成</text>
+      <!--pnid:dXMcPF4I9r4qKFQegq3blZ--><!-- 左组：索引构建过程 -->
+      <rect data-page-node-id="oK6nx0nTE3wR6DWi7vexcF" fill="#fff5f6" height="168" rx="10" stroke="#be123c" stroke-dasharray="5 4" width="290" x="16" y="116"/>
+      <text data-page-node-id="MLRqDT7xAvPdpa9rmtNCo7" fill="#be123c" font-size="13" font-weight="700" x="30" y="140"><!--pnid:KuGc4uIeHC6KEdKp7Sg43O-->索引构建过程的失败点</text>
+      <text data-page-node-id="v1onIJRWpeMjhULKMwXCsv" class="txt" font-size="12" x="30" y="166"><!--pnid:YsmkcSvHlki3Bljx0FlKod-->· 内容缺失：答案根本不在库里</text>
+      <text data-page-node-id="1K8kmb1tohoUvi0tUXltVb" class="txt" font-size="12" x="30" y="190"><!--pnid:nOZPvtITJoKyaUOOyGHLIT-->· 文档加载失真：PDF 表格 / 图片提取</text>
+      <text data-page-node-id="lL8zn1jjBHbgWZpD2npwiB" class="txt" font-size="12" x="30" y="214"><!--pnid:Urn8ZP4R74FpwCP4cEkfhO-->· 切分粒度不当：太碎丢上下文、</text>
+      <text data-page-node-id="yb2dB7Yst2DyccIzYLSABr" class="txt" font-size="12" x="44" y="232"><!--pnid:e7LhoLMTRzYGVK2CF7EYyY-->太大灌噪声</text>
+      <text data-page-node-id="mTyafYhKqghGZr7ArdUtfu" class="small" x="30" y="256"><!--pnid:8nO6Hq2KSWIOBDLtMSP8LC-->前段问题靠知识库治理与分块策略解决，</text>
+      <text data-page-node-id="HdxiSl36z9JS9ohZ7tcAMn" class="small" x="30" y="274"><!--pnid:FXOV5dneOcqVSW6QA4fKGP-->属外在层——检索器再强也救不了。</text>
+      <!--pnid:86XBYfHaVXbWkjksenWUVC--><!-- 右组：检索增强过程 -->
+      <rect data-page-node-id="3JcXc6PFS0uAdBOmjSdHuw" fill="#fff" height="168" rx="10" stroke="#0d9488" stroke-dasharray="5 4" width="334" x="330" y="116"/>
+      <text data-page-node-id="9bOFnZarvhNGdBzh7SZBnm" fill="#0f766e" font-size="13" font-weight="700" x="344" y="140"><!--pnid:J7hYmdPKrzlK97hltsrXbo-->检索增强过程的失败点</text>
+      <text data-page-node-id="6PP3WgsgKkeM0HdGlRDmBS" class="txt" font-size="12" x="344" y="164"><!--pnid:lP7B1oGTvbJYAzYoxNrq66-->· 错过排名靠前的文档：答案在第 6 名，只取前 5</text>
+      <text data-page-node-id="dLQSggYUz3vxuc0R6eLwaU" class="txt" font-size="12" x="344" y="186"><!--pnid:BfawyhEvywssHY1QLacvre-->· 不在上下文：提取的上下文与答案无关</text>
+      <text data-page-node-id="FAj4I37iRCr2Ub1tZ0tw2G" class="txt" font-size="12" x="344" y="208"><!--pnid:7Yw14HQs5B5T500AtoM0zs-->· 未提取到答案：上下文有，模型没抓出来</text>
+      <text data-page-node-id="5bCqgKPVNIlTpGTcuJ9clD" class="txt" font-size="12" x="344" y="230"><!--pnid:X3YaxjT3sjmMcTHjllgvCD-->· 格式错误：要 JSON 给了字符串</text>
+      <text data-page-node-id="apFp0nbi30UnqxSb9AxjMB" class="txt" font-size="12" x="344" y="252"><!--pnid:Zhex84eo2CDoXlsMbTBWqW-->· 具体度不当：答案太笼统或太细</text>
+      <text data-page-node-id="EPcR59QjXFAqWvsK4ZQt2y" class="txt" font-size="12" x="344" y="274"><!--pnid:OckuwnAGLXyILuuxdUby9q-->· 答案不完整：只回答了一部分</text>
+    </svg>
+    <div data-page-node-id="GrRrS5dFy057DgWb9utuQ2" class="note"><!--pnid:suoxGCvRy8bGZqRIMqpbTT-->判断第一问永远是：<strong data-page-node-id="GAaOhzjSfcZ2R7CT0ogFKs"><!--pnid:RZ1bpc22hpEyHTuIqXVGwR-->答案到底在不在召回回来的上下文里？</strong><!--pnid:QgXHFrd5KeSBpCSfMFLM3S-->不在 → 外在（治理）；在但答错 → 内在（链路调优）。</div>
+  </div>
+
+  <div data-page-node-id="1oqitODFvCa6o0Xfwkamjz" class="card">
+    <div data-page-node-id="F9CEPhd6ESbqMFGAmPMDZL" class="cap"><!--pnid:rD9SRByFMDRbrxs3rFoVkz-->表 1 · 七类失败点与对应解法</div>
+    <table data-page-node-id="4pQjNoZaT6nGEhY2pFusqc" class="tbl">
+      <tr data-page-node-id="N01qgGRHAKJWACahTeEbMS"><th data-page-node-id="08uXEviDaRYtMN1YyrvgQ3"><!--pnid:kGZOKScq4n9ES9uozJKL1v-->失败点</th><th data-page-node-id="HQAaqYjRJ8NIWMZEhV6SJT"><!--pnid:vHCfYkrt5EUHQh119oAM5V-->所在段</th><th data-page-node-id="9WU5H394iUzG877xvy9q33"><!--pnid:nDZLVy3FL3ewZGo6q6tQu7-->典型表现</th><th data-page-node-id="rZVRwvJdgTIBqwDFMfx2hj"><!--pnid:uVP1qdtgdZkLLCpM9xpvqF-->解法方向</th></tr>
+      <tr data-page-node-id="hzw6QolokQKOaySPvFmvWT"><td data-page-node-id="IfCuKAVGwajuSj29TOLyXO" class="kv"><!--pnid:kOpWO17IaRJkoZxR7oIgHA-->内容缺失</td><td data-page-node-id="3IKMK8e2fFIVslBYnIqXCR"><!--pnid:7TO7PvQTy4T2daTDlelx92-->知识库治理（前）</td><td data-page-node-id="EuSnU8kwbLl75JzrbwHHUz"><!--pnid:GJLmX5B7lHeAZ1CQgr3j35-->答案压根不在库里，模型给看似合理实则错的答案</td><td data-page-node-id="3NYPA20rKtsqGM8cZ8upFX"><!--pnid:kO3bmtumsDxrPYF9pmQI4j-->补录知识库、数据清洗、提示「找不到答案就明说」</td></tr>
+      <tr data-page-node-id="61CHsaUEKtF2xAlSo6f3To"><td data-page-node-id="ccytjzBbGLUWOsZNcozWpx" class="kv"><!--pnid:Dvc7Em9nMW6Gf9IdBqz3Br-->错过排名靠前的文档</td><td data-page-node-id="u8fVnBkO6GDxxy1iVrQGzy"><!--pnid:7UvWwI3b3YkJ3jjoSfN52b-->检索 / 重排</td><td data-page-node-id="rgj0ZcQx8vycXApAhQ6mEq"><!--pnid:OSdCTS0DPZcrMYUX9V1XRo-->召回 top5，但正确答案在第 6 条</td><td data-page-node-id="kU3JLamSNNfQn5lFyrAWyc"><!--pnid:J9FRHI5Fj502kbW1tYYzdC-->加大 topK（注意 token 与干扰代价）、重排 rerank</td></tr>
+      <tr data-page-node-id="Drmt0zpBx8wtpvCNLflpjH"><td data-page-node-id="8ASq4Du4ExwQ2XbaRBQs10" class="kv"><!--pnid:ypyIhHs6wo9u2m78WIptiT-->不在上下文</td><td data-page-node-id="Fr8JUXHovRjBz6IrwE91OQ"><!--pnid:90xPojjNCUPMwms0oF7S39-->上下文拼接</td><td data-page-node-id="xWn9GxEIpEwhLDEBIQTbMF"><!--pnid:71i9u58GJnKbmd8T0hT2s9-->召回后拼进上下文的内容与答案无关</td><td data-page-node-id="QWDj6vbgs2vCA1P8FwbWnw"><!--pnid:e0UQuGW5evTgxutXFMtcWG-->更精准检索、上下文压缩、关键句强调</td></tr>
+      <tr data-page-node-id="VsZRIAWAjVtiRf7T4WMJ4j"><td data-page-node-id="8XceT3FY9ENQqmG7p9kz6w" class="kv"><!--pnid:UutbkSyunN4PDDvVUFPqHR-->未提取到答案</td><td data-page-node-id="zv6VsnLmUAAf4WCdEXcaB3"><!--pnid:g0unVmLVXaHqhoEUWEWehV-->生成</td><td data-page-node-id="2poH6gebGFnNFukHZRi5jI"><!--pnid:oaWSaJUTeaGHMH1b3aHfEJ-->上下文有答案，模型没提取出来</td><td data-page-node-id="h7ft67RsjlUU3p9127R7WW"><!--pnid:0O4QH2qCxAJ1kJlIh8xxoO-->更强模型、提示「必须基于上下文回答」</td></tr>
+      <tr data-page-node-id="BYVzqQl0ggP5CoPpS6vbXw"><td data-page-node-id="DdGs65fgVk3gf0Z69cctyy" class="kv"><!--pnid:0fyE05D44asl6vxERqZsCV-->格式错误</td><td data-page-node-id="j1tGjuNRy7tpTRguGOGnZd"><!--pnid:Gj5dkTqhuDpVoxQqhz5IH1-->生成</td><td data-page-node-id="bq0dQILJyQfilneAz9mBsM"><!--pnid:R24DfEq8vUy3hQulUoefNW-->要 JSON 给了字符串</td><td data-page-node-id="n9LlCxkoJ2j4aZfB6bCFa6"><!--pnid:AgcS9phNOgPxSTchuPXFnA-->提示调优、格式校验（如输出解析器）、自动修复</td></tr>
+      <tr data-page-node-id="GI4oFYOu1dwkCMR91br1mQ"><td data-page-node-id="8r2fA6qBzafRIpMaaEIjdx" class="kv"><!--pnid:bUnH0Tr3LAEtim13lkfY8D-->具体度不当</td><td data-page-node-id="PyschBHOQKSeqZxGJAff7r"><!--pnid:D3uY8HAT0LRvfdTHmmv4ie-->生成</td><td data-page-node-id="8hEaepEPpmwdGiTqMKGJe2"><!--pnid:i9RMFLzPpPIwbIrdqfUNy4-->答案太具体或太笼统</td><td data-page-node-id="Z7E4jUpivglRUGlHuQniqA"><!--pnid:XQjFwCD7JPfNmZyUebkrDC-->提示改善、提升基座模型能力</td></tr>
+      <tr data-page-node-id="HqnfeboJjQhnOnGSbMIF8P"><td data-page-node-id="FoaAvhr44Ejq8dRuCbovl6" class="kv"><!--pnid:TtOmJebMdH2IFtNEC0QST9-->答案不完整</td><td data-page-node-id="QsmT6C3BZCZY7iVkK892Dj"><!--pnid:vh6LWmDpbewqY9xlWcs2Hl-->生成</td><td data-page-node-id="a6Fv2SQgPP46f45jGZ0KxG"><!--pnid:MyTMSZukyhaM2kvHCsbuiw-->只回答了问题的一部分</td><td data-page-node-id="vw7wOsiiCaiEpotQDRjZDD"><!--pnid:0ZMKMAjculVOfL79Qd7XYB-->问题拆成子问题，并行 / 串行求解后汇总</td></tr>
+    </table>
+  </div>
+</section>
+
+<!--pnid:hIAJ2Noi0MjA0zqSYR1iCO--><!-- 03 分块策略 -->
+<section data-page-node-id="jrNLhXuA7jv5DsJe872BaG" class="sec">
+  <h2 data-page-node-id="2lzfrrGVTMuAsmu2T5H8yx" class="sec-h"><!--pnid:O1DWxnXCopY26ogW2HQ5Zq-->分块策略：决定召回上限的第一步</h2>
+  <p data-page-node-id="P0gpHOScLFVwNU0DR1qqjh" class="sec-sub"><!--pnid:bqYRBUvhNv2DS2wnIlpsO9-->切分的大小和位置，直接影响检索出的上下文完整性与 token 成本</p>
+  <div data-page-node-id="aIvT9bjqfC1JFvDz4gZRR9" class="pull"><!--pnid:GC36rj6TWTfYXsKyGQvCGX-->「分块质量几乎决定了 RAG 系统的性能上限。」即使换上高性能大模型和精心设计的提示词，分块不当仍会导致上下文缺失、事实性错误、拼接不连贯与幻觉。</div>
+  <div data-page-node-id="9zpye7VRsSgETHHc90Jk4C" class="lead"><!--pnid:pp9hLlWmHGc34JGc8cWQVe-->
+    为什么必须分块？一是模型上下文窗口有限；二是控制检索信噪比。块过大引入噪声、稀释关键信息，块过小缺乏上下文、难以理解语义；三是靠重叠窗口（overlap）缓解边界断裂，避免定义、条件等关键内容被拆散。理想状态是在<strong data-page-node-id="Hp3mKrHpyTvTys6GBbvlKP"><!--pnid:zZ5CPgrFXZZonfOpM94wL5-->「上下文完整性」与「信息密度」</strong><!--pnid:7YmMqmC3cXDSoExLleXFWP-->之间取得动态平衡。这也是检索块与生成块可以分开设计的原因。
+  </div>
+
+  <div data-page-node-id="lM7exnNzVMTlFVdfL0CE4M" class="card">
+    <div data-page-node-id="0NWPprQoP3TP3Aa5vZxIb3" class="cap"><!--pnid:rgzBMi7XKdLAtu0woAnStI-->表 2 · 分块策略分类、参数与适用</div>
+    <table data-page-node-id="U8jqSNXF3vkJx9rxL6yyBG" class="tbl">
+      <tr data-page-node-id="iQBM7GuHY600RF23mezjuN"><th data-page-node-id="mDMADFVnDtVjsqCVe3LqSD"><!--pnid:5TAKyJ4IfUViDKCAAL6uGL-->策略</th><th data-page-node-id="Vm6Y7plUXN0Z2SuszoZ7QI"><!--pnid:FYPzBrUamVmUmzkvugTqYc-->做法与关键参数</th><th data-page-node-id="1tZ48OOYJQnyg8E3ypnLhI"><!--pnid:72j437go1QP6GilEIroEQW-->适用场景</th><th data-page-node-id="nTNeTyk7XkTOMvEe0oLQnH"><!--pnid:DNGfu8LfKQ5FGokbYsN7bT-->注意</th></tr>
+      <tr data-page-node-id="dTwGfXRRdtL0m0hOnw6Qf2"><td data-page-node-id="jJ9vLbGA8ivEBP1iIDqzTX" class="kv"><!--pnid:KRR6yevW4bKOMYddok4XdC-->固定长度</td><td data-page-node-id="QcO7kgIUhk2xo3hVd8dTQi"><!--pnid:COHQfHmEmymaCln2MHfidP-->按字符数硬切；中文 chunk_size 300–800 字，overlap 10%–20%</td><td data-page-node-id="ZpHqnyGt5GOeFbuWGOcwX9"><!--pnid:gBNMcvhyfMM2CfskkYIcd1-->结构弱的纯文本、基线方案</td><td data-page-node-id="jv8jdlASkQF1GgkIUHCLCu"><!--pnid:HeaQGFYP2LKRhc9tZqKhmd-->极易破坏语义边界</td></tr>
+      <tr data-page-node-id="Xhkumi1GxfGuAPbKUFVghQ"><td data-page-node-id="t36iOVsuIQ4dujrHvUfQ3n" class="kv"><!--pnid:iBWOVGsUnayLrGfyhHC1uj-->句子 / 递归</td><td data-page-node-id="ZZ9b58B62Me2yiGav7BLiH"><!--pnid:kuLntCCtfAwplOnei8zR2d-->先句后段；递归按「标题→段落→换行→空格→字符」粗到细分隔符链切</td><td data-page-node-id="enXyeo1APAShgGYYxjZaEI"><!--pnid:Pu9MvmY2ixwjddNtppRevw-->说明文档、知识库条目、综合语料</td><td data-page-node-id="98bSk5tKp0INlPnw6i0Rtv"><!--pnid:JAKX3vDn3J8wjjmzM0gYuS-->中文分句别用 NLTK（不支持中文标点），用 HanLP / Stanza / 正则</td></tr>
+      <tr data-page-node-id="fm3GlBEHe6LDgFfxkZqdRY"><td data-page-node-id="zuIKLjZDgqoBIXn9gzNnR8" class="kv"><!--pnid:2se75f5DtrigiZ4590R85w-->结构感知</td><td data-page-node-id="X97SAS009Ln5fTbOdXMex4"><!--pnid:XxfzsFsXJq3F6SqNYBrnjQ-->以标题层级为父聚合内容，超长章节二次细分；注入父级路径（如「指南＞安装」）</td><td data-page-node-id="5OG5ZHlwCEr7SxJ4MMqFxN"><!--pnid:N9mCRO2J3EogIj6pLmDmZq-->技术文档、手册、白皮书</td><td data-page-node-id="bktaRq3Iokue37EclLZ9Qy"><!--pnid:5MwGYmhLWrnx43Ljn3kS96-->过短块在同父标题下合并</td></tr>
+      <tr data-page-node-id="qAEUbqYcdbppH3nOtLFgjc"><td data-page-node-id="KPPy9xqQa3cxlO7QxFbaWc" class="kv"><!--pnid:fK7Bknk92K9DLs13qmUOjA-->对话式</td><td data-page-node-id="Qv15ROnlA8lupOruLj6eoS"><!--pnid:7NavUdmV1bJeAoJ4O4wGWf-->以「说话人＋轮次」为单位，按话题窗口聚合；用轮次重叠而非字符重叠</td><td data-page-node-id="8LNCvj3BLZYrPB1sOJQL4W"><!--pnid:LJfYlcWnJPVOw43bN66rbn-->客服对话、会议纪要</td><td data-page-node-id="GU6cURekmJKOxUgim2PClA"><!--pnid:lAbWjJyZXPJ7k9AM9fQSnx-->召回后做「邻接扩展」（拼接前后轮次）</td></tr>
+      <tr data-page-node-id="JwSLNTtJ3TBOOO8orWRpyq"><td data-page-node-id="Csv7DIDxNtc4yW9jiMRFsn" class="kv"><!--pnid:6cwM0RB8iSnjD73HagWaX9-->语义 / 主题</td><td data-page-node-id="cjP0KLXVIPV660Picp25VT"><!--pnid:zzqUsHKoxY7El7duIBQfiG-->句向量相似度骤降处切分；或句向量聚类按主题切换点切</td><td data-page-node-id="xlFytAPVaKjt8wOL5XpsXQ"><!--pnid:CKSDNB4CN69ntfE8e9jXmr-->论文、白皮书、长篇报告</td><td data-page-node-id="y3O2Nsn15cFUiRG8ZApMVi"><!--pnid:LeqOn6PaUidyHtLnzn5eVP-->计算开销大，短文档效果有限</td></tr>
+      <tr data-page-node-id="fmLFyphrVQQv9PtcDlS4QC"><td data-page-node-id="47xY5IXoHU1vdK7Wp4hq3Y" class="kv"><!--pnid:276DyhEbnuF3eY1vAVNbL1-->小-大 / 父子</td><td data-page-node-id="a6IB0ECOoC2D8Ye0MuYLSu"><!--pnid:PcHwlZwGRaJRnFy9bcjQQy-->小块高精度召回，命中后回溯父大块给完整上下文</td><td data-page-node-id="M7rfNrdntqvTXoa9rfhfXC"><!--pnid:13LR6Qb9JBM1XfqrF8V9S1-->需句级证据 + 段落解释的问答</td><td data-page-node-id="1Xle1C8VmmySFt6T3ku06L"><!--pnid:SgLA9pOk6vB6kNXsNM6zDw-->维护父子映射，易于去重与回链</td></tr>
+      <tr data-page-node-id="8J720d7RVHTrfYCNy6IFlm"><td data-page-node-id="EUBvM3OXtmUpQBRn4hMwrb" class="kv"><!--pnid:zG0SKlpSK2KU6oFUx04es7-->代理式</td><td data-page-node-id="6fPNwKykdXghwwYbKbvRpW"><!--pnid:HDzP1u8Pbme08cNtKiVSbn-->用小模型动态判断边界：不在代码/表格中间切、保持标题链完整</td><td data-page-node-id="i01SurZhatklQwFePpMYO2"><!--pnid:Rs5Weu3e95kPGMJGEv4f5q-->高度复杂的混合格式长文档</td><td data-page-node-id="tYtxpONVdUyi0ziEhcaD2R"><!--pnid:UpKMgKYEtEx7IKO20h56oe-->需规则护栏 + 自动回退，控制成本</td></tr>
+      <tr data-page-node-id="cMbij2bZaeXcRvVpLJ6kXM"><td data-page-node-id="pqv2zrNFPF7aKEITcPaj7P" class="kv"><!--pnid:TyqvbJepJclKFXDZEC2MIj-->混合分块</td><td data-page-node-id="xsoWI4uu2FU4auosfuDJcd"><!--pnid:mtFovD7PDj6cIJsbYWG07J-->先粗切结构、再按需细化；同时建「小块索引 + 大块存储」</td><td data-page-node-id="tDjDdV5ViiywxCtzmWDiee"><!--pnid:R77DrxbpTah5g9mUTtGXo4-->大多数生产环境（推荐）</td><td data-page-node-id="bvJ1llrGuvrEA3HN0IKJA0"><!--pnid:BFBFlFmXfUwJ8Z345Yd2CP-->原子块（代码/表格）保持完整</td></tr>
+    </table>
+    <div data-page-node-id="ilfs6SZrQuI0vBoyggJo5O" class="note"><!--pnid:CEy2l5mzXpgvXZrcREhc2T-->重叠窗口是维持上下文连续的关键，但不宜过大（通常 ≤20%）；元数据（标题路径、块类型、位置）同样重要，可显著提升检索与重排效果。</div>
+  </div>
+
+  <div data-page-node-id="wRfs9YCHGhnwlPxUl82eRZ" class="figcard">
+    <div data-page-node-id="5QNybR3tFzxqqcSqGSbGir" class="cap"><!--pnid:CAc02vH8mlaBB3Tm1thtHr-->图 3 · 块大小权衡：两条反向曲线的交点附近为最优块长区间</div>
+    <svg data-page-node-id="VSCtpM50tWiOogQ043YGKH" aria-label="块大小权衡曲线" role="img" viewBox="0 0 680 248">
+      <defs data-page-node-id="XXpA3L77lVZXVfpU5IleOb"><marker data-page-node-id="tyM3k5fy4EYeeSXakxmHQf" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="NCLzZ8EH7Z7E80ON6T72Fi" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <!--pnid:OLFM4gdEmOhvgwhYWHiafC--><!-- 最优块长区间背景 -->
+      <rect data-page-node-id="QUy7e5PYB4KtI3F7W0ttk5" fill="#10b981" height="160" opacity="0.08" width="180" x="250" y="30"/>
+      <line data-page-node-id="BiJrHxYGHBTJ0VFzVxSEVO" class="flow" x1="70" x2="645" y1="190" y2="190"/>
+      <line data-page-node-id="XmpyiYklxqmk5TQuVaCRDb" class="flow" x1="70" x2="70" y1="190" y2="26"/>
+      <text data-page-node-id="MrAwocHAGJLMOCpDzgwxD9" class="axis" text-anchor="middle" transform="rotate(-90 40 110)" x="40" y="110"><!--pnid:WOlYjwfD7eRoRknbwAy0Xg-->效果</text>
+      <text data-page-node-id="dkANq1XaTZMpu3PzttgakR" class="axis" text-anchor="middle" x="357" y="216"><!--pnid:d5AwVSX0qh9i1KzabnH3Ve-->块大小（tokens）</text>
+      <text data-page-node-id="rnEu8TAg7ybXxIVe0Gfx1I" class="axis" text-anchor="middle" x="140" y="212"><!--pnid:hvs7vLGYqzp93pwE1heA2Y-->128</text>
+      <text data-page-node-id="AmPS0xqn6RmFtg9xQ424Ul" class="axis" text-anchor="middle" x="250" y="212"><!--pnid:YCG85VrfiC1GVJZditI2kl-->256</text>
+      <text data-page-node-id="Sbee1NW1B4Uavv3mIOiyNN" class="axis" text-anchor="middle" x="430" y="212"><!--pnid:ZxoRIXj6iIesrqyF0egyU9-->512</text>
+      <text data-page-node-id="zQLvwLsWfyrwCdVtBzKBfI" class="axis" text-anchor="middle" x="590" y="212"><!--pnid:Y2cBoY8RC3JxWTZPN7MpRK-->1024</text>
+      <!--pnid:xMDhqtDBKG36d3IXuLT6Y9--><!-- 上下文完整度：上升 -->
+      <path data-page-node-id="Bg8Z8OHxaTOdDfee1g60f9" d="M80,172 C 250,148 450,72 632,44" fill="none" stroke="#94a3b8" stroke-dasharray="6 4" stroke-width="1.8"/>
+      <!--pnid:1gqXrp9Kt7w7nbY2kQ5USp--><!-- 信息密度：下降 -->
+      <path data-page-node-id="07ISyPUzTq32MCbRjAKSNm" d="M80,44 C 250,72 450,148 632,172" fill="none" stroke="#b45309" stroke-dasharray="2 4" stroke-width="1.8"/>
+      <!--pnid:z5fA3yBX6Sh5Vlpck8TlCv--><!-- 综合效果：倒U -->
+      <path data-page-node-id="pNynmwID0xBUHO70q0nQ9J" d="M80,128 C 220,88 300,68 360,68 C 428,70 520,110 632,162" fill="none" stroke="#0d9488" stroke-width="2.6"/>
+      <circle data-page-node-id="EkCD6bV4PzO5J6NT9UbpPi" cx="360" cy="68" fill="#0d9488" r="5.5"/>
+      <text data-page-node-id="EbDfKNuPBgexGiYFU0Cfnh" class="small" fill="#0f766e" font-weight="700" text-anchor="middle" x="360" y="52"><!--pnid:4CSB9qbJEMvHykkOrUCZgL-->综合效果峰值</text>
+      <text data-page-node-id="6jz50jWx0tf8E5bFf4saum" class="small" fill="#059669" font-weight="700" text-anchor="middle" x="340" y="180"><!--pnid:H9TmjcADMmRwqhFxELs1T9-->最优区间 256–512</text>
+      <!--pnid:qh3UyGwDZ8q3MAmVWoDXBA--><!-- 标注 -->
+      <text data-page-node-id="kez6Kfifnfu7Gp72H8Uc9q" class="small halo" x="120" y="158"><!--pnid:7Keo0wZsiiypQLnA0RyIvm-->过小：语义碎裂，</text>
+      <text data-page-node-id="UpwF8CMESXuQPScQT54dj9" class="small halo" x="120" y="176"><!--pnid:VquDzsLLzYchY2pDUJKfLM-->关键信息不在块内</text>
+      <text data-page-node-id="hqCa62MqdO46KCAPNUZ3bj" class="small halo" x="500" y="130"><!--pnid:SQk5jAs2bp45mwdE9bd2lU-->过大：噪声稀释注意力，</text>
+      <text data-page-node-id="opb0d7YNfMRC5hLzgMI0RK" class="small halo" x="500" y="148"><!--pnid:gLIVWUa6w95DZkRPabvHAb-->token 成本升高</text>
+      <!--pnid:JqJ9y4YiCgLKa2336hNKHf--><!-- 图例 -->
+      <line data-page-node-id="x38ChGV8ld4J3XEULFHtdQ" stroke="#0d9488" stroke-width="2.6" x1="392" x2="424" y1="24" y2="24"/><text data-page-node-id="18g1hxmmFyX60o1yRXj7QI" class="small" x="430" y="28"><!--pnid:hMem1nwqrbEkSLjJDyevWp-->综合效果</text>
+      <line data-page-node-id="lvdyb5lxECKE1K55ZpIsjV" stroke="#94a3b8" stroke-dasharray="6 4" stroke-width="1.8" x1="502" x2="534" y1="24" y2="24"/><text data-page-node-id="SMVmxozTFibQKUmYd5YETG" class="small" x="540" y="28"><!--pnid:P030L9h9XQr8jQxqY8Ie5r-->上下文完整度</text>
+      <line data-page-node-id="ZoitfqaOZSYFmZRiOmJQ9C" stroke="#b45309" stroke-dasharray="2 4" stroke-width="1.8" x1="502" x2="534" y1="42" y2="42"/><text data-page-node-id="3bxIPISaBqqDbGQ3A0IXtq" class="small" x="540" y="46"><!--pnid:HeeCIBgWo7U1qJnixKPOgS-->信息密度</text>
+      <text data-page-node-id="xyQ2ustta2dPtsXjWjZrOA" class="small" text-anchor="middle" x="340" y="238"><!--pnid:0BT0AcexLupTb9bWbMi2c1-->两条反向曲线的交叉附近即最优块长区间；具体数值没有放之四海皆准，要用评测集实跑确定。</text>
+    </svg>
+  </div>
+
+  <div data-page-node-id="zcvtbFoaqAVlEQsuyOGAhE" class="grid2">
+    <div data-page-node-id="oxthlnouTXXEBqWj8EqiUs" class="card">
+      <div data-page-node-id="IiBOzdC0qMGoxdTDUsl6hp" class="cap"><!--pnid:EPyLmDh1vx6woYsZGcemzf-->表 3 · 分块场景推荐（tokens）</div>
+      <table data-page-node-id="6E3c4ouLMcx1xI1jR76ibt" class="tbl">
+        <tr data-page-node-id="kPc9KYpqejQiEBqpIoITPK"><th data-page-node-id="izRaxAlL5AuYhZjMbx43Xb"><!--pnid:B1LmdrUDiuf0vTKHltl2aB-->场景</th><th data-page-node-id="WguZc7QZeJsNcPjhSrwXCf"><!--pnid:Xf6az5XdDrbM5X2Tmb7nb8-->建议区间</th></tr>
+        <tr data-page-node-id="yhUR87HJCcnQ68HnMkrQh9"><td data-page-node-id="4x8MMrXGqJIChyXCyv7I9J" class="kv"><!--pnid:xnw7PgcnRkZWnkEyoSp3pb-->通用问答</td><td data-page-node-id="qKT43gB2CGcCYvJqigHJAu"><!--pnid:Vy0saKLqzL8LvComEhqrtx-->128–512，最常见的平衡区间</td></tr>
+        <tr data-page-node-id="KmJbcYo7d8AbAhyYWBLlSz"><td data-page-node-id="6kIFFlzYffHq3VjJJuqQSJ" class="kv"><!--pnid:3e8OvloLn5Xr3gxaQUrmaq-->技术文档 / 论文</td><td data-page-node-id="1CvsL4qzbPRX6ypAtYImCP"><!--pnid:0CaLJ6bIub1IdZGysC3feM-->200–300，保术语与逻辑结构</td></tr>
+        <tr data-page-node-id="q9SLSW4yb37anh1UaCi2uO"><td data-page-node-id="2MEn2ySyzvYTpFh058aT7s" class="kv"><!--pnid:jvbTrRIyPpJ6abZNDSJt4E-->长叙事（小说）</td><td data-page-node-id="NTXsZicgtWVCxL04iSNriu"><!--pnid:fsgyKUborGEmZgdlcMTETT-->500–1000，保情节连贯</td></tr>
+        <tr data-page-node-id="zlmjuh1KLZs3aTa4d34X6x"><td data-page-node-id="IZcQptNtsS01PfI6KoPr0i" class="kv"><!--pnid:yoxEcE6E5oehZCOV3VgS5n-->社媒 / 短文本</td><td data-page-node-id="p3IFAUDyYzByPXCOgaEK5q"><!--pnid:GHk2Z4G9AHPKyCeuXd7E74-->100–200，适配碎片检索</td></tr>
+        <tr data-page-node-id="L00TaX5DgYWy8Jb9rFOy3B"><td data-page-node-id="bDzuu1iKEBv22eV0mgJ2gj" class="kv"><!--pnid:zE2cw5DwdxY5bFUz2nFS2B-->复杂任务</td><td data-page-node-id="OlJ24nE9soEnoRs4RdWqb6"><!--pnid:79rRsbRnZTdq245w5YldDg-->1024，响应时间与质量的平衡点</td></tr>
+      </table>
+    </div>
+    <div data-page-node-id="ubWezZqLZmewTz4OpMYqlF" class="card">
+      <div data-page-node-id="4UTDlxQH1MAl9zivAj4OKh" class="cap"><!--pnid:ooFimVRBOHhFsoMNLDLH0b-->表 4 · 质量-成本档位</div>
+      <table data-page-node-id="tUNlvJbvDzrGmYwaoJGoXl" class="tbl">
+        <tr data-page-node-id="u1BcEuvbW7QwCQWNTu2Ysx"><th data-page-node-id="EhHRcanVyYLBPVsMIEki0y"><!--pnid:4DPt4N1nWNpSwznahsCPcZ-->档位</th><th data-page-node-id="yzKH0vSUDeOOvbrknVVpYv"><!--pnid:jNLB3hsoxNBE5s2szS8Yro-->策略</th><th data-page-node-id="BISngOeh9Pcpgp0skAqV5z"><!--pnid:782clE9UwFtvNFYlrLCOJD-->适用</th></tr>
+        <tr data-page-node-id="lxf0WpNtKrEGr5zzo5luaN"><td data-page-node-id="9biZg79BU2U9TkASHOqNbo" class="kv"><!--pnid:dz8xfhIH0t9o7Kcv7OKyKK-->Fast</td><td data-page-node-id="Y2zKI0D3M2qq6U3RToYob5"><!--pnid:IWbLKwRqAEFO8a8jUVCjjz-->结构→递归</td><td data-page-node-id="FtxUr7L0JHnmOgFwqb8aah"><!--pnid:LC9VgUF1PNZlPEkKVkmTA1-->快速上线</td></tr>
+        <tr data-page-node-id="GTypnmQWZIejXh4nu8nr2T"><td data-page-node-id="qH6xcmXLqaJ7JhCga3SqNj" class="kv"><!--pnid:LXUHj9E1JtSGdJJCbfBfVW-->Balanced</td><td data-page-node-id="QvcyxgPeRN9Emn3N7XRLr8"><!--pnid:sBsNXJiP9BRtLcbVdy7TfE-->+ 异常块语义分块 + 小-大检索</td><td data-page-node-id="pxKEAnZt7ZPmJ5u5Yw5GiP"><!--pnid:6mGuCsuwmXOxS1QNnPWaWI-->多数生产</td></tr>
+        <tr data-page-node-id="5z5gJjwYsCTc8KqCq8s4cS"><td data-page-node-id="QWgVbpErcN8sS478zaizel" class="kv"><!--pnid:beGCOA46IrM2Rg3nWYyk8I-->Quality</td><td data-page-node-id="yNMdMUnXecwaSjfHbLHAVw"><!--pnid:J02u0pAYoQtSKOONd67ivI-->+ 代理式精修 + 强 rerank</td><td data-page-node-id="ivxwjcKp7JwUMmwzfdzbSE"><!--pnid:nic1hLPGW5tHyZ5ptX4kxI-->高精度</td></tr>
+      </table>
+      <div data-page-node-id="fcSbg3YXbiDGk0yknm1vou" class="note"><!--pnid:Tbyb1FnNrkQfn17rOjzhLH-->调优方法论：固定检索与重排，只动分块参数，用 Recall@k、nDCG、忠实度评估。</div>
+    </div>
+  </div>
+
+  <div data-page-node-id="7D4uxKLEEi5tFRehq9597g" class="card">
+    <div data-page-node-id="cgxCZ38RUgXnvLN0MqauSy" class="cap"><!--pnid:HzOa1Jfh3t6BZQGozMNvyn-->表 5 · 实测案例：同一套企业级 RAG，三种块大小对比</div>
+    <p data-page-node-id="I8KK5965QOfQmSW0IWIghz" style="margin:6px 0 10px; color:var(--ink2)"><strong data-page-node-id="8LphsxZmjHtoeEknW0WBUr"><!--pnid:9KrXERrKLfGdl2k02xxXmf-->案例背景：</strong><!--pnid:tXh9ZsESVtaSV0ovpYSnYK-->一套企业级问答 RAG 应用，用评估框架和评估数据集实测三种 chunk_size。除块大小外其余条件全部固定。LangChain 递归字符分块（默认分隔符，overlap 为 chunk_size 的 20%）、生成模型 qwen-max-latest、向量模型 text-embedding-v3、向量库 FAISS、纯向量检索（未加任何 Advanced RAG 增强）、top_k=10。三个指标各管一段链路：<strong data-page-node-id="am0uOEEF4Gp6Tq1yBGcVDS"><!--pnid:Xz9yJFmm8pKMnB6VKWmJwV-->事实准确性</strong><!--pnid:ayiVpIdzuaueAJiPxLypIe-->看答案是否忠于召回的上下文（生成层），<strong data-page-node-id="EPqKplFuwsjpaHo2gqHP7N"><!--pnid:aUkLTsxrCGpg2sbW6DE9rS-->上下文精度</strong><!--pnid:PS3ibA8lRnT9bMkPvxFlEb-->看相关块是否排在召回结果前列（检索层），<strong data-page-node-id="oD8hOqEF3Qql7SK424dI44"><!--pnid:wwHQrBuudeeE6G8QdD9uQ9-->答案相关性</strong><!--pnid:mlYPDGCHhsmmrZzTr6bx2z-->看回答是否切题（生成层）。</p>
+    <table data-page-node-id="xtQSYBSbckeHGAkMEjcI3n" class="tbl">
+      <tr data-page-node-id="3dGay93A1FThaqm0NTAj6a"><th data-page-node-id="cyvnHTn7kEVs29qyUboej5"><!--pnid:5xs8kxYMiopnIfVha5OJ2H-->chunk_size</th><th data-page-node-id="iPDUabpQzMgaph0trUzPa6"><!--pnid:6Ef1bWvreYag5PpDSpK6my-->分块数</th><th data-page-node-id="jbMMNiXEz4WPUkB442o5Ht"><!--pnid:XYXChgdGAE49XnmXICCmvh-->事实准确性</th><th data-page-node-id="w8gJs7Kytc8diFS2UjDChR"><!--pnid:2bVuCHgzmJW0uSlJ849e9r-->上下文精度</th><th data-page-node-id="ObTiapTPuC4A2kBzn1SSyX"><!--pnid:pUoUem6WOT7H3x13XmdQBN-->答案相关性</th><th data-page-node-id="4xr4BDtwEnYEp5fWygIoqd"><!--pnid:fimLTMNZvGyougmD3i0osv-->结论</th></tr>
+      <tr data-page-node-id="u7gRiuH27HNb5fVO6gl2BK"><td data-page-node-id="OExHMWhjrApoP4X60D3mhG" class="kv"><!--pnid:cJxcQvfKi7v1E4TMpPU3YA-->128</td><td data-page-node-id="QxQ6hC5jl3RzVeKqeo2FQo"><!--pnid:jIOoTtmmdZDewigup327oe-->1546</td><td data-page-node-id="lHPyy2cxmq4H3KdcKmgk2V"><!--pnid:Z2QH7jAlsqIE2HbCYKd9yK-->最高</td><td data-page-node-id="AqXr50ruFFKUKSEBXGTKS6"><!--pnid:DrOHVxzNU9cyG3Xu7yUuOT-->中</td><td data-page-node-id="Z8fSMuOqwDCcX7psuu2ICp"><!--pnid:tAFiFLcbJbRedOoBWWejya-->0.90+</td><td data-page-node-id="9F39Jh04derrBrEdOJt061"><!--pnid:uOZBlHk6PxgOTqNr8VkLBr-->事实最准，token 消耗约为 256 的一半。成本敏感场景的最优</td></tr>
+      <tr data-page-node-id="CsBfPEDNOkcTIomlgTbKBf"><td data-page-node-id="Xqj8M2TFlo9aoxIbfnkQ6t" class="kv"><!--pnid:G60itKMB14umQLmn6j7riK-->256</td><td data-page-node-id="2Gq7yxfOgBetYcQEjEVNW3"><!--pnid:Ib9vB7vMdGni1T9erzv6V8-->821</td><td data-page-node-id="cwkVe9wZtlyuHBrdugVHzn"><!--pnid:mI5PNtfDhwpJ6vHm9FQgt9-->中高</td><td data-page-node-id="FY8Ut6noAlGBwiyh4dUCA8"><!--pnid:247CMkQj0CiUu9ux7peKCx-->中高</td><td data-page-node-id="XKD6ovGgtV7q77zeVFbCKz"><!--pnid:71ngRRaQg4PMLgKsVl1XhU-->0.90+</td><td data-page-node-id="yA3gSTlzyWYoYz4sypl4YB"><!--pnid:KnjJlgfHW7vOxb2Ucpb2hh-->综合最优，优先选用</td></tr>
+      <tr data-page-node-id="FCYIJ45auBqN7pISY6B8W9"><td data-page-node-id="kfwJ8TEX3sBh4E9m12w23Y" class="kv"><!--pnid:JgawwJCXqHwvfK2mznLpiz-->512</td><td data-page-node-id="F0VIxIEtGYKmHlwq3TTwts"><!--pnid:EmTQsq7anpZMKumrAcWtYu-->462</td><td data-page-node-id="FxfzhwE9LYiE5ZxdpF8qKO"><!--pnid:hsN7mdsZtccmIePzEtgeCH-->中</td><td data-page-node-id="c4IE0tBBEiIyDch6KmRvmN"><!--pnid:dT2J9rXDC9nnisRerd9hmv-->最低</td><td data-page-node-id="LVQ6yvkpULQ5eitl7X0Liu"><!--pnid:hbOwnVhT5OBI5MxgYe3trV-->0.90+</td><td data-page-node-id="uwgdQ5Rvw0ohAP57ES7hc4"><!--pnid:Rrc8meGqbOxcZsuXJP6Gmd-->低精准度拉低整条链路，性价比极低</td></tr>
+    </table>
+    <div data-page-node-id="7PXDn0VczicdiApBXtJoqo" class="note"><!--pnid:erNDLpG9KlCvXYtzCqoErw-->三种块大小的整体表现都在中高区间，拉开差距的是「事实准确性 × 上下文精度」的组合。条件不同结论会变。所以可迁移的不是「记住 256」，而是「用评估框架在真实数据上跑」这套动作。</div>
+  </div>
+</section>
+
+<!--pnid:1gx8qZy6W7Z7YFtoru3d9K--><!-- 04 向量检索算法 -->
+<section data-page-node-id="FQQrdxWPFq2E38q8u4q9iL" class="sec">
+  <h2 data-page-node-id="vlLv4sh59JYWwihoWGpxbf" class="sec-h"><!--pnid:cx5vCKTHxsikEBwWSo3a4p-->向量检索算法：从暴力搜索到 IVF 与 HNSW</h2>
+  <p data-page-node-id="metczZIWQHI64OG4uHJns3" class="sec-sub"><!--pnid:WA94McsbE7yYDmZWiUxe3n-->检索阶段的底层引擎。选型直接影响速度、召回率与知识库能否增量更新</p>
+  <div data-page-node-id="oEEnOJGpupHEYswGLIaXvB" class="pull"><!--pnid:FtasY3m6ZAWe7MJGkegs7b-->「与其追求 100% 精确的最近邻（KNN），不如在毫秒内找到 99% 相似的近似最近邻（ANN）。对大多数应用，速度上的提升远比微小的精度损失更有价值。」</div>
+
+  <div data-page-node-id="gmsmsbY18NXmmcnjdZqx7d" class="figcard">
+    <div data-page-node-id="7y3FvKv0Oi5My7dMZA5v9l" class="cap"><!--pnid:XJywBrGbRfcHoqb6rpawm2-->图 4 · 两大 ANN 主流算法：IVF 先分区再精搜，HNSW 分层导航</div>
+    <svg data-page-node-id="2WRilQLXUfZ5u2nReDK3q8" aria-label="IVF与HNSW示意" role="img" viewBox="0 0 680 312">
+      <!--pnid:eRpWC7wcO0F148zQgCPuWo--><!-- 左：IVF -->
+      <text data-page-node-id="UFky8FzD0n8bmKwJtV8bw6" class="txt" fill="#0f766e" font-weight="700" text-anchor="middle" x="170" y="30"><!--pnid:oBch8MlClQC5ANL8Ru1uBn-->IVF · 先分区，再精搜</text>
+      <ellipse data-page-node-id="bLeaDlkaDkEA16qtSQkNan" cx="115" cy="120" fill="none" rx="72" ry="54" stroke="#94a3b8" stroke-dasharray="5 4" stroke-width="1.4"/>
+      <circle data-page-node-id="9uTLqcaDOQYkxWEL5wG2rd" cx="90" cy="105" fill="#0d9488" r="3.2"/><circle data-page-node-id="mNaYi1BBJFFjuSJDiBRAWY" cx="130" cy="95" fill="#0d9488" r="3.2"/><circle data-page-node-id="vWsioxhEO2E88dURk6tYDl" cx="145" cy="135" fill="#0d9488" r="3.2"/><circle data-page-node-id="WM60KMUbYoUt0bEouiMHkb" cx="100" cy="145" fill="#0d9488" r="3.2"/>
+      <path data-page-node-id="GVne9A7IvWMp4Vw489idrj" d="M111,116 h8 M115,112 v8" stroke="#be123c" stroke-width="2"/>
+      <ellipse data-page-node-id="RxRCzF0IiDhgK8TtBqbk5v" cx="252" cy="100" fill="none" rx="58" ry="44" stroke="#94a3b8" stroke-dasharray="5 4" stroke-width="1.4"/>
+      <circle data-page-node-id="qLSYaEYMoiQLcKo3ZhHKmK" cx="235" cy="88" fill="#0d9488" r="3.2"/><circle data-page-node-id="BqeolZbCjNnmgRlQkdZ19w" cx="268" cy="92" fill="#0d9488" r="3.2"/><circle data-page-node-id="ESORYNBHCpAwRbMrPhkMql" cx="255" cy="118" fill="#0d9488" r="3.2"/>
+      <path data-page-node-id="GBRFLBeseCsAWnLLEjTDwP" d="M251,96 h8 M255,92 v8" stroke="#be123c" stroke-width="2"/>
+      <ellipse data-page-node-id="HamqsD4bxHFgMc2jb5YAOJ" cx="185" cy="228" fill="#fff7ed" rx="86" ry="46" stroke="#b45309" stroke-width="1.8"/>
+      <circle data-page-node-id="iUX23qizzJXY4eWoxHBKYp" cx="150" cy="215" fill="#b45309" r="3.2"/><circle data-page-node-id="yCffQBpfwG4vTvaFSz2pGp" cx="195" cy="205" fill="#b45309" r="3.2"/><circle data-page-node-id="lRyB14yJI1fHAidmP6yuwn" cx="230" cy="230" fill="#b45309" r="3.2"/><circle data-page-node-id="JXlJgOtAS8OJitwHEdWw6r" cx="175" cy="252" fill="#b45309" r="3.2"/><circle data-page-node-id="Gyw31c1oPZjlSlC8IhVbOQ" cx="215" cy="258" fill="#b45309" r="3.2"/>
+      <path data-page-node-id="Lnfe2LR1ZZmbCwNxNjCWCL" d="M181,224 h8 M185,220 v8" stroke="#be123c" stroke-width="2"/>
+      <circle data-page-node-id="tVbeNuFo1Ih0l65hqXVeiU" cx="320" cy="262" fill="#fff" r="7" stroke="#be123c" stroke-width="2"/><text data-page-node-id="E7Xqa3x8s3B9etCy3yCd6d" class="small" fill="#be123c" font-weight="700" text-anchor="middle" x="320" y="266"><!--pnid:LbvFt16VoqXJEMHd0UAj5U-->?</text>
+      <path data-page-node-id="bUksvLBRCqq3gn62Ekrm9f" class="flow" d="M313,257 L272,238" marker-end="url(#ar)"/>
+      <text data-page-node-id="9JCQKkyfIj6F4mKiS2rrkK" class="small" text-anchor="middle" x="185" y="288"><!--pnid:LrFEHpyfsOJ6uhIbO5tGAJ-->查询先比质心，只搜最近的</text>
+      <text data-page-node-id="OgOhWYk7E6Dhozlamw9ww1" class="small" text-anchor="middle" x="185" y="306"><!--pnid:Cb4bHIKi5eCYmjwf5Z6Nvt-->nprobe 个簇（橙色）</text>
+      <text data-page-node-id="OsgGXxAQmcAehNLbN0dq7V" class="small" x="30" y="180"><!--pnid:PeWKvwGbdzjibw6nyvCwl4-->×＝质心</text>
+      <!--pnid:skfSkIBaERx7q5Y6zrr7a6--><!-- 右：HNSW -->
+      <text data-page-node-id="eAU2GMcfDEzrsmXuiq0l4D" class="txt" fill="#0f766e" font-weight="700" text-anchor="middle" x="505" y="30"><!--pnid:RoGgZDlhgI72y2lRqOHXOP-->HNSW · 分层导航小世界</text>
+      <text data-page-node-id="TY92ftzBYo01DX7Ffkwhu9" class="small" text-anchor="end" x="352" y="66"><!--pnid:UQY3tYUYcS18DU1ejWhmgP-->顶层</text>
+      <line data-page-node-id="CQzvkfeqLqPLurG3nhpy5H" stroke="#0d9488" stroke-width="1.6" x1="430" x2="600" y1="62" y2="62"/>
+      <circle data-page-node-id="RHcrsdwFqymJbpdRRJrnZx" cx="430" cy="62" fill="#0d9488" r="8"/><circle data-page-node-id="9IDykF6cj3yERKhWvp7ZoG" cx="600" cy="62" fill="#0d9488" r="8"/>
+      <text data-page-node-id="ellTs43XD5xQy4OrSMMCaD" class="small" text-anchor="middle" x="430" y="46"><!--pnid:9iwKIRo7DCRr01L4YwIaUU-->入口点</text>
+      <path data-page-node-id="QDl10QIK8YhjF2WgcKkkNJ" class="flow" d="M430,70 L430,102"/><path data-page-node-id="SM7yfyw6byQKYscY8V8Hka" class="flow" d="M600,70 L560,116"/>
+      <text data-page-node-id="TT9xDflCWZJmdsc7k88oP5" class="small" text-anchor="end" x="352" y="130"><!--pnid:5cqPdyxdiTDblU7KEmMRnP-->中层</text>
+      <line data-page-node-id="ROG6JBrCeK1l3hLtBLeEf0" stroke="#94a3b8" stroke-width="1.2" x1="390" x2="465" y1="126" y2="126"/><line data-page-node-id="a2mJr1r2fEEoA51jUJdPqY" stroke="#94a3b8" stroke-width="1.2" x1="465" x2="560" y1="126" y2="126"/><line data-page-node-id="DmTjbGLPBZO5J6qgt6KE7M" stroke="#94a3b8" stroke-width="1.2" x1="560" x2="632" y1="126" y2="126"/>
+      <circle data-page-node-id="eIXJ5YkT48VNVfq3WS9wAL" cx="390" cy="126" fill="#64748b" r="6"/><circle data-page-node-id="VGIyMJw2yWcEDkcsVluqgF" cx="465" cy="126" fill="#64748b" r="6"/><circle data-page-node-id="5UsDDq1MhNuZObGukliFo6" cx="560" cy="126" fill="#0d9488" r="6"/><circle data-page-node-id="Iq1bLJmgo3CR85BppbSU6R" cx="632" cy="126" fill="#64748b" r="6"/>
+      <path data-page-node-id="i8BYmHvZN7bd4e12oUIwey" class="flow" d="M560,134 L640,196"/>
+      <text data-page-node-id="QbMZowUh3xPphshpsiZJwX" class="small" text-anchor="end" x="352" y="212"><!--pnid:bSQr2kNh0Bi1WnJLoWJCW4-->底层</text>
+      <line data-page-node-id="HYVAhkBKqZueYGrO56ucH1" stroke="#cbd5e1" stroke-width="1" x1="372" x2="420" y1="206" y2="206"/><line data-page-node-id="2fYtEw42lLD12rvhQpVpKu" stroke="#cbd5e1" stroke-width="1" x1="420" x2="470" y1="206" y2="206"/><line data-page-node-id="T7ZGyy945CiPbR1XGubyLU" stroke="#cbd5e1" stroke-width="1" x1="470" x2="520" y1="206" y2="206"/><line data-page-node-id="bqVVh2VbJ8fGSs8xMxMjLi" stroke="#cbd5e1" stroke-width="1" x1="520" x2="570" y1="206" y2="206"/><line data-page-node-id="r9sGBVJJqOM8z2MtyqERWQ" stroke="#cbd5e1" stroke-width="1" x1="570" x2="614" y1="206" y2="206"/><line data-page-node-id="qSsKZCY0yLryAw06IbFfO7" stroke="#cbd5e1" stroke-width="1" x1="614" x2="648" y1="206" y2="206"/>
+      <circle data-page-node-id="tZeA35OYAy0D3Bv4v4bF50" cx="372" cy="206" fill="#94a3b8" r="5"/><circle data-page-node-id="lQADjj5HhLZhEPNg2p4Dqg" cx="420" cy="206" fill="#94a3b8" r="5"/><circle data-page-node-id="QhTkJy70YgGSVZnCkf0DtJ" cx="470" cy="206" fill="#94a3b8" r="5"/><circle data-page-node-id="TaYFoDgyMK3hMvmsM3LAPe" cx="520" cy="206" fill="#94a3b8" r="5"/><circle data-page-node-id="rGQkjBjBZHN0VMTB5u2lKY" cx="570" cy="206" fill="#94a3b8" r="5"/><circle data-page-node-id="SiGK0qWfAZddsrnJMIMbih" cx="614" cy="206" fill="#94a3b8" r="5"/><circle data-page-node-id="CiJpNg525meoQfDr84ostK" cx="648" cy="206" fill="#0d9488" r="7"/>
+      <line data-page-node-id="svcUDzBOL0yJvRKT9APTVm" stroke="#cbd5e1" stroke-width="1" x1="648" x2="648" y1="206" y2="248"/>
+      <circle data-page-node-id="jAHxpxZVKVPHQYCCqfUydT" cx="648" cy="248" fill="#94a3b8" r="5"/>
+      <path data-page-node-id="5gjxmM7zhgbOpOJFDOLOQa" d="M610,248 h28" stroke="#be123c" stroke-dasharray="3 3" stroke-width="2"/>
+      <circle data-page-node-id="pidMsRK6U8624PL95aGpC4" cx="604" cy="248" fill="#fff" r="5" stroke="#be123c" stroke-width="2"/>
+      <text data-page-node-id="B6xeHCjwCQJxJvFfH4bAJP" class="small" text-anchor="middle" x="505" y="282"><!--pnid:W0dtcOopDSt5xD0o2RBYqN-->高层稀疏长边（高速公路），底层密集短边（本地街道）</text>
+      <text data-page-node-id="e6Uk5wVikI2732YWW9wlBo" class="small" text-anchor="middle" x="505" y="298"><!--pnid:rarX6EGYDvcTN5fbjk84bC-->层内贪婪搜索 → 找不到更近就下探，底层精细搜索</text>
+    </svg>
+    <div data-page-node-id="v3UnNbfi6YVvmX4uuVK8jm" class="note"><!--pnid:zTocwp3qsaidqraeG2fIQ5-->IVF：K-Means 把全库聚成 nlist 个簇并记录质心，查询只与质心比距离、在最近 nprobe 个簇内暴力搜。快，但答案可能落在没搜的簇里。HNSW：借鉴小世界网络与跳表，从顶层入口贪婪逼近，逐层下探到底层精细搜索。召回率通常更高，且支持增量添加数据。</div>
+  </div>
+
+  <div data-page-node-id="i3jlOPs2Uso9W3wgWWDxEZ" class="card">
+    <div data-page-node-id="bl2zRkcF6slFxjJXrCLWcb" class="cap"><!--pnid:IHbrP6ZeWgTJ6fGqCUTAKI-->表 6 · HNSW 三大核心超参数</div>
+    <table data-page-node-id="VAIMtODCK27dljn76eohL0" class="tbl">
+      <tr data-page-node-id="DMIWxHGkAZ7HTgZbqFgU7D"><th data-page-node-id="yvKkIcGihcIiqRIj94UfPr"><!--pnid:WcKXPUFJr6c00mxXTzXHPj-->参数</th><th data-page-node-id="DonwJSvAICbxqanbl6hvcH"><!--pnid:ev98ochz0tWCAjevOjz4Id-->作用</th><th data-page-node-id="7aM46IkawK2z5zh8Of7Zbm"><!--pnid:65P9EGpe3Za3FTGUVs2fc6-->调大的代价与收益</th><th data-page-node-id="8wGmuZFpTm663ztStOsAlx"><!--pnid:Yrs94NO3sur1hnmgpdMAnr-->类比</th></tr>
+      <tr data-page-node-id="rJBDXNdq4BhqRcPHefOGKb"><td data-page-node-id="wtDPVBqJuU7dEdRMSbfmCW" class="kv"><!--pnid:kM4awHZflQmh4Fbl24Er0H-->M（最大连接数）</td><td data-page-node-id="TZvG0AEOGLae4sNGxwrPgL"><!--pnid:rkImTjnaZXzphK0mWuXCSc-->控制每个节点的邻居数量（出度）</td><td data-page-node-id="dB2Nf7qmK8DPXogbhDfWsP"><!--pnid:y9My6V8dDJyYf0TFnblPcI-->图更稠密、召回率更高；内存与构建时间显著增加</td><td data-page-node-id="js1Z7rLZFDYMP2HgdqN2MD"><!--pnid:h7NwFz77liqeM0zZFqt1Vo-->每条街道的交叉口数量</td></tr>
+      <tr data-page-node-id="4eVAFDIKFK148HHqpsKlh1"><td data-page-node-id="ZUStfMDhQweP0zNmS5YahL" class="kv"><!--pnid:WrepYXyWCvlqUSJkpUK1On-->efConstruction</td><td data-page-node-id="qsJE6iYOd66OhLiQLoiF32"><!--pnid:TAiPxTcgWt5HKKuMGAQjBK-->建索引时为每个新节点找邻居的候选队列大小</td><td data-page-node-id="tWlrO4XBv42RILdjfAtsQ2"><!--pnid:3uniBcSgBuwwNMeIL0Mpdv-->图质量更高、利于最终精度；索引构建大幅变慢</td><td data-page-node-id="NRrVapDatXvYdrSvXQe2q5"><!--pnid:Wvk4LeRhP4RuMPpDEg3JjP-->修路时考察更多备选路线</td></tr>
+      <tr data-page-node-id="fKPKEPIVfkNzxyJkr193R0"><td data-page-node-id="ozOJMxF6LCcSBGhbggSUor" class="kv"><!--pnid:XzFsrS23ySgIT0P3IwOOq4-->efSearch</td><td data-page-node-id="nY88mUJCDkDNeGz9qntRvk"><!--pnid:Er7SduXFOGHSaoQherF1GB-->查询时候选队列大小。最重要的查询时参数</td><td data-page-node-id="JkbPA8stWgnfrbwkzW4FUj"><!--pnid:yilWzHQfaZwZSZsJyu4vK6-->探索更广、召回率显著提高；查询延迟增加</td><td data-page-node-id="23jQjdfXc7vVruVhsZShwl"><!--pnid:jteLBTndKnoHrCuOz36LPH-->导航时同时考虑更多备选路径</td></tr>
+    </table>
+  </div>
+
+  <div data-page-node-id="npzIGg4DfT6SVh32T444UK" class="card">
+    <div data-page-node-id="WbFnNUzW5k4Ipt5IMRaNgq" class="cap"><!--pnid:SwDuZV9eC9NAckxDbEzFPl-->表 7 · IVF vs HNSW 全方位对比</div>
+    <table data-page-node-id="BEr5W82wuhXIKPxAMYR5jC" class="tbl">
+      <tr data-page-node-id="tdA0b17bgnGjjSHjMcn3db"><th data-page-node-id="fuagOFqRdKK6GL97501Ue4"><!--pnid:EuCrlnpiMbbKgilVYNIlJA-->特性</th><th data-page-node-id="q85gOl60FnUXuSJf88Cp3Z"><!--pnid:8XX4sHEJ4r44Rm15R6KcDG-->IVF（倒排文件索引）</th><th data-page-node-id="FpSBnOHMlobJUrHbG6ULXk"><!--pnid:y0kzmmLsqkSfmRjFc4ZU0o-->HNSW（分层导航小世界）</th></tr>
+      <tr data-page-node-id="tIVko7szZNz3kJOws6GRkR"><td data-page-node-id="3hQBYNoyYXORUia2kIf6Ud" class="kv"><!--pnid:regZKvbyoBIBPsSDtsMiGh-->搜索类型</td><td data-page-node-id="FmepwoQUsH5y6xDsYGAmZE"><!--pnid:2k30lXG9Sv3F1JASoGX7wm-->基于聚类的搜索</td><td data-page-node-id="K7RZJLl0mxxqEc64PR27FA"><!--pnid:yuyVTp6svlm77TVDch9JLl-->基于图的搜索</td></tr>
+      <tr data-page-node-id="fdgoyc1XuJUNIvdMszQatA"><td data-page-node-id="FBoA4IUgYS106ri8SzrUeT" class="kv"><!--pnid:PfKZqQpivuYW9q9PzHqsiP-->搜索速度</td><td data-page-node-id="pWqKSnFlmHBFz4cmyTLxpp"><!--pnid:0tOaMXzVCCte24x1afcCE6-->快</td><td data-page-node-id="lBW0P8XHPZUv3628aAiqTO"><!--pnid:hoFKS5KKV3SGDMQe7AzoYb-->非常快，超大规模下尤甚</td></tr>
+      <tr data-page-node-id="Ag78NdGf6T7AWJWXoSKUen"><td data-page-node-id="bLMsiB4WZ3SGyj9uPsz47X" class="kv"><!--pnid:853O2iLNOlLni45Tu9P8O4-->构建速度</td><td data-page-node-id="C72aOccaRyEVZqUpHEFSVi"><!--pnid:dGcuO9O0rWJcp1xBLTNiwv-->相对较快</td><td data-page-node-id="u0gpU6dkYAKyU4S9HyBPz1"><!--pnid:1EvjEH1OmfqMnx95nIZhKC-->计算量大，相对耗时</td></tr>
+      <tr data-page-node-id="2ukqFffSaY1ITvMNzfTlNi"><td data-page-node-id="LkwzJqZ5tIBLyqtdTBAQyF" class="kv"><!--pnid:IflRaHPJfBKdEE7tkVWoZY-->内存占用</td><td data-page-node-id="qMpdITu7ruG4KHJjmctswD"><!--pnid:wveO897Swc0Jc12tcEeEKS-->较低，适合与量化结合、处理载不进内存的超大规模数据</td><td data-page-node-id="eDfZt4EaxT0yDC0mWSddAg"><!--pnid:kDlwptno447cxzEGgtajfm-->需将向量全量载入内存，开销巨大</td></tr>
+      <tr data-page-node-id="z2uTXeV17iZ0e5rIKvqV9X"><td data-page-node-id="5LLLyalr6C0INFWFxG4PB0" class="kv"><!--pnid:nh9dSbu5IdNahVGoAhMpmu-->召回率</td><td data-page-node-id="ro8f4OlNhRnfKLaACIi8Re"><!--pnid:iF1qQ1EYeXqDCy8MUSBC04-->靠 nprobe 参数在召回与速度间权衡</td><td data-page-node-id="QkiBuPKnAzxt74MU1nMvNL"><!--pnid:MZUwyTnaG8t15N7MCyohgA-->通常能达到非常高的召回率</td></tr>
+      <tr data-page-node-id="4L2ewhQ2XbxtBWSnxhmDcJ"><td data-page-node-id="qZLdXVPYeqZyX74DHOKXRY" class="kv"><!--pnid:Hkqh7UyFrmOANoTnrQSUEM-->动态数据</td><td data-page-node-id="FfEYyuFG0JCTuNNMp4Mr0P"><!--pnid:9M8GqK3DPTHa1ksaD3yJJ5-->对新增数据不友好，通常需定期重建索引</td><td data-page-node-id="Wmt6LvGWUNhXZHKBJJeSRL"><strong data-page-node-id="PWz8zW5gj6nBBGRqBpVtDN"><!--pnid:w3OGkYyLglQ8aX4qJfElRV-->支持增量添加，无需全量重建</strong></td></tr>
+      <tr data-page-node-id="dAjkBjJcKgnYP3Ul1C2mBl"><td data-page-node-id="KX7IAffkaxkJ0eJRqtS73R" class="kv"><!--pnid:XyP9AR67ZVPfmYMP0pgokL-->适用场景</td><td data-page-node-id="Y5TEw7JvT1qMdP3KyzikMG"><!--pnid:9qsteRkn3GXVHggXefMnD4-->静态、超大规模、内存有限</td><td data-page-node-id="PkWILy5nH32dRAPhnqvPIv"><!--pnid:WGxTYnq9VeRxV88Gsnt4JE-->高召回实时应用，数据可全量载入内存</td></tr>
+    </table>
+    <div data-page-node-id="yBFZQ6dEfkSsrwj1FzsjUH" class="note"><!--pnid:0HYDHDMNS5jHhMcTPHsoPh-->产品侧最该记住的是「动态数据」这一行：规则 / 政策类知识库天天在更新。选 IVF 就意味着每次更新可能要重建索引、服务中断；选 HNSW 才有「改一条录一条」的增量能力。这就是知识库治理里「增量更新」的底层依据。</div>
+  </div>
+</section>
+
+<!--pnid:SuOnjSZN31PLZaaCWFyaWO--><!-- 05 检索前中后优化 -->
+<section data-page-node-id="ARB94LPmUdMvcJsMzELX1C" class="sec">
+  <h2 data-page-node-id="EaNL76LAU7WrR80IZQRLK6" class="sec-h"><!--pnid:gr6obqtUlkMQAz2JfvwiZE-->检索前、中、后优化手段</h2>
+  <p data-page-node-id="DPR7GIGkXGVX58ntKaVeVq" class="sec-sub"><!--pnid:hCWKQDXQFSWeoCigvZcHLj-->增强 RAG 把优化拆成三段。先看全景骨架，再逐招拆开：基本思路、是否用 LLM、流程图、适用场景与实例</p>
+
+  <div data-page-node-id="Uc5DBhuSe0X5qSTHNWOqu9" class="figcard">
+    <div data-page-node-id="ywxrE0vXGXqRPeX1Vtc5tC" class="cap"><!--pnid:D662CYWRB6IwxWhCmY6dW3-->图 5 · 三段优化全景：每段的招数清单</div>
+    <svg data-page-node-id="oFzissKMXbSE2nNMAIVeFe" aria-label="三段优化全景" role="img" viewBox="0 0 680 336">
+      <defs data-page-node-id="60Rs9DKNOtizMylZh9vwhg"><marker data-page-node-id="CnOfKQjjC7Marc7iCTTNLi" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="A4wR6VELX5U2ZlxCrTtEG8" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <!--pnid:MN41Z72BvsX06luZu7VGtN--><!-- Band 1 -->
+      <rect data-page-node-id="EUOCbxNWCSL3RzxQho97pB" fill="#fffbeb" height="86" rx="10" stroke="#b45309" stroke-width="1.4" width="650" x="15" y="20"/>
+      <text data-page-node-id="5kzZVbMxIm9Eae1Dc5Io9y" fill="#b45309" font-size="14.5" font-weight="700" x="32" y="46"><!--pnid:zLOZJE6QXR7zMmuCu1Im9C-->① 检索前 Pre-Retrieval</text>
+      <text data-page-node-id="IAjNx4zryhHDea3QtTclUu" fill="#334155" font-size="12.5" x="40" y="72"><!--pnid:atWwKbojtFsrI1ZiuIYgrC-->索引优化：摘要索引 · 父子索引 · 假设性问题索引 · 元数据索引</text>
+      <text data-page-node-id="zQ02UESW0dnfibXYF3k7Ez" fill="#334155" font-size="12.5" x="40" y="94"><!--pnid:nOytXpdCxYzhJB3YrnLgK1-->查询优化：完善问题（Enrich） · 多路召回（Multi-Query） · 问题分解（Decomposition）</text>
+      <line data-page-node-id="2oxXE0CGTR9fTe3TajOulR" marker-end="url(#ar)" stroke="#64748b" stroke-width="2" x1="340" x2="340" y1="106" y2="126"/>
+      <!--pnid:TDh79AEo1qhflYNqWuaKKC--><!-- Band 2 -->
+      <rect data-page-node-id="WEX0X6Mai56XycLkSqQ72F" fill="#f8fafc" height="64" rx="10" stroke="#94a3b8" stroke-width="1.4" width="650" x="15" y="128"/>
+      <text data-page-node-id="Om9La1uCtplu1Bcd1es3B9" fill="#334155" font-size="14.5" font-weight="700" x="32" y="154"><!--pnid:cnXbATBH5hkDWaOpJLuXDn-->② 检索 Retrieval</text>
+      <text data-page-node-id="4IQbxfed5ocMxrfiRlzZjG" fill="#334155" font-size="12.5" x="40" y="178"><!--pnid:g2wktcZS5FTPpRloAuu00k-->混合检索＝向量（语义）＋ BM25（术语）→ 标准化评分 → 加权融合；必要时微调嵌入模型适配领域术语</text>
+      <line data-page-node-id="IiN36bb4YHG9nKPrmjzL04" marker-end="url(#ar)" stroke="#64748b" stroke-width="2" x1="340" x2="340" y1="192" y2="212"/>
+      <!--pnid:1vZKpjREH3dHOQLxvwgxbW--><!-- Band 3 -->
+      <rect data-page-node-id="ZeWVOFBwq7xOy1dSepsFPi" fill="#fffbeb" height="64" rx="10" stroke="#b45309" stroke-width="1.4" width="650" x="15" y="214"/>
+      <text data-page-node-id="I45RVrGGzTMWhNIuIZc3HB" fill="#b45309" font-size="14.5" font-weight="700" x="32" y="240"><!--pnid:QANuKnn8nsJi2qxEMwwCcT-->③ 检索后 Post-Retrieval</text>
+      <text data-page-node-id="RVsYH6tIESssf5xtxN8B0N" fill="#334155" font-size="12.5" x="40" y="264"><!--pnid:PmpqbzcON2nHQRfV51qU6x-->重排（最相关顶到最前） · RAG-Fusion / RRF 融合排序 · 上下文压缩与过滤</text>
+      <line data-page-node-id="ayrRGqsibg7NFjWDFHcBjC" marker-end="url(#ar)" stroke="#64748b" stroke-width="2" x1="340" x2="340" y1="278" y2="294"/>
+      <!--pnid:9b69mfOQJIco0N3NA26jxJ--><!-- Band 4 -->
+      <rect data-page-node-id="N9knpPTW1QuZv4WQeSCeJj" fill="#10b981" height="36" rx="10" width="650" x="15" y="296"/>
+      <text data-page-node-id="0xLtAUWvdB8rFBtZIfVjEr" fill="#fff" font-size="13.5" font-weight="600" text-anchor="middle" x="340" y="319"><!--pnid:3uUtsliHismusUZVBGqJ5h-->④ 生成：候选上下文拼进提示 → 大模型作答</text>
+    </svg>
+    <div data-page-node-id="sHuS530FUzDKBtCWDXLT4U" class="note"><!--pnid:1lTZh3VXgStwsFWCsbD1B0-->检索前提高「被索引内容的质量」并理顺查询意图；检索阶段决定「找什么、怎么合」；检索后解决「给模型的上下文纯不纯」。</div>
+  </div>
+
+  <h3 data-page-node-id="xLdDEKtUAAUsed3G78WpHR" class="sub"><!--pnid:hkNFAUXUYuRpBuzHoAL7YF-->检索前 · 索引优化四招（逐招拆解）</h3>
+
+  <div data-page-node-id="7ZmAvTHuP3EfuCD69YpMAU" class="figcard">
+    <div data-page-node-id="nzbtcs44NsS9t5uA2HyLCb" class="cap"><!--pnid:TscKNGDNCwXedSEYThZt8M-->图 6 · 摘要索引：用摘要当「替身」检索，命中后回溯原文</div>
+    <p data-page-node-id="0L5DaNkVfULTuPKlNUb0NW" style="margin:6px 0 8px"><span data-page-node-id="eaoBqvPMMUVAsiXUcD5PmS" class="pill"><!--pnid:ODaI3wBP34sNAZTjCZ0gXm-->LLM 参与：建库时逐块生成摘要</span> <span data-page-node-id="1iod8QJOfKP56GQOycfdNh" class="pill"><!--pnid:Qr7oKjzq8nMjYLf7wS3Nfn-->查询时不额外调用 LLM</span></p>
+    <p data-page-node-id="9RUASWVvefJEwhgg12tdHX" style="margin:0 0 10px; color:var(--ink2)"><!--pnid:vnLwF8HSHhTR6SQEtZPf2G-->解决什么：半结构化文档（文本＋表格混排）直接切分会切碎表格，整张表做向量检索又难以匹配。基本思路三步：①建库时让 LLM 为每个块生成摘要，向量化存入摘要库；②查询时先在摘要库里命中最相关的摘要；③回溯到摘要对应的原始块，把原始块（而不是摘要）送入模型作答。</p>
+    <svg data-page-node-id="jfjKUphPgZTgAXDVHGxp3e" aria-label="摘要索引流程" role="img" viewBox="0 0 680 300">
+      <defs data-page-node-id="L9iF1vciQWqQ5uQPCgne14"><marker data-page-node-id="7N30v6S0qSKl6ouxahHxCZ" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="gVh6V4suMezZNXQrklP2J7" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <text data-page-node-id="URyZJgMLwY3tHA5pQy6Mtb" class="small" fill="#b45309" font-weight="700" x="16" y="36"><!--pnid:pVVvFvPhHnGxqKpi7FNodz-->离线 · 建库时（每个块一次）</text>
+      <rect data-page-node-id="iNHzBVSit0WrfEu7kcKRNd" class="boxg" height="44" rx="8" width="104" x="16" y="48"/><text data-page-node-id="XtrXqnrH0NW9h1pKj6Q0Mo" class="txt" text-anchor="middle" x="68" y="74"><!--pnid:8KlmjYFSFYlgKFhXAmxzIf-->原始文档块</text>
+      <path data-page-node-id="F4EIdc4bFRxmMpJ2fNNpai" class="flow" d="M120,70 L148,70"/>
+      <rect data-page-node-id="WMpI2JZSTD3VqqdS52yFKz" fill="#10b981" height="44" rx="8" stroke="#059669" width="130" x="152" y="48"/><text data-page-node-id="oPfe6kVJPY9XwZQ6dFkYAu" class="txtw" text-anchor="middle" x="217" y="66"><!--pnid:84fZYcXhkQeyu4YcFW4xx9-->LLM 生成摘要</text><text data-page-node-id="Bhv94RVAK3V5GjQGPNGIEg" class="small" text-anchor="middle" x="217" y="82" style="fill:#fff; font-weight:600"><!--pnid:MhJO6sIJqB1JCMrsenR1ZE-->逐块一次</text>
+      <path data-page-node-id="JLf98UxkxdVqu6UBSwRokE" class="flow" d="M282,70 L308,70"/>
+      <rect data-page-node-id="38nGYM9e2VZXI1fh31d2cr" class="box" height="44" rx="8" width="150" x="312" y="48"/><text data-page-node-id="zYzb7dvJgkK1QLtkahG5qf" class="txt" text-anchor="middle" x="387" y="66"><!--pnid:2IO9VBnbhNTmg66m7ASc7r-->摘要向量化入库</text><text data-page-node-id="tLQ90SdJFUjbm1Xs4RalnE" class="small" text-anchor="middle" x="387" y="82"><!--pnid:mtJ2r3NJF4qEaAhk2pKwPY-->摘要向量库</text>
+      <text data-page-node-id="ElCJTEnN54JLOIieOZlKYW" class="small" x="492" y="66"><!--pnid:m6SBsfTP2gMRJQWZ9jAJmg-->原始块原样保留，</text>
+      <text data-page-node-id="RbpVHiElkfEpo4lpWo2xVG" class="small" x="492" y="84"><!--pnid:yjI3Y4B2xmv06LSHgTJvH2-->摘要只是检索替身</text>
+      <line data-page-node-id="kKlxdhMY5t9P4mqgzUBtxe" stroke="#cbd5e1" stroke-dasharray="5 4" x1="16" x2="664" y1="132" y2="132"/>
+      <text data-page-node-id="sSj1qK7CQi9BVxrjMxySk2" class="small" fill="#0f766e" font-weight="700" x="16" y="156"><!--pnid:WWp7GAccYodwnkWij8VuVU-->在线 · 查询时</text>
+      <rect data-page-node-id="tTWmAHhdBZCnqhGOmZtWGY" class="boxg" height="46" rx="8" width="92" x="16" y="170"/><text data-page-node-id="KCEK44GxaoPt1WSQQBXXGu" class="txt" text-anchor="middle" x="62" y="197"><!--pnid:Lh5Hh5fHANwNOfOWrlsVqP-->用户问题</text>
+      <path data-page-node-id="KPHMvfdF5n7HhYFtXP7WkQ" class="flow" d="M108,193 L128,193"/>
+      <rect data-page-node-id="T3v8xP6Jx2sLnBRo7h47S4" class="box-a" height="46" rx="8" width="150" x="132" y="170"/><text data-page-node-id="wyFquyKe0dxn6h9aqSC92I" class="txt" text-anchor="middle" x="207" y="188"><!--pnid:8ndpRLrfwsqrUJGqH3tDsb-->在摘要库中检索</text><text data-page-node-id="8Aq6XfapJj2rFAFfmrBAPO" class="small" text-anchor="middle" x="207" y="204"><!--pnid:hiLegsIRtwb6bOcwTr6Kn4-->命中最相关摘要</text>
+      <path data-page-node-id="JuqBP6pznK5bza4v97hKHW" class="flow" d="M282,193 L302,193"/>
+      <rect data-page-node-id="j1OimZVSTMJm5fxSjvuRJx" class="box" height="46" rx="8" width="128" x="306" y="170"/><text data-page-node-id="9CO4Lyz6s031M0qJDcFnYi" class="txt" text-anchor="middle" x="370" y="188"><!--pnid:azGwhfppHvupMnafXvLQPK-->回溯到原始块</text><text data-page-node-id="aosXQBJawj3swIC3R01Pn3" class="small" text-anchor="middle" x="370" y="204"><!--pnid:pUyfnBvfovWtjzSHqDeREg-->替身只是入口</text>
+      <path data-page-node-id="ZgfT0kToqKBhYnQgHCpiLl" class="flow" d="M434,193 L454,193"/>
+      <rect data-page-node-id="XNwQFucRrrYWsnAjnRIeSV" fill="#10b981" height="46" rx="8" stroke="#059669" width="128" x="458" y="170"/><text data-page-node-id="56Ln9Y5yeRXzqUy4de2rr7" class="txtw" text-anchor="middle" x="522" y="188"><!--pnid:XL6vn2DBoTj45XOJ6ULu2s-->大模型生成</text><text data-page-node-id="YRE26DT0ifxe2FKeZYzjYH" class="small" text-anchor="middle" x="522" y="204" style="fill:#fff; font-weight:600"><!--pnid:DkdxZVFB59OmAwhQ71c8vH-->原始块拼进提示</text>
+      <path data-page-node-id="swieBQpYnajnK7Dy0MxIP3" d="M387,94 L387,150 L207,150 L207,168" fill="none" marker-end="url(#ar)" stroke="#94a3b8" stroke-dasharray="4 3" stroke-width="1.4"/>
+      <text data-page-node-id="eWnThPzAmnIONNVL5ngoZh" class="small" fill="#94a3b8" x="580" y="146"><!--pnid:MlFiox8JOLZoN9Il4jtbCF-->同一个摘要库</text>
+    </svg>
+    <div data-page-node-id="ToZne9Up1boeUo00IS4nvO" class="note"><!--pnid:iQ4pxc3bQY50szVw3lg2Cu-->适用：需要快速定位、上下文要求简洁的场景。新闻资讯平台从海量新闻中快速提取关键信息。两个注意：摘要必须包含高价值表格的关键信息，过简会丢信息；每个块一次 LLM 调用，要按数据价值权衡成本。</div>
+  </div>
+
+  <div data-page-node-id="qqDwRiZEnc6WGSt6osPygX" class="figcard">
+    <div data-page-node-id="aEEYbadyrwd3jI6DwhBNz5" class="cap"><!--pnid:HgMX0akPCxvhv20TV0gRpg-->图 7 · 父子索引：子块负责检得准，父块负责答得全</div>
+    <p data-page-node-id="jQ2QQR1AD5VFL7ZWW4mQt7" style="margin:6px 0 8px"><span data-page-node-id="v2xYXA6UmQ5ITdu477icSR" class="pill"><!--pnid:ScUk9gtU9tT9SLWueiVkiB-->LLM 参与：不需要（纯索引结构策略）</span></p>
+    <p data-page-node-id="3AW4HVczv3E6L3GMejbniT" style="margin:0 0 10px; color:var(--ink2)"><!--pnid:bXtu6USqIKQynYfj289M02-->基本思路三步：①文档切成层级化块结构，只用最小的叶子块建向量索引；②检索时召回 top-k 个叶子块。块小，向量语义准，匹配得准；③若多个叶子块指向同一个父块，用父块替换这些子块送入模型。块大，上下文全，答得全。</p>
+    <svg data-page-node-id="SAnpKZBqXtZoj3DCVx9HcJ" aria-label="父子索引流程" role="img" viewBox="0 0 680 296">
+      <defs data-page-node-id="Z73BHA1uYJAK2QJobWapmX"><marker data-page-node-id="LR75PBRWMtN3dLK3G8m9da" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="aFbtJ0j9tQhFvvh2cyBaI6" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <text data-page-node-id="GehRwoQpXB3K4UurNr4hS8" class="small" fill="#b45309" font-weight="700" x="40" y="34"><!--pnid:g4dWQP40xsTuXp9gCKJbhx-->建库：层级切块</text>
+      <rect data-page-node-id="ge8pqcniFjFchywbVdLDiA" fill="#f4faf7" height="168" rx="10" stroke="#0d9488" stroke-dasharray="5 4" width="200" x="40" y="46"/>
+      <text data-page-node-id="XiNqM7Qe04uAcIOsyo5DZU" class="txt" fill="#0f766e" font-weight="700" text-anchor="middle" x="140" y="70"><!--pnid:2ThUbmIHS1kYC1B6DjZWpa-->父块（大 · 不入索引）</text>
+      <rect data-page-node-id="8pmhr8G3mQTEGZMZfDcnmi" fill="#fff" height="54" rx="6" stroke="#94a3b8" width="82" x="56" y="84"/><text data-page-node-id="dMYSbsifNqklXsrgujm60Z" class="small" text-anchor="middle" x="97" y="115"><!--pnid:x2xTE3QDTVjte8kCxB1Wle-->子块 1</text>
+      <rect data-page-node-id="KWuJY4MyanqJ1L2CikEnPM" fill="#fff7ed" height="54" rx="6" stroke="#b45309" stroke-width="1.6" width="82" x="146" y="84"/><text data-page-node-id="db4uyb1fbRwwRAPCFiO4Eb" class="small" text-anchor="middle" x="187" y="106"><!--pnid:27mGgWgOUFGbporg9eiCK7-->子块 2</text><text data-page-node-id="vZhW0x1vjI6i4wTaA9xH9K" class="small" fill="#b45309" text-anchor="middle" x="187" y="124"><!--pnid:Hd1PrgPFHUcN3Aw4Ct0lsh-->被命中 ✓</text>
+      <rect data-page-node-id="ey2L0bYyOBgqlzfgnk226P" fill="#fff" height="54" rx="6" stroke="#94a3b8" width="82" x="56" y="148"/><text data-page-node-id="Qe5qe58cH85NMDKQJBx8nm" class="small" text-anchor="middle" x="97" y="179"><!--pnid:eHz2V0Iuv5gjuWYdobBB1N-->子块 3</text>
+      <rect data-page-node-id="0aKOCeYRN4uUcnpIjQ6GV6" fill="#fff" height="54" rx="6" stroke="#94a3b8" width="82" x="146" y="148"/><text data-page-node-id="IQWLPEsULb3gHCUW9pmo2H" class="small" text-anchor="middle" x="187" y="179"><!--pnid:SrgyVIfddgMgX6aIUChtZE-->子块 4</text>
+      <text data-page-node-id="O3QSSz6jVRzV9B1LvNNBmQ" class="small" text-anchor="middle" x="140" y="240"><!--pnid:VsIqfAe5R0L5jPbZeweUVU-->向量索引只建在子块上；</text>
+      <text data-page-node-id="03A2nEfoLv9w46JHz416he" class="small" text-anchor="middle" x="140" y="258"><!--pnid:W5IsNUD3S1jTE9Jdq3UYkr-->子块小语义准，父块大上下文全</text>
+      <path data-page-node-id="KNacbZGLghxxb3GkA92H5j" d="M232,111 C330,111 330,131 414,131" fill="none" marker-end="url(#ar)" stroke="#b45309" stroke-dasharray="4 3" stroke-width="1.4"/>
+      <rect data-page-node-id="er2RDIbKdmfPt7l7ZEuwVA" class="boxg" height="40" rx="8" width="140" x="420" y="48"/><text data-page-node-id="Yb81sWE46uI9Ls2fB7U8mU" class="txt" text-anchor="middle" x="490" y="72"><!--pnid:kmmGfqsua3o09L5wJevvs8-->用户查询</text>
+      <path data-page-node-id="bnQIRJ7TPQHz1wgOq8sw24" class="flow" d="M490,88 L490,104"/>
+      <rect data-page-node-id="vDctARkeM5NO2HR2dcFjjw" class="box-a" height="50" rx="8" width="140" x="420" y="106"/><text data-page-node-id="jacG9jvxFTTBoq2z83vMLV" class="txt" text-anchor="middle" x="490" y="126"><!--pnid:B8wvQ8twr3KPkTEKtUst7n-->检索命中子块</text><text data-page-node-id="EOvff6vGHvDRqYdEe3B2zc" class="small" text-anchor="middle" x="490" y="143"><!--pnid:YVK2KVImzAbKDZOURMYidA-->细粒度 · 匹配准</text>
+      <path data-page-node-id="X0VO0PFIUpYvVdEaz4VfDf" class="flow" d="M490,156 L490,172"/>
+      <rect data-page-node-id="x1oBIMSlNAWHlJYq6dFrrJ" class="box" height="50" rx="8" width="140" x="420" y="174"/><text data-page-node-id="P5SShTX0yPkLBz5QozObvJ" class="txt" text-anchor="middle" x="490" y="194"><!--pnid:4JJ3kxsJgKcT1laxMd9uS7-->多个子块同父？</text><text data-page-node-id="cxFXqxHxDXmGdbCoIyt9w4" class="small" text-anchor="middle" x="490" y="211"><!--pnid:xCXe7usg3taite19Q27UGp-->是 → 用父块替换</text>
+      <path data-page-node-id="IHF1Yap5JfdYeokgus28bT" class="flow" d="M490,224 L490,240"/>
+      <rect data-page-node-id="mpxv4GcvbR89SXp2csMqyf" fill="#10b981" height="50" rx="8" stroke="#059669" width="140" x="420" y="242"/><text data-page-node-id="UTgz1pVzqo8alj6fexfCE3" class="txtw" text-anchor="middle" x="490" y="262"><!--pnid:1jr7HtIAPa5uR19imOSjDW-->父块送入大模型</text><text data-page-node-id="i1qfQdU6PpTiU0Leq3zDKn" class="small" text-anchor="middle" x="490" y="279" style="fill:#fff; font-weight:600"><!--pnid:iMnPmcmKzydSJ3aqfcfKY9-->粗粒度 · 上下文全</text>
+    </svg>
+    <div data-page-node-id="hHNm2PQnLPBmwKUsEIdMPL" class="note"><!--pnid:VIaIJhzR5jdkboeIZICyqV-->适用：文档有清晰层次、查询针对具体细节、需要保上下文完整。技术文档（API 文档）、书籍、代码库检索；法律检索按条款命中后召回完整条文，避免分块过细丢前提。</div>
+  </div>
+
+  <div data-page-node-id="B9if65XjrjOsHxi1oelOI1" class="card">
+    <div data-page-node-id="Z31nLcQMAVWqtXY4tIjGYZ" class="cap"><!--pnid:q1bKqCee1V5r9rKLNcNoyJ-->父子索引为什么存在：一对天然矛盾</div>
+    <div data-page-node-id="BBKFO988Igfu5V2RUGZdpP" class="pull" style="margin:10px 0 12px"><!--pnid:O0DBcSy3fdVus2hABiwN1z-->「检索需要细粒度：越细越容易匹配问题里的关键词；生成需要粗粒度：模型需要完整上下文才能正确理解。传统 RAG 无法兼顾二者，陷入精度 vs 完整性的两难。」</div>
+    <p data-page-node-id="Z2TRcKtEGZfsGhPdRfk8UD" style="margin:6px 0; color:var(--ink2); font-size:14.5px"><!--pnid:z9ctF5ax5dx2sOD377Btx1-->一个典型翻车：合同里写「违约要赔偿 30%」，前提是「非不可抗力情形下」。如果前提那一条没被一起召回，AI 给出的答案就是错的。父子索引让「检得准」与「答得全」同时成立。</p>
+  </div>
+
+  <div data-page-node-id="PabwZ6DSS0FEtMj2I2VABT" class="figcard">
+    <div data-page-node-id="PMSjCumQssYyLLUm4h1aYc" class="cap"><!--pnid:TKZmjXen1uzn1XaplCubTw-->图 8 · 假设性问题索引：用「问题」检索「问题」，同语义空间更好匹配</div>
+    <p data-page-node-id="C9VaLDDD58wBJtushV6rnz" style="margin:6px 0 8px"><span data-page-node-id="TfGDzr58bm6UE4nzk9DgAb" class="pill"><!--pnid:n9Vhgw91dx9a9C7zejDm5I-->LLM 参与：建库时为每块预生成 n 个问题</span> <span data-page-node-id="x0lRi65Q1D3985q4CSyh2k" class="pill"><!--pnid:6J3BYVKl7yyqmrKiG9McMG-->查询时不额外调用 LLM</span></p>
+    <p data-page-node-id="C49MGg9DC4YwzSpNrdjb02" style="margin:0 0 10px; color:var(--ink2)"><!--pnid:YvgsJLRT3r8MvUvr4ESDVa-->基本思路三步：①建库时让 LLM 为每个块生成 n 个假设性问题（这些问题和块内容强相关），向量化存入问题向量库；②查询时拿用户问题向量检索「问题向量库」。用问题搜问题（query-to-query），替换掉常规的「问题搜文档」；③命中后回溯到原始文本块送入模型作答。</p>
+    <svg data-page-node-id="0G8JCpENOab73PC556UOde" aria-label="假设性问题索引流程" role="img" viewBox="0 0 680 300">
+      <defs data-page-node-id="Icq4A4cjuZ8aQ14bwoKApK"><marker data-page-node-id="jDlzg7TcAQTTDLbnIsjjI2" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="a0BfymC9z9NowmI2FJ3a0W" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <text data-page-node-id="8pD84vX8ys8D2gPJJ23z14" class="small" fill="#b45309" font-weight="700" x="16" y="36"><!--pnid:oyhK6c7KF6xFmYPxu0t5vZ-->离线 · 建库时</text>
+      <rect data-page-node-id="rMQUabEfkmmlWAVyflr6UA" class="boxg" height="44" rx="8" width="104" x="16" y="48"/><text data-page-node-id="QUQ21lBI4w9GDew0fFstuC" class="txt" text-anchor="middle" x="68" y="74"><!--pnid:WH5naPMPIcZJSfl0xptg2J-->原始文档块</text>
+      <path data-page-node-id="ajarQtV6iTggJJF7qpgc6z" class="flow" d="M120,70 L148,70"/>
+      <rect data-page-node-id="LC7kDJJcVvrY2eD9ljAnoy" fill="#10b981" height="44" rx="8" stroke="#059669" width="152" x="152" y="48"/><text data-page-node-id="VykgPyZ3YYI9QiT1jv69mm" class="txtw" text-anchor="middle" x="228" y="66"><!--pnid:PZ5ZVyR0dm5h6JV8AklyIZ-->LLM 预生成问题</text><text data-page-node-id="yBPJMCkao6OhhKHywqiXZ9" class="small" text-anchor="middle" x="228" y="82" style="fill:#fff; font-weight:600"><!--pnid:tEGDaGLycO790y2CvXWJuc-->每块 n 个假设问题</text>
+      <path data-page-node-id="J4soMx4Ve0tiW4EDgnMZP8" class="flow" d="M304,70 L330,70"/>
+      <rect data-page-node-id="LeGwH24E55b1AqaDJQ4ax9" class="box" height="44" rx="8" width="150" x="334" y="48"/><text data-page-node-id="DGKgmN9IMgJqtBALFh3ETx" class="txt" text-anchor="middle" x="409" y="66"><!--pnid:wj1pDhaA2fdRhkrFHXIbxZ-->问题向量化入库</text><text data-page-node-id="O2sRLV97whvDUw9xYXZCIJ" class="small" text-anchor="middle" x="409" y="82"><!--pnid:RxrA9PUXx2PO5LTqcyG212-->问题向量库</text>
+      <text data-page-node-id="pB9KDSOxxRJrgavGcAR6o8" class="small" x="514" y="66"><!--pnid:fhhYyRNUMNDrmyHwxG3jQN-->覆盖原因 / 影响 /</text>
+      <text data-page-node-id="dxRfSjsFJNQ06C6Yc2L128" class="small" x="514" y="84"><!--pnid:TmBtAjQvXheFk4um0ZBEnP-->步骤等不同角度</text>
+      <line data-page-node-id="MQ3ybZi6V7kSetnqeGRLti" stroke="#cbd5e1" stroke-dasharray="5 4" x1="16" x2="664" y1="132" y2="132"/>
+      <text data-page-node-id="u3z1izVK9U3u4RvvYPVCIE" class="small" fill="#0f766e" font-weight="700" x="16" y="156"><!--pnid:Yiiblfd5dFDgVzrmhl75il-->在线 · 查询时</text>
+      <rect data-page-node-id="SirXr2H0g4AUpEA2mtk4oy" class="boxg" height="46" rx="8" width="92" x="16" y="170"/><text data-page-node-id="xJWp6Vh1kRsESFltGqwsrq" class="txt" text-anchor="middle" x="62" y="197"><!--pnid:pGZjq0cvTbWMpxjfnrqj7p-->用户问题</text>
+      <path data-page-node-id="YpYeN9uCkKnsqo6e4QmNpt" class="flow" d="M108,193 L128,193"/>
+      <rect data-page-node-id="wteSFaVrGzDKtMMuszSfD4" class="box-a" height="46" rx="8" width="160" x="132" y="170"/><text data-page-node-id="V1aGTFGPVPVWv7CTM2n9Et" class="txt" text-anchor="middle" x="212" y="188"><!--pnid:U8sHI3qcRsBm9ENusyC71j-->用问题搜问题</text><text data-page-node-id="4zAc0bC4Eghwe5I4u86oz3" class="small" text-anchor="middle" x="212" y="204"><!--pnid:kTN6PfefwFILoFlnK7rGfb-->query-to-query</text>
+      <path data-page-node-id="TfrPEmhw6ZIGhRUMHuPD5I" class="flow" d="M292,193 L312,193"/>
+      <rect data-page-node-id="0Z0YFI97KLbmGlxNajEPfp" class="box" height="46" rx="8" width="118" x="316" y="170"/><text data-page-node-id="LURaDnpGgwj1ScfGS7dV6J" class="txt" text-anchor="middle" x="375" y="188"><!--pnid:TvkdpgEnMsER9Vc7RqNT9b-->回溯原始块</text><text data-page-node-id="UahPYKVwYhz3OsiIuEzQMs" class="small" text-anchor="middle" x="375" y="204"><!--pnid:hvFrVF9W3G8pvsRiUUuROE-->问题只是入口</text>
+      <path data-page-node-id="bgICiZkbGWKixBMi8T2lzm" class="flow" d="M434,193 L454,193"/>
+      <rect data-page-node-id="BlXaG6jSwoDVs4InsQlUt0" fill="#10b981" height="46" rx="8" stroke="#059669" width="128" x="458" y="170"/><text data-page-node-id="KvduAQLtuI6W19h849zMZC" class="txtw" text-anchor="middle" x="522" y="188"><!--pnid:aVmHRb41FdkBTLQurMJSk4-->大模型生成</text><text data-page-node-id="3Xuf5HC2rdqHmGZHZ8DrYA" class="small" text-anchor="middle" x="522" y="204" style="fill:#fff; font-weight:600"><!--pnid:ApNZ74Mh3FcmjMAcjtpqCu-->原始块拼进提示</text>
+      <path data-page-node-id="cLZJ6Ml0rzH0kUxKgmrL3v" d="M409,94 L409,150 L212,150 L212,168" fill="none" marker-end="url(#ar)" stroke="#94a3b8" stroke-dasharray="4 3" stroke-width="1.4"/>
+      <text data-page-node-id="gSF78N44O52EqXJXkfBFTk" class="small" fill="#94a3b8" x="580" y="146"><!--pnid:JwQP1D3kApJkEv3EUlTCl7-->同一语义空间</text>
+    </svg>
+    <div data-page-node-id="YFvJ34X1esGm59qdcKkHUc" class="note"><!--pnid:YKMJgTwf1JyQ19lJcCGOq3-->优点：用户问题与预生成问题同属一个语义空间，比「问题对文档」更容易匹配；用户措辞与原文差异大也能召回。局限：依赖 LLM 生成问题的质量，专业领域可能需微调或人工校验。适用：FAQ、产品手册、教育客服等问法高度重复可预测的场景。药品咨询里为每种药品预生成「感冒了吃什么药」一类问题。</div>
+  </div>
+
+  <div data-page-node-id="XmgPxb6IfgXPytTsp36dYR" class="figcard">
+    <div data-page-node-id="urxMlnPy9rfz0UdhlSnF3L" class="cap"><!--pnid:0zCdHjl9foOTu9kbjvGED8-->图 9 · 元数据索引：先按标签过滤收窄范围，再向量检索定位</div>
+    <p data-page-node-id="6STGMMrJnoxGTug7PmXEoB" style="margin:6px 0 8px"><span data-page-node-id="14bCtOgRZV7TpTlVrREYKt" class="pill"><!--pnid:WKZdawC22Nte0Z42fTUMYP-->LLM 参与：可选（文档没标签时可让 LLM 推理补出）</span> <span data-page-node-id="V6mpIxp7CZl1lo5jQdmpGt" class="pill"><!--pnid:onGuYg2yVqgsvNMQYMVmby-->查询时过滤为结构化操作</span></p>
+    <p data-page-node-id="ap3ETJBpqBcDcKduke2FLO" style="margin:0 0 10px; color:var(--ink2)"><!--pnid:QQRZcVDkj6SOPOP3kpnIUq-->解决什么：几百个来源与类型的大文档集，只靠「切块＋top-k 相似检索」会精度不足、知识互相干扰。基本思路三步：①定义标签体系（topic / author / year 等，文档自带就用，没有可让 LLM 建库时推理补出）；②查询时先按标签过滤；③在过滤后的子集里做向量检索定位 Top-K。LangChain 中用自查询检索器（SelfQueryRetriever）实现。</p>
+    <svg data-page-node-id="nyuUHQucKwckiH22NxmgLz" aria-label="元数据索引流程" role="img" viewBox="0 0 680 250">
+      <defs data-page-node-id="bjUZatxSqyPP0jFU3nAwnN"><marker data-page-node-id="M3p7KUXBKNQPRGH1XbQtGU" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="pGmWHBcaIbHzEhHZbojOwN" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <text data-page-node-id="tv73DMjeYzvjF9QLTwXQP7" class="small" x="16" y="34"><!--pnid:fKHENLzKakqLcWqCYKX0L0-->标签示例：topic: 人工智能 / 云计算　·　author: A / B / C　·　year: 2022 / 2023 / 2024</text>
+      <rect data-page-node-id="Qn2uUQgRprJ6ZnFmPtlhGF" class="boxg" height="56" rx="8" width="100" x="16" y="92"/><text data-page-node-id="lDRO96kTB735vodrfg2BvT" class="txt" text-anchor="middle" x="66" y="114"><!--pnid:SgHFRDE1dQRIcfTtdlZnTq-->用户查询</text><text data-page-node-id="3vBS8zfvoT9A0xtd7M4qrp" class="small" text-anchor="middle" x="66" y="132"><!--pnid:AZEovCNeXEYBs2iJiV3UqQ-->含过滤意图</text>
+      <path data-page-node-id="mAr51uGWPnTfwBvrzN5F7r" class="flow" d="M116,120 L142,120"/>
+      <rect data-page-node-id="hfFWxOgw7aMY8ZgWpBQYnS" class="box-a" height="76" rx="8" width="188" x="146" y="82"/><text data-page-node-id="BPYXP4PyHFr7oWCt1TEOvF" class="txt" text-anchor="middle" x="240" y="106"><!--pnid:geQxYI6YniIgMk4GgmvDUy-->第一步：标签过滤</text><text data-page-node-id="01fri58ecSnuQzRazGWnlM" class="small" text-anchor="middle" x="240" y="126"><!--pnid:YNLyZPUa4L38IY7IqYWbAR-->topic=人工智能</text><text data-page-node-id="4laavAToyCKO6rURzeNZjk" class="small" text-anchor="middle" x="240" y="143"><!--pnid:zpqY4JTGttzYm0amnbfVmP-->year=2024</text>
+      <path data-page-node-id="4EZOA3PcRkwokU0OgpP74e" class="flow" d="M334,120 L358,120"/>
+      <rect data-page-node-id="tKNXQCJtAev2Xcb9ucNNr7" class="box" height="76" rx="8" width="118" x="362" y="82"/><text data-page-node-id="kJEENVER5xScVMCyll4QBh" class="txt" text-anchor="middle" x="421" y="110"><!--pnid:tRONemQ9bFZbnh5O6FbwMk-->过滤后子集</text><text data-page-node-id="2wlhvlaUHUF1XUg2XkWM0f" class="small" text-anchor="middle" x="421" y="130"><!--pnid:OXhNPUWQldJYRqvqQFjWmj-->几百篇 → 少量</text>
+      <path data-page-node-id="IsfRyJqnhgVmizwqsa1MGI" class="flow" d="M480,120 L504,120"/>
+      <rect data-page-node-id="z1sWmty9bXZdydUTmgSCpK" class="box" height="76" rx="8" width="156" x="508" y="82"/><text data-page-node-id="orCGnDJPrk19kQM8BjPxci" class="txt" text-anchor="middle" x="586" y="106"><!--pnid:kGnlDmVfsDv67vSbYj9o8q-->第二步：向量检索</text><text data-page-node-id="nGDyO6KWIeYRP8d2ARMDiC" class="small" text-anchor="middle" x="586" y="126"><!--pnid:mOc57luJjlzqBzdOp2zO4B-->只在子集内比对</text><text data-page-node-id="Bo4QXe1vqnL5JE2qc149Ar" class="small" text-anchor="middle" x="586" y="143"><!--pnid:6AFgNofV3Wfs08eOjLe0yl-->定位 Top-K</text>
+      <text data-page-node-id="TYr6VfwZ0fdhvlfdfdWRtv" class="small" x="16" y="206"><!--pnid:fQC8vjumZCV7JabXS9UGhe-->先过滤再检索：相似度只负责「内容像不像」，「哪条适用」交给结构化标签判定。</text>
+      <text data-page-node-id="43Gj1lnDSOOe6EV7C75Zqk" class="small" x="16" y="228"><!--pnid:Cnm5LyiLyE78F9knNcAECL-->例：医学文献库查「糖尿病」，先按 topic 过滤，就不会被并发症资料干扰。</text>
+    </svg>
+    <div data-page-node-id="r5OByraAIS1Wq9hkOtAk9S" class="note"><!--pnid:snszRtqWmnGJYpnHmrKAKD-->适用：多源异构、需分层筛选的大文档集。电商推荐按用户偏好标签先筛商品知识。规则 / 政策类场景尤其关键：活动、品类、版本多轴并存，只靠相似度分不出「哪条适用」，必须先按维度过滤。</div>
+  </div>
+
+  <h3 data-page-node-id="n31OQGLNLIV0pyAfZp0U7z" class="sub"><!--pnid:qj7izszoqfc8iCwMQ0OBeD-->检索前 · 查询优化三招（逐招拆解）</h3>
+
+  <div data-page-node-id="0Mwz0dzQb904ri3DnMCcIF" class="figcard">
+    <div data-page-node-id="H2KxXEPll3MEEhVCNFQniQ" class="cap"><!--pnid:3I5jarjrSQYsCEwdZqmPtc-->图 10 · 完善问题（Enrich）：模型主动追问，把模糊问题问清楚</div>
+    <p data-page-node-id="ef64JPd6XJqPnwFw6NP0RU" style="margin:6px 0 8px"><span data-page-node-id="hxkn0XknfQjTwQU4AFhuOx" class="pill"><!--pnid:Cejoqgbw5QGk3AFJL9Wx8G-->LLM 参与：查询时，多轮对话补全</span></p>
+    <p data-page-node-id="zz0oxo7MxqbMD47Ar968Fn" style="margin:0 0 10px; color:var(--ink2)"><!--pnid:z7vvVTGEHUTfU0cOYqnnwR-->解决什么：口语表达过于简略或含糊，容易引发语义歧义；问题里隐含要素多、表达出的信息却不足。基本思路：让模型主动与用户多轮沟通，不断收集信息、完善对真实意图的理解，补全执行所需的各项参数，得到一个完善后的查询再送检索。</p>
+    <svg data-page-node-id="bgs8kQe3VjY1PX81vMMqvt" aria-label="完善问题流程" role="img" viewBox="0 0 680 220">
+      <defs data-page-node-id="t0AUbj6Gis8KTPtXK1usCi"><marker data-page-node-id="X992ceoWeESHUih5N4iEzB" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="91IUXARmoVmdaGPOFcFKzH" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <rect data-page-node-id="hQX687wbNNJEoLUJELgH2z" class="boxg" height="56" rx="8" width="152" x="16" y="60"/><text data-page-node-id="gkgYxRh2IzlSZpKXkYxtTO" class="txt" text-anchor="middle" x="92" y="82"><!--pnid:oSgFm5F54N4tIV3ihGxMEf-->用户原话</text><text data-page-node-id="ZM7FniPOdXA6cQ1uN742c3" class="small" text-anchor="middle" x="92" y="102"><!--pnid:0SFUiyu5Vn4PGcjiW7zXV9-->「退货怎么办？」</text>
+      <path data-page-node-id="hqlml0IbvvnpfLYzutz1ZB" class="flow" d="M168,88 L196,88"/>
+      <rect data-page-node-id="Cd9JICle287NbpQx4XPhEv" fill="#10b981" height="72" rx="8" stroke="#059669" width="152" x="200" y="52"/><text data-page-node-id="C0BfbSsGauRZ7PZDKB6Ehw" class="txtw" text-anchor="middle" x="276" y="78"><!--pnid:ioC6pzVIsnUppymKcfpNmG-->LLM 补全意图</text><text data-page-node-id="DYg4yfHAAaXO40xMeLFrAH" class="small" text-anchor="middle" x="276" y="96" style="fill:#fff; font-weight:600"><!--pnid:Yleb1EsTVT1SDkra9BCAMA-->主动追问 · 多轮</text><text data-page-node-id="yoaZSa71ppEb7fC0pt8tg8" class="small" text-anchor="middle" x="276" y="112" style="fill:#fff; font-weight:600"><!--pnid:o55gQnqIcR5pGAqKVnmHIs-->收集缺失参数</text>
+      <path data-page-node-id="r6qAqzQc103CwrWWNsiwCs" class="flow" d="M352,88 L380,88"/>
+      <rect data-page-node-id="8H8bnRsaWDHs3QKPcEx8rL" class="box-a" height="56" rx="8" width="152" x="384" y="60"/><text data-page-node-id="mDI2SWlpU3O6f1n2ICVwf7" class="txt" text-anchor="middle" x="460" y="82"><!--pnid:hiSJl5fcON1Lrxo1qTH4TZ-->完善后的问题</text><text data-page-node-id="odffMKWpMcJP6fnjdCsFDU" class="small" text-anchor="middle" x="460" y="102"><!--pnid:icAwpO7B7PBoQ9TgDx0euO-->订单 · 类型 · 诉求</text>
+      <path data-page-node-id="QxLT08Lrzs4hxAoOIX1dvM" class="flow" d="M536,88 L564,88"/>
+      <rect data-page-node-id="Q57lPrc9KwoDA6bXhMZk5U" class="box" height="40" rx="8" width="96" x="568" y="68"/><text data-page-node-id="1dcksxwTGDENy8NnjAOtcn" class="txt" text-anchor="middle" x="616" y="92"><!--pnid:M3U4EvJ6TskiyxFOJmOhGo-->送检索</text>
+      <text data-page-node-id="Mm6gqmO4L0zWixsE2yc68z" class="small" text-anchor="middle" x="340" y="172"><!--pnid:Z3Tt7FLdEvs241Yz6V4rEJ-->追问示例：「哪个订单？是质量问题还是七天无理由？」</text>
+      <text data-page-node-id="szUokvbTAyUQhf6tYRiNXT" class="small" text-anchor="middle" x="340" y="192"><!--pnid:C4e1kzLObYRKbQ9FmPWXSt-->——补全之后再检索，命中率明显更高</text>
+    </svg>
+    <div data-page-node-id="WKZIvLcp4UkxtkubR6IMiQ" class="note"><!--pnid:t9CsQBPKzcfQRfGCMdB4Cd-->适用：C 端自然语言对话入口。表达简略、语义歧义、信息不足三类问题都靠它兜底；代价是多一轮交互，适合异步场景或对话式产品。</div>
+  </div>
+
+  <div data-page-node-id="mmQLNZhuKtwlOd3TVVHif5" class="figcard">
+    <div data-page-node-id="lsSbteHiK1Z723Vo311O3E" class="cap"><!--pnid:3TEdTlnWa2oyDob8bNcnfB-->图 11 · 多路召回（Multi-Query）：一问变多问，覆盖不同视角</div>
+    <p data-page-node-id="dzGzC5NvsT6RjncANbvTrF" style="margin:6px 0 8px"><span data-page-node-id="pjSg35hSryEFL0laNmS2vV" class="pill"><!--pnid:eb4VzzZEaVnJoUS47SoIiz-->LLM 参与：查询时，生成 N 个相关问题</span></p>
+    <p data-page-node-id="JqNJE1URURRINFRtSLytGz" style="margin:0 0 10px; color:var(--ink2)"><!--pnid:VfFSg2CRpPYukbXS7nRpUt-->解决什么：单一查询措辞有限，覆盖不全。用户措辞与文档表述稍有差异就漏召。基本思路三步：①用 LLM 基于原始问题生成 N 个不同视角的相关问题；②N 个新问题连同原始问题一起送检索，各自召回一批文档；③所有结果汇总去重后交给模型，生成更完整的答案。</p>
+    <svg data-page-node-id="ehf8AMnCGjP91HBANXhCBM" aria-label="多路召回流程" role="img" viewBox="0 0 680 340">
+      <defs data-page-node-id="XGNblng871vatQwg1FTQ3V"><marker data-page-node-id="GyhOs2oNuVdtMXcFb8Ebnr" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="cwZ8hYUMFe0xv0xyq2jaWT" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <rect data-page-node-id="ObIxofjVfCbO8RtjZfq9OJ" class="boxg" height="40" rx="8" width="180" x="250" y="16"/><text data-page-node-id="ntDWNAdo7ZyOmOEtsD9MGX" class="txt" text-anchor="middle" x="340" y="40"><!--pnid:rbcDYhv5xpeDchBD4isWqo-->原始问题</text>
+      <path data-page-node-id="YNFLOUVPGM6ZTVoJOsdnEO" class="flow" d="M340,56 L340,72"/>
+      <rect data-page-node-id="GCoeCZzCok8EkUsxKjABLL" fill="#10b981" height="50" rx="8" stroke="#059669" width="190" x="245" y="74"/><text data-page-node-id="8751Y4qMXOWr73G3G3NKHh" class="txtw" text-anchor="middle" x="340" y="94"><!--pnid:9K9Pzv8Utp4rceh2bPvHna-->LLM 生成 N 个问题</text><text data-page-node-id="M2WKbC2HjUoriL6Rxblemq" class="small" text-anchor="middle" x="340" y="111" style="fill:#fff; font-weight:600"><!--pnid:u0L4BJE3So4JpAPFDSFvXT-->不同视角 · 互补覆盖</text>
+      <path data-page-node-id="48ok4e8XQglkPm0cpueRUt" class="flow" d="M120,132 L120,150"/><path data-page-node-id="N1ZP75cCSy9k0ocZzelcT1" class="flow" d="M340,124 L340,150"/><path data-page-node-id="9rfB6vc31f6ubq7PY0ntiU" class="flow" d="M560,132 L560,150"/>
+      <path data-page-node-id="6Ldp3Qgebdoh8HeSrPiSMb" d="M243,99 C170,99 122,112 120,146" fill="none" marker-end="url(#ar)" stroke="#94a3b8" stroke-dasharray="4 3" stroke-width="1.2"/>
+      <path data-page-node-id="KjHlQtV3ygsy5upcx2xpFx" d="M437,99 C510,99 558,112 560,146" fill="none" marker-end="url(#ar)" stroke="#94a3b8" stroke-dasharray="4 3" stroke-width="1.2"/>
+      <rect data-page-node-id="toYDyhISXZycjiq1LR592f" class="box" height="46" rx="8" width="180" x="30" y="152"/><text data-page-node-id="gV7JtqpHDjrrYhdOyy8gHI" class="txt" text-anchor="middle" x="120" y="170"><!--pnid:SOXr8Oq7b4QiBpZvK0bVGO-->视角 1：退货政策</text><text data-page-node-id="aobJNF6843yoTWlFG08mTm" class="small" text-anchor="middle" x="120" y="187"><!--pnid:qd4v2EA77Dv1fAru1ZTSS3-->各自检索一批文档</text>
+      <rect data-page-node-id="FVCw9q4M8y9pHEm9JEeaBv" class="box" height="46" rx="8" width="180" x="250" y="152"/><text data-page-node-id="yIs3B3DqzrdDWZMcVc5t4A" class="txt" text-anchor="middle" x="340" y="170"><!--pnid:NIHO2vea654Saz0moNM60i-->视角 2：运费规则</text><text data-page-node-id="fzFL6vsAy6AHlbXnxylBz0" class="small" text-anchor="middle" x="340" y="187"><!--pnid:4YflNIy164LQFOVTBRoOFG-->各自检索一批文档</text>
+      <rect data-page-node-id="9qX8zDEP5URbG8kDsMtCKz" class="box" height="46" rx="8" width="180" x="470" y="152"/><text data-page-node-id="jwLjtCBSn6KIpaC35zUseS" class="txt" text-anchor="middle" x="560" y="170"><!--pnid:NTbHY65WHNCidfrpdOSdPZ-->视角 3：时效限制</text><text data-page-node-id="3AjTEb8WXVDl4hoEl5NBCO" class="small" text-anchor="middle" x="560" y="187"><!--pnid:uZnp4VybIYTKqwQj17UhVR-->各自检索一批文档</text>
+      <path data-page-node-id="VOTkGt7mdGCkVfNcFElI5w" class="flow" d="M120,198 L120,222 L252,240"/><path data-page-node-id="QyV99oYI4E9VNBL339QT86" class="flow" d="M340,198 L340,224"/><path data-page-node-id="TkJ2SlM3z7xsvfAe0ZcX8a" class="flow" d="M560,198 L560,222 L428,240"/>
+      <rect data-page-node-id="eiwvyysIiOnWCTxbXyx88t" class="box-a" height="46" rx="8" width="180" x="250" y="242"/><text data-page-node-id="tTQlziEN5IGguSljqVXQgm" class="txt" text-anchor="middle" x="340" y="260"><!--pnid:xfXn8IKSo0qZ0iu5VPPBMb-->结果汇总 · 去重</text><text data-page-node-id="cwqqCBl2fPD9eVhcemIVhB" class="small" text-anchor="middle" x="340" y="277"><!--pnid:2mLsyqs4WsDe3xySqoxStW-->原始问题也在其中</text>
+      <path data-page-node-id="yRZiaOEB1dIUwVMvowdKaa" class="flow" d="M340,288 L340,300"/>
+      <rect data-page-node-id="v9VKFXolgfydyUrEl76Cpa" fill="#10b981" height="34" rx="8" stroke="#059669" width="170" x="255" y="302"/><text data-page-node-id="GlEeUoVWXaoD7apZsZ2q26" class="txtw" text-anchor="middle" x="340" y="324"><!--pnid:MIuPPC7suJYiQwZo00wXOX-->大模型生成答案</text>
+    </svg>
+    <div data-page-node-id="2Ed29dfTl1U2l3RUj3t8pC" class="note"><!--pnid:eabBHVR1mH8afU8UOlXc5x-->适用：通用问答里单条查询覆盖不全的场景。视角怎么定不是拍脑袋。让 LLM 从「政策 / 费用 / 时效」等维度改写；多路检索的代价是调用量翻 N 倍，配合后面的 RRF 融合排序使用效果最好。</div>
+  </div>
+
+  <div data-page-node-id="Hc7EFiyvrr7Wuo4VU5MHXX" class="figcard">
+    <div data-page-node-id="8dP7XTKaqYHqFru5jib3Rm" class="cap"><!--pnid:ql4C0yX9YdZunOM5zAofD0-->图 12 · 问题分解（Decomposition）：复合问题拆成子问题，分而治之</div>
+    <p data-page-node-id="1eoFkqhIPdqg45o9iye7kz" style="margin:6px 0 8px"><span data-page-node-id="DEuTVtwTcCkABRHkYM2HZF" class="pill"><!--pnid:TvTFbMQs24xYVpt1WX48D3-->LLM 参与：查询时，CoT 提示拆解</span></p>
+    <p data-page-node-id="6WwJVrTdJ4qDH8essVfdCm" style="margin:0 0 10px; color:var(--ink2)"><!--pnid:3IJ0cswdfAxa7LCACr1Tc4-->解决什么：复杂问题需要多步推理才能回答，模型一步到位容易漏。基本思路：用思维链（CoT）提示把问题拆成小问题，再选一种执行策略。<strong data-page-node-id="axmFY00WQKDdnc6KEfucoY"><!--pnid:MhLEDNkQpTaX0OWUA4CgNm-->并行</strong><!--pnid:KLksDiVc8NphJAM1LoTaGO-->：每个子问题各自检索作答，最后把所有子答案汇总成最终答案；<strong data-page-node-id="k1h6n87tFcTkcsQtYDlnzW"><!--pnid:DmzA9JfjWd9L64QWT71gpS-->串行</strong><!--pnid:xTlAgFHCGNVjGNH0OyT816-->：依次执行，把前一问的答案并入后一问的提示，逐步逼近。</p>
+    <svg data-page-node-id="bP2Y0GpngWZgESs1g35sbH" aria-label="问题分解流程" role="img" viewBox="0 0 680 312">
+      <defs data-page-node-id="KpLjNHKtSaAYxF6ANnkpTQ"><marker data-page-node-id="7zmQNFRF9agJkZKgwYKr1U" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="FiUUPWzflBsbqQrGB1MctZ" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <rect data-page-node-id="ok7FzldSDiWbAGzCO6ZLOB" class="boxg" height="44" rx="8" width="220" x="230" y="16"/><text data-page-node-id="vfQvneeyX8EPwDgRKfsKMh" class="txt" text-anchor="middle" x="340" y="34"><!--pnid:0oQF6S94lmTH9uXxp506JS-->复合问题</text><text data-page-node-id="0xJx2dN0WaGlVpeLhOfxZ0" class="small" text-anchor="middle" x="340" y="51"><!--pnid:cK6z5vnKy58ULt56dPTiRy-->需要多步推理才能回答</text>
+      <path data-page-node-id="nr4jA2XLLyg2ZqAlqEp9vx" class="flow" d="M340,60 L340,76"/>
+      <rect data-page-node-id="WkXNJmhe9telQuApd9TuYR" fill="#10b981" height="48" rx="8" stroke="#059669" width="170" x="255" y="78"/><text data-page-node-id="OX5WAgzXSr748g6lxwDCLb" class="txtw" text-anchor="middle" x="340" y="98"><!--pnid:49xLjkgllMQhMaRQbVK9Ey-->CoT 拆解</text><text data-page-node-id="bF5qQLQDW42UL991dMhNp6" class="small" text-anchor="middle" x="340" y="115" style="fill:#fff; font-weight:600"><!--pnid:ljkU4e3vqHbqkr2uCOZfok-->拆成可独立回答的子问题</text>
+      <path data-page-node-id="QC1UBbtOhXn2gEohUrhdUC" class="flow" d="M140,134 L140,158"/><path data-page-node-id="alOx7ybdme3gKzeULRgli3" class="flow" d="M340,126 L340,158"/><path data-page-node-id="SVXSBtzwzr3UiltfIliGAF" class="flow" d="M540,134 L540,158"/>
+      <rect data-page-node-id="II0H9Wtt8pX936iVeYCZAT" class="box" height="46" rx="8" width="160" x="60" y="160"/><text data-page-node-id="ikAUYum9aUgJmfXHRdAH8M" class="txt" text-anchor="middle" x="140" y="178"><!--pnid:Z9zyzApLjETJNys4MlvCH9-->子问题 1</text><text data-page-node-id="vB0MhsdonwfMdPQYL0qfd2" class="small" text-anchor="middle" x="140" y="195"><!--pnid:dHtu5XGs77QgR4v0xUs0tV-->查 A 的表现</text>
+      <rect data-page-node-id="dn5JQ0H2iXkd0ZIAmN4Szm" class="box" height="46" rx="8" width="160" x="260" y="160"/><text data-page-node-id="5aMJMRpHki8vx88FfIDWbw" class="txt" text-anchor="middle" x="340" y="178"><!--pnid:BphCVb7KxTIoUQBw8brtOl-->子问题 2</text><text data-page-node-id="RkfFJXqAROZzlwRxCe35Wz" class="small" text-anchor="middle" x="340" y="195"><!--pnid:y6xofh3JAprnEgsxnEqBi1-->查 B 的表现</text>
+      <rect data-page-node-id="uuHdCgrCzzjoIVgAIIGSgl" class="box" height="46" rx="8" width="160" x="460" y="160"/><text data-page-node-id="Wraa2xFWw9NtDbPYvBOoxd" class="txt" text-anchor="middle" x="540" y="178"><!--pnid:JZKeIhJx2GpNYJjpGEZCp0-->子问题 3</text><text data-page-node-id="nEcPENNiFGIHvQavRszWcL" class="small" text-anchor="middle" x="540" y="195"><!--pnid:Kf8yH2C9QuJWGijIVZfFp5-->查条件 X 的定义</text>
+      <text data-page-node-id="IvLXnzTwAoKkNye3yawamr" class="small" fill="#475569" font-weight="700" text-anchor="middle" x="340" y="240"><!--pnid:Ypba4r5l2Zs91fmhPVYCqO-->两种执行策略</text>
+      <rect data-page-node-id="NVStYn5vLhObwKQddesqC9" class="box-a" height="50" rx="8" width="270" x="60" y="252"/><text data-page-node-id="iiNRwQyeoEJu46JMkTMhyx" class="txt" text-anchor="middle" x="195" y="272"><!--pnid:WwEuGzWscsynnJIestnOgz-->并行：各自作答 → 汇总</text><text data-page-node-id="VlSoG016UXE8vnpjS1Rh27" class="small" text-anchor="middle" x="195" y="289"><!--pnid:2Qq72mmutf7xrDPZKnIWyv-->子问题互相独立时用</text>
+      <rect data-page-node-id="bENhwjlmibvvGmt0L6HGdP" class="box-a" height="50" rx="8" width="250" x="370" y="252"/><text data-page-node-id="LWx0PgkZriXHnyqfGArftQ" class="txt" text-anchor="middle" x="495" y="272"><!--pnid:EqANqqrzdXgHkjSQB9JDei-->串行：答案滚动并入</text><text data-page-node-id="NIqDmzCGbqWD9uVpIfjalg" class="small" text-anchor="middle" x="495" y="289"><!--pnid:2JHkLla4Udygai13alnU7p-->后一问依赖前一问时用</text>
+    </svg>
+    <div data-page-node-id="VRZUOmN97xHdcFRNFN1Pg5" class="note"><!--pnid:4LuPQwi9y9DS7ZCVENqSTJ-->适用：对比类、多跳类复合问题。「A 和 B 哪个更满足条件 X」拆成分别查 A、查 B、查 X 的定义；串行适合「先查资质，再按资质查适用政策」这类有依赖关系的问题。</div>
+  </div>
+
+  <h3 data-page-node-id="EVPZ9zm1lm73Fj3mbeZeN2" class="sub"><!--pnid:hD2zP9KSypMnpBjrueTvO7-->检索 · 混合检索</h3>
+  <div data-page-node-id="mcqonwGeGc3JXUnr3rC5HW" class="figcard">
+    <div data-page-node-id="ecpGQYlIn1E85zpIYdHJBI" class="cap"><!--pnid:ZiUyaPyOIRBZKmWjepV4qc-->图 13 · 混合检索标准流程：两路并行 → 标准化评分 → 加权融合</div>
+    <svg data-page-node-id="GKSrwUc89RsPQdC2aqelpA" aria-label="混合检索流程" role="img" viewBox="0 0 680 356">
+      <defs data-page-node-id="QRQbrnBgcEU0wbdyNR9NEZ"><marker data-page-node-id="PXzG0anWNjD8VJ4K9Srnna" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="jsNiQ7GZfJErRsn3alCNYM" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <rect data-page-node-id="66CwuSRMdpw6Zb3ZT5Lval" class="boxg" height="38" rx="8" width="120" x="280" y="12"/><text data-page-node-id="qlPUrog0CELGpKwWN8DXwz" class="txt" text-anchor="middle" x="340" y="35"><!--pnid:mdPI0RkuHzHop27o8OLYoE-->用户查询</text>
+      <path data-page-node-id="UoILsYnuLQEdzwmejJLCud" class="flow" d="M340,50 L340,66"/>
+      <rect data-page-node-id="ayR535x2HuXr9oRSu2HGQ0" class="box" height="38" rx="8" width="124" x="278" y="68"/><text data-page-node-id="j3XmPLskS35LVzfc70A5yQ" class="txt" text-anchor="middle" x="340" y="91"><!--pnid:j7qfPXyO2zZfVTh3m7q56u-->查询预处理</text>
+      <path data-page-node-id="fKAvvU6eigqPI3sHM3BqgJ" class="flow" d="M316,106 L316,128"/><path data-page-node-id="1xRRK8zjElwc4oyPEczfAk" class="flow" d="M364,106 L364,128"/>
+      <rect data-page-node-id="ZTZ4hUkc87bUBgXQUFjmtb" class="box" height="40" rx="8" width="120" x="196" y="130"/><text data-page-node-id="9Go2YKDhWQ0PkNURNJglPd" class="txt" text-anchor="middle" x="256" y="154"><!--pnid:p35x81T37zLSwftwoDtVpG-->向量检索</text>
+      <rect data-page-node-id="TfLeUW358Tf34I7L1eKqzd" class="box" height="40" rx="8" width="140" x="364" y="130"/><text data-page-node-id="DyPzYU1Xu8cA3vQ022bdOp" class="txt" text-anchor="middle" x="434" y="148"><!--pnid:z1CabkyWygyRzTsdvKwg8e-->BM25 关键词检索</text><text data-page-node-id="JDSAX93A8JYzvWGLskS4A8" class="small" text-anchor="middle" x="434" y="163"><!--pnid:tMkJhUYbG9vCbhqKESS6yw-->精确术语匹配</text>
+      <path data-page-node-id="hmpJA5qm8dtY0YehrF6CNG" class="flow" d="M256,170 L256,190"/><path data-page-node-id="Q2kEynDJnyFQmhzINzBuKC" class="flow" d="M434,170 L434,190"/>
+      <rect data-page-node-id="MMSJnDyKnKrXS52zn2HzHK" class="boxg" height="40" rx="8" width="120" x="196" y="192"/><text data-page-node-id="0mjhQayNSKVGm5ncr3ngSK" class="txt" text-anchor="middle" x="256" y="210"><!--pnid:bfWrlX96xIb7CEOY0stcIn-->结果标准化评分</text><text data-page-node-id="PeGKGoNNPdjOP7NpltQtNs" class="small" text-anchor="middle" x="256" y="225"><!--pnid:sBXGiXwJQk1ShxJKjHOFyD-->归一到可比区间</text>
+      <rect data-page-node-id="2U8TP52gxDbuWT5R8jqzGt" class="boxg" height="40" rx="8" width="140" x="364" y="192"/><text data-page-node-id="y8wLniPgDGUkoVCPcqTQ5q" class="txt" text-anchor="middle" x="434" y="210"><!--pnid:fFvn203yrserd4QPHov0Im-->结果标准化评分</text><text data-page-node-id="bJBMHbmifRBanD3pH2sVvx" class="small" text-anchor="middle" x="434" y="225"><!--pnid:kK9kbkjv7E2vdtPaZ42jz3-->归一到可比区间</text>
+      <path data-page-node-id="67NIDBX2VIDL0pIcky8GY3" class="flow" d="M256,232 L316,262"/><path data-page-node-id="VrHEcES1lRWfeHgo6hw44Y" class="flow" d="M434,232 L364,262"/>
+      <rect data-page-node-id="pyTXAvaqnn2T6DzKGDnVmn" class="box-a" height="40" rx="8" width="124" x="278" y="264"/><text data-page-node-id="RHnUPRNZRTUgeK8YsuVzmF" class="txt" text-anchor="middle" x="340" y="282"><!--pnid:5GG3DTbnaYIR1YS2Muh4Vu-->加权融合</text><text data-page-node-id="xpLes41VEaZiMYQxXx9QW5" class="small" text-anchor="middle" x="340" y="297"><!--pnid:SDy2se74LHTbPz6QxEscpL-->按权重合成总分</text>
+      <path data-page-node-id="gOIRlX95a1nQqvfYTOZ3od" class="flow" d="M340,304 L340,318"/>
+      <rect data-page-node-id="e5wNMR3y2WGzm7Q9pLr0bW" class="box" height="32" rx="8" width="164" x="258" y="320"/><text data-page-node-id="omFUFpxrBrOgqzkmdd7YeL" class="txt" text-anchor="middle" x="340" y="341"><!--pnid:kpHT0bfDinAAMIpg9nz5rz-->按总分排序 · 取 Top-K</text>
+      <text data-page-node-id="k1Q8Mjo5HCPcde8slx9sLu" class="small" text-anchor="middle" x="580" y="341"><!--pnid:AckEu3rMKy83icJuJ3TLFn-->→ 送入生成阶段</text>
+      <text data-page-node-id="nKiDEHxMgduelvypHjaGHj" class="small" text-anchor="middle" x="120" y="152"><!--pnid:zwa4GNtxwEOsPsIqeU823r-->语义相似，</text>
+      <text data-page-node-id="s2TKs9bLCZfUHKNHuKDSPY" class="small" text-anchor="middle" x="120" y="167"><!--pnid:ws8KXWQ5iLLSH6z6Wp7RAE-->受表示能力限制</text>
+    </svg>
+    <div data-page-node-id="ye5n4Bs7KAFDPzdWNOyCtS" class="note"><!--pnid:8rK7NfiZNwtqfmdr9KZIOt-->「标准化评分 → 加权融合 → 排序」这三步正是「无脑拼接」会跳过的部分。没有归一，两路分数根本不可比。</div>
+  </div>
+
+  <div data-page-node-id="jM5mmqvwbxp7pIWZjmTbww" class="card">
+    <div data-page-node-id="qu4sUu7N83C0OsOpLQBd3F" class="cap"><!--pnid:2CFQ3Pg6R08wa6g9UaVvRS-->表 8 · 三种检索方式对比</div>
+    <table data-page-node-id="IOEZvZHvDE4A9KIHjlYBcI" class="tbl">
+      <tr data-page-node-id="K0Q6x4FOPCyb3US7LAXsGz"><th data-page-node-id="IobI9lM6cnpzeEUGQcdOQ6"><!--pnid:TdiRsP9x7vJSgblpuzCHUM-->方式</th><th data-page-node-id="DsLENyaITMtYFwF2ARLbfO"><!--pnid:2zKzPTGqorA9u51w6yy1xS-->擅长</th><th data-page-node-id="Ssi5nWRGSzPDvreweZQAoR"><!--pnid:kcxcCYLdbBQoBlYoEVj1jt-->短板</th><th data-page-node-id="kBwVXQjcLL752vYQm6mC7H"><!--pnid:pjdQblTBdXKmT5KrsRVTzU-->角色</th></tr>
+      <tr data-page-node-id="Ms6sKHokBb2jAsqrlJsL6h"><td data-page-node-id="iTghCBIcd4YDDr2xvHnzkt" class="kv"><!--pnid:TxZxD8nn2YlNgkhNse6p6m-->向量检索</td><td data-page-node-id="P1anaazeDXaYFNqGo7nwyV"><!--pnid:zm0GjhVfbG3s9ARCplRmhn-->捕捉语义相似</td><td data-page-node-id="mteTCsdEEpad4rXiLwrt5M"><!--pnid:7kXKpucZcJmEtc1CQZCTwq-->受向量空间表示能力限制，易漏「关键词匹配、表述不同」的核心信息</td><td data-page-node-id="alsuQCZmDEdbkHddCn5KlL"><!--pnid:A4n8MlTAQFOXYFE3eGAdSo-->理解意图</td></tr>
+      <tr data-page-node-id="dVpX8Nuwo4kBnyEjMTeLfJ"><td data-page-node-id="FYzsMlBGuC3nSpL9sq16LX" class="kv"><!--pnid:ATq6XqQb5dQH3IUeA8J8tZ-->关键词 / BM25</td><td data-page-node-id="0XXGzhQrmPInnOgpAyUkeX"><!--pnid:HWvOC0v6Hhel7dCHvYim66-->精确术语匹配、召回率高</td><td data-page-node-id="gOHNIF92txLGK6bubw1Fr4"><!--pnid:JvrMqMvvGPdw2r7msiGP38-->对自然语言表达不友好，易召回「词频相似、语义无关」的块</td><td data-page-node-id="XCa4QBylGCJCgjWwXNbvhI"><!--pnid:nV3cAAihnLs57DFhSlCgSg-->抓准专有词</td></tr>
+      <tr data-page-node-id="fHKfzBvk8uhvtueyHHy8DU"><td data-page-node-id="QtWHgY8n5gQJjFmduccw00" class="kv"><!--pnid:OXfNh7sF3FUQyTT2NVSTzo-->混合检索</td><td data-page-node-id="vqyX4cBxCo85tr04uVliaa"><!--pnid:Q5IrvH7Dtzpt36pdLgZ05M-->取长补短、动态适配</td><td data-page-node-id="9tAa7FcFrBfTOyzpTO0Bn9"><!--pnid:DdrGiuQ9wrBKF8DPzgHD0d-->需调权重，绝不能无脑拼接</td><td data-page-node-id="1l9MIZGf7xhX4KUANRlimG"><!--pnid:frHYJ8bGOeEzOMBAbgGDZs-->生产默认</td></tr>
+    </table>
+  </div>
+
+  <div data-page-node-id="DzvdcaUsG9v3yJGmkSFau4" class="card">
+    <div data-page-node-id="CVmn6qS7Zp66Q9WiwdAbk4" class="cap"><!--pnid:1kZ07eIIcJgFt4EN4nLp8J-->表 9 · 实测对照：同一应用四种检索方案（汽车手册问答）</div>
+    <p data-page-node-id="qgItvcotXeXGIWfNGnIrzz" style="margin:6px 0 10px; color:var(--ink2)"><strong data-page-node-id="27curfiDHxcSgvb5r07LNP"><!--pnid:OzlP7w4Xjn2oPPuGPD8P2e-->案例背景：</strong><!--pnid:WDpdd04mdjnE8cmtSoEpCm-->一套汽车手册问答 RAG 应用作固定底座，在同一评估数据集上每次只替换 / 叠加一个检索组件，其余条件不变。指标沿用 RAGAS 体系：忠实度（答案是否忠于上下文）、上下文精准度（相关块是否排得靠前）、上下文召回率（关键信息是否被覆盖）。括号内为相对第一行纯向量基线的百分点变化。</p>
+    <table data-page-node-id="UPhD5a3UuiZoXcvITYrU9c" class="tbl">
+      <tr data-page-node-id="pJrJ3eGt7gY3dehoG8DQxh"><th data-page-node-id="uxJaItYsfyMs7VK7AMC7eI"><!--pnid:gjh1whkmWmSric2Zm3Vw4h-->方案</th><th data-page-node-id="QUJ4KnO8BNxaQ8P7ztKOV5"><!--pnid:D82ySCDQiGR6AaNJyld1uw-->忠实度</th><th data-page-node-id="LSDIgqvC96gBeRJhNlWcrx"><!--pnid:POSVLOyH7Zw0BKiJ45eF3p-->上下文精准度</th><th data-page-node-id="8jejxDoY5bdyya5VGYJqnW"><!--pnid:U0PnjLXL28LQzBcoEc6BLi-->上下文召回率</th><th data-page-node-id="KV62uBIFZ7WrK0h7UjCt4Y"><!--pnid:J15nygucsLje1iolIR68H9-->结论</th></tr>
+      <tr data-page-node-id="Mg4eZMQP9MKBRpbXt5WXB9"><td data-page-node-id="39yDiRyKlOchqDAA5KNXcJ" class="kv"><!--pnid:ahHH6HFGxTDizAtoIVfwJ8-->原始：纯向量（256 块）</td><td data-page-node-id="srr9rfac1pKjCM7NwqgjN1"><!--pnid:GqBBGzxKTc1kMo6piSMdP1-->0.7619</td><td data-page-node-id="wau93zQy4piVkcwHTI49vz"><!--pnid:nrk4DxTxzPtvzc7MHksPoz-->0.8514</td><td data-page-node-id="qxqYQClvSkbHBCHAlsiwnn"><!--pnid:CQCxaTalRlWn9opHg28OLP-->0.8750</td><td data-page-node-id="nzLloFFmZgXyLrn577DsWZ"><!--pnid:glmvnwuCGf6CUI0lpDHAZi-->忠实度是最大短板</td></tr>
+      <tr data-page-node-id="5zApYHx56uYORFGADw3Fsd"><td data-page-node-id="4TN7g9Bb2tFFIVuY95k1Zx" class="kv"><!--pnid:7veYdHG0MgbyXgtBPw4jJS-->＋上下文压缩检索器</td><td data-page-node-id="2qzuPEyYopQ5Qvkt0zgd51"><strong data-page-node-id="YtiW0mfoKrXBtGiwAraHJr"><!--pnid:iDL774b7njQm4OCLBcKR20-->0.8615（+9.96%）</strong></td><td data-page-node-id="BaqulDJ0emCtRNAl5nwrmI"><strong data-page-node-id="p3tGFwQLKGooL6jTIgUg8m"><!--pnid:oAOJ49bLPmsnRCeDxANBP7-->0.9028（+5.14%）</strong></td><td data-page-node-id="LIhBAhCkEIRIfbz6LB6LQa"><!--pnid:CYH5phVEFUlUF4UEMmUxlc-->0.8194（−5.56%）</td><td data-page-node-id="9DHgTA6aimG9f4aTrcbZET"><!--pnid:5Z0G3MXeTEKKxlb31XDnwd-->以小幅召回损失换核心指标双升，综合 F1 几乎不变（0.8630→0.8591）</td></tr>
+      <tr data-page-node-id="pZJlD0xxSIeUuhljVwsAOS"><td data-page-node-id="8ar7FBdpPO3akgZ8XgYtwD" class="kv"><!--pnid:bt3riIbrJD9g2EgHbouVFf-->＋混合检索（无脑拼接）</td><td data-page-node-id="UtDrtTL493f0k4Z6hdIvj7"><!--pnid:0Vv2p5gESEdJYiQwTYkZIG-->0.8474（+8.55%）</td><td data-page-node-id="Z6ppnSVquhFXHZ9tsPIu8M"><strong data-page-node-id="YeURUc1XfS0DflDyAtz8c6" style="color:#be123c"><!--pnid:rvMH57tC9ffi387fdBRF1A-->0.4257（近乎减半）</strong></td><td data-page-node-id="Sri2KvSUMW40PzXeaci3Ri"><!--pnid:5y5h7t6yIcjBVZWpHmRhs9-->0.8750（持平）</td><td data-page-node-id="ggwJe2kUKpGpB5uAEzYjkg"><!--pnid:pIUNac3xGji0OLIBGnjcEa-->几乎不可用。两路分数没归一就合并</td></tr>
+      <tr data-page-node-id="M8NJ8mQMi3u64Qqh1m4FL5"><td data-page-node-id="QM5CCGqzBpgUeoz3TBUHXv" class="kv"><!--pnid:PVMdWIUf02CKuobMnxN0ZS-->混合＋调权重＋重排</td><td data-page-node-id="gA8vUUkGoEa2RKG444JR2l" colspan="3" style="text-align:center"><!--pnid:NE2tit4qKJRHg9NverMVVL-->从「最差方案」变「最优方案」，指标提升的同时成本还下降</td><td data-page-node-id="Qqo7NBp0kNnUAeg5qzJZsE"><!--pnid:Vobyo1nHll49eFq2iBIjUu-->重排是保留优势、剔除缺陷的必备操作</td></tr>
+    </table>
+    <div data-page-node-id="Y8t9ztzTukx3DTPCEKZg5v" class="note"><!--pnid:UVWj0mM7qIaUuc18pB6WDm-->这组数据把两条工程铁律钉死了：①混合检索绝不简单拼接结果；②所有指标的最终落脚点都是「检索到的上下文质量」。优化围绕完整度＋纯净度展开。</div>
+  </div>
+
+  <h3 data-page-node-id="lUBdYhuWH4duBoezxOpUQQ" class="sub"><!--pnid:NqPBiPqT1SHy3pxbHazxey-->检索后 · 三件套（逐招拆解）</h3>
+
+  <div data-page-node-id="59Lma9FYmr9mYdUpKfR1Hg" class="figcard">
+    <div data-page-node-id="5zmrwcE9LTy0HmkGym6L3X" class="cap"><!--pnid:58SS8mXaZ3fw7OF6dnK70R-->图 14 · 重排（Rerank）：用更专业的排序模型，把最相关的顶到最前</div>
+    <p data-page-node-id="B4FVznoSy3he3dxEXk6C6U" style="margin:6px 0 8px"><span data-page-node-id="z0IthoqKbsF1dHCUBb06cx" class="pill"><!--pnid:0QluySaQep52NIogtW4bAi-->模型参与：交叉编码器（专用排序模型，非生成式 LLM）</span></p>
+    <p data-page-node-id="jncLrLvCPyzKNnxD7KC2Zd" style="margin:0 0 10px; color:var(--ink2)"><!--pnid:STfc1w2G7bXaqxG7zkBxcV-->解决什么：检索器（向量 / BM25）为了快，排序都比较粗。最相关的文档不一定排最前，而模型对上下文开头的内容最敏感。基本思路：用更专业的排序模型对候选重新打分。交叉编码器把「查询＋文档」成对送入逐条打分，比向量检索的「各自编码再算距离」准得多。把最相关、最合规的结果顶到上下文最前端。</p>
+    <svg data-page-node-id="bpVJdLbsS5QGEAV2SLt2jw" aria-label="重排流程" role="img" viewBox="0 0 680 282">
+      <defs data-page-node-id="IKr9mbMQoasxH5ZlOXABy4"><marker data-page-node-id="WRStFP0p59p9UIc4BK9bJp" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="c2xpzw3ndsrJhtuvcf6Wy5" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <text data-page-node-id="Ey8orfmbjzYStnDxPEpzDK" class="small" fill="#475569" font-weight="700" x="16" y="36"><!--pnid:sbMvkOMh9rc5PwHDhBGKbs-->检索器返回的候选（顺序粗糙）</text>
+      <rect data-page-node-id="Bs0isWUlsKxnUNriE01yjk" class="box" height="34" rx="6" width="170" x="16" y="48"/><text data-page-node-id="0OUD6HvL763RlIpV3nQO45" class="small" text-anchor="middle" x="101" y="69"><!--pnid:Wdvm37cr8ceDQqgLmujmR4-->文档 C · 相关性 0.81</text>
+      <rect data-page-node-id="SG1MkyRbjatp1I0rl9pk7T" class="box" height="34" rx="6" width="170" x="16" y="90"/><text data-page-node-id="luGMaM1BLYoomZFadvY3pF" class="small" text-anchor="middle" x="101" y="111"><!--pnid:ZCrZDutXqT3mg3BWu252fm-->文档 A · 相关性 0.78</text>
+      <rect data-page-node-id="8GNYjj30YDXk78nrXrC27S" class="box" height="34" rx="6" width="170" x="16" y="132"/><text data-page-node-id="tACec58ng6GX8BAXFwg1NP" class="small" text-anchor="middle" x="101" y="153"><!--pnid:ojajC12SSvRFhwODBBIJ44-->文档 E · 相关性 0.75</text>
+      <rect data-page-node-id="1IVt25jVa9786iT9ii8c79" class="box" height="34" rx="6" width="170" x="16" y="174"/><text data-page-node-id="2D0tHMEhw5KYdaGbTpaVHx" class="small" text-anchor="middle" x="101" y="195"><!--pnid:cYZKth7h2qR1jeK4w6jmnj-->文档 B · 相关性 0.74</text>
+      <rect data-page-node-id="mynWXoYlGUqzCEsufC6PV9" class="box" height="34" rx="6" width="170" x="16" y="216"/><text data-page-node-id="ygKGGQbbWMWwP5fQZMbrgO" class="small" text-anchor="middle" x="101" y="237"><!--pnid:U4jp7SsPEwlDMdtxcY1H50-->文档 D · 相关性 0.70</text>
+      <path data-page-node-id="QTrpP0GSyy09DtM7rtHeBy" class="flow" d="M186,150 L244,150"/>
+      <rect data-page-node-id="j35PK3uJEiD4fb0THM5H7m" fill="#10b981" height="96" rx="8" stroke="#059669" width="164" x="248" y="102"/><text data-page-node-id="dPO5ia6OvtgV3Efk78uS27" class="txtw" text-anchor="middle" x="330" y="130"><!--pnid:GDhUeL38JNC7FfWMZCJu8T-->重排模型</text><text data-page-node-id="ElpXFjLMCEJctMBq2zIaoY" class="small" text-anchor="middle" x="330" y="150" style="fill:#fff; font-weight:600"><!--pnid:wRwx4CJbf0ujq5ST30Yuog-->交叉编码器</text><text data-page-node-id="iGWXa8HaoduYcitT0fxkOC" class="small" text-anchor="middle" x="330" y="168" style="fill:#fff; font-weight:600"><!--pnid:MwSFivbkHXDhGl8vB72Ury-->「查询＋文档」成对打分</text><text data-page-node-id="aITYxdx40dJ9g4jE0FxxE0" class="small" text-anchor="middle" x="330" y="186" style="fill:#fff; font-weight:600"><!--pnid:ov6M60RMC9E6svF8Q6XLZv-->比向量相似度更准</text>
+      <path data-page-node-id="GfA2LHQHiomt0qoA7lbajd" class="flow" d="M412,150 L470,142"/>
+      <text data-page-node-id="k05ZnVNDO2ZgAg6NX0ML7N" class="small" fill="#0f766e" font-weight="700" x="480" y="36"><!--pnid:bIYBSqidrk2qiSaK2hjLnH-->重排后（最相关置顶）</text>
+      <rect data-page-node-id="YFnj6uEDNgamv8LcJyQwVq" fill="#fff7ed" height="34" rx="6" stroke="#b45309" stroke-width="1.6" width="184" x="480" y="48"/><text data-page-node-id="vlbx05lbUyr9djKL0bOq2R" class="small" fill="#b45309" font-weight="700" text-anchor="middle" x="572" y="69"><!--pnid:Iuyn3amUyEcBwc8wbIPirU-->文档 A · 0.95 → 第 1 位</text>
+      <rect data-page-node-id="eC0wnejBOEN7WS3ocxOWnt" class="box" height="34" rx="6" width="184" x="480" y="90"/><text data-page-node-id="AviYv6S8joUhJZuhZaTXAG" class="small" text-anchor="middle" x="572" y="111"><!--pnid:5HGZe6IUFgGALVGlsHI7Uv-->文档 C · 0.88</text>
+      <rect data-page-node-id="buraO8Ev4vB5DoQ4PyjWOK" class="box" height="34" rx="6" width="184" x="480" y="132"/><text data-page-node-id="kpIsPhP3pdXB8QluD64IC3" class="small" text-anchor="middle" x="572" y="153"><!--pnid:N6FDBq2UFGNVCqqcwawTQ4-->文档 B · 0.84</text>
+      <rect data-page-node-id="Y0OVphKmZitt5temP7voz3" class="box" height="34" rx="6" width="184" x="480" y="174"/><text data-page-node-id="mgGNADQWX7KXNzJOgCryjS" class="small" text-anchor="middle" x="572" y="195"><!--pnid:bvZpkJXdMLcWfem3CuTgTU-->文档 D · 0.72</text>
+      <rect data-page-node-id="UJI7PD2Cvasoa8R10w2wJM" class="boxg" height="34" rx="6" width="184" x="480" y="216"/><text data-page-node-id="ovvRwLICJOYQryB65ZtxgA" class="small" text-anchor="middle" x="572" y="237"><!--pnid:rII5iRIiissjRl3eyRdAPU-->文档 E · 0.51（沉底）</text>
+      <text data-page-node-id="av2KYfbrTlanzXZiTOYIdo" class="small" text-anchor="middle" x="340" y="266"><!--pnid:0U6jnajjreuPYp9NUByoiI-->打分依据从「各自编码算距离」变成「成对精算」，顺序质量完全不同</text>
+    </svg>
+    <div data-page-node-id="Luk12blydxAqnZ6BrysvtU" class="note"><!--pnid:He12AKJ1msNz0EyNXEVkAK-->生产必备。表 9 的实测里，混合检索要加上调权重＋重排才从最差方案变成最优方案。重排是「保留召回优势、剔除排序缺陷」的核心操作。</div>
+  </div>
+
+  <div data-page-node-id="L8apn2YPirqidUGiNAVcKz" class="figcard">
+    <div data-page-node-id="dSeTKvlgkfCp7jAe55CkWn" class="cap"><!--pnid:kkjEDF0MBBg7aYcyHDaMGJ-->图 15 · RAG-Fusion / RRF：多路排名列表，按「倒数排名」融合成一份</div>
+    <p data-page-node-id="t6leFsBCGDZ8Cj5hrKIjBg" style="margin:6px 0 8px"><span data-page-node-id="hISFizHQSVNh06hRvu7eZI" class="pill"><!--pnid:xivZ3OUniioQ7f1mhHWTKn-->LLM 参与：多路问题由 LLM 生成；融合本身是纯计算</span></p>
+    <p data-page-node-id="epjoATO4QPRuxT44vueuuD" style="margin:0 0 10px; color:var(--ink2)"><!--pnid:TINa4FRtK8vdZ51jqM8a3E-->解决什么：多路查询（Multi-Query / 混合检索）各自返回一个排名列表，直接合并会让不相关文档排在前面。基本思路：用倒数排名融合（RRF）把多个排名列表合并成一个。不看原始分数（不同检索器的分数不可比），只看「在各自列表里排第几」：排得越靠前贡献越大，「两路都认可」的文档合成后最靠前。输出 Top-K 再送模型。免分数归一化，简单稳健。</p>
+    <svg data-page-node-id="uu1T6tErL8XSDP5pHmZAkN" aria-label="RRF融合流程" role="img" viewBox="0 0 680 272">
+      <defs data-page-node-id="ffITwI3U1dgYtHmBSScf36"><marker data-page-node-id="jO6oOgk7rR6S2U2NUNyvnZ" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="nIZ9uRgw9zOjqGJnEbcUid" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <rect data-page-node-id="qKCZV2HVpRlbZ2u6G0YjMx" class="box" height="100" rx="8" width="160" x="16" y="24"/><text data-page-node-id="ZAM1RjT38bRVa4MpnQCymI" class="small" fill="#475569" font-weight="700" text-anchor="middle" x="96" y="46"><!--pnid:34pcPFtVeseyA2SnfmTkGg-->列表 1（第 1 路）</text>
+      <text data-page-node-id="Y5fOGusASGXXn3pae0wBVj" class="small" text-anchor="middle" x="96" y="72"><!--pnid:jGBoax0v8gaa6DcERj2BB6-->文档 D · 第 1</text>
+      <text data-page-node-id="xJUDYC8a4htxGpvcJXaJL4" class="small" text-anchor="middle" x="96" y="92"><!--pnid:1imLgvDYxgAE8s3TfLbhqu-->文档 A · 第 2</text>
+      <text data-page-node-id="7Z1CDAFYDhWtureShMdOkG" class="small" text-anchor="middle" x="96" y="112"><!--pnid:J9DN9enX3XO1ptqIDHB0YM-->文档 B · 第 5</text>
+      <rect data-page-node-id="xF268stGVIDjOdHFj9Xg1S" class="box" height="100" rx="8" width="160" x="16" y="140"/><text data-page-node-id="hrCDhSVXMIIC3GLwAnyJ1P" class="small" fill="#475569" font-weight="700" text-anchor="middle" x="96" y="162"><!--pnid:Z41RBKTYbljoFZNg1BKL5X-->列表 2（第 2 路）</text>
+      <text data-page-node-id="dCFHFdSsMdj7y0It48fGbw" class="small" text-anchor="middle" x="96" y="188"><!--pnid:9wx91FZVrT8prwgUeGuA8J-->文档 A · 第 1</text>
+      <text data-page-node-id="c5XvZv4bIYxSveAuw1V00Z" class="small" text-anchor="middle" x="96" y="208"><!--pnid:cDBDFUrXFvbKnNZaJWn4ho-->文档 C · 第 3</text>
+      <text data-page-node-id="XjnhzhPBBxIK2uy38cCqFY" class="small" text-anchor="middle" x="96" y="228"><!--pnid:OVMkDeTXK4kTs3Xn3UMRk5-->文档 D · 第 4</text>
+      <path data-page-node-id="QZqF5sdViO4PYZdQI9Z91a" class="flow" d="M176,74 C230,74 240,120 274,136"/>
+      <path data-page-node-id="h6ZYuEnM83gyQCLKN4hjr6" class="flow" d="M176,190 C230,190 240,158 274,146"/>
+      <rect data-page-node-id="lqgtDoDqdXqEJFlfLS6fvt" class="box-a" height="84" rx="8" width="130" x="278" y="106"/><text data-page-node-id="DibHjKT2YX52geAiToSa8k" class="txt" text-anchor="middle" x="343" y="136"><!--pnid:qwlGvwab4OVTIKExoaTMe4-->RRF 融合</text><text data-page-node-id="rKvvKFbXyMSXPscdYrls01" class="small" text-anchor="middle" x="343" y="156"><!--pnid:dkUCLIUzxlrMgejM35GijE-->只看排名</text><text data-page-node-id="j7GtGl5hY5brBCfGF44WM1" class="small" text-anchor="middle" x="343" y="173"><!--pnid:M1PYgjFqNzmExtMByrtFL3-->不看原始分数</text>
+      <path data-page-node-id="diEnm2ZREPw6PSeOHvM4YE" class="flow" d="M408,148 L436,140"/>
+      <rect data-page-node-id="Z0wtUxPVoTFACttplrWpEW" class="box" height="140" rx="8" width="196" x="440" y="66"/><text data-page-node-id="WnN9CPGBB777gJ9h35rLuS" class="small" fill="#0f766e" font-weight="700" text-anchor="middle" x="538" y="92"><!--pnid:uhGjFWZ0QobjidCtVjlEMa-->融合后 Top-K</text>
+      <rect data-page-node-id="sgfIeBhJXR265TdmI6sdHM" fill="#fff7ed" height="32" rx="5" stroke="#b45309" stroke-width="1.4" width="168" x="454" y="106"/><text data-page-node-id="BzYLHdpJksyaw0h5NBGpvt" class="small" fill="#b45309" font-weight="700" text-anchor="middle" x="538" y="126"><!--pnid:59zCFdRGLaUiKsA2en98aS-->文档 A · 第 1</text>
+      <rect data-page-node-id="eMFgVyptwv6DfQIwNqp2Mt" fill="#fff" height="32" rx="5" stroke="#94a3b8" width="168" x="454" y="146"/><text data-page-node-id="kRe8nXUjMv35nQr0yyeHn2" class="small" text-anchor="middle" x="538" y="166"><!--pnid:CFeNCIz0zNj79jCGVVOX79-->文档 D · 第 2</text>
+      <text data-page-node-id="ZuxNmqtp1nlmbicy3o3ENB" class="small" text-anchor="middle" x="340" y="260"><!--pnid:TdyhwsswfsfDaxHEOQftHE-->文档 A 两路都靠前（第 2、第 1）→ 合成第 1；文档 D 一路第 1、另一路第 4 → 合成第 2</text>
+    </svg>
+    <div data-page-node-id="WbotmJp2oDSvpNYFWjSZ0t" class="code"><span data-page-node-id="bOuAgoZIRQ1a62wBr7jxHA" class="c"><!--pnid:9hvOYGELIgvwNQ00BMg7rS-->RRF 公式：对每个文档，把它在各列表里的「倒数排名」加起来</span>
+<span data-page-node-id="tp6KmGnMquVEao9REhu1zc" class="g"><!--pnid:dclzvgii4k0gTA3ppIwLck-->RRF(d) = Σ  1 / (k + rankᵢ(d))</span>
+
+<span data-page-node-id="dlNLgm25LLtUXNEX3VLUF8" class="c"><!--pnid:iETHm9miTkWSuRDDJ3iyGa-->· N：参与融合的检索列表数量（BM25＋向量 → N=2；多路召回生成 3 问 → N=3）</span>
+<span data-page-node-id="pKtEcI2xTfcgTb9XZlSRZo" class="c"><!--pnid:T31SVTKuXnscuOgbHpWYOf-->· rankᵢ(d)：文档 d 在第 i 路检索结果里的排名（从 1 数起）</span>
+<span data-page-node-id="JvYBA5tWNCTmSClaC7dvMR" class="c"><!--pnid:51zL2f25Ax2r7igV1L3uJX-->· k：平滑常数，通常取 60。压平不同检索器间不可比的分差</span>
+
+<span data-page-node-id="liM8yqiYEEohJHFQ5lh233" class="y"><!--pnid:EQR7mjGCHcsVdeRNa0B5S4-->→ 「两路都认可」比「单路第一」更可信，这正是融合排序的价值。</span></div>
+    <div data-page-node-id="kG25v3FiOtckLYb0dh5h9s" class="note"><!--pnid:n6vgSdjVFZ9UaKZeHYxOzd-->适用：多路召回 / 混合检索的结果合并场景，是 Multi-Query 的标配后处理。</div>
+  </div>
+
+  <div data-page-node-id="I4hDXHga1gwZg50MlMcJ0W" class="figcard">
+    <div data-page-node-id="ItvPKpEWALMiVNwtT9dtCI" class="cap"><!--pnid:L2haNnUmaM1xp6jatyMXZD-->图 16 · 上下文压缩：按查询抽取相关内容，不带噪声送模型</div>
+    <p data-page-node-id="sOHRtcVykx4gLczTDlmEfv" style="margin:6px 0 8px"><span data-page-node-id="5Z4CwgMRs8ycEkzupIkUo0" class="pill"><!--pnid:Ve1fIlYbBoMEPwGwpSqnHT-->模型参与：可用 LLM 抽取，也可用轻量小模型降成本</span></p>
+    <p data-page-node-id="21cLLfPSzXbPZ4QTH2sKrN" style="margin:0 0 10px; color:var(--ink2)"><!--pnid:0XDEcYwrr6usnpSZTec4oN-->解决什么：切块的时候并不知道用户会问什么。与查询最相关的信息可能埋在一大段无关文本里，原样送模型既贵又稀释注意力。基本思路：检索返回文档后不直接使用，先用「给定查询的上下文」对文档做压缩，只返回与查询相关的部分。</p>
+    <svg data-page-node-id="vj2ZomxB528QdsMMdtCLWp" aria-label="上下文压缩流程" role="img" viewBox="0 0 680 240">
+      <defs data-page-node-id="PivbyEJ2bOsEmX7kJYFMqA"><marker data-page-node-id="25wfE4VkbDxwieIVcpSm4Q" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="uECl3hVJEgesWBdbsEP4HW" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <rect data-page-node-id="gkWa20ZiY5V9o4aLl46fZI" class="box" height="160" rx="8" width="200" x="16" y="36"/>
+      <text data-page-node-id="bHJJqGsESCjgaUy89iQOUG" class="small" fill="#475569" font-weight="700" text-anchor="middle" x="116" y="60"><!--pnid:ztZjLeAd44YyeIVSsISUHq-->检索回来的块</text>
+      <text data-page-node-id="D2ZmT49kyKalgQd8CWanpD" class="small" fill="#94a3b8" text-anchor="middle" x="116" y="90"><!--pnid:shUyurUq92s5TLy1zOUodE-->无关背景段落……</text>
+      <text data-page-node-id="47bBzZZBCoeFG84WbtOcJj" class="small" fill="#0f766e" font-weight="700" text-anchor="middle" x="116" y="116"><!--pnid:gaPsyC26zTDu334lY0ytw5-->✓ 与查询相关的句子</text>
+      <text data-page-node-id="i7Jv29TRYEArV7CvaUKWhQ" class="small" fill="#94a3b8" text-anchor="middle" x="116" y="142"><!--pnid:qH9zEuALHrhhgNk0oznSLT-->无关举例段落……</text>
+      <text data-page-node-id="Wk1VGgMQcL4b0Zdtcua0qT" class="small" fill="#0f766e" font-weight="700" text-anchor="middle" x="116" y="168"><!--pnid:oLnCLUcnsyD67tQ8qHh6Hw-->✓ 与查询相关的句子</text>
+      <path data-page-node-id="6nHWRtt4QTKn3OtSmesHDB" class="flow" d="M216,116 L254,116"/>
+      <rect data-page-node-id="DsrJkjdXxgzIr2xi9ObuMM" class="box-a" height="64" rx="8" width="156" x="258" y="84"/><text data-page-node-id="51cQMBnoMgYeU2hdYX3Oag" class="txt" text-anchor="middle" x="336" y="108"><!--pnid:leSPzjxzeTEreYfBjWNyAb-->上下文压缩</text><text data-page-node-id="E3OxOAC3ze5SjJG3RQRkyx" class="small" text-anchor="middle" x="336" y="127"><!--pnid:v5zpGgENErlZXu9bST2rMW-->按查询只留相关内容</text>
+      <path data-page-node-id="3GhjnaYlEUt5H0z1ra2rMZ" class="flow" d="M414,116 L442,116"/>
+      <rect data-page-node-id="JUINzSoN1tXFlLHQv1qg4l" fill="#f4faf7" height="92" rx="8" stroke="#0d9488" width="200" x="446" y="70"/>
+      <text data-page-node-id="O3PHDwHHbZBoGN0wupm1nD" class="small" fill="#0f766e" font-weight="700" text-anchor="middle" x="546" y="94"><!--pnid:MkgNfYYUS2RiD3tT6QKttI-->压缩后的上下文</text>
+      <text data-page-node-id="SmPMemJbzwrh1P7JljSsqR" class="small" text-anchor="middle" x="546" y="120"><!--pnid:9vAyDb1FZAVeCjHAjE9u7V-->✓ 相关句子</text>
+      <text data-page-node-id="UKnAgQQgX9TnGt4MOXlbFm" class="small" text-anchor="middle" x="546" y="144"><!--pnid:LTvDJgHgp3ySXeSyJBebRC-->✓ 相关句子</text>
+      <text data-page-node-id="K0EDBGS8n1qucZS3oebNC5" class="small" text-anchor="middle" x="340" y="222"><!--pnid:UI3eNESAu1pAcFmM19hQzZ-->token 更省、注意力更聚焦；代价是召回率小幅下降</text>
+    </svg>
+    <div data-page-node-id="lxbiYWugsqErX8VlDabYOF" class="note"><!--pnid:m3LKq8nSTWh8LXrClPX3rO-->实测（表 9）：上下文压缩让忠实度 +9.96%、上下文精准度 +5.14%，代价是召回率 −5.56%，综合 F1 几乎不变。省下的 token 和提纯的注意力，换的是更高的答案质量。</div>
+  </div>
+</section>
+
+<!--pnid:6l8hZAz7KZgLVLG57jJGhM--><!-- 06 评估 -->
+<section data-page-node-id="rwW4ilgLRRGekgcuk9N99Q" class="sec">
+  <h2 data-page-node-id="6iCwVLeZOVwx7XfxHJi96H" class="sec-h"><!--pnid:uksRNIjgDmLXySM30HcYEo-->评测方法：四个指标与归因诊断</h2>
+  <p data-page-node-id="AySV1d3ESLlv51MtDsmBgk" class="sec-sub"><!--pnid:pXtWJOyodjHefl3CCqPmun-->检索和生成必须分开测，否则归因会指错方向</p>
+  <div data-page-node-id="KoaaeTuE8OrKxh9vkbK2Gs" class="lead"><!--pnid:rmU51vkGfSo3IJYEvdliXr-->
+    任何 RAG 系统的有效性都依赖两个核心组件：<strong data-page-node-id="DtrdDMn1qf2RTzrVn3TcI0"><!--pnid:1DtnsbpnI4p78Fi2yjjPDl-->检索器</strong><!--pnid:5c4lp0v4Le5qkz8fTCqBsk-->（高效找到最相关文档）与<strong data-page-node-id="jpWpUwSRcEJM0cN3xxDXqm"><!--pnid:YmMcB2NvjhbEffKTONHYd9-->生成器</strong><!--pnid:iMzCClJqCnbEiqdR6o44M3-->（用检索内容生成连贯准确的回答）。评估的输入有四要素：问题（question）、答案（answer）、上下文（context）、参考答案（reference answer，需人工标注）。据此拆成<strong data-page-node-id="3MBXxmZkWxCzY7v75hj36t"><!--pnid:8SNPsUV2PX38tbqvLJhtlJ-->检索评估</strong><!--pnid:2xGcoTsnzCxu71GFBPdKcQ-->与<strong data-page-node-id="TNwuwj89XQ8nPYdm3nU7Dp"><!--pnid:BJCliWyEP4fEQeYAJxpuac-->响应评估</strong><!--pnid:Dfdf8c1tAejSUgRRCFIAHm-->两组。核心认知是：<strong data-page-node-id="ADCo1Qa62Yc9u8YlFRtD0S"><!--pnid:MthrVM4sIIaJuY5Ayk86iS-->忠实度低 ≠ 检索差</strong><!--pnid:Co8cTGPEK2uP4p8knMCeYr-->，往往是生成阶段忽略了上下文；召回率低才指向检索与治理。两组分开看，才能定位瓶颈。
+  </div>
+
+  <div data-page-node-id="0pumz7jIzaAjdP4wnmWH3I" class="figcard">
+    <div data-page-node-id="FIBvlgm3Ws8kyrZcSbJRR3" class="cap"><!--pnid:RIu7tYrCFXFQllvgsvrCvc-->图 17 · 四个指标在链路上的归属</div>
+    <svg data-page-node-id="aEnXRrKhRquc3tkwypojwc" aria-label="四指标归属" role="img" viewBox="0 0 680 268">
+      <defs data-page-node-id="TD5kEDzeJzhC0ka8PNCyex"><marker data-page-node-id="GNB1zfthFcMVj4NwLtamcD" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="lpieosg2EnStgQVqDgQLeU" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <!--pnid:Nd0cuNQw7Qoo8DtEW0SvKi--><!-- 主链路 -->
+      <rect data-page-node-id="vV3bkUOtQmHMl1tCVbiMkj" class="boxg" height="44" rx="8" width="92" x="16" y="128"/><text data-page-node-id="lnQadDgcd3M6JXi9LNAn38" class="txt" text-anchor="middle" x="62" y="147"><!--pnid:GcQfy3a3Jsc6SFXjflKGZu-->问题</text><text data-page-node-id="7vgiHoG80bQhSjiVPZWRPr" class="small" text-anchor="middle" x="62" y="163"><!--pnid:O8B2WSQSS6prHGXFnLX3Ek-->question</text>
+      <path data-page-node-id="rLxxLb3v7qjzbvkZJtEyLm" class="flow" d="M108,150 L134,150"/>
+      <rect data-page-node-id="5LoolmruzQR0D3Faj1FQTj" class="box" height="44" rx="8" width="100" x="138" y="128"/><text data-page-node-id="VMby3ikgrN8KpE02KhKIGr" class="txt" text-anchor="middle" x="188" y="147"><!--pnid:FocBEznWT00bB2nodM2wxf-->检索器</text><text data-page-node-id="9MS0JCZzdFoToVbx4pQ06g" class="small" text-anchor="middle" x="188" y="163"><!--pnid:bfNkjZTmY8qK9fGsurheSK-->Retriever</text>
+      <path data-page-node-id="AqBMpPXuQwYuD5bKWNi8Pp" class="flow" d="M238,150 L264,150"/>
+      <rect data-page-node-id="pBzPvPJFFv6DjX8IFDgt3X" class="box-l" height="44" rx="8" width="112" x="268" y="128"/><text data-page-node-id="3Nw0LXABVNE2azUcoT2g49" class="txt" text-anchor="middle" x="324" y="147"><!--pnid:YwEVluq1V9J8VFcgdkduqT-->上下文</text><text data-page-node-id="ZZHoHfQkHyQ1rj5WRDVzaH" class="small" text-anchor="middle" x="324" y="163"><!--pnid:5GUv7N4xXBWvSDUdwHrbNW-->context</text>
+      <path data-page-node-id="opxiSLOiTJV1GKJM5N79Ip" class="flow" d="M380,150 L406,150"/>
+      <rect data-page-node-id="hZT2oG2YqcMUWXaf96Xz8O" class="box" height="44" rx="8" width="100" x="410" y="128"/><text data-page-node-id="NMuivHgynVbrWJU53UrgOn" class="txt" text-anchor="middle" x="460" y="147"><!--pnid:2vZeOrC4s29hd6zkmSBlPO-->生成器</text><text data-page-node-id="d2x4rrgHrgpjMKFhoAzlAH" class="small" text-anchor="middle" x="460" y="163"><!--pnid:Wjix4jXOO2kBpb1ba1TqKx-->Generator</text>
+      <path data-page-node-id="Wa6GhMnnLNuiVVRyqfGgJi" class="flow" d="M510,150 L536,150"/>
+      <rect data-page-node-id="lIjcqyZ8SAjW2HIhxzcOa2" class="boxg" height="44" rx="8" width="92" x="540" y="128"/><text data-page-node-id="jkSU0Jft4tKrhYy4mlvBZy" class="txt" text-anchor="middle" x="586" y="147"><!--pnid:TxmI7pXM8UgRpa5WaoWuel-->答案</text><text data-page-node-id="U0zPZTMU1ROnPnNnvSGiir" class="small" text-anchor="middle" x="586" y="163"><!--pnid:MhG1ptsGyfviGmnPWwwtXm-->answer</text>
+      <!--pnid:dQxFujqxjHKvqsuWoyIpIM--><!-- 参考答案 -->
+      <rect data-page-node-id="VtPdBYO0pMlfEuBw4ZYhzU" fill="#fff" height="36" rx="8" stroke="#94a3b8" stroke-dasharray="4 3" width="112" x="268" y="208"/><text data-page-node-id="E0cqseOweKvaV2Y6CBz3kW" class="txt" text-anchor="middle" x="324" y="222"><!--pnid:XH8ac2SGuouhD76OVHcpLi-->参考答案</text><text data-page-node-id="xSNm8yPeGVJjKgFAzdlEMc" class="small" text-anchor="middle" x="324" y="239"><!--pnid:t0PUlKMKBgLbikIib8g3tN-->人工标注</text>
+      <line data-page-node-id="NKN2RPyyJxKY07WasYIVwH" marker-end="url(#ar)" stroke="#94a3b8" stroke-dasharray="4 3" stroke-width="1.2" x1="324" x2="324" y1="206" y2="176"/>
+      <!--pnid:1PJWa0tRTpLmOhfxW4brCv--><!-- 检索层指标框 -->
+      <rect data-page-node-id="qxa2i25EiONtUFJ7odNGuG" fill="#f4faf7" height="68" rx="9" stroke="#0d9488" stroke-width="1.4" width="280" x="120" y="28"/>
+      <text data-page-node-id="y4aNOSeBpGF6iPiFl2k85o" fill="#0f766e" font-size="13" font-weight="700" x="136" y="48"><!--pnid:22RIJXe75ocP9m7fwubcX3-->检索层指标</text>
+      <text data-page-node-id="VyRJFIW91FYMnGdzrS0avF" class="txt" font-size="12" x="136" y="68"><!--pnid:ewfWa7ezKf56qGBMFkcm4I-->context_recall：覆盖关键信息的比例</text>
+      <text data-page-node-id="DCPSEs8M69kNfSSEBMYDfa" class="txt" font-size="12" x="136" y="88"><!--pnid:hgprMpqKfbSSlDtObr06ft-->context_precision：相关的是否排得靠前</text>
+      <line data-page-node-id="Ipf59UVTqOxyFTpRbalgVs" marker-end="url(#ar)" stroke="#0d9488" stroke-dasharray="4 3" stroke-width="1.2" x1="188" x2="188" y1="98" y2="124"/>
+      <line data-page-node-id="KZxvFjZ9XKoXLBpZ6DKe6b" marker-end="url(#ar)" stroke="#0d9488" stroke-dasharray="4 3" stroke-width="1.2" x1="324" x2="324" y1="98" y2="124"/>
+      <!--pnid:MbhFR0IUYizfrW3XShIaJo--><!-- 生成层指标框 -->
+      <rect data-page-node-id="0WXJUoXDV454biKqwCwQUb" fill="#f4faf7" height="68" rx="9" stroke="#0d9488" stroke-width="1.4" width="244" x="420" y="28"/>
+      <text data-page-node-id="Y9L0MoMX3jRPcxtjfklHvJ" fill="#0f766e" font-size="13" font-weight="700" x="436" y="48"><!--pnid:ZqyAs8WRiXkAjvWhugJc8e-->生成层指标</text>
+      <text data-page-node-id="joglQZDah3RY3SCcA0f8zU" class="txt" font-size="12" x="436" y="68"><!--pnid:iGkZ3Xqb6uyC6elKZ2S3WR-->faithfulness：答案是否忠于上下文</text>
+      <text data-page-node-id="i4I8H6Mj22C4TUmspEKGYQ" class="txt" font-size="12" x="436" y="88"><!--pnid:5HD1GyYCFXbcUBJKavzl1f-->answer_relevancy：是否直接回应问题</text>
+      <line data-page-node-id="ydgB33mvb0TW55TxiNjB6Z" marker-end="url(#ar)" stroke="#0d9488" stroke-dasharray="4 3" stroke-width="1.2" x1="460" x2="460" y1="98" y2="124"/>
+      <line data-page-node-id="eihDcewcoqWXHmDH9UYPAe" marker-end="url(#ar)" stroke="#0d9488" stroke-dasharray="4 3" stroke-width="1.2" x1="586" x2="586" y1="98" y2="124"/>
+      <text data-page-node-id="vAxfyMjPAg2PbxiQRAZuVH" class="small" text-anchor="middle" x="340" y="258"><!--pnid:fRFB3S1SOMLZaSwnB58P47-->recall 与 precision 难分高下时，用 F1（二者的调和平均）综合评估</text>
+    </svg>
+    <div data-page-node-id="044OCbyYv89fh7pQKHkXGC" class="note"><!--pnid:pioUvz0BSha9joHmAIY5S9-->理想状态是「高召回 + 高精准」：该找到的都找到、找到的都是相关的。但大规模数据上二者常难兼得。很多业务（客服、技术文档问答）宁可优先保证信息不遗漏，接受「高召回 + 中等精准」。</div>
+  </div>
+
+  <div data-page-node-id="OSMazgyMS9S8F1kvU9WhRC" class="card">
+    <div data-page-node-id="nxo0hWH9tKwIyORY8quDpx" class="cap"><!--pnid:RnseUL2eXumFPUaBnmOfMS-->表 10 · 指标含义与评估输入</div>
+    <table data-page-node-id="URPtfmlo8z866o9NiaMyQA" class="tbl">
+      <tr data-page-node-id="hIXRhzVjmL4E5GGMaD5GGo"><th data-page-node-id="4KVKvY78ZO9DEWx4XZtXLH"><!--pnid:dsh92SKr6J9W3X8H1URjWv-->指标</th><th data-page-node-id="L4wd2ELOuizrlNjigRZwcb"><!--pnid:NK3ttpGHQR9AExKY6E0qPF-->归属</th><th data-page-node-id="vqOyjYHGh8AQ8VQgTAL9i7"><!--pnid:FkcqGdzYDKHqx64guv2JzT-->评估输入</th><th data-page-node-id="00qEnNtBsVFWh3m9Wuobny"><!--pnid:hOTtBK3wYSggwW8Q8vnYac-->含义</th></tr>
+      <tr data-page-node-id="4zJ6OhI8JawNc2DrRmmpFv"><td data-page-node-id="fRr1pIt8iQmI83apeVfxcW" class="kv"><!--pnid:r56Glip4qc4M9F9fj0GDTc-->context_recall</td><td data-page-node-id="dj59Gtf0eZ8zEh0bYOefZU"><!--pnid:sf78f88ThNMzQYcBSPM3L8-->检索</td><td data-page-node-id="sIrOQ8OEUdT1DdwJBHuM43"><!--pnid:fklSRHhrTE07f3P9rxF4vL-->上下文 + 参考答案</td><td data-page-node-id="kyGqENTlGsBumnp2njPtWl"><!--pnid:0kvDtTsu18ADFYbK057oPQ-->上下文覆盖问题所需关键信息的比例</td></tr>
+      <tr data-page-node-id="zUgfutiQPbQNqR4ABdcvaM"><td data-page-node-id="gtaBNxRiy7ekBSZ8e38Lg1" class="kv"><!--pnid:1dPzbrpwrU98yG1BQu7kIM-->context_precision</td><td data-page-node-id="2PHdh9Eoa5lopaamVk6MEI"><!--pnid:FmKFAMTXpG9FvMYyXh5UIJ-->检索</td><td data-page-node-id="ySCbGD5zZSvKbLcnrxqLnH"><!--pnid:ZWFziZg9NIEYNIeWvuv3IP-->上下文 + 参考答案 / 问题</td><td data-page-node-id="QIpRBi4HQ2JJ7gBm1RLaFn"><!--pnid:nEfmb2PZgCZceP0EL7sC82-->相关信息是否排在前列、占比如何（按位置 k 计算排序质量）</td></tr>
+      <tr data-page-node-id="rIG9hgOQgdG3vHzrCBZ9Jl"><td data-page-node-id="V9QKg71xLajUgQjfGqYdwL" class="kv"><!--pnid:zD7VvRTaaPTEjCMC7zSzQ8-->faithfulness</td><td data-page-node-id="u9kLKRL4swErP1fhUJJ4Ru"><!--pnid:POW9y2YZNp8W6otXlKR549-->生成</td><td data-page-node-id="4CHtG2FZdykFdpBmOaiYoy"><!--pnid:yxbrCiGA1K4q9uC71AKhVI-->答案 + 上下文</td><td data-page-node-id="87WJZY1yrKOo3mAV9WPDzZ"><!--pnid:Bbb2QI2bUXrfuUe8zDMpZU-->答案是否完全基于上下文、无捏造。拆成原子事实逐条核对依据</td></tr>
+      <tr data-page-node-id="RR1BERYydm0Lgk7V8vuoR0"><td data-page-node-id="Iql9osBkccAFJBaWVvmCgC" class="kv"><!--pnid:OaxvpEdApNmWJUJBU7e30m-->answer_relevancy</td><td data-page-node-id="jgOAEoq2mFBHBqWvXAL4oM"><!--pnid:9hGTIbAjde9bmqTLjbDdE4-->生成</td><td data-page-node-id="1NaMxk9BdfNShIZpOirubc"><!--pnid:5ZLLKPA43hTBQ8bKkK1KWU-->答案 + 问题</td><td data-page-node-id="CjCSR948mR9cwN5GCRsDaP"><!--pnid:tPKVb0wiLT2MbkDlynAgGk-->答案是否直接、清晰回答了问题。不考虑正确性，答非所问即无效</td></tr>
+    </table>
+  </div>
+
+  <div data-page-node-id="iJLhZfqaa8jFWKXtFjJ5zK" class="card">
+    <div data-page-node-id="yDM6qyiFmQxTzwALtv9uHp" class="cap"><!--pnid:cB3kEKybmAYVahupWp5DcA-->表 11 · 四个判例：指标怎么读</div>
+    <table data-page-node-id="8hQ1NgGPgiGdQQhIEs32o3" class="tbl">
+      <tr data-page-node-id="p0ailj3JdILcmzexRUYfFF"><th data-page-node-id="ww8eSmKDkHVyy3bv37HT4v"><!--pnid:2YjIin4iyveiabyiyCiHz7-->问题</th><th data-page-node-id="ZOxASRILE7bJLkw1TXEBvN"><!--pnid:2WheOaavxlne24snaq6he1-->关键事实</th><th data-page-node-id="mao5n3jso1z7X7jZzHDH44"><!--pnid:OuNg9qgh9iD162f70paLG5-->指标读数</th></tr>
+      <tr data-page-node-id="taCI9HpCMC2EjaRqbgiUiT"><td data-page-node-id="XCe112u77MdDoas5abuUPC"><!--pnid:Ka8GUf1DpMPGZM0HSJnMh5-->苹果公司总部在哪？</td><td data-page-node-id="91nD78O5aSfjh3HS4ltpJX"><!--pnid:pZGnWlfP0AEtVXTfBorRyA-->上下文四句里只有一句含「库比蒂诺」，其余是成立年份、CEO、产品</td><td data-page-node-id="CuRo3R9BhKzRLCz0qMPtO8"><!--pnid:YfOd75om1kMgZMYD5PBRfL-->精准度 = 1/4 = <strong data-page-node-id="PjehjyEdrs3c8Tso2D2mxP"><!--pnid:erEO805OCg6m3EZfQW1iNJ-->25%</strong><!--pnid:roVyV2EYdGPonN2lNeWvGL-->。相关内容占比低</td></tr>
+      <tr data-page-node-id="dVEABC5gSNtMgG7Va4ZIvK"><td data-page-node-id="SSkgqzhss53M01IFGAtkFi"><!--pnid:D3gMaqFoOvJPkxtRO4oQCN-->《三体》作者是谁？哪年出版？</td><td data-page-node-id="1lSAikaVdHfV70mORFFpoV"><!--pnid:1pe6Y49Xk8JDIm38vLdL90-->参考答案两个要点「刘慈欣」「2006 年」，上下文都包含 → 召回 100%；缺「2006 年」则只剩 50%</td><td data-page-node-id="vZJcFOSnhDRyHn7V5hBx11"><!--pnid:e05toLSHYzC2C69PUi9w6p-->召回率按关键点覆盖计</td></tr>
+      <tr data-page-node-id="xP5USyFnPcyrF8JRuG6kL1"><td data-page-node-id="h7xFndAcdhZAU0DMk1wgeI"><!--pnid:uJW7i7EDVjnfoLL5VpenTH-->爱因斯坦哪年获诺贝尔奖？</td><td data-page-node-id="RLQSudCwsQzYcEN1iX2b3D"><!--pnid:Z8rJTn8F80yURmHOjHrHAl-->答案与上下文一致 → 忠实度 100%；若答案多写一句「当时在普林斯顿任教」（上下文没有），即使正确也判不忠实</td><td data-page-node-id="zPGEUpuVwPBHuCmu0onCuY"><!--pnid:EFY8mU1qKSmsAXhtwMCKW0-->忠实度看「有无上下文依据」</td></tr>
+      <tr data-page-node-id="UCUvN8qkgbAjliZukL254y"><td data-page-node-id="zMWRY3PGNAAvoMhP9Buzrp"><!--pnid:m7rudrI5Y0YAixMCPQmPXk-->如何煮咖啡？</td><td data-page-node-id="fvhSDvmuPPgLjDfAk3CwEU"><!--pnid:1Q7oQ7DWaMqgyqDq6yQJSr-->答「研磨至中粗、90℃ 冲 3 分钟」→ 相关性高；答「咖啡起源于埃塞俄比亚」→ 忠实但答非所问</td><td data-page-node-id="Fh0eOPxF6Jac7ex2VnIB9q"><!--pnid:e3CakedRPRCNVrc2TQTqxx-->相关性看「是否回应所问」</td></tr>
+    </table>
+  </div>
+
+  <div data-page-node-id="vncyMTO3HB2lJ7PEARzUz0" class="card">
+    <div data-page-node-id="aqMVT8LBELXBonGY0QgdJT" class="cap"><!--pnid:AliRgitG3mc77ny4cF4fq2-->表 12 · 指标等级标准（满分 1.0）</div>
+    <table data-page-node-id="bwxFxKap7fqewAGYO76ON8" class="tbl">
+      <tr data-page-node-id="sRtqzbgwcWD47pnFuZjYHZ"><th data-page-node-id="q5ooa0iEWywienDV9A826p"><!--pnid:lEoMoA2z225XBkaLiukKBA-->指标</th><th data-page-node-id="ELYXlhAsTghB3bflmnWvs9"><!--pnid:n89iltwc6dPJckHfr6GtuR-->高</th><th data-page-node-id="IcU8jgifhySdMV02eYVJ7f"><!--pnid:5JZVt49BNw2qhRP3yrc5m0-->中</th><th data-page-node-id="9ppOBGA2wZMpykVTWDwT0V"><!--pnid:UJb94UH6WqnC7Ohdyel5lD-->低</th></tr>
+      <tr data-page-node-id="r3sPuq4VTW4UMYQJc3jdFt"><td data-page-node-id="3OiRtiN7n9ZKgBhIl0YRQ3" class="kv"><!--pnid:DEQu6LBRH2xjRUVPGbMEMF-->context_recall</td><td data-page-node-id="TCo5u5FioFfrt0HunwR5Op"><!--pnid:pkUAEPXrL4KPPdm67rgmmb-->≥ 0.8</td><td data-page-node-id="j8Ilza6rKo3qkZnmlnB8ST"><!--pnid:gWbFJ1iwaIqgDg8We58vZw-->0.5 ~ 0.8</td><td data-page-node-id="Pw8AQmAB1AgOOwGVQBHt3v"><!--pnid:2nciaErIYHuXfEIQvLV73J-->&lt; 0.5</td></tr>
+      <tr data-page-node-id="qfQoeDFiTB4NRoIUgfpT0K"><td data-page-node-id="XvS5u9FZkp8nsiLuabkQBY" class="kv"><!--pnid:nwpe2d9jUEDuO9HYluKgjM-->context_precision</td><td data-page-node-id="lTB8n24E4K1eqkIDQbQwCS"><!--pnid:V37IurvAg0vi1XOUkZdOqf-->≥ 0.7</td><td data-page-node-id="NfRH5N6kNeyXSdjl27sIor"><!--pnid:10JqbHAxM57n8yGsHVxKZ4-->0.4 ~ 0.7</td><td data-page-node-id="qEq7lL87gbqeCohLhkWoq1"><!--pnid:zblfxAW0nKZo7S2PD5Joss-->&lt; 0.4</td></tr>
+      <tr data-page-node-id="7WimDxpVvxoqDzlZCOhYpL"><td data-page-node-id="hAcuv2rgmeSanAFxEDGLOU" class="kv"><!--pnid:qoxunsKLcHquWPpsPchdEE-->faithfulness</td><td data-page-node-id="Rp2u27NnbViqPStbjogZwP"><!--pnid:6wopy8S8ESnnrmBK3N4s3K-->≥ 0.9</td><td data-page-node-id="YhVNZVuIHjbVbSC5ye9i46"><!--pnid:ERRbx862qeoZcH9dX0uUZb-->0.7 ~ 0.9</td><td data-page-node-id="G72zN39LBX1zjjgyCyUNsa"><!--pnid:gmksUcTWT2aANwbmHYNbBU-->&lt; 0.7</td></tr>
+      <tr data-page-node-id="YI4gijugEqAm7XSrzL9BL5"><td data-page-node-id="ljGlj8Dg01FGTCy6zEqJRO" class="kv"><!--pnid:F822vTlIdWzhCIFAmbGy11-->answer_relevancy</td><td data-page-node-id="JOmhviqrcTAM0CzkP4egnu"><!--pnid:tWacyqp2SRSzWWP6JzI9t9-->≥ 0.9</td><td data-page-node-id="FdIdnnz5RXWFBFcCyuOkAZ"><!--pnid:JauCWszdJtkVTWkfdxuZjT-->0.7 ~ 0.9</td><td data-page-node-id="Ary5PO4a0daLPJJjIrHmdb"><!--pnid:dRFSNTAixMAcmTfx67Hxlh-->&lt; 0.7</td></tr>
+    </table>
+    <div data-page-node-id="7KtslOXqD19iGy1i2RVaiR" class="note"><!--pnid:5ahOoBc0ikrpBXVeOmzPfu-->两组指标各有高低、难分优劣时，用 F1（精确率与召回率的调和平均）综合评估。比如 recall 0.67 / precision 0.45（F1≈0.54）对阵 recall 1.00 / precision 0.39（F1≈0.56），F1 给出可比较的综合分。「多高算高」也要按业务风险定，见下面的阈值表。</div>
+  </div>
+
+  <div data-page-node-id="CL407mVI8j6DgGEx2KVjbX" class="card">
+    <div data-page-node-id="Zqmexe2b8mDRVmJ3VUK9Fb" class="cap"><!--pnid:ArXv6KYADaIklfr4MiVql7-->表 13 · 归因诊断：哪个指标低，指向哪</div>
+    <table data-page-node-id="hrbdBvWSdLEs7bYM7dolFL" class="tbl">
+      <tr data-page-node-id="kFwXdrxgG9p50Mur1BplMC"><th data-page-node-id="A9DtVDhtdc49B7d2097fpa"><!--pnid:bwbjyKgG1f5gKtCRrouohE-->低指标</th><th data-page-node-id="9mMHzBQJC1ZgnDC19aQbGf"><!--pnid:0JYAVly0xIb2aKJW8rSoqm-->可能的问题场景</th><th data-page-node-id="aqIdCC8Ib5Pg4a4kwjUEQn"><!--pnid:OLKo0dknNBG1kodnh9N3vE-->核心指向</th></tr>
+      <tr data-page-node-id="1NvlHSO2j6s5eMWD2NTYDY"><td data-page-node-id="wwq1quXqv8NB9ap4qLfpSN" class="kv"><!--pnid:dKgAXDMp4gch1jO2aL2nuF-->context_recall</td><td data-page-node-id="fqTASfszSgPpyOOHyheYeH"><!--pnid:hp4paVBoU9TiyhbUhPauEa-->检索器未覆盖关键文档（知识库缺失）、嵌入模型语义匹配能力不足</td><td data-page-node-id="mxAi7yra9UaNS3TfAoombU"><!--pnid:Y8wpMstI2rVYjvnFKetDUY-->检索器</td></tr>
+      <tr data-page-node-id="zCtCNf3zKZVccwxFMOOYuq"><td data-page-node-id="erFK8JzLXi8mWbZfBud8LD" class="kv"><!--pnid:zrSgz1xo7n1rHiR6rKsJMi-->context_precision</td><td data-page-node-id="TrdkGIf2NCglf76YczDaaB"><!--pnid:0Cwc8zRbG9NuWDVivyD8Bc-->返回大量无关文档、向量库索引策略有误、相关文档排名低</td><td data-page-node-id="odFlc8aEQaosllgnzRk2oK"><!--pnid:9TyGKNo7KEMpl1nDfrTt18-->检索器</td></tr>
+      <tr data-page-node-id="Lz6BnM9aepQv5gb7FfTto2"><td data-page-node-id="uqoffhau7IRQTSuqjJRJ9z" class="kv"><!--pnid:d6ai5dw10W4Uqalx89yH7C-->faithfulness</td><td data-page-node-id="ZXP9g5kHoCA5IjnFx59GKb"><!--pnid:rCVdG7opFQulUtnwScOOdC-->生成未严格遵循上下文（提示没约束「基于提供的信息回答」）、上下文过长信息稀释</td><td data-page-node-id="VayooNbT7TlYNNB2gm9e54"><!--pnid:hQbD3DN02owoFOcPV7yyMr-->生成器</td></tr>
+      <tr data-page-node-id="ApiC6QFbrVrSedinElQkJn"><td data-page-node-id="6NhREloQbw5234GODCMHxw" class="kv"><!--pnid:CEjMF1vmNjQOtvhldTOY9n-->answer_relevancy</td><td data-page-node-id="WrwTeSZbcD3mgyI4hBZfdN"><!--pnid:nuWyxytyl8evXNQw88Yiyn-->未准确理解问题意图（复杂问题没用链式提示分解）、上下文与问题关联弱</td><td data-page-node-id="YC1aGpavmf8sMSYg6OYM2c"><!--pnid:StXx7GlWtKjSVN9Jj0IDNM-->生成器</td></tr>
+      <tr data-page-node-id="wPtMejW6pVv09wd9yD8NiQ"><td data-page-node-id="OmO7M4dLl6k5vRAxOhVaso" class="kv"><!--pnid:jsytuA77iOxrMASrUcoMfo-->四指标全低</td><td data-page-node-id="C4m4JOARKfSUeZtmvV4fOX"><!--pnid:ygq9rwt4eJvFiG85x67ZMa-->系统性问题：检索质量极差导致生成器输入混乱；或问题本身超出系统能力</td><td data-page-node-id="ZSaORH31f8ogIY1jGzXDQB"><!--pnid:SpQ9VnAUaV3DCeDMSH0TDt-->检索优先</td></tr>
+    </table>
+    <div data-page-node-id="2QYw57od0B05orooXa7VSj" class="note"><!--pnid:IXYFAP8pFeWHe4MIfKn9c1-->优化顺序遵循「先固根基，再求精进」：生成器的输出上限受限于检索器给的输入。Garbage In, Garbage Out。调检索策略（调参、混合检索、重排）通常比大规模微调生成模型更快见效、成本更低。第一阶段夯实检索（recall & precision），第二阶段提升生成（faithfulness & relevancy）。</div>
+  </div>
+
+  <div data-page-node-id="A3FABpNaP1hDWdyAaXCwka" class="card amber">
+    <div data-page-node-id="cxU9RIcq8C8nwyG7J4xsgd" class="cap"><!--pnid:b9Qewc7fkVbxATbUhcjxfo-->表 14 · 阈值参考：按业务风险定线</div>
+    <table data-page-node-id="49lFlTSftPaITZnYlnJr4O" class="tbl">
+      <tr data-page-node-id="dhMBbRwBD8sIIKFrmVVvn3"><th data-page-node-id="XzFMn43nb3KcW3jWmfwwcf"><!--pnid:acY5r5poJsBtQi6mdGzcW7-->场景</th><th data-page-node-id="4LWtaRDZS6YdQPv3Xukkeq"><!--pnid:OXW3UTO421okS2CqaGUlkJ-->核心指标线</th><th data-page-node-id="Xdsk06jJkBb9Xtn0ehe6ne"><!--pnid:wNbLR6rFPV8Q7rnai1br1E-->关注点</th></tr>
+      <tr data-page-node-id="MnWFQg1SlfC8NsWLimBdld"><td data-page-node-id="a1PzqgzZnfcW7P7vT61nlz" class="kv"><!--pnid:vi2fgWq6IHzWi3zBWoG1IP-->医疗 / 法律（高风险）</td><td data-page-node-id="dorxjPYfsAcT0dQXNRoBcz"><!--pnid:t8d2H79iD0NexbM5odNAMN-->Faithfulness ≥ 0.9，Context Recall ≥ 0.9</td><td data-page-node-id="eSbsmbdXacLvuKInP1hAYZ"><!--pnid:a1epWE2LZtG40quSa1diH2-->任何事实错漏都可能造成严重后果</td></tr>
+      <tr data-page-node-id="qM84aeheyB0BCyU5cRoWv4"><td data-page-node-id="zeAGfHCZWOGcaSQwxFABUE" class="kv"><!--pnid:9wH2yqVxUalEsgqtxKEupS-->客服 / 电商 / 咨询</td><td data-page-node-id="RmpyLypXxE2X2az0lDVYHH"><!--pnid:fjtThRwNSdQQbtQ8r2venl-->Answer Relevancy ≥ 0.8，Context Precision ≥ 0.7</td><td data-page-node-id="IKbcFBIddCvCWoAdmlt4xc"><!--pnid:dlZiqO6gKeFamLLbEQmU3u-->直接解决问题、少冗余干扰</td></tr>
+      <tr data-page-node-id="HdP6PI713qzVrNks4cAAXT"><td data-page-node-id="GrHkxM7s6cqjs5sOlMLklI" class="kv"><!--pnid:DN1uoMzVRO4M4ZEU5tfZAX-->通用问答 / 内容生成</td><td data-page-node-id="GCwokGQECVXvRqvXiEOnrz"><!--pnid:66ttxNvFEc1uDpDxakTZAI-->Answer Relevancy ≥ 0.7，Context Recall ≥ 0.7</td><td data-page-node-id="1anUZhEszD0A3Y7w1c3gEj"><!--pnid:GjV0yYqHe7GZHtumjsmTzp-->覆盖面与相关性的平衡</td></tr>
+    </table>
+    <div data-page-node-id="xQQEvbLyZDuQfFn90y00Vk" class="note"><!--pnid:ucsj4v6XqfsvudiQczicfc-->通用基准可再细一档：忠实度 ≥0.85 是行业普遍追求的目标，低于 0.7 可能存在严重幻觉；答案相关性低于 0.6 用户通常难以接受（开放域 0.7 也可接受）；召回率在知识密集场景要求更高，若允许部分信息缺失（如新闻摘要）可降至 0.6。</div>
+  </div>
+</section>
+
+<!--pnid:r2QCEjFglWnQuNqEgvef7K--><!-- 07 选型边界 -->
+<section data-page-node-id="Cz7RgOM0g697d26cuyIKUf" class="sec">
+  <h2 data-page-node-id="RKvOJJGJWkmkgOkL6VpsxA" class="sec-h"><!--pnid:CzwSOMOScnwVRCv8UiFfNx-->适用边界与选型决策</h2>
+  <p data-page-node-id="H9swzRC1DxmWHsh8AWFcXA" class="sec-sub"><!--pnid:pnZeaAsyswxz2RWPImpSNl-->RAG 不是万能，先判断该不该上，再谈怎么搭</p>
+  <div data-page-node-id="lKqPrpI5fCJTcB9536hHR4" class="lead"><!--pnid:sEAppItWpjjCbMDT1FGpb8-->
+    当业务需要「用自有、易变的知识回答」，RAG 通常优于微调与纯长上下文：微调改不动、成本高、难溯源；长上下文在知识频繁更新、超长语料、精确溯源上都不如外挂知识库。但以下情况 RAG 不是最优解，需换思路。
+  </div>
+  <div data-page-node-id="thKwDOQl6n5Jd0RsaIwDDJ" class="card">
+    <div data-page-node-id="0QOKtg8ZxOFsAZyMmgrVSI" class="cap"><!--pnid:8Ab7RAPK5nefceUywDY3Ot-->表 15 · RAG vs 微调 vs 长上下文</div>
+    <table data-page-node-id="S64s2u65ailfa73Fy0sDgo" class="tbl">
+      <tr data-page-node-id="BBN9RO7CpGNroHIQ7NjDsx"><th data-page-node-id="Djrh5b3cv3SxsMOL4kt7As"><!--pnid:70speGNyL1vyO04vWSW6S6-->维度</th><th data-page-node-id="8gSOS10Ho1MsvoDKTuMPEk"><!--pnid:CXLBU25qE5Mt6GtzHqjGhk-->RAG</th><th data-page-node-id="YNY7AL20mbxYhBR0Dnjyom"><!--pnid:Pfm8eovO1aYxzJ0op3IJJx-->微调</th><th data-page-node-id="b8NYVxeKe6OuPtZesB4VeQ"><!--pnid:l0UfvSQpb4mWEUyGwtNGrO-->长上下文</th></tr>
+      <tr data-page-node-id="luXhFiByYWIHOydol9bem0"><td data-page-node-id="bi8rx8hnpp6mYJL0gIAeU8" class="kv"><!--pnid:HrGfAWYJ3uXKW3kPp5xhOc-->知识更新</td><td data-page-node-id="AgKU4I9E7wAUlc3TntVDYH"><!--pnid:0FZlidZNQooquOWGtMWQDc-->即时（改库即可）</td><td data-page-node-id="28YSSRwVf4XQ13TZ3nKw8Q"><!--pnid:JcxI8YKjVR14t146pTpNQo-->慢（需重训）</td><td data-page-node-id="imyKPoePNLnFwe3esDuoMS"><!--pnid:ahyrVVLl2HbjyWPcRhD9pA-->受窗口限制</td></tr>
+      <tr data-page-node-id="qrkrA4LTsA51f3ZPfq2FwA"><td data-page-node-id="E1pmuT2RLVzsw2QemzIPbW" class="kv"><!--pnid:5jFmXDLNZ32klybnliELx9-->溯源能力</td><td data-page-node-id="OtGipMvJIanfHocvoFXmIb"><!--pnid:7B8rPNsZ8lENZ0829ipu3l-->强（可附引用）</td><td data-page-node-id="igD44E5aqvovsYuvnTgGpK"><!--pnid:CZKAglR3PPAHQWl3rmdW4m-->弱</td><td data-page-node-id="fKgAvuyHPQxzjYS3KmblyR"><!--pnid:ZOr3C7qy6UmznidzymmoV9-->中</td></tr>
+      <tr data-page-node-id="R8NyYpV1ubjSpSmHU5gBnU"><td data-page-node-id="4E6NUs8VRsY9DjrRbRDdta" class="kv"><!--pnid:ZBnaQoqIw0azGL2fXrSDM7-->适合</td><td data-page-node-id="wPx5JMlL8mTLCp3U4kuX5F"><!--pnid:9rGigALpwLUMI7HT3c80kz-->易变、专属知识问答</td><td data-page-node-id="2PcasgBWyEG94x2bDU7OBJ"><!--pnid:CoeBjhQhPjBpJO8AuCihgi-->稳定风格 / 能力塑形</td><td data-page-node-id="PrXizODVzM8GOENkbbZvKx"><!--pnid:y9cYb2tjV4PiqVCMA6ockO-->单次超长文档理解</td></tr>
+      <tr data-page-node-id="4MxetQmoUIvPtVguFnqxGf"><td data-page-node-id="CxQP60LkwNeu4DNKOZJ2RP" class="kv"><!--pnid:f4KTBcVC4lEOhP942Xrf5N-->不适合</td><td data-page-node-id="69YpyBfr1MRIkgD4L6ZxJb"><!--pnid:nDgNBQSDbvLc9inlscrzER-->实时长尾（行情/库存/天气）</td><td data-page-node-id="xq3rK9XVJYHwbjIFMxNP9f"><!--pnid:I7thmhYwqgp9SWdxA44PLx-->频繁变的知识</td><td data-page-node-id="0ev0gIDqp5o7Kjej0uj65d"><!--pnid:2wt8rCOoTCjE4lO0gXb9QY-->知识需持续更新</td></tr>
+    </table>
+    <div data-page-node-id="tbSYbnh1sEVSLgPKBdgw1W" class="note"><!--pnid:y6lk1jvMExPxcTM7NkfgNb-->实时、长尾、强时效的信息靠外部 API / 工具调用更合适，不是知识库能兜的。这划定了 RAG 的边界。</div>
+  </div>
+  <div data-page-node-id="x7oFj57qRbcanW3DzjfluV" class="card">
+    <div data-page-node-id="JIp6IzOrCMqqaeKmfAHegU" class="cap"><!--pnid:9EyvEkVKO5m7NK1MUTdpIi-->现代口径：长上下文没有让检索过时</div>
+    <p data-page-node-id="UREzuCrkf5BmUgWgwE8RTV" style="margin:0; color:var(--ink2)"><!--pnid:ySPeZfAgopKrjui37Xlepg-->
+      大窗口和检索不是二选一。窗口是<strong data-page-node-id="8RQ4RT7eulq1S2yeRJyJ0R"><!--pnid:PBrT3byyTyvR8HHkAy3z5a-->工作容量</strong><!--pnid:h7mnV6VFZ3uHcXKFSNRlak-->（一次能同时摆下多少材料），检索是<strong data-page-node-id="LJ968XRSYOwU7qVa98hNYm"><!--pnid:ijxgqlht3t693MsUzsGn3Y-->选择器</strong><!--pnid:i71YlbMkZQu6H3YCaUJIR1-->（从海量知识里挑出此刻该看的几段）。两者正交、互补：检索把对的材料送进窗口，窗口负责把材料与问题一起消化。<br data-page-node-id="mnymYvniaKfr9B6AjupWx3"><!--pnid:jcLs5JPa04HDlQ7hUuEScz-->
+      窗口越长，越要防「上下文腐烂」——内容一多，模型对中间部分的注意力会掉（Lost-in-the-Middle），把整库塞进去反而稀释信号。所以即便百万级窗口，仍靠检索先筛掉噪声，再用窗口承载被筛出的工作集与推理过程。<br data-page-node-id="aovms0uwfUupT23puK9vDX"><!--pnid:MtLJUzyk5TKTFV305c7XhX-->
+      现实分工：易变、专属知识用检索外挂（即时更新、可溯源）；单次超长文档的理解用大窗口直读。把长上下文当成 RAG 的替代方案，是选型里最常见的误判。
+    </p>
+  </div>
+</section>
+
+<!--pnid:zHJbpV9Rl8nPrwN4z5ceCo--><!-- 08 知识库治理 -->
+<section data-page-node-id="T4BLQhsdH4MHzBxCjMZf3a" class="sec">
+  <h2 data-page-node-id="pb22l4ysB96u1etIbKhSTZ" class="sec-h"><!--pnid:zPtovsDJFsBApmrZbRnUQp-->知识库治理：翻车的真正高发区</h2>
+  <p data-page-node-id="DwmAO1xytFHOxVFPWKXOCU" class="sec-sub"><!--pnid:0RGLgbgiuvoniYENQrIbp7-->外在层问题靠治理，不靠检索调优。这是产品侧最该扛的卡</p>
+  <div data-page-node-id="ZASF3DczaJn0zdysAcElBa" class="lead"><!--pnid:mFYrDt651WtrEHFR0cwUy2-->
+    前面所有失败点里，最高频、最难靠工程手段救的，是知识库自身的治理问题：内容缺失、版本过期、多版本并存。这些本质是产品与数据问题，不是算法问题。「输入垃圾，必定输出垃圾」，任何 RAG 链路想获得好表现，都得先清洗数据。对规则 / 政策密集的电商场景尤其突出。
+  </div>
+  <div data-page-node-id="Tbwml4uMIe0GJoQN7LI3aH" class="figcard">
+    <div data-page-node-id="jjPEzEhIdoholAq4rECXwd" class="cap"><!--pnid:bJwzHarGgMs3KJ3TzkCmmp-->图 18 · 治理两子类：覆盖缺失 vs 版本冲突</div>
+    <svg data-page-node-id="9WfT5knynTomAa06OTTYw1" aria-label="治理两子类" role="img" viewBox="0 0 680 178">
+      <rect data-page-node-id="2aarLzfYtXKMJenfKzzJPC" class="box-r" height="118" rx="12" width="310" x="20" y="24"/>
+      <text data-page-node-id="dGd6MUZwuoepRGrBNEFwPp" class="txt" fill="#be123c" font-weight="700" text-anchor="middle" x="175" y="52"><!--pnid:XMrmeTGoN64Yufu7Ur96Q8-->覆盖缺失（没进库）</text>
+      <text data-page-node-id="t7JQeH7sIfuvNx9aRKcSd9" class="txt" text-anchor="middle" x="175" y="78"><!--pnid:3nblzgZkFU5DARzFDNYuWM-->新规则未录入 / 录入滞后</text>
+      <text data-page-node-id="lOPdtMiPbc4iXK1EnhoKeg" class="txt" text-anchor="middle" x="175" y="100"><!--pnid:liSqYzLkgqueKMO8Xt1nx2-->表现：context_recall 低</text>
+      <text data-page-node-id="O3tUHL1vYYDl26KFHmca4O" class="small" text-anchor="middle" x="175" y="126"><!--pnid:FAruoOb7sVWSd8332CZpHO-->解法：补录入 + 数据清洗 + 「不知道就明说」兜底</text>
+      <rect data-page-node-id="m5RetvDWw1BQMxvV6ca2wg" class="box" height="118" rx="12" width="310" x="350" y="24"/>
+      <text data-page-node-id="rxZ0FNBTdJoOKrFWVxvg5H" class="txt" fill="#0f766e" font-weight="700" text-anchor="middle" x="505" y="52"><!--pnid:S1PT56OrDwxD4ld217jokI-->版本冲突（进了库但乱）</text>
+      <text data-page-node-id="sXtxmzdeKdQkKxxu0PK36y" class="txt" text-anchor="middle" x="505" y="78"><!--pnid:QVB8DaQDLPK2oB1WjoYlq5-->现行版与过期版并存、排序错</text>
+      <text data-page-node-id="h9kkb3JEmZYK1NB4nSV2yy" class="txt" text-anchor="middle" x="505" y="100"><!--pnid:HBgFEeK2h7kpI5fdyrvHuC-->表现：context_precision 低</text>
+      <text data-page-node-id="E8rwB4BYUtzmdcE9Gsv8Fy" class="small" text-anchor="middle" x="505" y="126"><!--pnid:hCaZtNJwUs5LuOKr4qpDO9-->解法：元数据 / 维度过滤 + 重排带时效信号</text>
+      <text data-page-node-id="GLJDHbyqqqKuh9zP38nfnV" class="small" text-anchor="middle" x="340" y="166"><!--pnid:ZH7eBElksaew4YBqclksm6-->两类都属外在幻觉——检索器治不了；一个是「没有」，一个是「太多且没分清」，解法完全不同。</text>
+    </svg>
+  </div>
+  <div data-page-node-id="iiXhrM0TU4FoODejjmNueY" class="card">
+    <div data-page-node-id="tbtohOZQh5DEv40PN83Jpf" class="cap"><!--pnid:D5rZnHAgaj2DMtxS3r9l7D-->治理四要点</div>
+    <p data-page-node-id="DemfaTMzMIqtxk0V6DySjc" style="margin:0; color:var(--ink2)">
+      <span data-page-node-id="GOsVpYYc5GMlkSnQVT6wFd" class="tag"><!--pnid:9A8sf3ivNIdS0gnTLqb7ko-->覆盖</span><!--pnid:9sQDcSVflsdBXhWcc72HG6--> 确保该有的规则都进库，建立录入与校验流程；新政策上线与知识库录入必须同步。<br data-page-node-id="DBgs6npA6zIKQHCMpKfxgI">
+      <span data-page-node-id="5NbJBTyFFeKTpewg6ZocYv" class="tag"><!--pnid:HtEG8HqeppiO7YpZMXKy33-->时效</span><!--pnid:XfTcOroT3Ami8UgGdP56nE--> 规则更新时旧版标记过期而非删了重写；定期增量更新并重建索引，避免知识滞后。<br data-page-node-id="QMBxbzMYlQ4irNmIjfseib">
+      <span data-page-node-id="iawapNcYCo2pErZj4k9JgB" class="tag"><!--pnid:NLSlNdWsOcjEwDzKKN3z11-->版本</span><!--pnid:Vr4I0YI8zqfyhtKzlrCy4Z--> 给知识块打活动 / 品类 / 时间维度标签，检索时先过滤。版本冲突的唯一解。<br data-page-node-id="DxTTfmHBt2OYP3lSNCe2Hl">
+      <span data-page-node-id="vtKgeMq0wTyrdnu3EwiPhk" class="tag"><!--pnid:Qvu5OMp1NDVHwdbXrxxljv-->增量</span><!--pnid:8bNGCafDft8fa9dyL7W7EJ--> 索引选型直接决定治理成本：HNSW 支持增量添加、无需全量重建；IVF 对新增数据不友好，频繁更新的知识库慎选。
+    </p>
+  </div>
+</section>
+
+<!--pnid:BgtYHWILV5Zd3f2swdEYQ1--><!-- 09 成本延迟 -->
+<section data-page-node-id="CmF1YFAAMabMO2Ip0Vj2aj" class="sec">
+  <h2 data-page-node-id="vl9irCw7stPiILSTIp3gCX" class="sec-h"><!--pnid:aO2jged4Lmf2yTBdNwA1wz-->成本与延迟权衡</h2>
+  <p data-page-node-id="clE5cYRC9sCksyp9wNjuVd" class="sec-sub"><!--pnid:py0da1qzuXo9h4vTKQlIvn-->轻量一节：工程取舍要算账</p>
+  <div data-page-node-id="PdntPTLAGuUnS5iqldhg0W" class="lead"><!--pnid:0Lpcu64jOtzESu4u2qbuhC-->
+    重排、上下文压缩、混合检索都能提质量，但各有代价：重排与压缩要额外的模型调用（token 成本、延迟）；混合检索需调权重。原则是用最低成本的组合达标。小团队可优先「递归分块 + 混合检索 + 轻量重排」，大流量再做更重的增强。实测里上下文压缩以 5.56% 的召回损失换来忠实度 +10%、精准度 +5%，综合 F1 几乎不动。这就是「算得过账」的增强；反过来，没调好权重的混合检索会让精准度近乎减半，得不偿失。评估前也要对 token 消耗有心理预期：评测本身就是一轮不小的调用开销。
+  </div>
+</section>
+
+<!--pnid:wvgBpcAH4QOUwvo3sHAveK--><!-- 10 总链路图 -->
+<section data-page-node-id="o74KVmIb56yTKJpsk2QifW" class="sec">
+  <h2 data-page-node-id="RjJ504141Zu59vQnCXUPIk" class="sec-h"><!--pnid:LzCxy5FMDNm8RyUoIPWtw3-->总链路图：一段一段看翻车点</h2>
+  <p data-page-node-id="rLdouPS8JLNG0AAi8pE2d3" class="sec-sub"><!--pnid:9LOb2AyLofSNsMrGWb0yFK-->把所有环节拼成一条端到端链路，红点即易翻车处</p>
+  <div data-page-node-id="zc9X0eYD3mxto1T9RVl2CA" class="figcard">
+    <div data-page-node-id="jaBo0uUhNErSdEW7fX2S52" class="cap"><!--pnid:aCKyUcS2vdwPKrTxM9AjMS-->图 19 · RAG 端到端链路与易翻车点</div>
+    <svg data-page-node-id="vAGEDi6Q4jGNpjbRtGibe8" aria-label="RAG端到端总链路" role="img" viewBox="0 0 680 252">
+      <defs data-page-node-id="kOtAWVjKzHsNZF0M9xQk7b"><marker data-page-node-id="mxtU0LgFG7t9vqBYbRcwO4" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="UhZUecM15CSZZoGXLp1WT3" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <!--pnid:pw6K35VphpSuzyvOCVWta1--><!-- 前置治理 -->
+      <rect data-page-node-id="G9zJYk9SvFmS7D7ePShAo6" fill="#fff5f6" height="42" rx="9" stroke="#be123c" stroke-width="1.4" width="652" x="14" y="18"/>
+      <text data-page-node-id="FsJK0CZbqvbSoPHlExqb05" fill="#be123c" font-size="13" font-weight="600" text-anchor="middle" x="340" y="44"><!--pnid:MUILxXnl0IZELoqZX94PZo-->前置 · 知识库治理：覆盖 / 时效 / 版本 —— 翻车最高发区，排障先查这里</text>
+      <!--pnid:HrPa7OgSNk16Nf7PgA4Py8--><!-- 主链 -->
+      <rect data-page-node-id="odCBcTCmHJSRumiT16S1Q8" class="boxg" height="44" rx="8" width="72" x="14" y="88"/><text data-page-node-id="1jyEsm47kUSZbZ8PwDUNEL" class="txt" text-anchor="middle" x="50" y="114"><!--pnid:7cAtE0qmtdoMrDpySRbHx5-->用户提问</text>
+      <path data-page-node-id="VG7InyAVBFF21UPN5G19Ft" class="flow" d="M86,110 L108,110"/>
+      <rect data-page-node-id="0WVGufwydy6alQhxEZo3Y2" class="box-a" height="44" rx="8" width="92" x="110" y="88"/><text data-page-node-id="wypIcgMKWIrdvMR0PQ71NN" class="txt" text-anchor="middle" x="156" y="107"><!--pnid:PRZGfs3KFN12TKLTlHMVku-->查询优化</text><text data-page-node-id="vZLb39lYDhglgIKxkGMgDe" class="small" text-anchor="middle" x="156" y="122"><!--pnid:8eAKDinqlaaM0mrISJwoYx-->改写·分解</text>
+      <path data-page-node-id="46D8b1bXIKjAKkREVb70K0" class="flow" d="M202,110 L224,110"/>
+      <rect data-page-node-id="KmqeZHLGJmm0i4Tmtx3dKb" class="box" height="44" rx="8" width="104" x="226" y="88"/><text data-page-node-id="EAaR52VJMecGr6N6dtZEFY" class="txt" text-anchor="middle" x="278" y="107"><!--pnid:hdCKdTqpl0LdiNSStcKTOt-->混合检索</text><text data-page-node-id="NT6RtJmNt3kq4llvh7xY5s" class="small" text-anchor="middle" x="278" y="122"><!--pnid:SeyzNkZQt3KK8p9BeO2H75-->向量＋BM25</text>
+      <path data-page-node-id="wjqozXeEaycipX76NPpvzA" class="flow" d="M330,110 L352,110"/>
+      <rect data-page-node-id="8Ft6u32xgqHkTa8sYG41lZ" class="box" height="44" rx="8" width="88" x="354" y="88"/><text data-page-node-id="hAJnH1zVqHkGCLND18bzU4" class="txt" text-anchor="middle" x="398" y="107"><!--pnid:XwF0MIkw5IInfSGosuoudw-->融合·排序</text><text data-page-node-id="j8Ed3hy4ZMePz0FROWAiFW" class="small" text-anchor="middle" x="398" y="122"><!--pnid:LBQWjb1u3uiH8X37tzByks-->RRF / 加权</text>
+      <path data-page-node-id="Mxf5WoL85PAXpjQ3mQyPmm" class="flow" d="M442,110 L464,110"/>
+      <rect data-page-node-id="gkt3FsOfGmZJNSJXCO1Eqd" class="box-a" height="44" rx="8" width="96" x="466" y="88"/><text data-page-node-id="MOs2ovu8oUBlE5MlxgCd50" class="txt" text-anchor="middle" x="514" y="107"><!--pnid:WbiUDGNwkuQ8hSaDO5NQP2-->重排·压缩</text><text data-page-node-id="V5d2SPBc8OteHmrEQcHkkP" class="small" text-anchor="middle" x="514" y="122"><!--pnid:XspUbMLv62RuGtKjl9EPxF-->提纯上下文</text>
+      <path data-page-node-id="BQfmAd5dl6cjeQQi1M6iiS" class="flow" d="M562,110 L584,110"/>
+      <rect data-page-node-id="SK2fbdULyicPgHqdpJ0RSU" fill="#10b981" height="44" rx="8" stroke="#059669" width="80" x="586" y="88"/><text data-page-node-id="9RAZ0v7jsE7bXaZ1sZ9wEF" class="txtw" text-anchor="middle" x="626" y="114"><!--pnid:fd2FpPlWYEfXbbvw78HiEc-->生成</text>
+      <!--pnid:hd3ZTIH2Shv6ZnVEZXDR12--><!-- 翻车点 -->
+      <circle data-page-node-id="M6VlmRZJkpJfgRpYD0dMDo" cx="156" cy="146" fill="#be123c" r="4"/><text data-page-node-id="2aN5Eg8Fw3tHgQC3cj4Owf" class="small" text-anchor="middle" x="156" y="166"><!--pnid:brLMNUqrfOuGVsIfAIVWE1-->问题含糊 / 多意图</text>
+      <circle data-page-node-id="Buv3NKOVtuNlTe9tyLNUJO" cx="278" cy="146" fill="#be123c" r="4"/><text data-page-node-id="CLg8bj8PjGtMoHBugF6mbs" class="small" text-anchor="middle" x="278" y="166"><!--pnid:wMPVtufL7axidrcmColcGM-->召回噪声 / 权重失衡</text>
+      <circle data-page-node-id="YweyFJjtuuPqXVW3Lq1qcO" cx="398" cy="146" fill="#be123c" r="4"/><text data-page-node-id="frywgRPxjAvsVz7Ok0HX29" class="small" text-anchor="middle" x="398" y="166"><!--pnid:nNhia9xuDa5OAqfe2khpjK-->排序错 / 相关沉底</text>
+      <circle data-page-node-id="HKT5eo4s6jNCYgwwxR0wjI" cx="514" cy="146" fill="#be123c" r="4"/><text data-page-node-id="5HpSK8DqP8QoFrJMastIvG" class="small" text-anchor="middle" x="514" y="166"><!--pnid:ex6Ykn9FGXEuxHAsgzRxZ0-->过度截断 / 丢关键</text>
+      <circle data-page-node-id="2N73tAIhrH1qwmmBDrxQEf" cx="626" cy="146" fill="#be123c" r="4"/><text data-page-node-id="gjte8jrQjKYYZDBAW040dp" class="small" text-anchor="middle" x="626" y="166"><!--pnid:9T78lHm6xgrNWFAevP83e7-->忽视上下文 / 格式错</text>
+      <!--pnid:MZYB4QRsCknAUUkwtjOSsT--><!-- 排障顺序 -->
+      <path data-page-node-id="dJF1UN1QMcEgFMOolcmUiK" d="M14,206 L666,206" marker-end="url(#ar)" stroke="#0d9488" stroke-width="1.6"/>
+      <text data-page-node-id="GbwT5WXhlovHrB7UEZMrKs" class="small" fill="#0f766e" font-weight="600" text-anchor="middle" x="340" y="232"><!--pnid:v471Hb5XzA0XLoiNRWHRmr-->排障从前往后：治理 → 查询 → 检索 → 融合 → 重排 → 生成（越往前，性价比越高）</text>
+    </svg>
+    <div data-page-node-id="DOksPKv8LFZcrC83p2EEIW" class="note"><!--pnid:o3pixidY5PdTIIivuHs2HQ-->链路越往后，问题越难靠单点解决；越往前（治理、查询），性价比越高。四个指标怎么读这张图：recall 低先看治理，precision 低看检索与融合排序，faithfulness / relevancy 低才轮到生成侧。</div>
+  </div>
+</section>
+
+<!--pnid:CYAIzfeBi6kOeLmrtc5GPe--><!-- 11 案例 -->
+<section data-page-node-id="urML4hbqz2gMnmObUYu0zW" class="sec">
+  <h2 data-page-node-id="KCddwQG7xJ8xSTbX0xs4aO" class="sec-h"><!--pnid:FnZur1jGtOXB1crQQFGMqD-->真实案例归因</h2>
+  <p data-page-node-id="siJTC50og9Lnd6tuWSefux" class="sec-sub"><!--pnid:d98YblAtb12dPS06lG2Cjf-->两个电商问答场景，对应治理两子类</p>
+
+  <div data-page-node-id="vXt0FJkMpydWsajh8pZQig" class="card danger">
+    <div data-page-node-id="DJAqOhzWgOUOAfNj5gXaXr" class="cap"><!--pnid:LOIsWU5DU2JnM1hH4ZdupO-->案例① · 大促「满减 + 品类券」互斥规则答错（版本冲突型）</div>
+    <p data-page-node-id="TWoKOL4ksevj9LM98ASTPx" style="margin:6px 0; color:var(--ink2)"><strong data-page-node-id="9E0BGaS2T4WvQpIdfVMzPD"><!--pnid:SPo6uRieMsnxESueTyc8fW-->事实：</strong><!--pnid:LVDLHOeB5XRDEnuGReNyiw-->用户问「满减和品类券能叠加吗？」系统答「可以叠加」，实际双 11 期间互斥不可叠加 → 错答、客诉。</p>
+    <p data-page-node-id="aEGl1sS0AHtehTzhhL8iSk" style="margin:6px 0; color:var(--ink2)"><strong data-page-node-id="MD7ocvlUraj4bXckdF2fHk"><!--pnid:FW9dj1Hub4b6X2YGrh2lxw-->归因：</strong><!--pnid:sbX7h4hK3T4aLAOTAQbNGv-->现行「双 11 互斥」规则<strong data-page-node-id="Qc8gxOPVmT2CEcSScaFhjW"><!--pnid:qlZz6TtQD1ADX1mxP2Iz9Z-->在库</strong><!--pnid:Zr1ipP3zTbbIsstyFLxu6G-->，排除内容缺失。根因是库里同时躺着现行版（互斥）与过期版（年中促·可叠加），两版语义相近，召回时过期版排前，重排没带时效信号，模型照过期版作答。翻在<strong data-page-node-id="R7p25SLUkzVv95ehPSGuvd"><!--pnid:RelJlsjyVoxchdOZkmI8C8-->后段（排序 / 重排 / 拼接）</strong><!--pnid:HpiR5J5c2Px6fjkZTw03RC-->。</p>
+    <p data-page-node-id="lJkcYBcd0CzpuL72fMS8dz" style="margin:6px 0; color:var(--ink2)"><strong data-page-node-id="dkuidaiMYAFEpM5zPQLmSv"><!--pnid:Su7tPJbyCm88K4rcuM8QMu-->指标与痛点：</strong><!--pnid:eeaT1FivUXETixtglv6hpu-->context_precision 低 + faithfulness 低（指向检索器为主因）；痛点对应「错过排名靠前的文档」与「不在上下文」。解法钥匙是<strong data-page-node-id="aFUTyo9IFXZZh95WfgdFzm"><!--pnid:RvwKmzw1010oqTgRD6ZBx9-->元数据 / 维度过滤 + 重排带版本信号</strong><!--pnid:rP1yTvaKQWOhn6xa2C5i6F-->。</p>
+  </div>
+
+  <div data-page-node-id="MC2dcfRCOoeyT2JcvbTnmo" class="card">
+    <div data-page-node-id="I38xqWqbho9lCqSpZOB1NV" class="cap"><!--pnid:LhWkWt47ayxtqABagCTct1-->案例② · 新业务线「以旧换新」政策未录入答错（覆盖缺失型）</div>
+    <p data-page-node-id="GF6hpphixbPMveLoDjLGiT" style="margin:6px 0; color:var(--ink2)"><strong data-page-node-id="aMXMDO7lydAnF4fNheAm83"><!--pnid:XFlDt5o8Aif76w54XBWL3Q-->事实：</strong><!--pnid:cKetsy843JBz7DmBeGJLVr-->新上线「以旧换新」配套新售后政策（不支持 7 天无理由退）。用户问能否 7 天无理由退，系统按通用政策答「支持」 → 实际不支持 → 错答。</p>
+    <p data-page-node-id="S0Sr4wrSKgzRVALUudgAbW" style="margin:6px 0; color:var(--ink2)"><strong data-page-node-id="uICrwVRdrkBhfhkgV1i2b1"><!--pnid:t2MoN02ugOjzoDDOtUbia9-->归因：</strong><!--pnid:5IEis4fBKahd1LrCZtiqSN-->知识库里<strong data-page-node-id="kFec0BtHvEaiiPFVfhw8MB"><!--pnid:r5L2Gyyh2V6FfCrJmL8YqK-->压根没有</strong><!--pnid:kBIo5U082l4UrMe6dikobW-->这条新政策。答案根本没进库，翻在<strong data-page-node-id="70JlhbhbBojrsdbOUpex6t"><!--pnid:Z2CzisuEncDkTETvrBKIrX-->前段（覆盖 / 治理）</strong><!--pnid:jUn6iFwQL0Q1EcE8EmmaAY-->。context_recall 低，并连带把 faithfulness 拉低（模型回退参数记忆泛化作答）。痛点对应「内容缺失」。</p>
+    <p data-page-node-id="WrUKK8xuXSzxeTzsHMrajf" style="margin:6px 0; color:var(--ink2)"><strong data-page-node-id="Y4ozWp6dp1vu84mAxw5Htf"><!--pnid:P8Eee5rN1GgLHNiXERD5Fi-->解法：</strong><!--pnid:5WiITWDmER4fS6twOjC8bW-->补录入 + 时效更新，并加提示兜底。「根据当前知识库，无法回答该问题」，别让模型编。</p>
+  </div>
+
+  <div data-page-node-id="MtKgPhJtm7oIbOzfrG5yvP" class="card">
+    <div data-page-node-id="naRzEgRQGGq7jTRHndnBUX" class="cap"><!--pnid:yCk7KR3l9Gh0KTVFdzrGq4-->表 16 · 两案例对照</div>
+    <table data-page-node-id="tUQEbd7WSS6pV2v98C0G0s" class="tbl">
+      <tr data-page-node-id="FOq8dE87db0eApdoc6tPuh"><th data-page-node-id="koDwWI3XrB3wohqj8cRya6"></th><th data-page-node-id="UiNshNVOVcAlswblSmVm3U"><!--pnid:XBtM447pyxrMOOUg5zYxfp-->案例① 版本冲突</th><th data-page-node-id="kFYtMmWufgsf3NbTB6CFll"><!--pnid:v711aGL15ghaCN7vOsbFLs-->案例② 覆盖缺失</th></tr>
+      <tr data-page-node-id="5C6DW2qnWCRrp0P6vZBNoF"><td data-page-node-id="BCEXm7iPV2gYOKXGNVQdeE" class="kv"><!--pnid:EAeN8d310ivSlhmA680ctF-->根因</td><td data-page-node-id="YIPjAcyts0xed9Z5Oo9lC2"><!--pnid:ogGW4PR5OExOlzP8Jj1BsM-->多版本并存、排序错</td><td data-page-node-id="T8EynQwsiObf3SnutQxJm7"><!--pnid:ROEJCyPGTXt90oO6LoaVu1-->根本没进库</td></tr>
+      <tr data-page-node-id="8anpB3XhCnWTXnkBMMO6nE"><td data-page-node-id="5yRMsyzsw7hsAWfuMvgtPt" class="kv"><!--pnid:N8CldFnYNFNmCBynzDhJUY-->翻车段</td><td data-page-node-id="Pg6z2lYE1tPyp5cqtuAIhx"><!--pnid:hdEP4neUl0S3j9mTMloOAT-->后段（排序/重排/拼接）</td><td data-page-node-id="3Koetd9NCJdkMbgOJceCNd"><!--pnid:tmD5sNo4AYVXgyCvWOgH8z-->前段（覆盖/治理）</td></tr>
+      <tr data-page-node-id="KQMKKqUfl4ko1mqAZSQ4pO"><td data-page-node-id="z1CQ2TuLBjsI5xMNXlMoTh" class="kv"><!--pnid:rab6qUwCPVLQabhwqmspab-->低指标</td><td data-page-node-id="hd2puz7EnvMbgNuA2rdYiX"><!--pnid:1eJ4sqbn3fuzqNzVnDI9fu-->precision + faithfulness</td><td data-page-node-id="cVnHLKtfqqMzyF5clhZVfR"><!--pnid:2aZs5mHyFmNveJt8HTtXLm-->recall + faithfulness</td></tr>
+      <tr data-page-node-id="5yjP0ElwvmFh4SatM5Bc76"><td data-page-node-id="QJENampCNxO7MIBGIBsdBN" class="kv"><!--pnid:tqfDSN2O4JIZJJwuKL3LxL-->解法</td><td data-page-node-id="VzFbkvP7WXINsgu3UjJSlB"><!--pnid:jfosunwlKdIVLzu4yWN3om-->元数据过滤 + 重排带信号</td><td data-page-node-id="vl8iQHIetTt3E0qAiQkKTi"><!--pnid:1C0aT1KI18P1EC6ima7lsG-->补录入 + 时效 + 兜底提示</td></tr>
+      <tr data-page-node-id="N6YnKdX0f4DjaTH7kmf7zM"><td data-page-node-id="m7aqjhGLtK5O9vgfK2Da2y" class="kv"><!--pnid:45ub3q5WOfIb83U9sG0NlV-->共性</td><td data-page-node-id="AEby2LZlcmptRxq0VAIJQd" colspan="2" style="text-align:center"><!--pnid:XwfOOQJD7iIPtECcOdHn1J-->均属外在幻觉，检索器治不了，靠知识库治理</td></tr>
+    </table>
+    <div data-page-node-id="zsJWa8kdzy4oWMbvd577Lr" class="note"><!--pnid:ITqAEIdQNf3WtR4I2grQpT-->迁移检验：售后政策（A/B 品类维度）、金融合规（监管版本迭代）与这两个案例同构。「同主题多版本需元数据/维度过滤 + 重排带信号」是可跨业务迁移的判据。</div>
+  </div>
+</section>
+
+<!--pnid:dTZWyF2ad2bXF1EHIbebgX--><!-- 12 方法判断 -->
+<section data-page-node-id="TJMgWBeVTVg6vMDaxgN8Ao" class="sec">
+  <h2 data-page-node-id="ucN3eZ9MbgZ2tJ94JFyqhs" class="sec-h"><!--pnid:VYH48ildnvJ8i6jaWXbChW-->三条可复用判断</h2>
+  <p data-page-node-id="MlAwG1Zr5rDLqO0rjEXqhW" class="sec-sub"><!--pnid:Xfpyt53Dtg9Xqxn99bb8jg-->从上文提炼，可直接用于需求评审与排障</p>
+  <div data-page-node-id="FOqBXzxUwe00D6gRUBD40m" class="card">
+    <p data-page-node-id="AxHNXj0PAQIwho5hFf1WNY" style="margin:0 0 12px"><span data-page-node-id="3rfZFTmkwrpR2QoqDAh1ML" class="pill"><!--pnid:mkSLNkLuc3NZMxHhHwEXjW-->判断一</span> <strong data-page-node-id="QZTKmCCvIOS6ZMlpt9YesB"><!--pnid:CFVE2QO6Vc5B834qnZUFEw-->定位先看「答案在不在召回上下文」</strong><!--pnid:97vGwQTsAsVNEs9VIXmcSQ-->。不在，归治理 / 覆盖（前段）；在但答错，归检索排序 / 生成（后段）。这是评测诊断表的口语版。</p>
+    <p data-page-node-id="F4nsMQvEdsIPH5vEkx3tGy" style="margin:0 0 12px"><span data-page-node-id="anqV06F0Ivbkt9kkdDwN7Z" class="pill"><!--pnid:zH5UqihKbrvRS4XeJV9ESk-->判断二</span> <strong data-page-node-id="CwKJn5GBzTP6W4x4UIVcJ0"><!--pnid:DruTXAT9RuagFTINcGPO9q-->治理问题分两子类，解法不同</strong><!--pnid:9l2uNvfx8ecIN623YFpGHY-->。覆盖缺失（补录入 + 时效）vs 版本冲突（元数据 / 维度过滤 + 重排），别混为一谈，也别指望调检索器解决治理病。</p>
+    <p data-page-node-id="QlOVVedWG1BQJcLTGXUYWA" style="margin:0"><span data-page-node-id="xh51EBMf8It5feGSRiwThm" class="pill"><!--pnid:7I90Ez40aW4ADiaF7evyPd-->判断三</span> <strong data-page-node-id="ARqwQZyfuglnlWS0kZhIho"><!--pnid:aitRrJ4Yr2xX3NEcRa1KR2-->规则 / 政策类知识库必须带「维度 + 时效」标签，索引选支持增量的</strong><!--pnid:aHQ7JhhwkENi3Lr0rTJjk2-->。电商的活动、品类、版本天然多轴并存，只靠向量相似分不出；而知识库频繁更新，索引得选 HNSW 这类支持增量添加的，别让每次改规则都要重建。</p>
+  </div>
+  <div data-page-node-id="Fjd1QillB5qxoQgMKtN2de" class="note"><!--pnid:7MUmHdxyZdYZ5p0IEOTX9V-->反例边界：生成器忽略上下文瞎编（recall/precision 正常，靠提示约束）、表格半结构化（需摘要 / 表格专用索引）、实时长尾（需外部 API）、问题含糊（需查询优化）。这些超出三条判断的覆盖，需落到对应专项。</div>
+</section>
+
+<!--pnid:KGXMx6a9oT8ojVMUXUpv8i--><!-- 13 进阶 -->
+<section data-page-node-id="2i8S2znHcAKSbySa4ErSw4" class="sec">
+  <h2 data-page-node-id="BL18o7sZbiyMdWcLLwMuN4" class="sec-h"><!--pnid:oCC4qxPQaVSb4M2i0xTMbN-->进阶方向速览</h2>
+  <p data-page-node-id="vRbcImXD1nmQAzzNEJTrdG" class="sec-sub"><!--pnid:bpJU7CwzucDMthT03MuzBa-->生产深入时可关注的四个方向</p>
+  <div data-page-node-id="77ltCaBF86tJJjOqDrSXH4" class="grid2">
+    <div data-page-node-id="wgZ5AYlc9U9lKa3flUaxPu" class="card">
+      <div data-page-node-id="SffD2VJODIRtcamYBLmMsq" class="cap"><!--pnid:1EwoBfcwcTaz4mAGIXemFv-->GraphRAG</div>
+      <p data-page-node-id="hBkDV1UVLDWefxa0AeZnYN" style="margin:4px 0; color:var(--ink2)"><!--pnid:dCL4gnjzygpesaDrVoiC5W-->用知识图谱做检索，擅长多跳、实体关联类问答，搜索精度高但构建成本高。</p>
+    </div>
+    <div data-page-node-id="1YQgcEkUzv8eHY8PiHojw1" class="card">
+      <div data-page-node-id="L4GMcK4nMs3ajqcKfur1OL" class="cap"><!--pnid:8vmYFKu35K8slNYKNdtbUt-->Self-RAG</div>
+      <p data-page-node-id="bW0QFK4jCg0zeeAS3lgSe9" style="margin:4px 0; color:var(--ink2)"><!--pnid:EyK7TTrO5qyO2ePhgj6ZNW-->自反思式检索生成，用反思标记自主决定是否检索、是否采信，可显著降低幻觉。</p>
+    </div>
+    <div data-page-node-id="FYwiJnEaZ4yLSqSZGeFZRR" class="card">
+      <div data-page-node-id="lACHiUSgVQzx9LTPshN579" class="cap"><!--pnid:CTNAY2juC9elur3Sl4tvmD-->CRAG</div>
+      <p data-page-node-id="nSHmKGLF4oOz8sAE8Ykemt" style="margin:4px 0; color:var(--ink2)"><!--pnid:5vLVs3QMrLdAKnLLZbhZRY-->对检索结果做置信度评估，不确定时触发外部兜底，提升鲁棒性。</p>
+    </div>
+    <div data-page-node-id="MgmCWpJ4muK0sGHzRyfSzn" class="card">
+      <div data-page-node-id="f9dKCc2v2XlNYajyXeVhQQ" class="cap"><!--pnid:snPisXvar1Ib1KbcqiFvND-->Agentic RAG</div>
+      <p data-page-node-id="JFGQvfniFIrr3Qet5z4fSV" style="margin:4px 0; color:var(--ink2)"><!--pnid:0qDEZma2kFBPmhUAV6hu47-->把复杂查询拆成并行子查询、动态路由，适合跨源、多步推理场景。</p>
+    </div>
+  </div>
+</section>
+
+  </div>
+
+</div>
+</body>
+</html>
