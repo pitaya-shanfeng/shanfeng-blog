@@ -1,0 +1,652 @@
+---
+title: Agent 怎么搭才靠谱
+published: 2026-11-04T16:05:00+08:00
+description: 多数 Agent 翻车，是盲目追求「全自主」。文章按控制流归属分三层：增强型 LLM、工作流、自主 Agent，先问「下一步能不能写死」，再看五种工作流、ReAct 与 MCP，最后给一份立项判死清单。
+quote: 能写死流程就别交权给模型：自主 Agent 是权衡，不是进阶奖励。
+image: /assets/library/notes/agent-how-to-build/cover.webp
+category: 拾遗/学习笔记
+tags:
+  - Agent
+  - 工作流
+  - ReAct
+  - 认知与设计
+draft: false
+comment: false
+---
+
+<!DOCTYPE html>
+<html data-page-node-id="IRRZaZ9T81hbyibZTAGDRM" lang="zh-CN">
+<head data-page-node-id="iGIFz9qdSaRYK2nTsCPBKy">
+<script data-page-node-id="pZ3g7lhao8XzND4URaT9Bo" src="/page/page_comm/inject.js"></script>
+<meta data-page-node-id="damfFNdhdK3ucT6mlKTzqt" charset="UTF-8">
+<meta data-page-node-id="97T823RQ46qayiiEKWpz0H" content="width=device-width,initial-scale=1" name="viewport">
+<title data-page-node-id="TcqdtA41zAJ2JuQbrQ0ADG" data-pnid-children="dYDz7rmW0JeHgejFRuTTMu">认知与设计 · Agent 怎么搭才靠谱</title>
+<style data-page-node-id="15Uxa5Pj8YnWvbseoT6ZKb" data-pnid-children="wxE4QmAnZjw3lGrzkUQ5i3">
+:root{
+  --ink:#1f2937; --ink2:#334155; --ink3:#6b7f76;
+  --teal:#0d9488; --teal2:#10b981; --teal-bg:#f2fbf6; --teal-line:#d7f3e7;
+  --amber:#b45309; --amber-bg:#fff7ed; --amber-line:#fed7aa;
+  --red:#be123c; --red-bg:#fff1f3;
+  --card:#fff; --line:#e3ede7; --bg:#f3f7f5;
+}
+*{box-sizing:border-box}
+body{margin:0;padding:36px 16px 64px;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;font-size:17px;line-height:1.92;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06)}
+.cover{position:relative;background:linear-gradient(135deg,#0e7490 0%,#0d9488 52%,#34d399 100%);color:#fff;padding:56px 40px 44px;overflow:hidden}
+.cover .kicker{display:inline-block;font-size:13px;letter-spacing:2px;color:rgba(255,255,255,.82);margin:0 0 12px;font-weight:600}
+.cover h1{font-size:30px;line-height:1.4;margin:0;font-weight:700;letter-spacing:.5px;color:#fff}
+.cover .tagline{margin-top:16px;font-size:15px;color:rgba(255,255,255,.92);line-height:1.7;border-top:1px solid rgba(255,255,255,.28);padding-top:14px;max-width:92%}
+.cover .topics{margin:18px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+.cover .topics li{background:rgba(255,255,255,.16);font-size:12.5px;padding:5px 11px;border-radius:14px;color:#fff}
+.brand{position:absolute;top:22px;right:30px;display:flex;align-items:center;gap:9px}
+.brand img{width:36px;height:36px;mix-blend-mode:screen;border-radius:8px}
+.brand span{font-size:12.5px;font-weight:600;color:#fff;letter-spacing:1px}
+.inner{padding:0 40px 8px}
+.wrap{counter-reset:secnum}
+.sec{margin:34px 0 0}
+.sec-h{display:flex;align-items:baseline;gap:12px;font-size:21px;font-weight:700;margin:46px 0 14px;padding:0;color:var(--ink);counter-increment:secnum}
+.sec-h::before{content:counter(secnum,decimal-leading-zero);color:#fff;font-size:13px;font-weight:700;letter-spacing:1px;background:linear-gradient(135deg,#0e7490,#0d9488);padding:4px 10px;border-radius:6px;flex:none;box-shadow:0 1px 3px rgba(13,148,136,.25)}
+.sec-sub{font-size:13px;color:var(--ink3);margin:0 0 16px}
+h3.sub{font-size:16.5px;color:#0f766e;margin:26px 0 8px;font-weight:700}
+.lead{background:var(--teal-bg);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:15px 18px;margin:16px 0;font-size:16px;line-height:1.8;color:var(--ink2)}
+.card{background:#fafdfb;border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:14px 0}
+.figcard{background:linear-gradient(135deg,#f0fdfa,#ecfdf5);border:1px solid var(--teal-line);border-radius:12px;padding:16px 16px 14px;margin:18px 0}
+.figcard .cap{text-align:center;font-size:14.5px;color:#0f766e;font-weight:700;margin:2px 0 12px;letter-spacing:.5px}
+.figcard svg{display:block;width:100%;height:auto;max-width:680px;margin:0 auto}
+.cap{font-size:13px;font-weight:600;color:var(--teal);letter-spacing:.04em;margin:0 0 8px}
+.note{font-size:13.5px;color:#475569;line-height:1.65;margin:12px auto 2px;max-width:640px}
+.pull{font-size:17.5px;line-height:1.75;color:#065f46;border-left:4px solid #0e7490;padding:4px 0 4px 20px;margin:22px 0;font-weight:500}
+.code{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:16px 18px;margin:16px 0;overflow-x:auto;white-space:pre-wrap;font-family:"SF Mono",Menlo,Consolas,monospace;font-size:12.5px;line-height:1.8}
+.code .c{color:#64748b}.code .g{color:#34d399}.code .y{color:#fbbf24}
+table.tbl{width:100%;border-collapse:collapse;margin:18px 0;font-size:14px;line-height:1.6;background:#fff}
+table.tbl th{background:#f4faf7;font-weight:600;text-align:left;padding:9px 11px;border:1px solid var(--line);color:var(--ink2);white-space:nowrap}
+table.tbl td{padding:9px 11px;border:1px solid var(--line);vertical-align:top;color:var(--ink2)}
+table.tbl tr:nth-child(even) td{background:#fafbfd}
+.kv{color:var(--ink);font-weight:600}
+.amber{background:var(--amber-bg);border:1px solid var(--amber-line)}
+.amber .cap{color:var(--amber)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tag{display:inline-block;font-size:11.5px;background:var(--teal-bg);color:var(--teal);border:1px solid var(--teal-line);border-radius:12px;padding:2px 9px;margin:2px 3px 2px 0}
+.pill{display:inline-block;font-size:11.5px;padding:2px 9px;border-radius:12px;background:#eef2ff;color:#4338ca}
+.danger{background:var(--red-bg);border:1px solid #fecdd3}
+.danger .cap{color:var(--red)}
+svg text{font-family:-apple-system,"PingFang SC",sans-serif}
+.axis{font-size:11px;fill:#64748b}
+.box{fill:#fff;stroke:#0d9488;stroke-width:1.5}
+.boxg{fill:#f1f5f9;stroke:#94a3b8;stroke-width:1.2}
+.box-a{fill:#fff;stroke:#b45309;stroke-width:1.5}
+.box-a2{fill:#fffbeb;stroke:#b45309;stroke-width:1.5}
+.box-r{fill:#fff;stroke:#be123c;stroke-width:1.5}
+.box-l{fill:#ecfdf5;stroke:#0d9488;stroke-width:1.5}
+.txt{fill:#1f2937;font-size:12.5px}
+.txtw{fill:#fff;font-size:12.5px;font-weight:600}
+.small{font-size:11px;fill:#64748b}
+.halo{paint-order:stroke;stroke:#f4fdf9;stroke-width:4px;stroke-linejoin:round}
+.flow{stroke:#72908a;stroke-width:1.5;fill:none;marker-end:url(#ar)}
+@media (max-width:640px){
+  body{padding:0;font-size:16px}
+  .wrap{border-radius:0;box-shadow:none}
+  .cover{padding:40px 22px 34px}
+  .cover h1{font-size:25px}
+  .inner{padding:0 22px}
+  .brand{top:16px;right:18px}
+  .brand img{width:30px;height:30px}
+  .brand span{font-size:11.5px}
+  .grid2{grid-template-columns:1fr}
+  table.tbl{table-layout:fixed;font-size:11px}
+  table.tbl th,table.tbl td{padding:7px 6px;word-break:break-word}
+}
+</style>
+</head>
+<body data-page-node-id="F6s0E4LVnbOuuBLiSVzJkn">
+<div data-page-node-id="nBGQlvaREOnQFIYjlOnxV1" class="wrap">
+
+<div data-page-node-id="cJF4rU99f2vVLGKvDsQV8a" class="cover">
+  <span data-page-node-id="2QzuU9lFNtVcGd5RNsAO51" class="kicker"><!--pnid:ImPfHV2rjZoOCSjOTleGrD-->认知与设计</span>
+  <h1 data-page-node-id="dlaJanVCS3zgD13uT03xmt"><!--pnid:OBG9s27oIjzqRRyE8AhLSf-->Agent 怎么搭才靠谱</h1>
+  <p data-page-node-id="bbcLw2SamMNk4d8v92KEZz" class="tagline"><!--pnid:krQSbHm6fLkQpZddMSkPUU-->Agent（智能体）让大模型从「回答问题」走向「自主执行多步任务」。但多数翻车来自盲目追求「全自主」。本篇用 Anthropic 的三层分型（增强型 LLM / 工作流 / 自主 Agent）、五种工作流模式、ReAct 控制流、MCP 工具标准，以及生产级翻车教训，给出一套「该不该上、怎么搭才稳」的判断。</p>
+  <ul data-page-node-id="LFXA3JzdDwmzYNzd6JytSa" class="topics">
+    <li data-page-node-id="8toFkbRYmiik1LYsw0k2Iw"><!--pnid:EKIbn9jlxdE35jZayh3GZt-->增强型 LLM</li><li data-page-node-id="wsbIGanF2wOXHlbiwq6n1C"><!--pnid:jkyqDYK48nDJq17xXFM9yM-->工作流 vs 自主 Agent</li><li data-page-node-id="AviFyXJVdY64tK2LutM8dU"><!--pnid:Lcj3Zw4E8BqEkrARH7FYqz-->五种工作流模式</li><li data-page-node-id="Gbx8nUhOANAwAZPREEoFxU"><!--pnid:lsuMoFNy06rrPFIGwHMuKo-->ReAct 循环</li>
+    <li data-page-node-id="1rL4F9Og3sm6yFeQmqMES5"><!--pnid:LIy6xbuf2nV5t0LpikFy8P-->MCP 标准</li><li data-page-node-id="J9PPGzvTJXiNKUi3UpDxhu"><!--pnid:72qYYcrvLFBdQIlWTYGM87-->翻车模式</li><li data-page-node-id="F0wjdZDMl5R48SA0dDzT2T"><!--pnid:7lcysSaRmp4CZkG2VOIzSi-->多智能体</li><li data-page-node-id="yMDMjMwdnIVg6WgoEGZICz"><!--pnid:XnMjJmK7pSkc7YZs3VhDV8-->选型边界</li>
+  </ul>
+  <div data-page-node-id="G4UJV6ess8B4a8u07hEWcz" class="brand"><img data-page-node-id="CKTSlfZzDRiY9fHBicnQZK" alt="logo" src="data:image/png;base64,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"><span data-page-node-id="tKPnVw98esr2Vewujuc5U8"><!--pnid:zcwbW37QyIEtECXV9Id4iI-->做个靠谱的产品经理</span></div>
+</div>
+
+  <div data-page-node-id="8cKYLr8VLKIPX8pSXW2tAX" class="inner">
+
+<!--pnid:9vRBV6IJqhJBGfex7jT5Aj--><!-- 01 概念分层 -->
+<section data-page-node-id="7A0M2s2Oo776B3sV1NvLdq" class="sec">
+  <h2 data-page-node-id="ceHE0OKAZhY6SlGvIMKul5" class="sec-h"><!--pnid:BvByYeChYakntquAY6MHzO-->概念分层：agentic systems 的三层与一条分界线</h2>
+  <p data-page-node-id="Oc3qUWwuFt6FyyYhaAwyN1" class="sec-sub"><!--pnid:7rlZIjpzBI8ezATIY16sTE-->先把「Agent」这个词拆开，否则选型无从谈起</p>
+  <div data-page-node-id="ADH1pgBZqeA5CH6Zt9nXGh" class="lead"><!--pnid:tnizJ0ihwjpzc0fK9f4501-->
+    凡是带工具调用、能多步执行的系统，Anthropic 一律归为 <strong data-page-node-id="faDn3xXEPAbHWsSSBxkqtd"><!--pnid:5ISm4h6dhIJV60lueZBGX4-->agentic systems（自主智能体类系统）</strong><!--pnid:Fy2XF16a7FLj9kZWF5LUU2-->，但内部按「流程控制权在谁手里」切成三层。最底的是<strong data-page-node-id="ZDAZt3mDRenTHvnQnO6gfl"><!--pnid:Dm2I4c9mFflGwUeZYQ4Rgl-->增强型 LLM（Augmented LLM）</strong><!--pnid:zlz30cHEFFMxJ12H1z6gjC-->：一个 LLM 接上检索、工具、记忆三种能力。它正是 RAG（检索增强生成）中被检索增强过的 LLM 本体。往上是<strong data-page-node-id="wiGPZRhzE106e7VRimojFW"><!--pnid:z5zsoJY3VCwkmbqopDofMz-->工作流（Workflow）</strong><!--pnid:uAiddlmAF0o4HnfypPZQoP-->：LLM 和工具被写死在代码路径里，模型只负责单步推理。再往上是<strong data-page-node-id="5aJCQ9xf18I97AdLo82Dys"><!--pnid:K62gGoL1UVRolc9RuG52Ww-->自主 Agent</strong><!--pnid:YtqcE2Q35zUCiLjpPbm1GW-->：模型自己动态决定调什么工具、走几步、何时停。三层不是等级，是<strong data-page-node-id="6jKtpAxoYk4tysJP7tdqh8"><!--pnid:BNDCOzP5lCcXbCG41Gt6oc-->控制流的归属不同</strong><!--pnid:BCaRzhdZdznPPmK6MlnZK2-->。
+  </div>
+
+  <div data-page-node-id="dKgGNHOtT01Krtz6ahHtQB" class="figcard">
+    <div data-page-node-id="PQScpPNlihXnlcpknRJ9Rh" class="cap"><!--pnid:hk9xoT67LczI1lftyCGr4m-->图 1 · 三层递进：越往上模型掌握的控制权越多，复杂度与代价也越高</div>
+    <svg data-page-node-id="zHuVJm3hplX1zXXz9hNVbX" aria-label="agentic systems 三层" role="img" viewBox="0 0 680 286">
+      <defs data-page-node-id="w0Sc40EPw9EHKGnqEFRp2H"><marker data-page-node-id="5TvMw61hZNPJpM6TTTOKob" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="9NCiSyAL8HHh5gEEftxRdi" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <!--pnid:WIV7OtCIiIPyFawMJT7IC9--><!-- 自主 Agent -->
+      <rect data-page-node-id="JXALIcFor3wzhReUkbqk2D" fill="#ecfdf5" height="58" rx="10" stroke="#0d9488" stroke-width="1.6" width="500" x="16" y="34"/>
+      <text data-page-node-id="UBlpnk1fISJKXjNFbMlrRe" class="txt" font-weight="700" x="34" y="60"><!--pnid:JtmzLKbnVZbPsgolsToJNf-->自主 Agent</text>
+      <text data-page-node-id="ELJHDwwjfPJ6tK4x0I7a3S" class="small" x="34" y="80"><!--pnid:Puw0pX1ifp5xkrWjGicW4y-->控制流在模型自身 · 动态决定工具与步数 · 自主循环</text>
+      <path data-page-node-id="SQi8tRNssHXrFd1hIdvA2G" class="flow" d="M520,63 L556,63"/>
+      <!--pnid:84C2Gp4ivokhtX8APYK3aU--><!-- 工作流 -->
+      <rect data-page-node-id="sLOqU7rMbtDDERvcIm5jPe" fill="#fff" height="58" rx="10" stroke="#94a3b8" stroke-width="1.4" width="500" x="16" y="112"/>
+      <text data-page-node-id="cbx5oH66MuRbt8B6fr9HYo" class="txt" font-weight="700" x="34" y="138"><!--pnid:radxkFeJl9i8gWVrYRnve6-->工作流 Workflow</text>
+      <text data-page-node-id="IkFsW3iJMxnPaghVwj7ngO" class="small" x="34" y="158"><!--pnid:Ql8UEUlYkcDPP4FmKC5qpM-->控制流在代码 · LLM 只做单步推理 · 五类固定模式</text>
+      <path data-page-node-id="FA6rh6X0C42XMVT2Jwv50W" class="flow" d="M520,141 L556,141"/>
+      <!--pnid:sMg4eq9etpesK8Aadnlvyw--><!-- 增强型 LLM -->
+      <rect data-page-node-id="4G5vxdNFcgXKfKNjLv0WZz" fill="#fff" height="58" rx="10" stroke="#cbd5e1" stroke-width="1.2" width="500" x="16" y="190"/>
+      <text data-page-node-id="ZsimYCqfqtwx4LPsoGEETW" class="txt" font-weight="700" x="34" y="216"><!--pnid:Kdt93IyiVj5525XmI9dc3V-->增强型 LLM Augmented LLM</text>
+      <text data-page-node-id="C5CjmP90IyCr6PBlg6QQKe" class="small" x="34" y="236"><!--pnid:AvQYhRIaMS4efWd9dmwSLa-->单步调用 · 检索＋工具＋记忆三种能力 · 无编排层</text>
+      <path data-page-node-id="mmFYaoVT6D4aCTdZCi2P51" class="flow" d="M520,219 L556,219"/>
+      <!--pnid:Cz4OmOn4xLKKL9ENQPS3BF--><!-- 复杂度阶梯（已在底部说明表达） -->
+      <!--pnid:rLf7nCfphvYvKY1HJd3XFH--><!-- 右侧能力标注 -->
+      <rect data-page-node-id="V6qRQ4DxOZAm20u1TgwYzX" class="boxg" height="58" rx="8" width="108" x="556" y="34"/><text data-page-node-id="alsQ0u55mPl4IO9KnaHQkZ" class="txt" text-anchor="middle" x="610" y="60"><!--pnid:wydTrps7TUkbHhCKFc5KTu-->最灵活</text><text data-page-node-id="3nQkKS4OhcoP6Ok4mD4KwL" class="small" text-anchor="middle" x="610" y="78"><!--pnid:1pTJLlBSLD6iQcANCBHWKL-->最难调</text>
+      <rect data-page-node-id="hFYPRnvLBP3RMyiDDpdYeK" class="boxg" height="58" rx="8" width="108" x="556" y="112"/><text data-page-node-id="sOs5XYtN6zxWaWTtTMTo1J" class="txt" text-anchor="middle" x="610" y="138"><!--pnid:6V2ID229xUb0BCXh7ynRnc-->可预测</text><text data-page-node-id="PzkThnHBwTazdIPdsu5Rqa" class="small" text-anchor="middle" x="610" y="156"><!--pnid:mhiQLhpPB6nkOWLzXgQoCu-->易调试</text>
+      <rect data-page-node-id="TGw5M48VMPGyLP1qjD4Fbr" class="boxg" height="58" rx="8" width="108" x="556" y="190"/><text data-page-node-id="aOCUkIh4O10bLgmgYEVe5k" class="txt" text-anchor="middle" x="610" y="216"><!--pnid:mH6iqZSO6uQyPSb3QCCnTk-->最便宜</text><text data-page-node-id="w4ruTozlSMWkMomImJjFcj" class="small" text-anchor="middle" x="610" y="234"><!--pnid:EwMlLwKb6BhYi14wUv1WlU-->最稳</text>
+      <text data-page-node-id="ygPB1a9qsWpLZKETRSr51M" class="small" x="34" y="276"><!--pnid:XlrKmlI8duREEeqCVkeIlU-->分界线只有一条：这一步的「下一步做什么」由代码定，还是由模型定。代码定＝工作流，模型定＝自主 Agent。</text>
+    </svg>
+    <div data-page-node-id="GkYKUNI0HfPBNyAdxVaK6U" class="note"><!--pnid:tHQlMHxb1Esr7XZvEDn5Im-->判断第一问永远是：这个任务「下一步做什么」能不能提前写死？能写死就别上自主 Agent。复杂度是代价，不是勋章。</div>
+  </div>
+
+  <div data-page-node-id="qsW5CiKLxFC9fnpl0WNrum" class="card">
+    <div data-page-node-id="fUTnw1Rpsgn4JjDlqrBAlR" class="cap"><!--pnid:H4juvG9Ox92BJgzpYntHaB-->表 1 · 三层的核心差异</div>
+    <table data-page-node-id="iybV6PVtWWbTwply5DX1ye" class="tbl">
+      <tr data-page-node-id="YxAmotEkmHZmjTCLu8jRxm"><th data-page-node-id="rFJg1GXzIDSMvR7F6382Jt"><!--pnid:8N61wa2dDyQoy0cJir0lpc-->层级</th><th data-page-node-id="FxtvLDewGCzEcPQtuZrMFQ"><!--pnid:RaX0l1Wye2KYsIsPX6XVg3-->控制流归属</th><th data-page-node-id="PI2yADhsUaD13isr4bzJJ6"><!--pnid:Uqj92OrodGsjdHClAow8JW-->典型代表</th><th data-page-node-id="aBDaewl51eTFc5OgKiCJqK"><!--pnid:3hEVTcn5Dhhb2Dn4O5m7p2-->可预测性</th><th data-page-node-id="alQql9LpbXGM1hObwpHrQE"><!--pnid:vovJpwN70l8UYnBDg504lx-->成本 / 延迟</th></tr>
+      <tr data-page-node-id="ycGM9d9L5v5Xrd1aJg1lW5"><td data-page-node-id="JEJnzcJJY2KCOphShImeCb" class="kv"><!--pnid:sAXnZwsVDPSpDk99nZZtg2-->增强型 LLM</td><td data-page-node-id="Z86EyXCfTnK53SI8zkNFGj"><!--pnid:BZ1ZR7iHHqbRSCsGZoQvUS-->单步，无编排</td><td data-page-node-id="lLo5O2HOLTWswR1hFAmGow"><!--pnid:gvznBUHbE0WBigcTNLp8Pa-->带检索的问答、单工具调用</td><td data-page-node-id="jZb5frS7m0EXbumI415fV1"><!--pnid:CvOITzhs0DY0oIkQNXHePh-->高</td><td data-page-node-id="HzoT8I3uq7r4XA1Qfl7ylS"><!--pnid:INtGrLPjQduImG8Ruv2Vh1-->最低</td></tr>
+      <tr data-page-node-id="0E7VIxBwRGlab5llOdb2Y1"><td data-page-node-id="Osm3bX6PZxZdaB47YCY2pS" class="kv"><!--pnid:VSO61BuinalxOpUfcotz7q-->工作流</td><td data-page-node-id="yFNl5Ihny7XYBzixsJfaHl"><!--pnid:VfjzEEoamNdNalzRgM0gUa-->代码预定义路径</td><td data-page-node-id="E1RhuA7ZErAXrQRbdfwsIA"><!--pnid:8M4SRQBTHqYTk1FJ7clB4U-->提示链、路由、并行、编排-工作、评估-优化</td><td data-page-node-id="Iae2NLgTSjIm86JKSVByBy"><!--pnid:4J0vENwgPDm1aJvJTMfpYJ-->高</td><td data-page-node-id="DTElBXNfOuHdvCGdZbcyrH"><!--pnid:JEytlaWDdkxSyjuamegueS-->中</td></tr>
+      <tr data-page-node-id="0c3dTKMZWsbQnUx7qX0vV9"><td data-page-node-id="ygHZ0neDKLkFlwkAoGiMN9" class="kv"><!--pnid:JhMPvUmlpiZJsU0GFEXCAx-->自主 Agent</td><td data-page-node-id="dq32cSlN0M942OEd7xh45r"><!--pnid:L1vzRph3mjQFsZCEBC1cTJ-->模型动态决定</td><td data-page-node-id="yk4pWvIA2Cictc0OBSqITF"><!--pnid:pKFeWIz6lQClRgXdlZJY3P-->自主循环、多智能体系统</td><td data-page-node-id="bOyMAS1XlQ4Y1GSshFLrqN"><!--pnid:1wPS4RaJQDbJxuanAeaW41-->低</td><td data-page-node-id="ohA9g0Ig1moC9Vps58DWNA"><!--pnid:slPftNaEU1T2g805WIdTdN-->最高</td></tr>
+    </table>
+  </div>
+
+  <div data-page-node-id="9GcqwKw0SJJRJmfth97AOa" class="pull"><!--pnid:yC3q7FKuDgrr2OJUknZeR2-->「在大模型领域，成功不在于造出最复杂的系统，而在于为需求造出最合适的系统。从最简单的方案开始，只在确实需要时才增加复杂度。」</div>
+</section>
+
+<!--pnid:OREGqzm3n29nc5n6HBlpYL--><!-- 02 选型判据 -->
+<section data-page-node-id="Edb6oGWpJAW5Z02T54rMvI" class="sec">
+  <h2 data-page-node-id="ZUFCW7JNTc2jGzBhOvhS5i" class="sec-h"><!--pnid:2wGqb4CahmwGQa0OhM5dkY-->选型判据：何时要上 Agent，何时根本不该上</h2>
+  <p data-page-node-id="pg2LvzTvkOWe9K3xItLfqa" class="sec-sub"><!--pnid:fIAeERRDUMRAtFaPhw0t1G-->选型逻辑一以贯之：先用最便宜的层，不够再升级</p>
+  <div data-page-node-id="M2PGDDh2rDOUGNkM66bD1A" class="lead"><!--pnid:tWvD04PgpH1ey5S34iTLTN-->
+    选型是<strong data-page-node-id="5XkQU6eFKSRCRuSijUS7nL"><!--pnid:k0SUUhzIcCgzwahbbrPjIA-->自底向上</strong><!--pnid:jt68uTWVh5mkhGR9kD81FN-->的：能用单 LLM 调用解决的，绝不上工作流；工作流的固定路径能覆盖的，绝不上自主 Agent。自主 Agent 用「灵活性」换「成本、延迟、可预测性」，只有当任务路径<strong data-page-node-id="cLcUJgNE0DGKDjC9HyuW4k"><!--pnid:5GFWE0dMF4Jz9Vw2W4jUQB-->真的无法提前枚举</strong><!--pnid:g418v65a3Ju3BeI6S9FZ4U-->时才划算。对产品经理来说，这意味着先问「这个任务的步骤是可枚举的吗」，而不是先问「能不能做成一个 Agent」。
+  </div>
+
+  <div data-page-node-id="YXXajWU0ah6K29gO6GsdlT" class="figcard">
+    <div data-page-node-id="b6AA1tKG4pFCrtz1SDvXIX" class="cap"><!--pnid:C7QcOcos6SiBDlyRfTaAJ2-->图 2 · 选型阶梯：每一级只在下一级不够时才升级</div>
+    <svg data-page-node-id="k8uIiEtyKCDJBqVC24HA3D" aria-label="选型阶梯" role="img" viewBox="0 0 680 288">
+      <defs data-page-node-id="k7DqMe5rhyQaRVh83ehXbd"><marker data-page-node-id="rFx0rE9djHzhzxl30YeQ8Q" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="97C5S8doxX0vz518WiNOwS" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <line data-page-node-id="Q9xuiXd3rUDFdiRVNURSwO" class="flow" x1="40" x2="40" y1="40" y2="232"/>
+      <text data-page-node-id="MRof8wDAPaAaB93la1xPYd" class="axis" text-anchor="middle" transform="rotate(-90 30 140)" x="30" y="140"><!--pnid:aAyXe9mILabkDvw6mooW8c-->自主权 / 复杂度</text>
+      <!--pnid:utZoYtF7aEeaidwZziPYyt--><!-- 第一级 -->
+      <rect data-page-node-id="9TNfqieEaubcoDoJF3STQN" class="box-l" height="46" rx="10" width="560" x="60" y="186"/><text data-page-node-id="iTpmmuV6pSU0WtZSympQuT" class="txt" font-weight="700" x="80" y="206"><!--pnid:726jdwK8jCqLhJxdOmWCfj-->① 增强型 LLM 单调用</text><text data-page-node-id="ZOHyhzpB0snxUyD9LMYF16" class="small" x="80" y="224"><!--pnid:cHOBWoSuH9DRYpP45ZPwtC-->步骤可枚举性：无步骤，一次完成 · 够用就停</text>
+      <!--pnid:YPhNpH4hhve4kSqULQwGr7--><!-- 第二级 -->
+      <rect data-page-node-id="qJZMZoD8GkJILFJGybINtn" fill="#fff" height="46" rx="10" stroke="#94a3b8" stroke-width="1.4" width="470" x="60" y="120"/><text data-page-node-id="e9lEq7NEC74u6EDyMVt2yY" class="txt" font-weight="700" x="80" y="140"><!--pnid:FQiPDXJXRyrDAbC72fvQFb-->② 工作流 Workflow</text><text data-page-node-id="BC0VrHXqsjlkUeujD8sBdK" class="small" x="80" y="158"><!--pnid:UeZ0miypT91A3iPuP3ClT5-->步骤可枚举：路径写死，模型只填空 · 要一致性选它</text>
+      <!--pnid:09592Gp3iYWgLLdo5B332l--><!-- 第三级 -->
+      <rect data-page-node-id="YVNXWlnpkqGGllU0DoSkuG" fill="#10b981" height="46" rx="10" stroke="#059669" width="380" x="60" y="54"/><text data-page-node-id="wLIpr1aelBTLAq5gkkPyU9" class="txtw" x="80" y="74" style="fill:#fff; font-weight:600"><!--pnid:eqGgINFnJaaWkIqPvWmY9F-->③ 自主 Agent</text><text data-page-node-id="7v9U4PPOrK1NoL15UIw1Wu" class="small" x="80" y="92" style="fill:#fff; font-weight:600"><!--pnid:VcX08jvMwgCQYOL8BFwYxP-->步骤不可枚举：模型动态决定 · 代价最高</text>
+      <path data-page-node-id="TDlD2jufyJW63327tF9JOW" class="flow" d="M580,209 L612,209 L612,143 L530,143"/>
+      <path data-page-node-id="LWWZBlQPRmbnMYzVgcf9dl" class="flow" d="M530,143 L530,77 L440,77"/>
+      <text data-page-node-id="8aYAOZTN1av0lYluLwoka2" class="small" text-anchor="middle" x="624" y="180" style="fill:#0d9488; font-weight:700"><!--pnid:Ei4vtHKtLkgH7D2He2Z4mv-->升级</text>
+      <text data-page-node-id="wRFG6kyQYJfkILUk2ZP076" class="small" text-anchor="middle" x="624" y="115" style="fill:#0d9488; font-weight:700"><!--pnid:h0P7tRQ5Sx2qtfVOU6LHsa-->升级</text>
+      <text data-page-node-id="7ZK2oyOkttQfKfrrz0okml" class="small" x="80" y="248"><!--pnid:hcyseyH76tzn6QS01EYRmO-->升级信号：① 单调用准确率够 → 停；② 需多步且路径固定 → 工作流；</text>
+      <text data-page-node-id="AmnyyeXn8kXglWARsxjGhz" class="small" x="80" y="266"><!--pnid:m5B68iXD7pFmvukvcThbQE-->③ 路径随输入大幅变化、需实时应变 → 自主 Agent。</text>
+    </svg>
+    <div data-page-node-id="FA739QD30UTkflnaUUWnfa" class="note"><!--pnid:ehXkNbGXu7u6DbTwkCXmQF-->一个常见误判：把「听起来高级」当成「该用 Agent」。自主 Agent 是权衡的产物，不是进阶奖励。</div>
+  </div>
+
+  <div data-page-node-id="jeKLHkyjkDV70zNd9x9Aaq" class="card">
+    <div data-page-node-id="WMo3bG0DWuVqxSCpy6TyQh" class="cap"><!--pnid:CyO40f4E8tuftTxrsGxZSP-->表 2 · 三个维度的选型对照</div>
+    <table data-page-node-id="1N3nAcGQqHEkdRrkE3JEij" class="tbl">
+      <tr data-page-node-id="Qz6TaqMB7gOxNMuF5KVlPc"><th data-page-node-id="ArXD44A6yY1NWDri0lTaY8"><!--pnid:N9N4Bf1RmOdwZGPHQmtl1n-->维度</th><th data-page-node-id="nhwfEslGP5qtkvvfAb24T8"><!--pnid:ucEO2OgnljkMqvHNYrQfXP-->增强型 LLM</th><th data-page-node-id="pghCPxxmK9aeIetgRgBipI"><!--pnid:LgPQXMxPKLdeq34AxeGsOY-->工作流</th><th data-page-node-id="jbsYicXmhxOcr0G04Y3CMX"><!--pnid:IN4hunQwQfxhCHZsaPLn9P-->自主 Agent</th></tr>
+      <tr data-page-node-id="BOyDqjI6jkTXUMBIJaq5RF"><td data-page-node-id="7lqH86hd7CIjCmwIXI6WnK" class="kv"><!--pnid:uCOJOpxNGdg0bbc4MsTQ4O-->步骤可预测性</td><td data-page-node-id="CAeoLZ6VPxfNZo4fwVHI1s"><!--pnid:7JF0zWBhhuQiklyGA7IsVL-->无步骤</td><td data-page-node-id="0oFLGc7kWJluT7fiU6Wb7U"><!--pnid:83YJ8Ac9RO63Yu5tVsyRRa-->高（代码写死）</td><td data-page-node-id="AzjfjhbhpKaJNBvF1XIw1m"><!--pnid:Gji73fgpEn4iGnOxxB2Zqh-->低（模型决定）</td></tr>
+      <tr data-page-node-id="7VeN73GSZxKuNKPeDw8yfg"><td data-page-node-id="O7sdWnzsMFJS7qFDAPCDPE" class="kv"><!--pnid:OOOZTg22lTOeGGuX0i5iI4-->每步成本 / 延迟</td><td data-page-node-id="IwvXoRa5R4t1EiXjmKZgYy"><!--pnid:8528tK8DQtPyVoSHYz7VF5-->最低</td><td data-page-node-id="SAZbUIWWNJzjTspmEVZtdp"><!--pnid:kMaPsf3HrWPpeSOynyhGWH-->中</td><td data-page-node-id="Oh0KkkWUQ2dhBNTVQkMn9Z"><!--pnid:FFSbuN8KrCIAIQBV3m3ws3-->最高，且随步数复利增长</td></tr>
+      <tr data-page-node-id="BgT0liLvpWo9LOHN2AUvCd"><td data-page-node-id="lK6rQ2uEjDgHZux1WHTdGQ" class="kv"><!--pnid:fi5p736PV370YeeAZtIEqO-->调试难度</td><td data-page-node-id="62oza0DnYEHC7E0wSbtiEK"><!--pnid:X7PkuJEINT31GLDI2rS4H6-->易</td><td data-page-node-id="OlITLm45I00st2NkeuWPFN"><!--pnid:WIsiZOurmEidDfc3JRCCff-->较易（失败落在单步）</td><td data-page-node-id="DXPV9fjvxKl0mdbdZncawy"><!--pnid:Zoxs8ejz1RcA1z08xGuRaH-->难（需沙箱与护栏）</td></tr>
+      <tr data-page-node-id="hQWdG9pgvPHObN6YZxXPVP"><td data-page-node-id="5Vk6OP5tlo66rRSq5XYMWN" class="kv"><!--pnid:Lyeezc3qGwL72anBTr5eF2-->适用</td><td data-page-node-id="CxLsmFHKjaSzISLLFQ5sjG"><!--pnid:7vposuuQsvtwtdge2qgA9T-->单轮问答、单工具</td><td data-page-node-id="mMfkQDxSboYdZtxIfH8K1Y"><!--pnid:Vs1sjgwgUDr8936QS52dDB-->边界清晰、可枚举的多步任务</td><td data-page-node-id="WqGmREZ6cHsjbeu6ahf4WC"><!--pnid:jHIiEeVgzu6vonpI0q0EeD-->开放、路径不可预测的任务</td></tr>
+    </table>
+  </div>
+</section>
+
+<!--pnid:qeBBSYliKr5HTo5aL5XGMF--><!-- 03 五种工作流模式 -->
+<section data-page-node-id="u8kbaMdghPnXf50YJ5OkNZ" class="sec">
+  <h2 data-page-node-id="cyTVecUoF5qprGE3iarLEB" class="sec-h"><!--pnid:4ywvEtg6cB9o7b2eQ41XGD-->五种工作流模式：控制流在代码，LLM 只填空</h2>
+  <p data-page-node-id="uotn4D7gJwFuEekWPQiIuI" class="sec-sub"><!--pnid:sr4fjHET1GEVenDK3eLA9j-->这五种是生产里最常用、也最稳的「半自主」形态，每种都标注 LLM 在哪一步参与</p>
+  <div data-page-node-id="f62lvHvgtOFNKBNFZf2Whg" class="lead"><!--pnid:HSurlXxk5lQ7v5GotCkKb2-->
+    工作流的价值是<strong data-page-node-id="RBDpWoMXiBrrAwANFeSeH5"><!--pnid:6aqFKTC9VRplIcbUWWNvXb-->用代码的确定性换可控性</strong><!--pnid:XpEQq9wrUCw75WeOFykj8Q-->。下面五种的「控制流」全在代码里。先走哪步、分几路、何时停都是架构师定死的，LLM 只负责每一步里的「理解 / 生成 / 判断」单点。对 PM 来说，选对模式比堆一个重框架重要得多。
+  </div>
+
+  <div data-page-node-id="dF1pT3TIPc6TRfXExaC4Fu" class="figcard">
+    <div data-page-node-id="EbQzU2UAp7uZD5HytqDvss" class="cap"><!--pnid:a77ZkdvSNokXSod3Qx842T-->图 3 · 提示链 Prompt chaining：把任务拆成固定子步骤，中间可加程序化检查</div>
+    <svg data-page-node-id="nsdGqZn1nicbhmOsaRF72J" aria-label="提示链" role="img" viewBox="0 0 680 222">
+      <defs data-page-node-id="yyyKzeeUl8dStbOJFCec70"><marker data-page-node-id="2thG7Sq2ZwXmoXVJWkaTRu" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="JL2gISlkBsrirOUJ20nntM" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <rect data-page-node-id="mGV0fEksBnKYzuTbzXHCLr" fill="#10b981" height="54" rx="10" stroke="#059669" width="110" x="16" y="40"/><text data-page-node-id="2AWtO57XyqCZqIQIdG8hH3" class="txtw" text-anchor="middle" x="71" y="62" style="fill:#fff; font-weight:600"><!--pnid:0QSQWEF1o4Ux9p3FL0VRas-->LLM 子任务A</text><text data-page-node-id="1koxB8ZxEadXP7m8iF8G2r" class="small" text-anchor="middle" x="71" y="80" style="fill:#fff; font-weight:600"><!--pnid:QD7Iwd1CiIAOuyfzDRYHxP-->理解/生成</text>
+      <path data-page-node-id="Mj531dSqFxurXxdJQGnjtF" class="flow" d="M126,67 L160,67"/>
+      <rect data-page-node-id="adKFUAcy3RhrFmEdlyaAyA" class="box-a2" height="54" rx="10" width="96" x="162" y="40"/><text data-page-node-id="VR27eo6lFZGqWOifXKUadX" class="txt" text-anchor="middle" x="210" y="62"><!--pnid:Xz709N0cqrNOU9H3xvNmQH-->gate 检查</text><text data-page-node-id="yu0LdivDFzO9sbIcGVaBkI" class="small" text-anchor="middle" x="210" y="80"><!--pnid:cKyKpWn5Gt6IsiYKbQqIa3-->程序化校验</text>
+      <path data-page-node-id="MfK2aU6vezKdWNrpHbfrIO" class="flow" d="M258,67 L292,67"/>
+      <rect data-page-node-id="Ridvo1Ilsqksa2ICTmiu37" fill="#10b981" height="54" rx="10" stroke="#059669" width="110" x="294" y="40"/><text data-page-node-id="d9hzJhZg1AcFAp2iDMCdCl" class="txtw" text-anchor="middle" x="349" y="62" style="fill:#fff; font-weight:600"><!--pnid:Yp87AdCneyv61Qx3N1PfM9-->LLM 子任务B</text><text data-page-node-id="cpYWukrH2lhoLZezgQoxId" class="small" text-anchor="middle" x="349" y="80" style="fill:#fff; font-weight:600"><!--pnid:9FneVq6KeLen4PhRp1CZTB-->基于A输出</text>
+      <path data-page-node-id="YNsHT0meJpNVk4fYYa57kg" class="flow" d="M404,67 L438,67"/>
+      <rect data-page-node-id="xZHSqMEzESd8dxhbbn0vkd" class="box-a2" height="54" rx="10" width="96" x="440" y="40"/><text data-page-node-id="JUu4vLDl4hkz9YJR52GVIe" class="txt" text-anchor="middle" x="488" y="62"><!--pnid:ucBifAg3whjdVSK0xuiOiy-->gate 检查</text><text data-page-node-id="nwwJsNm3n8lY6s7Se9OFhi" class="small" text-anchor="middle" x="488" y="80"><!--pnid:XaccZR2NLjkfnc7adERHgo-->程序化校验</text>
+      <path data-page-node-id="JBdaP1LSgPhZWe55WR1eCs" class="flow" d="M536,67 L560,67"/>
+      <rect data-page-node-id="Tj1rsNxCX7Zzr5tQ4tKeZw" fill="#10b981" height="54" rx="10" stroke="#059669" width="100" x="562" y="40"/><text data-page-node-id="hINe2iPUvPqh43WV4VLXbh" class="txtw" text-anchor="middle" x="612" y="62" style="fill:#fff; font-weight:600"><!--pnid:NWxDYpgBR0G711pt7frfSn-->LLM 子任务C</text><text data-page-node-id="EfpyBlOW05q3f6siavIvEB" class="small" text-anchor="middle" x="612" y="80" style="fill:#fff; font-weight:600"><!--pnid:05o1umE5VDRRTLY3daCuXo-->产出</text>
+      <text data-page-node-id="N2uyPhlsVoRw2G1JkzZjdG" class="small" text-anchor="middle" x="71" y="124"><!--pnid:1rtf4yAJ5j2lrikXUtNbHp-->用延迟换准确率：每步更简单</text>
+      <text data-page-node-id="5aZZtpXw0SvALL4qSuw8sT" class="small" text-anchor="middle" x="340" y="124"><!--pnid:OdMcLaXxDjVYLt6OPt8qrZ-->gate 让「跑偏」在中间就被拦下</text>
+      <text data-page-node-id="zf0wDplbWw8l0W4MaBY7qa" class="small" text-anchor="middle" x="612" y="124"><!--pnid:r8vOUiX7H9paTd0lCI4N7V-->最终产出</text>
+      <text data-page-node-id="9mkWzlrYVNzKC2BivxiW1k" class="small" text-anchor="middle" x="340" y="196"><!--pnid:VzQX8GKFKm0zCBqKMJRILp-->例：电商平台「生成营销文案 → 校验合规 → 翻译成多语 → 校验术语 → 发布草稿」，任一步不达标就停。</text>
+    </svg>
+    <div data-page-node-id="n86NuQzTNtvdsFddV5T8iv" class="note"><span data-page-node-id="Py4UO0d3qlxbQ8iZqMk6gA" class="pill"><!--pnid:8aAC8kQoag8kAG4830EzkK-->LLM 参与</span><!--pnid:wIgIR8Za5ZelCa9LFq6mVr--> 仅在各子任务的「理解与生成」单步；gate 是纯代码校验，不消耗模型。<strong data-page-node-id="pG8BeEfIMAX0rDxdzpcN1l"><!--pnid:CFcz7LAmxaup8Zp2TyKdhF-->适用：</strong><!--pnid:AXk3g2qlLfy5wflxwCeOYy-->能干净拆成固定子步骤、且每步质量需把关的任务。如先写大纲、校验大纲达标、再写正文。</div>
+  </div>
+
+  <div data-page-node-id="K5DseeBJOE9B2IO0kKdXnN" class="figcard">
+    <div data-page-node-id="cUEX4lwQG2NnGicLyxL7lW" class="cap"><!--pnid:kM25Q603Us3UUZrISpL9vM-->图 4 · 路由 Routing：先分类，再派给专门路径</div>
+    <svg data-page-node-id="pev2t3Z0DiOjYNQD15rN8E" aria-label="路由" role="img" viewBox="0 0 680 236">
+      <defs data-page-node-id="55ahQTc4oD3xQBij6qHJ4F"><marker data-page-node-id="feBuWrmvit5EicTrNnNZwB" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="yb359nueSvMHzymscVGypa" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <rect data-page-node-id="5hNgc8W7TXoj8zfaAYuw8r" fill="#10b981" height="54" rx="10" stroke="#059669" width="120" x="20" y="92"/><text data-page-node-id="942ItAgoKQqihKncEebdPv" class="txtw" x="80" y="114" style="fill:#fff; font-weight:600"><!--pnid:UV3fvtdvZiBvn2Omw8Jgzs-->LLM 分类</text><text data-page-node-id="8e2lcH6RMJxMBYzXav1Vpm" class="small" x="80" y="132" style="fill:#fff; font-weight:600"><!--pnid:gMhpkqoHSeguu2dMzrkVls-->判输入类型</text>
+      <path data-page-node-id="xQOtIBFoBiAI5FlhvFEtIo" class="flow" d="M140,119 L186,119"/>
+      <path data-page-node-id="YiYUqdJ8to0mGu2n3dsw3V" class="flow" d="M186,119 L186,56 L260,56"/>
+      <path data-page-node-id="jEfWTbY1SDg4MHlhvw5s1R" class="flow" d="M186,119 L186,119 L260,119"/>
+      <path data-page-node-id="b2HpEn1OSBwb1iVLHmm02m" class="flow" d="M186,119 L186,182 L260,182"/>
+      <rect data-page-node-id="0IeKgy9uLIF34rDUZqgKql" class="box-l" height="52" rx="10" width="150" x="262" y="30"/><text data-page-node-id="XQP9R0pNSHMu5Ffwb7u2RC" class="txt" font-weight="700" text-anchor="middle" x="337" y="50"><!--pnid:9ZhJzkBlVJNJdqf15Xg1Nw-->专门路径 A</text><text data-page-node-id="pn5Nx0V5hogAGsluVkzLFx" class="small" text-anchor="middle" x="337" y="68"><!--pnid:VkNtyj4TgGrX0vWaLKNFih-->专用提示词</text>
+      <rect data-page-node-id="g4sbOyGHOnjiUzoDlYSPWV" class="box-l" height="52" rx="10" width="150" x="262" y="93"/><text data-page-node-id="koQteSKoBs35bGLZaOLPR0" class="txt" font-weight="700" text-anchor="middle" x="337" y="113"><!--pnid:nVEDcHQRuPKCqTdGVr7Tyb-->专门路径 B</text><text data-page-node-id="lAVzIc1zoLky9MPD4UVTEd" class="small" text-anchor="middle" x="337" y="131"><!--pnid:U1lQTbADv1a3n5LXnYn7VG-->专用提示词</text>
+      <rect data-page-node-id="TRJTNJLgXDaExZ7JznuYC7" class="box-l" height="52" rx="10" width="150" x="262" y="156"/><text data-page-node-id="twY7LTQBJw5UUBoiET12nO" class="txt" font-weight="700" text-anchor="middle" x="337" y="176"><!--pnid:WIGrusNABIcCh6Py5kjz5x-->专门路径 C</text><text data-page-node-id="w3plTFgzF3z504oK7on7Um" class="small" text-anchor="middle" x="337" y="194"><!--pnid:S8dM2aZjleEiQCDBBDMhqy-->专用提示词</text>
+      <text data-page-node-id="pxDP7K2qx8ooULixFzP7eH" class="small" text-anchor="middle" x="337" y="226"><!--pnid:EiVgLVCP2J1JibnKUeBT8i-->例：电商客服工单先分类为「退款 / 物流 / 商品咨询」，再走各自专用流程，互不干扰。</text>
+    </svg>
+    <div data-page-node-id="S5Q98Rt7ftgLHySNjqgP2F" class="note"><span data-page-node-id="24BR6q6wz3JJmtHFUzOEST" class="pill"><!--pnid:JufDiseABckVRKPa64lhuR-->LLM 参与</span><!--pnid:V3g0YtpSeyOhBZuzc3Oxgp--> 只在「分类」这一步；下游是固定分支，可为每类单独优化提示词。<strong data-page-node-id="IH2uL5u8NoqYIc96knsfZO"><!--pnid:sO8Z8sRlNLmeHxZzfkiORk-->适用：</strong><!--pnid:Zjub5I1UlbQSXqDfMJ8nUP-->输入类型差异大、一类优化会拖累另一类的场景。</div>
+  </div>
+
+  <div data-page-node-id="mfvCQasiAiYAfeint8JEP0" class="figcard">
+    <div data-page-node-id="IGIWutEqXWAVBpkalLUX6W" class="cap"><!--pnid:eKMfTGo6PzSVaUMfCK5kcg-->图 5 · 并行 Parallelization：同时跑多路，再合并或投票</div>
+    <svg data-page-node-id="TXxVmryk6TDkFJykLoToLp" aria-label="并行" role="img" viewBox="0 0 680 240">
+      <defs data-page-node-id="FLS4UNKHfLyyO0r2HOEgjn"><marker data-page-node-id="wZO3zM114ZFzKSwwyoj1F0" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="NK9TotNkozN8l3D6xc1sir" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <rect data-page-node-id="9jJyAlA0e5idSfy5Cw9dG8" class="boxg" height="50" rx="10" width="110" x="20" y="96"/><text data-page-node-id="pG3dGXPi7oXhq290anRUZo" class="txt" text-anchor="middle" x="75" y="120"><!--pnid:5tE6tBGO6xmen2dR40jRiL-->同一输入</text><text data-page-node-id="nL94xRsAWbzVt1z10EvJRl" class="small" text-anchor="middle" x="75" y="138"><!--pnid:TkokJ76ke80icR6SUmN1VM-->或任务切片</text>
+      <path data-page-node-id="xuDUjbOwnYjdz0nkETuEQc" class="flow" d="M130,121 L168,71"/>
+      <path data-page-node-id="L0XdO6dtVcfMajq60gAgy8" class="flow" d="M130,121 L168,121"/>
+      <path data-page-node-id="ID4BLxIf9dvyJ5lX4qzRAP" class="flow" d="M130,121 L168,171"/>
+      <rect data-page-node-id="gUup9WDWwXn4HSwSNMBgEb" fill="#10b981" height="50" rx="10" stroke="#059669" width="110" x="170" y="46"/><text data-page-node-id="dD3h14N1hUcrRhpx5ZHwNM" class="txtw" x="225" y="68" style="fill:#fff; font-weight:600"><!--pnid:bUVClSTxFLCEGu1QPbyhhw-->LLM 路 1</text><text data-page-node-id="AgchTi3iad4R0LNo8ECemV" class="small" x="225" y="86" style="fill:#fff; font-weight:600"><!--pnid:Y6bcEQxi9qtjnPDro5j3Pf-->切片A</text>
+      <rect data-page-node-id="j7Zq7UCmJFI6bWOcIsdoDM" fill="#10b981" height="50" rx="10" stroke="#059669" width="110" x="170" y="96"/><text data-page-node-id="5J8bxmGtUay16lqhYCzbpP" class="txtw" x="225" y="118" style="fill:#fff; font-weight:600"><!--pnid:GyujSJGa85Sr7D64IeABrv-->LLM 路 2</text><text data-page-node-id="qetD3cLm9Z92Sh0OXrFV5r" class="small" x="225" y="136" style="fill:#fff; font-weight:600"><!--pnid:fst3yDot99TEPn6TvQnBwO-->切片B</text>
+      <rect data-page-node-id="CPflhpdnJgEwQnQuH5Ie4L" fill="#10b981" height="50" rx="10" stroke="#059669" width="110" x="170" y="146"/><text data-page-node-id="ezwPApyx1Oy8TPkgHf5WrS" class="txtw" x="225" y="168" style="fill:#fff; font-weight:600"><!--pnid:ogOca6V9M3qm1ybJ5EdzqH-->LLM 路 3</text><text data-page-node-id="oaZjdDr9YbtJ9meQrUYLTk" class="small" x="225" y="186" style="fill:#fff; font-weight:600"><!--pnid:26JDcgimgKb4eV7nnYaWlQ-->切片C</text>
+      <path data-page-node-id="bkK2uHWjk2kAZwdFnlDy1q" class="flow" d="M280,71 L330,121"/>
+      <path data-page-node-id="Q6LldWrUaObUEZKcLstyFY" class="flow" d="M280,121 L330,121"/>
+      <path data-page-node-id="JwOSYt4n6m3fGwepv5gXH5" class="flow" d="M280,171 L330,121"/>
+      <rect data-page-node-id="9VFVZxQj1tuBpkGeAFiohp" class="box-a2" height="50" rx="10" width="130" x="332" y="96"/><text data-page-node-id="59fN8ZeDYnepAncS83yvjw" class="txt" text-anchor="middle" x="397" y="118"><!--pnid:2rntBdvuMfTZKPRzXuEP1o-->合并 / 投票</text><text data-page-node-id="8qdZPc6dPlTXzJBM5EwtR0" class="small" text-anchor="middle" x="397" y="136"><!--pnid:odJQ7uePdtOsfxhca1TPuG-->分段 或 表决</text>
+      <path data-page-node-id="vMOJfLondpapcEBDuIjR08" class="flow" d="M462,121 L500,121"/>
+      <rect data-page-node-id="Hk9g32s1mxiLnthfPFWmMN" class="boxg" height="50" rx="10" width="158" x="502" y="96"/><text data-page-node-id="VRIxCP48YsV88OcECYyKCl" class="txt" text-anchor="middle" x="581" y="118"><!--pnid:RRpU4FahRefJ0hggj91kUT-->统一结果</text><text data-page-node-id="dWp9YH1KO5Xhd2aGmgKezt" class="small" text-anchor="middle" x="581" y="136"><!--pnid:YGmDQkwisrwmlsJUllknbS-->汇总输出</text>
+      <text data-page-node-id="w7ygD9QOMWcGbsmfsnxBoU" class="small" text-anchor="middle" x="340" y="224"><!--pnid:lKuEyAp9LCOLMd7qsWuEvC-->两种用法：分段（sectioning）把大任务切片并行做；投票（voting）同一任务跑多次取多数，抗单点失误。</text>
+    </svg>
+    <div data-page-node-id="i9XxicbDkBHsbeG8m9qJBM" class="note"><span data-page-node-id="J0xEHYCJh4oEoCMfPA7oYf" class="pill"><!--pnid:FiSAR7Vq3GgWBTSam5U646-->LLM 参与</span><!--pnid:wNxwvLAC4WBUs3nFvAXY59--> 在多路「生成 / 判断」；合并步可代码可模型。<strong data-page-node-id="yanoGpUlLWmFki8kDbYOyp"><!--pnid:5A3WVHyHzwry2aqO9KAZ1R-->适用：</strong><!--pnid:rAB2lFsiTiN22WmWIcSN2d-->子任务相互独立（分段），或需降低偶发错误（投票，如风控初审多模型表决）。</div>
+  </div>
+
+  <div data-page-node-id="FzKy6GBbZgaxpdkFCCICrA" class="figcard">
+    <div data-page-node-id="2uF7gvcblHjwhKkvp4bTf3" class="cap"><!--pnid:EQsk4bO2gInkhmI2CMxOYs-->图 6 · 编排-工作 Orchestrator-workers：中央 LLM 运行时拆解并派活</div>
+    <svg data-page-node-id="TskiLoBDrfxFsTG6qqErl3" aria-label="编排工作" role="img" viewBox="0 0 680 272">
+      <defs data-page-node-id="p26svkhf0BiBFgjFlg4lrA"><marker data-page-node-id="WgixnLRtaToMxpMeQn0Jvl" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="8vmGdcTzpP9GXh8eMz5VB7" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <rect data-page-node-id="w5B5OTXZCFtuyewVlEvnLc" fill="#10b981" height="56" rx="10" stroke="#059669" width="180" x="250" y="36"/><text data-page-node-id="uFNQFvMvB33oIKnMZakmkH" class="txtw" x="340" y="60" style="fill:#fff; font-weight:600"><!--pnid:ciW05ZedVdBElmr2vOWSDR-->编排 LLM</text><text data-page-node-id="IfzNcda8zgZQoFt31ElUaY" class="small" x="340" y="78" style="fill:#fff; font-weight:600"><!--pnid:4WMKTmm5ZHEJLVMo7Z1PeW-->运行时拆解任务</text>
+      <path data-page-node-id="tFvL9ECO14aUPcnosVfjsd" class="flow" d="M340,92 L340,128"/>
+      <path data-page-node-id="3wXW94WI66ooZo6agA7GVC" class="flow" d="M340,110 L150,150"/>
+      <path data-page-node-id="YCL4IdaY8gswZqlnhNRywb" class="flow" d="M340,110 L340,150"/>
+      <path data-page-node-id="wDwyj37fS3Ad3amYoCd8tn" class="flow" d="M340,110 L530,150"/>
+      <rect data-page-node-id="7VpQC5Ca28ql2pyiTGDJLS" fill="#10b981" height="50" rx="10" stroke="#059669" width="150" x="60" y="150"/><text data-page-node-id="bRbYxZHNVci1VtAkqL4kIr" class="txtw" x="135" y="172" style="fill:#fff; font-weight:600"><!--pnid:BIflrqxA4TvdopE4vGpduR-->Worker 1</text><text data-page-node-id="FzhCIJSIfplj9b8KteR2UU" class="small" x="135" y="190" style="fill:#fff; font-weight:600"><!--pnid:kH68zeplotEaKbwYKC5F1M-->窄上下文</text>
+      <rect data-page-node-id="23SWjPjZXTmCESiJ5oO4lS" fill="#10b981" height="50" rx="10" stroke="#059669" width="150" x="265" y="150"/><text data-page-node-id="JjaPV9UZMHjr9S6Nvij0SX" class="txtw" x="340" y="172" style="fill:#fff; font-weight:600"><!--pnid:uLor4yn5V5fLfVgGVXUF0X-->Worker 2</text><text data-page-node-id="Ztd5iLoL5uMpgyY5e8TWGK" class="small" x="340" y="190" style="fill:#fff; font-weight:600"><!--pnid:OiQKLbeHuJfhEsQeZBVKQc-->窄上下文</text>
+      <rect data-page-node-id="MJn6ksj3eJBPWP2SPYHYE4" fill="#10b981" height="50" rx="10" stroke="#059669" width="150" x="470" y="150"/><text data-page-node-id="8gbqS9G1o3Cu8RXncJMD1n" class="txtw" x="545" y="172" style="fill:#fff; font-weight:600"><!--pnid:d1FjgvAKXtEhtbAEJ2rkjS-->Worker 3</text><text data-page-node-id="GfotD592S5aRI4to3APSQ8" class="small" x="545" y="190" style="fill:#fff; font-weight:600"><!--pnid:1qWzE1al6QXLzJN88ehl1v-->窄上下文</text>
+      <path data-page-node-id="Z7LDbBYmsDfTnCS5Irs8OK" class="flow" d="M135,200 L300,224"/>
+      <path data-page-node-id="3u0HCaGcyssyHqvu79BuE4" class="flow" d="M340,200 L340,224"/>
+      <path data-page-node-id="teGBWYhjtWM4QqVVVHPSY3" class="flow" d="M545,200 L380,224"/>
+      <rect data-page-node-id="JqUEMVO7GEukdKUyDL30qO" fill="none" height="0" rx="0" width="156" x="262" y="224"/>
+      <text data-page-node-id="CuW2ljTjFWrl52nttlREuq" class="small" text-anchor="middle" x="340" y="240" style="fill:#0d9488; font-weight:700"><!--pnid:kUuU8vZhxCKjvYOcBx4zsd-->合成</text>
+      <text data-page-node-id="OusKmtqu2nnwYsv6i1m1yc" class="small" text-anchor="middle" x="340" y="258"><!--pnid:8CKXPLydW283WXGLJklBP6-->例：电商大促复盘，编排 LLM 把「销量 / 退款 / 竞品」拆给三个 worker 各查一块，再合成总报告。</text>
+    </svg>
+    <div data-page-node-id="nIQ8aXu5XvGMpFkMFAmsn3" class="note"><span data-page-node-id="AJ8gjm2bf9dsycWbamv49F" class="pill"><!--pnid:ukAuCdws7JuOhv2bOhu3Qu-->LLM 参与</span><!--pnid:BehPnr6iNQ0akFDTQchPwb--> 编排（拆解）与每个 worker（执行）。<strong data-page-node-id="Z0IkTsgCIPc0XDwakOqvnl"><!--pnid:8EMoPnheLyWp2lc8TkU9dj-->关键：</strong><!--pnid:pDuRPH4izaItAkUF5YtkJj-->worker 用各自窄上下文，但<strong data-page-node-id="gKGJFo65cYQwbJkskR2sln"><!--pnid:Utk78aZQNUpVD8pYLiWBVi-->不继承</strong><!--pnid:KuhIm2MDOqSSRbGT59YpSr-->编排的对话史。编排必须把每个 worker 需要的事实写进任务里。<strong data-page-node-id="uU9quzY2mClQUki41ph3Bz"><!--pnid:2COSMu0taqIjaAd2Nk8ET1-->这是和工作流最像、却最接近自主 Agent 的一档。</strong></div>
+  </div>
+
+  <div data-page-node-id="HfAwBSEqIASxOHgZHDLj6l" class="figcard">
+    <div data-page-node-id="yIBNZOBQZjDCvxpABahZr3" class="cap"><!--pnid:vdl1eapUjbxnqMlEwQf9FQ-->图 7 · 评估-优化 Evaluator-optimizer：生成与批评迭代，直到过关</div>
+    <svg data-page-node-id="UNr2Oulj52KERsujun0CXN" aria-label="评估优化" role="img" viewBox="0 0 680 234">
+      <defs data-page-node-id="qDRU2rmHfonZn0h1gGtI9L"><marker data-page-node-id="PEBHUrkRsT15vytAX9CrvN" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="dpWGuqT4uM2DpjbaFy8HRU" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <rect data-page-node-id="pxv1TCfq0xZLgC0iHcx1vN" fill="#10b981" height="56" rx="10" stroke="#059669" width="170" x="40" y="64"/><text data-page-node-id="pWZNULYkUl0vii09eOON1Y" class="txtw" x="125" y="88" style="fill:#fff; font-weight:600"><!--pnid:0rIVHYl1vh9CrLirTVVEzv-->生成 LLM</text><text data-page-node-id="6VQM0ylZWjMnynyY1LoEvN" class="small" x="125" y="106" style="fill:#fff; font-weight:600"><!--pnid:bAXQnOoswPbzKJ2DXdScSS-->产出初稿</text>
+      <path data-page-node-id="9Xt56ftyJ06xK0Cm0G8iMV" class="flow" d="M210,92 L260,92"/>
+      <rect data-page-node-id="VqAPzcZT84RjjWOolAJ2Ek" class="box-a" height="56" rx="10" width="170" x="262" y="64"/><text data-page-node-id="RWbqeNdf3jqXp73uoWtwGK" class="txt" text-anchor="middle" x="347" y="88"><!--pnid:m13HVzZ1x49o0mmQEKW5AD-->评估 LLM</text><text data-page-node-id="9aAnTAMdDa5FAcJvvCoKxE" class="small" text-anchor="middle" x="347" y="106"><!--pnid:eom4umqhgK2dAc4vmxFJc5-->批评·给反馈</text>
+      <path data-page-node-id="fhYlryWN8wNYhLMEmR38Hc" class="flow" d="M432,92 L470,92"/>
+      <path data-page-node-id="CsCB4tMu10aPAaBh0P3eTt" class="flow" d="M347,120 L347,150 L125,150 L125,124"/>
+      <text data-page-node-id="VgiKz85JVezhqZijYXDcPL" class="small" text-anchor="middle" x="347" y="190" style="fill:#b45309"><!--pnid:2LdD3Wv7XadkrW11Nsp3NB-->未达阈值→带反馈重做</text>
+      <text data-page-node-id="5Cnt1MGsu2dD0JnQUUptYz" class="small" text-anchor="middle" x="560" y="52" style="fill:#0d9488; font-weight:700"><!--pnid:M2NfZOmTLxZmgLrUrw1OJN-->达标→输出</text>
+      <path data-page-node-id="PPp1VBEgFH0BULnxbT2nFW" class="flow" d="M347,120 L347,178 L560,178 L560,120"/>
+      <rect data-page-node-id="JL6P9hBnOVPEMP6M2XM7GF" class="boxg" height="56" rx="10" width="120" x="500" y="64"/><text data-page-node-id="5gNsFLn8LFcUgxQVjNRJDK" class="txt" text-anchor="middle" x="560" y="88"><!--pnid:dlaPNpp5q0LQJX7thD0jh7-->最终结果</text><text data-page-node-id="V2Paiy73CVdMtThnoLPS2o" class="small" text-anchor="middle" x="560" y="106"><!--pnid:YtLde54sKK7PYWaYLr0llb-->通过阈值</text>
+      <text data-page-node-id="KEFR1hztlGkbtXP1opM5kq" class="small" text-anchor="middle" x="340" y="218"><!--pnid:kJl9l2Sr1DvCvrlecS4KOH-->例：商品详情页文案先生成，评估 LLM 按「合规 / 卖点 / 可读性」打分，不过关就带意见重生成，直到全过。</text>
+    </svg>
+    <div data-page-node-id="SZCiP0h5KfPRVgmZ3n9hQE" class="note"><span data-page-node-id="HjCvZ24ASbfJ2yCnAPMa3A" class="pill"><!--pnid:Wl46btWw1Lbl5jUZYHe6MB-->LLM 参与</span><!--pnid:BxsNmlev2CamLqyU1y9hEN--> 生成与评估两个角色。<strong data-page-node-id="NPy2eFjXcc9HzRwyoz2cOY"><!--pnid:7mHN1sZBLmSZCPuicU89KM-->适用：</strong><!--pnid:yWqSflxsQAOlp6VhamTcxT-->有明确质量阈值、且「批评能改善生成」的任务，如代码生成后自测、文案多轮打磨。</div>
+  </div>
+
+  <div data-page-node-id="2KWzxJRXlnlKrDCq9Vrsjm" class="card">
+    <div data-page-node-id="me8UCGN0d1BYquOWHaiM06" class="cap"><!--pnid:VHcD8NGENFGesm8rqK6pIT-->表 3 · 五种工作流模式速查</div>
+    <table data-page-node-id="FqzpKOcXW6xhonMSDKsmT4" class="tbl">
+      <tr data-page-node-id="5Pu3OSBF7klLKLCLvPbzSc"><th data-page-node-id="Qif9Q8NoEQsqwSifOqVHdd"><!--pnid:gMNmBB2ESrnUxPbcicprsk-->模式</th><th data-page-node-id="b5UIwil3K56rNsmLhdAv8Y"><!--pnid:q5nzNScSqO8TxBmJ5ENxWP-->LLM 在哪参与</th><th data-page-node-id="NX7la8NXgDPcBJUTV0W73r"><!--pnid:FVd9fKdJNz1uvQ1ouAnNVL-->控制流</th><th data-page-node-id="yNf3ZLGAO6TlvinldZipTX"><!--pnid:jZWx7H0n5bv0tcljYyOOrW-->适用场景（电商示例）</th></tr>
+      <tr data-page-node-id="7OUjxNcvVIWDCkytl0yPSh"><td data-page-node-id="90GLn6ujIrAyuikmkfTbbP" class="kv"><!--pnid:wqfXOKDCLXzKg47zEB6TBI-->提示链</td><td data-page-node-id="FZJV43VbFVQot24lEQ1lVG"><!--pnid:mnMOnDQIlExxT5GO8E03ch-->每步生成 / 理解</td><td data-page-node-id="9wTjvkCuvgTPJ3WKxjfCir"><!--pnid:NZxEdMroKv2bkhLJxbDDl9-->顺序 + 中间 gate</td><td data-page-node-id="CYs0LD6vwBW2I3eCANY4sj"><!--pnid:H7L51YwDcrsGqQcQ8HnJ26-->多步且每步需质检：文案→合规校验→多语翻译</td></tr>
+      <tr data-page-node-id="D0xo8dQO6k3WXjJbAMnlvy"><td data-page-node-id="jodWV932BRmpwnrQOS6ZG3" class="kv"><!--pnid:o7xDZLHDmm24qa47FJWxqM-->路由</td><td data-page-node-id="gAt959LAEJ2mOgrRPHHCGm"><!--pnid:QoZ6KNkUgUNeG0zck0kivf-->仅分类一步</td><td data-page-node-id="rIjmYfFUyFPDsWGKYI6m5G"><!--pnid:3nTr1uYVMMY1HZp9CNrSFU-->分类后定分支</td><td data-page-node-id="JiO55qb9XntdL7oCDhGHnp"><!--pnid:7mVNFCWUn6CQY3PxTy61K6-->工单分类：退款 / 物流 / 咨询各走专线</td></tr>
+      <tr data-page-node-id="b7BcFTtocJpdcbyGdoPo4z"><td data-page-node-id="47nQ0MhfFwKws0b1LGBqJf" class="kv"><!--pnid:CDydfkmhJPqgnv9AULgvK4-->并行</td><td data-page-node-id="bmvs8a5jMa1HaaxIqOj2oh"><!--pnid:GjjujGLTfbfrv1rfxx6dQf-->多路生成 / 判断</td><td data-page-node-id="LtDAYzezUJapQLdfiuJYyt"><!--pnid:Bd6IwKEkuilO9omwaLZtQa-->同输入多路、后合并</td><td data-page-node-id="JssMRDlWedsDVq1QV2ggQQ"><!--pnid:wlDLUNDcTvWL2ndbGZc9rk-->大任务切片、或风控多模型投票表决</td></tr>
+      <tr data-page-node-id="Aj02tSM7VRGKubzyBH16s3"><td data-page-node-id="45NMJMXkG9JUnoWm87amV0" class="kv"><!--pnid:84NDYEwuWt63xzaXd0C2Sk-->编排-工作</td><td data-page-node-id="3mkoCv9YWDBodQ6HieM7MA"><!--pnid:lTEzQjzwpLOP7Kx7NsPtsY-->编排拆解 + 各 worker</td><td data-page-node-id="H55mYk8HCez19ohXS6ahlG"><!--pnid:kmsC5CwRTLFNrbbjpAFjA4-->中央 LLM 运行时派活</td><td data-page-node-id="9hOSfCKzcJXuKRPwb83oV8"><!--pnid:AiHxuidOd59u7Ewnb5KLrk-->大促复盘：销量 / 退款 / 竞品分头查后合成</td></tr>
+      <tr data-page-node-id="IoKtr1ZuB244JTZ6RfuTLo"><td data-page-node-id="ErACdbxvL6hM3A4V5eYKwC" class="kv"><!--pnid:QCtmasttY7s4mdbJripPQf-->评估-优化</td><td data-page-node-id="TnjZ55IkNC2MOuEsCCzjvE"><!--pnid:11TI0ity15P7Z85fykdgZv-->生成 + 评估两角色</td><td data-page-node-id="zWw5yCDu32Up4OH0lEaT4S"><!--pnid:hxTu3zX7WD3CSAc2tKWkKy-->迭代直到阈值</td><td data-page-node-id="0PNDIZQekrPt29MeH57T1V"><!--pnid:Fs7WLAcuMsVBPa4ZO7YQpN-->商品文案多轮打分打磨、代码自测</td></tr>
+    </table>
+    <div data-page-node-id="Hiv3uSCTuzEeBERb03Ya0c" class="note"><!--pnid:yxs3torZISkKbDnnDiNUXD-->五种的公约数：控制流写死在代码。当「拆解方式也想知道运行时才知道」时，就滑向自主 Agent 了。</div>
+  </div>
+</section>
+
+<!--pnid:AvDnBWOb0WX6Frnx60QLg5--><!-- 04 ReAct -->
+<section data-page-node-id="qfHxAgvxrXdQmcTQ9AiwxQ" class="sec">
+  <h2 data-page-node-id="QSUk1zjL9mCQZ6nNwZtu2a" class="sec-h"><!--pnid:oDp0dw0GBhy7lk0lZtxaPq-->自主循环机制：ReAct 的 Thought-Action-Observation</h2>
+  <p data-page-node-id="wnXmSzxhdIYYjMqCJF8oFU" class="sec-sub"><!--pnid:evZFDo0BY5FqSWE7332Tua-->自主 Agent 的底层控制流蓝图，几乎所有框架都长这样</p>
+  <div data-page-node-id="m6EjgANFRCo3eNIT6DtBUv" class="lead"><!--pnid:z5HiYq3lauDbqWQLhWkuwQ-->
+    自主 Agent「自己决定下一步」的能力，底层几乎都来自 ReAct（Yao 等，2022，arXiv:2210.03629）。它让模型在一圈循环里交替产出<strong data-page-node-id="6nsiNmyIhDn2OmkU8kwXV3"><!--pnid:pVZ7Y4b63cuAT8hr7olcoM-->思考（Thought）</strong><!--pnid:xLRBNQ9ZG9XMrhRTcTYfLm-->、<strong data-page-node-id="MNBnArLshxBKV7Ov4V76ZY"><!--pnid:v0LR9VvRNwMoFHZrEsh6OY-->行动（Action）</strong><!--pnid:dUCRLMZiO4xRK04ico0BaK-->、<strong data-page-node-id="EoDIwpo3EmncEQrLsFdkhN"><!--pnid:1yqZt56K37KnbINCaIU1xH-->观察（Observation）</strong><!--pnid:BQsRPz888lM6AVvEAosRjk-->：思考决定调什么工具，行动调用工具，观察把真实结果喂回下一轮思考。这同时治好了两个老毛病。纯推理（思维链）的<strong data-page-node-id="QIUIDX5A55DTf0b1oFfxtu"><!--pnid:hh2grDpIFg1iv43F31dnor-->幻觉与错误传播</strong><!--pnid:dGbhlsmgQqh7ER9O9Pvk1n-->，和纯行动（无推理）的<strong data-page-node-id="I6kNpJuzr2NrsvMtcCk97b"><!--pnid:ui3ueD5dD3ZUJsl675grWG-->缺乏规划</strong><!--pnid:NJ85VfOailmbMDnAWodmtS-->。
+  </div>
+
+  <div data-page-node-id="ABPMxzIprIYOcyvvWwzlJK" class="figcard">
+    <div data-page-node-id="3NXHaad09uACAmBHu8mdp8" class="cap"><!--pnid:ztsr0CGUeUiz5rOW5iWwwa-->图 8 · ReAct 循环：思考、行动、观察交替，直到能回答</div>
+    <svg data-page-node-id="jlfWrkurTIA2noaiLkrRyt" aria-label="ReAct 循环" role="img" viewBox="0 0 680 300">
+      <defs data-page-node-id="BLl5jh3L19qpK0WKLNuH4c"><marker data-page-node-id="HBcT8fOpBYma6ShMJeNRoR" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="KnEw08KF8J2LLm8sZJDlxc" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <!--pnid:NqX3BBAMPaHozgUYa5rerd--><!-- 思考 -->
+      <rect data-page-node-id="swGsKvaq5YU31Ulqhsj5NA" fill="#10b981" height="60" rx="10" stroke="#059669" width="180" x="60" y="40"/><text data-page-node-id="B2fLXkL3RtrnoURDBYhIiz" class="txtw" x="150" y="64" style="fill:#fff; font-weight:600"><!--pnid:4Uxiy959GQL0d3138wiaLj-->Thought 思考</text><text data-page-node-id="irNb2cyrFkQpedgVOHGuvp" class="small" x="150" y="84" style="fill:#fff; font-weight:600"><!--pnid:eUR7S1fk9fBZBRV6oasi39-->计划·追踪·处理异常</text>
+      <path data-page-node-id="w6043XfdiXNpUKpXQzrS20" class="flow" d="M240,70 L300,70"/>
+      <text data-page-node-id="abR5TCfQMfErufDeaDTMrH" class="small" text-anchor="middle" x="270" y="62"><!--pnid:QTwQQAxAIYGTcn4YXixOdA-->决定调什么</text>
+      <!--pnid:oSjm6rQZaKreN73WeMia7H--><!-- 行动 -->
+      <rect data-page-node-id="GocKZ2zxIKemUh3eREBIOf" class="box-a" height="60" rx="10" width="180" x="302" y="40"/><text data-page-node-id="WZC0DZfdQ39Why7xCmJR94" class="txt" text-anchor="middle" x="392" y="64"><!--pnid:SkkBVoBG3CzCTy73ROMhvM-->Action 行动</text><text data-page-node-id="wxdIarpGfK0tzZQD2qXPp2" class="small" text-anchor="middle" x="392" y="84"><!--pnid:9reBhbqTb8TgXz9QrfWOFl-->调用工具·接口</text>
+      <path data-page-node-id="Xc43rOJTyrp8CefSbgP6gI" class="flow" d="M482,70 L540,70"/>
+      <text data-page-node-id="wqicKfNYZOpp586HWm3uXC" class="small" text-anchor="middle" x="511" y="62"><!--pnid:TvOeuVfPRo5Uq9FA22EUED-->返回结果</text>
+      <!--pnid:MUwfn5ME0BknrXw3uRNIay--><!-- 观察 -->
+      <rect data-page-node-id="kJdjFT93kNNjRsEXRCJcP4" class="box-l" height="60" rx="10" width="120" x="542" y="40"/><text data-page-node-id="gNu7tO7hQ1dnCki2uDlJpy" class="txt" font-weight="700" text-anchor="middle" x="602" y="64"><!--pnid:wFmv8aUVTfisJ3JatrUsTt-->Observation</text><text data-page-node-id="DL29HwEsR5b3doDZKZCpHb" class="small" text-anchor="middle" x="602" y="84"><!--pnid:XOD0bQBO0dCEaPILpI1sUH-->真实外部信息</text>
+      <!--pnid:g60ASvpAx3KZIMtqJJ10sp--><!-- 回到思考 -->
+      <path data-page-node-id="RosTkpCjctBk75qG9oERAw" class="flow" d="M602,100 L602,150 L150,150 L150,100"/>
+      <text data-page-node-id="CimO0dlXurMqpY3L5wg0OS" class="small" text-anchor="middle" x="376" y="138" style="fill:#0d9488; font-weight:700"><!--pnid:CCStBdcHo3MpkJ73Pj72mm-->观察结果喂回下一轮思考，斩断幻觉螺旋</text>
+      <!--pnid:Tl81U56vpqszXodloIiMlu--><!-- 终止 -->
+      <rect data-page-node-id="XKOPdafoNot2kHPUO0JgBs" fill="#0e7490" height="56" rx="10" stroke="#0e7490" width="180" x="302" y="186"/><text data-page-node-id="7OvCNEoY2PSm1lLz2ZCxZ8" class="txtw" x="392" y="210" style="fill:#fff; font-weight:600"><!--pnid:Vg77ST1f5dcLCUmWTQdgfA-->能回答 → Final Answer</text><text data-page-node-id="S5mzn0mgMLKzlKVn9cDDd4" class="small" x="392" y="228" style="fill:#fff; font-weight:600"><!--pnid:ecAjmonyrc3EXeLOAgfJ8w-->或触发停止条件</text>
+      <path data-page-node-id="usMCSJb8Dim3dZHfEg8tye" class="flow" d="M392,146 L392,184" stroke-dasharray="4 4"/>
+      <text data-page-node-id="BW1XVLuO5JSGmDO1DjOFDV" class="small" text-anchor="start" x="410" y="166" style="fill:#6b7f76"><!--pnid:sSIFTAhG0QiAlD4RpF3yp1-->判断信息足够</text>
+      <text data-page-node-id="oDH6lLJ2lfYko9miHTG8VA" class="small" x="60" y="286"><!--pnid:eEBu3sI3srPzoInI7FVrnj-->关键：观察来自真实外部源（检索 / 接口 / 环境），替换模型内部猜测——这正是它比纯思维链更不易幻觉的根。</text>
+    </svg>
+    <div data-page-node-id="H8MQSyyilWLDEWUUqjhRZM" class="note"><!--pnid:TLXOjWNiMgYqBsDHqABfOc-->一句话记住：<strong data-page-node-id="uICikplXFsIqiAAhmvLP3D"><!--pnid:ePNRBkJ5GHJR1MkJDGaIrF-->思考负责「为什么这么做、还差什么」，观察负责「用事实纠正思考」</strong><!--pnid:1gMtyw0xhwUfAzucEiqR4F-->。没有观察的循环，只是把幻觉多转几圈。</div>
+  </div>
+
+  <div data-page-node-id="eJaPHz4pUjVjdLJeEaVepo" class="code"><span data-page-node-id="Acv5OuMBbzT9upAtPG4tZb" class="c"><!--pnid:ukzJSmnh51uAIbMrud57K9--># ReAct 轨迹（简化伪代码）</span>
+<span data-page-node-id="Vujw46zncM2DP8fGUtaDL4" class="g"><!--pnid:lA774GidkTSQA5aNw36rxf-->while</span><!--pnid:hMvGJQJEfei00v1Izft2w4--> not done:
+    thought = llm.<span data-page-node-id="nfeImp4TrmZJsrLgygfKU5" class="y"><!--pnid:ohvWsBlDsYTKrGAheU1ceQ-->reason</span><!--pnid:wCAxBCXWsVDU016RxXhN11-->(context)        <span data-page-node-id="sCJIlCJxGx5QQBtWfwZdY9" class="c"><!--pnid:QzcYkVdz528d86kcygbNxf--># Thought：计划下一步</span><!--pnid:eRoosW0lLEdpoYivbtTZGu-->
+    action = llm.<span data-page-node-id="gkBnZHMwx5VCDwV8EAln19" class="y"><!--pnid:Xqyztum0xrYAYL0jYwj0vk-->select_tool</span><!--pnid:guTFhndu8vetBPgHiqYcpk-->(thought)   <span data-page-node-id="H55ZRaxgzzc8zTy0ZLx0q5" class="c"><!--pnid:KfCFfBI8ZJX56wlsmgIYSa--># Action：选工具+参数</span><!--pnid:4jirMq8LKEHIy1rpk9yntW-->
+    obs    = tool.<span data-page-node-id="tUM44y66vqLVWaQn5maQZh" class="y"><!--pnid:ouN8OxrJNdEeW37eoWeQZb-->run</span><!--pnid:I0w6KZEiliAcb0iq0asjH8-->(action)            <span data-page-node-id="LbxZ9Pf190kd8MgVL8O20R" class="c"><!--pnid:GrZIIwKVGV62wLVGSLMBuj--># Observation：真实返回</span><!--pnid:WFoAHsg8GrKPP9YSCr8AzH-->
+    context += (thought, action, obs)   <span data-page-node-id="4zZFYQalFrmSO36GOKmM7C" class="c"><!--pnid:tVmtE6l16QfeFE0ndmvxOf--># 追加进上下文</span><!--pnid:u315zL9VSHs5PjrXdLeW4e-->
+    if llm.<span data-page-node-id="Uc2SfOtM9g0pwGVwchK5PA" class="y"><!--pnid:VXLUKJMiqNsW1uzQ6E5xfX-->can_answer</span><!--pnid:Wy3JTXApro6I11T0RH2bBx-->(context): done  <span data-page-node-id="kX6dmp0ZRX3ipIRXYg671c" class="c"><!--pnid:o7wEK3onB5DBEkvEn0XC4L--># 信息够了就收</span></div>
+
+  <div data-page-node-id="fGXXbu3Xufco36KDKW573N" class="card">
+    <div data-page-node-id="PxFY9z5bn8t1KWBLONqLYf" class="cap"><!--pnid:rF3mOJ4TLCxQGkR6bkgUPQ-->表 4 · ReAct 解决的两个老毛病（来自原论文基准）</div>
+    <table data-page-node-id="UHm7GPkup18CFyp6PoNoov" class="tbl">
+      <tr data-page-node-id="k2uhWM0DSHw7kZsv2ZKS3s"><th data-page-node-id="VY9IzchvmnWhDdx7mvmIVO"><!--pnid:XRutHlBeR5S7GbG0VV216A-->旧范式</th><th data-page-node-id="vY78A0OlTX3rdvubTkg0Rp"><!--pnid:9ByHaUgs21Jc0RLUw51DNq-->致命缺陷</th><th data-page-node-id="58ar6lp4DrjeFHdTfm70Uw"><!--pnid:TtGoeq6NprXXAtUEBiccnC-->ReAct 怎么治</th><th data-page-node-id="DaVsMiwuB5XXZodGvgF5QA"><!--pnid:i9QwIk2mxjvr1uwmsygh3X-->论文基准体现</th></tr>
+      <tr data-page-node-id="2WiWS5QlFwFakKuGu5eeQF"><td data-page-node-id="JFEh5KypykuBsTbyLf8uqT" class="kv"><!--pnid:RkcKqFP7rdW1GGh4zeil9A-->纯推理（思维链）</td><td data-page-node-id="KXkqBvrFKX4uH98ToWfgXv"><!--pnid:ZuqylFzLuASK1O96F4OqW4-->事实幻觉、错误传播，靠内部记忆不落地</td><td data-page-node-id="YujZDSswoCkXibo03PfmCh"><!--pnid:gr5ccW1xmqyRxiEfHk5M0K-->观察从外部取真实信息，替换内部猜测</td><td data-page-node-id="jlbH0eKo87WfV0BvWO1Y7D"><!--pnid:ft8hX7NDMaAA0K9Ja31R9m-->FEVER 事实验证 ReAct 60.9 vs 思维链 56.3</td></tr>
+      <tr data-page-node-id="jOMrjmfw92CfYsqEi2NnND"><td data-page-node-id="1o4PAVbNe8kCXx8vZETCew" class="kv"><!--pnid:gauv5Hn7iOgc1E3kHjCkDg-->纯行动</td><td data-page-node-id="5UT9KWir7iLwxSEHdEiKSV"><!--pnid:lE6uHNMZqcGOMVboEUSE26-->无推理轨迹，不会规划、不知为何失败</td><td data-page-node-id="3XDHXUCj5OPo5kFY47qwnx"><!--pnid:gw0A43IgzLM7XkoZZt6meB-->思考步记录目标与进度，可人工检查纠正</td><td data-page-node-id="jd2DWf1nMVQmKGXx34GPXk"><!--pnid:6RqwKwxmYkI8ArCbGc4A3V-->ALFWorld 成功率 71% vs 纯行动 45%</td></tr>
+    </table>
+    <div data-page-node-id="TpELNdsazAvR3Cv79Imazt" class="note"><!--pnid:pAoui0CXU5TFkjWIJ7gOml-->口径说明：上述为论文在 PaLM-540B 上的少样本（few-shot）提示结果，相对「纯思维链」与「纯行动」基线；不代表所有基座模型都复现同等差距。</div>
+  </div>
+</section>
+
+<!--pnid:k3WoXv2f9xMAwZHZ0XlSLb--><!-- 05 MCP -->
+<section data-page-node-id="6azq6KRV930jtnSxmUhqkn" class="sec">
+  <h2 data-page-node-id="KSc5HTkLF2JViwqjP7B0ni" class="sec-h"><!--pnid:Xlr0YjUJfW29ghfGTPyOLa-->工具连接标准：MCP 把「接外部能力」变成插头</h2>
+  <p data-page-node-id="DKK9MVFXAOXEL3OqzW5Pvy" class="sec-sub"><!--pnid:2sVMaFhXFioALshUzQ32aA-->Agent 要动手就得接工具，MCP 是这套连接的事实标准</p>
+  <div data-page-node-id="C4BIEXLglqI0OeExR1S9PD" class="lead"><!--pnid:mUScf0yHyh06CAnhYv1Qr9-->
+    自主 Agent 的价值大半来自「能调用外部工具与数据」，但每接一个系统就写一套私有对接，开发与维护成本爆炸。MCP（Model Context Protocol，Anthropic 2024-11 开源）要做的是<strong data-page-node-id="Z2yi9KPfaQs0sPkgH22vjR"><!--pnid:EYl20nWGgYbOiTcqQ3wM2A-->AI 领域的 USB-C</strong><!--pnid:PsgzS27XPpdNDk2O7aSQlS-->：用一套开放协议，让任何模型都能即插即用地连上任何遵循 MCP 的服务端。对要接知识库、业务系统、专家能力的产品，这意味着<strong data-page-node-id="HwmSRyHNl4Q9QdnGANB6Le"><!--pnid:fSlhh4jDfAbZh83sO3kph3-->能力以标准服务端暴露，主机一次适配、处处可用</strong><!--pnid:DR82YjeYC78sEfA4LnArtO-->。
+  </div>
+
+  <div data-page-node-id="2DQ972XL0Dqml8B6eeN2Ov" class="figcard">
+    <div data-page-node-id="9nc7nXMc15TdZCnv7ZQ5rQ" class="cap"><!--pnid:99w0EBSZ4QSv0ZsAA0K7js-->图 9 · MCP 客户端-服务器架构：主机经客户端连多个服务端</div>
+    <svg data-page-node-id="Avcy5hz6svarBvZw5XdC3u" aria-label="MCP 架构" role="img" viewBox="0 0 680 286">
+      <defs data-page-node-id="tk2Vin0aTNM2eWsf7Vn2Vp"><marker data-page-node-id="HMBJz5keis3ypb8VTUp3hr" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="yB511aYxGEtCHEKvhxw3Rb" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <!--pnid:y0bbVu6FNQlnKz5JTGEr9p--><!-- 主机 -->
+      <rect data-page-node-id="DV9UtWpx51IgV7YgvKW4rL" fill="#0e7490" height="58" rx="10" stroke="#0e7490" width="180" x="250" y="30"/><text data-page-node-id="NxntPBKxyvXKQukIrOUqtY" class="txtw" x="340" y="54" style="fill:#fff; font-weight:600"><!--pnid:qluYRT2y9ULt0bS5688SE9-->MCP 主机 Host</text><text data-page-node-id="S7lvVFdzOXfZFn6krM6MfK" class="small" x="340" y="72" style="fill:#fff; font-weight:600"><!--pnid:C1Vwgzm2xs4dyTzrVBiHIE-->AI 应用 / Agent</text>
+      <!--pnid:pQeIolVADc6RgxmvHhjUsH--><!-- 客户端 -->
+      <rect data-page-node-id="hz10MKrWAKWznBfkeh62iA" class="box-l" height="50" rx="10" width="180" x="250" y="118"/><text data-page-node-id="3LGKNPDkkIuy9S1IXAQc15" class="txt" font-weight="700" text-anchor="middle" x="340" y="140"><!--pnid:EMdST6qVvWh7Dy190IxppY-->MCP 客户端 Client</text><text data-page-node-id="vdJGQjcjrXMiCMrivSVq0o" class="small" text-anchor="middle" x="340" y="158"><!--pnid:mZ5qFsr01eFJIVUJ7peVF4-->1:1 连接服务端</text>
+      <path data-page-node-id="fh9F08GB0kovCl0DPNN23h" class="flow" d="M340,88 L340,116"/>
+      <!--pnid:EGUBnmXQ4k1jYdQNmwUIyq--><!-- 三个服务端 -->
+      <rect data-page-node-id="7lGAPLTSddzc8KZT32kCiz" class="boxg" height="58" rx="10" width="170" x="30" y="200"/><text data-page-node-id="V3EQ3wXdkx6FdajlUAJ0zs" class="txt" font-weight="700" text-anchor="middle" x="115" y="224"><!--pnid:mIm9HqC5LgFYQjCCBFrsOD-->服务端 A</text><text data-page-node-id="iQQDF8j7ZcDGqo5QXjvPvG" class="small" text-anchor="middle" x="115" y="242"><!--pnid:uNgbaaDLNseZHPmQDxtF8B-->本地文件 / 数据库</text>
+      <rect data-page-node-id="Szukeev0lRnJIWmEDI678t" class="boxg" height="58" rx="10" width="170" x="255" y="200"/><text data-page-node-id="ksg2dwOLtsKKXq5JodTIhZ" class="txt" font-weight="700" text-anchor="middle" x="340" y="224"><!--pnid:4uYZB50VpXDtgRo1W3E4wX-->服务端 B</text><text data-page-node-id="R24srlh8AnDFjLVowan2J4" class="small" text-anchor="middle" x="340" y="242"><!--pnid:AHb3AYKVLSpBgLTMA2bSoU-->远程业务 API</text>
+      <rect data-page-node-id="dVcZVg7QiNcydagDVJHabz" class="boxg" height="58" rx="10" width="170" x="480" y="200"/><text data-page-node-id="QcQuj0gPFuD3KfX4twNsB7" class="txt" font-weight="700" text-anchor="middle" x="565" y="224"><!--pnid:LLWwXPVtMQwTaVhWuccv61-->服务端 C</text><text data-page-node-id="M7i3fBfsEiUTqtB6NxpNX3" class="small" text-anchor="middle" x="565" y="242"><!--pnid:oLP3PAlYPsfYZktmfifoVw-->专家能力 / 工具</text>
+      <path data-page-node-id="2b1TdVFs7rv2Qpb0QLPuzd" class="flow" d="M290,168 L115,198"/>
+      <path data-page-node-id="KcjT3SjCmfMxw2t9wBMHYU" class="flow" d="M340,168 L340,198"/>
+      <path data-page-node-id="pMrAWO6B9wIP73CXDl5ve8" class="flow" d="M390,168 L565,198"/>
+      <text data-page-node-id="3NZtGaMNzmjmtdOnXKBECb" class="small" text-anchor="middle" x="340" y="278"><!--pnid:We4dZINOz14Ft4ns68Ch1t-->主机经客户端连多个服务端；每个服务端用标准协议暴露「资源 / 提示 / 工具 / 采样」，模型按需取用。</text>
+    </svg>
+    <div data-page-node-id="WeK5BYOuxuusu9Gr1CVt1N" class="note"><!--pnid:YjZ8AXTM0p8kDlex8bvsBY-->对 PM 的含义：把各路能力（方法论库、案例库、业务系统查询）做成 MCP 服务端，主 Agent 用统一协议调用。新增能力不必改主机代码。</div>
+  </div>
+
+  <div data-page-node-id="WXCjYU2fbXYeSgHlCgqzPq" class="card">
+    <div data-page-node-id="KrahHnPvQCjGiBptOPZBtY" class="cap"><!--pnid:BivS4HzyXKvBwChhGghLOR-->表 5 · MCP 标准 vs 私有 API 对接</div>
+    <table data-page-node-id="NbuTtFLGb3moY9pZWud7Iy" class="tbl">
+      <tr data-page-node-id="MwCymQYBSOwJdkfoWInwOM"><th data-page-node-id="fVWY11cT6igmQMDkhAuzbz"><!--pnid:guLzLQf0t2k4KmMFIhKhP6-->维度</th><th data-page-node-id="ns21MtaVk2fsCIzPYQuQsK"><!--pnid:Aop8rGrg1xhvNcHltFPhQK-->逐个私有对接</th><th data-page-node-id="bl5VOMjS0aE6S9r2ROLxiA"><!--pnid:L6HRE09htdHzOPWfYGX9xw-->MCP 标准服务端</th></tr>
+      <tr data-page-node-id="KPcF13xZZgPabgVJrLmpdp"><td data-page-node-id="CckTkPIuSu9EzaSfAZZJ3g" class="kv"><!--pnid:8JeXgE7TjJqAvzMn7GwJNm-->接入成本</td><td data-page-node-id="5UgbJxvV6vllL37p9y0GCO"><!--pnid:YPBHTfJuLj1K9iE5hZ8ypu-->每系统一套代码</td><td data-page-node-id="VyHbf07BRgXrXq7sXTjZi3"><!--pnid:eWlZlcuOH6RwaWK4PkUsaD-->主机一次适配，服务端即插即用</td></tr>
+      <tr data-page-node-id="xXdqyJZxjTGPFajdvPIc1b"><td data-page-node-id="ImLSn2ou1gucYxDcDqZMmK" class="kv"><!--pnid:sU9vVubl0hChvbYeaXMPw8-->跨模型</td><td data-page-node-id="WTvSWByn5St4ngh6zktVYc"><!--pnid:RLFXIHQHdf8vOoUCb3LTLW-->绑定某家模型 / 框架</td><td data-page-node-id="PMikooUsU8oRTGPmAGvolc"><!--pnid:xmthuDK11gTJxVJbhlTsdV-->不绑定模型，换模型不重写</td></tr>
+      <tr data-page-node-id="66iFDCuo3De9vAGuB6iaKq"><td data-page-node-id="Ussg3hLJw3GPsKICdiJPnm" class="kv"><!--pnid:X4K6R7clvPI2ggPcRFHIeF-->能力复用</td><td data-page-node-id="bfG47CZYsUzmuG1kE8SmCW"><!--pnid:dom8c4n3QMc4U39FjmZzeM-->难复用</td><td data-page-node-id="ZwcSZhwtZPet9P6lLbJLTl"><!--pnid:RPHTx3XlJuX00LAyetYKcA-->同一服务端多处调用</td></tr>
+      <tr data-page-node-id="dwBGzoCokgt6vBDEBLiYFt"><td data-page-node-id="GwVCBC86OLoFs7H8JYxRNs" class="kv"><!--pnid:yJNJFfCeecjw1bU1NSYg5P-->治理与权限</td><td data-page-node-id="UD820349geMJHgjiz5xqcr"><!--pnid:vDbn1FI6p99Cjs04TDRsyg-->散落各处</td><td data-page-node-id="JNpHCkGDS9euWg131Kkdq3"><!--pnid:ZPmBqY4xbA0iL3cUR6zZe5-->服务端统一授权与审计</td></tr>
+    </table>
+    <div data-page-node-id="4YBoC4GqOlOYTQtW297ZAV" class="note"><!--pnid:QZe0I0uRaspo1jgq33r3aa-->代价：引入协议层与一套服务端开发生命周期，简单场景可能过度设计。这又回到「按需复杂度」。</div>
+  </div>
+</section>
+
+<!--pnid:OyzNzPF8tf3jSqx6M74HVX--><!-- 06 翻车模式 -->
+<section data-page-node-id="dhueO62qFZGVgZ0aqhFbfu" class="sec">
+  <h2 data-page-node-id="CqXaBCWKn0Vsy3q0HpZGrQ" class="sec-h"><!--pnid:khVitElQaKxOsCLIQN7mfm-->翻车模式：自主 Agent 比 RAG 更会「自爆」</h2>
+  <p data-page-node-id="nicQCKD1Q5gJJw8rfzTF24" class="sec-sub"><!--pnid:C7MGgrnqVUhjf3mlq1Z4Ub-->生产级失败清单，多数来自「把控制权交给模型」的副作用</p>
+  <div data-page-node-id="MKSNMIheocWt6EQX7LdCj4" class="lead"><!--pnid:BYRHmyP2aUR5cG3hEQPoBE-->
+    自主 Agent 把 RAG 的「链路翻车」升级成了「行为翻车」。一类是<strong data-page-node-id="romics42HEkLT4WufpWOL4"><!--pnid:Ag8w6uaEETYSeAnIOBxxKG-->设计 / 成本层（外在）</strong><!--pnid:SbHAAGQIJXMZ7V3r2zpZ4J-->。从一开始就该用更简单的形态；另一类是<strong data-page-node-id="BBiDrYqYjZAeBrGHIl8ZLU"><!--pnid:PjLrGt2DnDX8f6ZWmbXIGj-->运行 / 链路层（内在）</strong><!--pnid:DS6P5xL475WJMDpQmBgWq6-->。架构选对了但执行没兜住。RAG 链路的四类失效在 Agent 场景演化成四类行为失效：幻觉变「工具误用幻觉」，体验变「循环失控」，时效变「上下文膨胀」，记忆变「多 Agent 协调失控」。
+  </div>
+
+  <div data-page-node-id="kg4mDGYrep3LoXQqluJKXw" class="figcard danger">
+    <div data-page-node-id="XpZ9C5wMnkIGShlO7JksUp" class="cap"><!--pnid:QCpfayL6EIphZ8zgH6FHFp-->图 10 · Agent 翻车分布：设计层（外在）vs 运行层（内在）</div>
+    <svg data-page-node-id="JZGYG2QbZert2y5wj9do3D" aria-label="翻车分布" role="img" viewBox="0 0 680 320">
+      <rect data-page-node-id="ijMOZSidgpEweZx0psVVUs" class="box-r" height="60" rx="10" width="300" x="16" y="40"/><text data-page-node-id="hfykFpV9WY7VFNSCUFD4Xi" class="txt" text-anchor="middle" x="166" y="64" style="fill:#be123c"><!--pnid:QEnDhdYw56Ons7bmv5XSgN-->设计 / 成本层（外在）</text><text data-page-node-id="am2KXqZRRHlhzCxHjqZhSG" class="small" text-anchor="middle" x="166" y="82"><!--pnid:EQf4sn7rzvO8rzR1M1SWuA-->本不该上 Agent</text>
+      <path data-page-node-id="FLSKG2BMUjEBqc2M4HqYZF" class="flow" d="M316,70 L352,70"/>
+      <rect data-page-node-id="rUKnYyLvORicyQcQLojS91" class="boxg" height="60" rx="10" width="100" x="356" y="40"/><text data-page-node-id="9ckiN7akG71JTWsXh9lggM" class="txt" text-anchor="middle" x="406" y="64"><!--pnid:zHGiSdAlftnJFMLkEEKWbT-->运行</text><text data-page-node-id="Err6RtHdcrUi8aka1jR9XK" class="small" text-anchor="middle" x="406" y="82"><!--pnid:pSp7Uy9eqJQFIXFKmkgfUM-->执行</text>
+      <path data-page-node-id="5Qwi9aA4oG5g8AOmeETBX9" class="flow" d="M456,70 L492,70"/>
+      <rect data-page-node-id="ptsEfe9dvhPUUAMoNArDGV" fill="#10b981" height="60" rx="10" stroke="#059669" width="80" x="494" y="40"/><text data-page-node-id="2niG1YZGKcqpRt5RObbkJc" class="txtw" x="534" y="64" style="fill:#fff; font-weight:600"><!--pnid:uaCZQ5enMNlI1AMC73ekDt-->结果</text>
+      <!--pnid:HeFRkizPMB6bhlMliefWTv--><!-- 左组 -->
+      <rect data-page-node-id="zWFzeANnwVrzxqqCos53Yf" fill="#fff5f6" height="168" rx="10" stroke="#be123c" stroke-dasharray="5 4" width="300" x="16" y="120"/>
+      <text data-page-node-id="HiXmtfVE8u7M1B03PHTS7X" fill="#be123c" font-size="13" font-weight="700" x="30" y="144"><!--pnid:im1RgmFs2EV8dXHs69q24j-->设计 / 成本层失败</text>
+      <text data-page-node-id="JjfxNruoOobCeOakNhtndF" class="txt" font-size="12" x="30" y="172"><!--pnid:gEbWxAaiBqFduEtlbJek5a-->· 过度设计：简单任务硬上自主 Agent</text>
+      <text data-page-node-id="zttVQcR9QPtbRGYujHI5kT" class="txt" font-size="12" x="30" y="196"><!--pnid:9a2yt6s2GUY1fQzbUrMJa0-->· 成本失控：步数复利，token 爆炸</text>
+      <text data-page-node-id="If8w9sKIEwjNEhQEP3R7pL" class="txt" font-size="12" x="30" y="220"><!--pnid:I5sTAkxI9jkRvR6Rf6ev6f-->· 不可预测：同输入不同路径，难验收</text>
+      <text data-page-node-id="CaIKPxXEFpztUYCFKOEJh2" class="small" x="30" y="244"><!--pnid:Vlpl8YK32IUN5wM9s8b9Vy-->这类靠「回到更简单形态」解决，</text>
+      <text data-page-node-id="G8RWCfpVg6TlC2Xgg6NpjT" class="small" x="30" y="262"><!--pnid:mUgibdBD8Z0DA4zFVMLdMY-->属外在层——加护栏也救不了。</text>
+      <!--pnid:IHdsPniB2mfj9QN2tgAwV9--><!-- 右组 -->
+      <rect data-page-node-id="ot9TKdgZMFMlBufKcfAfKU" fill="#fff" height="168" rx="10" stroke="#0d9488" stroke-dasharray="5 4" width="324" x="340" y="120"/>
+      <text data-page-node-id="XcRS21vDGFp0mJyaoMHIIN" fill="#0f766e" font-size="13" font-weight="700" x="354" y="144"><!--pnid:iWYrvHevEtKnU4vpgYKkcq-->运行 / 链路层失败</text>
+      <text data-page-node-id="7gnWbYDR0AeOM761oDRppd" class="txt" font-size="12" x="354" y="170"><!--pnid:6LTc8QxjydoqWmM96rd52H-->· 无效循环：转圈不收敛、不停止</text>
+      <text data-page-node-id="iNSLOk1gbDa3lJJ2v9E5Qi" class="txt" font-size="12" x="354" y="192"><!--pnid:r8Rv6siG0dHSUHvinnExm9-->· 工具误用：调错工具 / 参数错 / 反复重试</text>
+      <text data-page-node-id="nVWhIsh8GkYoozzyf73iV0" class="txt" font-size="12" x="354" y="214"><!--pnid:jdzpjrQuU29fQE04L8FNKs-->· 上下文膨胀：历史越积越长，注意力稀释</text>
+      <text data-page-node-id="DzX0lw09IPGotzA8KVegZ2" class="txt" font-size="12" x="354" y="236"><!--pnid:JAKcLBKFsEu9CZZFHfPlq9-->· 多 Agent 协调失控：互相干扰、重复劳动</text>
+      <text data-page-node-id="yBzp6Z5qVy4zits9dGSeHN" class="small" x="354" y="258"><!--pnid:Wo2JDYo6C8r1iHu4fz0UDU-->这类靠护栏、停止条件、工具描述质量解决。</text>
+    </svg>
+    <div data-page-node-id="6r6mWw7lojlWrZCEmyf7Vs" class="note"><!--pnid:OoL1Iavp4tjVpWLOFUDdNt-->判断第一问仍是：<strong data-page-node-id="mHFrzgPzORciVVht4BBuKM"><!--pnid:OopetIYvFF1tjDTHOl2ZzB-->这个失败是「不该上 Agent」（外在）还是「没兜住」（内在）？</strong><!--pnid:dV1eghHB2EnM1KTfabbSSY-->外在退形态，内在加护栏。</div>
+  </div>
+
+  <div data-page-node-id="x5GMGtveYr0E8NHrbSXAqC" class="card">
+    <div data-page-node-id="BygpKcyunaOBRDSHO2wKW4" class="cap"><!--pnid:YyVQEp0ICtH7j2e6SMvFY8-->表 6 · 五种运行层翻车：成因与解法</div>
+    <table data-page-node-id="ZmmyXj0tkV0sMSxBqzq7B2" class="tbl">
+      <tr data-page-node-id="tCSYkMlGGziUG1khbjsPvN"><th data-page-node-id="FaJSNiziZ2arSHs2Pv5emO"><!--pnid:xTcKEYFHdAeePYXeH1DgqZ-->翻车</th><th data-page-node-id="MJqVWSR9dPsvXHn9F5DoEz"><!--pnid:7HPoU7BBi6j0keP3intXIO-->成因</th><th data-page-node-id="eU3NI2OkQXzgRIZA1bagmJ"><!--pnid:qH0T9Hvjw7FbPf7BjcfFEw-->解法</th></tr>
+      <tr data-page-node-id="IZdM6r103BxjLvBRf4maAe"><td data-page-node-id="czx3Uyge3rcSCyHzDJHEmo" class="kv"><!--pnid:Drj4CU0ZqlN8eGegwtgvSr-->无效循环</td><td data-page-node-id="xzKxH59h0RGt0KjzVqDWun"><!--pnid:LTACwkQ5V7D9Z5CmyTR7O4-->停止条件模糊，模型认为信息永远不够</td><td data-page-node-id="roAxE2KsGWCYYfi74zqJwS"><!--pnid:gyTNsz4WMRUl6AeZbII6fr-->明确停止判据、最大步数上限、超时熔断</td></tr>
+      <tr data-page-node-id="hgC12Hxo8hbVYec52pECl7"><td data-page-node-id="ZPTUYSqBQjVPxAOAEWiWCk" class="kv"><!--pnid:6aPYNVVg4smXzJXKNjK53x-->工具误用</td><td data-page-node-id="lW29J6RfTk1Vv5RiJdndRt"><!--pnid:oE8IPZTEEPVILdhLcw9Gf3-->工具描述不清，模型调错或反复重试</td><td data-page-node-id="DPfSuTMWTuNa2cXpCD1tit"><!--pnid:tnepzuELO13avs9fs5G6rP-->每个工具唯一用途＋清晰输入输出说明</td></tr>
+      <tr data-page-node-id="xljiiixV4tnq3hWQPuEOWN"><td data-page-node-id="Bt8VSj0iJBjW6GbMJVfS11" class="kv"><!--pnid:pqy8GYKDwO1cquR64RFuqT-->成本失控</td><td data-page-node-id="WZs4KY35n0AcP77WnHRJ4N"><!--pnid:Xm20q8yloJhD1KhFUeTmH3-->步数与调用数复利增长，无预算闸</td><td data-page-node-id="xKGi2F47vRvC57YqCQu2hp"><!--pnid:X5AeQx7ttYzOWJiUABkAqW-->按复杂度配资源、设 token / 步数预算</td></tr>
+      <tr data-page-node-id="jIUw7XX5CTePeBwfCRAvCI"><td data-page-node-id="OnkJC8ZNYGmvM6xU6uWlmS" class="kv"><!--pnid:FmDYPzgM4QtqNg2nEchpes-->上下文膨胀</td><td data-page-node-id="TkeMpCttDeCTYv0XE2GUWZ"><!--pnid:9iM0BqMGHUur3eSdz9WF8P-->历史全量拼回，关键信号被稀释</td><td data-page-node-id="5bT7kkaSCUEEQe3FgopZ60"><!--pnid:KTvRIkq3vu5xDv0fQVfrfe-->压缩小结、子 Agent 隔离、只回传要点</td></tr>
+      <tr data-page-node-id="NNZqlXu5azayuceQmuLcQg"><td data-page-node-id="owK2rK3kS3HipAkmD8nLnq" class="kv"><!--pnid:oiZe0YfDNGF0tw5yMStQIi-->多 Agent 协调失控</td><td data-page-node-id="1uYf04Fi2bbsCKGb8qj6U8"><!--pnid:uLfn69MOKO2IqVo49k9Rk5-->子 Agent 重复劳动、互相干扰</td><td data-page-node-id="ais4xgNarADdMv8ALdcFLV"><!--pnid:fG6bVir7A5I1PhhRRRvPHK-->明确任务边界、减少冗余更新、编排管控</td></tr>
+    </table>
+  </div>
+</section>
+
+<!--pnid:loaxZk9AvDW9qDUpfWWLam--><!-- 07 多智能体 -->
+<section data-page-node-id="GgJLeRZ6ESYFr8cD0kyKvz" class="sec">
+  <h2 data-page-node-id="1dIv7nbLVY0IitizXOLXUq" class="sec-h"><!--pnid:o4bUyTqR70fMp4DiU4pEe0-->多智能体系统：更强，但协调复杂度也飙升</h2>
+  <p data-page-node-id="T4piZKAkm3USazNfUymJf9" class="sec-sub"><!--pnid:S8OzlPjNqrZLJYazpLZZkx-->真实生产数据。编排-工作形态能把研究准确率抬上去，前提是别踩协调坑</p>
+  <div data-page-node-id="9eXBQCAB3bFUQxhAeHnKiQ" class="lead"><!--pnid:LrCSa9WHItTRrNfwUoH3c7-->
+    把多个 Agent 编排起来（一个主 Agent 派多个子 Agent 并行）能处理单一 Agent 搞不定的开放任务。Anthropic 公开的研究系统就是这种形态：主 Agent 拆解问题、派子 Agent 并行搜证、再合成带引用的报告。它把研究准确性较单 Agent <strong data-page-node-id="kr8qGqfVxOsJe69Prb47Mz"><!--pnid:u46lfW3uctiuEPELWqvjzf-->抬升约 90%</strong><!--pnid:lJaEcixySQnUQ2kKakYAmX-->，但早期版本踩过一串协调坑。这些坑对任何想做多 Agent 架构的团队，几乎是必考题。
+  </div>
+
+  <div data-page-node-id="z6y9lMynfbChTl2P39C21Y" class="figcard">
+    <div data-page-node-id="GPBo70sif0TYqRlqQTojJe" class="cap"><!--pnid:jl5tmnCkEoXmor8bGl8YtV-->图 11 · 多智能体编排-工作：主 Agent 派活，子 Agent 并行，回收合成</div>
+    <svg data-page-node-id="BhMTebcPBHXpoAeMYb1r4v" aria-label="多智能体编排" role="img" viewBox="0 0 680 286">
+      <defs data-page-node-id="Xtzsm3AXALjSgZUFnvuOA7"><marker data-page-node-id="Lav2qmuJAo9ZnCkPgfZi30" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="QKATh8F6uPGtkOF30pTTZG" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <rect data-page-node-id="OVL2tbyBpE5kI5h7DdA3tX" fill="#10b981" height="56" rx="10" stroke="#059669" width="180" x="250" y="30"/><text data-page-node-id="tdCkzzSwPAiupP0Kf33OuD" class="txtw" x="340" y="54" style="fill:#fff; font-weight:600"><!--pnid:Q42eZjW0bY0bKBQHJCoDg2-->主 Agent Lead</text><text data-page-node-id="ZyQKn0BdVFIL9uwMKkoEEX" class="small" x="340" y="72" style="fill:#fff; font-weight:600"><!--pnid:VXPvQzaTBdDUrFpeyVRYlL-->拆解·派活·合成</text>
+      <path data-page-node-id="dsjg5J66iHYjBwVCQ2UZfN" class="flow" d="M340,86 L340,120"/>
+      <path data-page-node-id="Qlu574Ajyxy2EFPUsRObCB" class="flow" d="M340,103 L150,150"/>
+      <path data-page-node-id="F5Z2zpzuf5UfqyhGJTBGBT" class="flow" d="M340,103 L340,150"/>
+      <path data-page-node-id="cfojz4Mclmy7NVl1wWZ9ba" class="flow" d="M340,103 L530,150"/>
+      <rect data-page-node-id="pCcjkgFbzwt676WwL1dE7p" fill="#0d9488" height="50" rx="10" stroke="#0d9488" width="150" x="60" y="150"/><text data-page-node-id="1ajz54iwjndwXfqrCKfWmu" class="txtw" x="135" y="172" style="fill:#fff; font-weight:600"><!--pnid:S9w8dx2RawutoGx8CeH6MO-->子 Agent 1</text><text data-page-node-id="5L8fZSek18skTweRTtUxX2" class="small" x="135" y="190" style="fill:#fff; font-weight:600"><!--pnid:2nXlAwOeKko3vwzjYWSJc1-->隔离上下文</text>
+      <rect data-page-node-id="wj2rwPQSj6gzjMkIjx0Sr3" fill="#0d9488" height="50" rx="10" stroke="#0d9488" width="150" x="265" y="150"/><text data-page-node-id="H66irOC8axakWyqkUznB0f" class="txtw" x="340" y="172" style="fill:#fff; font-weight:600"><!--pnid:aZ1xPtoX0unbChdoSJvoHP-->子 Agent 2</text><text data-page-node-id="1V56aTIn5Gjldljfn9C0aX" class="small" x="340" y="190" style="fill:#fff; font-weight:600"><!--pnid:lbVujI7hBN5RcN48dbYSSb-->隔离上下文</text>
+      <rect data-page-node-id="60IZcDyouz16WX1kesfcn2" fill="#0d9488" height="50" rx="10" stroke="#0d9488" width="150" x="470" y="150"/><text data-page-node-id="S3h8PRhsmBOgcJ6V75xVVN" class="txtw" x="545" y="172" style="fill:#fff; font-weight:600"><!--pnid:BQqjteiL8aziYdQuXRFFK6-->子 Agent 3</text><text data-page-node-id="FtkoHQRacAeFwQx2syebqX" class="small" x="545" y="190" style="fill:#fff; font-weight:600"><!--pnid:2gIT0jUXIxpdJxqRdZq3ec-->隔离上下文</text>
+      <path data-page-node-id="DpYyI0sFkDdfCPar3kIvLt" class="flow" d="M135,200 L300,232"/>
+      <path data-page-node-id="8lEprNaLN9JKORS0gv3kXW" class="flow" d="M340,200 L340,232"/>
+      <path data-page-node-id="W5mPFONiGUwYSYzReZq2V3" class="flow" d="M545,200 L380,232"/>
+      <rect data-page-node-id="62AzybKBXyVPd0VHdQh0Ns" fill="none" height="0" rx="0" width="200" x="240" y="234"/>
+      <text data-page-node-id="aC5D2TmThWK527jedLUyCk" class="small" text-anchor="middle" x="340" y="246" style="fill:#0d9488; font-weight:700"><!--pnid:J1UjjUfGbB9AFkrGFtUOC9-->只回传要点</text>
+      <text data-page-node-id="4E4JLualsthnb0HA9XGF9Q" class="small" text-anchor="middle" x="340" y="274"><!--pnid:SR4bFbnH8cIyTl7XyBhyES-->子 Agent 用独立上下文窗口，只把相关结论回传主 Agent，避免主上下文被无关信息淹没。</text>
+    </svg>
+    <div data-page-node-id="KgXX0TX1Gpw5bdtoMGC3Ro" class="note"><!--pnid:41cjgXjUd6HwcHoqAmmtRw-->两个设计要点：① 子 Agent 隔离上下文，主 Agent 只收要点；② 任务边界必须写清，否则子 Agent 会重复劳动或越界。</div>
+  </div>
+
+  <div data-page-node-id="mqSwdvJkmgkyDJI7vaTAd2" class="card">
+    <div data-page-node-id="PCPY2ugDpEqBf6sxzIsQLs" class="cap"><!--pnid:u6jTgzgaF7BEjbkoX5sHZv-->表 7 · 多智能体系统的真实教训（来自生产复盘）</div>
+    <table data-page-node-id="tjKQzCcdxM9YW12qzot1zA" class="tbl">
+      <tr data-page-node-id="jpOhf98Qj3xTmKRjzAy4De"><th data-page-node-id="UoFAa0x8Euodk7ilulWqKn"><!--pnid:9XB3yihtv9QzpYEyEvcoUt-->踩过的坑</th><th data-page-node-id="OkxhcjFXt9Pl0D1UoCqDYd"><!--pnid:ZFj4dKrexnpgc1on0u4UhS-->表现</th><th data-page-node-id="kFrenhgDSe3cj38cff97xR"><!--pnid:hzk1R4kRJf1cMjchTUo2dM-->对策</th></tr>
+      <tr data-page-node-id="LJZne1JH35WDKG7gdty5a5"><td data-page-node-id="DfxKytkCRGfpYUBil19g14" class="kv"><!--pnid:7fLZCSSELIUJjxoCfAGelK-->过度派活</td><td data-page-node-id="uBdSWb5udJEqDNzmIPvuHo"><!--pnid:cpW6TbxyLFs3tctnM0PBPC-->简单查询也 spawn 数十个子 Agent</td><td data-page-node-id="FPlEQSqi4I5PCOaYFSndLD"><!--pnid:wQ06eKAZCFjbjQM1nFAg4R-->按复杂度配资源：事实题 1 个、对比题 2–4 个、开放题才多</td></tr>
+      <tr data-page-node-id="Cbmvs3l91ptWzYnndelom9"><td data-page-node-id="IqJDcPiCZQe2DrU4ECOxXs" class="kv"><!--pnid:21BsUHf9vL0BiEHDId0YJZ-->无休止搜</td><td data-page-node-id="xinraNmVWc2UQUxYl4qIr4"><!--pnid:WFTbonL4dEcd1ZZlTDCvgg-->子 Agent 搜不存在的源、停不下来</td><td data-page-node-id="w0aLJP5zG6Yqin8twgDlEU"><!--pnid:FydXl9d9UO6SoUw9gZ9GoO-->明确工具与来源范围、设步数上限</td></tr>
+      <tr data-page-node-id="iw7oVUEOVuRRr1gtj1sFYN"><td data-page-node-id="0dfNe1zMA0TY7Fpv2rnzjo" class="kv"><!--pnid:KpYhiLhiNNm2hb4G8KxZ1n-->互相干扰</td><td data-page-node-id="OLG3iJlTiW7Z3J4Xt6E8I8"><!--pnid:2PKwxMTDI1z2STEOpeSncS-->子 Agent 用过多更新彼此带偏</td><td data-page-node-id="AMX1P2wP5nOzY9opACfMtK"><!--pnid:XClHonQAaaA1JScPGRm9wE-->减少跨 Agent 冗余通信、明确职责边界</td></tr>
+      <tr data-page-node-id="d8OpOBZprPGXKnqxQg1IJP"><td data-page-node-id="NCHe2tJvEb26X93PHDIzOq" class="kv"><!--pnid:GkkOuc0pDYsGJnsCuSLMgX-->任务含糊</td><td data-page-node-id="KqvTVCDQ9UiPMkzYWRgM36"><!--pnid:6tkmwKgBjPhrGHpr1FZIhn-->子 Agent 误解或重复搜索</td><td data-page-node-id="ekrLaf1iKngXkF3NgYGQRZ"><!--pnid:Z9plfzf6LgC2Zo57Bp0TSu-->给每子 Agent 目标＋输出格式＋工具指引＋边界</td></tr>
+    </table>
+    <div data-page-node-id="iiNcna0KkFWSIPWBjeR2LO" class="note"><!--pnid:ROgpLmQWGZoFtNUtiTyjsZ-->口径：上方「＋90% 准确性」为 Anthropic 公开研究系统相对单 Agent 的对比口径；「数十个子 Agent」「过度派活」为早期版本观察到的失败现象，后经提示与护栏收敛。</div>
+  </div>
+</section>
+
+<!--pnid:PbvnTGhTFf2ujsJjnUQacy--><!-- 08 评测与防护 -->
+<section data-page-node-id="M9sQpj1mVsrTsIBXy83KPq" class="sec">
+  <h2 data-page-node-id="omaHz5o2LfXCnQj9OZVnFA" class="sec-h"><!--pnid:e4T3flcRHZ26W4bi7swxDf-->评测与防护：三层把「不可预测」关进笼子</h2>
+  <p data-page-node-id="eT6BFb56xndjraMMzWHZjl" class="sec-sub"><!--pnid:aYAl80RDZOapt7dVA6DMDE-->自主 Agent 难调试，靠三层兜底。模拟、护栏、监控</p>
+  <div data-page-node-id="ib33f496IBtfuuct7eUjM3" class="lead"><!--pnid:Yi5ZWkDC6URX39uRBGusB5-->
+    自主 Agent 的调试难点在于「失败落在任意一步」。生产级做法是把防护拆成三层：<strong data-page-node-id="zL1Ba1BufmdJoz8RpSAwRt"><!--pnid:xRSjwJtShohfRxNUYK0iyu-->模拟层</strong><!--pnid:3oUZ8suBGG6eNYl3z6mthw-->在上线前用真实场景和边界用例跑沙箱；<strong data-page-node-id="i3cgzSoQl2jBJC7r1NeavI"><!--pnid:48nP1Kpm5tOv9E10gTzaaT-->护栏层</strong><!--pnid:XKfzgLzRZ0aoZh2z9nTUFj-->在运行时每步校验、设人审与停止条件；<strong data-page-node-id="40Mhp56fcPngfSpZT5G0xq"><!--pnid:pJUMCzB04Uo2WAm4gfz8YA-->监控层</strong><!--pnid:yJNuZMWVfcZnbFd6LekAzt-->上线后持续度量结果与成本，用真实表现迭代。
+  </div>
+
+  <div data-page-node-id="IY0GuuR6oICG7anponn2pI" class="card">
+    <div data-page-node-id="2iKoyi7xCApg3Zh3SZMx2g" class="cap"><!--pnid:UkUNoS1fcEb3m9OFXZMpeB-->表 8 · 防护三层</div>
+    <table data-page-node-id="4b6SQk4j941CkVnKOg58vP" class="tbl">
+      <tr data-page-node-id="xnaNNu7gPzj5CptxZpeOg1"><th data-page-node-id="NLjZEnaJ7dso0YNEgge0Tw"><!--pnid:KtcYDxZXeQwoacdssdLzep-->层</th><th data-page-node-id="Dwn3V3o1lNh4HbSIuAStyi"><!--pnid:RsGqP5MUeWU4sjztfN0Avb-->做什么</th><th data-page-node-id="RV96p98CzqIcCCxxNaSqmZ"><!--pnid:DO6GOdzZUCMqwyW9L7ivC9-->关键动作</th></tr>
+      <tr data-page-node-id="V17T1zv0DQSPt0l1ehqGhN"><td data-page-node-id="NvpI8WgE9wcquhwrtjTKC6" class="kv"><!--pnid:Aax4My4BIArOMfiDhHdRd7-->模拟层</td><td data-page-node-id="6apWjL73rAPlWRptAU5vg3"><!--pnid:x6fYBKiDvWLKgbZYNb83we-->上线前沙箱测试</td><td data-page-node-id="rEDNJJIhV92suitNOcdLir"><!--pnid:6APuYezJYBqm9g2rIwZfOs-->真实场景＋边界用例、观察 Agent 逐步决策</td></tr>
+      <tr data-page-node-id="hIcgVGdP9E0JWRtfzLiXu0"><td data-page-node-id="voMgSCY6lq3KEA235ZJkGy" class="kv"><!--pnid:En6PSpYwoUA5xF7Wr5QioU-->护栏层</td><td data-page-node-id="aVZQNoUMtP4WFtpSF1EokZ"><!--pnid:HQLiJJb6Eut2LUeyhn98az-->运行时每步校验</td><td data-page-node-id="KYmlPAi94PjyEauFIbBPOC"><!--pnid:COV7rFdFZIY7yv0kmxYWrD-->工具白名单、人审节点、明确停止条件</td></tr>
+      <tr data-page-node-id="Q9tNGKOdJ75JkFBkRsxkLN"><td data-page-node-id="GMzoCzNY44rKTV7MxMYFJc" class="kv"><!--pnid:aCBfNmzs9ZDEqLx1t5mBnV-->监控层</td><td data-page-node-id="nDA9S9F51jiOJ1UJDoxu7v"><!--pnid:QytOyqHH7PoavpP94yXdQ6-->上线后持续度量</td><td data-page-node-id="3nxHrqFg6LJAtXv4qXLOfj"><!--pnid:7Nz3cTfgJRIphxslHjyX3r-->结果质量＋token / 步数成本，按真实数据迭代</td></tr>
+    </table>
+  </div>
+  <div data-page-node-id="UVyi2ZZstQDneil6yjzwBD" class="lead">
+    <strong data-page-node-id="zFXH1tj8m7rcLceeGIa1v4"><!--pnid:SsGdeKDQZe7Z6EouvKWMID-->三个常见误解：</strong><!--pnid:yPUxiWStVhJiDHWCum4DSS-->①「自主 Agent 比工作流更先进」。它是权衡不是升级；②「上了 Agent 就自动会干活」。工具描述与停止条件决定成败；③「多 Agent 一定更强」。协调失控会吃掉并行收益。
+  </div>
+</section>
+
+<!--pnid:FggDiMy1S9dbAb7tcSpMtW--><!-- 09 适用边界 -->
+<section data-page-node-id="4bk62y91GBuMA5kT3FHxDx" class="sec">
+  <h2 data-page-node-id="7NRlweGgkHn3QnR5GPh6LZ" class="sec-h"><!--pnid:fJ5GYgv2bTU0X7jIF6DWah-->适用边界与选型决策：什么时候不该上 Agent</h2>
+  <p data-page-node-id="Rezih4i2eIxqEAbMpoSjNk" class="sec-sub"><!--pnid:38RJX2YyyNk16LXklDgnfm-->把前面所有判断收口成一张「该不该上」的清单</p>
+  <div data-page-node-id="PBsxgd4pdqcdiLkiVALxxB" class="lead"><!--pnid:R74lKSMc4gCA582zLpBKlU-->
+    决策的最后一步是划清边界。自主 Agent 不是默认选项，而是「更便宜的形态都不够」时的兜底。下面这张清单用来在立项时快速判死刑。
+  </div>
+
+  <div data-page-node-id="bM8RLhJsV8k2zVCBZwlPO2" class="card">
+    <div data-page-node-id="l9dBeW8iLRH4IkYWwIy0YF" class="cap"><!--pnid:q4jhKjaSrHw46dYPNnZNIC-->表 9 · 「不该上自主 Agent」的决策信号</div>
+    <table data-page-node-id="yg0eIRZPIaKKntV1Kcsecq" class="tbl">
+      <tr data-page-node-id="hhwHxaQy5lx0hEC28AI678"><th data-page-node-id="LdnUdqp5fVWftaRPkBFa8o"><!--pnid:7GnrZV10u7NAh5Nvhm2O9b-->信号</th><th data-page-node-id="HZQzGAOcNfbgMGtwrs1EwS"><!--pnid:PwDR2qC7vrmhB6sukghcRV-->说明</th><th data-page-node-id="78yEf8xOB41jthiPjBF0Ju"><!--pnid:6EgUD8G1eq0zO3s5eeFc2k-->更合适的形态</th></tr>
+      <tr data-page-node-id="JdmDNYMBbHLvdpK4XtfQd0"><td data-page-node-id="YtB6Ohrz4X6xRdu4Z4zaCy" class="kv"><!--pnid:hcfozsRcbUZ4Ey6SGKGNwd-->步骤可枚举</td><td data-page-node-id="mWybnnKV7JUeZWalov227O"><!--pnid:QQWazzYhi0ydelzFN8sNFa-->路径能提前写死</td><td data-page-node-id="tvaU5cmDve0CtlVvPTCxPs"><!--pnid:oDpMhv21bLPn7xRwh5f1yK-->工作流（提示链 / 路由 / 并行）</td></tr>
+      <tr data-page-node-id="a3w50LcANXNRs7ahCWsFRX"><td data-page-node-id="bKerVFbe0gsTQUjuEcYx3h" class="kv"><!--pnid:xms5O8cGvrHRC2ErcT0wCV-->单轮能解决</td><td data-page-node-id="zLLzncr3x2AbODfOpqHOdQ"><!--pnid:ShravCz677QZlMkOh4SfAs-->无需多步、无需工具</td><td data-page-node-id="RAcNvoBZZS4DyhcVwW4Hi2"><!--pnid:5W8pV5tpR0hu50Mv0ou4fd-->增强型 LLM 单调用</td></tr>
+      <tr data-page-node-id="O7zURhP46uNCqy77cov1GN"><td data-page-node-id="zZPSCxIXYsbOzoUKJKLcce" class="kv"><!--pnid:3ktpi7JFyWdi4EytbVeowQ-->一致性优先</td><td data-page-node-id="At6m0ZEw3edK0Cooms006l"><!--pnid:sc5i8tRpEeACncfe9bfplH-->出错代价高、要可复现</td><td data-page-node-id="OKqjb4BgR8PFpVQciT5qhu"><!--pnid:tLS2NSZ5vE9ONMjnGzmyZp-->工作流＋强校验</td></tr>
+      <tr data-page-node-id="awje3aOBBF9JXNxQb3YmHG"><td data-page-node-id="EBRHMQ31DqBJPJYQ1r98s8" class="kv"><!--pnid:ThF8NLCofNfKe8L8EjM6nR-->预算敏感</td><td data-page-node-id="iZFWDsxyZuXElKagNFSPiy"><!--pnid:aiwiTX2Ung7IUQ3rfcWgDX-->高并发、单价要低</td><td data-page-node-id="6FlAuNnBa8o6XSbFljLTNN"><!--pnid:6ffXJY0IqHFFjt7SNUfAF6-->尽量下沉到更便宜的形态</td></tr>
+      <tr data-page-node-id="hZUo27i3DJ0ElYc0NIXAtW"><td data-page-node-id="LjxZNOqGOaiS7RgnN9UE7X" class="kv"><!--pnid:dQSed1VrIqaUbRyHz2Fc3A-->无护栏能力</td><td data-page-node-id="5t3hOKm7yjBkBFqAxYKplY"><!--pnid:z8dtBhviOfSkAQTCNAGc6E-->做不到人审 / 停止 / 监控</td><td data-page-node-id="2EtQS5ROgeefCn7Tm6cID2"><!--pnid:qK8SKl1ybw1svjFQFd7HGt-->暂缓，先补防护三层</td></tr>
+    </table>
+    <div data-page-node-id="RxzNspsvjBF8BL0TIwnY3d" class="note"><!--pnid:hxaQbLmK30NAGAGwQnCyEE-->反过来说，<strong data-page-node-id="z19NXOj3zx5l7wLPwfC3vG"><!--pnid:awxqBsrYOLVn1UIoP0Wytv-->只有「步骤随输入大幅变化、需实时应变、且能承受成本与不可预测」</strong><!--pnid:BUi0ux93JLEnRNrdZq2Im3-->的任务，才真正落在自主 Agent 的甜区。</div>
+  </div>
+</section>
+
+<!--pnid:7MzxPU0xWveghxJYI8HK3b--><!-- 11 决策方法（本轮对话沉淀） -->
+<section data-page-node-id="mlj59biYk0sjVdWHJPCU2e" class="sec">
+  <h2 data-page-node-id="5DELkdBmOpRscks6a6s0Jm" class="sec-h"><!--pnid:HXyJCiNzs5AU7o1o65SBNb-->决策方法：三条判断 + 案例 + 反例清单</h2>
+  <p data-page-node-id="6HrNY1eTbUfJeNtOm0e0XO" class="sec-sub"><!--pnid:oJubct4jnb7h9TUGq0ol7m-->把前述内容收成一张可复用的选型清单。任何「要不要上 Agent」的需求过一遍就有答案</p>
+  <div data-page-node-id="Imwu3xbcXv9MF7TswHOvXO" class="lead"><!--pnid:QZlXYxaVPTRmUPp2ihcfnn-->
+    本节把选型收敛成三条递进判断，像漏斗一样逐层收窄：<strong data-page-node-id="7QQowTmQRDzburneVacXze"><!--pnid:ZWcJAxzLRlWfiHbJutMOAM-->先定层（控制流在谁手里）→ 再定要不要多 Agent 容量 → 最后定内部串并行</strong><!--pnid:DrOzxJGRnea90mXxDNzdFH-->。每一条都从真实案例与反例里来，不是口号。
+  </div>
+
+  <div data-page-node-id="mk31SOMMTNwQlay3sMwQZE" class="figcard">
+    <div data-page-node-id="KHdof7EjWzmMJVSTWa41o6" class="cap"><!--pnid:6OPfzoyuRyioTqNwXDgIw7-->图 12 · 三条判断漏斗：递进收窄，从「该不该上」到「怎么编排」</div>
+    <svg data-page-node-id="5TfK3fPefS3CYoKaZuBy40" aria-label="三条判断漏斗" role="img" viewBox="0 0 680 300">
+      <defs data-page-node-id="gVlDKcnbEUaK8Zxz6c8ISM"><marker data-page-node-id="24JcG2MNdpwwFVgIq0xf4N" id="ar" markerHeight="8" markerWidth="8" orient="auto" refX="6" refY="3"><path data-page-node-id="EMFSbhYRhJWH3e4Xc52qde" d="M0,0 L6,3 L0,6 Z" fill="#72908a"/></marker></defs>
+      <!--pnid:frIox01tVnMxA8rvcSiyQc--><!-- 判断一 -->
+      <rect data-page-node-id="SQDjo6Yy0HSu2B7R9j5Q4H" class="box-l" height="66" rx="10" width="648" x="16" y="24"/>
+      <text data-page-node-id="pYlHK3KxSvxVSTulgLd7qB" class="txt" font-weight="700" x="34" y="52"><!--pnid:ZaRhx9X8QO9bfkF3LlxrYd-->判断一 · 控制流在谁手里</text>
+      <text data-page-node-id="yKlOjkuZsu4ZJZerkDc9Xa" class="small" x="34" y="76"><!--pnid:8rvhNvkXe9UyGYcvCZxEDs-->下一步由代码定 → 进工作流层（判断二·三）；由模型定 → 直接自主 Agent</text>
+      <!--pnid:CdVOVJZPoqaEfwOBGP2i3l--><!-- 判断二 -->
+      <rect data-page-node-id="CMCu5aHzOFzXeOlAgaGPXb" fill="#fff" height="66" rx="10" stroke="#94a3b8" stroke-width="1.4" width="430" x="16" y="116"/>
+      <text data-page-node-id="8fZWpn4PfUDqtFMRKRSr8a" class="txt" font-weight="700" x="34" y="144"><!--pnid:XaXF43E4ss9Zgd3ShkDkNQ-->判断二 · 单 Agent 容量够吗</text>
+      <text data-page-node-id="PI4QpPx8RTKLOgiP46wqY0" class="small" x="34" y="168"><!--pnid:Kw1DhpG3zDoo2YdDesU8iU-->够 → 增强型 LLM+工作流；不够且(可并行+装不下+付得起) → 多 Agent 并行容量</text>
+      <!--pnid:zXci3xcCBmUZ6UMyPUc5QV--><!-- 判断三 -->
+      <rect data-page-node-id="j4FsSanXeM9uBDLg8o4EZr" fill="#fff" height="66" rx="10" stroke="#94a3b8" stroke-width="1.4" width="430" x="16" y="208"/>
+      <text data-page-node-id="McAay4gY2y85MuusBcsRkn" class="txt" font-weight="700" x="34" y="236"><!--pnid:EP9X1CGeNnSE7kNXx5HRsS-->判断三 · 子任务独立吗</text>
+      <text data-page-node-id="oQlqjy6eoZpnpr2k5ijczI" class="small" x="34" y="260"><!--pnid:u5QpxtgDOyPMlds2Ozxfis-->依赖 → 串行提示链+评估 gate；独立 → 并行(分段/voting)+聚合器</text>
+      <!--pnid:WpjQVnuzU8CqMXHu463S1G--><!-- 右：自主Agent区 -->
+      <rect data-page-node-id="szdQYJAGFTHOK9NNkUTCP4" fill="#ecfdf5" height="158" rx="10" stroke="#0d9488" stroke-dasharray="5 4" stroke-width="1.4" width="202" x="462" y="116"/>
+      <text data-page-node-id="vxHfJNIsbDDdVWF2aImDs8" fill="#0f766e" font-size="13" font-weight="700" text-anchor="middle" x="563" y="144"><!--pnid:kIBU3V634kZEwJZy8gR2DP-->自主 Agent 区</text>
+      <text data-page-node-id="JGzD21LY1NcyUHglWxQZif" class="small" x="476" y="172"><!--pnid:JFU7qaluZvlXloY2M5sr92-->控制流在模型：用灵活性换</text>
+      <text data-page-node-id="MQpbr8NpjLlyZMWocNRwiX" class="small" x="476" y="190"><!--pnid:hA0H62wf5qZ3WJBNpo7kaZ-->成本 / 延迟 / 不可预测</text>
+      <text data-page-node-id="eWhcf7pZIeU84sqYEaWNjX" class="small" x="476" y="210"><!--pnid:CYoI2xp2OMckQwYeGZqAfn-->只在步骤无法提前枚举时进</text>
+      <text data-page-node-id="6sL8nITHArzMOrKIIrlLYF" class="small" x="476" y="230"><!--pnid:PfFXnLhI5AdqBpEmNaRIah-->单 Agent 内并行调工具只是提速，</text>
+      <text data-page-node-id="jMs3bKDJgFw8OeRkF7mk4C" class="small" x="476" y="248"><!--pnid:FHsnvqukNunHm9El5yOsnX-->不算多 Agent（容量轴没动）</text>
+      <!--pnid:lEG0rzc0M0dGHamcQKfswr--><!-- 箭头 -->
+      <path data-page-node-id="qJUgdWsTqowRxpfabD8P0D" class="flow" d="M231,90 L231,114"/>
+      <path data-page-node-id="tQHROqTgtiI9LEG1h10skK" class="flow" d="M231,182 L231,206"/>
+      <path data-page-node-id="GKwmGXhJlwQIn4QtjYBF4y" class="flow" d="M664,57 L460,150" stroke-dasharray="5 4"/>
+      <text data-page-node-id="Y06LKOurPGZqBsSVG4d8oN" class="small" x="34" y="294"><!--pnid:zj2nZ9tV0HNenWh7sEnjO5-->递进漏斗：先定层（一）→ 再定要不要多 Agent 容量（二）→ 最后定内部串并行（三）。</text>
+    </svg>
+    <div data-page-node-id="JmpewYv5Uo10nrlcvZyaUk" class="note"><!--pnid:115oE4GDTNyVmTM7bsvJMU-->一句话记住：<strong data-page-node-id="qVCoAFyYdupS9FuRYrY2r9"><!--pnid:BgTaZhB2SSaEkRebEcn4Ys-->自主 Agent 是权衡不是奖赏</strong><!--pnid:xcik83WUM9rys3rg3HUFdE-->。能写死流程就别交权给模型；需要多 Agent 往往只是为了「容量」，不是为了「自主权」。</div>
+  </div>
+
+  <div data-page-node-id="zZpoJm8kGYmYaKmAaMF83f" class="pull"><!--pnid:QF6AiB5i6buEZwFb9LMCnS-->并行 ≠ 多 Agent：单 Agent 内并行调工具只为提速，容量轴没动；多 Agent 是独立上下文窗口换并行容量。把「为了快」和「为了容量」混为一谈，是选型最常犯的错。</div>
+
+  <div data-page-node-id="9HSeQTH9nBZgCtMQp2Iypo" class="card">
+    <div data-page-node-id="tRG4AWbs1VwYV4Zm3xb0X5" class="cap"><!--pnid:m4etRP8O9P10mmAHxN3WZw-->表 10 · 三个案例：事实 → 三条判断 → 结论</div>
+    <table data-page-node-id="eTU0f25ObnfbLhkpi3gh1A" class="tbl">
+      <tr data-page-node-id="cddRtGVwUgjNKf21ojZlF5"><th data-page-node-id="G9iaMedpzU0i9Yk9qsjyo4"><!--pnid:Txq3RwynCGTl1AZt32Oqfx-->场景</th><th data-page-node-id="mRMqu0gouxFkV807va1kp3"><!--pnid:7npqp8jfVfknqu7CLWL1Do-->关键事实</th><th data-page-node-id="kGwpjHuZrWEfvZMRXa7GQj"><!--pnid:pfFqaKMsEH7UBuTN8COb51-->三条判断结论</th><th data-page-node-id="mKKcb7pgZpcnOz32xaC6yw"><!--pnid:yfE17IQG5lxeQzv7vN8UGi-->启示</th></tr>
+      <tr data-page-node-id="A1DjWif6dVd42u7AduDHUL"><td data-page-node-id="0JjgdirVV2WSv16Zdfs6gr" class="kv"><!--pnid:FrK1YQyppbDUQ1YCnYW2jp-->电商中台客服助手（翻车）</td><td data-page-node-id="XmDtfNiGg4nizioWbXk40b"><!--pnid:HI7FI1L0J8Fj0hIPpHI5rh-->拆四 Agent 后延迟 0.8→3.5s、成本 4×、准确率 92→88%、质检改崩话术</td><td data-page-node-id="ip5XFlgy8qU2hUuPQ5ClLa"><!--pnid:sL3wlxSHGpBaXmDNGGEis3-->一·代码定；二·不需多 Agent（串行依赖+上下文小）；三·串行提示链+评估 gate</td><td data-page-node-id="h0d9UPETogHMhPKLPQ6uL7"><!--pnid:kaziuROkvPzuYyi8GF10ua-->回退「增强型 LLM+评估 gate」，准确率回到 93%</td></tr>
+      <tr data-page-node-id="F7lUIrf9PZzP653le4MOqI"><td data-page-node-id="HOdTuSLhwLaTXYGUc9J0j6" class="kv"><!--pnid:IdQkJjJLvYsXWlAscqePwX-->社交电商种草笔记审核</td><td data-page-node-id="TaKoqjG3bz8XzR7tU2fnla"><!--pnid:vwqBND0WzsKX2wHDLSO3AL-->虚假宣传/导流/医疗宣称三维度互相独立</td><td data-page-node-id="3m6KbmSYtqTVYja7k9YD1j"><!--pnid:hqaeQ3ybLz6UmKiG4Uophp-->一·代码定；二·单 Agent 容量够；三·并行分段+聚合器（投票类）</td><td data-page-node-id="ylcipjCReuyuodIsuXNXiX"><!--pnid:JPhAO0yET0zkQfXE8WW47U-->子任务独立 → 可并行提速，不必串行</td></tr>
+      <tr data-page-node-id="zE1jNpnNwOzP5TwGeyDEHv"><td data-page-node-id="3CuxaHDeDfhxiouVPqkvZl" class="kv"><!--pnid:o3DP22VYSQzj3WarO4Gjp2-->传统零售竞品深度综述</td><td data-page-node-id="FUwxTyO3vEHezPLOKNXmP9"><!--pnid:eoJsjDTzsmenj5kfYSkfTF-->5 竞品×4 维度=20 块独立资料，单 Agent 装不下</td><td data-page-node-id="NnjU4nQccdLgLCNsF8kzhk"><!--pnid:8BVcRCQRFVcAUHSfbEfNZg-->一·代码定；二·翻转→多 Agent 并行容量（并行工作流分段）；三·非自主 Agent</td><td data-page-node-id="r0G88ana4hfGSv3DWa9x8i"><!--pnid:2ME7a75nbW3AlaRzveVMsi-->容量轴翻转，但控制流仍代码。不上自主 Agent</td></tr>
+    </table>
+    <div data-page-node-id="7F08VVRYibpwXqQwB77bPV" class="note"><!--pnid:dejwaeXifpm1Sex4E9GOya-->三个案例跨域（中台/社交/传统零售）仍成立，说明方法是可迁移的判据，不是记场景。</div>
+  </div>
+
+  <div data-page-node-id="YGxap4Ih2z9A2HPd32Wd81" class="card amber">
+    <div data-page-node-id="j5wo8QEgf0I786W2gRnqcs" class="cap"><!--pnid:xw2SbOmFR3sfRRzVx6zl3b-->追问三层 · 拿真实需求压测判据（以「季度经营分析报告」为例）</div>
+    <p data-page-node-id="EBAFIHvBeDpLGesPu5DLZ8" class="txt" style="margin:6px 0"><strong data-page-node-id="XAL9AjFXofclipKc9yOFgS"><!--pnid:9lf0Q0bB7hS566DAr6seGu-->层一 · 逆推落地（MVP）</strong><!--pnid:ZTrfEbZQTW1eZQ40MfS0dW-->：按「代码控制流 + 单 Agent + 门店并行抓取」做，最小落地长什么样？哪些环节真要 LLM（洞察生成、市场结合），哪些 SQL/规则就能搞定（数据汇总、环比）？防「为 AI 而 AI」。</p>
+    <p data-page-node-id="B5cDSxQHWyOduD6jcQDjUN" class="txt" style="margin:6px 0"><strong data-page-node-id="1jSd7dNEpJym7hYHTSJDLG"><!--pnid:eAV4nBRKQDai12tl7pCuHJ-->层二 · 边界（什么情况翻转）</strong><!--pnid:7CNT1KsJRdBl4fxppf84zw-->：门店从几十家涨到几千家、或市场动态要实时多轮调研时，单 Agent 还装得下吗？控制流还能钉代码吗？哪条信号先破？</p>
+    <p data-page-node-id="6vQLnp8JQ0Q9DDDknl8OLk" class="txt" style="margin:6px 0"><strong data-page-node-id="Rg3G37CawACcbgz13BdDyg"><!--pnid:jIYDfCnaCAYwoanBUkDlI5-->层三 · 跨场景泛化</strong><!--pnid:qzGOT9c0CiMTJgJVlRZGVH-->：这套结论换到合规月报、投后管理报告、实时大促战报还成立吗？哪类报告会翻转（如实时战报可能要运行时动态决定分析角度，控制流该交给模型）？</p>
+  </div>
+
+  <div data-page-node-id="e0PIZc2awKhv5GtZwwXgHE" class="card danger">
+    <div data-page-node-id="v5PY3ISPLAOCkOZoTeDSeG" class="cap"><!--pnid:UvzdwEt4whQ2cgbaNz33Wi-->表 11 · 反例清单：每条判断各配反例</div>
+    <table data-page-node-id="QIuzEBgUT9FJOqROruLt99" class="tbl">
+      <tr data-page-node-id="vlYtFthTOdPd2UJluRX5fk"><th data-page-node-id="OrDgXXy1gvAXqe7KJnTGbI"><!--pnid:dtBzHKZWLTWEiIJ3kjHlEb-->编号</th><th data-page-node-id="qg0UHf6lHQsiIUHGQNUDRb"><!--pnid:rJwpB4IE7Mf377cJ5RI6Xt-->反例</th><th data-page-node-id="hom8f7lspDVSFKatZ8PNds"><!--pnid:ed9KmbvkJP5onk9HVYyroC-->错在哪</th><th data-page-node-id="i2PqWA7o5ndVtkTAKNRiai"><!--pnid:YkvRYVEtzd7JnXs8qZQo7r-->正确做法</th></tr>
+      <tr data-page-node-id="OO86LjfdvJlsSqiGdY2LKJ"><td data-page-node-id="6uBwysCjroojJD9GnAD9r0" class="kv"><!--pnid:lzgiX0rnXC8g8sfjC7EdWg-->判断一·A</td><td data-page-node-id="4XOuAdDtxWDbAWNxDcDfay"><!--pnid:hdik88GyvttIkZbmsnYEQA-->动态故障排查硬写成工作流</td><td data-page-node-id="sP4Qwly1MjBj3JHkqgs6DR"><!--pnid:YG2BxcVAk4N86IYRZwPujd-->该上 Agent（步骤不可预知）却没上，流程僵死</td><td data-page-node-id="eyfLtLxlI1MsPUeFBnW2FE"><!--pnid:rO20S8diIZVff82K2gKcQ2-->步骤看中间结果才定 → 上 ReAct 自主 Agent</td></tr>
+      <tr data-page-node-id="HNuejELAKzOAEsutloiUBJ"><td data-page-node-id="wXfNBdjwORVL837g5M5J7B" class="kv"><!--pnid:YqxGzFIieyCvCzCNMBxMRm-->判断一·B</td><td data-page-node-id="De9mc0lACf2Fc3iNg8cBVL"><!--pnid:A0Epr4HSYLU5SEoxm9WpM3-->客服四 Agent 翻车</td><td data-page-node-id="FnWJgASE49MHyGKW9xNu5K"><!--pnid:ZORHcpaLAukNQc0BDnPhDD-->不该上 Agent（控制流本该代码）却为「先进」上了</td><td data-page-node-id="Jc8qpA6Wm1sXYgkax1ZrHo"><!--pnid:kGQY0NncSuNA9UuFl8hQRr-->回退增强型 LLM + 评估 gate</td></tr>
+      <tr data-page-node-id="QbTgPel164hZYIKnILFe5d"><td data-page-node-id="p1tZ1IhmWMLcigYa2q4UDO" class="kv"><!--pnid:LUjaMOAQRqCDce9dresItJ-->判断二·C</td><td data-page-node-id="jODExqtLB6KlGE8FZy2oVc"><!--pnid:NWfNnFQy69VuRdW91DEkTm-->竞品综述硬撑单 Agent</td><td data-page-node-id="4K0Zrri1kawAL5r2y8aNSe"><!--pnid:5tLCRKWREdSz0c2imONyS7-->该用多 Agent 容量（20 块装不下）却没上，资料被截断</td><td data-page-node-id="uLo3X4ic2ZUEiJL5e48pVc"><!--pnid:7CA6aXA3yWZPVcafeZ4YrG-->并行工作流分段，拆 20 块独立窗口</td></tr>
+      <tr data-page-node-id="NnQ3hCKlxBUWp85E9A29NT"><td data-page-node-id="5BEbyaLhGVCLdfPbPpX9kT" class="kv"><!--pnid:IXR2NZqWdHBlFo5l42n9hk-->判断二·D</td><td data-page-node-id="zQfbdlHK21gLljr7bBmqOL"><!--pnid:2C14WZyyx4HGUyHVjwJmMt-->季度报告「用了并行就是多 Agent」</td><td data-page-node-id="pYRVZJkM06xJa8QdbwXUPF"><!--pnid:pgp3VJfCXgLpVczGmDzWYw-->单 Agent 内并行调工具只为提速，误当多 Agent</td><td data-page-node-id="5rUbWWil5CeWEUtkoV0w1i"><!--pnid:sR4eXMiODqZrhC739xpsHe-->单 Agent+并行工具调用，容量轴没动</td></tr>
+      <tr data-page-node-id="o1tGL2b2oeP1C40a0GwpjG"><td data-page-node-id="ZsoRJlJLNhPuf3gnUOZjCq" class="kv"><!--pnid:d3xFU4UUtSp2TCcmIrvvoU-->判断三·E</td><td data-page-node-id="bpmYS9F5huTNIEfpWQUEbK"><!--pnid:aMkxylFHvatJeyd0t8D5ZJ-->种草审核三维度误串行</td><td data-page-node-id="t5HuK85P8Pgc8ZBtEGbfBx"><!--pnid:hdFeTji6BX1I1iDy98oKQK-->独立任务误串行，慢一倍，浪费并行红利</td><td data-page-node-id="mPf64AcawDgVg5fgPsmS5W"><!--pnid:Sk6JxFhJ4yyQgoLIiiwBlp-->并行分段 + 聚合器</td></tr>
+      <tr data-page-node-id="vtzOQVMDkCWsAQnXeQkN63"><td data-page-node-id="kNWOFwU9LERXm5G9l9MEo8" class="kv"><!--pnid:HseMzLDZj428Ov6mzvde39-->判断三·F</td><td data-page-node-id="1SFA5PYIkPm3xwv1HF8jmh"><!--pnid:3FwHnqFabw3AtnId7oN5kK-->意图未知就并行检索</td><td data-page-node-id="h8iLqDUElWUllVU9aJGgLw"><!--pnid:OWMbnwPYObV35WDfCowdss-->依赖任务（先识别意图再按意图检索）误并行，方向错、烧 token</td><td data-page-node-id="gDFMSdakHMlBUFjXSgEc6I"><!--pnid:cLZTyznjVtQhOcvNsslcee-->串行提示链：先识别，再按意图检索</td></tr>
+    </table>
+  </div>
+</section>
+
+<!--pnid:Dt48yhwDCRthDUrBmocehd--><!-- 10 进阶速览 -->
+<section data-page-node-id="oqdMiu0YEHpNoDpx3Eoilu" class="sec">
+  <h2 data-page-node-id="RWYBsKQFay8BDYiMYvjVaw" class="sec-h"><!--pnid:9UUEMpXgySVEJkHfYimlBp-->进阶方向速览</h2>
+  <p data-page-node-id="qgo7orv3YlYRvAV6YNcJlv" class="sec-sub"><!--pnid:MYlFVrMSvwZeafLeecOwPI-->三条值得继续追的线，点到为止</p>
+  <div data-page-node-id="7hLJaq7XoDo3WP5Zf1YwJE" class="lead">
+    <strong data-page-node-id="EWaep0kmqwMeqoow0GPO2C"><!--pnid:sH0k2YQjc4nCReL9DBKXAF-->计算机操作（Computer Use）</strong><!--pnid:8UipAjE4SEfpftJBLZdEn1-->：把「操作电脑」本身做成工具（读屏、点按、执行命令），Agent 由此能处理没 API 的旧系统。代价是更不可预测，护栏要求更高。<br data-page-node-id="OohJXCVKSO2iXiXaHMai5i">
+    <strong data-page-node-id="vz2KNG77kI8pJaqpFWyN2Q"><!--pnid:gFm8Ptqn0jncFjpeqgqePm-->长期记忆</strong><!--pnid:0aF8AqnFyrb6uOiXXu27gj-->：把跨会话的关键事实、决策、进度外置存储，避免上下文窗口撑爆；它直接对应大模型「记忆」一类失效。装不下时靠外置而非硬塞。<br data-page-node-id="jEJgkNGafjzHM0mHgCUqyJ">
+    <strong data-page-node-id="cLRK1ysdiSKAQ2XsAfXc5v"><!--pnid:haU98HbZJFiSDYWppL3GZw-->框架对比</strong><!--pnid:K2zliNunGc97bsMGWOi3gH-->：Anthropic Agent SDK、LangGraph、开源多 Agent 框架各擅场，选型原则仍是一句。先直接调 LLM API，确需时再上框架，且要懂框架下的提示与响应。
+  </div>
+  <div data-page-node-id="JcmDDMWKAup5JOylJf0Qof" class="pull"><!--pnid:kD3WD9YjzQOhY6vhPrBTfG-->收口一句：Agent 靠谱不靠「多自主」，靠「该简单的绝不复杂、该兜住的绝不裸奔」。把控制权留在代码里能解决的事，就不要交给模型。</div>
+</section>
+
+  </div>
+</div>
+</body>
+</html>
