@@ -1,5 +1,5 @@
 ---
-title: 中国 AIGC 应用全景图谱
+title: AIGC应用全景图
 published: 2025-11-29
 description: 量子位智库 2025 年出的 AIGC 应用全景图谱，按 to C 与 to B 两大类铺开，右侧单列底层开发与 AI 编程工具。
 image: /assets/library/notes/aigc-landscape-2025/cover.webp
@@ -14,8 +14,8 @@ comment: false
 documentPages: 1
 ---
 
-<div class="document-page-stream" aria-label="中国 AIGC 应用全景图谱在线预览">
+<div class="document-page-stream" aria-label="AIGC应用全景图在线预览">
   <a href="/assets/library/notes/aigc-landscape-2025/pages/page-01.webp" target="_blank" rel="noopener" title="点击查看原图">
-    <img src="/assets/library/notes/aigc-landscape-2025/pages/page-01.webp" alt="中国 AIGC 应用全景图谱" loading="lazy" decoding="async" draggable="false" />
+    <img src="/assets/library/notes/aigc-landscape-2025/pages/page-01.webp" alt="AIGC应用全景图" loading="lazy" decoding="async" draggable="false" />
   </a>
 </div>
