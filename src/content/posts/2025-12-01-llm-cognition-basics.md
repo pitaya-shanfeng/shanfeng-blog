@@ -1,5 +1,5 @@
 ---
-title: 【分享】大模型认知基础
+title: 大模型认知基础
 published: 2025-12-01
 description: 大模型认知基础课程资料，涵盖 AI、机器学习、深度学习、大模型、RAG、Agent 与微调。
 image: /assets/library/notes/llm-cognition-basics/cover.webp
