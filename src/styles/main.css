@@ -59,9 +59,32 @@ html {
     font-size: 14px;
 }
 
+/* 桌面按屏幕宽度分档补偿：
+   固定乘一个系数的话，笔记本上刚好，大屏上就会同时「字小 + 内容窄」。
+   这里以 rootScale（默认 0.9）为基准，屏幕越宽系数越往上补，
+   到 1920 左右回到 16px（相当于浏览器 100% 的观感），更宽的屏再放大一点。
+   折算：1440→14.4px、1600→15.2、1920→16.0、2400→17.0。 */
 @media (min-width: 768px) {
     html {
         font-size: calc(16px * var(--root-scale, 0.9));
+    }
+}
+
+@media (min-width: 1600px) {
+    html {
+        font-size: calc(16px * var(--root-scale, 0.9) * 1.055);
+    }
+}
+
+@media (min-width: 1920px) {
+    html {
+        font-size: calc(16px * var(--root-scale, 0.9) * 1.111);
+    }
+}
+
+@media (min-width: 2400px) {
+    html {
+        font-size: calc(16px * var(--root-scale, 0.9) * 1.18);
     }
 }
 
