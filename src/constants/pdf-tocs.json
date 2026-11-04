@@ -1,935 +1,1067 @@
 {
-  "2025-12-01-llm-cognition-basics": [
-    {
-      "depth": 1,
-      "slug": "page-02",
-      "text": "AI基础认知"
-    },
-    {
-      "depth": 2,
-      "slug": "page-03",
-      "text": "一张图厘清名词关系"
-    },
-    {
-      "depth": 2,
-      "slug": "page-04",
-      "text": "什么是人工智能（AI）？"
-    },
-    {
-      "depth": 2,
-      "slug": "page-05",
-      "text": "什么是机器学习ML?"
-    },
-    {
-      "depth": 2,
-      "slug": "page-06",
-      "text": "机器学习ML-监督学习"
-    },
-    {
-      "depth": 2,
-      "slug": "page-07",
-      "text": "机器学习ML-无监督学习"
-    },
-    {
-      "depth": 2,
-      "slug": "page-08",
-      "text": "机器学习ML-强化学习"
-    },
-    {
-      "depth": 2,
-      "slug": "page-09",
-      "text": "机器学习ML-半监督学习"
-    },
-    {
-      "depth": 2,
-      "slug": "page-10",
-      "text": "机器学习ML-自监督学习"
-    },
-    {
-      "depth": 2,
-      "slug": "page-11",
-      "text": "什么是深度学习DL?"
-    },
-    {
-      "depth": 2,
-      "slug": "page-12",
-      "text": "深度学习DL-卷积神经网络（CNN）"
-    },
-    {
-      "depth": 2,
-      "slug": "page-13",
-      "text": "深度学习DL-循环神经网络（RNN）"
-    },
-    {
-      "depth": 2,
-      "slug": "page-14",
-      "text": "深度学习DL-生成对抗网络（GAN）"
-    },
-    {
-      "depth": 2,
-      "slug": "page-15",
-      "text": "神经网络与机器学习的关系？"
-    },
-    {
-      "depth": 1,
-      "slug": "page-16",
-      "text": "AI演进发展"
-    },
-    {
-      "depth": 2,
-      "slug": "page-17",
-      "text": "AI的起源及发展变迁历程"
-    },
-    {
-      "depth": 2,
-      "slug": "page-18",
-      "text": "AI的起源及发展变迁历程"
-    },
-    {
-      "depth": 2,
-      "slug": "page-19",
-      "text": "现象级产品-DeepBlue"
-    },
-    {
-      "depth": 2,
-      "slug": "page-20",
-      "text": "现象级产品-AlphaGo"
-    },
-    {
-      "depth": 2,
-      "slug": "page-21",
-      "text": "现象级产品-ChatGPT与DeepSeek"
-    },
-    {
-      "depth": 2,
-      "slug": "page-22",
-      "text": "现象级产品-ChatGPT与DeepSeek"
-    },
-    {
-      "depth": 2,
-      "slug": "page-23",
-      "text": "AI1.0：感知智能时代"
-    },
-    {
-      "depth": 2,
-      "slug": "page-24",
-      "text": "AI2.0：认知智能时代"
-    },
-    {
-      "depth": 1,
-      "slug": "page-25",
-      "text": "什么是大模型？"
-    },
-    {
-      "depth": 2,
-      "slug": "page-26",
-      "text": "什么是大模型？"
-    },
-    {
-      "depth": 2,
-      "slug": "page-27",
-      "text": "常见的大模型"
-    },
-    {
-      "depth": 2,
-      "slug": "page-28",
-      "text": "大模型认知误区（补充）"
-    },
-    {
-      "depth": 2,
-      "slug": "page-29",
-      "text": "大模型的\"超能力1\"-总结与提取"
-    },
-    {
-      "depth": 2,
-      "slug": "page-30",
-      "text": "大模型的\"超能力2\"-生成与创作"
-    },
-    {
-      "depth": 2,
-      "slug": "page-31",
-      "text": "大模型的\"超能力3\"-翻译与改写"
-    },
-    {
-      "depth": 2,
-      "slug": "page-32",
-      "text": "大模型的\"超能力4\"-逻辑与推理"
-    },
-    {
-      "depth": 2,
-      "slug": "page-33",
-      "text": "大模型的\"超能力5\"-意图理解"
-    },
-    {
-      "depth": 2,
-      "slug": "page-34",
-      "text": "大模型的\"致命伤1\"-幻觉"
-    },
-    {
-      "depth": 2,
-      "slug": "page-35",
-      "text": "大模型的\"致命伤2\"-记忆受限"
-    },
-    {
-      "depth": 2,
-      "slug": "page-36",
-      "text": "大模型的\"致命伤3\"-时效性与私有数据"
-    },
-    {
-      "depth": 2,
-      "slug": "page-37",
-      "text": "大模型的\"致命伤4\"-不可控性与延迟"
-    },
-    {
-      "depth": 2,
-      "slug": "page-38",
-      "text": "大模型的发展趋势"
-    },
-    {
-      "depth": 2,
-      "slug": "page-39",
-      "text": "大模型面临的挑战"
-    },
-    {
-      "depth": 1,
-      "slug": "page-40",
-      "text": "我们如何拥抱AI？"
-    },
-    {
-      "depth": 2,
-      "slug": "page-41",
-      "text": "大模型的行业应用"
-    },
-    {
-      "depth": 2,
-      "slug": "page-42",
-      "text": "大模型落地-提示词工程（Prompt）"
-    },
-    {
-      "depth": 2,
-      "slug": "page-43",
-      "text": "大模型落地-检索增强生成（RAG）"
-    },
-    {
-      "depth": 2,
-      "slug": "page-44",
-      "text": "大模型落地-智能体（Agent）"
-    },
-    {
-      "depth": 2,
-      "slug": "page-45",
-      "text": "大模型落地-微调（Fine-tuning）"
-    }
-  ],
-  "2026-10-29-prd-writing": [
-    {
-      "depth": 1,
-      "slug": "page-02",
-      "text": "说在前面"
-    },
-    {
-      "depth": 1,
-      "slug": "page-03",
-      "text": "重新认识一下 PRD"
-    },
-    {
-      "depth": 2,
-      "slug": "page-04",
-      "text": "PRD 是用来干啥的"
-    },
-    {
-      "depth": 2,
-      "slug": "page-05",
-      "text": "三种常见形式"
-    },
-    {
-      "depth": 2,
-      "slug": "page-06",
-      "text": "核心工具"
-    },
-    {
-      "depth": 2,
-      "slug": "page-07",
-      "text": "辅助工具：图标、图片与图表"
-    },
-    {
-      "depth": 2,
-      "slug": "page-08",
-      "text": "辅助工具：脑图与流程图"
-    },
-    {
-      "depth": 2,
-      "slug": "page-09",
-      "text": "「PRD 不行」的五类表现"
-    },
-    {
-      "depth": 1,
-      "slug": "page-10",
-      "text": "一体化 PRD 结构"
-    },
-    {
-      "depth": 2,
-      "slug": "page-11",
-      "text": "版本说明"
-    },
-    {
-      "depth": 2,
-      "slug": "page-12",
-      "text": "项目说明"
-    },
-    {
-      "depth": 2,
-      "slug": "page-13",
-      "text": "功能说明"
-    },
-    {
-      "depth": 2,
-      "slug": "page-14",
-      "text": "埋点说明"
-    },
-    {
-      "depth": 2,
-      "slug": "page-15",
-      "text": "影响、性能与其他说明"
-    },
-    {
-      "depth": 2,
-      "slug": "page-16",
-      "text": "前台详细设计"
-    },
-    {
-      "depth": 2,
-      "slug": "page-17",
-      "text": "后台详细设计"
-    }
-  ],
-  "2025-11-30-ai-product-posture": [
-    {
-      "depth": 1,
-      "slug": "page-01",
-      "text": "确定性与概率思维"
-    },
-    {
-      "depth": 1,
-      "slug": "page-02",
-      "text": "五维能力模型与进阶路径"
-    }
-  ],
-  "2025-11-29-aigc-application-map": [
-    {
-      "depth": 1,
-      "slug": "page-01",
-      "text": "中国 AIGC 应用全景图谱"
-    }
-  ],
-  "2026-11-03-vector-search-ann": [
-    {
-      "depth": 1,
-      "slug": "page-02",
-      "text": "向量搜索的背景与意义"
-    },
-    {
-      "depth": 2,
-      "slug": "page-03",
-      "text": "RAG 场景：为什么需要向量检索"
-    },
-    {
-      "depth": 1,
-      "slug": "page-04",
-      "text": "常用检索算法总览"
-    },
-    {
-      "depth": 2,
-      "slug": "page-05",
-      "text": "暴力搜索：地毯式排查的比喻"
-    },
-    {
-      "depth": 2,
-      "slug": "page-06",
-      "text": "暴力搜索的原理与代价"
-    },
-    {
-      "depth": 1,
-      "slug": "page-07",
-      "text": "范式革命：ANN"
-    },
-    {
-      "depth": 2,
-      "slug": "page-08",
-      "text": "IVF 工作流程：聚类、索引、查询"
-    },
-    {
-      "depth": 2,
-      "slug": "page-09",
-      "text": "IVF 示意：只搜邻近几簇"
-    },
-    {
-      "depth": 2,
-      "slug": "page-10",
-      "text": "IVF 的颜色类比"
-    },
-    {
-      "depth": 2,
-      "slug": "page-11",
-      "text": "HNSW 核心思想：小世界与分层"
-    },
-    {
-      "depth": 2,
-      "slug": "page-12",
-      "text": "HNSW 搜索流程：逐层贪婪下探"
-    },
-    {
-      "depth": 2,
-      "slug": "page-13",
-      "text": "三大超参数：M / efConstruction / efSearch"
-    },
-    {
-      "depth": 2,
-      "slug": "page-14",
-      "text": "IVF 与 HNSW 对比"
-    }
-  ],
-  "2026-11-03-ai-llm-intro": [
-    {
-      "depth": 1,
-      "slug": "page-03",
-      "text": "开启你的大模型学习之路"
-    },
-    {
-      "depth": 1,
-      "slug": "page-04",
-      "text": "第一章：大模型是什么"
-    },
-    {
-      "depth": 2,
-      "slug": "page-05",
-      "text": "深蓝的故事"
-    },
-    {
-      "depth": 2,
-      "slug": "page-06",
-      "text": "AlphaGo 的故事"
-    },
-    {
-      "depth": 2,
-      "slug": "page-07",
-      "text": "ChatGPT 与 DeepSeek"
-    },
-    {
-      "depth": 1,
-      "slug": "page-08",
-      "text": "第二章：大模型的能力边界"
-    },
-    {
-      "depth": 2,
-      "slug": "page-09",
-      "text": "幻觉问题"
-    },
-    {
-      "depth": 2,
-      "slug": "page-10",
-      "text": "上下文窗口"
-    },
-    {
-      "depth": 1,
-      "slug": "page-11",
-      "text": "第三章：应用开发的四个方向"
-    },
-    {
-      "depth": 2,
-      "slug": "page-12",
-      "text": "提示词工程"
-    },
-    {
-      "depth": 2,
-      "slug": "page-13",
-      "text": "知识库 RAG"
-    },
-    {
-      "depth": 2,
-      "slug": "page-14",
-      "text": "智能体 Agentic"
-    },
-    {
-      "depth": 2,
-      "slug": "page-15",
-      "text": "微调 Fine-tuning"
-    },
-    {
-      "depth": 1,
-      "slug": "page-16",
-      "text": "第四章：职业机会在哪"
-    },
-    {
-      "depth": 2,
-      "slug": "page-17",
-      "text": "不同行业的应用案例"
-    },
-    {
-      "depth": 2,
-      "slug": "page-18",
-      "text": "职业机会与技能要求"
-    },
-    {
-      "depth": 1,
-      "slug": "page-19",
-      "text": "总结与讨论"
-    }
-  ],
-  "2026-11-03-prompt-engineering-tuning": [
-    {
-      "depth": 1,
-      "slug": "page-03",
-      "text": "第一章：提示词 Prompt"
-    },
-    {
-      "depth": 2,
-      "slug": "page-04",
-      "text": "什么是提示词"
-    },
-    {
-      "depth": 2,
-      "slug": "page-05",
-      "text": "提示词的重要性"
-    },
-    {
-      "depth": 2,
-      "slug": "page-06",
-      "text": "构建原则"
-    },
-    {
-      "depth": 2,
-      "slug": "page-07",
-      "text": "示例：信息充足、指令清晰"
-    },
-    {
-      "depth": 2,
-      "slug": "page-08",
-      "text": "示例：分步骤引导模型"
-    },
-    {
-      "depth": 1,
-      "slug": "page-09",
-      "text": "第二章：提示工程"
-    },
-    {
-      "depth": 2,
-      "slug": "page-10",
-      "text": "什么是提示工程"
-    },
-    {
-      "depth": 2,
-      "slug": "page-11",
-      "text": "Prompt 的典型构成要素"
-    },
-    {
-      "depth": 2,
-      "slug": "page-12",
-      "text": "本章总结：怎么用好提示词"
-    },
-    {
-      "depth": 1,
-      "slug": "page-13",
-      "text": "第三章：Prompt 调优技巧"
-    },
-    {
-      "depth": 2,
-      "slug": "page-14",
-      "text": "六大提示技术总览"
-    },
-    {
-      "depth": 2,
-      "slug": "page-15",
-      "text": "零样本提示"
-    },
-    {
-      "depth": 2,
-      "slug": "page-16",
-      "text": "少样本提示"
-    },
-    {
-      "depth": 2,
-      "slug": "page-17",
-      "text": "思维链 CoT"
-    },
-    {
-      "depth": 2,
-      "slug": "page-18",
-      "text": "CoT 实战：用流程引导复杂创作"
-    },
-    {
-      "depth": 2,
-      "slug": "page-19",
-      "text": "自我一致性"
-    },
-    {
-      "depth": 2,
-      "slug": "page-20",
-      "text": "思维树 ToT"
-    },
-    {
-      "depth": 2,
-      "slug": "page-21",
-      "text": "ToT 使用场景与完整示例"
-    },
-    {
-      "depth": 2,
-      "slug": "page-22",
-      "text": "反思机制"
-    },
-    {
-      "depth": 2,
-      "slug": "page-23",
-      "text": "六大技巧总结"
-    },
-    {
-      "depth": 1,
-      "slug": "page-24",
-      "text": "第四章：Prompt 攻击与防范"
-    },
-    {
-      "depth": 2,
-      "slug": "page-25",
-      "text": "什么是 Prompt 攻击"
-    },
-    {
-      "depth": 2,
-      "slug": "page-26",
-      "text": "三种典型攻击形式"
-    },
-    {
-      "depth": 2,
-      "slug": "page-27",
-      "text": "防范措施"
-    },
-    {
-      "depth": 2,
-      "slug": "page-28",
-      "text": "防范示例：邮件分类专家"
-    },
-    {
-      "depth": 1,
-      "slug": "page-29",
-      "text": "第五章：Coze 概述和应用"
-    },
-    {
-      "depth": 2,
-      "slug": "page-30",
-      "text": "Coze 是什么"
-    },
-    {
-      "depth": 2,
-      "slug": "page-31",
-      "text": "国内版与国外版"
-    },
-    {
-      "depth": 2,
-      "slug": "page-32",
-      "text": "Coze 能做什么"
-    },
-    {
-      "depth": 2,
-      "slug": "page-33",
-      "text": "注册登录与快速上手"
-    },
-    {
-      "depth": 2,
-      "slug": "page-34",
-      "text": "Coze 实战：旅游攻略系统"
-    },
-    {
-      "depth": 1,
-      "slug": "page-35",
-      "text": "第六章：大模型应用开发"
-    },
-    {
-      "depth": 2,
-      "slug": "page-36",
-      "text": "基本步骤"
-    },
-    {
-      "depth": 2,
-      "slug": "page-37",
-      "text": "开通功能与获取 API Key"
-    },
-    {
-      "depth": 2,
-      "slug": "page-38",
-      "text": "安装 Python 包并调用 API"
-    },
-    {
-      "depth": 1,
-      "slug": "page-39",
-      "text": "第七章：Prompt Engineering 实战"
-    },
-    {
-      "depth": 2,
-      "slug": "page-40",
-      "text": "两大实战课题"
-    }
-  ],
-  "2026-11-03-llm-core-principles": [
-    {
-      "depth": 1,
-      "slug": "page-03",
-      "text": "第一章：GPT 与 Transformer 架构"
-    },
-    {
-      "depth": 2,
-      "slug": "page-04",
-      "text": "GPT 和 ChatGPT"
-    },
-    {
-      "depth": 2,
-      "slug": "page-05",
-      "text": "什么是「生成式」"
-    },
-    {
-      "depth": 2,
-      "slug": "page-06",
-      "text": "从神经网络说起"
-    },
-    {
-      "depth": 2,
-      "slug": "page-07",
-      "text": "CNN · RNN · LSTM，直到 Transformer"
-    },
-    {
-      "depth": 2,
-      "slug": "page-08",
-      "text": "Transformer 架构与四大优势"
-    },
-    {
-      "depth": 1,
-      "slug": "page-09",
-      "text": "第二章：大模型的工作原理"
-    },
-    {
-      "depth": 2,
-      "slug": "page-10",
-      "text": "四个步骤看懂大模型"
-    },
-    {
-      "depth": 2,
-      "slug": "page-11",
-      "text": "第一步：分词"
-    },
-    {
-      "depth": 2,
-      "slug": "page-12",
-      "text": "词与词之间，存在远近亲疏"
-    },
-    {
-      "depth": 2,
-      "slug": "page-13",
-      "text": "第二步：词嵌入"
-    },
-    {
-      "depth": 2,
-      "slug": "page-14",
-      "text": "词向量：把词语变成坐标里的点"
-    },
-    {
-      "depth": 2,
-      "slug": "page-15",
-      "text": "第三步：注意力机制"
-    },
-    {
-      "depth": 2,
-      "slug": "page-16",
-      "text": "注意力如何打分"
-    },
-    {
-      "depth": 1,
-      "slug": "page-17",
-      "text": "第三章：案例拆解「国王有个女儿，」"
-    },
-    {
-      "depth": 2,
-      "slug": "page-18",
-      "text": "第一步：分词，得到 Token"
-    },
-    {
-      "depth": 2,
-      "slug": "page-19",
-      "text": "第二步：词嵌入，「女儿」是什么"
-    },
-    {
-      "depth": 2,
-      "slug": "page-20",
-      "text": "词嵌入是动态的过程，不是静态的"
-    },
-    {
-      "depth": 2,
-      "slug": "page-21",
-      "text": "「开会交流」：自注意力机制"
-    },
-    {
-      "depth": 2,
-      "slug": "page-22",
-      "text": "「闭门思考」：前馈网络"
-    },
-    {
-      "depth": 2,
-      "slug": "page-23",
-      "text": "多层变换与最终效果"
-    },
-    {
-      "depth": 2,
-      "slug": "page-24",
-      "text": "第四步：基于上下文，生成预测"
-    },
-    {
-      "depth": 1,
-      "slug": "page-25",
-      "text": "第四章：模型训练流程"
-    },
-    {
-      "depth": 2,
-      "slug": "page-26",
-      "text": "前置知识：机器学习"
-    },
-    {
-      "depth": 2,
-      "slug": "page-27",
-      "text": "四种学习范式"
-    },
-    {
-      "depth": 2,
-      "slug": "page-28",
-      "text": "大模型训练的三大阶段"
-    },
-    {
-      "depth": 2,
-      "slug": "page-29",
-      "text": "预训练：修内功，积累知识"
-    },
-    {
-      "depth": 2,
-      "slug": "page-30",
-      "text": "监督微调 SFT：「大佬教教我」"
-    },
-    {
-      "depth": 2,
-      "slug": "page-31",
-      "text": "微调的例子：同一个基座，不同专长"
-    },
-    {
-      "depth": 2,
-      "slug": "page-32",
-      "text": "RLHF：「接受审判」"
-    },
-    {
-      "depth": 2,
-      "slug": "page-33",
-      "text": "模型成长之路：三大阶段串起来"
-    }
-  ],
-  "2026-11-03-transformer-architecture": [
-    {
-      "depth": 1,
-      "slug": "page-03",
-      "text": "整体架构与输入准备"
-    },
-    {
-      "depth": 2,
-      "slug": "page-04",
-      "text": "Transformer 整体架构总览"
-    },
-    {
-      "depth": 2,
-      "slug": "page-05",
-      "text": "第一步：分词与词嵌入"
-    },
-    {
-      "depth": 2,
-      "slug": "page-06",
-      "text": "位置编码"
-    },
-    {
-      "depth": 2,
-      "slug": "page-07",
-      "text": "嵌入矩阵：词嵌入 + 位置编码"
-    },
-    {
-      "depth": 1,
-      "slug": "page-08",
-      "text": "注意力机制"
-    },
-    {
-      "depth": 2,
-      "slug": "page-09",
-      "text": "为什么需要自注意力"
-    },
-    {
-      "depth": 2,
-      "slug": "page-10",
-      "text": "QKV：查询、键、值"
-    },
-    {
-      "depth": 2,
-      "slug": "page-11",
-      "text": "QKV 矩阵计算"
-    },
-    {
-      "depth": 2,
-      "slug": "page-12",
-      "text": "多头注意力"
-    },
-    {
-      "depth": 2,
-      "slug": "page-13",
-      "text": "Mask 掩码"
-    },
-    {
-      "depth": 1,
-      "slug": "page-14",
-      "text": "编码器组件与架构变体"
-    },
-    {
-      "depth": 2,
-      "slug": "page-15",
-      "text": "残差连接与层归一化"
-    },
-    {
-      "depth": 2,
-      "slug": "page-16",
-      "text": "FFN 前馈神经网络"
-    },
-    {
-      "depth": 2,
-      "slug": "page-17",
-      "text": "三种架构变体"
-    },
-    {
-      "depth": 1,
-      "slug": "page-18",
-      "text": "解码器与自回归生成"
-    },
-    {
-      "depth": 2,
-      "slug": "page-19",
-      "text": "解码器的完整工作流程"
-    },
-    {
-      "depth": 2,
-      "slug": "page-20",
-      "text": "自回归"
-    },
-    {
-      "depth": 2,
-      "slug": "page-21",
-      "text": "案例四步走"
-    },
-    {
-      "depth": 2,
-      "slug": "page-22",
-      "text": "逐词生成"
-    },
-    {
-      "depth": 2,
-      "slug": "page-23",
-      "text": "总结：完整链路"
-    }
-  ]
+	"2025-12-01-llm-cognition-basics": [
+		{
+			"depth": 1,
+			"slug": "page-02",
+			"text": "AI基础认知"
+		},
+		{
+			"depth": 2,
+			"slug": "page-03",
+			"text": "一张图厘清名词关系"
+		},
+		{
+			"depth": 2,
+			"slug": "page-04",
+			"text": "什么是人工智能（AI）？"
+		},
+		{
+			"depth": 2,
+			"slug": "page-05",
+			"text": "什么是机器学习ML?"
+		},
+		{
+			"depth": 2,
+			"slug": "page-06",
+			"text": "机器学习ML-监督学习"
+		},
+		{
+			"depth": 2,
+			"slug": "page-07",
+			"text": "机器学习ML-无监督学习"
+		},
+		{
+			"depth": 2,
+			"slug": "page-08",
+			"text": "机器学习ML-强化学习"
+		},
+		{
+			"depth": 2,
+			"slug": "page-09",
+			"text": "机器学习ML-半监督学习"
+		},
+		{
+			"depth": 2,
+			"slug": "page-10",
+			"text": "机器学习ML-自监督学习"
+		},
+		{
+			"depth": 2,
+			"slug": "page-11",
+			"text": "什么是深度学习DL?"
+		},
+		{
+			"depth": 2,
+			"slug": "page-12",
+			"text": "深度学习DL-卷积神经网络（CNN）"
+		},
+		{
+			"depth": 2,
+			"slug": "page-13",
+			"text": "深度学习DL-循环神经网络（RNN）"
+		},
+		{
+			"depth": 2,
+			"slug": "page-14",
+			"text": "深度学习DL-生成对抗网络（GAN）"
+		},
+		{
+			"depth": 2,
+			"slug": "page-15",
+			"text": "神经网络与机器学习的关系？"
+		},
+		{
+			"depth": 1,
+			"slug": "page-16",
+			"text": "AI演进发展"
+		},
+		{
+			"depth": 2,
+			"slug": "page-17",
+			"text": "AI的起源及发展变迁历程"
+		},
+		{
+			"depth": 2,
+			"slug": "page-18",
+			"text": "AI的起源及发展变迁历程"
+		},
+		{
+			"depth": 2,
+			"slug": "page-19",
+			"text": "现象级产品-DeepBlue"
+		},
+		{
+			"depth": 2,
+			"slug": "page-20",
+			"text": "现象级产品-AlphaGo"
+		},
+		{
+			"depth": 2,
+			"slug": "page-21",
+			"text": "现象级产品-ChatGPT与DeepSeek"
+		},
+		{
+			"depth": 2,
+			"slug": "page-22",
+			"text": "现象级产品-ChatGPT与DeepSeek"
+		},
+		{
+			"depth": 2,
+			"slug": "page-23",
+			"text": "AI1.0：感知智能时代"
+		},
+		{
+			"depth": 2,
+			"slug": "page-24",
+			"text": "AI2.0：认知智能时代"
+		},
+		{
+			"depth": 1,
+			"slug": "page-25",
+			"text": "什么是大模型？"
+		},
+		{
+			"depth": 2,
+			"slug": "page-26",
+			"text": "什么是大模型？"
+		},
+		{
+			"depth": 2,
+			"slug": "page-27",
+			"text": "常见的大模型"
+		},
+		{
+			"depth": 2,
+			"slug": "page-28",
+			"text": "大模型认知误区（补充）"
+		},
+		{
+			"depth": 2,
+			"slug": "page-29",
+			"text": "大模型的\"超能力1\"-总结与提取"
+		},
+		{
+			"depth": 2,
+			"slug": "page-30",
+			"text": "大模型的\"超能力2\"-生成与创作"
+		},
+		{
+			"depth": 2,
+			"slug": "page-31",
+			"text": "大模型的\"超能力3\"-翻译与改写"
+		},
+		{
+			"depth": 2,
+			"slug": "page-32",
+			"text": "大模型的\"超能力4\"-逻辑与推理"
+		},
+		{
+			"depth": 2,
+			"slug": "page-33",
+			"text": "大模型的\"超能力5\"-意图理解"
+		},
+		{
+			"depth": 2,
+			"slug": "page-34",
+			"text": "大模型的\"致命伤1\"-幻觉"
+		},
+		{
+			"depth": 2,
+			"slug": "page-35",
+			"text": "大模型的\"致命伤2\"-记忆受限"
+		},
+		{
+			"depth": 2,
+			"slug": "page-36",
+			"text": "大模型的\"致命伤3\"-时效性与私有数据"
+		},
+		{
+			"depth": 2,
+			"slug": "page-37",
+			"text": "大模型的\"致命伤4\"-不可控性与延迟"
+		},
+		{
+			"depth": 2,
+			"slug": "page-38",
+			"text": "大模型的发展趋势"
+		},
+		{
+			"depth": 2,
+			"slug": "page-39",
+			"text": "大模型面临的挑战"
+		},
+		{
+			"depth": 1,
+			"slug": "page-40",
+			"text": "我们如何拥抱AI？"
+		},
+		{
+			"depth": 2,
+			"slug": "page-41",
+			"text": "大模型的行业应用"
+		},
+		{
+			"depth": 2,
+			"slug": "page-42",
+			"text": "大模型落地-提示词工程（Prompt）"
+		},
+		{
+			"depth": 2,
+			"slug": "page-43",
+			"text": "大模型落地-检索增强生成（RAG）"
+		},
+		{
+			"depth": 2,
+			"slug": "page-44",
+			"text": "大模型落地-智能体（Agent）"
+		},
+		{
+			"depth": 2,
+			"slug": "page-45",
+			"text": "大模型落地-微调（Fine-tuning）"
+		}
+	],
+	"2026-10-29-prd-writing": [
+		{
+			"depth": 1,
+			"slug": "page-02",
+			"text": "说在前面"
+		},
+		{
+			"depth": 1,
+			"slug": "page-03",
+			"text": "重新认识一下 PRD"
+		},
+		{
+			"depth": 2,
+			"slug": "page-04",
+			"text": "PRD 是用来干啥的"
+		},
+		{
+			"depth": 2,
+			"slug": "page-05",
+			"text": "三种常见形式"
+		},
+		{
+			"depth": 2,
+			"slug": "page-06",
+			"text": "核心工具"
+		},
+		{
+			"depth": 2,
+			"slug": "page-07",
+			"text": "辅助工具：图标、图片与图表"
+		},
+		{
+			"depth": 2,
+			"slug": "page-08",
+			"text": "辅助工具：脑图与流程图"
+		},
+		{
+			"depth": 2,
+			"slug": "page-09",
+			"text": "「PRD 不行」的五类表现"
+		},
+		{
+			"depth": 1,
+			"slug": "page-10",
+			"text": "一体化 PRD 结构"
+		},
+		{
+			"depth": 2,
+			"slug": "page-11",
+			"text": "版本说明"
+		},
+		{
+			"depth": 2,
+			"slug": "page-12",
+			"text": "项目说明"
+		},
+		{
+			"depth": 2,
+			"slug": "page-13",
+			"text": "功能说明"
+		},
+		{
+			"depth": 2,
+			"slug": "page-14",
+			"text": "埋点说明"
+		},
+		{
+			"depth": 2,
+			"slug": "page-15",
+			"text": "影响、性能与其他说明"
+		},
+		{
+			"depth": 2,
+			"slug": "page-16",
+			"text": "前台详细设计"
+		},
+		{
+			"depth": 2,
+			"slug": "page-17",
+			"text": "后台详细设计"
+		}
+	],
+	"2025-11-30-ai-product-posture": [
+		{
+			"depth": 1,
+			"slug": "page-01",
+			"text": "确定性与概率思维"
+		},
+		{
+			"depth": 1,
+			"slug": "page-02",
+			"text": "五维能力模型与进阶路径"
+		}
+	],
+	"2025-11-29-aigc-application-map": [
+		{
+			"depth": 1,
+			"slug": "page-01",
+			"text": "中国 AIGC 应用全景图谱"
+		}
+	],
+	"2026-11-03-vector-search-ann": [
+		{
+			"depth": 1,
+			"slug": "page-02",
+			"text": "向量搜索的背景与意义"
+		},
+		{
+			"depth": 2,
+			"slug": "page-03",
+			"text": "RAG 场景：为什么需要向量检索"
+		},
+		{
+			"depth": 1,
+			"slug": "page-04",
+			"text": "常用检索算法总览"
+		},
+		{
+			"depth": 2,
+			"slug": "page-05",
+			"text": "暴力搜索：地毯式排查的比喻"
+		},
+		{
+			"depth": 2,
+			"slug": "page-06",
+			"text": "暴力搜索的原理与代价"
+		},
+		{
+			"depth": 1,
+			"slug": "page-07",
+			"text": "范式革命：ANN"
+		},
+		{
+			"depth": 2,
+			"slug": "page-08",
+			"text": "IVF 工作流程：聚类、索引、查询"
+		},
+		{
+			"depth": 2,
+			"slug": "page-09",
+			"text": "IVF 示意：只搜邻近几簇"
+		},
+		{
+			"depth": 2,
+			"slug": "page-10",
+			"text": "IVF 的颜色类比"
+		},
+		{
+			"depth": 2,
+			"slug": "page-11",
+			"text": "HNSW 核心思想：小世界与分层"
+		},
+		{
+			"depth": 2,
+			"slug": "page-12",
+			"text": "HNSW 搜索流程：逐层贪婪下探"
+		},
+		{
+			"depth": 2,
+			"slug": "page-13",
+			"text": "三大超参数：M / efConstruction / efSearch"
+		},
+		{
+			"depth": 2,
+			"slug": "page-14",
+			"text": "IVF 与 HNSW 对比"
+		}
+	],
+	"2026-11-03-ai-llm-intro": [
+		{
+			"depth": 1,
+			"slug": "page-03",
+			"text": "开启你的大模型学习之路"
+		},
+		{
+			"depth": 1,
+			"slug": "page-04",
+			"text": "第一章：大模型是什么"
+		},
+		{
+			"depth": 2,
+			"slug": "page-05",
+			"text": "深蓝的故事"
+		},
+		{
+			"depth": 2,
+			"slug": "page-06",
+			"text": "AlphaGo 的故事"
+		},
+		{
+			"depth": 2,
+			"slug": "page-07",
+			"text": "ChatGPT 与 DeepSeek"
+		},
+		{
+			"depth": 1,
+			"slug": "page-08",
+			"text": "第二章：大模型的能力边界"
+		},
+		{
+			"depth": 2,
+			"slug": "page-09",
+			"text": "幻觉问题"
+		},
+		{
+			"depth": 2,
+			"slug": "page-10",
+			"text": "上下文窗口"
+		},
+		{
+			"depth": 1,
+			"slug": "page-11",
+			"text": "第三章：应用开发的四个方向"
+		},
+		{
+			"depth": 2,
+			"slug": "page-12",
+			"text": "提示词工程"
+		},
+		{
+			"depth": 2,
+			"slug": "page-13",
+			"text": "知识库 RAG"
+		},
+		{
+			"depth": 2,
+			"slug": "page-14",
+			"text": "智能体 Agentic"
+		},
+		{
+			"depth": 2,
+			"slug": "page-15",
+			"text": "微调 Fine-tuning"
+		},
+		{
+			"depth": 1,
+			"slug": "page-16",
+			"text": "第四章：职业机会在哪"
+		},
+		{
+			"depth": 2,
+			"slug": "page-17",
+			"text": "不同行业的应用案例"
+		},
+		{
+			"depth": 2,
+			"slug": "page-18",
+			"text": "职业机会与技能要求"
+		},
+		{
+			"depth": 1,
+			"slug": "page-19",
+			"text": "总结与讨论"
+		}
+	],
+	"2026-11-03-prompt-engineering-tuning": [
+		{
+			"depth": 1,
+			"slug": "page-03",
+			"text": "第一章：提示词 Prompt"
+		},
+		{
+			"depth": 2,
+			"slug": "page-04",
+			"text": "什么是提示词"
+		},
+		{
+			"depth": 2,
+			"slug": "page-05",
+			"text": "提示词的重要性"
+		},
+		{
+			"depth": 2,
+			"slug": "page-06",
+			"text": "构建原则"
+		},
+		{
+			"depth": 2,
+			"slug": "page-07",
+			"text": "示例：信息充足、指令清晰"
+		},
+		{
+			"depth": 2,
+			"slug": "page-08",
+			"text": "示例：分步骤引导模型"
+		},
+		{
+			"depth": 1,
+			"slug": "page-09",
+			"text": "第二章：提示工程"
+		},
+		{
+			"depth": 2,
+			"slug": "page-10",
+			"text": "什么是提示工程"
+		},
+		{
+			"depth": 2,
+			"slug": "page-11",
+			"text": "Prompt 的典型构成要素"
+		},
+		{
+			"depth": 2,
+			"slug": "page-12",
+			"text": "本章总结：怎么用好提示词"
+		},
+		{
+			"depth": 1,
+			"slug": "page-13",
+			"text": "第三章：Prompt 调优技巧"
+		},
+		{
+			"depth": 2,
+			"slug": "page-14",
+			"text": "六大提示技术总览"
+		},
+		{
+			"depth": 2,
+			"slug": "page-15",
+			"text": "零样本提示"
+		},
+		{
+			"depth": 2,
+			"slug": "page-16",
+			"text": "少样本提示"
+		},
+		{
+			"depth": 2,
+			"slug": "page-17",
+			"text": "思维链 CoT"
+		},
+		{
+			"depth": 2,
+			"slug": "page-18",
+			"text": "CoT 实战：用流程引导复杂创作"
+		},
+		{
+			"depth": 2,
+			"slug": "page-19",
+			"text": "自我一致性"
+		},
+		{
+			"depth": 2,
+			"slug": "page-20",
+			"text": "思维树 ToT"
+		},
+		{
+			"depth": 2,
+			"slug": "page-21",
+			"text": "ToT 使用场景与完整示例"
+		},
+		{
+			"depth": 2,
+			"slug": "page-22",
+			"text": "反思机制"
+		},
+		{
+			"depth": 2,
+			"slug": "page-23",
+			"text": "六大技巧总结"
+		},
+		{
+			"depth": 1,
+			"slug": "page-24",
+			"text": "第四章：Prompt 攻击与防范"
+		},
+		{
+			"depth": 2,
+			"slug": "page-25",
+			"text": "什么是 Prompt 攻击"
+		},
+		{
+			"depth": 2,
+			"slug": "page-26",
+			"text": "三种典型攻击形式"
+		},
+		{
+			"depth": 2,
+			"slug": "page-27",
+			"text": "防范措施"
+		},
+		{
+			"depth": 2,
+			"slug": "page-28",
+			"text": "防范示例：邮件分类专家"
+		},
+		{
+			"depth": 1,
+			"slug": "page-29",
+			"text": "第五章：Coze 概述和应用"
+		},
+		{
+			"depth": 2,
+			"slug": "page-30",
+			"text": "Coze 是什么"
+		},
+		{
+			"depth": 2,
+			"slug": "page-31",
+			"text": "国内版与国外版"
+		},
+		{
+			"depth": 2,
+			"slug": "page-32",
+			"text": "Coze 能做什么"
+		},
+		{
+			"depth": 2,
+			"slug": "page-33",
+			"text": "注册登录与快速上手"
+		},
+		{
+			"depth": 2,
+			"slug": "page-34",
+			"text": "Coze 实战：旅游攻略系统"
+		},
+		{
+			"depth": 1,
+			"slug": "page-35",
+			"text": "第六章：大模型应用开发"
+		},
+		{
+			"depth": 2,
+			"slug": "page-36",
+			"text": "基本步骤"
+		},
+		{
+			"depth": 2,
+			"slug": "page-37",
+			"text": "开通功能与获取 API Key"
+		},
+		{
+			"depth": 2,
+			"slug": "page-38",
+			"text": "安装 Python 包并调用 API"
+		},
+		{
+			"depth": 1,
+			"slug": "page-39",
+			"text": "第七章：Prompt Engineering 实战"
+		},
+		{
+			"depth": 2,
+			"slug": "page-40",
+			"text": "两大实战课题"
+		}
+	],
+	"2026-11-03-llm-core-principles": [
+		{
+			"depth": 1,
+			"slug": "page-03",
+			"text": "第一章：GPT 与 Transformer 架构"
+		},
+		{
+			"depth": 2,
+			"slug": "page-04",
+			"text": "GPT 和 ChatGPT"
+		},
+		{
+			"depth": 2,
+			"slug": "page-05",
+			"text": "什么是「生成式」"
+		},
+		{
+			"depth": 2,
+			"slug": "page-06",
+			"text": "从神经网络说起"
+		},
+		{
+			"depth": 2,
+			"slug": "page-07",
+			"text": "CNN · RNN · LSTM，直到 Transformer"
+		},
+		{
+			"depth": 2,
+			"slug": "page-08",
+			"text": "Transformer 架构与四大优势"
+		},
+		{
+			"depth": 1,
+			"slug": "page-09",
+			"text": "第二章：大模型的工作原理"
+		},
+		{
+			"depth": 2,
+			"slug": "page-10",
+			"text": "四个步骤看懂大模型"
+		},
+		{
+			"depth": 2,
+			"slug": "page-11",
+			"text": "第一步：分词"
+		},
+		{
+			"depth": 2,
+			"slug": "page-12",
+			"text": "词与词之间，存在远近亲疏"
+		},
+		{
+			"depth": 2,
+			"slug": "page-13",
+			"text": "第二步：词嵌入"
+		},
+		{
+			"depth": 2,
+			"slug": "page-14",
+			"text": "词向量：把词语变成坐标里的点"
+		},
+		{
+			"depth": 2,
+			"slug": "page-15",
+			"text": "第三步：注意力机制"
+		},
+		{
+			"depth": 2,
+			"slug": "page-16",
+			"text": "注意力如何打分"
+		},
+		{
+			"depth": 1,
+			"slug": "page-17",
+			"text": "第三章：案例拆解「国王有个女儿，」"
+		},
+		{
+			"depth": 2,
+			"slug": "page-18",
+			"text": "第一步：分词，得到 Token"
+		},
+		{
+			"depth": 2,
+			"slug": "page-19",
+			"text": "第二步：词嵌入，「女儿」是什么"
+		},
+		{
+			"depth": 2,
+			"slug": "page-20",
+			"text": "词嵌入是动态的过程，不是静态的"
+		},
+		{
+			"depth": 2,
+			"slug": "page-21",
+			"text": "「开会交流」：自注意力机制"
+		},
+		{
+			"depth": 2,
+			"slug": "page-22",
+			"text": "「闭门思考」：前馈网络"
+		},
+		{
+			"depth": 2,
+			"slug": "page-23",
+			"text": "多层变换与最终效果"
+		},
+		{
+			"depth": 2,
+			"slug": "page-24",
+			"text": "第四步：基于上下文，生成预测"
+		},
+		{
+			"depth": 1,
+			"slug": "page-25",
+			"text": "第四章：模型训练流程"
+		},
+		{
+			"depth": 2,
+			"slug": "page-26",
+			"text": "前置知识：机器学习"
+		},
+		{
+			"depth": 2,
+			"slug": "page-27",
+			"text": "四种学习范式"
+		},
+		{
+			"depth": 2,
+			"slug": "page-28",
+			"text": "大模型训练的三大阶段"
+		},
+		{
+			"depth": 2,
+			"slug": "page-29",
+			"text": "预训练：修内功，积累知识"
+		},
+		{
+			"depth": 2,
+			"slug": "page-30",
+			"text": "监督微调 SFT：「大佬教教我」"
+		},
+		{
+			"depth": 2,
+			"slug": "page-31",
+			"text": "微调的例子：同一个基座，不同专长"
+		},
+		{
+			"depth": 2,
+			"slug": "page-32",
+			"text": "RLHF：「接受审判」"
+		},
+		{
+			"depth": 2,
+			"slug": "page-33",
+			"text": "模型成长之路：三大阶段串起来"
+		}
+	],
+	"2026-11-03-transformer-architecture": [
+		{
+			"depth": 1,
+			"slug": "page-03",
+			"text": "整体架构与输入准备"
+		},
+		{
+			"depth": 2,
+			"slug": "page-04",
+			"text": "Transformer 整体架构总览"
+		},
+		{
+			"depth": 2,
+			"slug": "page-05",
+			"text": "第一步：分词与词嵌入"
+		},
+		{
+			"depth": 2,
+			"slug": "page-06",
+			"text": "位置编码"
+		},
+		{
+			"depth": 2,
+			"slug": "page-07",
+			"text": "嵌入矩阵：词嵌入 + 位置编码"
+		},
+		{
+			"depth": 1,
+			"slug": "page-08",
+			"text": "注意力机制"
+		},
+		{
+			"depth": 2,
+			"slug": "page-09",
+			"text": "为什么需要自注意力"
+		},
+		{
+			"depth": 2,
+			"slug": "page-10",
+			"text": "QKV：查询、键、值"
+		},
+		{
+			"depth": 2,
+			"slug": "page-11",
+			"text": "QKV 矩阵计算"
+		},
+		{
+			"depth": 2,
+			"slug": "page-12",
+			"text": "多头注意力"
+		},
+		{
+			"depth": 2,
+			"slug": "page-13",
+			"text": "Mask 掩码"
+		},
+		{
+			"depth": 1,
+			"slug": "page-14",
+			"text": "编码器组件与架构变体"
+		},
+		{
+			"depth": 2,
+			"slug": "page-15",
+			"text": "残差连接与层归一化"
+		},
+		{
+			"depth": 2,
+			"slug": "page-16",
+			"text": "FFN 前馈神经网络"
+		},
+		{
+			"depth": 2,
+			"slug": "page-17",
+			"text": "三种架构变体"
+		},
+		{
+			"depth": 1,
+			"slug": "page-18",
+			"text": "解码器与自回归生成"
+		},
+		{
+			"depth": 2,
+			"slug": "page-19",
+			"text": "解码器的完整工作流程"
+		},
+		{
+			"depth": 2,
+			"slug": "page-20",
+			"text": "自回归"
+		},
+		{
+			"depth": 2,
+			"slug": "page-21",
+			"text": "案例四步走"
+		},
+		{
+			"depth": 2,
+			"slug": "page-22",
+			"text": "逐词生成"
+		},
+		{
+			"depth": 2,
+			"slug": "page-23",
+			"text": "总结：完整链路"
+		}
+	],
+	"2026-11-04-naive-rag": [
+		{
+			"depth": 1,
+			"slug": "page-03",
+			"text": "为什么需要 RAG"
+		},
+		{
+			"depth": 2,
+			"slug": "page-04",
+			"text": "大语言模型的三大局限"
+		},
+		{
+			"depth": 2,
+			"slug": "page-05",
+			"text": "两条解决路径：微调 vs RAG"
+		},
+		{
+			"depth": 2,
+			"slug": "page-06",
+			"text": "什么是 RAG"
+		},
+		{
+			"depth": 1,
+			"slug": "page-07",
+			"text": "通过 FastGPT 认识 RAG"
+		},
+		{
+			"depth": 2,
+			"slug": "page-08",
+			"text": "FastGPT：开箱即用的 AI 知识库平台"
+		},
+		{
+			"depth": 1,
+			"slug": "page-09",
+			"text": "Naive RAG 工作流程"
+		},
+		{
+			"depth": 2,
+			"slug": "page-10",
+			"text": "Naive RAG 三步骤"
+		},
+		{
+			"depth": 2,
+			"slug": "page-11",
+			"text": "文档分块：四种基本策略"
+		},
+		{
+			"depth": 1,
+			"slug": "page-12",
+			"text": "向量化与向量模型"
+		},
+		{
+			"depth": 2,
+			"slug": "page-13",
+			"text": "Embeddings 向量化"
+		},
+		{
+			"depth": 2,
+			"slug": "page-14",
+			"text": "RAG 中的向量化：文本块 → 句向量"
+		},
+		{
+			"depth": 2,
+			"slug": "page-15",
+			"text": "BGE-M3：企业常用的嵌入模型"
+		},
+		{
+			"depth": 2,
+			"slug": "page-16",
+			"text": "向量间的相似度计算"
+		},
+		{
+			"depth": 2,
+			"slug": "page-17",
+			"text": "向量间的相似度计算"
+		},
+		{
+			"depth": 1,
+			"slug": "page-18",
+			"text": "向量数据库"
+		},
+		{
+			"depth": 2,
+			"slug": "page-19",
+			"text": "为什么需要向量数据库"
+		},
+		{
+			"depth": 2,
+			"slug": "page-20",
+			"text": "主流向量数据库对比"
+		},
+		{
+			"depth": 2,
+			"slug": "page-21",
+			"text": "Chroma 实战：Client 与 Collection"
+		},
+		{
+			"depth": 2,
+			"slug": "page-22",
+			"text": "Chroma 实战：添加文档与相似度检索"
+		},
+		{
+			"depth": 1,
+			"slug": "page-23",
+			"text": "实战案例与总结"
+		},
+		{
+			"depth": 2,
+			"slug": "page-24",
+			"text": "三种检索技术"
+		},
+		{
+			"depth": 2,
+			"slug": "page-25",
+			"text": "全文检索 vs 向量检索"
+		},
+		{
+			"depth": 2,
+			"slug": "page-26",
+			"text": "实战一：医疗知识混合检索"
+		},
+		{
+			"depth": 2,
+			"slug": "page-27",
+			"text": "实战二：HR 制度智能问答系统"
+		},
+		{
+			"depth": 2,
+			"slug": "page-28",
+			"text": "本章节总结"
+		}
+	]
 }
