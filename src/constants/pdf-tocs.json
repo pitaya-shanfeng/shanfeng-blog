@@ -1277,5 +1277,187 @@
 			"slug": "page-13",
 			"text": "优势与代价：一笔账算清楚"
 		}
+	],
+	"2026-11-03-rag-evaluation": [
+		{
+			"depth": 1,
+			"slug": "page-03",
+			"text": "RAG 评估的依据和指标"
+		},
+		{
+			"depth": 2,
+			"slug": "page-04",
+			"text": "为什么必须评估 RAG 应用？"
+		},
+		{
+			"depth": 2,
+			"slug": "page-05",
+			"text": "两种评估方法：人工评估 vs 自动化评估"
+		},
+		{
+			"depth": 2,
+			"slug": "page-06",
+			"text": "评估什么：检索器与生成器，缺一不可"
+		},
+		{
+			"depth": 2,
+			"slug": "page-07",
+			"text": "评估的输入：四个要素，五个指标"
+		},
+		{
+			"depth": 2,
+			"slug": "page-08",
+			"text": "上下文相关性 Context Relevancy"
+		},
+		{
+			"depth": 2,
+			"slug": "page-09",
+			"text": "上下文召回率 Context Recall"
+		},
+		{
+			"depth": 2,
+			"slug": "page-10",
+			"text": "忠实度 Faithfulness：答案是否「有据可查」"
+		},
+		{
+			"depth": 2,
+			"slug": "page-11",
+			"text": "答案相关性 Answer Relevancy：答没答到点上"
+		},
+		{
+			"depth": 2,
+			"slug": "page-12",
+			"text": "五大指标总结"
+		},
+		{
+			"depth": 1,
+			"slug": "page-13",
+			"text": "常用的 RAG 评估工具"
+		},
+		{
+			"depth": 2,
+			"slug": "page-14",
+			"text": "Ragas：RAG 专属评测框架"
+		},
+		{
+			"depth": 2,
+			"slug": "page-15",
+			"text": "TruLens：反馈式 LLM 应用评估"
+		},
+		{
+			"depth": 1,
+			"slug": "page-16",
+			"text": "医疗评估：深入理解指标与优化方向"
+		},
+		{
+			"depth": 2,
+			"slug": "page-17",
+			"text": "用 RAGAS 拿到四个指标，然后呢？"
+		},
+		{
+			"depth": 2,
+			"slug": "page-18",
+			"text": "四个指标不是孤立的：协同关系"
+		},
+		{
+			"depth": 2,
+			"slug": "page-19",
+			"text": "召回了和精确难以取舍时：用 F1 综合评估"
+		},
+		{
+			"depth": 2,
+			"slug": "page-20",
+			"text": "指标等级标准：多高算高，多低算低"
+		},
+		{
+			"depth": 2,
+			"slug": "page-21",
+			"text": "诊断性能瓶颈：对症下药的前提"
+		},
+		{
+			"depth": 2,
+			"slug": "page-22",
+			"text": "系统性优化路径：先固根基，再求精进"
+		},
+		{
+			"depth": 2,
+			"slug": "page-23",
+			"text": "提升 context_recall（上下文召回率）"
+		},
+		{
+			"depth": 2,
+			"slug": "page-24",
+			"text": "提升 context_precision（上下文精度）"
+		},
+		{
+			"depth": 2,
+			"slug": "page-25",
+			"text": "提升 faithfulness（忠实度）"
+		},
+		{
+			"depth": 2,
+			"slug": "page-26",
+			"text": "提升 answer_relevancy（答案相关性）"
+		},
+		{
+			"depth": 2,
+			"slug": "page-27",
+			"text": "设定合理的性能目标：通用基准参考"
+		},
+		{
+			"depth": 2,
+			"slug": "page-28",
+			"text": "行业阈值建议：因地制宜"
+		},
+		{
+			"depth": 2,
+			"slug": "page-29",
+			"text": "持续评估与优化的闭环"
+		},
+		{
+			"depth": 1,
+			"slug": "page-30",
+			"text": "评估选择合适的知识块大小"
+		},
+		{
+			"depth": 2,
+			"slug": "page-31",
+			"text": "chunk_size 的两难：小而准 vs 大而全"
+		},
+		{
+			"depth": 2,
+			"slug": "page-32",
+			"text": "场景化推荐：没有放之四海而皆准的数值"
+		},
+		{
+			"depth": 2,
+			"slug": "page-33",
+			"text": "分块实验：128 / 256 / 512 三组对比"
+		},
+		{
+			"depth": 1,
+			"slug": "page-34",
+			"text": "2023 全球智能汽车 AI 挑战赛"
+		},
+		{
+			"depth": 2,
+			"slug": "page-35",
+			"text": "实验动机与设计：忠实度还能再提吗？"
+		},
+		{
+			"depth": 2,
+			"slug": "page-36",
+			"text": "第一轮结果：一升一跌，两个方案命运迥异"
+		},
+		{
+			"depth": 2,
+			"slug": "page-37",
+			"text": "第二轮：mix_retriever 翻盘记"
+		},
+		{
+			"depth": 2,
+			"slug": "page-38",
+			"text": "课后作业：亲手试两个参数"
+		}
 	]
 }
