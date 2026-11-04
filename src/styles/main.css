@@ -50,6 +50,21 @@
   }
 }
 
+/* 根字号：全站 rem 的基准（此前由 <html> 上的 text-[14px] md:text-[16px] 决定）。
+   系数来自 siteConfig.rootScale，默认 0.9 —— 浏览器 100% 缩放下的观感，
+   约等于把整站缩到 90%。rem 会连带 --page-width（100rem）一起等比收窄，
+   与真实缩放的行为一致；图片像素和媒体查询断点不受影响。 */
+html {
+    /* 移动端不缩放：14px 已经是手机上能接受的下限，再乘系数会伤可读性 */
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: calc(16px * var(--root-scale, 0.9));
+    }
+}
+
 /* 确保平滑滚动 */
 html {
     scroll-behavior: smooth;

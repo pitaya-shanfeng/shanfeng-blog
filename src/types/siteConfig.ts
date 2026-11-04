@@ -45,6 +45,8 @@ export type SiteConfig = {
 
 	// 页面整体宽度（单位：rem）
 	pageWidth?: number;
+	/** 全局缩放系数，作用于根字号（rem 的基准），默认 1 */
+	rootScale?: number;
 
 	// 卡片样式配置
 	card: {
