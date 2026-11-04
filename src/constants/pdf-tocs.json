@@ -1063,5 +1063,162 @@
 			"slug": "page-28",
 			"text": "本章节总结"
 		}
+	],
+	"2026-11-03-advanced-rag": [
+		{
+			"depth": 1,
+			"slug": "page-03",
+			"text": "RAG 商业化痛点分析"
+		},
+		{
+			"depth": 2,
+			"slug": "page-04",
+			"text": "七个失效点：一篇论文的系统总结"
+		},
+		{
+			"depth": 2,
+			"slug": "page-05",
+			"text": "索引构建过程（Index Process）的痛点"
+		},
+		{
+			"depth": 2,
+			"slug": "page-06",
+			"text": "检索增强过程（Query Process）的痛点"
+		},
+		{
+			"depth": 1,
+			"slug": "page-07",
+			"text": "逐项优化与 Advanced RAG"
+		},
+		{
+			"depth": 2,
+			"slug": "page-08",
+			"text": "索引过程痛点的对策"
+		},
+		{
+			"depth": 2,
+			"slug": "page-09",
+			"text": "查询过程痛点的对策"
+		},
+		{
+			"depth": 2,
+			"slug": "page-10",
+			"text": "三段式优化框架"
+		},
+		{
+			"depth": 1,
+			"slug": "page-11",
+			"text": "Pre-Retrieval：索引优化"
+		},
+		{
+			"depth": 2,
+			"slug": "page-12",
+			"text": "两条优化路线总览"
+		},
+		{
+			"depth": 2,
+			"slug": "page-13",
+			"text": "摘要索引 Summary Index"
+		},
+		{
+			"depth": 2,
+			"slug": "page-14",
+			"text": "父子索引 Parent-Child Index"
+		},
+		{
+			"depth": 2,
+			"slug": "page-15",
+			"text": "父子索引：适用场景与总结"
+		},
+		{
+			"depth": 2,
+			"slug": "page-16",
+			"text": "假设性问题索引 Hypothetical Questions"
+		},
+		{
+			"depth": 2,
+			"slug": "page-17",
+			"text": "假设性问题索引：优点、局限与场景"
+		},
+		{
+			"depth": 2,
+			"slug": "page-18",
+			"text": "元数据索引 Metadata Index"
+		},
+		{
+			"depth": 2,
+			"slug": "page-19",
+			"text": "四种索引优化对比"
+		},
+		{
+			"depth": 1,
+			"slug": "page-20",
+			"text": "Pre-Retrieval：查询优化"
+		},
+		{
+			"depth": 2,
+			"slug": "page-21",
+			"text": "Enrich 完善问题"
+		},
+		{
+			"depth": 2,
+			"slug": "page-22",
+			"text": "Multi-Query 多路召回"
+		},
+		{
+			"depth": 2,
+			"slug": "page-23",
+			"text": "Decomposition 问题分解"
+		},
+		{
+			"depth": 2,
+			"slug": "page-24",
+			"text": "查询优化的目标"
+		},
+		{
+			"depth": 1,
+			"slug": "page-25",
+			"text": "检索优化：混合检索"
+		},
+		{
+			"depth": 2,
+			"slug": "page-26",
+			"text": "混合检索：核心价值"
+		},
+		{
+			"depth": 2,
+			"slug": "page-27",
+			"text": "混合检索：基本思路"
+		},
+		{
+			"depth": 1,
+			"slug": "page-28",
+			"text": "Post-Retrieval 后检索优化"
+		},
+		{
+			"depth": 2,
+			"slug": "page-29",
+			"text": "为什么要做后检索处理"
+		},
+		{
+			"depth": 2,
+			"slug": "page-30",
+			"text": "RAG-Fusion"
+		},
+		{
+			"depth": 2,
+			"slug": "page-31",
+			"text": "RRF 倒数排名融合"
+		},
+		{
+			"depth": 2,
+			"slug": "page-32",
+			"text": "RRF 融合示例"
+		},
+		{
+			"depth": 2,
+			"slug": "page-33",
+			"text": "上下文压缩和过滤"
+		}
 	]
 }
