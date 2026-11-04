@@ -1,7 +1,7 @@
 ---
 title: AI大模型初识
 published: 2025-12-01T12:00:00+08:00
-description: 从深蓝赢下卡斯帕罗夫讲到 ChatGPT 和 DeepSeek，先建立「它到底在做什么」的直觉，再谈幻觉和上下文窗口两条硬边界，最后落到四个方向。
+description: 从深蓝赢下卡斯帕罗夫，讲到 ChatGPT 和 DeepSeek，先建立「它到底在做什么」的直觉，再谈幻觉和上下文窗口两条硬边界，最后落到四个应用方向。
 image: /assets/library/notes/ai-llm-intro/cover.webp
 category: 拾遗/学习笔记
 tags:
