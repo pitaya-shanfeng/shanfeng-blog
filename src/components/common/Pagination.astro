@@ -48,14 +48,21 @@ if (r < page.lastPage - 2) pages.push(HIDDEN);
 if (r === page.lastPage - 2) pages.push(page.lastPage - 1);
 if (r < page.lastPage) pages.push(page.lastPage);
 
-const getPageUrl = (p: number) => {
-	if (p === 1) return "/";
-	return `/${p}/`;
-};
+/**
+ * 页码地址必须从「当前路由」推，不能写死成首页的 /。
+ *
+ * 首页的 paginate 出来的 current 是 /2/，而合集页是 /notes/2/；
+ * 写死 `/${p}/` 会让 /notes/ 上的页码指向首页分页，点进去变成全站文章。
+ * 这里把末尾的页码段剥掉，得到本页自己的前缀。
+ */
+const currentPath = page.url.current;
+const basePath = currentPath.replace(/\d+\/?$/, "").replace(/\/?$/, "/") || "/";
+
+const getPageUrl = (p: number) => (p === 1 ? basePath : `${basePath}${p}/`);
 
 // 传给 PageJump island 的跳转模板。函数没法跨 island 边界传，只能给字符串
-const jumpHrefTemplate = url("/{page}/");
-const jumpHrefFirst = url("/");
+const jumpHrefTemplate = `${basePath}{page}/`;
+const jumpHrefFirst = basePath;
 ---
 
 <div class:list={[className, "pagination-wrapper flex flex-col gap-4 items-center"]} style={style}>

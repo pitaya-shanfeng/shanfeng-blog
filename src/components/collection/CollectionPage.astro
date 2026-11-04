@@ -299,17 +299,18 @@ const shareDate = latest ? latest.data.published.toISOString().slice(0, 10) : ""
                 </div>
             )
         }
+        {
+            /* 分页必须留在 .col-page 内：它是纵向 flex 的一格，
+               放到容器外面就成了兄弟节点，会压在最后一张卡片上。 */
+            page && page.total > page.size ? (
+                <Pagination
+                    page={page}
+                    class="col-pagination mx-auto onload-animation"
+                    style="animation-delay: calc(var(--content-delay) + 120ms)"
+                />
+            ) : null
+        }
     </div>
-
-    {
-        page && page.total > page.size ? (
-            <Pagination
-                page={page}
-                class="col-pagination mx-auto onload-animation"
-                style="animation-delay: calc(var(--content-delay) + 120ms)"
-            />
-        ) : null
-    }
 
     {showSponsorButton && <SponsorModal />}
 </MainGridLayout>
