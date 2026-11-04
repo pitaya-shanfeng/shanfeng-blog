@@ -11,7 +11,7 @@ tags:
   - 课程笔记
 draft: false
 comment: false
-documentPages: 19
+documentPages: 20
 ---
 
 <div class="document-page-stream" aria-label="AI 大模型初识在线预览">
@@ -34,4 +34,5 @@ documentPages: 19
   <img src="/assets/library/notes/ai-llm-intro/pages/page-17.webp" alt="AI 大模型初识第 17 页" loading="lazy" decoding="async" draggable="false" />
   <img src="/assets/library/notes/ai-llm-intro/pages/page-18.webp" alt="AI 大模型初识第 18 页" loading="lazy" decoding="async" draggable="false" />
   <img src="/assets/library/notes/ai-llm-intro/pages/page-19.webp" alt="AI 大模型初识第 19 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/ai-llm-intro/pages/page-20.webp" alt="AI 大模型初识第 20 页" loading="lazy" decoding="async" draggable="false" />
 </div>
