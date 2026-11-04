@@ -1,6 +1,6 @@
 ---
 title: 大模型核心原理
-published: 2026-11-03T16:20:00+08:00
+published: 2025-12-02T10:00:00+08:00
 description: 模型只做一件事，根据上文猜下一个词。四步拆开：分词把句子剁成 Token，词嵌入把 Token 变成带语义的向量，注意力让每个词按相关度去看邻居，最后按概率一个词一个词续写。案例部分用「国王有个女儿，」走了一遍全流程，训练三阶段则对齐成修内功、大佬教、接受审判。
 image: /assets/library/notes/llm-core-principles/cover.webp
 category: 拾遗/学习笔记
@@ -11,7 +11,7 @@ tags:
   - 课程笔记
 draft: false
 comment: false
-documentPages: 33
+documentPages: 34
 ---
 
 <div class="document-page-stream" aria-label="大模型核心原理在线预览">
@@ -48,4 +48,5 @@ documentPages: 33
   <img src="/assets/library/notes/llm-core-principles/pages/page-31.webp" alt="大模型核心原理第 31 页" loading="lazy" decoding="async" draggable="false" />
   <img src="/assets/library/notes/llm-core-principles/pages/page-32.webp" alt="大模型核心原理第 32 页" loading="lazy" decoding="async" draggable="false" />
   <img src="/assets/library/notes/llm-core-principles/pages/page-33.webp" alt="大模型核心原理第 33 页" loading="lazy" decoding="async" draggable="false" />
+  <img src="/assets/library/notes/llm-core-principles/pages/page-34.webp" alt="大模型核心原理第 34 页" loading="lazy" decoding="async" draggable="false" />
 </div>
