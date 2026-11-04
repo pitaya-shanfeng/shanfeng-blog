@@ -7,9 +7,7 @@ image: /assets/library/notes/llm-core-principles/cover.webp
 category: 拾遗/学习笔记
 tags:
   - 大模型
-  - Transformer
-  - 注意力机制
-  - 课程笔记
+  - 原理
 draft: false
 comment: false
 documentPages: 34

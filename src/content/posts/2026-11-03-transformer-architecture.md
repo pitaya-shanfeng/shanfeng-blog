@@ -6,10 +6,8 @@ quote: 词向量本身不带位置信息，「他打了我」和「我打了他�
 image: /assets/library/notes/transformer-architecture/cover.webp
 category: 拾遗/学习笔记
 tags:
-  - Transformer
-  - 注意力机制
-  - 自回归
-  - 课程笔记
+  - 大模型
+  - 原理
 draft: false
 comment: false
 documentPages: 24

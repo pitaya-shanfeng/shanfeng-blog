@@ -6,10 +6,8 @@ quote: Naive RAG 上线容易、商用难，先看清失效点在哪。
 image: /assets/library/notes/advanced-rag/cover.webp
 category: 拾遗/学习笔记
 tags:
-  - 大模型
   - RAG
-  - 检索优化
-  - 课程笔记
+  - 工程化
 draft: false
 comment: false
 documentPages: 34

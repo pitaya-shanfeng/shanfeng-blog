@@ -6,10 +6,8 @@ quote: 暴力搜索精度 100%、复杂度 O(N)，规模一上来就不可用。
 image: /assets/library/notes/vector-search-ann/cover.webp
 category: 拾遗/学习笔记
 tags:
-  - 向量检索
-  - ANN
-  - HNSW
-  - 课程笔记
+  - RAG
+  - 原理
 draft: false
 comment: false
 documentPages: 14

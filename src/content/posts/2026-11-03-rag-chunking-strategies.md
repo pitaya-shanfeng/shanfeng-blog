@@ -7,9 +7,7 @@ image: /assets/library/notes/rag-chunking-strategies/cover.webp
 category: 拾遗/学习笔记
 tags:
   - RAG
-  - 文档分块
-  - 知识库
-  - 课程笔记
+  - 原理
 draft: false
 ---
 

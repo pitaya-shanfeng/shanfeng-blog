@@ -7,9 +7,7 @@ image: /assets/library/notes/prompt-engineering-tuning/cover.webp
 category: 拾遗/学习笔记
 tags:
   - 提示词
-  - 提示工程
-  - Coze
-  - 课程笔记
+  - 工程化
 draft: false
 comment: false
 documentPages: 41

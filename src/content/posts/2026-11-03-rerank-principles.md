@@ -6,10 +6,8 @@ quote: 初步检索「召得回」，但不一定「排得好」。
 image: /assets/library/notes/rerank-principles/cover.webp
 category: 拾遗/学习笔记
 tags:
-  - 大模型
   - RAG
-  - 重排序
-  - 课程笔记
+  - 原理
 draft: false
 comment: false
 documentPages: 14

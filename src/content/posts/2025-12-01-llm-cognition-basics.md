@@ -7,7 +7,7 @@ image: /assets/library/notes/llm-cognition-basics/cover.webp
 category: 拾遗/学习笔记
 tags:
   - 大模型
-  - AI产品
+  - 原理
 draft: false
 comment: false
 documentPages: 46

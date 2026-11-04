@@ -6,10 +6,8 @@ quote: 按 to C 与 to B 两大类铺开，底层开发与 AI 编程工具单列
 image: /assets/library/notes/aigc-landscape-2025/cover.webp
 category: 拾遗/学习笔记
 tags:
-  - AIGC
-  - 行业图谱
-  - 产品全景
-  - 学习笔记
+  - 产品
+  - 大模型
 draft: false
 comment: false
 documentPages: 1

@@ -7,9 +7,7 @@ image: /assets/library/notes/agent-skill/cover.webp
 category: 拾遗/学习笔记
 tags:
   - Agent
-  - Skill
   - 工程化
-  - 课程笔记
 draft: false
 comment: false
 documentPages: 26

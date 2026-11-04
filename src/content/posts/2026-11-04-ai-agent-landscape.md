@@ -6,10 +6,8 @@ quote: 模型负责想，工具负责做，记忆负责不忘记。
 image: /assets/library/notes/ai-agent-landscape/cover.webp
 category: 拾遗/学习笔记
 tags:
-  - 大模型
   - Agent
-  - Function Calling
-  - 课程笔记
+  - 大模型
 draft: false
 comment: false
 documentPages: 27

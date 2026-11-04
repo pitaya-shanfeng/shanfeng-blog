@@ -6,10 +6,8 @@ quote: 确定性与概率思维的分野，决定了 AI 产品该怎么定标准
 image: /assets/library/notes/ai-product-posture/cover.webp
 category: 拾遗/学习笔记
 tags:
-  - AI产品经理
-  - 能力模型
-  - 技术理解
-  - 进化路径
+  - 产品
+  - 大模型
 draft: false
 comment: false
 documentPages: 2

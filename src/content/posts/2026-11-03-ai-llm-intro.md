@@ -7,9 +7,7 @@ image: /assets/library/notes/ai-llm-intro/cover.webp
 category: 拾遗/学习笔记
 tags:
   - 大模型
-  - 提示词
-  - RAG
-  - 课程笔记
+  - 原理
 draft: false
 comment: false
 documentPages: 20

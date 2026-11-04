@@ -7,9 +7,7 @@ image: /assets/library/notes/coze-agent/cover.webp
 category: 拾遗/学习笔记
 tags:
   - Agent
-  - Coze
-  - 工作流
-  - 课程笔记
+  - 工程化
 draft: false
 comment: false
 documentPages: 34

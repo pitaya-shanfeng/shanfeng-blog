@@ -6,10 +6,8 @@ quote: 四个指标不是孤立的，检索器是生成器的地基。
 image: /assets/library/notes/rag-evaluation/cover.webp
 category: 拾遗/学习笔记
 tags:
-  - 大模型
   - RAG
-  - 评估
-  - 课程笔记
+  - 工程化
 draft: false
 comment: false
 documentPages: 39

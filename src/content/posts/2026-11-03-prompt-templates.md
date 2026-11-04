@@ -7,9 +7,7 @@ image: /assets/library/notes/prompt-templates/cover.webp
 category: 拾遗/学习笔记
 tags:
   - 提示词
-  - 模板
   - 大模型
-  - 课程笔记
 draft: false
 ---
 
