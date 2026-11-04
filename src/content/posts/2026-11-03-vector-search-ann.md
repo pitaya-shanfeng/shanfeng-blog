@@ -1,7 +1,7 @@
 ---
 title: 向量检索算法
 published: 2026-11-03T12:41:00+08:00
-description: 暴力搜索精度 100%、复杂度 O(N)，规模一上来就不可用；ANN 用可接受的精度损失换毫秒级返回。两条路分开走：IVF 先聚类分簇，查询只比质心、搜邻近几簇，快但答案可能落在没搜的簇里；HNSW 借小世界网络与跳表分层下探，召回更高，还支持增量更新。最后一页的对比表把选型钉在「动态数据」这一行。
+description: 暴力搜索 O(N) 撑不住规模，ANN 用精度换毫秒：IVF 先聚类分簇、快但可能漏；HNSW 分层下探、召回更高还能增量更新。
 image: /assets/library/notes/vector-search-ann/cover.webp
 category: 拾遗/学习笔记
 tags:

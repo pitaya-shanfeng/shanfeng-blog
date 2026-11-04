@@ -1,7 +1,7 @@
 ---
 title: Transformer 架构解析
 published: 2025-12-02T20:00:00+08:00
-description: 整条链路拆成四段走一遍：先把「国王他有个女儿」分词成四个 token，词嵌入叠上位置编码凑成 4×512 的矩阵；Q、K、V 由这个矩阵乘三个可学习参数得到，八个头各看一个视角，Mask 挡住还没生成的词；编码器靠残差连接与层归一化稳住梯度，FFN 把 512 放大到 2048 再压回来；解码器从 bos 起步，一次一个词，把输出接回输入循环。末页把全程收在一张图上。
+description: 一句话走完整条链路：分词、词嵌入叠位置编码、QKV 与八头注意力、残差与 FFN，直到解码器逐词生成。
 image: /assets/library/notes/transformer-architecture/cover.webp
 category: 拾遗/学习笔记
 tags:

@@ -1,7 +1,7 @@
 ---
 title: AI 产品姿态
 published: 2025-11-30
-description: 两页材料，讲 AI 产品经理与传统 PM 的差别在哪。第一页是确定性与概率思维的分野，第二页是五维能力模型与三级进阶路径。
+description: 两页材料讲 AI 产品经理与传统 PM 的差别：第一页是确定性与概率思维的分野，第二页是五维模型与三级进阶。
 image: /assets/library/notes/ai-product-posture/cover.webp
 category: 拾遗/学习笔记
 tags:

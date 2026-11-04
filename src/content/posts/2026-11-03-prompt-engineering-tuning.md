@@ -1,7 +1,7 @@
 ---
 title: Prompt工程与调优技巧
 published: 2026-10-20T10:00:00+08:00
-description: 提示词只解决两件事，把背景信息给足，把复杂任务拆成步骤。六种技巧按代价排开：零样本最省，少样本改格式，思维链拆推理，自我一致性靠多次投票，思维树在分支里搜，反思机制让模型自己回看一遍。后半段转向防守与搭建，注入、泄露、越狱三类攻击怎么防，Coze 零代码怎么搭，百炼 API 怎么跑通第一个 Hello World。
+description: 提示词只解决两件事：信息给足、任务拆开。六种技巧按代价排开，后半段讲注入、泄露、越狱三类攻击怎么防。
 image: /assets/library/notes/prompt-engineering-tuning/cover.webp
 category: 拾遗/学习笔记
 tags:

@@ -1,7 +1,7 @@
 ---
 title: 大模型核心原理
 published: 2025-12-02T18:00:00+08:00
-description: 模型只做一件事，根据上文猜下一个词。四步拆开：分词把句子剁成 Token，词嵌入把 Token 变成带语义的向量，注意力让每个词按相关度去看邻居，最后按概率一个词一个词续写。案例部分用「国王有个女儿，」走了一遍全流程，训练三阶段则对齐成修内功、大佬教、接受审判。
+description: 模型只做一件事：根据上文猜下一个词。分词、词嵌入、注意力、生成四步，配「国王有个女儿」的完整案例。
 image: /assets/library/notes/llm-core-principles/cover.webp
 category: 拾遗/学习笔记
 tags:

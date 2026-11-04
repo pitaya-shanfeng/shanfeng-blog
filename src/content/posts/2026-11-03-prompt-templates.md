@@ -1,7 +1,7 @@
 ---
 title: 提示词参考范例
 published: 2026-11-03T11:45:00+08:00
-description: 一套能直接套的提示词骨架。通用结构分七块（角色、技能、要求、任务、工作流、示例、限制），基于知识的问答模板含 jinja2 变量版，智能体部分讲意图识别与工具调用，任务执行类是三步流程，后面跟市场分析、短视频剧本、学习规划、销售数据提取四个完整范例。
+description: 一套可直接套的骨架：七块通用结构（角色到限制），加问答模板、智能体工具调用，以及四个完整范例。
 image: /assets/library/notes/prompt-templates/cover.webp
 category: 拾遗/学习笔记
 tags:
