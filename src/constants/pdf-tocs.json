@@ -1220,5 +1220,62 @@
 			"slug": "page-33",
 			"text": "上下文压缩和过滤"
 		}
+	],
+	"2026-11-03-rerank-principles": [
+		{
+			"depth": 1,
+			"slug": "page-03",
+			"text": "为什么需要重排序？"
+		},
+		{
+			"depth": 2,
+			"slug": "page-04",
+			"text": "重排序在 RAG 全流程中的位置"
+		},
+		{
+			"depth": 2,
+			"slug": "page-05",
+			"text": "初步检索的局限性"
+		},
+		{
+			"depth": 2,
+			"slug": "page-06",
+			"text": "重排器（Reranker）：第二阶段文档过滤器"
+		},
+		{
+			"depth": 1,
+			"slug": "page-07",
+			"text": "关键技术：Cross-Encoder 模型"
+		},
+		{
+			"depth": 2,
+			"slug": "page-08",
+			"text": "什么是 Cross-Encoder 模型？"
+		},
+		{
+			"depth": 2,
+			"slug": "page-09",
+			"text": "Cross-Encoder 模型工作原理"
+		},
+		{
+			"depth": 2,
+			"slug": "page-10",
+			"text": "编码器内部：Transformer Encoder 结构"
+		},
+		{
+			"depth": 2,
+			"slug": "page-11",
+			"text": "嵌入模型 & 重排序模型的区别"
+		},
+		{
+			"depth": 1,
+			"slug": "page-12",
+			"text": "重排序的优势与代价"
+		},
+		{
+			"depth": 2,
+			"slug": "page-13",
+			"text": "优势与代价：一笔账算清楚"
+		}
 	]
 }
