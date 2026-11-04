@@ -285,14 +285,6 @@ body.wallpaper-transparent .custom-md {
   flex-direction: column;
   /* 页间距：比正文行距略大，翻页时能看出「换了一页」 */
   gap: 14px;
-  /* 页流外面套一层浅灰底板：幻灯片是白底，只靠 1px 描边在白卡片上几乎看不见，
-     给它一个略深的衬托面，白色页面才会浮起来。只在页流内生效，不动文章底色。 */
-  padding: 16px;
-  border-radius: 16px;
-  /* 用半透明黑叠加而不是色板变量：变量在浅色主题下贴近白色（oklab 0.965），
-     压不出和幻灯片之间的差；固定 6% 的黑叠在白卡片上约等于 #F0F1F2。 */
-  background-color: rgb(15 23 42 / 0.09);
-  border: 1px solid rgb(15 23 42 / 0.07);
   margin-block: 1.25rem;
 }
 
@@ -315,11 +307,6 @@ body.wallpaper-transparent .custom-md {
   display: block;
   line-height: 0;
   border-radius: 10px;
-}
-
-.dark .document-page-stream {
-  background-color: rgb(255 255 255 / 0.06);
-  border-color: rgb(255 255 255 / 0.08);
 }
 
 .dark .document-page-stream img {
