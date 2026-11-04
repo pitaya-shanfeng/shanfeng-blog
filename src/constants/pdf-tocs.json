@@ -1992,5 +1992,122 @@
 			"slug": "page-29",
 			"text": "总结：四个实战沉淀的 Dify 方法论"
 		}
+	],
+	"2026-11-04-agent-skill": [
+		{
+			"depth": 1,
+			"slug": "page-03",
+			"text": "概念介绍 — 正本清源"
+		},
+		{
+			"depth": 2,
+			"slug": "page-04",
+			"text": "AI Agent 的\"翻车\"现场"
+		},
+		{
+			"depth": 2,
+			"slug": "page-05",
+			"text": "灵魂拷问：模型不够强吗？"
+		},
+		{
+			"depth": 2,
+			"slug": "page-06",
+			"text": "给 Agent 装上\"手和脚\""
+		},
+		{
+			"depth": 2,
+			"slug": "page-07",
+			"text": "Skill 的官方定义（Anthropic 标准）"
+		},
+		{
+			"depth": 1,
+			"slug": "page-08",
+			"text": "核心机制"
+		},
+		{
+			"depth": 2,
+			"slug": "page-09",
+			"text": "Skill 的物理结构：一个文件夹就是一项能力"
+		},
+		{
+			"depth": 2,
+			"slug": "page-10",
+			"text": "SKILL.md 解剖：YAML 元数据 + Markdown 正文"
+		},
+		{
+			"depth": 2,
+			"slug": "page-11",
+			"text": "渐进式披露：Skill 的省 Token 秘诀"
+		},
+		{
+			"depth": 2,
+			"slug": "page-12",
+			"text": "工作流示例：Agent 如何使用 Skill"
+		},
+		{
+			"depth": 2,
+			"slug": "page-13",
+			"text": "本章小结"
+		},
+		{
+			"depth": 1,
+			"slug": "page-14",
+			"text": "实操指南 — 从使用到\"调教\""
+		},
+		{
+			"depth": 2,
+			"slug": "page-15",
+			"text": "使用篇：如何让 Agent 拥有\"超能力\"？"
+		},
+		{
+			"depth": 2,
+			"slug": "page-16",
+			"text": "两种调用模式：显式 vs 隐式"
+		},
+		{
+			"depth": 2,
+			"slug": "page-17",
+			"text": "开发篇：从零写一个\"测试报告分析\" Skill"
+		},
+		{
+			"depth": 2,
+			"slug": "page-18",
+			"text": "编写高质量 SKILL.md 的三条铁律"
+		},
+		{
+			"depth": 2,
+			"slug": "page-19",
+			"text": "避坑指南：Skill 开发常见误区"
+		},
+		{
+			"depth": 1,
+			"slug": "page-20",
+			"text": "工程化落地 — 从玩具到生产"
+		},
+		{
+			"depth": 2,
+			"slug": "page-21",
+			"text": "企业落地三件事（测试团队视角）"
+		},
+		{
+			"depth": 2,
+			"slug": "page-22",
+			"text": "Skill 的版本管理策略"
+		},
+		{
+			"depth": 2,
+			"slug": "page-23",
+			"text": "安全与沙箱：不让 Skill 变成\"特洛伊木马\""
+		},
+		{
+			"depth": 2,
+			"slug": "page-24",
+			"text": "性能优化：Skill 太多会不会影响模型反应速度？"
+		},
+		{
+			"depth": 2,
+			"slug": "page-25",
+			"text": "知识地图：Agent Skill 一图串起来"
+		}
 	]
 }
