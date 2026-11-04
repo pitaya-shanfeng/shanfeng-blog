@@ -2196,5 +2196,247 @@
 			"slug": "page-19",
 			"text": "知识地图：Harness Engineering 一图串起来"
 		}
+	],
+	"2026-11-04-openclaw": [
+		{
+			"depth": 1,
+			"slug": "page-03",
+			"text": "Harness Engineering 驾驭工程"
+		},
+		{
+			"depth": 2,
+			"slug": "page-04",
+			"text": "驾驭工程的定义与核心公式"
+		},
+		{
+			"depth": 2,
+			"slug": "page-05",
+			"text": "为什么需要 Harness？原生大模型的五类失控"
+		},
+		{
+			"depth": 2,
+			"slug": "page-06",
+			"text": "Agent Harness 八大核心组件"
+		},
+		{
+			"depth": 2,
+			"slug": "page-07",
+			"text": "与相关概念的区别"
+		},
+		{
+			"depth": 1,
+			"slug": "page-08",
+			"text": "OpenClaw 是什么"
+		},
+		{
+			"depth": 2,
+			"slug": "page-09",
+			"text": "核心架构：四层解耦"
+		},
+		{
+			"depth": 2,
+			"slug": "page-10",
+			"text": "OpenClaw 的核心特性"
+		},
+		{
+			"depth": 2,
+			"slug": "page-11",
+			"text": "典型应用场景"
+		},
+		{
+			"depth": 2,
+			"slug": "page-12",
+			"text": "WorkBuddy：OpenClaw 的发行版"
+		},
+		{
+			"depth": 2,
+			"slug": "page-13",
+			"text": "Skill：可插拔的能力包"
+		},
+		{
+			"depth": 2,
+			"slug": "page-14",
+			"text": "Skill 的目录结构与示例"
+		},
+		{
+			"depth": 2,
+			"slug": "page-15",
+			"text": "MCP：AI 的 USB-C 接口"
+		},
+		{
+			"depth": 1,
+			"slug": "page-16",
+			"text": "工作原理与流程"
+		},
+		{
+			"depth": 2,
+			"slug": "page-17",
+			"text": "五步固定工作流程"
+		},
+		{
+			"depth": 2,
+			"slug": "page-18",
+			"text": "办公场景：行业资料整理"
+		},
+		{
+			"depth": 2,
+			"slug": "page-19",
+			"text": "研发整理与个人归档自动化"
+		},
+		{
+			"depth": 2,
+			"slug": "page-20",
+			"text": "端到端串讲：从用户到工具"
+		},
+		{
+			"depth": 1,
+			"slug": "page-21",
+			"text": "OpenClaw 开发指南"
+		},
+		{
+			"depth": 2,
+			"slug": "page-22",
+			"text": "六大开发方向"
+		},
+		{
+			"depth": 2,
+			"slug": "page-23",
+			"text": "两种开发模式选型"
+		},
+		{
+			"depth": 2,
+			"slug": "page-24",
+			"text": "Skill 插件最简开发模板"
+		},
+		{
+			"depth": 1,
+			"slug": "page-25",
+			"text": "OpenClaw 文件结构详解"
+		},
+		{
+			"depth": 2,
+			"slug": "page-26",
+			"text": "总览：所有开发结果的存放位置"
+		},
+		{
+			"depth": 2,
+			"slug": "page-27",
+			"text": "workspace 与 skills 文件夹"
+		},
+		{
+			"depth": 2,
+			"slug": "page-28",
+			"text": "agents · mcp · openclaw.json"
+		},
+		{
+			"depth": 1,
+			"slug": "page-29",
+			"text": "OpenClaw 配置详解"
+		},
+		{
+			"depth": 2,
+			"slug": "page-30",
+			"text": "最常改的六大类配置"
+		},
+		{
+			"depth": 2,
+			"slug": "page-31",
+			"text": "日常修改建议顺序"
+		},
+		{
+			"depth": 2,
+			"slug": "page-32",
+			"text": "八大 Harness 组件在 OpenClaw 中的实现"
+		},
+		{
+			"depth": 1,
+			"slug": "page-33",
+			"text": "行业实践：财务垂直智能体"
+		},
+		{
+			"depth": 2,
+			"slug": "page-34",
+			"text": "四类开发文件分层"
+		},
+		{
+			"depth": 2,
+			"slug": "page-35",
+			"text": "财务自定义 Skill 主代码"
+		},
+		{
+			"depth": 2,
+			"slug": "page-36",
+			"text": "财务风控规则"
+		},
+		{
+			"depth": 1,
+			"slug": "page-37",
+			"text": "项目解析：数字店长 Agent"
+		},
+		{
+			"depth": 2,
+			"slug": "page-38",
+			"text": "数字店长 Agent：学完本讲你该能完成四件事"
+		},
+		{
+			"depth": 2,
+			"slug": "page-39",
+			"text": "店长困境：为什么需要一个 AI 助手"
+		},
+		{
+			"depth": 2,
+			"slug": "page-40",
+			"text": "5 个典型触发场景：被动响应 + 主动调度"
+		},
+		{
+			"depth": 2,
+			"slug": "page-41",
+			"text": "Agent 四要素：一个能用工具的 LLM"
+		},
+		{
+			"depth": 2,
+			"slug": "page-42",
+			"text": "10 个工具：查询 + 生成 + 外发，按风险三色区分"
+		},
+		{
+			"depth": 2,
+			"slug": "page-43",
+			"text": "三级审批机制"
+		},
+		{
+			"depth": 2,
+			"slug": "page-44",
+			"text": "完整 Agent Trace 示例"
+		},
+		{
+			"depth": 2,
+			"slug": "page-45",
+			"text": "RAG 是 Agent 的工具之一，不是替代关系"
+		},
+		{
+			"depth": 2,
+			"slug": "page-46",
+			"text": "工具粒度与工具描述详略"
+		},
+		{
+			"depth": 2,
+			"slug": "page-47",
+			"text": "审批分级 · 对话状态 · 错误处理"
+		},
+		{
+			"depth": 2,
+			"slug": "page-48",
+			"text": "工具设计 5 条铁律"
+		},
+		{
+			"depth": 2,
+			"slug": "page-49",
+			"text": "什么时候用 Agent？四级火箭决策"
+		},
+		{
+			"depth": 2,
+			"slug": "page-50",
+			"text": "设计哲学：难点不在 LLM，在工具集设计"
+		}
 	]
 }
