@@ -12,8 +12,6 @@ tags:
 draft: false
 ---
 
-> Jerry 老师 L2 课程《RAG 到底怎么用？从 LLM 短板出发》的配套资料，按策略逐条拆开。
-
 ## 一、背景与重要性
 
 在 RAG（Retrieval-Augmented Generation）系统中，**文档分块质量直接影响问答系统的准确性与连贯性**。即使使用高性能大模型和精心设计的 Prompt，若分块不当，仍会导致：
