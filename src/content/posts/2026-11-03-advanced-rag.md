@@ -7,6 +7,7 @@ image: /assets/library/notes/advanced-rag/cover.webp
 category: 拾遗/学习笔记
 tags:
   - RAG
+  - 原理
   - 工程化
 draft: false
 comment: false
