@@ -274,3 +274,44 @@ body.wallpaper-transparent .custom-md {
   }
 }
 
+
+/* ===== 文档页流（PDF / PPT 逐页截图）=====
+   这类文章的正文是一串 page-NN.webp：幻灯片本身是白底，
+   直接铺在白色卡片上时，页边与卡片底色同色，读者分不出哪是「一页」。
+   这里给每张图一层纸的样子：细描边 + 轻投影 + 圆角，页与页之间留出间距。
+   只在 .document-page-stream 内生效，普通文章的配图不受影响。 */
+.document-page-stream {
+  display: flex;
+  flex-direction: column;
+  /* 页间距：比正文行距略大，翻页时能看出「换了一页」 */
+  gap: 14px;
+  margin-block: 1.25rem;
+}
+
+.document-page-stream img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  border-radius: 10px;
+  /* 描边压在图片像素上，不改布局；用带透明度的深色，暗色模式下也不突兀 */
+  border: 1px solid rgb(15 23 42 / 0.1);
+  background-color: #fff;
+  box-shadow:
+    0 1px 2px rgb(15 23 42 / 0.06),
+    0 10px 28px -12px rgb(15 23 42 / 0.18);
+}
+
+/* 外面套了 <a> 的文章（可点开原图）：描边与阴影交给图片，链接本身不参与排版 */
+.document-page-stream > a {
+  display: block;
+  line-height: 0;
+  border-radius: 10px;
+}
+
+.dark .document-page-stream img {
+  border-color: rgb(255 255 255 / 0.12);
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.5),
+    0 10px 28px -12px rgb(0 0 0 / 0.6);
+}
