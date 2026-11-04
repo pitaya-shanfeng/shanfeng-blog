@@ -2438,5 +2438,257 @@
 			"slug": "page-50",
 			"text": "设计哲学：难点不在 LLM，在工具集设计"
 		}
+	],
+	"2026-11-04-rag-data-pipeline": [
+		{
+			"depth": 1,
+			"slug": "page-03",
+			"text": "RAG 系统文档处理"
+		},
+		{
+			"depth": 2,
+			"slug": "page-04",
+			"text": "课程目标：你将获得四项明确能力"
+		},
+		{
+			"depth": 2,
+			"slug": "page-05",
+			"text": "为什么文档处理决定 RAG 上限"
+		},
+		{
+			"depth": 2,
+			"slug": "page-06",
+			"text": "三段架构铁律与落地三条原则"
+		},
+		{
+			"depth": 2,
+			"slug": "page-07",
+			"text": "文档类型全景：五类形态，难点各异"
+		},
+		{
+			"depth": 2,
+			"slug": "page-08",
+			"text": "三大技术范式：三条根本不同的路线"
+		},
+		{
+			"depth": 2,
+			"slug": "page-09",
+			"text": "三大范式五维对比 + 文档适配关系"
+		},
+		{
+			"depth": 2,
+			"slug": "page-10",
+			"text": "主流工具链全景地图"
+		},
+		{
+			"depth": 2,
+			"slug": "page-11",
+			"text": "电子文档解析工具：MinerU 为中文首选"
+		},
+		{
+			"depth": 2,
+			"slug": "page-12",
+			"text": "扫描件与 OCR：传统 OCR vs VLM 端到端"
+		},
+		{
+			"depth": 2,
+			"slug": "page-13",
+			"text": "表格识别：容错率最低的内容"
+		},
+		{
+			"depth": 2,
+			"slug": "page-14",
+			"text": "公式与图表专项：被严重低估的两块"
+		},
+		{
+			"depth": 2,
+			"slug": "page-15",
+			"text": "工程图与设计图：通用 VLM 仍弱，需组合方案"
+		},
+		{
+			"depth": 2,
+			"slug": "page-16",
+			"text": "为什么传统 OCR 失效：答案不在文字里"
+		},
+		{
+			"depth": 2,
+			"slug": "page-17",
+			"text": "ColPali / ColQwen2 工作原理"
+		},
+		{
+			"depth": 2,
+			"slug": "page-18",
+			"text": "视觉原生 RAG 的三大代价与适用判断"
+		},
+		{
+			"depth": 2,
+			"slug": "page-19",
+			"text": "多模态融合范式：三种架构的取舍"
+		},
+		{
+			"depth": 2,
+			"slug": "page-20",
+			"text": "分块策略：从固定切分到语义感知"
+		},
+		{
+			"depth": 2,
+			"slug": "page-21",
+			"text": "分块策略 × 工具映射：五种方法的具体落地"
+		},
+		{
+			"depth": 2,
+			"slug": "page-22",
+			"text": "Embedding 与向量库选型"
+		},
+		{
+			"depth": 2,
+			"slug": "page-23",
+			"text": "知识图谱 RAG：何时该用，何时是过度工程"
+		},
+		{
+			"depth": 2,
+			"slug": "page-24",
+			"text": "国产商业 API：中小团队的最短路径"
+		},
+		{
+			"depth": 2,
+			"slug": "page-25",
+			"text": "一站式框架与编排工具"
+		},
+		{
+			"depth": 2,
+			"slug": "page-26",
+			"text": "三层评估体系：没有评估，选型都是猜测"
+		},
+		{
+			"depth": 2,
+			"slug": "page-27",
+			"text": "四种典型选型组合：90% 的场景能套用"
+		},
+		{
+			"depth": 2,
+			"slug": "page-28",
+			"text": "选型决策双维度：数据敏感性 × 内容形态"
+		},
+		{
+			"depth": 2,
+			"slug": "page-29",
+			"text": "把今天的内容浓缩成可执行的清单"
+		},
+		{
+			"depth": 2,
+			"slug": "page-30",
+			"text": "RAG 文档处理：一页看全"
+		},
+		{
+			"depth": 1,
+			"slug": "page-31",
+			"text": "综合实战：电商智能客服"
+		},
+		{
+			"depth": 2,
+			"slug": "page-32",
+			"text": "电商客服的私有部署大模型解决方案"
+		},
+		{
+			"depth": 2,
+			"slug": "page-33",
+			"text": "完整工程流程：7 步从零到生产部署"
+		},
+		{
+			"depth": 2,
+			"slug": "page-34",
+			"text": "数据生成与 LoRA 微调"
+		},
+		{
+			"depth": 2,
+			"slug": "page-35",
+			"text": "AWQ 量化：W4A16 · 压缩 49%"
+		},
+		{
+			"depth": 2,
+			"slug": "page-36",
+			"text": "服务架构：Gradio → FastAPI → RAG → vLLM → Redis"
+		},
+		{
+			"depth": 2,
+			"slug": "page-37",
+			"text": "三区服务模型 · 核心功能需求"
+		},
+		{
+			"depth": 2,
+			"slug": "page-38",
+			"text": "GUI 测试用例：三个区 + 多轮验证"
+		},
+		{
+			"depth": 2,
+			"slug": "page-39",
+			"text": "环境部署：一键启动 · 显存规划"
+		},
+		{
+			"depth": 2,
+			"slug": "page-40",
+			"text": "核心技术点：可迁移的大模型工程决策能力"
+		},
+		{
+			"depth": 2,
+			"slug": "page-41",
+			"text": "实战全链路回顾：从训练到上线"
+		},
+		{
+			"depth": 1,
+			"slug": "page-42",
+			"text": "系统架构与学习路径"
+		},
+		{
+			"depth": 2,
+			"slug": "page-43",
+			"text": "这是个什么项目：LLM 应用要解决三类问题"
+		},
+		{
+			"depth": 2,
+			"slug": "page-44",
+			"text": "七个组件，各司其职"
+		},
+		{
+			"depth": 2,
+			"slug": "page-45",
+			"text": "一次提问发生了什么：七个步骤"
+		},
+		{
+			"depth": 2,
+			"slug": "page-46",
+			"text": "四个工程亮点与三处有意简化"
+		},
+		{
+			"depth": 2,
+			"slug": "page-47",
+			"text": "四层架构：理解职责划分是理解系统的钥匙"
+		},
+		{
+			"depth": 2,
+			"slug": "page-48",
+			"text": "建议的阅读顺序：不要从 main.py 开始"
+		},
+		{
+			"depth": 2,
+			"slug": "page-49",
+			"text": "LLM 应用 90% 的工作：决定往提示词里放什么"
+		},
+		{
+			"depth": 2,
+			"slug": "page-50",
+			"text": "demo 和上线之间的距离：四件事让玩具变产品"
+		},
+		{
+			"depth": 2,
+			"slug": "page-51",
+			"text": "动手练习与自检清单"
+		},
+		{
+			"depth": 2,
+			"slug": "page-52",
+			"text": "全课知识地图"
+		}
 	]
 }
