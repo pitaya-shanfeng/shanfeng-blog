@@ -1,7 +1,7 @@
 ---
 title: 大模型核心原理
 published: 2025-12-02T18:00:00+08:00
-description: 模型只做一件事：根据上文猜下一个词。分词、词嵌入、注意力、生成四步，配「国王有个女儿」的完整案例。
+description: 模型只做一件事：根据上文猜下一个词。分词、词嵌入、注意力、生成四步拆开，配「国王有个女儿」的完整案例；训练三阶段则是预训练、SFT、RLHF。
 image: /assets/library/notes/llm-core-principles/cover.webp
 category: 拾遗/学习笔记
 tags:

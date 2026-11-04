@@ -1,7 +1,7 @@
 ---
 title: Prompt工程与调优技巧
 published: 2026-10-20T10:00:00+08:00
-description: 提示词只解决两件事：信息给足、任务拆开。六种技巧按代价排开，后半段讲注入、泄露、越狱三类攻击怎么防。
+description: 提示词只解决两件事：把背景信息给足、把复杂任务拆成步骤。六种技巧按代价排开，后半段转向防守与搭建：注入、泄露、越狱怎么防，Coze 与百炼怎么跑通。
 image: /assets/library/notes/prompt-engineering-tuning/cover.webp
 category: 拾遗/学习笔记
 tags:

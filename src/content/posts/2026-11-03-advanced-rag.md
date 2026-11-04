@@ -1,7 +1,7 @@
 ---
 title: RAG 商业化痛点与 Advanced RAG
 published: 2026-11-03T12:45:00+08:00
-description: Naive RAG 上线容易、商用难：七个失效点逐一归位，再给出 Pre-Retrieval、检索、Post-Retrieval 的三段式优化框架。
+description: Naive RAG 上线容易、商用难：七个失效点逐一归位（索引构建四个、检索增强三个），再给出 Pre-Retrieval、检索、Post-Retrieval 的三段式优化框架。
 image: /assets/library/notes/advanced-rag/cover.webp
 category: 拾遗/学习笔记
 tags:

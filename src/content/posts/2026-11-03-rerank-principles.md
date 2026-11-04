@@ -1,7 +1,7 @@
 ---
 title: RAG 重排序底层原理解析
 published: 2026-11-03T13:08:00+08:00
-description: 初步检索「召得回」不等于「排得好」：重排序做第二阶段过滤，Cross-Encoder 成对打分，最后把延迟成本算成一笔账。
+description: 初步检索「召得回」不等于「排得好」：重排序是 RAG 的第二阶段过滤器，Cross-Encoder 成对打分再排序，最后把精度收益与延迟成本算成一笔账。
 image: /assets/library/notes/rerank-principles/cover.webp
 category: 拾遗/学习笔记
 tags:

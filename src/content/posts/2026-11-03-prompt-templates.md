@@ -1,7 +1,7 @@
 ---
 title: 提示词参考范例
 published: 2026-11-03T11:45:00+08:00
-description: 一套可直接套的骨架：七块通用结构（角色到限制），加问答模板、智能体工具调用，以及四个完整范例。
+description: 一套可直接套的提示词骨架：通用结构分七块（角色、技能、要求、任务、工作流、示例、限制），另有问答模板、智能体工具调用与四个完整范例可直接改用。
 image: /assets/library/notes/prompt-templates/cover.webp
 category: 拾遗/学习笔记
 tags:
