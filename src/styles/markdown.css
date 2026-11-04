@@ -293,6 +293,11 @@ body.wallpaper-transparent .custom-md {
   width: 100%;
   height: auto;
   margin: 0;
+  /* 灯箱已由 FancyboxManager 绑定（.custom-md img 选择器覆盖到页流），
+     这里只补「可点」的视觉提示：放大光标 + 悬停时轻微提亮。
+     页图是 3200/6400 宽的高清图，点开能看到细节，但没有光标提示时读者不会去点。 */
+  cursor: zoom-in;
+  transition: filter 0.15s ease, box-shadow 0.2s ease;
   border-radius: 10px;
   /* 描边压在图片像素上，不改布局；用带透明度的深色，暗色模式下也不突兀 */
   border: 1px solid rgb(15 23 42 / 0.13);
@@ -307,6 +312,13 @@ body.wallpaper-transparent .custom-md {
   display: block;
   line-height: 0;
   border-radius: 10px;
+}
+
+.document-page-stream img:hover {
+  filter: brightness(1.03);
+  box-shadow:
+    0 1px 2px rgb(15 23 42 / 0.08),
+    0 14px 34px -12px rgb(15 23 42 / 0.28);
 }
 
 .dark .document-page-stream img {
