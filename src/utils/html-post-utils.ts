@@ -26,6 +26,8 @@ import { visit } from "unist-util-visit";
 export interface HtmlPostMeta {
 	title?: string;
 	description?: string;
+	/** 详情页 banner 金句；不填则用正文首个引用块 */
+	quote?: string;
 	tags?: string[];
 	category?: string;
 	published?: Date;
@@ -321,6 +323,7 @@ export function parseHtmlPost(
 		pinned: fm.pinned === true || /^(true|1|yes)$/i.test(pickMeta(metas, "pinned")),
 		author: String(fm.author ?? "").trim() || pickMeta(metas, "author"),
 		slug: String(fm.slug ?? "").trim() || pickMeta(metas, "slug"),
+		quote: String(fm.quote ?? "").trim() || clamp(firstQuote, 200),
 	};
 
 	return {

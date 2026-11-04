@@ -2,6 +2,7 @@
 title: AIGC应用全景图
 published: 2025-11-29
 description: 量子位智库 2025 年出的 AIGC 应用全景图谱，按 to C 和 to B 两大类铺开，右侧单列底层开发与 AI 编程工具，可以当行业地图来翻。
+quote: 按 to C 与 to B 两大类铺开，底层开发与 AI 编程工具单列。
 image: /assets/library/notes/aigc-landscape-2025/cover.webp
 category: 拾遗/学习笔记
 tags:

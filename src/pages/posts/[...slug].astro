@@ -115,7 +115,9 @@ const markdownClass = `mb-6 markdown-content onload-animation${
 
 // banner 金句：优先从正文第一个引用块自动提取，没有引用块则回退到 frontmatter 的 description。
 // 注意：SEO / 分享卡片仍使用 entry.data.description，不受此处影响。
-const bannerQuote = extractPostQuote(entry.body) || entry.data.description;
+// 优先级：frontmatter 的 quote（人工提炼的金句）> 正文首个引用块 > description
+const bannerQuote =
+	entry.data.quote || extractPostQuote(entry.body) || entry.data.description;
 
 // 字数 / 阅读时长：md 文章来自 remark 插件，HTML 文章由 loader 直接写进 data。
 // ⚠️ `rendered.metadata` 不会变成 `remarkPluginFrontmatter`，所以 HTML 文章必须读 data ——
