@@ -1,0 +1,59 @@
+---
+/**
+ * 学习笔记合集页：/notes/ 、/notes/2/ …
+ *
+ * 对象是「自己的理解过程」：不总结别人的书，只记这个知识点怎么啃下来的。
+ * 版式与取数在 src/components/collection/CollectionPage.astro。
+ *
+ * 分页说明：
+ * 本页是唯一的「拾遗」分页页，其余栏目（/hotnews/、/picks/）仍是一次性列表。
+ * 之所以要把路由写成 [...page]，是因为 Astro 的 paginate() 只能在带 rest 参数的
+ * 页面里用；第一页的地址仍是 /notes/，动态段为空，对外链接不变。
+ */
+
+import type { GetStaticPaths } from "astro";
+import CollectionPage from "@/components/collection/CollectionPage.astro";
+import { siteConfig } from "@/config";
+import { bannerQuotes } from "@/utils/banner-quotes-data";
+import { getCollectionPosts } from "@/utils/collection-posts";
+
+const CATEGORY = "学习笔记";
+
+const LEAD = "把「学会了」拆成能回看的每一步。";
+const DESC =
+	"学的时候记，不等到学会再写——所以会有卡住的地方、试错的做法、被推翻的判断。每条只回答三件事：它到底是什么，我在什么场景下用过，它替我省下了什么。不整理成知识图谱，也不假装成体系。";
+const EMPTY_HINT =
+	"第一篇大概会从一个具体的卡点开始——哪个概念没想通、试了什么、后来怎么绕过去的。";
+
+/**
+ * 空栏目要单独兜底：paginate() 遇到空数组会抛错，
+ * 而栏目刚建好、一篇都还没写的时候仍然要能访问（现在是 /picks/ 的处境）。
+ */
+export const getStaticPaths = (async ({ paginate }) => {
+	// 这里不能用 frontmatter 里的 CATEGORY：getStaticPaths 在组件作用域之外求值。
+	const posts = await getCollectionPosts("学习笔记");
+	if (posts.length === 0) {
+		return [{ params: { page: undefined }, props: { page: null } }];
+	}
+	return paginate(posts, { pageSize: siteConfig.pagination.postsPerPage });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+
+/** 盘口的篇数、字数按全量算，翻页不该让「共多少篇」跟着变 */
+const posts = await getCollectionPosts(CATEGORY);
+---
+
+<CollectionPage
+	path="/notes/"
+	category={CATEGORY}
+	lead={LEAD}
+	desc={DESC}
+	banner="/assets/images/notes-banner.webp"
+	quotes={bannerQuotes}
+	emptyHint={EMPTY_HINT}
+	icon="material-symbols:edit-note-rounded"
+	unit="篇"
+	posts={posts}
+	page={page}
+/>

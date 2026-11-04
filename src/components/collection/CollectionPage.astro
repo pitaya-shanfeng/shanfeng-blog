@@ -22,7 +22,8 @@
  * HTML 文章（htmlPosts 集合）一并合并，写法不受限。
  */
 
-import { getCollection, render } from "astro:content";
+import { render } from "astro:content";
+import type { Page } from "astro";
 import { Icon } from "astro-icon/components";
 import PostCard from "@/components/layout/PostCard.astro";
 import SharePoster from "@/components/misc/SharePoster.svelte";
@@ -33,7 +34,9 @@ import { profileConfig } from "@/config/profileConfig";
 import { sponsorConfig } from "@/config/sponsorConfig";
 import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
+import Pagination from "@/components/common/Pagination.astro";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import { type CollectionPost, getCollectionPosts } from "@/utils/collection-posts";
 import { getPostUrlBySlug } from "@/utils/url-utils";
 import type { BannerQuote } from "@/utils/banner-quotes-data";
 // 霞鹜文楷按 unicode-range 切成 97 片，浏览器只会拉当前文案命中的那几片。
@@ -61,6 +64,10 @@ interface Props {
 	unit?: string;
 	/** banner 上逐字打出的金句；不传则文字层不出现 */
 	quotes?: BannerQuote[];
+	/** 完整文章列表（分页时由页面层传入，用于盘口统计与翻页） */
+	posts?: CollectionPost[];
+	/** Astro 分页对象；不传表示这一页不分页 */
+	page?: Page | null;
 }
 
 const {
@@ -74,6 +81,8 @@ const {
 	icon = "material-symbols:auto-stories-rounded",
 	unit = "篇",
 	quotes = [],
+	posts: postsProp,
+	page = null,
 } = Astro.props;
 
 const navEntry = navBarConfig.links
@@ -91,42 +100,17 @@ const KICKER = GROUP_NAME ? `${GROUP_NAME} · ${CATEGORY}` : CATEGORY;
 /** 数据筛选键：优先用调用方给的，否则与栏目名一致 */
 const POST_CATEGORY = category ?? CATEGORY;
 
-/**
- * 归类命中判定：等值 / 路径拆段 / tags 三种都收。
+/*
+ * 取数交给 utils/collection-posts：分页要求 getStaticPaths 与渲染用同一份
+ * 列表与同一个判定函数，所以这里不再自带筛选逻辑。
  *
- * 等值是本项目的原始约定（见山那批用 category: 写作，二级主题走 tags）。
- * 但实际写稿时，很自然会照着导航「拾遗 → 学习笔记」两级把归类写成
- * 路径式 category: 拾遗/学习笔记 —— 这个写法有信息量（卡片底部能看出
- * 归属），却会让等值匹配一条都收不到，栏目页白白空着。
- * 所以按「/」拆段后任一段相等即算命中，两种写法都能进，不必回头改稿。
- * 拆段而非取末段：将来写成「拾遗/学习笔记/Prompt」也照样命中。
+ * posts 不传时（行业动态那种不走分页的调用方）这里自己取一次，
+ * 保证组件单用时行为不变。
  */
-const inCategory = ({
-	data,
-}: {
-	data: { draft?: boolean; category?: string | null; tags?: string[] };
-}) => {
-	if (data.draft || !POST_CATEGORY) return false;
-	if ((data.tags ?? []).includes(POST_CATEGORY)) return true;
-	const category = data.category?.trim();
-	if (!category) return false;
-	return category
-		.split("/")
-		.some((segment) => segment.trim() === POST_CATEGORY);
-};
+const posts: CollectionPost[] = postsProp ?? (await getCollectionPosts(POST_CATEGORY));
 
-const mdPosts = await getCollection("posts", inCategory);
-const htmlPosts = await getCollection("htmlPosts", inCategory);
-
-/**
- * 两个集合合并：HTML 文章与 md 文章在列表里应当无差别。
- * htmlPosts 的 entry 类型与 posts 不同，但 loader 写出的 data 形状一致
- * （content.config.ts 里两个 collection 共用 postSchema），这里 cast 一次。
- */
-const posts = [
-	...mdPosts,
-	...(htmlPosts as unknown as typeof mdPosts),
-].sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
+/** 当前页要渲染的条目：分页调用方给 slice，未分页时就是整份列表 */
+const pagePosts: CollectionPost[] = page ? (page.data as CollectionPost[]) : posts;
 
 /**
  * 字数 / 阅读时长：优先取 data 上的值（HTML 文章由 loader 写入）。
@@ -222,7 +206,7 @@ const shareDate = latest ? latest.data.published.toISOString().slice(0, 10) : ""
                         {
                             posts.length > 0 ? (
                                 <>
-                                    <b>{posts.length}</b> {unit}
+                                    <b>{page ? page.total : posts.length}</b> {unit}
                                     {wordStat && (
                                         <>
                                             <span class="sep" />
@@ -277,9 +261,9 @@ const shareDate = latest ? latest.data.published.toISOString().slice(0, 10) : ""
              平铺，不分组。卡片交给母版 PostCard，本页只补封面尺寸与间距，
              其余（标题、元信息、底部标签）与见山合集页逐像素一致。 -->
         {
-            posts.length > 0 ? (
+            pagePosts.length > 0 ? (
                 <div class="col-list list-mode">
-                    {posts.map((post) => (
+                    {pagePosts.map((post) => (
                         <div class="col-item">
                             <PostCard
                                 entry={post}
@@ -316,6 +300,16 @@ const shareDate = latest ? latest.data.published.toISOString().slice(0, 10) : ""
             )
         }
     </div>
+
+    {
+        page && page.total > page.size ? (
+            <Pagination
+                page={page}
+                class="col-pagination mx-auto onload-animation"
+                style="animation-delay: calc(var(--content-delay) + 120ms)"
+            />
+        ) : null
+    }
 
     {showSponsorButton && <SponsorModal />}
 </MainGridLayout>
