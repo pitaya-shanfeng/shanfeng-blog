@@ -1,7 +1,7 @@
 ---
 title: 向量检索算法
 published: 2026-11-03T12:41:00+08:00
-description: 暴力搜索精度 100% 但复杂度 O(N)，规模一上来就不可用：IVF 先聚类分簇、查询只比质心，HNSW 借小世界网络分层下探，最后一张对比表把选型钉在「数据动不动」上。
+description: 暴力搜索精度 100%，复杂度却是 O(N)，数据一多就慢到不能用。IVF 先聚类分簇、查询只比质心，HNSW 用分层图逐层下探，末尾附选型对比表。
 image: /assets/library/notes/vector-search-ann/cover.webp
 category: 拾遗/学习笔记
 tags:

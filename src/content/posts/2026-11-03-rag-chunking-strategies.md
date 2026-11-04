@@ -1,7 +1,7 @@
 ---
 title: RAG 的分块策略
 published: 2026-11-03T12:38:00+08:00
-description: 分块质量几乎决定 RAG 的性能上限，换更强的模型也补不回来：五种策略从固定长度排到父子索引，落点是一句可执行的话——固定检索与重排，只动分块参数。
+description: 分块切得好不好，几乎决定了 RAG 的上限，换更强的模型也补不回来。五种策略从固定长度排到父子索引，落点只有一句：固定检索，只动分块。
 image: /assets/library/notes/rag-chunking-strategies/cover.webp
 category: 拾遗/学习笔记
 tags:

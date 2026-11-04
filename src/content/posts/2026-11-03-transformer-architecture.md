@@ -1,7 +1,7 @@
 ---
 title: Transformer 架构解析
 published: 2025-12-02T20:00:00+08:00
-description: 一句话走完整条链路：分词、词嵌入叠位置编码凑成 4×512 矩阵，QKV 与八头注意力各看一个视角，编码器靠残差与 FFN 稳住，解码器逐词生成。
+description: 拿「国王他有个女儿」走一遍全链路。分词、词嵌入叠位置编码凑成 4×512 矩阵，QKV 和八头注意力各看一个视角，编码器稳住梯度，解码器逐词生成。
 image: /assets/library/notes/transformer-architecture/cover.webp
 category: 拾遗/学习笔记
 tags:
