@@ -11,6 +11,7 @@
 @import './layout-base.css';
 @import './type-scale.css'; /* 全站字阶：角色 → 字号 */
 @import './banner-quote.css'; /* 合集页 banner 右侧金句（三套模板共用） */
+@import './book-page.css'; /* 书页整页版式（见山 / 增长黑客） */
 
 @plugin '@tailwindcss/typography';
 
@@ -55,8 +56,12 @@
    约等于把整站缩到 90%。rem 会连带 --page-width（100rem）一起等比收窄，
    与真实缩放的行为一致；图片像素和媒体查询断点不受影响。 */
 html {
-    /* 移动端不缩放：14px 已经是手机上能接受的下限，再乘系数会伤可读性 */
-    font-size: 14px;
+    /* 移动端根字号：模板默认 14px，0.75rem 的小标签只剩 10.5px。
+       抬到 15px 后，正文 15、元信息 12.2，都在可读范围内，且整站等比 */
+    font-size: 15px;
+    /* 滚动条槽位常驻：弹窗锁滚动（overflow: hidden）时滚动条会消失，
+       整页会右移约 15px，看起来像抖了一下（固定定位的元素也会跟着移） */
+    scrollbar-gutter: stable;
 }
 
 /* 桌面字号：以 rootScale（默认 0.9）为基准，屏幕很宽时按宽度平滑补偿。
@@ -661,7 +666,9 @@ html {
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 1.4;
-  max-height: 2.8em; /* 2行的高度 */
+  /* 2 行 + 一档呼吸：写死 2.8em 时，行高 1.4 的两行刚好占满，
+     最后一行带下伸笔画的字会溢出 4~5px，和下面的标签叠在一起 */
+  max-height: 3em;
 }
 
 .post-list-container.grid-mode .post-card-item a[aria-label] {
@@ -712,4 +719,15 @@ html {
 /* 分页信息样式 */
 .pagination-info {
   @apply text-sm text-(--text-secondary) text-center mb-2;
+}
+
+/* 无封面卡片的「进入」箭头：桌面上是 52px 的竖条，手机上会吃掉近 1/5 卡宽，
+   把标题和摘要压成很窄的一列 —— 窄屏缩到 44px 并贴边 */
+@media (max-width: 767px) {
+	.post-card-enter-btn {
+		width: 2.75rem;
+		right: 0.5rem;
+		top: 0.5rem;
+		bottom: 0.5rem;
+	}
 }

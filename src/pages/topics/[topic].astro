@@ -1,0 +1,39 @@
+---
+/**
+ * 「方法 / 实战」两栏的二级合集页：/topics/<slug>/
+ *
+ * 版式完全复用 CollectionPage.astro —— 与见山书页、拾遗三栏同一套：
+ * 刊头在 banner 上（栏目名 + 上级副题 + 定位语 + 分享/打赏 + 金句），
+ * 下面一张说明卡，再往下是列表卡。
+ *
+ * 每个栏目一条路由，配置在 src/config/topicsConfig.ts，
+ * 加栏目只加配置，不用再写页面。
+ */
+import type { GetStaticPaths } from "astro";
+import CollectionPage from "@/components/collection/CollectionPage.astro";
+import { topicPages } from "@/config/topicsConfig";
+import { getCollectionPosts } from "@/utils/collection-posts";
+
+export const getStaticPaths = (() =>
+	topicPages.map((topic) => ({
+		params: { topic: topic.slug },
+		props: { topic },
+	}))) satisfies GetStaticPaths;
+
+const { topic } = Astro.props;
+const posts = await getCollectionPosts(topic.category);
+---
+
+<CollectionPage
+	path={`/topics/${topic.slug}/`}
+	category={topic.category}
+	kickerName={topic.name}
+	kickerGroup={topic.group}
+	lead={topic.lead}
+	desc={topic.desc}
+	banner={topic.banner}
+	emptyHint={topic.emptyHint}
+	icon={topic.icon}
+	unit={topic.unit ?? "篇"}
+	posts={posts}
+/>

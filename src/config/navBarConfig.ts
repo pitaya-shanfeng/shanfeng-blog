@@ -99,20 +99,20 @@ const CONTENT_GROUPS: ContentGroupConfig[] = [
 	},
 	{
 		name: "方法",
-		// 每个二级 = 一个分类（category 两级写法）。暂时没有合集页，落归档筛选。
+		// 每个二级 = 一个分类（category 两级写法），各自有合集页 /topics/<slug>/。
 		topics: [
-			{ name: "需求洞察", category: "方法/需求洞察" },
-			{ name: "产品设计", category: "方法/产品设计" },
-			{ name: "商业增长", category: "方法/商业增长" },
+			{ name: "需求洞察", category: "方法/需求洞察", url: "/topics/xuqiu-dongcha/" },
+			{ name: "产品设计", category: "方法/产品设计", url: "/topics/chanpin-sheji/" },
+			{ name: "商业增长", category: "方法/商业增长", url: "/topics/shangye-zengzhang/" },
 		],
 	},
 	{
 		name: "实战",
-		// 同上：这一栏还是内容规划，实战类文章在写，菜单先留位。
+		// 同上：各自有合集页 /topics/<slug>/。
 		topics: [
-			{ name: "调研报告", category: "实战/调研报告" },
-			{ name: "方案设计", category: "实战/方案设计" },
-			{ name: "项目复盘", category: "实战/项目复盘" },
+			{ name: "调研报告", category: "实战/调研报告", url: "/topics/diaoyan-baogao/" },
+			{ name: "方案设计", category: "实战/方案设计", url: "/topics/fangan-sheji/" },
+			{ name: "项目复盘", category: "实战/项目复盘", url: "/topics/xiangmu-fupan/" },
 		],
 	},
 	{

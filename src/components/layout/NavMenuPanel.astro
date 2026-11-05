@@ -92,12 +92,16 @@ const navTitle = siteConfig.navbar.title || siteConfig.title;
     .mobile-submenu {
         overflow: hidden;
         max-height: 0;
+        /* 折叠态彻底不可见：只靠 max-height:0 时，标签仍会被渲染/量到，
+           出现「文字截断、文字叠在一起」的误判与焦点可进入问题 */
+        visibility: hidden;
         transition: max-height 0.3s var(--ease-standard);
         display: flex;
         flex-direction: column;
         gap: 4px;
     }
     .mobile-dropdown[data-expanded="true"] .mobile-submenu {
+        visibility: visible;
         max-height: 60vh;
         margin-top: 4px; /* 触发器与子项之间留距 */
     }

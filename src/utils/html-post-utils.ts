@@ -302,7 +302,20 @@ export function parseHtmlPost(
 	})();
 
 	const plainText = toText({ type: "root", children: contentChildren } as never);
-	const reading = measure(plainText);
+	// 正文里的内容图：PDF / PPT 转成图片发的文章，一页一张图，按 2 分钟/张折算
+	let imageCount = 0;
+	visit(
+		{ type: "root", children: contentChildren } as never,
+		"element",
+		(node: { tagName: string; properties?: Record<string, unknown> }) => {
+			if (node.tagName !== "img") return;
+			// 装饰性小图（logo、图标）不计：带宽度且小于 200px 的跳过
+			const w = Number(node.properties?.width);
+			if (Number.isFinite(w) && w > 0 && w < 200) return;
+			imageCount += 1;
+		},
+	);
+	const reading = measure(plainText, imageCount);
 
 	const published =
 		parseDate(String(fm.published ?? fm.date ?? "")) ??

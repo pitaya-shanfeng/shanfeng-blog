@@ -1,0 +1,876 @@
+/**
+ * 见山 / 增长黑客这类书页的整页版式（刊头、关于这本书、篇章节列表）。
+ *
+ * 为什么放在全局样式表里，而不是页面内的 <style>：
+ * 书页的版式全部由这一份样式承担，页面内联样式在 swup 切页（只替换容器 HTML）
+ * 时不一定会跟着进来，页面的 scoped 样式还会因为内存缓存/开发服务器重启对不上；
+ * 放进 main.css 之后它就是全站样式表的一部分，直达和切页表现一致。
+ *
+ * 选择器都限定在 .book-* / .book-page 之内，不会影响其它页面。
+ */
+
+.book-page {
+  display: flex;
+  flex-direction: column;
+  /* 与母版列表容器一致的块间距 */
+  gap: 16px;
+}
+
+/* ---------- 刊头 ----------
+   版式：模板 banner 提供照片、压暗和底部水波；这一层只负责把文字、按钮、金句
+   摆到 banner 上。高度全部来自 --book-banner-h，和波浪、下方列表同一个量。 */
+
+.book-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* 自己兜住高度：切页后外层容器尺寸没跟上也不会塌 */
+  min-height: var(--book-banner-h, max(50vh, 430px));
+  height: 100%;
+  color: #fff;
+}
+
+/* 照片：桌面端由模板 banner 提供；窄屏模板会隐藏壁纸，这里自带一张 */
+.book-hero-media {
+  display: none;
+}
+
+.book-hero-inner {
+  /* 绝对定位在 hero 中线上：只跟 hero 自身高度有关 */
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 100%;
+  max-width: var(--page-width, 100rem);
+  margin-inline: auto;
+  padding: 1.5rem 1.5rem 4.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.book-hero-inner > * {
+  max-width: 40rem;
+}
+
+@media (min-width: 1280px) {
+  .book-hero-inner {
+    max-width: min(92vw, var(--page-width, 100rem));
+  }
+}
+
+.book-hero-title {
+  margin: 0;
+  /* 书名是这一屏的视觉焦点：以 h1 为下限、display 为上限，跟着视口在两者之间走，
+     不再用一个固定的中间值 */
+  font-size: clamp(var(--fs-h1), 4.6vw, var(--fs-display));
+  font-weight: 700;
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  text-shadow: 0 2px 34px rgb(0 0 0 / 0.45);
+}
+
+/* 副书名：沿用设计稿的「— 产品判断力」，短横 + 字间距 */
+.book-hero-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+  font-size: var(--fs-ui);
+  font-weight: 500;
+  letter-spacing: var(--ls-wide);
+  color: #b9d4c9;
+  text-shadow: 0 1px 18px rgb(0 0 0 / 0.35);
+}
+
+.book-hero-lead {
+  margin-top: 0.9rem;
+  font-size: var(--fs-h3);
+  line-height: var(--lh-ui);
+  text-wrap: balance;
+  text-shadow: 0 1px 18px rgb(0 0 0 / 0.35);
+}
+
+/* ---------- 操作按钮：落在 banner 下沿的浅色水波上，所以做成玻璃底 ---------- */
+
+.book-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.15rem;
+}
+
+.book-hero-cta,
+.book-hero-ghost,
+.book-hero-actions .btn-regular {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  height: 2.9rem;
+  padding: 0 1.15rem;
+  border: 1px solid rgb(255 255 255 / 0.42);
+  border-radius: 10px;
+  background: rgb(255 255 255 / 0.12);
+  color: #fff;
+  /* 0.9375rem：90% 根字号下约 13.5px，按钮文字不会掉到 12px 以下 */
+  font-size: 0.9375rem;
+  font-weight: 500;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.book-hero-cta:hover,
+.book-hero-ghost:hover,
+.book-hero-actions .btn-regular:hover {
+  background: rgb(255 255 255 / 0.2);
+}
+
+.book-hero-ghost {
+  cursor: pointer;
+}
+
+/* ---------- 金句：右下角，和合集页同一个位置 ---------- */
+
+.book-hero-quote-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 0 1rem 10rem;
+  width: 100%;
+  max-width: var(--page-width, 100rem);
+  margin-inline: auto;
+  pointer-events: none;
+}
+
+@media (min-width: 1280px) {
+  .book-hero-quote-wrap {
+    max-width: min(92vw, var(--page-width, 100rem));
+  }
+}
+
+/* 平板：仍然右下角，往上抬一档 */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .book-hero-quote-wrap {
+    padding: 0 1rem 12rem;
+  }
+}
+
+/* 手机：不放金句，避免压住文字 */
+@media (max-width: 767px) {
+  .book-hero-quote-wrap {
+    display: none;
+  }
+}
+
+/* ---------- 窄屏（<1024）：模板会隐藏壁纸 banner，这一档改成自带照片的单栏 ----------
+   注意：模板那条隐藏规则在 @layer 里、又是 !important，unlayered 的样式压不过它，
+   所以 768–1023 也只能走"自带照片"这条路，不能再指望模板的 banner */
+
+@media (max-width: 1023px) {
+  .book-hero {
+    height: auto;
+    min-height: 0;
+  }
+
+  .book-hero-media {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .book-hero-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 62% 32%;
+  }
+
+  /* 模板在窄屏会连压暗层一起隐藏，这里补一层 */
+  .book-hero-media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgb(4 20 16 / 0.72) 0%,
+      rgb(4 20 16 / 0.45) 45%,
+      rgb(4 20 16 / 0.82) 100%
+    );
+  }
+
+  /* 窄屏书页用自带照片，模板那份壁纸藏起来 */
+  html:has(.book-hero) #wallpaper-wrapper {
+    display: none !important;
+  }
+
+  .book-hero-inner {
+    position: relative;
+    top: auto;
+    transform: none;
+    padding: 7rem 1.5rem 4rem;
+  }
+
+  .book-hero-title {
+    font-size: clamp(2rem, 7vw, 2.8rem);
+  }
+
+  .book-hero-lead {
+    font-size: var(--fs-item);
+  }
+}
+
+  /* ---------- 关于这本书：封面 + 一句引文 + 盘口 ---------- */
+  .book-about {
+    display: flex;
+    /* 文字列拉满卡片高度：书名顶到封面顶，盘口落到封面底 */
+    align-items: stretch;
+    gap: 1.4rem;
+    padding: 1.4rem;
+  }
+  .book-about-cover {
+    width: 96px;
+    align-self: flex-start;
+    flex: 0 0 auto;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0 14px 28px -16px rgb(0 0 0 / 0.45);
+  }
+  .book-about-cover img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .book-about-text {
+    min-width: 0;
+    /* 占满封面右侧的剩余宽度：不写 flex 时按 max-content 收缩，右侧会空出一大块 */
+    flex: 1 1 0%;
+    display: flex;
+    flex-direction: column;
+    /* 与封面同高：132×(4/3) = 176 */
+    min-height: 176px;
+  }
+  .book-about-name {
+    /* 与卡片里其它标题同档（--fs-item），不再多出一个 18px 的字号 */
+    font-size: var(--fs-item);
+    font-weight: 700;
+    line-height: var(--lh-snug);
+    letter-spacing: var(--ls-wide);
+    color: var(--deep-text, currentColor);
+    text-wrap: balance;
+  }
+
+  .book-about-author {
+    margin-top: 0.25rem;
+    font-size: var(--fs-meta);
+    color: var(--content-meta);
+  }
+  .book-about-desc {
+    margin-top: 0.7rem;
+    /* 与正文、篇首语同一档：三块都是"读一段话"，字号必须一样 */
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--content-meta);
+    text-wrap: pretty;
+  }
+  /* 盘口：与刊头分隔线同一种节奏，放在简介下方 */
+  .book-about-facts {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    /* 落到封面底边 */
+    margin-top: auto;
+    padding-top: 0.9rem;
+    font-size: var(--fs-meta);
+    color: var(--content-meta);
+  }
+  .book-about-facts li {
+    padding: 0 0.7rem;
+    border-left: 1px solid var(--line-divider, rgb(0 0 0 / 0.1));
+  }
+  .book-about-facts li:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+  /* 卡片里的按钮组（保留样式，仅当页面需要时使用） */
+  .book-about-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.1rem;
+  }
+  .book-about-actions .book-hero-cta {
+    background: var(--primary);
+    color: #fff;
+  }
+  .book-about-actions .book-hero-cta:hover {
+    background: color-mix(in oklab, var(--primary) 85%, black);
+  }
+  .book-about-actions .book-hero-ghost {
+    border-color: var(--line-strong, rgb(0 0 0 / 0.14));
+    background: transparent;
+    color: var(--deep-text, currentColor);
+  }
+  .book-about-actions .book-hero-ghost:hover {
+    background: var(--btn-regular-bg);
+  }
+  .book-about-actions .btn-regular {
+    height: 2.9rem;
+    padding: 0 1.1rem;
+    border: 1px solid var(--line-strong, rgb(0 0 0 / 0.14));
+    background: var(--btn-regular-bg);
+    color: var(--btn-content);
+    font-size: var(--fs-meta);
+  }
+
+  .book-about-facts b {
+    font-size: var(--fs-body);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: currentColor;
+  }
+  /* 平板：盘口不展示（字数/章节这些信息在下面目录里都有） */
+  @media (max-width: 1023px) {
+    .book-about-facts {
+      display: none;
+    }
+  }
+
+  /* 手机：作者也不展示，卡片只留书名 + 简介 */
+  @media (max-width: 767px) {
+    .book-about-author {
+      display: none;
+    }
+  }
+
+  /* 窄屏盘口会折行，左边的竖线会变成孤零零的一道，改留白分隔 */
+  @media (max-width: 767px) {
+    .book-about-facts li {
+      padding: 0 0.7rem 0 0;
+      border-left: 0;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .book-about {
+      padding: 1.7rem;
+      gap: 1.6rem;
+    }
+    .book-about-cover {
+      width: 132px;
+    }
+    .book-about-quote {
+      font-size: var(--fs-item);
+    }
+  }
+
+  /* 排版封面：竖排书名 + 书脊 */
+  .book-page .plate {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    padding: 20px 16px 20px 28px;
+    background: radial-gradient(
+      120% 88% at 16% 0%,
+      oklch(0.78 0.1 168) 0%,
+      oklch(0.63 0.1 173) 58%,
+      oklch(0.5 0.09 178) 100%
+    );
+  }
+  .book-page .plate::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 14px;
+    background: linear-gradient(
+      90deg,
+      rgb(0 0 0 / 0.34) 0%,
+      rgb(0 0 0 / 0.1) 62%,
+      rgb(255 255 255 / 0.12) 100%
+    );
+    box-shadow: inset -1px 0 0 rgb(255 255 255 / 0.18);
+  }
+  /* 封面上不写装饰字：0.6rem（9.6px）不在字阶里，
+     竖排书名本身就是这本书的标识，不需要再加一行小字 */
+
+  .book-page .cv-title {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    align-self: flex-start;
+    font-size: var(--fs-h2);
+    font-weight: 700;
+    letter-spacing: var(--ls-wide);
+    line-height: 1;
+    color: #fff;
+    text-shadow: 0 2px 10px rgb(0 0 0 / 0.18);
+    padding: 4px 0;
+  }
+  .book-page .cv-bottom {
+    font-size: var(--fs-label);
+    letter-spacing: var(--ls-wide);
+    color: rgb(255 255 255 / 0.8);
+  }
+
+  /* ---------- 篇 / 序 / 后记 ---------- */
+  .book-part {
+    display: flex;
+    flex-direction: column;
+  }
+  .book-page .group-head {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+    padding: 0 2px;
+  }
+  .book-page .gno {
+    /* 编号是标签级，但 --fs-label 在 0.9 缩放下只有 10.8px，抬到副标题级 */
+    font-size: var(--fs-meta);
+    font-weight: 700;
+    letter-spacing: var(--ls-wide);
+    /* 弱化为次要信息：标题是黑的，编号是灰的 */
+    color: var(--content-meta);
+  }
+  .book-page .group-head h2 {
+    /* 区块标题统一 h3(22)：29 留给页面主标题，不然一页里两个大标题打架 */
+    font-size: var(--fs-h3);
+    font-weight: 700;
+    line-height: var(--lh-snug);
+    /* 与其他列表标题一致：黑色（text-90），不用主色 */
+    color: currentColor;
+  }
+  .book-page .gsub {
+    /* 副题是说明句，与卡片的描述同级：16px（--fs-body） */
+    font-size: var(--fs-body);
+    color: var(--content-meta);
+  }
+
+  /* 篇首语：两行截断 + 展开（纯 CSS，swup 后仍可用） */
+  /* 篇 = 一张白卡（篇头 + 篇首语），章节卡在它下面各自独立 */
+  .book-page .group-panel {
+    padding: 18px 20px;
+  }
+  /* 篇首语在白卡内，是一段引文：左侧主色竖线，不再另起底色 */
+  .book-page .gintro {
+    margin: 12px 0 0;
+    padding-left: 14px;
+    border-left: 3px solid color-mix(in oklab, var(--primary) 55%, transparent);
+  }
+  /* 篇首语的小标题：就是正文里的一行小标题，不是篇头的副题 */
+  .book-page .gintro-lead {
+    font-size: var(--fs-body);
+    font-weight: 700;
+    line-height: var(--lh-quote);
+    color: currentColor;
+    margin-bottom: 10px;
+  }
+  .book-page .pi-body {
+    /* 篇首语是正文级：16px（--fs-body），行高与正文一致。
+       不限宽：卡片是整宽的，限宽会在右侧空出一条硬边（和简介同一个毛病） */
+    font-size: var(--fs-body);
+    /* 行高与卡片简介、正文一致：同样 16px，1.85 的行高会显得"字更大" */
+    line-height: var(--lh-body);
+    color: var(--content-meta);
+  }
+  /*
+   * 篇首语 md 的开头带「# 第一篇 认知篇」和「## 先把…说清楚」两个标题
+   * （本地稿原文如此，不能删）。但卡片头部 .group-head / .gintro-lead
+   * 已经把这两行显示过了，正文里再出现一次就是重复。
+   * 只在渲染层隐藏这两个，md 保持与本地稿逐字一致。
+   */
+  .pi-body h1,
+  .book-page .pi-body h2:first-of-type {
+    display: none;
+  }
+  .book-page .pi-body p {
+    margin: 0;
+  }
+  .book-page .pi-body p + p {
+    margin-top: 18px;
+  }
+  .book-page .pi-check {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    margin: 0;
+    pointer-events: none;
+  }
+  .book-page .pi-check:checked ~ .gintro .pi-body {
+    -webkit-line-clamp: unset;
+    max-height: 80em;
+    opacity: 1;
+  }
+  .book-page .pi-check:focus-visible ~ .pi-toggle {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .book-page .pi-toggle {
+    display: inline-flex;
+    align-items: center;
+    margin: 8px 0 0 15px;
+    padding: 3px 8px 3px 0;
+    font-size: var(--fs-label);
+    font-weight: 600;
+    /* 浅绿底上 btn-content 只有 4.07:1，压深一档 */
+    color: oklch(0.48 0.12 165);
+    cursor: pointer;
+    user-select: none;
+    border-radius: 5px;
+    transition:
+      color 0.15s ease,
+      background-color 0.15s ease;
+  }
+  .book-page .pi-toggle:hover {
+    color: var(--primary);
+  }
+  .book-page .pi-close {
+    display: none;
+  }
+  .book-page .pi-caret {
+    width: 11px;
+    height: 11px;
+    margin-left: 3px;
+    transform: rotate(90deg);
+    transition: transform 0.2s;
+  }
+  .book-page .pi-check:checked ~ .pi-toggle .pi-open {
+    display: none;
+  }
+  .book-page .pi-check:checked ~ .pi-toggle .pi-close {
+    display: inline;
+  }
+  .book-page .pi-check:checked ~ .pi-toggle .pi-caret {
+    transform: rotate(-90deg);
+  }
+
+  /* ---------- 章节卡：母版原生 PostCard（list 模式），本页零覆盖 ----------
+     高度、间距、标签呈现、字号全部继承母版，书页与首页 / 归档页的卡片像素级一致。
+     这里只做两件事：
+       1) 加 list-mode —— 触发母版 list 模式的规则（标题 24px、封面绝对定位在右 30%、
+          内容内边距 1.75/.5/1.75/2.25rem），与首页走同一套；
+       2) 间距用母版的 gap-4（16px）。 */
+  .book-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .book-item {
+    scroll-margin-top: 5rem;
+  }
+
+/* ---------- 跨组件覆盖：章卡的封面与摘要在 PostCard 内部，必须提到作用域外 ---------- */
+/* 壁纸区在 swup 容器之外、切页不重建。
+     书页自己画 hero，进到这一页时要把上一页留下的壁纸收起来。
+     用 :has() 做条件：hero 进 DOM 才生效，离开这一页自动失效 */
+  /*
+   * 书页章卡右侧的封面图：缩到 176×88 并固定 2:1。
+   *
+   * 用 is:global + 0,6,0 的特异性 —— 目标元素在 PostCard 子组件里，而它自己的规则
+   * :global(.list-mode) .has-cover .post-card-image 会因为 scoped 属性实际达到 0,5,0。
+   * 0,4,0 的写法一条都命中不了，必须先把前缀堆到 0,6,0 才压得住。
+   * 选择器限定在 .book-list.list-mode 内，不影响首页/归档的卡片。
+   */
+  /* 摘要：书页的章卡把摘要拦在 2 行会切掉半句（手机端尤其明显），
+     这里放开行数，让卡片按内容长高。
+     不再限宽：内容列本身已经是「卡宽 − 封面宽」，再加 44em 会在封面左侧空出一条 */
+  .book-part .book-list.list-mode .book-item .post-card-content .description {
+    /* 与简介、篇首语同一档：三处都是正文级阅读块 */
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    max-width: 100%;
+    display: block !important;
+    -webkit-line-clamp: unset !important;
+    line-clamp: unset !important;
+    overflow: visible !important;
+  }
+
+  .book-part .book-list.list-mode .book-item .post-card-wrapper.has-cover .post-card-image {
+    /* 参照原博客列表的做法：图不撑满卡片高度，固定 2:1、垂直居中，
+       上下自然留白。之前按"与文字块等高"撑满，反而喧宾夺主。 */
+    top: 50% !important;
+    bottom: auto !important;
+    /* 16:9：319×179，占卡片高度 76%（原来 2:1 只有 68%，上下空得慌）。
+       原图 1.9:1 裁到 16:9 损失左右各 3%，标题仍完整。
+       以后新做章封面直接按 16:9 出图，这条以后就不用裁。 */
+    height: auto !important;
+    aspect-ratio: 16 / 9 !important;
+    right: 16px !important;
+    transform: translateY(-50%);
+    border-radius: 8px !important;
+  }
+  /* 悬停：整体轻微放大 + 阴影。
+     母版对内部 img 有 scale-110，但容器 overflow:hidden 把它裁掉了，
+     视觉上看不出放大；这里让容器自己放大 4%，才有「浮起来」的感觉 */
+  .book-part .book-list.list-mode .book-item .post-card-wrapper.has-cover .post-card-image:hover {
+    transform: translateY(-50%) scale(1.03) !important;
+    box-shadow: 0 8px 22px rgb(0 0 0 / 0.16);
+  }
+  /* 手机端：章卡改成和首页一样的竖版卡片 —— 封面整宽置顶、文字在下。
+     桌面/平板仍是「左文右图」的列表卡，和首页在各自断点的排法一致。 */
+  @media (max-width: 767px) {
+    .book-part .book-list.list-mode .book-item .post-card-wrapper.has-cover {
+      flex-direction: column-reverse !important;
+    }
+
+    .book-part .book-list.list-mode .book-item .post-card-wrapper.has-cover .post-card-image {
+      position: static !important;
+      inset: auto !important;
+      transform: none !important;
+      width: 100% !important;
+      height: auto !important;
+      aspect-ratio: 2 / 1 !important;
+      margin: 0 !important;
+      border-radius: 0 !important;
+    }
+
+    .book-part .book-list.list-mode .book-item .post-card-wrapper.has-cover .post-card-image:hover {
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    .book-part .book-list.list-mode .book-item .post-card-wrapper.has-cover .post-card-image img {
+      border-radius: 0 !important;
+      position: absolute !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+    }
+
+    .book-part .book-list.list-mode .book-item .post-card-wrapper.has-cover .post-card-content {
+      width: 100% !important;
+      padding: 1rem 1rem 1.1rem !important;
+    }
+
+    .book-part .book-list.list-mode .book-item .post-card-title {
+      font-size: var(--fs-item) !important;
+      /* 行高 1.45：17px × 1.45 ≈ 24.6px，标题链接的点击区才够 24px 高 */
+      line-height: 1.45 !important;
+    }
+  }
+
+  .book-part .book-list.list-mode .book-item .post-card-wrapper.has-cover .post-card-image img {
+    border-radius: 8px !important;
+    /* 绝对定位填满容器，容器高度才能被 aspect-ratio: 16/9 决定；
+       否则高度会被图片自身的 1.9:1 撑开，aspect-ratio 形同虚设 */
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+/* 书页的刊头是盖在模板 banner 上的一层文字：
+   照片、压暗、底部波浪全部由壁纸区自己提供（和合集页同一个元素、同一份动画），
+   这里只负责把这层文字放到 banner 上方，且不影响其它页面。
+   用 :has() 挂在 hero 上：切走时自动还原。 */
+/* 书页的壁纸区：高度钉死成书页 banner 的高度，切页也不让模板改回去。
+   注意不要写 body:not(.is-home)——swup 的 updateBodyClass 是关闭的，
+   body 上的 is-home 是第一页留下的、切页不会更新；带上它会时灵时不灵
+   （表现就是切几次菜单后蒙版只盖了一半 banner）。 */
+html:has(.book-hero) #wallpaper-wrapper {
+  display: block !important;
+  height: var(--book-banner-h, max(50vh, 430px)) !important;
+  min-height: var(--book-banner-h, max(50vh, 430px)) !important;
+  max-height: var(--book-banner-h, max(50vh, 430px)) !important;
+}
+
+/* 蒙版铺满整条 banner：切页后这块会被 swup 换成新节点，
+   模板给的是 inset-0，这里再兜一层尺寸，避免出现“蒙版只盖了一半” */
+html:has(.book-hero) #banner-dim-container,
+html:has(.book-hero) #banner-dim-container .banner-dim-overlay {
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* 蒙版：画在壁纸容器自己的 ::before 上。
+   为什么不继续用模板的 #banner-dim-container：那个节点会被 swup 整体替换，
+   切几次页之后尺寸/背景会变，出现过“只盖了上半截”。
+   壁纸容器本身在 swup 容器之外、始终存在，伪元素不受替换影响。
+   层级：照片(auto) < 蒙版(12) < 波浪(15)，蒙版在水波之下、盖满整条 banner。 */
+html:has(.book-hero) #wallpaper-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      to right,
+      rgb(4 20 16 / 0.92) 0%,
+      rgb(4 20 16 / 0.78) 30%,
+      rgb(4 20 16 / 0.42) 58%,
+      rgb(4 20 16 / 0.2) 100%
+    );
+}
+
+/* 合集页（非书页）的蒙版压得轻一些：这些页面的 banner 是白天实景，
+   压到 0.92 会把画面糊死；文字靠字号和投影撑住，不靠死黑。
+   用 :not(:has(.book-page)) 只放宽合集页，书页保持原来那档。 */
+html:has(.book-hero):not(:has(.book-page)) #wallpaper-wrapper::before {
+  background:
+    /* 只在文字这一列（左 ~46%）压暗，右边整片亮出来：
+       渐变在 46% 处收干净，画面主体（书桌/城市/书架）保持原亮度 */
+    linear-gradient(
+      to right,
+      rgb(4 20 16 / 0.74) 0%,
+      rgb(4 20 16 / 0.6) 26%,
+      rgb(4 20 16 / 0.26) 40%,
+      rgb(4 20 16 / 0) 48%,
+      rgb(4 20 16 / 0) 100%
+    ),
+    /* 顶部一道极淡的横向压暗，让导航下面那圈不刺眼 */
+    linear-gradient(
+      to bottom,
+      rgb(4 20 16 / 0.28) 0%,
+      rgb(4 20 16 / 0) 34%
+    );
+}
+
+/* 模板自带的那层纯色压暗在书页关掉，避免和我们这层叠成一块死黑 */
+html:has(.book-hero) #banner-dim-container .banner-dim-overlay {
+  background: transparent !important;
+}
+
+html:has(.book-hero) {
+  /* 书页 banner 的高度：比模板默认（45vh/380px）高一档，
+     给书名、定位语和按钮留出上下呼吸，波浪与下方列表随之一起下移 */
+  --book-banner-h: max(50vh, 430px);
+}
+
+html:has(.book-hero) #book-hero-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--book-banner-h, max(50vh, 430px));
+  /* 必须高于壁纸区（z-10）以及它内部的波浪（z-15）：
+     文字和按钮要压在水波之上，只有蒙版留在水波之下 */
+  z-index: 20;
+  /* 这一层要能点：从序言开始 / 分享 / 打赏 都在里面。
+     只有引文那一块（纯装饰）单独关掉事件 */
+  pointer-events: none;
+}
+
+/* 容器本身不拦事件（避免整条 banner 挡住下层），只让按钮这一块恢复点击 */
+html:has(.book-hero) #book-hero-container .book-hero-actions {
+  pointer-events: auto;
+}
+
+html:has(.book-hero) #book-hero-container .book-hero-quote-wrap {
+  pointer-events: none;
+}
+
+html:has(.book-hero) #content-panel {
+  position: relative;
+  top: 0;
+  min-height: 0;
+  /* 刊头是绝对定位的一层，不占文档流：内容面板自己让出一个 banner 高度，
+     再和合集页一样向上压 3.5rem，卡片起始位置与合集页一致 */
+  margin-top: calc(var(--book-banner-h, max(50vh, 430px)) - 3.5rem);
+}
+
+/* ── 书页 · 平板（768–1279）：左栏（作者卡、音乐、本书目录）不参与布局 ──
+   只作用于书页（html:has(.book-hero)），其它页面仍按模板的 tabletSidebar 走。
+   模板的 tabletSidebar 只有 left/right 两档，改成 config 会牵动所有页面的网格，
+   这里用页面条件把左栏收掉、内容整宽。 */
+@media (min-width: 768px) and (max-width: 1279px) {
+	html:has(.book-hero) #main-grid {
+		grid-template-columns: 1fr !important;
+	}
+
+	html:has(.book-hero) #main-grid > #left-sidebar-wrapper,
+	html:has(.book-hero) #main-grid > #left-sidebar-dynamic {
+		display: none !important;
+	}
+
+	html:has(.book-hero) body:not(.immersive-reading) #main-grid > #content-column {
+		max-width: 100% !important;
+	}
+}
+
+/* ── 合集页的列表卡：手机端与书页章卡同款（封面整宽置顶 + 文字在下） ──
+   书页那套规则挂在 .book-part 下，这里给 .col-list 补一份，两边的移动端排法一致。 */
+@media (max-width: 767px) {
+	.col-list.list-mode .col-item .post-card-wrapper.has-cover {
+		flex-direction: column-reverse !important;
+	}
+
+	.col-list.list-mode .col-item .post-card-wrapper.has-cover .post-card-image {
+		position: static !important;
+		inset: auto !important;
+		transform: none !important;
+		width: 100% !important;
+		height: auto !important;
+		aspect-ratio: 2 / 1 !important;
+		margin: 0 !important;
+		border-radius: 0 !important;
+	}
+
+	.col-list.list-mode .col-item .post-card-wrapper.has-cover .post-card-image:hover {
+		transform: none !important;
+		box-shadow: none !important;
+	}
+
+	.col-list.list-mode .col-item .post-card-wrapper.has-cover .post-card-image img {
+		border-radius: 0 !important;
+		position: absolute !important;
+		inset: 0 !important;
+		width: 100% !important;
+		height: 100% !important;
+		object-fit: cover !important;
+	}
+
+	.col-list.list-mode .col-item .post-card-wrapper.has-cover .post-card-content {
+		width: 100% !important;
+		padding: 1rem 1rem 1.1rem !important;
+	}
+}
+
+/* ── 合集页 banner 上的盘口（篇数 / 字数 / 更新日期） ──
+   一行小字 + 细竖线分隔；不用胶囊（试过，比这版更吵）。
+   见山、增长黑客两个书页没有这块（书的信息在「关于这本书」卡里）。 */
+.book-hero-facts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 0.75rem;
+  margin-top: 1.1rem;
+  font-size: var(--fs-ui);
+  color: rgb(255 255 255 / 0.72);
+  text-shadow: 0 1px 12px rgb(0 0 0 / 0.35);
+}
+
+.book-hero-facts b {
+  font-weight: 600;
+  color: rgb(255 255 255 / 0.92);
+  font-variant-numeric: tabular-nums;
+}
+
+.book-hero-facts .sep {
+  width: 1px;
+  height: 0.85em;
+  background: rgb(255 255 255 / 0.28);
+}

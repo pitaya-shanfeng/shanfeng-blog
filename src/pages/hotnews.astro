@@ -211,79 +211,74 @@ const shareDate = latest
     description={DESC}
     postBanner={BANNER}
     heading={`${CATEGORY} · 行业日报合集`}
+    customHero
     hideBannerTitle
 >
+    {/* 刊头：与见山书页 / 其它合集页同一套（.book-hero）。
+        标题位放栏目名，副题位放「拾遗 · 行业日报」，定位语放 lead，
+        分享 / 打赏收进 banner；下方白卡只留说明与盘口。 */}
+    <Fragment slot="hero">
+        <header
+            class="book-hero"
+            style="min-height: var(--book-banner-h, max(50vh, 430px))"
+        >
+            {
+                BANNER && (
+                    <div class="book-hero-media" aria-hidden="true">
+                        <img src={BANNER} alt="" loading="eager" fetchpriority="high" />
+                    </div>
+                )
+            }
+            <div class="book-hero-inner">
+                <h1 class="book-hero-title">{CATEGORY}</h1>
+                <p class="book-hero-lead">{LEAD}</p>
+
+                <div class="book-hero-actions">
+                    {
+                        showShare && (
+                            <SharePoster
+                                client:load
+                                title={CATEGORY}
+                                author={profileConfig.name}
+                                description={DESC}
+                                pubDate={shareDate}
+                                coverImage={BANNER}
+                                url={Astro.url.href}
+                                siteTitle={siteConfig.title}
+                                avatarSelector=".profile-avatar-image img"
+                            />
+                        )
+                    }
+                    {
+                        showSponsorButton && (
+                            <button type="button" data-sponsor-open class="book-hero-ghost">
+                                <span>{i18n(I18nKey.sponsor)}</span>
+                                <Icon name="material-symbols:favorite-rounded" class="text-sm" />
+                            </button>
+                        )
+                    }
+                </div>
+
+                <p class="book-hero-facts">
+                    <b>{posts.length}</b> 期
+                    <span class="sep" />
+                    <b>{totalItems}</b> 条
+                    <span class="sep" />
+                    每期约 <b>{avgItems}</b> 条
+                    <span class="sep" />
+                    更新至 <b>{latest?.mmdd ?? "—"}</b>
+                </p>
+            </div>
+
+            <div class="book-hero-quote-wrap" data-quote-host aria-hidden="true" />
+        </header>
+    </Fragment>
+
     <div
         class="hotnews-page onload-animation"
         data-no-category-bar
         data-quotes={JSON.stringify(bannerQuotes)}
     >
-
-        <!-- ============ 刊头 ============
-             结构与见山书卷卡（/books/jianshan/ 的 .scroll）一致：
-             kicker → 刊名 → 一句话定位 → 说明 → 底部一行盘口，右侧分享/打赏。
-             唯一差别是没有封面图：日报没有实体封面，空出一个 200px 的封面列
-             只会让这块板看着缺一块，所以文字直接占满整行。
-             高度用 min-height 对齐见山那张卡（封面 200×267 + 上下 28px padding），
-             盘口靠 margin-top:auto 贴到底，删掉封面后版面才不会塌在顶部。 -->
-        <section class="hn-board card-base" data-quote-anchor aria-label="栏目概况">
-            <div class="hn-main">
-                <div class="hn-text">
-                    <p class="hn-kicker">拾遗 · 行业日报</p>
-                    {/* 母版已经渲染了一个 sr-only 的 h1（heading || title），
-                        这块是视觉主标题，语义上降到 h2，别和它撞 */}
-                    <h2 class="hn-title">{CATEGORY}</h2>
-                    <p class="hn-claim">{LEAD}</p>
-                    <p class="hn-desc">{DESC}</p>
-
-                    <p class="hn-facts">
-                        <b>{posts.length}</b> 期
-                        <span class="sep"></span>
-                        <b>{totalItems}</b> 条
-                        <span class="sep"></span>
-                        每期约 <b>{avgItems}</b> 条
-                        <span class="sep"></span>
-                        更新至 <b>{latest?.mmdd ?? "—"}</b>
-                    </p>
-                </div>
-
-                {
-                    showSupportBlock && (
-                        <aside
-                            class="hn-support"
-                            aria-label={i18n(I18nKey.sponsorButton)}
-                        >
-                            {showShare && (
-                                <SharePoster
-                                    client:load
-                                    title={CATEGORY}
-                                    author={profileConfig.name}
-                                    description={DESC}
-                                    pubDate={shareDate}
-                                    coverImage={BANNER}
-                                    url={Astro.url.href}
-                                    siteTitle={siteConfig.title}
-                                    avatarSelector=".profile-avatar-image img"
-                                />
-                            )}
-                            {showSponsorButton && (
-                                <button
-                                    type="button"
-                                    data-sponsor-open
-                                    class="hn-reward"
-                                >
-                                    <span>{i18n(I18nKey.sponsor)}</span>
-                                    <Icon
-                                        name="material-symbols:favorite-rounded"
-                                        class="text-sm"
-                                    />
-                                </button>
-                            )}
-                        </aside>
-                    )
-                }
-            </div>
-        </section>
 
         <!-- ============ 按月分组的时间轴 ============
              分组头已经承担了索引功能，不再单独放筛选行：
@@ -448,11 +443,7 @@ const shareDate = latest
     @media (min-width: 1024px) {
         .hn-board {
             padding: 28px 30px;
-            /* 与见山 .scroll 等高：封面 200×267 撑出的高度 + 上下 28px padding。
-               没有封面后内容不足这么高，靠 min-height 兜住；
-               盘口再用 margin-top:auto 贴底，否则整块板会缩在顶部、下面空一大块。
-               只在桌面生效——窄屏单列后按钮落到盘口下面，按内容高度走更自然。 */
-            min-height: calc(200px * 4 / 3 + 56px);
+            /* 刊头已经搬到 banner 上，这张卡只剩说明 + 盘口，按内容高度走 */
         }
     }
     :global(.dark) .hn-board {
@@ -560,8 +551,9 @@ const shareDate = latest
         align-items: baseline;
         flex-wrap: wrap;
         gap: 8px;
-        margin: auto 0 0;
-        padding-top: 20px;
+        /* 说明下方留一档就够，不要再用 auto 把它推到底 */
+        margin: 20px 0 0;
+        padding-top: 0;
         font-size: var(--fs-meta);
         color: color-mix(in oklab, var(--content-meta) 88%, transparent);
     }

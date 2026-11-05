@@ -50,6 +50,9 @@ export interface BookConfig {
 	kicker: string;
 	/** 一句话定位（大字） */
 	lead: string;
+	/** 书页「关于这本书」里的一句引文；不填就不显示这一行 */
+	quote?: string;
+/** 刊头金句不在这里配：与其它合集页共用 src/data/banner-quotes.md 的同一份金句集 */
 	/** 简介 */
 	description: string;
 	/** 封面图；留空则用排版封面（竖排书名） */
@@ -79,6 +82,7 @@ export const booksConfig: BookConfig[] = [
 		fullTitle: "见山 · 产品判断力",
 		kicker: "产品判断",
 		lead: "在复杂之后，重新看见问题本身。",
+		quote: "见山是山，见山不是山，见山还是山。",
 		description:
 			"这本书讲的是产品经理的判断力——在信息不完整、目标还在变化的时候，怎么把问题看清楚，又怎么把判断变成可复用的方法。二十一章从认知、需求、用户，走到架构、商业、增长与组织，拆的是判断的各个面向。",
 		// 出版稿 PDF 首页（雪山封面），已按 3:4 裁切；放 public 才能直接当 src 用

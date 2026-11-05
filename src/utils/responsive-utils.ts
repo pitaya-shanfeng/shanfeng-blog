@@ -20,7 +20,7 @@ export interface ResponsiveSidebarConfig {
 	 */
 	hasLeftComponents: boolean;
 	hasRightComponents: boolean;
-	tabletSidebar: "left" | "right";
+	tabletSidebar: "left" | "right" | "none";
 	/** 以下四个只服务于列几何，不含 position 门控 */
 	hasLeftWidgetsOnPost: boolean;
 	hasLeftWidgetsOnNonPost: boolean;
@@ -98,7 +98,7 @@ export function getResponsiveSidebarConfig(): ResponsiveSidebarConfig {
 export interface GridColumnsInput {
 	enabled: boolean;
 	position: "left" | "right" | "both";
-	tabletSidebar: "left" | "right";
+	tabletSidebar: "left" | "right" | "none";
 	hideSidebarOnPostPage: boolean;
 	isPostPage: boolean;
 	hasLeftWidgets: boolean;
@@ -157,6 +157,7 @@ export function computeGridColumns(input: GridColumnsInput): GridColumnVars {
 		rightIn &&
 		(input.position === "right" ||
 			(input.position === "both" && input.tabletSidebar === "right"));
+	// tabletSidebar: "none" —— 平板不显示任何侧栏，交给下面的 ratioMd 决定内容宽度
 
 	// 侧栏已启用但本断点无侧栏列 → 内容栏按比例收窄；比例钳到 [0,1]，1 即不收窄
 	// 闸门用 enabled 而非 sidebarActive：enable: false 时仍铺满。md 与 xl 需各自判定

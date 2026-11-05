@@ -25,7 +25,6 @@ import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
 import PostCard from "@/components/layout/PostCard.astro";
-import "@/styles/lxgw-wenkai.css";
 import { bannerQuotes } from "@/utils/banner-quotes-data";
 import { getSeriesPostsOf } from "@/utils/content-utils";
 import { getPostUrlBySlug } from "@/utils/url-utils";
@@ -48,13 +47,9 @@ const posts = await getSeriesPostsOf(book.title);
  */
 const coverTitle = book.title.split(/[:：]/)[0].trim() || book.title;
 
-/** 书页大标题用完整书名；kicker 是书名上方的类别小字，独立于书名，始终显示 */
-const displayTitle = book.fullTitle || book.title;
-
 // 支持区块：分享的是「这本书的合集页」，不是某一章
 const showShare = siteConfig.post.share !== false;
 const showSponsorButton = sponsorConfig.showButtonInPost;
-const showSupportBlock = showShare || showSponsorButton;
 /**
  * 海报标题取完整书名。
  * 原来拼 `${title}：${kicker}` 会重复——kicker 有时就是副书名的一部分
@@ -152,6 +147,43 @@ const chapterList = [
 /** 章节序号（1 起），供进度尺显示「第 N 条」 */
 const indexOf = (anchor: string) =>
 	chapterList.find((c) => c.anchor === anchor)?.index ?? 0;
+
+/* ---------- 刊头（hero）用到的几个值 ---------- */
+
+
+/** 副书名：完整书名里「·」之后的部分（见山 · 产品判断力 → 产品判断力） */
+const heroSubtitle = (() => {
+	const full = book.fullTitle || book.title;
+	const parts = full
+		.split(/[·:：]/)
+		.map((part) => part.trim())
+		.filter(Boolean);
+	return parts.length > 1 ? parts.slice(1).join(" · ") : "";
+})();
+
+/**
+ * 刊头金句：与拾遗、行业动态等合集页共用同一份金句集
+ * （src/data/banner-quotes.md，构建期解析成 bannerQuotes）。
+ * 每次进页面由全局脚本抽一条、打字机打出来。
+ */
+const heroQuotes = bannerQuotes;
+
+/**
+ * 刊头那颗主按钮：有序言进序，没有序言直接进第 1 章（文案同步换掉）。
+ * 都没有（空书）才退回目录卡。
+ */
+const firstChapterPost = book.parts
+	.flatMap((part) => part.entries)
+	.map((entry) => byOrder.get(entry.order))
+	.find((post) => Boolean(post));
+
+const readingStartUrl = prefacePost
+	? getPostUrlBySlug(prefacePost.id)
+	: firstChapterPost
+		? getPostUrlBySlug(firstChapterPost.id)
+		: "#book-toc";
+
+const readingStartLabel = prefacePost ? "从序言开始" : "从第 1 章开始";
 ---
 
 <MainGridLayout
@@ -159,12 +191,104 @@ const indexOf = (anchor: string) =>
   description={book.description}
   postBanner={book.banner}
   hideBannerTitle
+  customHero
 >
+  {/* 横幅即书页刊头：照片当底，书名 / 定位 / 简介 / 盘口直接压在上面，
+      不再另起一张白卡（见 design/shanfeng-ui/baseline/books-jianshan.html） */}
+  <Fragment slot="hero">
+    {/* 关键尺寸写成内联样式：跟着页面 HTML 一起被 swup 插入，
+        不会因为样式表加载先后 / 切页被覆盖而失效 */}
+    <header
+      class="book-hero"
+      style="min-height: var(--book-banner-h, max(50vh, 430px))"
+    >
+      {/* 窄屏模板会把非首页壁纸整块隐藏，所以照片这一份留给窄屏自己带；
+          桌面端由模板 banner 提供（隐藏掉这里的副本） */}
+      {
+        book.banner && (
+          <div class="book-hero-media" aria-hidden="true">
+            <img src={book.banner} alt="" loading="eager" fetchpriority="high" />
+          </div>
+        )
+      }
+      <div class="book-hero-inner">
+        {/* 书名分两层：主名大字，副书名跟在后面一行，避免 h1 一长串 */}
+        <h1 class="book-hero-title">{book.title}</h1>
+        {
+          heroSubtitle && (
+            /* 样式写在内联属性上：swup 切页后即便样式表状态不一致，这一块也不变样 */
+            <p
+              class="book-hero-subtitle"
+              style="display: flex; align-items: center; gap: 0.75rem; margin: 0.85rem 0 0; font-size: var(--fs-ui); font-weight: 500; letter-spacing: var(--ls-wide); color: #b9d4c9;"
+            >
+              <span
+                aria-hidden="true"
+                style="flex: 0 0 auto; width: 1.6rem; height: 1px; background: var(--primary)"
+              />
+              {heroSubtitle}
+            </p>
+          )
+        }
+        <p class="book-hero-lead">{book.lead}</p>
+
+        <div class="book-hero-actions">
+
+          <a class="book-hero-cta" href={readingStartUrl}>
+            {readingStartLabel}
+            <Icon name="material-symbols:arrow-forward-rounded" class="text-sm" />
+          </a>
+          {
+            showShare && (
+              <SharePoster
+                client:load
+                title={bookShareTitle}
+                author={profileConfig.name}
+                description={book.description}
+                pubDate={bookShareDate}
+                coverImage={book.cover ?? null}
+                coverFocus={book.posterFocus ?? 0.72}
+                coverTitle={book.title}
+                coverSubtitle={book.kicker}
+                coverQuote={book.lead}
+                url={Astro.url.href}
+                siteTitle={siteConfig.title}
+                avatar={profileConfig.avatar ?? null}
+                avatarSelector=".profile-avatar-image img"
+              />
+            )
+          }
+          {
+            showSponsorButton && (
+              <button type="button" data-sponsor-open class="book-hero-ghost">
+                {i18n(I18nKey.sponsor)}
+                <Icon name="material-symbols:favorite-rounded" class="text-sm" />
+              </button>
+            )
+          }
+        </div>
+      </div>
+
+      {
+        heroQuotes.length > 0 && (
+          /* 外框只为对齐导航栏：宽度/内边距和 #top-row 同一套算法，
+             金句右边缘才会正好落在导航胶囊的右边上。
+             data-quote-host 告诉全局脚本：这次把打字机层挂在这里。 */
+          <div
+            class="book-hero-quote-wrap"
+            data-quote-host
+            aria-hidden="true"
+          />
+        )
+      }
+
+    </header>
+  </Fragment>
+
   <div
     class="book-page onload-animation"
     data-book-id={book.id}
     data-no-category-bar
-    data-quotes={book.banner ? JSON.stringify(bannerQuotes) : undefined}
+    data-quotes={heroQuotes.length ? JSON.stringify(heroQuotes) : undefined}
   >
     <!-- 章节元数据：供侧栏进度尺读取 -->
     <script
@@ -175,15 +299,15 @@ const indexOf = (anchor: string) =>
       style="display:none"
     />
 
-    <!-- 书卷：封面 + 书名 + 定位 + 盘口 -->
-    <header class="scroll card-base" data-quote-anchor>
-      <div class="cover">
+    <!-- 关于这本书：封面 + 一句引文 + 简介 + 盘口。
+         这几段原来浮在 banner 上，压着照片不好读，统一收进这张卡 -->
+    <section class="book-about card-base" id="book-toc">
+      <div class="book-about-cover">
         {
           book.cover ? (
             <img src={book.cover} alt={`${book.title}封面`} loading="eager" />
           ) : (
             <div class="plate" aria-hidden="true">
-              {/* 竖排书名按字数缩字号：200×267 的封面，32px 只放得下四五个字 */}
               <span
                 class="cv-title"
                 style={[
@@ -199,75 +323,30 @@ const indexOf = (anchor: string) =>
           )
         }
       </div>
+      <div class="book-about-text">
+        <p class="book-about-name">{book.fullTitle || book.title}</p>
+        <p class="book-about-author">{profileConfig.name}</p>
+        <p class="book-about-desc">{book.description}</p>
+        <ul class="book-about-facts">
+          <li><b>{book.parts.length}</b> 篇</li>
+          <li><b>{chapterCount}</b> 章</li>
+          {
+            (book.preface || book.afterword) && (
+              <li>
+                {book.preface && book.afterword
+                  ? "序与后记"
+                  : book.preface
+                    ? "序"
+                    : "后记"}
+              </li>
+            )
+          }
+          <li>约 <b>{totalWan}</b> 万字</li>
+          <li>读完约 <b>{totalHours}</b> 小时</li>
+        </ul>
 
-      <div class="main">
-        <div class="main-text">
-        {/* kicker 是类别小字（产品判断 / 增长黑客），与书名各司其职 */}
-        {book.kicker && <p class="kick">{book.kicker}</p>}
-        {/* 书名自带间隔号（见山 · 产品判断力），不再套书名号 */}
-        <h1>{displayTitle}</h1>
-        <p class="claim">{book.lead}</p>
-        <p class="desc">{book.description}</p>
-
-        <p class="facts">
-          <b>{book.parts.length}</b> 篇
-          <span class="sep"></span>
-          <b>{chapterCount}</b> 章
-          {/* 序 / 后记按实际有无显示，没有就不占位 */}
-          {(book.preface || book.afterword) && (
-            <>
-              <span class="sep"></span>
-              {book.preface && book.afterword
-                ? "序与后记"
-                : book.preface
-                  ? "序"
-                  : "后记"}
-            </>
-          )}
-          <span class="sep"></span>
-          约 <b>{totalWan}</b> 万字
-          <span class="sep"></span>
-          读完约 <b>{totalHours}</b> 小时
-        </p>
-        </div>
-
-        {/* 分享 / 打赏：只有两个按钮，放在书卷右侧、相对卡片垂直居中。
-            分享对象是这本合集（url 取当前书页）。 */}
-        {showSupportBlock && (
-          <aside class="support" aria-label={i18n(I18nKey.sponsorButton)}>
-            <div class="support-actions">
-              {showShare && (
-                <SharePoster
-                  client:load
-                  title={bookShareTitle}
-                  author={profileConfig.name}
-                  description={book.description}
-                  pubDate={bookShareDate}
-                  coverImage={book.cover ?? null}
-                  coverFocus={book.posterFocus ?? 0.72}
-                  coverTitle={book.title}
-                  coverSubtitle={book.kicker}
-                  coverQuote={book.lead}
-                  url={Astro.url.href}
-                  siteTitle={siteConfig.title}
-                  avatar={profileConfig.avatar ?? null}
-                  {/* 头像走侧栏作者卡里已经优化过的图片：
-                      profileConfig.avatar 是相对路径（assets/…），直接当 src 会 404，
-                      而 getDirectImageUrl 对非 / 开头的路径返回 null。 */}}
-                  avatarSelector=".profile-avatar-image img"
-                />
-              )}
-              {showSponsorButton && (
-                <button type="button" data-sponsor-open class="support-reward">
-                  <span>{i18n(I18nKey.sponsor)}</span>
-                  <Icon name="material-symbols:favorite-rounded" class="text-sm" />
-                </button>
-              )}
-            </div>
-          </aside>
-        )}
       </div>
-    </header>
+    </section>
 
     <!-- 序 -->
     {
@@ -405,421 +484,3 @@ const indexOf = (anchor: string) =>
   {showSponsorButton && <SponsorModal />}
 </MainGridLayout>
 
-<style>
-  @reference "../../styles/main.css";
-
-  .book-page {
-    @apply text-neutral-900 dark:text-neutral-100;
-    display: flex;
-    flex-direction: column;
-    /* 全部块间距统一用母版的 gap-4（16px）：
-       母版列表容器是 #post-list-container = flex flex-col gap-4 md:gap-4 */
-    gap: 16px;
-  }
-
-  /* ---------- 书卷 ---------- */
-  .scroll {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 24px;
-    padding: 22px;
-  }
-  @media (min-width: 1024px) {
-    .scroll {
-      grid-template-columns: 200px 1fr;
-      gap: 34px;
-      padding: 28px 30px;
-    }
-  }
-
-  .cover {
-    position: relative;
-    width: 100%;
-    max-width: 200px;
-    margin-inline: auto;
-    aspect-ratio: 3 / 4;
-    border-radius: 4px;
-    overflow: hidden;
-    box-shadow: 0 18px 34px -18px rgb(0 0 0 / 0.5);
-  }
-  @media (min-width: 1024px) {
-    .cover {
-      margin-inline: 0;
-    }
-  }
-  .cover img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  /* ── 书卷文字区：正文在左，支持区块在右 ──
-     支持块宽度固定，正文区 min-width:0 保证长段落能正常折行 */
-  .main {
-    display: flex;
-    align-items: flex-start;
-    gap: 24px;
-  }
-  .main-text {
-    min-width: 0;
-    flex: 1 1 auto;
-  }
-
-  /*
-   * 分享 / 打赏：右侧一列，相对书卷垂直居中。
-   * 不做卡片外壳——书卷本身已经是一张卡，里面再套一层浅底块会显得脏。
-   */
-  .support {
-    flex: 0 0 auto;
-    align-self: center;
-  }
-  .support-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  /* 打赏按钮：与文章页同款（主色实心 + 深色字），尺寸收小 */
-  .support-reward {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    /* 与旁边 SharePoster 的分享按钮同高（那边 px-6 py-3 = 48px） */
-    height: 48px;
-    padding: 0 22px;
-    border-radius: 8px;
-    background: var(--primary);
-    color: white;
-    font-size: var(--fs-sub);
-    font-weight: 500;
-    white-space: nowrap;
-    cursor: pointer;
-    transition: background 150ms cubic-bezier(0.4, 0, 0.2, 1), transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  :global(.dark) .support-reward {
-    color: rgb(0 0 0 / 0.7);
-  }
-  .support-reward:hover {
-    background: color-mix(in oklab, var(--primary) 80%, transparent);
-    transform: scale(1.04);
-  }
-  .support-reward:active {
-    transform: scale(0.96);
-  }
-
-  /* 窄屏：支持块落到正文下方，占满宽度 */
-  @media (max-width: 1023px) {
-    .main {
-      flex-direction: column;
-      gap: 16px;
-    }
-    .support {
-      align-self: stretch;
-    }
-    .support-actions {
-      justify-content: flex-start;
-    }
-  }
-
-  /* 排版封面：竖排书名 + 书脊 */
-  .plate {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 100%;
-    height: 100%;
-    padding: 20px 16px 20px 28px;
-    background: radial-gradient(
-      120% 88% at 16% 0%,
-      oklch(0.78 0.1 168) 0%,
-      oklch(0.63 0.1 173) 58%,
-      oklch(0.5 0.09 178) 100%
-    );
-  }
-  .plate::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 14px;
-    background: linear-gradient(
-      90deg,
-      rgb(0 0 0 / 0.34) 0%,
-      rgb(0 0 0 / 0.1) 62%,
-      rgb(255 255 255 / 0.12) 100%
-    );
-    box-shadow: inset -1px 0 0 rgb(255 255 255 / 0.18);
-  }
-  /* 封面上不写装饰字：0.6rem（9.6px）不在字阶里，
-     竖排书名本身就是这本书的标识，不需要再加一行小字 */
-
-  .cv-title {
-    writing-mode: vertical-rl;
-    text-orientation: upright;
-    align-self: flex-start;
-    font-size: var(--fs-h1);
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    line-height: 1;
-    color: #fff;
-    text-shadow: 0 2px 10px rgb(0 0 0 / 0.18);
-    padding: 4px 0;
-  }
-  .cv-bottom {
-    font-size: var(--fs-label);
-    letter-spacing: 0.2em;
-    color: rgb(255 255 255 / 0.8);
-  }
-
-  /* 布局（横排两列 / 窄屏竖排）在上方 .main 处统一定义，这里只留约束 */
-  .main {
-    min-width: 0;
-  }
-  .kick {
-    font-size: var(--fs-label);
-    font-weight: 600;
-    letter-spacing: 0.16em;
-    color: var(--btn-content);
-  }
-  .main h1 {
-    margin: 10px 0 0;
-    font-size: var(--fs-h1);
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: 0.04em;
-    /* 书名在 1280 这类窄列里会折行，不均衡就会把「术》」单独甩到第二行 */
-    text-wrap: balance;
-  }
-  .claim {
-    margin: 10px 0 0;
-    font-size: var(--fs-item);
-    line-height: 1.75;
-    text-wrap: balance;
-    color: color-mix(in oklab, currentColor 82%, transparent);
-  }
-  .desc {
-    margin: 10px 0 0;
-    font-size: var(--fs-sub);
-    line-height: 1.95;
-    color: var(--content-meta);
-    max-width: 620px;
-  }
-
-  .facts {
-    display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: auto 0 0;
-    padding-top: 20px;
-    font-size: var(--fs-meta);
-    color: color-mix(in oklab, var(--content-meta) 88%, transparent);
-  }
-  .facts b {
-    font-size: var(--fs-body);
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-    color: currentColor;
-  }
-  .sep {
-    width: 1px;
-    height: 11px;
-    background: var(--line-divider);
-    align-self: center;
-    margin: 0 6px;
-  }
-
-
-  /* ---------- 篇 / 序 / 后记 ---------- */
-  .book-part {
-    display: flex;
-    flex-direction: column;
-  }
-  .group-head {
-    display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: 6px 12px;
-    padding: 0 2px;
-  }
-  .gno {
-    font-size: var(--fs-label);
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    /* 弱化为次要信息：标题是黑的，编号是灰的 */
-    color: var(--content-meta);
-  }
-  .group-head h2 {
-    font-size: var(--fs-h2);
-    font-weight: 700;
-    line-height: 1.4;
-    /* 与其他列表标题一致：黑色（text-90），不用主色 */
-    color: currentColor;
-  }
-  .gsub {
-    /* 副题是说明句，与卡片的描述同级：16px（--fs-body） */
-    font-size: var(--fs-body);
-    color: var(--content-meta);
-  }
-
-  /* 篇首语：两行截断 + 展开（纯 CSS，swup 后仍可用） */
-  /* 篇 = 一张白卡（篇头 + 篇首语），章节卡在它下面各自独立 */
-  .group-panel {
-    padding: 18px 20px;
-  }
-  /* 篇首语在白卡内，是一段引文：左侧主色竖线，不再另起底色 */
-  .gintro {
-    margin: 12px 0 0;
-    padding-left: 14px;
-    border-left: 3px solid color-mix(in oklab, var(--primary) 55%, transparent);
-  }
-  /* 篇首语的小标题：就是正文里的一行小标题，不是篇头的副题 */
-  .gintro-lead {
-    font-size: var(--fs-body);
-    font-weight: 700;
-    line-height: 1.6;
-    color: currentColor;
-    margin-bottom: 10px;
-  }
-  .pi-body {
-    /* 篇首语是正文级：16px（--fs-body），行高与正文一致。
-       不限宽：留 860px 上限会让右侧空出一条硬边，像没排完 */
-    font-size: var(--fs-body);
-    line-height: 1.85;
-    color: var(--content-meta);
-  }
-  /*
-   * 篇首语 md 的开头带「# 第一篇 认知篇」和「## 先把…说清楚」两个标题
-   * （本地稿原文如此，不能删）。但卡片头部 .group-head / .gintro-lead
-   * 已经把这两行显示过了，正文里再出现一次就是重复。
-   * 只在渲染层隐藏这两个，md 保持与本地稿逐字一致。
-   */
-  .pi-body :global(h1),
-  .pi-body :global(h2:first-of-type) {
-    display: none;
-  }
-  .pi-body :global(p) {
-    margin: 0;
-  }
-  .pi-body :global(p + p) {
-    margin-top: 18px;
-  }
-  .pi-check {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    opacity: 0;
-    margin: 0;
-    pointer-events: none;
-  }
-  .pi-check:checked ~ .gintro .pi-body {
-    -webkit-line-clamp: unset;
-    max-height: 80em;
-    opacity: 1;
-  }
-  .pi-check:focus-visible ~ .pi-toggle {
-    outline: 2px solid var(--primary);
-    outline-offset: 3px;
-    border-radius: 4px;
-  }
-  .pi-toggle {
-    display: inline-flex;
-    align-items: center;
-    margin: 8px 0 0 15px;
-    padding: 3px 8px 3px 0;
-    font-size: var(--fs-label);
-    font-weight: 600;
-    /* 浅绿底上 btn-content 只有 4.07:1，压深一档 */
-    color: oklch(0.48 0.12 165);
-    cursor: pointer;
-    user-select: none;
-    border-radius: 5px;
-    transition:
-      color 0.15s ease,
-      background-color 0.15s ease;
-  }
-  .pi-toggle:hover {
-    color: var(--primary);
-  }
-  .pi-close {
-    display: none;
-  }
-  .pi-caret {
-    width: 11px;
-    height: 11px;
-    margin-left: 3px;
-    transform: rotate(90deg);
-    transition: transform 0.2s;
-  }
-  .pi-check:checked ~ .pi-toggle .pi-open {
-    display: none;
-  }
-  .pi-check:checked ~ .pi-toggle .pi-close {
-    display: inline;
-  }
-  .pi-check:checked ~ .pi-toggle .pi-caret {
-    transform: rotate(-90deg);
-  }
-
-  /* ---------- 章节卡：母版原生 PostCard（list 模式），本页零覆盖 ----------
-     高度、间距、标签呈现、字号全部继承母版，书页与首页 / 归档页的卡片像素级一致。
-     这里只做两件事：
-       1) 加 list-mode —— 触发母版 list 模式的规则（标题 24px、封面绝对定位在右 30%、
-          内容内边距 1.75/.5/1.75/2.25rem），与首页走同一套；
-       2) 间距用母版的 gap-4（16px）。 */
-  .book-list {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin-top: 16px;
-  }
-  .book-item {
-    scroll-margin-top: 5rem;
-  }
-
-</style>
-
-<style is:global>
-  /*
-   * 书页章卡右侧的封面图：缩到 176×88 并固定 2:1。
-   *
-   * 用 is:global + 0,6,0 的特异性 —— 目标元素在 PostCard 子组件里，而它自己的规则
-   * :global(.list-mode) .has-cover .post-card-image 会因为 scoped 属性实际达到 0,5,0。
-   * 0,4,0 的写法一条都命中不了，必须先把前缀堆到 0,6,0 才压得住。
-   * 选择器限定在 .book-list.list-mode 内，不影响首页/归档的卡片。
-   */
-  .book-part .book-list.list-mode .book-item .post-card-wrapper.has-cover .post-card-image {
-    /* 参照原博客列表的做法：图不撑满卡片高度，固定 2:1、垂直居中，
-       上下自然留白。之前按"与文字块等高"撑满，反而喧宾夺主。 */
-    top: 50% !important;
-    bottom: auto !important;
-    /* 16:9：319×179，占卡片高度 76%（原来 2:1 只有 68%，上下空得慌）。
-       原图 1.9:1 裁到 16:9 损失左右各 3%，标题仍完整。
-       以后新做章封面直接按 16:9 出图，这条以后就不用裁。 */
-    height: auto !important;
-    aspect-ratio: 16 / 9 !important;
-    right: 16px !important;
-    transform: translateY(-50%);
-    border-radius: 8px !important;
-  }
-  /* 悬停：整体轻微放大 + 阴影。
-     母版对内部 img 有 scale-110，但容器 overflow:hidden 把它裁掉了，
-     视觉上看不出放大；这里让容器自己放大 4%，才有「浮起来」的感觉 */
-  .book-part .book-list.list-mode .book-item .post-card-wrapper.has-cover .post-card-image:hover {
-    transform: translateY(-50%) scale(1.03) !important;
-    box-shadow: 0 8px 22px rgb(0 0 0 / 0.16);
-  }
-  .book-part .book-list.list-mode .book-item .post-card-wrapper.has-cover .post-card-image img {
-    border-radius: 8px !important;
-    /* 绝对定位填满容器，容器高度才能被 aspect-ratio: 16/9 决定；
-       否则高度会被图片自身的 1.9:1 撑开，aspect-ratio 形同虚设 */
-    position: absolute !important;
-    inset: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-  }
-</style>

@@ -93,7 +93,8 @@
 	width: 1.35rem;
 	height: 1.35rem;
 	border-radius: 0.5rem;
-	font-size: 0.68rem;
+	/* 0.68rem 在移动端根字号 15 下只有 10.2px，低于 12px 下限 */
+	font-size: 0.8125rem;
 	font-weight: 700;
 	line-height: 1;
 }

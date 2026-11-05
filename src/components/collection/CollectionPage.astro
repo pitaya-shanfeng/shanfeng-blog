@@ -78,6 +78,10 @@ const {
 	banner: BANNER,
 	emptyTitle,
 	emptyHint,
+	/** 栏目名：导航里没登记的栏目（/topics/…）由调用方直接给 */
+	kickerName,
+	/** 上级栏目名，同上 */
+	kickerGroup,
 	icon = "material-symbols:auto-stories-rounded",
 	unit = "篇",
 	quotes = [],
@@ -92,9 +96,9 @@ const navEntry = navBarConfig.links
 	}))
 	.find((pair) => pair.child);
 /** 栏目名（导航二级项） */
-const CATEGORY = navEntry?.child?.name ?? category ?? "";
+const CATEGORY = kickerName ?? navEntry?.child?.name ?? category ?? "";
 /** 栏目归属（导航一级项）：拾遗 */
-const GROUP_NAME = navEntry?.parent.name ?? "";
+const GROUP_NAME = kickerGroup ?? navEntry?.parent.name ?? "";
 const KICKER = GROUP_NAME ? `${GROUP_NAME} · ${CATEGORY}` : CATEGORY;
 
 /** 数据筛选键：优先用调用方给的，否则与栏目名一致 */
@@ -174,8 +178,88 @@ const shareDate = latest ? latest.data.published.toISOString().slice(0, 10) : ""
     description={DESC}
     postBanner={BANNER || undefined}
     heading={`${CATEGORY}合集`}
+    customHero
     hideBannerTitle
 >
+    {/* 刊头：与见山书页同一套（.book-hero）——书名位放栏目名，副书名位放上级栏目，
+        一句话定位放 lead，分享 / 打赏收进 banner；下方白卡只留说明与盘口 */}
+    <Fragment slot="hero">
+        <header
+            class="book-hero"
+            style="min-height: var(--book-banner-h, max(50vh, 430px))"
+        >
+            {
+                BANNER && (
+                    <div class="book-hero-media" aria-hidden="true">
+                        <img src={BANNER} alt="" loading="eager" fetchpriority="high" />
+                    </div>
+                )
+            }
+            <div class="book-hero-inner">
+                <h1 class="book-hero-title">{CATEGORY}</h1>
+                <p class="book-hero-lead">{LEAD}</p>
+
+                <div class="book-hero-actions">
+                    {
+                        showShare && (
+                            <SharePoster
+                                client:load
+                                title={CATEGORY}
+                                author={profileConfig.name}
+                                description={DESC}
+                                pubDate={shareDate}
+                                coverImage={BANNER || null}
+                                url={Astro.url.href}
+                                siteTitle={siteConfig.title}
+                                avatarSelector=".profile-avatar-image img"
+                            />
+                        )
+                    }
+                    {
+                        showSponsorButton && (
+                            <button type="button" data-sponsor-open class="book-hero-ghost">
+                                <span>{i18n(I18nKey.sponsor)}</span>
+                                <Icon name="material-symbols:favorite-rounded" class="text-sm" />
+                            </button>
+                        )
+                    }
+                </div>
+
+                <p class="book-hero-facts">
+                    {
+                        posts.length > 0 ? (
+                            <>
+                                <b>{page ? page.total : posts.length}</b> {unit}
+                                {wordStat && (
+                                    <>
+                                        <span class="sep" />
+                                        约 <b>{wordStat.n}</b> {wordStat.u}
+                                    </>
+                                )}
+                                {timeStat && (
+                                    <>
+                                        <span class="sep" />
+                                        读完约 <b>{timeStat.n}</b> {timeStat.u}
+                                    </>
+                                )}
+                                <span class="sep" />
+                                更新至 <b>{mmdd(latest.data.published)}</b>
+                            </>
+                        ) : (
+                            "待第一篇"
+                        )
+                    }
+                </p>
+            </div>
+
+            {
+                BANNER && quotes.length > 0 && (
+                    <div class="book-hero-quote-wrap" data-quote-host aria-hidden="true" />
+                )
+            }
+        </header>
+    </Fragment>
+
     {/* 只有这一页有自己的 banner 才挂金句：没传 BANNER 的栏目回落的是全局壁纸
         （动漫插画），白字压上去既不干净也不像这个栏目该有的样子。
         等这两个栏目出了自己的图，金句会自动出现，不用再改这里。 */}
@@ -186,76 +270,6 @@ const shareDate = latest ? latest.data.published.toISOString().slice(0, 10) : ""
             ? JSON.stringify(quotes)
             : undefined}
     >
-
-        <!-- ============ 刊头 ============
-             照见山书卷卡（/books/jianshan/ 的 .scroll）：kicker → 刊名 →
-             一句话定位 → 说明 → 底部盘口，右侧分享 / 打赏。
-             没有封面列，文字占满整行；高度用 min-height 对齐那张卡，
-             盘口靠 margin-top:auto 贴底。 -->
-        <section class="col-board card-base" data-quote-anchor aria-label="栏目概况">
-            <div class="col-main">
-                <div class="col-text">
-                    <p class="col-kicker">{KICKER}</p>
-                    {/* 母版已经渲染了一个 sr-only 的 h1（heading || title），
-                        这块是视觉主标题，语义上降到 h2，别和它撞 */}
-                    <h2 class="col-title">{CATEGORY}</h2>
-                    <p class="col-claim">{LEAD}</p>
-                    <p class="col-desc">{DESC}</p>
-
-                    <p class="col-facts">
-                        {
-                            posts.length > 0 ? (
-                                <>
-                                    <b>{page ? page.total : posts.length}</b> {unit}
-                                    {wordStat && (
-                                        <>
-                                            <span class="sep" />
-                                            约 <b>{wordStat.n}</b> {wordStat.u}
-                                        </>
-                                    )}
-                                    {timeStat && (
-                                        <>
-                                            <span class="sep" />
-                                            读完约 <b>{timeStat.n}</b> {timeStat.u}
-                                        </>
-                                    )}
-                                    <span class="sep"></span>
-                                    更新至 <b>{mmdd(latest.data.published)}</b>
-                                </>
-                            ) : (
-                                "待第一篇"
-                            )
-                        }
-                    </p>
-                </div>
-
-                {
-                    showSupportBlock && (
-                        <aside class="col-support" aria-label={i18n(I18nKey.sponsorButton)}>
-                            {showShare && (
-                                <SharePoster
-                                    client:load
-                                    title={CATEGORY}
-                                    author={profileConfig.name}
-                                    description={DESC}
-                                    pubDate={shareDate}
-                                    coverImage={BANNER || null}
-                                    url={Astro.url.href}
-                                    siteTitle={siteConfig.title}
-                                    avatarSelector=".profile-avatar-image img"
-                                />
-                            )}
-                            {showSponsorButton && (
-                                <button type="button" data-sponsor-open class="col-reward">
-                                    <span>{i18n(I18nKey.sponsor)}</span>
-                                    <Icon name="material-symbols:favorite-rounded" class="text-sm" />
-                                </button>
-                            )}
-                        </aside>
-                    )
-                }
-            </div>
-        </section>
 
         <!-- ============ 文章列表 ============
              平铺，不分组。卡片交给母版 PostCard，本页只补封面尺寸与间距，
@@ -342,10 +356,8 @@ const shareDate = latest ? latest.data.published.toISOString().slice(0, 10) : ""
     @media (min-width: 1024px) {
         .col-board {
             padding: 28px 30px;
-            /* 与见山 .scroll 等高：封面 200×267 撑出的高度 + 上下 28px padding。
-               没有封面后内容不足这么高，靠 min-height 兜住；
-               盘口再用 margin-top:auto 贴底，否则整块板会缩在顶部、下面空一大块。 */
-            min-height: calc(200px * 4 / 3 + 56px);
+            /* 刊头已经搬到 banner 上，这张卡只剩说明 + 盘口，
+               不再需要 min-height 去对齐「封面 + 文字」那块板 */
         }
     }
     :global(.dark) .col-board {
@@ -448,8 +460,9 @@ const shareDate = latest ? latest.data.published.toISOString().slice(0, 10) : ""
         align-items: baseline;
         flex-wrap: wrap;
         gap: 8px;
-        margin: auto 0 0;
-        padding-top: 20px;
+        /* 说明下方留一档就够：卡里没有别的内容，不要再用 auto 把它推到底 */
+        margin: 20px 0 0;
+        padding-top: 0;
         font-size: var(--fs-meta);
         color: color-mix(in oklab, var(--content-meta) 88%, transparent);
     }

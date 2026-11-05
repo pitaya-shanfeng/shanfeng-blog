@@ -124,6 +124,8 @@ export default defineConfig({
 			// the default value `transition-` cause transition delay
 			// when the Tailwind class `transition-all` is used
 			containers: [
+				// 书页自绘的刊头：放在布局层（页面内容之外），靠 swup 换页时整块替换
+				"#book-hero-container",
 				"#banner-images-container",
 				"#banner-overlay-container",
 				"#banner-dim-container",
@@ -133,7 +135,9 @@ export default defineConfig({
 				"#floating-toc-wrapper",
 			],
 			smoothScrolling: false,
-			cache: true,
+			// 临时关闭页面缓存排查「切页后样式回退」：关掉后每次切页都重新 fetch，
+			// 不会拿缓存里带着旧内联 CSS 的整页 HTML。确认完再打开。
+			cache: false,
 			preload: {
 				hover: true,
 				visible: true,

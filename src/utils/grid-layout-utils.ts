@@ -48,10 +48,12 @@ export function updateMainGridCols(): void {
 			positionAttr === "right" || positionAttr === "both"
 				? positionAttr
 				: "left",
-		tabletSidebar:
-			mainGrid.getAttribute("data-tablet-sidebar") === "right"
-				? "right"
-				: "left",
+		tabletSidebar: (() => {
+			const value = mainGrid.getAttribute("data-tablet-sidebar");
+			if (value === "right") return "right" as const;
+			if (value === "none") return "none" as const;
+			return "left" as const;
+		})(),
 		hideSidebarOnPostPage:
 			mainGrid.getAttribute("data-grid-hide-sidebar-on-post") === "true",
 		isPostPage,

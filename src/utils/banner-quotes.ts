@@ -121,6 +121,10 @@ function ensureStage(host: HTMLElement): HTMLElement {
  * 才不会每加一页就往这儿补一个选择器。
  */
 function alignStage(stage: HTMLElement, host: HTMLElement): void {
+	// 书页这类「页面自己画的 hero」：外框本身就和导航栏同一套宽度算法，
+	// 右边缘已经对齐，不需要再按卡片量一次
+	if (host.hasAttribute("data-quote-host")) return;
+
 	const card = document.querySelector<HTMLElement>("[data-quote-anchor]");
 	if (!card) return;
 
@@ -497,9 +501,15 @@ function renderQuotes(): void {
 		return;
 	}
 
-	const host = document.getElementById("banner-overlay-container");
-	// 手机端壁纸模式是 none，容器高度 0 —— 没有 banner 就没有地方放金句
-	if (!host || host.clientHeight === 0) {
+	// 优先用页面自己给的挂载点（书页的 hero），否则回落到壁纸区
+	const host =
+		document.querySelector<HTMLElement>("[data-quote-host]") ??
+		document.getElementById("banner-overlay-container");
+	// 手机端壁纸模式是 none，容器高度 0 —— 没有 banner 就没有地方放金句。
+	// 页面自己给的挂载点（书页 hero 的引文框）刚渲染时是空的、高度也是 0，
+	// 它是被金句撑开的，不能按高度判断
+	const isPageHost = host?.hasAttribute("data-quote-host") ?? false;
+	if (!host || (!isPageHost && host.clientHeight === 0)) {
 		teardown();
 		return;
 	}
@@ -511,6 +521,8 @@ function renderQuotes(): void {
 	signature = next;
 
 	const stage = ensureStage(host);
+	// 挂在 hero 里时换一套定位（见 banner-quote.css 的 .is-hero）
+	stage.classList.toggle("is-hero", host.hasAttribute("data-quote-host"));
 	alignStage(stage, host);
 
 	// 窗口尺寸变了，可用宽度跟着变：正在播的那句要重新量一次，

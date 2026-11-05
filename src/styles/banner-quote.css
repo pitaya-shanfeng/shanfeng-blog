@@ -38,14 +38,13 @@
 
 #col-quote-stage .col-quote-line {
   margin: 0;
-  font-family: 'LXGW WenKai', var(--font-serif, 'Songti SC', serif);
   /* 22px 是基准。宽度不写死在样式里：脚本按实际断行量一次，两行装得下就用
      上面的默认宽度（384），装不下就往左加宽到刚好两行——字号和字数都不动，
      所以长句不会缩成 20px 那样的碎字，也不会被截断加省略号。
      24px 时同一句要更宽才放得下两行，会横穿画面主体；再小则撑不住 */
-  font-size: 1.375rem;
-  line-height: 1.8;
-  letter-spacing: 0.02em;
+  font-size: var(--fs-h3);
+  line-height: var(--lh-body);
+  letter-spacing: var(--ls-wide);
   text-wrap: pretty;
   /* 背后没有压暗了，全部对比度都靠这圈阴影。
      第一层不带位移、模糊半径极小：它在笔画周围收出一圈紧贴的暗边，
@@ -99,11 +98,10 @@
 #col-quote-stage .col-quote-sign {
   /* 14px 的间距在 1.8 行高下看着还是贴在一起，放到 18 才断开 */
   margin-top: 1.125rem;
-  font-family: 'LXGW WenKai', var(--font-serif, 'Songti SC', serif);
   /* 正文 22px 时落款 15px（约 0.68 倍），再小就撑不住 */
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  letter-spacing: 0.14em;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-quote);
+  letter-spacing: var(--ls-wide);
   /* 字距在最后一个字后面也会加上，右对齐时整体会往左缩进半个字距；
      补回来，落款的右边缘才和正文齐平 */
   margin-right: -0.14em;
@@ -125,6 +123,45 @@
   transform: none;
 }
 
+/* ------------------------------------------------------------------
+   书页：金句挂在页面自己的 hero 里（[data-quote-host]），
+   定位交给外框（和导航栏同一套宽度算法），这里只负责排版。
+   ------------------------------------------------------------------ */
+#col-quote-stage.is-hero {
+  position: static;
+  inset: auto;
+  /* 默认宽度要让多数句子能在逗号处断开（26rem 太窄，会把词从中间劈开）；
+     实在放不下两行时脚本会自己往左长 */
+  width: min(30rem, 42vw);
+  max-width: 100%;
+  text-align: right;
+  /* 贴到刊头下沿（往上留一档）：两行金句的正中会压在人脸和白板上，
+     落到桌面那一片最暗、最安静的地方才读得清 */
+  transform: none;
+}
+
+#col-quote-stage.is-hero .col-quote-line {
+  font-size: var(--fs-h3);
+}
+
+/* 平板（768–1023）：仍然贴右下角，只把行宽和字号收一档 */
+@media (min-width: 768px) and (max-width: 1023px) {
+  #col-quote-stage.is-hero {
+    width: min(24rem, 56vw);
+  }
+
+  #col-quote-stage.is-hero .col-quote-line {
+    font-size: var(--fs-ui);
+  }
+}
+
+/* 手机（<768）：刊头里不放金句，随外框一起隐藏 */
+@media (max-width: 767px) {
+  #col-quote-stage.is-hero {
+    display: none;
+  }
+}
+
 /* 窄一点的桌面：行宽收到 20rem，别让字压到画面中间那台平板上 */
 @media (max-width: 1279px) {
   #col-quote-stage {
@@ -132,7 +169,7 @@
   }
 
   #col-quote-stage .col-quote-line {
-    font-size: 1.25rem;
+    font-size: var(--fs-item);
   }
 }
 

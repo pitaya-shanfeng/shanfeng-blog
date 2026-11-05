@@ -71,17 +71,33 @@ export function countChars(text) {
  */
 export const WORDS_PER_MINUTE = 150;
 
-/** 由总字数换算阅读分钟数，最少 1 分钟 */
-export function countMinutes(words) {
-	return Math.max(1, Math.round((words || 0) / WORDS_PER_MINUTE));
+/**
+ * 每张「内容图」折算的阅读分钟数。
+ *
+ * 大量文章是 PDF / PPT 转成图片发出来的，一页就是一张图，读一页的功夫
+ * 和读几百字差不多。按 2 分钟/张折算，比纯文字估算更接近真实耗时。
+ *
+ * 只算正文里的 <img>：图标、头像、emoji 不在正文节点里，天然不会被计入；
+ * 装饰性小图（宽度 < 200px）直接跳过。
+ */
+export const MINUTES_PER_IMAGE = 2;
+
+/** 宽度小于这个值的图按装饰处理，不计入阅读时长 */
+export const DECORATIVE_IMAGE_MAX_WIDTH = 200;
+
+/** 由总字数 + 内容图数量换算阅读分钟数，最少 1 分钟 */
+export function countMinutes(words, images = 0) {
+	const textMinutes = (words || 0) / WORDS_PER_MINUTE;
+	const imageMinutes = (images || 0) * MINUTES_PER_IMAGE;
+	return Math.max(1, Math.round(textMinutes + imageMinutes));
 }
 
 /** 一次性拿到三个值 */
-export function measure(text) {
+export function measure(text, images = 0) {
 	const words = countWords(text);
 	return {
 		words,
 		chars: countChars(text),
-		minutes: countMinutes(words),
+		minutes: countMinutes(words, images),
 	};
 }
