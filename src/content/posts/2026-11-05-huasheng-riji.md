@@ -1,8 +1,8 @@
 ---
 title: 花生日记调研报告
 published: 2026-11-05T15:50:00+08:00
-description: 电商平台的商品智能导购 App，用户复制淘口令领券返利。报告拆产品定位、用户结构、会员体系与业务流程，再用下载曲线与差评数据看它从爆发到稳定的过程。
-quote: 8 个月探索期后进入成长期，用户增长开始放缓。
+description: 电商平台的商品智能导购 App，用户复制淘口令领券返利。拆产品定位、用户结构、会员体系与业务流程，再用下载曲线与差评数据看它从爆发到稳定的过程。
+quote: 8 个月探索期后成长期，用户增长开始放缓。
 image: /assets/library/notes/huasheng-riji/cover.webp
 banner: /assets/library/notes/huasheng-riji/banner.webp
 category: 实战/调研报告
@@ -11,21 +11,177 @@ tags:
   - 调研
 draft: false
 comment: false
-documentPages: 13
 ---
 
-<div class="document-page-stream" aria-label="花生日记调研报告在线预览">
-  <img src="/assets/library/notes/huasheng-riji/pages/page-01.webp" alt="花生日记调研报告第 1 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/huasheng-riji/pages/page-02.webp" alt="花生日记调研报告第 2 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/huasheng-riji/pages/page-03.webp" alt="花生日记调研报告第 3 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/huasheng-riji/pages/page-04.webp" alt="花生日记调研报告第 4 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/huasheng-riji/pages/page-05.webp" alt="花生日记调研报告第 5 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/huasheng-riji/pages/page-06.webp" alt="花生日记调研报告第 6 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/huasheng-riji/pages/page-07.webp" alt="花生日记调研报告第 7 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/huasheng-riji/pages/page-08.webp" alt="花生日记调研报告第 8 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/huasheng-riji/pages/page-09.webp" alt="花生日记调研报告第 9 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/huasheng-riji/pages/page-10.webp" alt="花生日记调研报告第 10 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/huasheng-riji/pages/page-11.webp" alt="花生日记调研报告第 11 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/huasheng-riji/pages/page-12.webp" alt="花生日记调研报告第 12 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/huasheng-riji/pages/page-13.webp" alt="花生日记调研报告第 13 页" loading="lazy" decoding="async" draggable="false" />
-</div>
+## 四、产品调研(花生日记)
+
+### 1、产品概述
+
+#### (1)产品定位
+
+一款电子商务平台商品智能导购APP
+
+#### (2)产品说明
+
+网购达人首选的省钱工具海量大额优惠券每天更新，真正让你实现少花钱，多生钱
+
+#### (3)产品生命周期
+
+(本数据由蝉大师提供)
+
+通过观察花生日记2017年8月份上线后的下载量分析，可以得出，花生日记通过近8个月的探索期，很快的步入了成⻓期，经过了一年多的成⻓期的积攒，目前已经有进入稳定期的趋势，用户增⻓速度变缓，用户总数基本已经达到一个稳定的规模。
+
+### 2、用户分析
+
+#### (1)应用数据统计
+
+- 男性用户与女性用户总体占比相差较大，女性用户占据较大的基数
+
+- 用户的年龄分布主要集中在25岁至35岁之间，其中30岁至35岁的用户群体基数最大
+
+- 用户主要分布在二线、三线城市
+
+![第 2 页原图](/assets/library/notes/huasheng-riji/pages/page-02.webp)
+
+#### (2)明确用户类型
+
+| 用户 | 用户描述 |
+| --- | --- |
+| 消费者 | 通过他人分享的链接,获取相应优惠进行省钱购物的用户 |
+| 推广者 | 通过在平台通过分享商品、自购等行为,获取相应推广收入的用户 |
+| 运营者 | 平台工作人员,通过推出各类商品、活动、规则、体系、功能等维系用户 |
+
+关系，获取商业利润
+
+| 卖家 | 各三方平台店家,通过发放一些优惠及佣金,获取一定量的流量、收入 |
+| --- | --- |
+
+#### (3)会员体系
+
+花生日记会员体系.pdf16.3MB
+
+### 3、产品体验
+
+#### (1)用户、场景、需求
+
+| 用户 | 使用的场景 | 满足的需求 |
+| --- | --- | --- |
+| 消费者 | 购物时,没有优惠券,想要获取优惠券购物 | 低价购物、优惠券 |
+| 购物时,有优惠券,想要获取更低的优惠券购 | 低价购物、内部粉丝券 |  |
+
+| 购物时,针对同一商品,想要找到性价比最高 | 低价购物、商品查询、筛选 |
+| --- | --- |
+
+的店铺
+
+| 购物时,使用淘宝、天猫购物,想要获得返利 | 返利购物 |  |
+| --- | --- | --- |
+| 参与闪购、抢购等活动 | 低价购物、性价比、稀缺性 |  |
+| 推广者 | 分享大额优惠券的商品给消费者 | 维护用户关系,吸引流量、 |
+
+| 分享大额返佣的商品给消费者 | 收入、维护用户关系 |
+| --- | --- |
+| 邀请消费者成为自己的粉丝 | 扩大团队、增加流量与收入 |
+| 针对不同用户分享不同类的商品 | 品类丰富 |
+| 邀请的粉丝的粉丝通过花生日记购买商品,抽 | 增加收入 |
+
+取佣金
+
+| 运营者 | 不需要维护维护商品、库存等自营商城工作 | 选品简单、种类多、成本可 |
+| --- | --- | --- |
+
+控、数据支撑
+
+| 不需要进行订单的售后工作,全部由淘宝、天 | 投诉低、无售后成本 |
+| --- | --- |
+
+猫等平台完成
+
+| 不需要自己设计太多活动,与淘宝、天猫同步 | 模仿、品牌背书、节约时间 |
+| --- | --- |
+
+| 运营商和超级会员根据会员体系,形成绑定关 | 构建社群、用户活跃度维持 |
+| --- | --- |
+
+| 卖家 | 想要通过优惠、返现获取不同渠道的流量 | 流量、销量、口碑 |
+| --- | --- | --- |
+| 在店铺主营平台发布商品、进行推广 | 流量、销量、方便、专一 |  |
+| 通过短时间的让利、提高商品销量、打造爆款 | 口碑、粉丝 |  |
+
+### 4、还原产品
+
+#### (1)产品业务形态
+
+核心逻辑：花生日记的产品业务形态如上图，主要涉及消费者、推广者、运营者、淘宝卖家、⻔店卖家五种用户⻆色，其中核心⻆色为消费者、推广者；平台通过佣金、奖金等措施激励推广者，从而获取更多的消费者，通过消费者的购买交易从而实现商品的售卖、三方平台的佣金收入、平台卖家的优惠投入，从而实现一个良性循环，平台通过活跃的消费者、推广者产生持续的平台活跃度，进而实现盈利等目标
+
+#### (2)产品信息结构
+
+![第 5 页原图](/assets/library/notes/huasheng-riji/pages/page-05.webp)
+
+![第 6 页原图](/assets/library/notes/huasheng-riji/pages/page-06.webp)
+
+- 邀请好友注册流程(待补充)
+
+### 5、分析产品
+
+#### (1)产品迭代路径
+
+- 花生日记APP版本记录
+
+![第 7 页原图](/assets/library/notes/huasheng-riji/pages/page-07.webp)
+
+![第 8 页原图](/assets/library/notes/huasheng-riji/pages/page-08.webp)
+
+![第 9 页原图](/assets/library/notes/huasheng-riji/pages/page-09.webp)
+
+(本数据由⻦哥ASO提供)
+
+- 用户增⻓曲线根据花生日记APP版本记录与用户增⻓曲线可以看出，花生日记目前已经趋于一个稳定期，功能相对而言已经很⻬全，目前版本基本是在进行优化或挖掘用户潜在的需求、价值；同时为了保证会员的留存率及活跃度，在3.7.0版本后基本把目光锁定在会员权益、会员知识体系构建两个方向，通过新的收入方式及商学院等，减少核心用户的流失率。
+
+#### (2)数据表现
+
+- 累计下载量(本数据由蝉大师提供)
+
+![第 10 页原图](/assets/library/notes/huasheng-riji/pages/page-10.webp)
+
+从Android下载量可以看出，花生日记目前的用户量已经破亿级单位，用户基数非常庞大。
+
+注：花生日记中，消费者通过他人分享的商品，可以直接复制淘口令等至其他三方平台下单，不会产生注册，所以实
+
+际上的用户群体规模可能远大于目前的统计数据
+
+- 排名趋势通过花生日记的App Store排名可以看出，从2018年5月重新上线后开始，虽然总体的排名变动不是特别大，但是现在已经出现了下滑趋势，从最早的工具榜前10目前只能达到工具榜前50,基本保持在30左右。
+
+#### (3)用户表现
+
+- 评分数据
+
+![第 11 页原图](/assets/library/notes/huasheng-riji/pages/page-11.webp)
+
+![第 12 页原图](/assets/library/notes/huasheng-riji/pages/page-12.webp)
+
+花生日记_评论详情_20190713_...
+
+0.1MB
+
+通过评分数据与评价数据可以看出，用户整体对花生日记的评分相对而言是不太理想的，随着版本更新、运营动作及公司、政府政策等影响，在后期版本中出现了大量的差评，纵观差评主要有以下几点:
+
+- 平台数据与三方平台数据无法统一，信息同步不及时
+
+- 注册需要要绑定微信、手机号，还需要邀请码，不能更换手机号
+
+- 订单、收入等经常会丢失，没有明确原因
+
+- 结算速度慢，提现约束多
+
+- 经常获取信息错误,⻚面卡顿严重
+
+- 推荐商品不够智能，不符合用户预期
+
+- 支付宝不能解绑，账号不能注销
+
+## 五、产品调研(未来集市)
+
+https://shimo.im/docs/6yRwH9xghdRWgYC9/
+
+![第 13 页原图](/assets/library/notes/huasheng-riji/pages/page-13.webp)

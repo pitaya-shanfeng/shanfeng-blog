@@ -1,7 +1,7 @@
 ---
 title: 未来集市调研报告
-published: 2026-11-05T14:40:00+08:00
-description: 2019 年的未来集市，一站式全品类圈层电商。报告按产品概述、用户与体验、还原产品、分析产品四条线走，把定位、会员体系、业务流程、功能架构与迭代数据依次拆开。
+published: 2026-11-05T15:35:00+08:00
+description: 2019 年的未来集市，一站式全品类圈层电商。按产品概述、用户与体验、还原产品、分析产品四条线走，把定位、会员体系、业务流程、功能架构与迭代数据依次拆开。
 quote: 7 月开始正式推广放量，目前还处在探索期。
 image: /assets/library/notes/weilai-jishi-report/cover.webp
 banner: /assets/library/notes/weilai-jishi-report/banner.webp
@@ -11,22 +11,158 @@ tags:
   - 调研
 draft: false
 comment: false
-documentPages: 14
 ---
 
-<div class="document-page-stream" aria-label="未来集市调研报告在线预览">
-  <img src="/assets/library/notes/weilai-jishi-report/pages/page-01.webp" alt="未来集市调研报告第 1 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/weilai-jishi-report/pages/page-02.webp" alt="未来集市调研报告第 2 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/weilai-jishi-report/pages/page-03.webp" alt="未来集市调研报告第 3 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/weilai-jishi-report/pages/page-04.webp" alt="未来集市调研报告第 4 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/weilai-jishi-report/pages/page-05.webp" alt="未来集市调研报告第 5 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/weilai-jishi-report/pages/page-06.webp" alt="未来集市调研报告第 6 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/weilai-jishi-report/pages/page-07.webp" alt="未来集市调研报告第 7 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/weilai-jishi-report/pages/page-08.webp" alt="未来集市调研报告第 8 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/weilai-jishi-report/pages/page-09.webp" alt="未来集市调研报告第 9 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/weilai-jishi-report/pages/page-10.webp" alt="未来集市调研报告第 10 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/weilai-jishi-report/pages/page-11.webp" alt="未来集市调研报告第 11 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/weilai-jishi-report/pages/page-12.webp" alt="未来集市调研报告第 12 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/weilai-jishi-report/pages/page-13.webp" alt="未来集市调研报告第 13 页" loading="lazy" decoding="async" draggable="false" />
-  <img src="/assets/library/notes/weilai-jishi-report/pages/page-14.webp" alt="未来集市调研报告第 14 页" loading="lazy" decoding="async" draggable="false" />
-</div>
+### 1、产品概述
+
+#### (1)产品定位
+
+一站式全品类圈层电商平台
+
+#### (2)产品说明
+
+未来集市打破传统电商模式，通过社交电商满足用户需求；通过未来集市孵化体系对整合的商品和内容进行管理和分类，实现信息准确推送；基于社群经济创业app,配备成⻓型创业培训系统，提供全方位创业流程。
+
+- 销售类目涵盖水果生鲜、美妆个护、母婴用品、居家日用等类目商品;
+
+- 采用与品牌方直接合作供货的方式，通过品控环节，采购流程把关，做到正品供应;
+
+- 配合各大物流服务商，时效快捷配送;
+
+- 成为店主，解锁素材一键转发，享购物折扣;
+
+- 商学院培训，开发个人成⻓培训体系，助力入⻔创业。
+
+#### (3)产品生命周期
+
+通过观察未来集市APP从2019年3月份上线后的下载量分析, 可以得出，未来集市通过近3个月的测试验证,7月开始正式推广放量，目前还正处于探索期。
+
+(本数据由禅大师提供)
+
+### 2、用户分析
+
+#### (1)用户类型
+
+| 用户 | 用户描述 |
+| --- | --- |
+| 普通会员 | 在未来集市APP中购买产品 |
+| 集市掌柜 | 在未来集市APP中开店赚取佣金 |
+| 运营者 | 未来集市APP工作人员,负责内容的维护及运营活动 |
+
+#### (2)会员体系
+
+### 3、产品体验
+
+#### (1)用户、场景、需求
+
+| 用户 | 使用场景 | 满足的需求 |
+| --- | --- | --- |
+| 消费者 | 购买物美价廉高性价比的产品 | 日常购物 |
+| 会员价购买,拿到返佣 | 便宜实惠 |  |
+| 随便逛逛,看到好的有需要的会买 | 打发时间 |  |
+| 店主 | 推荐亲朋好友使用未来集市购物 | 佣金贴补家用、业余收入 |
+| 分享自己用过的好的产品 | 分享、趣味 |  |
+| 平时有时间顺便做一下 | 打发时间 |  |
+| 别人说好,跟着做,有人带 | 赚业余收入 |  |
+| 运营人员 | 运营日常活动 | 平台收入 |
+| 售后处理、维护 | 用户维系 |  |
+
+#### (2)用户故事
+
+- 故事1:
+
+小刘是一个全职太太，平时在家带娃，时间比较充裕，没事喜欢逛各大购物网站，参加各类网站购物活动，看到朋友圈有人在使用未来集市购物，出于好奇下载了app尝试在集市上购物，价格也不是很贵，逐渐开始习惯在集市购物。
+
+(注：上述故事主要表述消费者在未来集市上被满足的日常购物需求)
+
+- 故事2:
+
+小蝶是个白领，朝九晚五，工作不是很忙，但收入不高勉强能在杭州生活，看到身边的同事是未来集市的掌柜店主，自己也想尝试一下，赚一点业余收入。在同事的推荐和指点下，慢慢入⻔,开始有了一定的收入，越来越有信心。
+
+(注：上述故事主要表述店主在未来集市开店，赚取收入的需求)
+
+### 4、还原产品
+
+#### (1)产品业务形态
+
+核心逻辑：未来集市通过直接对接各大品牌商资源，尽可能向上游争取议价空间；并由掌柜店主将商品推荐给消费者，赚取佣金；平台直接向消费者提供商品、售后、仓储、物流等服务。
+
+#### (2)产品核心业务流程
+
+- 消费者购物流程
+
+![第 3 页原图](/assets/library/notes/weilai-jishi-report/pages/page-03.webp)
+
+![第 4 页原图](/assets/library/notes/weilai-jishi-report/pages/page-04.webp)
+
+![第 5 页原图](/assets/library/notes/weilai-jishi-report/pages/page-05.webp)
+
+![第 6 页原图](/assets/library/notes/weilai-jishi-report/pages/page-06.webp)
+
+![第 7 页原图](/assets/library/notes/weilai-jishi-report/pages/page-07.webp)
+
+![第 8 页原图](/assets/library/notes/weilai-jishi-report/pages/page-08.webp)
+
+![第 9 页原图](/assets/library/notes/weilai-jishi-report/pages/page-09.webp)
+
+(本数据由禅大师提供)
+
+- 用户增⻓曲线(本数据由禅大师提供)
+
+根据未来集市APP的版本记录与用户增⻓曲线可以看出截止目前主要历经了以下两个阶段:
+
+- 第一阶段：基础功能完善优化,V1.1.6前，主要着重基础功能的完善和优化;
+
+- 第二阶段：营销活动及BUG处理，例如:UI界面优化、七夕活动等，提升用户留存;
+
+#### (2)数据表现
+
+![第 10 页原图](/assets/library/notes/weilai-jishi-report/pages/page-10.webp)
+
+- 累计下载量(Android)
+
+(本数禅大师提供)
+
+从Android下载量可以看出，未来集市APP下载量达到千万级。
+
+- 排名趋势(本数据由酷传提供)
+
+通过App Store排名可以看出，从2019年6月之前排名还是相对靠后,2019年7月开始，一个多月的时间，在购物品类榜排名上升到第25名。
+
+#### (3)用户表现
+
+- 评分数据
+
+![第 11 页原图](/assets/library/notes/weilai-jishi-report/pages/page-11.webp)
+
+![第 12 页原图](/assets/library/notes/weilai-jishi-report/pages/page-12.webp)
+
+虽然从下载量上看未来集市APP已经突破千万，但是从评论数据来看暂时还不够好，评论数量也只有几千,1、2星的差评占了十分之一，差评主要集中在以下几点:
+
+- 没有退款售后功能，人工客服处理太慢，拖着拖着就没有下文了，没有保障
+
+- 产品质量差
+
+- 服务跟不上，与宣传力度不匹配
+
+- 系统不稳定
+
+#### (4)运营节点
+
+截止目前为止，未来集市完成平台构建，开始着手推广引流，根据多渠道消息获悉未来集市先后从云集,⻉店等社交电商平台引入店主入驻;
+
+### 6、总结与借鉴
+
+#### (1)总结
+
+- 功能迭代稳定：通过以上产品还原与分析，可以看出，未来集市在3月份完成内测后，并未急于放量，而是花了3个月的时间，不断打磨完善功能，直至7月开始推广放量;
+
+- 交互体验良好：未来集市在核心功能交互上比较简洁清晰，操作步骤简短,⻚面清晰。并且融入了短视频功能，优惠券和集市币等营销功能也相对完善，为大量投入运营夯实了基础。
+
+- 购物体验需要加强：从用户反馈上可以看到，由于目前缺少系统化的售后流程，且人工处理效率低下，对未来集市造成负面效果较大，造成用户流失。
+
+#### (2)借鉴
+
+- 从未来集市的迭代过程可以看到未来集市在购物⻋、优惠券等营销功能完善之后才开始大量推广，作为一个C端产品，这些功能的重要性不言而喻，对我们来说也是如此;
+
+![第 14 页原图](/assets/library/notes/weilai-jishi-report/pages/page-14.webp)
