@@ -4,6 +4,7 @@ published: 2026-11-05T14:40:00+08:00
 description: 2019 年的未来集市，一站式全品类圈层电商。报告按产品概述、用户与体验、还原产品、分析产品四条线走，把定位、会员体系、业务流程、功能架构与迭代数据依次拆开。
 quote: 7 月开始正式推广放量，目前还处在探索期。
 image: /assets/library/notes/weilai-jishi-report/cover.webp
+banner: /assets/library/notes/weilai-jishi-report/banner.webp
 category: 实战/调研报告
 tags:
   - 产品
