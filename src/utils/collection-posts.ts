@@ -33,6 +33,9 @@ export function makeCategoryFilter(category: string) {
 		if ((data.tags ?? []).includes(category)) return true;
 		const raw = data.category?.trim();
 		if (!raw) return false;
+		// 整体相等也算命中：方法 / 实战两栏的专题页（topicsConfig）传的是两级全称
+		// 「实战/调研报告」，只比拆段的话一条都收不到，栏目页会一直空着。
+		if (raw === category) return true;
 		return raw
 			.split("/")
 			.some((segment) => segment.trim() === category);
