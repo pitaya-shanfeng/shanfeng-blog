@@ -251,22 +251,20 @@ const shareDate = latest ? latest.data.published.toISOString().slice(0, 10) : ""
             </div>
 
             {
-                BANNER && quotes.length > 0 && (
+                quotes.length > 0 && (
                     <div class="book-hero-quote-wrap" data-quote-host aria-hidden="true" />
                 )
             }
         </header>
     </Fragment>
 
-    {/* 只有这一页有自己的 banner 才挂金句：没传 BANNER 的栏目回落的是全局壁纸
-        （动漫插画），白字压上去既不干净也不像这个栏目该有的样子。
-        等这两个栏目出了自己的图，金句会自动出现，不用再改这里。 */}
+    {/* 金句不再要求「这一页有自己的 banner」—— 之前只要没配 banner（回落到全局壁纸）
+        就整块不出现，读者会以为栏目缺了一块。刊头文字本来就是白色叠在壁纸上，
+        金句同理，保持一致即可。 */}
     <div
         class="col-page onload-animation"
         data-no-category-bar
-        data-quotes={BANNER && quotes.length > 0
-            ? JSON.stringify(quotes)
-            : undefined}
+        data-quotes={quotes.length > 0 ? JSON.stringify(quotes) : undefined}
     >
 
         <!-- ============ 文章列表 ============
