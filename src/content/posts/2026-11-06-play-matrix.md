@@ -5,7 +5,7 @@ description: 把玩法当成乐高来拼：云集想把留存、裂变、转化�
 quote: 单个玩法只能带来流量，拼成矩阵才能带来留存。
 image: /assets/library/notes/play-matrix/cover.webp
 banner: /assets/library/notes/play-matrix/banner.webp
-category: 落地实战/产品设计
+category: 方法沉淀
 tags:
   - 产品
   - 玩法
