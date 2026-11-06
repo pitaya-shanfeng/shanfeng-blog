@@ -49,6 +49,14 @@
   margin-inline: 0;
 }
 
+/* 标题颜色交还给文档自己。
+   Tailwind Typography 会直接给 h1~h6 写 color，而文档通常只在容器上设 color（如深色
+   hero 用 #fff）——继承不敌直接命中，于是白字变黑字，深蓝底上看不清。
+   这里的权重 (0,2,0) 高于 `.prose :where(h1)`，文档自己写了 color 的规则仍然更具体、照旧生效。 */
+.html-post-content.html-post-content :where(h1, h2, h3, h4, h5, h6) {
+  color: inherit;
+}
+
 .custom-md {
   /* 正文字号：Tailwind Typography 的 prose-base 默认 1rem(16px)。
      侧栏改单侧后正文区变宽，字号升一档。prose 内部元素按 em 计算，会等比缩放 */
