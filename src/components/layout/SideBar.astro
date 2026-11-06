@@ -22,7 +22,7 @@ import type {
 } from "@/types/config";
 import { isWidgetVisibleOnPageType } from "@/utils/responsive-utils";
 import type { PostForList } from "@/utils/content-utils";
-import { isArticleDetailPage, isBookPage } from "@/utils/url-utils";
+import { isArticleDetailPage, isBookPage, isCollectionListPage } from "@/utils/url-utils";
 
 interface Props {
 	class?: string;
@@ -164,10 +164,13 @@ const getComponentProps = (
 		}
 	}
 
-	// 合集页专用：书页里换成「本书目录」，不要两份清单
-	if ("hideOnBookPage" in config && config.hideOnBookPage === true) {
-		baseProps.class = `${baseProps.class} widget-hide-on-book`;
-		if (isBookPage(Astro.url.pathname)) {
+	// 只在分类合集页显示（侧栏推荐阅读）：其余页面首屏就带 hidden，避免闪
+	if (
+		"onlyOnCollectionPages" in config &&
+		config.onlyOnCollectionPages === true
+	) {
+		baseProps.class = `${baseProps.class} widget-hide-outside-collection`;
+		if (!isCollectionListPage(Astro.url.pathname)) {
 			baseProps.class = `${baseProps.class} hidden`;
 		}
 	}

@@ -6,7 +6,7 @@ import {
 	computeGridColumns,
 	gridColumnVarsToStyle,
 } from "@/utils/responsive-utils";
-import { isArticleDetailPage, isBookPage } from "@/utils/url-utils";
+import { isArticleDetailPage, isBookPage, isCollectionListPage } from "@/utils/url-utils";
 
 const sidebarStickyState: Record<
 	"left" | "right",
@@ -107,18 +107,21 @@ export function updateSidebarComponentsVisibility(): void {
 
 	// 处理只在书籍合集页显示的组件
 	const isBook = isBookPage(window.location.pathname);
+	const isCollectionPage = isCollectionListPage(window.location.pathname);
 	document.querySelectorAll(".widget-hide-on-non-book").forEach((widget) => {
 		!isBook
 			? widget.classList.add("hidden")
 			: widget.classList.remove("hidden");
 	});
 
-	// 只在合集页显示的组件（侧栏推荐阅读）
-	document.querySelectorAll(".widget-hide-on-book").forEach((widget) => {
-		isBook
-			? widget.classList.add("hidden")
-			: widget.classList.remove("hidden");
-	});
+	// 只在分类合集页显示的组件（侧栏推荐阅读）
+	document
+		.querySelectorAll(".widget-hide-outside-collection")
+		.forEach((widget) => {
+			isCollectionPage
+				? widget.classList.remove("hidden")
+				: widget.classList.add("hidden");
+		});
 
 	// 组件可见性变化后，重新读取 top 容器可见性并重算 sticky 间距，避免 swup 切页后残留旧间距
 	refreshSidebarStickyState();

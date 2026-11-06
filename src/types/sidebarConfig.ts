@@ -29,8 +29,8 @@ export type WidgetComponentConfig = {
 	hideOnNonPostPage?: boolean; // 是否在非文章详情页隐藏
 	/** 是否只在书籍合集页（/books/…）显示 */
 	hideOnNonBookPage?: boolean;
-	/** 是否在书籍合集页隐藏（合集页的推荐阅读用） */
-	hideOnBookPage?: boolean;
+	/** 是否只在分类合集页（文章列表页）显示（侧栏推荐阅读用） */
+	onlyOnCollectionPages?: boolean;
 	specificConfig?: WidgetSpecificConfig;
 	customProps?: Record<string, unknown>; // 自定义属性，用于扩展组件功能
 };

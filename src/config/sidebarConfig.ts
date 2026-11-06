@@ -106,7 +106,8 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			enable: true,
 			position: "sticky",
 			showOnPostPage: false,
-			hideOnBookPage: true,
+			// 只在分类合集页出现：首页、文章页、书页、关于/归档等一律不显示
+			onlyOnCollectionPages: true,
 			// 标题与「本书目录」一致，不另起样式
 			showTitle: true,
 		},

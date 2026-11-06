@@ -114,6 +114,19 @@ export function isArticleDetailPage(pathname: string): boolean {
 	return CONTENT_DETAIL_PATH_PATTERNS.some((re) => re.test(pathname));
 }
 
+/**
+ * 分类合集页（文章列表页）：/notes/、/picks/、/hotnews/、/topics/<slug>/
+ *
+ * 与「首页」「归档」「关于」这些也带列表的页面区分开：这里只认二级分类页，
+ * 侧栏「推荐阅读」就挂在这几个页面上。
+ */
+export function isCollectionListPage(pathname: string): boolean {
+	return (
+		/^\/(notes|picks|hotnews)(\/|$)/.test(pathname) ||
+		/^\/topics\/[^/]+\/?$/.test(pathname)
+	);
+}
+
 /** 书籍合集页：/books/<book>/ */
 export function isBookPage(pathname: string): boolean {
 	return /^\/books\/[^/]+\/?$/.test(pathname);
