@@ -2,14 +2,15 @@
 /**
  * 推荐阅读（侧栏，合集页）
  *
- * 版式复用 SidebarTOC 的外链目录：01–10 的圆形序号 + 标题，和书页的
- * 「本书目录」同一套样式，读者在合集页和书页看到的是同一种清单。
+ * 版式对齐「相关文章」那一路：圆角序号 + 标题 + 右侧箭头，条目之间虚线分隔。
+ * 区别只有一个——不带分类标签：这里是跨分类挑的 10 篇，标了分类反而干扰
+ * 「先读哪篇」的判断。
  *
  * 名单在 src/config/recommendedReadingConfig.ts，只挑 10 篇。
  * 显示范围：合集页显示、文章页与书籍页隐藏（见 SideBar 的 widget-hide-* 规则）。
  */
-import "@/styles/toc.css";
-import SidebarTOC, { type TocLinkItem } from "@/components/widget/SidebarTOC.astro";
+import { Icon } from "astro-icon/components";
+import WidgetLayout from "@/components/common/WidgetLayout.astro";
 import { RECOMMENDED_READING } from "@/config";
 import type { WidgetComponentConfig } from "@/types/config";
 import { getSortedPosts } from "@/utils/content-utils";
@@ -23,50 +24,56 @@ interface Props {
 
 const { class: className, style, widgetConfig } = Astro.props;
 
+const showTitle = widgetConfig?.showTitle !== false;
+
 const posts = await getSortedPosts();
 const byId = new Map(posts.map((post) => [post.id, post]));
 
-const items: TocLinkItem[] = [];
-for (const entry of RECOMMENDED_READING) {
+const list = RECOMMENDED_READING.flatMap((entry) => {
 	const post = byId.get(entry.slug);
-	if (!post) continue;
-	items.push({
-		badge: String(items.length + 1).padStart(2, "0"),
-		text: post.data.title,
-		href: getPostUrlBySlug(post.id),
-		// 与书页目录一致：扁平清单，不缩进
-		depthLevel: 2,
-		badgeKind: "index",
-		anchor: `rec-${post.id}`,
-	});
-}
+	return post
+		? [{ id: post.id, title: post.data.title, note: entry.note ?? "" }]
+		: [];
+});
 ---
 
 {
-	items.length > 0 && (
-		<div class="recommended-reading">
-		<SidebarTOC
-			items={items}
-			mode="link"
-			title="推荐阅读"
-			contentId="sidebar-rec-content"
-			widgetConfig={widgetConfig}
+	list.length > 0 && (
+		<WidgetLayout
+			id="recommended-reading-widget"
+			name="推荐阅读"
+			showTitle={showTitle}
 			class={className}
 			style={style}
-		/>
-	</div>
+			contentPadding={false}
+		>
+			<div class="flex flex-col px-4 pb-3 -mt-1">
+				{list.map((post, idx) => (
+					<a
+						href={getPostUrlBySlug(post.id)}
+						title={post.note}
+						class:list={[
+							"group flex items-center gap-2.5 px-2 py-2 rounded-lg",
+							"transition-all hover:bg-black/5 dark:hover:bg-white/5 active:scale-[0.98]",
+							idx < list.length - 1 &&
+								"border-b border-dashed border-(--line-divider)",
+						]}
+					>
+						<div class="shrink-0 w-5 h-5 rounded-md bg-(--enter-btn-bg) text-(--primary) flex items-center justify-center text-xs font-bold transition">
+							{idx + 1}
+						</div>
+						<div class="flex-1 min-w-0">
+							<div class="text-sm font-medium text-black/75 dark:text-white/75 truncate transition group-hover:text-(--primary)">
+								{post.title}
+							</div>
+						</div>
+						<Icon
+							name="material-symbols:chevron-right-rounded"
+							class="shrink-0 text-lg text-black/15 dark:text-white/15 transition group-hover:text-(--primary) group-hover:translate-x-0.5"
+						/>
+					</a>
+				))}
+			</div>
+		</WidgetLayout>
 	)
 }
-
-<style>
-	/* 推荐条目的标题允许换行：这里多是完整标题，截断后看不出是哪篇 */
-	.recommended-reading :global(.toc-label) {
-		white-space: normal;
-		display: -webkit-box;
-		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 2;
-		line-clamp: 2;
-		line-height: 1.45;
-		max-width: calc(100% - 2.4rem);
-	}
-</style>
