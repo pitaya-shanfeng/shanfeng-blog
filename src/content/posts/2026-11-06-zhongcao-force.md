@@ -5,7 +5,7 @@ description: 克劳锐 2020 年的百页报告：把种草的三种角色（明�
 quote: 种草不是让人知道，是让人想去评论里找答案。
 image: /assets/library/notes/zhongcao-force/cover.webp
 banner: /assets/library/notes/zhongcao-force/banner.webp
-category: 学习思考
+category: 落地实战/调研分析
 tags:
   - 转载精选
   - 内容
