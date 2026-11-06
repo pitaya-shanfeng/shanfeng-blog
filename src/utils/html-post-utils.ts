@@ -32,6 +32,8 @@ export interface HtmlPostMeta {
 	category?: string;
 	published?: Date;
 	image?: string;
+	/** 详情页 banner 壁纸；不填则回落到分类／全局壁纸 */
+	banner?: string;
 	draft?: boolean;
 	pinned?: boolean;
 	author?: string;
@@ -332,6 +334,7 @@ export function parseHtmlPost(
 		category: String(fm.category ?? "").trim() || pickMeta(metas, "category", "article:section"),
 		published,
 		image: String(fm.image ?? "").trim() || pickMeta(metas, "image", "og:image"),
+		banner: String(fm.banner ?? "").trim() || pickMeta(metas, "banner"),
 		draft: fm.draft === true || /^(true|1|yes)$/i.test(pickMeta(metas, "draft")),
 		pinned: fm.pinned === true || /^(true|1|yes)$/i.test(pickMeta(metas, "pinned")),
 		author: String(fm.author ?? "").trim() || pickMeta(metas, "author"),
