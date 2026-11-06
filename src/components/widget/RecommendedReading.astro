@@ -106,6 +106,15 @@ const list: PostForList[] = picked
 
 <style>
 	/*
+	 * widget-layout 是自定义元素，默认 inline；平时靠侧栏的 flex 容器把它块化。
+	 * 这一栏外面多套了一层 div（要挂 data-* 给客户端脚本用），它就不再是 flex
+	 * 直接子项，会退回 inline、宽度塌成 0 —— 卡片白底也就跟着看不见了。
+	 */
+	.recommended-reading-root :global(widget-layout) {
+		display: block;
+	}
+
+	/*
 	 * 条目比「相关文章」高一档：那一栏每行带分类标签是两行，这里只有标题，
 	 * 用同样的 py-2 会挤成一条细线。只调这一处，不动相关文章本身。
 	 */
