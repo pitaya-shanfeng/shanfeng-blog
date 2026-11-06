@@ -95,6 +95,22 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			showOnPostPage: false,
 		},
 		{
+			// 组件类型：推荐阅读（合集页）
+			//
+			// 位置：往期目录之后。为什么放这儿——书页的左栏是「本书目录」，
+			// 合集页左栏原本在音乐卡之后就空了；这里补一份 10 篇的清单，
+			// 让两级页面共用同一种「左边有目录」的读法。
+			//
+			// 显示范围：合集页显示，文章页与书页都隐藏（客户端按路由切换）。
+			type: "recommendedReading",
+			enable: true,
+			position: "sticky",
+			showOnPostPage: false,
+			hideOnBookPage: true,
+			// 标题与「本书目录」一致，不另起样式
+			showTitle: true,
+		},
+		{
 			// 组件类型：最新动态组件（原在右侧栏，因改为单侧布局移到这里）
 			type: "dynamic",
 			// 是否启用该组件

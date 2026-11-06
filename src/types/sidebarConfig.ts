@@ -13,7 +13,8 @@ export type WidgetComponentType =
 	| "dynamic"
 	| "relatedPosts"
 	| "bookProgress"
-	| "hotnewsIndex";
+	| "hotnewsIndex"
+	| "recommendedReading";
 
 export type WidgetComponentConfig = {
 	type: WidgetComponentType; // 组件类型
@@ -28,6 +29,8 @@ export type WidgetComponentConfig = {
 	hideOnNonPostPage?: boolean; // 是否在非文章详情页隐藏
 	/** 是否只在书籍合集页（/books/…）显示 */
 	hideOnNonBookPage?: boolean;
+	/** 是否在书籍合集页隐藏（合集页的推荐阅读用） */
+	hideOnBookPage?: boolean;
 	specificConfig?: WidgetSpecificConfig;
 	customProps?: Record<string, unknown>; // 自定义属性，用于扩展组件功能
 };

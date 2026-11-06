@@ -5,6 +5,7 @@ import Announcement from "@/components/widget/Announcement.astro";
 import Calendar from "@/components/widget/Calendar.astro";
 import BookProgress from "@/components/widget/BookProgress.astro";
 import HotnewsIndex from "@/components/widget/HotnewsIndex.astro";
+import RecommendedReading from "@/components/widget/RecommendedReading.astro";
 import Categories from "@/components/widget/Categories.astro";
 import Dynamic from "@/components/widget/Dynamic.astro";
 import Music from "@/components/widget/Music.astro";
@@ -67,6 +68,7 @@ const componentMap = {
 	relatedPosts: RelatedPosts,
 	bookProgress: BookProgress,
 	hotnewsIndex: HotnewsIndex,
+	recommendedReading: RecommendedReading,
 };
 
 // 获取侧边栏位置
@@ -158,6 +160,14 @@ const getComponentProps = (
 	if ("hideOnNonBookPage" in config && config.hideOnNonBookPage === true) {
 		baseProps.class = `${baseProps.class} widget-hide-on-non-book`;
 		if (!isBookPage(Astro.url.pathname)) {
+			baseProps.class = `${baseProps.class} hidden`;
+		}
+	}
+
+	// 合集页专用：书页里换成「本书目录」，不要两份清单
+	if ("hideOnBookPage" in config && config.hideOnBookPage === true) {
+		baseProps.class = `${baseProps.class} widget-hide-on-book`;
+		if (isBookPage(Astro.url.pathname)) {
 			baseProps.class = `${baseProps.class} hidden`;
 		}
 	}

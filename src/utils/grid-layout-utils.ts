@@ -113,6 +113,13 @@ export function updateSidebarComponentsVisibility(): void {
 			: widget.classList.remove("hidden");
 	});
 
+	// 只在合集页显示的组件（侧栏推荐阅读）
+	document.querySelectorAll(".widget-hide-on-book").forEach((widget) => {
+		isBook
+			? widget.classList.add("hidden")
+			: widget.classList.remove("hidden");
+	});
+
 	// 组件可见性变化后，重新读取 top 容器可见性并重算 sticky 间距，避免 swup 切页后残留旧间距
 	refreshSidebarStickyState();
 }

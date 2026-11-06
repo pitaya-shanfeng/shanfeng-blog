@@ -1,0 +1,72 @@
+---
+/**
+ * 推荐阅读（侧栏，合集页）
+ *
+ * 版式复用 SidebarTOC 的外链目录：01–10 的圆形序号 + 标题，和书页的
+ * 「本书目录」同一套样式，读者在合集页和书页看到的是同一种清单。
+ *
+ * 名单在 src/config/recommendedReadingConfig.ts，只挑 10 篇。
+ * 显示范围：合集页显示、文章页与书籍页隐藏（见 SideBar 的 widget-hide-* 规则）。
+ */
+import "@/styles/toc.css";
+import SidebarTOC, { type TocLinkItem } from "@/components/widget/SidebarTOC.astro";
+import { RECOMMENDED_READING } from "@/config";
+import type { WidgetComponentConfig } from "@/types/config";
+import { getSortedPosts } from "@/utils/content-utils";
+import { getPostUrlBySlug } from "@/utils/url-utils";
+
+interface Props {
+	class?: string;
+	style?: string;
+	widgetConfig?: WidgetComponentConfig;
+}
+
+const { class: className, style, widgetConfig } = Astro.props;
+
+const posts = await getSortedPosts();
+const byId = new Map(posts.map((post) => [post.id, post]));
+
+const items: TocLinkItem[] = [];
+for (const entry of RECOMMENDED_READING) {
+	const post = byId.get(entry.slug);
+	if (!post) continue;
+	items.push({
+		badge: String(items.length + 1).padStart(2, "0"),
+		text: post.data.title,
+		href: getPostUrlBySlug(post.id),
+		// 与书页目录一致：扁平清单，不缩进
+		depthLevel: 2,
+		badgeKind: "index",
+		anchor: `rec-${post.id}`,
+	});
+}
+---
+
+{
+	items.length > 0 && (
+		<div class="recommended-reading">
+		<SidebarTOC
+			items={items}
+			mode="link"
+			title="推荐阅读"
+			contentId="sidebar-rec-content"
+			widgetConfig={widgetConfig}
+			class={className}
+			style={style}
+		/>
+	</div>
+	)
+}
+
+<style>
+	/* 推荐条目的标题允许换行：这里多是完整标题，截断后看不出是哪篇 */
+	.recommended-reading :global(.toc-label) {
+		white-space: normal;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+		line-height: 1.45;
+		max-width: calc(100% - 2.4rem);
+	}
+</style>
