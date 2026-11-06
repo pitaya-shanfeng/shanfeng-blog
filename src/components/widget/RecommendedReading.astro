@@ -241,14 +241,10 @@ const list: PostForList[] = picked
 		// 侧栏是 swup 的静态容器，不这么做会留一张只有标题的空卡。
 		if (!category && !tag) {
 			listEl.replaceChildren();
-			widget.classList.add("hidden");
-			// 双保险：书页/文章页上整张卡直接不排版，避免残留一个空标题卡
-			widget.style.display = "none";
+			widget.hidden = true;
 			root.dataset.recRendered = "";
 			return;
 		}
-
-		widget.style.removeProperty("display");
 
 		if (!metaCache) {
 			try {
@@ -273,7 +269,7 @@ const list: PostForList[] = picked
 			...rows.map((p, i) => buildRow(p, i, i === rows.length - 1)),
 		);
 		// 合集里一篇都没有（如项目复盘）也不留空卡
-		widget.classList.toggle("hidden", rows.length === 0);
+		widget.hidden = rows.length === 0;
 		root.dataset.recRendered = category || tag;
 	};
 
