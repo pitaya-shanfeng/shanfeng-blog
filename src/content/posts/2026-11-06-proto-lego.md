@@ -25,15 +25,12 @@ comment: false
 
 左下角的站点树直接切页面，「产品结构」那一页是整体结构图；画布内可以拖动、点击。
 
-<div class="proto-embed">
-  <iframe
-    src="https://axhub.im/ax9/c5b479fb17db22a2/#g=1"
-    title="乐高 V4.0 改版方案 · 可交互原型"
-    loading="lazy"
-    allowfullscreen
-  ></iframe>
+<div class="proto-card">
+  <a class="proto-card-shot" href="https://axhub.im/ax9/c5b479fb17db22a2/#g=1" target="_blank" rel="noopener noreferrer">
+    <img src="/assets/library/notes/proto-lego/preview.webp" alt="乐高 V4.0 改版方案原型截图：左侧站点树与产品结构图" loading="lazy" />
+  </a>
+  <div class="proto-card-bar">
+    <a class="proto-card-btn" href="https://axhub.im/ax9/c5b479fb17db22a2/#g=1" target="_blank" rel="noopener noreferrer">打开原型</a>
+    <span class="proto-card-hint">原型托管在 Axhub，点开后可拖动、切页面</span>
+  </div>
 </div>
-
-<p class="proto-embed-note">
-  原型托管在 Axhub，首次打开可能需要几秒。若内嵌区加载不出来，可以<a href="https://axhub.im/ax9/c5b479fb17db22a2/#g=1" target="_blank" rel="noopener noreferrer">新窗口打开原型</a>。
-</p>

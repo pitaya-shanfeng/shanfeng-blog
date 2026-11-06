@@ -354,27 +354,57 @@ body.wallpaper-transparent .custom-md {
     0 10px 28px -12px rgb(0 0 0 / 0.6);
 }
 
-/* 在线原型内嵌（Axhub 等）：满宽，高度按视口取一档，不加外框装饰 */
-.proto-embed {
-  margin: 1.5rem 0 0.75rem;
-}
-
-.proto-embed iframe {
-  width: 100%;
-  height: clamp(520px, 74vh, 820px);
-  border: 1px solid color-mix(in oklab, var(--primary) 18%, transparent);
-  border-radius: 0.75rem;
+/* 在线原型入口：截图当封面，点开在新窗口用原型的全屏模式。
+   （Axhub 的原型画布依赖它自己的 iframe 与 cookie，直接内嵌在我们页面里
+   会只出来左侧站点树、画布一片空白，所以不做内嵌。） */
+.proto-card {
+  margin: 1.5rem 0 1.75rem;
+  border: 1px solid color-mix(in oklab, var(--primary) 16%, transparent);
+  border-radius: 0.85rem;
+  overflow: hidden;
   background: #fff;
 }
 
-@media (max-width: 767px) {
-  .proto-embed iframe {
-    height: 66vh;
-  }
+.proto-card-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
-.proto-embed-note {
-  margin: 0 0 1.5rem;
+.proto-card-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-top: 1px solid color-mix(in oklab, var(--primary) 12%, transparent);
+}
+
+.proto-card a.proto-card-btn {
+  display: inline-flex;
+  border: 0;
+  line-height: 1;
+  align-items: center;
+  height: 2.25rem;
+  padding: 0 1.1rem;
+  border-radius: 0.55rem;
+  background: var(--primary);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.proto-card a.proto-card-btn:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.proto-card a.proto-card-btn:hover {
+  filter: brightness(1.05);
+}
+
+.proto-card-hint {
   font-size: 0.8125rem;
   color: color-mix(in oklab, var(--primary) 45%, #6b7280);
 }
