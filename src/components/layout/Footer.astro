@@ -1,16 +1,22 @@
 ---
 /**
- * 页脚：品牌 + 快捷入口 + 声明 + 版权。
+ * 页脚：一条深色收底，带一丝主题青绿。
  *
- * 「关于」从导航拿掉之后，个人介绍 / 联系合作走头像，版权声明与书签导航落在
- * 这里——所以页脚要能自己站住，不能只是一行版权。
+ * 设计要点（v4 暗色呼应版）：
+ * - 页面从浅色内容区收进深色页脚，像「入山」到「出山」走完一个明暗节奏；
+ *   顶部一轮青色微光与 banner 呼应。
+ * - 默认只露两行：品牌行 + 版权行，整体约 190px。
+ * - 书签导航收进抽屉：收起时一行标题带组数/站点数，展开后按组铺开。
+ *   抽屉是访客主动要求才展开的，与「一进门就被塞一墙链接」有本质区别。
+ * - 版权三段压成一句，CC 徽章用 9% 白。
  *
+ * 数据在 src/config/footerNavConfig.ts，改链接只动那份配置。
  * site-footer / pointer-events-auto 是 immersive-reading 与首页 banner 的
  * 样式钩子，别删。
  */
 import fs from "node:fs";
 import path from "node:path";
-import { profileConfig, siteConfig } from "@/config";
+import { RESOURCE_GROUPS, profileConfig, siteConfig } from "@/config";
 import { url } from "@/utils/url-utils";
 
 const currentYear = new Date().getFullYear();
@@ -32,154 +38,308 @@ try {
 	// 没有该文件就跳过，不打断构建
 }
 
-/** 快捷入口：两栏，左边是「关于这个站」，右边是「怎么找我」 */
-const LINK_GROUPS = [
-	{
-		title: "快捷入口",
-		links: [
-			{ name: "版权声明", href: "/privacy/", external: false },
-			{ name: "书签导航", href: "/booknav/", external: false },
-			{ name: "友情链接", href: "/friends/", external: false },
-			{ name: "留言板", href: "/guestbook/", external: false },
-		],
-	},
-	{
-		title: "关于作者",
-		links: [
-			{ name: "个人介绍", href: "/about/", external: false },
-			{ name: "联系合作", href: "/contact/", external: false },
-			{ name: "RSS 订阅", href: "/rss.xml", external: true },
-		],
-	},
+const GROUP_COUNT = RESOURCE_GROUPS.length;
+const SITE_COUNT = RESOURCE_GROUPS.reduce(
+	(sum, group) => sum + group.links.length,
+	0,
+);
+
+/** 顶栏两个胶囊按钮：只留还有用的 */
+const QUICK_LINKS = [
+	{ name: "RSS", href: "/rss.xml", icon: "rss", external: true },
+	{ name: "留言板", href: "/guestbook/", icon: "chat", external: false },
 ];
 ---
 
-<footer class="site-footer pointer-events-auto pb-24 md:pb-10">
-	<div
-		class="transition border-t border-dashed border-black/10 dark:border-white/15 mt-10 mb-8 mx-6 md:mx-10"
-	>
-	</div>
-
-	<div class="px-6 md:px-10">
+<footer class="site-footer pointer-events-auto pb-28 pt-10 md:pb-10">
+	<div>
 		<div
-			class="transition flex flex-col gap-8 md:flex-row md:items-start md:justify-between"
+			class="footer-band relative overflow-hidden px-6 py-7 md:px-9 md:py-8"
 		>
-			<!-- 左：品牌 -->
-			<div class="md:max-w-[22rem]">
+			<!-- 顶部一轮青色微光，与 banner 收尾呼应 -->
+			<div class="footer-rim" aria-hidden="true"></div>
+
+			<!-- 品牌行 -->
+			<div
+				class="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+			>
+				<div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+					<div class="flex items-center gap-2">
+						<svg
+							class="h-5 w-5 text-(--primary)"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.9"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M3 18l6-9 4 6 3-4 5 7"></path>
+						</svg>
+						<span class="footer-brand text-[0.95rem] font-semibold tracking-wide"
+							>{siteConfig.title}</span
+						>
+					</div>
+					<span class="footer-dim text-xs leading-6"
+						>{siteConfig.subtitle}。把想清楚的写下来，把做过的留个底。</span
+					>
+					{
+						customFooterHtml && (
+							<span class="footer-dim text-xs" set:html={customFooterHtml} />
+						)
+					}
+				</div>
+
 				<div class="flex items-center gap-2">
+					{
+						QUICK_LINKS.map((link) => (
+							<a
+								class="footer-pill inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs"
+								href={url(link.href.slice(1))}
+								target={link.external ? "_blank" : undefined}
+								rel={link.external ? "noopener" : undefined}
+							>
+								<svg
+									class="h-3.5 w-3.5 opacity-80"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="1.9"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									{link.icon === "rss" ? (
+										<path d="M5 19a1 1 0 100-2 1 1 0 000 2zM5 12a7 7 0 017 7M5 5a14 14 0 0114 14" />
+									) : (
+										<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+									)}
+								</svg>
+								{link.name}
+							</a>
+						))
+					}
+				</div>
+			</div>
+
+			<!-- 书签导航：抽屉，默认收起 -->
+			<details class="footer-drawer relative mt-5">
+				<summary
+					class="flex cursor-pointer items-center gap-2 text-xs select-none [&::-webkit-details-marker]:hidden"
+				>
+					<span class="footer-label font-medium">书签导航</span>
+					<span class="footer-dim"
+						>{GROUP_COUNT} 组 · {SITE_COUNT} 站</span
+					>
 					<svg
-						class="transition h-6 w-6 text-(--primary)"
+						class="footer-chevron h-3.5 w-3.5 transition-transform duration-200"
 						viewBox="0 0 24 24"
 						fill="none"
 						stroke="currentColor"
-						stroke-width="1.8"
+						stroke-width="2"
 						stroke-linecap="round"
 						stroke-linejoin="round"
 						aria-hidden="true"
 					>
-						<path d="M3 18l6-9 4 6 3-4 5 7"></path>
+						<path d="M6 9l6 6 6-6"></path>
 					</svg>
-					<span class="transition text-90 font-bold text-lg tracking-wide"
-						>{siteConfig.title}</span
-					>
-				</div>
-				<p class="transition text-50 text-sm mt-2 leading-relaxed">
-					{siteConfig.subtitle}。把想清楚的写下来，把做过的留个底。
-				</p>
-				{
-					customFooterHtml && (
-						<div
-							class="transition text-50 text-sm mt-3"
-							set:html={customFooterHtml}
-						/>
-					)
-				}
-			</div>
+				</summary>
 
-			<!-- 右：链接分栏 -->
-			<div class="grid grid-cols-2 gap-x-10 gap-y-6 sm:gap-x-16">
-				{
-					LINK_GROUPS.map((group) => (
-						<div>
-							<div class="transition text-90 text-sm font-bold mb-3">
-								{group.title}
+				<div
+					class="mt-4 grid grid-cols-2 gap-x-6 gap-y-5 md:grid-cols-3 lg:grid-cols-6"
+				>
+					{
+						RESOURCE_GROUPS.map((group) => (
+							<div>
+								<div class="footer-label text-xs font-semibold mb-1.5">
+									{group.title}
+								</div>
+								<ul class="space-y-0.5">
+									{group.links.map((link) => (
+										<li>
+											<a
+												class="footer-link text-xs leading-6"
+												href={link.href}
+												target="_blank"
+												rel="noopener"
+												title={link.hint}
+											>
+												{link.name}
+											</a>
+										</li>
+									))}
+								</ul>
 							</div>
-							<ul class="space-y-2">
-								{group.links.map((link) => (
-									<li>
-										<a
-											class="transition link text-50 text-sm hover:text-(--primary)"
-											href={
-												link.external
-													? url(link.href.slice(1))
-													: url(link.href.slice(1))
-											}
-											target={link.external ? "_blank" : undefined}
-											rel={link.external ? "noopener" : undefined}
-										>
-											{link.name}
-										</a>
-									</li>
-								))}
-							</ul>
-						</div>
-					))
-				}
-			</div>
-		</div>
+						))
+					}
+				</div>
+			</details>
 
-		<!-- 声明 -->
-		<div
-			class="transition mt-8 pt-6 border-t border-dashed border-black/10 dark:border-white/15"
-		>
-			<p class="transition text-50 text-xs leading-relaxed md:max-w-[42rem]">
-				站内内容为个人学习与工作整理，参考文献与数据来源已在正文标注；转载、引用请注明出处。
-				如涉版权问题，可通过「联系合作」告知，核实后即时处理。
-			</p>
-
+			<!-- 底栏 -->
 			<div
-				class="transition mt-4 flex flex-col gap-2 text-50 text-xs sm:flex-row sm:items-center sm:justify-between"
+				class="footer-divider relative mt-6 flex flex-col gap-2 pt-4 text-xs sm:flex-row sm:items-center sm:justify-between"
 			>
-				<div class="flex flex-wrap items-center gap-x-2 gap-y-1">
+				<div class="footer-dim flex flex-wrap items-center gap-x-2 gap-y-1">
 					<span
 						>&copy; <span id="copyright-year">{currentYear}</span>
 						{profileConfig.name}</span
 					>
 					<span aria-hidden="true">·</span>
-					<span>保留所有权利</span>
+					<span>原创内容，转载请注明出处与链接</span>
+					<span aria-hidden="true">·</span>
+					<span class="footer-badge rounded px-1.5 py-0.5"
+						>CC BY-NC-SA 4.0</span
+					>
 				</div>
-				<div class="flex flex-wrap items-center gap-x-2 gap-y-1">
+
+				<div
+					class="footer-dim flex flex-wrap items-center gap-x-2 gap-y-1"
+				>
 					<!-- 开源署名勿删 -->
 					<span>Powered by</span>
 					<a
-						class="transition link text-(--primary)"
+						class="footer-link"
 						target="_blank"
 						rel="noopener"
 						href="https://astro.build">Astro</a
 					>
 					<span aria-hidden="true">&amp;</span>
 					<a
-						class="transition link text-(--primary)"
+						class="footer-link"
 						target="_blank"
 						rel="noopener"
 						href="https://github.com/CuteLeaf/Firefly">Firefly</a
 					>
 					<span aria-hidden="true">·</span>
 					<a
-						class="transition link text-(--primary)"
+						class="footer-link"
 						target="_blank"
 						rel="noopener"
 						href={url("atom.xml")}>Atom</a
 					>
 					<span aria-hidden="true">·</span>
 					<a
-						class="transition link text-(--primary)"
+						class="footer-link"
 						target="_blank"
 						rel="noopener"
 						href={url("sitemap-index.xml")}>Sitemap</a
 					>
+					<span aria-hidden="true">·</span>
+					<button
+						type="button"
+						id="footer-back-to-top"
+						class="footer-link inline-flex cursor-pointer items-center gap-1"
+					>
+						回到顶部
+						<svg
+							class="h-3 w-3"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2.2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M12 19V5M5 12l7-7 7 7"></path>
+						</svg>
+					</button>
 				</div>
 			</div>
 		</div>
 	</div>
 </footer>
+
+<style>
+	/* 深色收底：带一丝主题青绿的暗调，顶部一轮青色微光与 banner 呼应 */
+	.footer-band {
+		background: #0f1614;
+		background-image: radial-gradient(
+			120% 90% at 50% -20%,
+			rgba(45, 212, 175, 0.1) 0%,
+			rgba(15, 22, 20, 0) 62%
+		);
+	}
+
+	.footer-rim {
+		position: absolute;
+		inset: 0 0 auto 0;
+		height: 1px;
+		background: linear-gradient(
+			90deg,
+			transparent,
+			rgba(45, 212, 175, 0.45),
+			transparent
+		);
+	}
+
+	.footer-brand {
+		color: #e9f4f0;
+	}
+
+	.footer-label {
+		color: rgba(233, 244, 240, 0.9);
+	}
+
+	.footer-dim {
+		color: rgba(233, 244, 240, 0.52);
+	}
+
+	.footer-link {
+		color: rgba(233, 244, 240, 0.6);
+		transition: color 0.18s ease;
+	}
+
+	.footer-link:hover {
+		color: #2dd4af;
+	}
+
+	/* 胶囊按钮：半透明描边 + 3% 白底，hover 泛起青色光 */
+	.footer-pill {
+		border: 1px solid rgba(233, 244, 240, 0.16);
+		background: rgba(255, 255, 255, 0.03);
+		color: rgba(233, 244, 240, 0.78);
+		transition:
+			border-color 0.18s ease,
+			color 0.18s ease,
+			background 0.18s ease;
+	}
+
+	.footer-pill:hover {
+		border-color: rgba(45, 212, 175, 0.55);
+		color: #2dd4af;
+		background: rgba(45, 212, 175, 0.08);
+	}
+
+	.footer-badge {
+		border: 1px solid rgba(255, 255, 255, 0.09);
+		background: rgba(255, 255, 255, 0.045);
+		color: rgba(233, 244, 240, 0.55);
+	}
+
+	.footer-divider {
+		border-top: 1px solid rgba(233, 244, 240, 0.08);
+	}
+
+	.footer-chevon,
+	.footer-chevron {
+		color: rgba(233, 244, 240, 0.45);
+	}
+
+	.footer-drawer[open] .footer-chevron {
+		transform: rotate(180deg);
+	}
+
+	/* 抽屉标题那行 hover 时整行轻微提亮 */
+	.footer-drawer > summary:hover .footer-label {
+		color: #2dd4af;
+	}
+</style>
+
+<script>
+	const backToTop = document.getElementById("footer-back-to-top");
+	backToTop?.addEventListener("click", () => {
+		window.scrollTo({ top: 0, behavior: "smooth" });
+	});
+</script>

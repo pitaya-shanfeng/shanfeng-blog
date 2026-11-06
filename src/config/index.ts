@@ -69,6 +69,8 @@ export { sakuraConfig } from "./effectsConfig"; // 动画特效配置（樱花�
 export { expressiveCodeConfig } from "./expressiveCodeConfig"; // 代码高亮配置
 export { fontConfig, fontsList } from "./fontConfig"; // 字体配置
 export { friendsPageConfig, getEnabledFriends } from "./friendsConfig"; // 友链配置
+export { RESOURCE_GROUPS } from "./footerNavConfig"; // 页脚资源导航
+export type { ResourceGroup, ResourceLink } from "./footerNavConfig";
 export { galleryConfig } from "./galleryConfig"; // 相册配置
 export { booksConfig, getBook, countBookEntries } from "./booksConfig"; // 书籍（丛书）配置
 export { licenseConfig } from "./licenseConfig"; // 许可证配置
