@@ -123,6 +123,11 @@ const list: PostForList[] = picked
 		padding-bottom: 0.9rem;
 	}
 
+	/* 不显示右侧箭头：整列都是站内文章，箭头只是装饰，还占掉标题的宽度 */
+	.recommended-reading-root :global(widget-layout a > svg) {
+		display: none;
+	}
+
 	/* 行高了，序号徽章跟着放大；底色比母版的 --enter-btn-bg 重一点，
 	   否则浅到和卡片底色分不出来，数字像浮在空白上 */
 	.recommended-reading-root :global(widget-layout a > div:first-child) {
