@@ -115,14 +115,14 @@ export function isArticleDetailPage(pathname: string): boolean {
 }
 
 /**
- * 分类合集页（文章列表页）：/notes/、/picks/、/hotnews/、/topics/<slug>/
+ * 分类合集页（文章列表页）：/notes/、/hotnews/、/topics/<slug>/
  *
  * 与「首页」「归档」「关于」这些也带列表的页面区分开：这里只认二级分类页，
  * 侧栏「推荐阅读」就挂在这几个页面上。
  */
 export function isCollectionListPage(pathname: string): boolean {
 	return (
-		/^\/(notes|picks|hotnews)(\/|$)/.test(pathname) ||
+		/^\/(notes|hotnews)(\/|$)/.test(pathname) ||
 		/^\/topics\/[^/]+\/?$/.test(pathname)
 	);
 }

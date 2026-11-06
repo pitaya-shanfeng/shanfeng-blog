@@ -3,7 +3,7 @@
  *
  * 文章 frontmatter 里写了 `banner` 就用文章自己的，没写才按 category 取这里的图。
  * 只影响「文章详情页顶部的横幅」，不动封面（frontmatter 的 image），也不动合集页——
- * 合集页的 banner 由各页自己传（拾遗三栏在 src/pages/{notes,picks}.astro 与
+ * 合集页的 banner 由各页自己传（拾遗两栏在 src/pages/{notes}.astro 与
  * hotnews.astro 里作为 banner 属性传给 CollectionPage 组件）。
  *
  * 加这一层是因为栏目级意图不该靠每篇手写：漏写一篇就会回落到全局壁纸，

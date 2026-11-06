@@ -22,7 +22,7 @@ import { booksConfig } from "./booksConfig";
 //
 // 二级项的落点有三种，取决于这一栏的内容形态：
 //   1. 成书的（写作）→ 直接进书页 /books/<id>/
-//   2. 已在做合集页的（拾遗三栏）→ 进自建页 /hotnews/ /notes/ /picks/
+//   2. 已在做合集页的（拾遗两栏）→ 进自建页 /hotnews/ /notes/
 //   3. 还没做页面的（方法 / 实战）→ 先用归档页的分类筛选兜住：
 //        /archive/?category=方法/需求洞察
 //      归档页的 category 筛选是**精确匹配**，所以文章的 category 必须

@@ -30,17 +30,11 @@ const { class: className, style, widgetConfig } = Astro.props;
 
 /**
  * 单级栏没有 topicPages 条目，路径与分类单独列。
- * /picks/ 是「转载精选」，但它在正文里的分类是「学习思考」（合并成一级栏了），
- * 只能按标签筛。
  */
 const FIXED_ROUTES: Record<string, string> = {
 	"/notes": "学习思考",
 	"/hotnews": "行业动态",
 };
-const TAG_ROUTES: Record<string, string> = {
-	"/picks": "转载精选",
-};
-
 const TOPIC_MAP: Record<string, string> = {};
 for (const page of topicPages) {
 	TOPIC_MAP[`/topics/${page.slug}`] = page.category;
@@ -49,7 +43,7 @@ for (const page of topicPages) {
 const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
 const currentCategory =
 	FIXED_ROUTES[currentPath] ?? TOPIC_MAP[currentPath] ?? "";
-const currentTag = TAG_ROUTES[currentPath] ?? "";
+
 
 /** 篇幅：文档类看页数，其余看字数 */
 const depth = (post: PostForList): number => {
@@ -61,13 +55,9 @@ const depth = (post: PostForList): number => {
 const LIMIT = 10;
 
 const posts = await getSortedPosts();
-const picked = currentTag
-	? posts.filter((post) => (post.data.tags ?? []).includes(currentTag))
-	: currentCategory
-		? posts.filter(
-				(post) => (post.data.category || "").trim() === currentCategory,
-			)
-		: [];
+const picked = currentCategory
+	? posts.filter((post) => (post.data.category || "").trim() === currentCategory)
+	: [];
 
 const list: PostForList[] = picked
 	.sort(
@@ -84,8 +74,7 @@ const list: PostForList[] = picked
 		<div
 			class="recommended-reading-root"
 			data-rec-category={currentCategory}
-			data-rec-tag={currentTag}
-			data-rec-tags={JSON.stringify(TAG_ROUTES)}
+			data-rec-tags="{}"
 			data-rec-topics={JSON.stringify(TOPIC_MAP)}
 			data-rec-fixed={JSON.stringify(FIXED_ROUTES)}
 			data-rec-limit={LIMIT}
