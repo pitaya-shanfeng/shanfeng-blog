@@ -16,46 +16,16 @@ type KeyPage = {
 	pageKey?: keyof typeof siteConfig.pages;
 };
 
-// 主要页面：首页 / 归档 / 关于始终包含；其余按 siteConfig.pages 开关过滤
+// 主要页面：首页 / 关于始终包含；其余按 siteConfig.pages 开关过滤
+// （归档、分类、标签、系列、友链、书签导航、动态、项目、相册等页面已下线）
 const KEY_PAGES: KeyPage[] = [
 	{ labelKey: I18nKey.home, path: "/" },
-	{ labelKey: I18nKey.archive, path: "/archive/" },
 	{ labelKey: I18nKey.about, path: "/about/" },
-	{
-		labelKey: I18nKey.friends,
-		path: "/friends/",
-		descKey: I18nKey.friendsDescription,
-		pageKey: "friends",
-	},
 	{
 		labelKey: I18nKey.guestbook,
 		path: "/guestbook/",
 		descKey: I18nKey.guestbookDescription,
 		pageKey: "guestbook",
-	},
-	{
-		labelKey: I18nKey.dynamic,
-		path: "/dynamic/",
-		descKey: I18nKey.dynamicDescription,
-		pageKey: "dynamic",
-	},
-	{
-		labelKey: I18nKey.projects,
-		path: "/projects/",
-		descKey: I18nKey.projectsDescription,
-		pageKey: "projects",
-	},
-	{
-		labelKey: I18nKey.gallery,
-		path: "/gallery/",
-		descKey: I18nKey.galleryDescription,
-		pageKey: "gallery",
-	},
-	{
-		labelKey: I18nKey.booknav,
-		path: "/booknav/",
-		descKey: I18nKey.booknavDescription,
-		pageKey: "booknav",
 	},
 	{
 		labelKey: I18nKey.bilibili,

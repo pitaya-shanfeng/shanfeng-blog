@@ -239,20 +239,21 @@ const minutes = entry.data.minutes ?? remarkPluginFrontmatter.minutes;
             {seriesLabel ? `/${seriesLabel}` : ""}
           </a>
         )}
-        {bottomTags.map((tag) => (
-          <a
-            href={getTagUrl(tag)}
-            aria-label={`View all posts with the ${tag.trim()} tag`}
-            class:list={[
-              "transition text-xs font-medium",
-              bottomTagsAsText
-                ? "text-50 hover:text-(--primary)"
-                : "tag-item px-2.5 py-1",
-            ]}
-          >
-            #{tag.trim()}
-          </a>
-        ))}
+        {bottomTags.map((tag) => {
+          // 标签页已下线：标签只展示、不跳转（getTagUrl 返回空串）
+          const tagUrl = getTagUrl(tag);
+          const tagClass = [
+            "transition text-xs font-medium",
+            bottomTagsAsText ? "text-50" : "tag-item px-2.5 py-1",
+          ];
+          return tagUrl ? (
+            <a href={tagUrl} aria-label={`View all posts with the ${tag.trim()} tag`} class:list={tagClass}>
+              #{tag.trim()}
+            </a>
+          ) : (
+            <span class:list={tagClass}>#{tag.trim()}</span>
+          );
+        })}
         {hiddenTagCount > 0 && (
           <span
             title={hiddenTags.map((tag) => `#${tag.trim()}`).join(" ")}

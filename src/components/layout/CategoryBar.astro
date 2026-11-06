@@ -8,12 +8,11 @@
  * 所以这里不能再拿 `getCategoryList()` 聚合：那会冒出既不是栏目、又没人认识的条目。
  *
  * 版式：两行。
- *   上行 —— 首页 + 四个一级栏（写作 / 方法 / 案例 / 拾遗）+ 归档入口（图标，放最右）
+ *   上行 —— 首页 + 四个一级栏（写作 / 方法 / 案例 / 拾遗）
  *   下行 —— 当前一级栏下的栏目，点栏目才跳转；切栏只换下行内容，不导航
  * 上行用文字 tab 样式（选中带下划线），下行沿用胶囊 pill，两级视觉上不会混。
  *
- * 归档不再是「分类」，退成一个图标入口 —— 它是个页面，不是一个栏目；
- * 但站内没有别的地方链到 /archive/，完全撤掉就没有入口了。
+ * 归档页 /archive/ 已下线（分类改由 /topics/<slug>/ 承载），这里不再保留入口图标。
  */
 
 import I18nKey from "@i18n/i18nKey";
@@ -29,7 +28,6 @@ interface Props {
 const { currentPostCategory } = Astro.props as Props;
 
 const homeUrl = url("/");
-const archiveUrl = url("/archive/");
 const groups = navCategoryGroups;
 
 /** 与客户端脚本里的 keyFromUrl 同一套规则：路径去尾斜杠 + 查询串排序 */
@@ -47,9 +45,7 @@ const currentKey = keyFromUrl(
 	Astro.url.pathname + (Astro.url.search || ""),
 );
 const homeKey = keyFromUrl(homeUrl);
-const archiveKey = keyFromUrl(archiveUrl);
 const isHome = currentKey === homeKey;
-const isArchive = currentKey === archiveKey;
 
 // 当前地址命中哪个栏目，就默认展开它所属的一级栏；没命中则落在第一栏
 let initialGroup = groups[0]?.name ?? "";
@@ -68,7 +64,6 @@ for (const group of groups) {
   class="card-base category-bar p-3 onload-animation"
   id="category-bar"
   data-home-path={homeUrl}
-  data-archive-path={archiveUrl}
   data-current-post-category={currentPostCategory || ""}
   data-groups={JSON.stringify(
     groups.map((group) => ({
@@ -106,16 +101,6 @@ for (const group of groups) {
       }
     </div>
 
-    <a
-      href={archiveUrl}
-      class="cat-archive category-pill focus-ring-inset text-sm px-3 py-1.5 shrink-0 ml-auto
-             transition-colors duration-150 ease-out flex items-center justify-center"
-      data-active={isArchive ? "" : undefined}
-      aria-label={i18n(I18nKey.archive)}
-      title={i18n(I18nKey.archive)}
-    >
-      <Icon name="material-symbols:archive" class="text-lg" />
-    </a>
   </div>
 
   <div class="sub-row">
@@ -261,10 +246,6 @@ for (const group of groups) {
 
     const key = keyFromUrl(currentUrl.href, currentUrl.origin);
     const homeKey = keyFromUrl(bar.dataset.homePath || "/", currentUrl.origin);
-    const archiveKey = keyFromUrl(
-      bar.dataset.archivePath || "/archive/",
-      currentUrl.origin,
-    );
 
     let activeGroup = groups[0].name;
     let activeItem = "";
@@ -284,11 +265,6 @@ for (const group of groups) {
     if (!matched && manual) activeGroup = manual;
 
     setFlag(bar.querySelector(".cat-home"), "data-active", key === homeKey);
-    setFlag(
-      bar.querySelector(".cat-archive"),
-      "data-active",
-      key === archiveKey,
-    );
 
     bar.querySelectorAll<HTMLElement>(".group-tab").forEach((tab) => {
       const on = tab.dataset.group === activeGroup;

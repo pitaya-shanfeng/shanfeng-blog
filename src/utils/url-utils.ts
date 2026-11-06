@@ -1,5 +1,6 @@
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
+import { topicPages } from "@/config/topicsConfig";
 
 /**
  * 移除文件扩展名（.md, .mdx, .markdown）
@@ -40,19 +41,26 @@ export function getPostUrlBySlug(slug: string): string {
 	return url(`/posts/${slugWithoutExt}/`);
 }
 
-export function getTagUrl(tag: string): string {
-	if (!tag) return url("/archive/");
-	return url(`/archive/?tag=${encodeURIComponent(tag.trim())}`);
+/**
+ * 标签链接：归档 / 标签页已下线，标签只作为内容属性展示，不再跳转。
+ * 返回空串，调用方据此渲染成纯文本（不是链接）。
+ */
+export function getTagUrl(_tag: string): string {
+	return "";
 }
 
+/** 分类 → 对应的合集页；没有对应合集页时回落到「学习思考」列表 */
 export function getCategoryUrl(category: string | null): string {
+	const name = (category ?? "").trim();
 	if (
-		!category ||
-		category.trim() === "" ||
-		category.trim().toLowerCase() === i18n(I18nKey.uncategorized).toLowerCase()
+		!name ||
+		name.toLowerCase() === i18n(I18nKey.uncategorized).toLowerCase()
 	)
-		return url("/archive/?uncategorized=true");
-	return url(`/archive/?category=${encodeURIComponent(category.trim())}`);
+		return url("/notes/");
+	for (const page of topicPages) {
+		if (page.category.trim() === name) return url(`/topics/${page.slug}/`);
+	}
+	return url("/notes/");
 }
 
 export function getDir(path: string): string {

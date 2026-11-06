@@ -2,12 +2,21 @@
 interface Props {
 	size?: string;
 	dot?: boolean;
+	/** 有 href 渲染成链接，没有就渲染成纯标签（标签页已下线，默认不跳转） */
 	href?: string;
 	label?: string;
 }
 const { dot, href, label }: Props = Astro.props;
+const cls = "tag-item transition text-sm font-medium px-3 py-1.5";
 ---
-<a href={href} aria-label={label} class="tag-item transition text-sm font-medium px-3 py-1.5">
-    {dot && <div class="h-1 w-1 bg-(--btn-content) dark:bg-(--card-bg) transition rounded-md mr-2"></div>}
-    <slot></slot>
-</a>
+{href ? (
+    <a href={href} aria-label={label} class={cls}>
+        {dot && <div class="h-1 w-1 bg-(--btn-content) dark:bg-(--card-bg) transition rounded-md mr-2"></div>}
+        <slot></slot>
+    </a>
+) : (
+    <span class={cls} aria-label={label}>
+        {dot && <div class="h-1 w-1 bg-(--btn-content) dark:bg-(--card-bg) transition rounded-md mr-2"></div>}
+        <slot></slot>
+    </span>
+)}
