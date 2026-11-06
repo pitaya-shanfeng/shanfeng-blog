@@ -39,6 +39,12 @@ try {
 }
 
 const GROUP_COUNT = RESOURCE_GROUPS.length;
+/** 抽屉里每行放几组：两端对齐排，避免最后一列右侧空一大块 */
+const PER_ROW = 6;
+const GROUP_ROWS = Array.from(
+	{ length: Math.ceil(GROUP_COUNT / PER_ROW) },
+	(_, i) => RESOURCE_GROUPS.slice(i * PER_ROW, (i + 1) * PER_ROW),
+);
 const SITE_COUNT = RESOURCE_GROUPS.reduce(
 	(sum, group) => sum + group.links.length,
 	0,
@@ -167,34 +173,37 @@ const SITE_COUNT = RESOURCE_GROUPS.reduce(
 		<!-- 书签抽屉：默认收起，点右上角按钮展开 -->
 		<div id="footer-bookmarks">
 			<div class="h-4"></div>
-			<div
-				class="grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-3 lg:grid-cols-6"
-			>
+			<div class="space-y-5">
 				{
-					RESOURCE_GROUPS.map((group) => (
-						<div>
-							<div class="transition text-90 text-xs font-semibold mb-1.5">
-								{group.title}
-							</div>
-							<ul class="space-y-0.5">
-								{group.links.map((link) => (
-									<li>
-										<a
-											class="transition text-50 text-xs leading-6 hover:text-(--primary)"
-											href={link.href}
-											target="_blank"
-											rel="noopener"
-											title={link.hint}
-										>
-											{link.name}
-										</a>
-									</li>
-								))}
-							</ul>
+					GROUP_ROWS.map((row) => (
+						<div class="flex flex-wrap justify-between gap-x-8 gap-y-5">
+							{row.map((group) => (
+								<div class="min-w-[6.5rem]">
+									<div class="transition text-90 text-xs font-semibold mb-1.5">
+										{group.title}
+									</div>
+									<ul class="space-y-0.5">
+										{group.links.map((link) => (
+											<li>
+												<a
+													class="transition text-50 text-xs leading-6 hover:text-(--primary)"
+													href={link.href}
+													target="_blank"
+													rel="noopener"
+													title={link.hint}
+												>
+													{link.name}
+												</a>
+											</li>
+										))}
+									</ul>
+								</div>
+							))}
 						</div>
 					))
 				}
 			</div>
+
 		</div>
 
 		<!-- 底栏 -->
