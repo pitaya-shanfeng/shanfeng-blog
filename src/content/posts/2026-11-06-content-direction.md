@@ -5,7 +5,7 @@ description: 云集想把内容做起来，于是把内容拆成四层：谁在�
 quote: 用户不是不看内容，是没人在他经过的地方放内容。
 image: /assets/library/notes/content-direction/cover.webp
 banner: /assets/library/notes/content-direction/banner.webp
-category: 方法沉淀
+category: 落地实战/调研分析
 tags:
   - 增长
   - 内容
