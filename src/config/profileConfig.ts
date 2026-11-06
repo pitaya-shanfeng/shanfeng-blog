@@ -17,10 +17,9 @@ export const profileConfig: ProfileConfig = {
 	// 联系方式：卡片底部直接写出微信与邮箱，不再用两个图标入口
 	contact: {
 		wechat: "pitaya_yutou",
-		// 微信二维码：把图片放到 public/assets/images/contact/wechat-qr.png 后取消下面这行注释
-		// wechatQr: "/assets/images/contact/wechat-qr.png",
-		qq: "100000000",
-		// qqQr: "/assets/images/contact/qq-qr.png",
+		wechatQr: "/assets/images/contact/wechat-qr.webp",
+		qq: "1315643567",
+		qqQr: "/assets/images/contact/qq-qr.webp",
 		email: "yt_pitaya@126.com",
 	},
 
