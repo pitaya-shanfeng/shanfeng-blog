@@ -69,16 +69,22 @@ const list: PostForList[] = picked
 		.map((post) => ({ id: post.id, data: post.data }));
 ---
 
-{
-	list.length > 0 && (
-		<div
-			class="recommended-reading-root"
-			data-rec-category={currentCategory}
-			data-rec-tags="{}"
-			data-rec-topics={JSON.stringify(TOPIC_MAP)}
-			data-rec-fixed={JSON.stringify(FIXED_ROUTES)}
-			data-rec-limit={LIMIT}
-		>
+{/*
+   ⚠️ 这个容器必须「每页都渲染」，哪怕当前页不是合集页。
+   左栏是 swup 的静态容器，站内跳转时整列不替换：如果首页不渲染它，
+   从首页点进合集页时左栏里根本没有这个节点，客户端脚本再怎么算也长不出来
+   （表现为「推荐阅读不见了」）。所以这里恒定输出，非合集页由 data-empty
+   让下面的内联脚本先把它整卡收起来，再由 sync() 按路由放开。
+*/}
+<div
+	class="recommended-reading-root"
+	data-rec-category={currentCategory}
+	hidden={list.length === 0 ? true : undefined}
+	data-rec-tags="{}"
+	data-rec-topics={JSON.stringify(TOPIC_MAP)}
+	data-rec-fixed={JSON.stringify(FIXED_ROUTES)}
+	data-rec-limit={LIMIT}
+>
 			<RelatedPosts
 				posts={list}
 				title="推荐阅读"
@@ -89,9 +95,9 @@ const list: PostForList[] = picked
 				class={className}
 				style={style}
 			/>
-		</div>
-	)
-}
+</div>
+
+{/* 首帧就把非合集页的空卡收起来，避免闪一下只有标题的空壳 */}
 
 <style>
 	/*
@@ -130,7 +136,6 @@ const list: PostForList[] = picked
 <script>
 	// 侧栏在 swup 容器之外，切页时不会重渲染；这里按新路由重算合集并重建列表。
 	const ROOT_SELECTOR = ".recommended-reading-root";
-	const WIDGET_SELECTOR = 'widget-layout[data-id="recommended-reading-widget"]';
 
 	type Meta = {
 		id: string;
@@ -216,10 +221,9 @@ const list: PostForList[] = picked
 
 	const sync = async (): Promise<void> => {
 		const root = document.querySelector<HTMLElement>(ROOT_SELECTOR);
-		const widget = document.querySelector<HTMLElement>(WIDGET_SELECTOR);
-		if (!root || !widget) return;
+		if (!root) return;
 
-		const listEl = widget.querySelector<HTMLElement>("[data-rec-list]");
+		const listEl = root.querySelector<HTMLElement>("[data-rec-list]");
 		if (!listEl) return;
 
 		const { category, tag } = routeForPath(normalise(location.pathname), root);
@@ -227,10 +231,10 @@ const list: PostForList[] = picked
 		if (root.dataset.recRendered === category) return;
 
 		// 当前页不是合集页（书页、文章页等）：整张卡收起来。
-		// 侧栏是 swup 的静态容器，不这么做会留一张只有标题的空卡。
+		// 侧栏是 swup 的静态容器，节点会一直留着，所以靠 root.hidden 控制显隐。
 		if (!category && !tag) {
 			listEl.replaceChildren();
-			widget.hidden = true;
+			root.hidden = true;
 			root.dataset.recRendered = "";
 			return;
 		}
@@ -258,7 +262,7 @@ const list: PostForList[] = picked
 			...rows.map((p, i) => buildRow(p, i, i === rows.length - 1)),
 		);
 		// 合集里一篇都没有（如项目复盘）也不留空卡
-		widget.hidden = rows.length === 0;
+		root.hidden = rows.length === 0;
 		root.dataset.recRendered = category || tag;
 	};
 
