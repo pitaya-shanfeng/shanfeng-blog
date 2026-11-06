@@ -237,8 +237,11 @@ const list: PostForList[] = picked
 		// 服务端渲染的就是这一类、且没换页面 → 不用重建
 		if (root.dataset.recRendered === category) return;
 
+		// 当前页不是合集页（书页、文章页等）：整张卡收起来。
+		// 侧栏是 swup 的静态容器，不这么做会留一张只有标题的空卡。
 		if (!category && !tag) {
 			listEl.replaceChildren();
+			widget.classList.add("hidden");
 			root.dataset.recRendered = "";
 			return;
 		}
@@ -265,6 +268,8 @@ const list: PostForList[] = picked
 		listEl.replaceChildren(
 			...rows.map((p, i) => buildRow(p, i, i === rows.length - 1)),
 		);
+		// 合集里一篇都没有（如项目复盘）也不留空卡
+		widget.classList.toggle("hidden", rows.length === 0);
 		root.dataset.recRendered = category || tag;
 	};
 
