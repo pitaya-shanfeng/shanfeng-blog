@@ -202,6 +202,9 @@ const {
                         />
                     </div>
                 )}
+
+                {/* 页脚跟着内容栏走：宽度与上方卡片一致 */}
+                <Footer />
             </div>
 
             <SidebarColumn
@@ -223,9 +226,6 @@ const {
         <SpineModel></SpineModel>
         {live2dWidgetConfig.enable && <Live2DWidget config={live2dWidgetConfig} />}
 
-        {/* 页脚宽度跨「侧栏 + 内容栏」，故在 #content-column 之外；又在 Swup 容器之外，
-            切页不重渲染 */}
-        <Footer />
     </div>
 </div>
 
