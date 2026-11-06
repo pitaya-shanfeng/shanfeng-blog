@@ -1,5 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
+import ProfileContact from "@/components/widget/ProfileContact.astro";
 import ImageWrapper from "@/components/common/ImageWrapper.astro";
 import { profileConfig } from "@/config/profileConfig";
 import { encodeMailto, MAILTO_ONCLICK_SCRIPT } from "@/utils/email-utils";
@@ -52,31 +53,8 @@ const className = Astro.props.class;
     <div class="text-center text-neutral-400 mb-2.5 transition">
       {profileConfig.bio}
     </div>
-        {profileConfig.contact && (profileConfig.contact.wechat || profileConfig.contact.email) ? (
-            <div class="flex flex-col items-start gap-1.5 mx-auto mb-1 w-fit text-sm transition">
-                {profileConfig.contact.wechat && (
-                    <button
-                        type="button"
-                        data-copy-wechat={profileConfig.contact.wechat}
-                        title="点击复制微信号"
-                        class="group flex items-center gap-1.5 text-neutral-500 dark:text-neutral-400 cursor-pointer hover:text-(--primary) transition"
-                    >
-                        <Icon name="fa7-brands:weixin" class="text-[1.05rem] shrink-0"></Icon>
-                        <span class="select-none font-medium text-neutral-700 dark:text-neutral-200 group-hover:text-(--primary) transition">{profileConfig.contact.wechat}</span>
-                        <Icon name="material-symbols:content-copy" class="text-[0.85rem] opacity-0 group-hover:opacity-60 transition" data-copy-hint></Icon>
-                    </button>
-                )}
-                {profileConfig.contact.email && (
-                    <a
-                        href={`mailto:${profileConfig.contact.email}`}
-                        title="发邮件"
-                        class="group flex items-center gap-1.5 text-neutral-500 dark:text-neutral-400 hover:text-(--primary) transition"
-                    >
-                        <Icon name="material-symbols:mail-outline" class="text-[1.05rem] shrink-0"></Icon>
-                        <span class="font-medium text-neutral-700 dark:text-neutral-200 group-hover:text-(--primary) transition">{profileConfig.contact.email}</span>
-                    </a>
-                )}
-            </div>
+        {profileConfig.contact ? (
+            <ProfileContact />
         ) : (
         <div class="flex flex-wrap gap-2 justify-center mb-1">
 
@@ -123,34 +101,3 @@ const className = Astro.props.class;
   </div>
 </div>
 
-<script>
-	// 微信号点击复制：不弹窗，把「已复制」写在原位置，2 秒后还原
-	document.querySelectorAll<HTMLButtonElement>("[data-copy-wechat]").forEach((btn) => {
-		btn.addEventListener("click", async () => {
-			const value = btn.dataset.copyWechat || "";
-			if (!value) return;
-			const label = btn.querySelector("span");
-			if (!label) return;
-			const original = label.textContent || "";
-			const flash = (text: string) => {
-				label.textContent = text;
-				window.setTimeout(() => {
-					label.textContent = original;
-				}, 1600);
-			};
-
-			try {
-				await navigator.clipboard.writeText(value);
-				flash("已复制");
-			} catch {
-				// 非安全上下文或没授权时 clipboard 不可用：选中文本，提示手动复制
-				const range = document.createRange();
-				range.selectNodeContents(label);
-				const sel = window.getSelection();
-				sel?.removeAllRanges();
-				sel?.addRange(range);
-				flash("已选中，按 ⌘C");
-			}
-		});
-	});
-</script>

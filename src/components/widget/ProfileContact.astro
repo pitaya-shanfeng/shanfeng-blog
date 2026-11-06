@@ -1,0 +1,243 @@
+---
+/**
+ * 头像卡片里的联系方式：微信 / QQ / 邮箱 三个图标入口。
+ *
+ * - 微信、QQ：点了弹二维码（<dialog>），号写在二维码下面
+ * - 邮箱：直接 mailto 去写信
+ *
+ * 二维码图片放在 public/assets/images/contact/ 下，路径写进 profileConfig.contact
+ * 的 wechatQr / qqQr。没配二维码时，按钮回退成「点击复制账号」，不会点了没反应。
+ */
+import { Icon } from "astro-icon/components";
+import { profileConfig } from "@/config";
+
+const contact = profileConfig.contact;
+const hasAny = !!contact && (contact.wechat || contact.qq || contact.email);
+---
+
+{
+	hasAny && (
+		<div class="flex items-center justify-center gap-2.5 mb-1">
+			{contact?.wechat && (
+				<button
+					type="button"
+					class="contact-btn"
+					aria-label="微信"
+					title={contact.wechatQr ? "扫码加微信" : "点击复制微信号"}
+					data-qr-src={contact.wechatQr ?? ""}
+					data-qr-name="微信"
+					data-qr-value={contact.wechat}
+				>
+					<Icon name="fa7-brands:weixin" class="text-[1.15rem]" />
+				</button>
+			)}
+			{contact?.qq && (
+				<button
+					type="button"
+					class="contact-btn"
+					aria-label="QQ"
+					title={contact.qqQr ? "扫码加 QQ" : "点击复制 QQ 号"}
+					data-qr-src={contact.qqQr ?? ""}
+					data-qr-name="QQ"
+					data-qr-value={contact.qq}
+				>
+					<Icon name="fa7-brands:qq" class="text-[1.15rem]" />
+				</button>
+			)}
+			{contact?.email && (
+				<a
+					href={`mailto:${contact.email}`}
+					class="contact-btn"
+					aria-label="邮箱"
+					title={contact.email}
+				>
+					<Icon name="material-symbols:mail-outline" class="text-[1.15rem]" />
+				</a>
+			)}
+		</div>
+	)
+}
+
+<!-- 二维码弹窗：三个入口共用一个，内容按点击的按钮填 -->
+<dialog class="contact-qr-dialog" data-qr-dialog>
+	<div class="contact-qr-card">
+		<div class="contact-qr-head">
+			<span class="contact-qr-title">微信</span>
+			<button type="button" class="contact-qr-close" aria-label="关闭" data-qr-close>
+				<Icon name="material-symbols:close-rounded" class="text-[1.1rem]" />
+			</button>
+		</div>
+		<div class="contact-qr-body">
+			<img class="contact-qr-img" src="" alt="" width="220" height="220" />
+			<div class="contact-qr-value"></div>
+		</div>
+		<div class="contact-qr-tip">打开微信「扫一扫」即可添加</div>
+	</div>
+</dialog>
+
+<style>
+	.contact-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.25rem;
+		height: 2.25rem;
+		border-radius: 0.625rem;
+		border: 1px solid color-mix(in oklab, var(--primary) 18%, transparent);
+		background: color-mix(in oklab, var(--primary) 9%, transparent);
+		color: var(--primary);
+		transition:
+			background 0.18s ease,
+			border-color 0.18s ease,
+			transform 0.12s ease;
+	}
+
+	.contact-btn:hover {
+		background: color-mix(in oklab, var(--primary) 16%, transparent);
+		border-color: color-mix(in oklab, var(--primary) 35%, transparent);
+	}
+
+	.contact-btn:active {
+		transform: scale(0.95);
+	}
+
+	.contact-qr-dialog {
+		margin: auto;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		max-width: min(92vw, 20rem);
+	}
+
+	.contact-qr-dialog::backdrop {
+		background: rgb(0 0 0 / 0.45);
+		backdrop-filter: blur(2px);
+	}
+
+	.contact-qr-card {
+		background: var(--card-bg, #fff);
+		color: inherit;
+		border-radius: 1rem;
+		padding: 1rem 1rem 1.1rem;
+		box-shadow: 0 18px 48px rgb(0 0 0 / 0.22);
+	}
+
+	.contact-qr-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		font-weight: 600;
+		font-size: 0.95rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.contact-qr-close {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.75rem;
+		height: 1.75rem;
+		border-radius: 0.5rem;
+		color: var(--content-meta, #666);
+		cursor: pointer;
+		transition: background 0.18s ease;
+	}
+
+	.contact-qr-close:hover {
+		background: rgb(0 0 0 / 0.06);
+	}
+
+	.contact-qr-body {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.6rem;
+	}
+
+	.contact-qr-body img {
+		width: 13.75rem;
+		height: 13.75rem;
+		border-radius: 0.5rem;
+		object-fit: contain;
+		background: #fff;
+	}
+
+	.contact-qr-value {
+		font-size: 0.8rem;
+		color: var(--content-meta, #666);
+		user-select: all;
+	}
+
+	.contact-qr-tip {
+		margin-top: 0.75rem;
+		text-align: center;
+		font-size: 0.75rem;
+		color: var(--content-meta, #888);
+	}
+
+	/* 没有二维码时：只留账号一行，提示改成复制 */
+	.contact-qr-dialog[data-mode="copy"] .contact-qr-tip::after {
+		content: "";
+	}
+</style>
+
+<script>
+	// 同一页可能出现两份头像卡（桌面侧栏 + 移动端底部），所以不能按 id 取元素：
+	// 每个按钮只操作自己那张卡片里的 dialog。
+	const openFor = (btn: HTMLButtonElement) => {
+		const root = btn.closest("widget-layout") ?? document;
+		const dialog = root.querySelector<HTMLDialogElement>("[data-qr-dialog]");
+		if (!dialog) return;
+
+		const titleEl = dialog.querySelector<HTMLElement>(".contact-qr-title");
+		const imgEl = dialog.querySelector<HTMLImageElement>(".contact-qr-img");
+		const valueEl = dialog.querySelector<HTMLElement>(".contact-qr-value");
+		const tipEl = dialog.querySelector<HTMLElement>(".contact-qr-tip");
+		if (!titleEl || !imgEl || !valueEl || !tipEl) return;
+
+		const name = btn.dataset.qrName || "";
+		const value = btn.dataset.qrValue || "";
+		const src = btn.dataset.qrSrc || "";
+
+		titleEl.textContent = name;
+		valueEl.textContent = value;
+
+		if (src) {
+			imgEl.src = src;
+			imgEl.alt = `${name}二维码`;
+			imgEl.hidden = false;
+			dialog.dataset.mode = "qr";
+			tipEl.textContent = `打开${name}扫一扫即可添加`;
+		} else {
+			imgEl.hidden = true;
+			imgEl.removeAttribute("src");
+			dialog.dataset.mode = "copy";
+			tipEl.textContent = "二维码还没放上来，先复制账号搜索添加";
+			void navigator.clipboard?.writeText(value).catch(() => {});
+		}
+
+		// 侧栏卡片有 overflow-hidden 与 transform，会形成自己的包含块；
+		// 先把 dialog 挂到 body 下，避免被卡片裁掉或定位错位
+		if (dialog.parentElement !== document.body) {
+			document.body.appendChild(dialog);
+		}
+		if (!dialog.open) dialog.showModal();
+
+		// 关闭：右上角按钮 / 点遮罩
+		const close = () => dialog.close();
+		dialog.onclick = (event) => {
+			if (event.target === dialog) close();
+		};
+		const closeBtn = dialog.querySelector("[data-qr-close]");
+		if (closeBtn) {
+			(closeBtn as HTMLElement).onclick = (event) => {
+				event.stopPropagation();
+				close();
+			};
+		}
+	};
+
+	document.querySelectorAll<HTMLButtonElement>("[data-qr-src]").forEach((btn) => {
+		btn.addEventListener("click", () => openFor(btn));
+	});
+</script>
