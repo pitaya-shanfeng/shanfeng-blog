@@ -1,9 +1,8 @@
 /**
- * 页脚「资源导航」数据。
+ * 页脚「书签导航」数据。
  *
- * 原来页脚里放的是「版权声明 / 书签导航 / 友情链接」三个二级页面的入口，
- * 二级页没人点、内容也薄；改成直接把链接铺在页脚，按用途分组。
- * 加一组、删一条都只动这里，Footer.astro 不用改。
+ * 分组只影响页脚抽屉里的列，改链接只动这份文件，Footer.astro 不用改。
+ * hint 是「这个站拿来干什么」，鼠标悬停可见，不在版面上占位置。
  */
 
 export interface ResourceLink {
@@ -25,98 +24,111 @@ export const RESOURCE_GROUPS: ResourceGroup[] = [
 	{
 		title: "行业调研",
 		links: [
-			{
-				name: "七麦数据",
-				href: "https://www.qimai.cn/",
-				hint: "iOS/安卓榜单与 ASO，看竞品下载与排名",
-			},
-			{
-				name: "QuestMobile",
-				href: "https://www.questmobile.com.cn/",
-				hint: "移动端用户与赛道流量大盘",
-			},
-			{
-				name: "巨量算数",
-				href: "https://trendinsight.oceanengine.com/",
-				hint: "抖音搜索指数与内容趋势",
-			},
-			{ name: "艾瑞咨询", href: "https://www.iresearch.com.cn/", hint: "行业研究报告库" },
-			{ name: "Similarweb", href: "https://www.similarweb.com/", hint: "网站/App 流量来源拆解" },
-			{ name: "增长黑盒", href: "https://growthbox.net/", hint: "私域与增长实战拆解" },
+			{ name: "七麦数据", href: "https://www.qimai.cn/", hint: "App Store 榜单与 ASO，看竞品排名" },
+			{ name: "QuestMobile", href: "https://www.questmobile.com.cn/", hint: "移动端用户与赛道流量大盘" },
+			{ name: "SimilarWeb", href: "https://www.similarweb.com/", hint: "网站/App 流量来源拆解" },
+			{ name: "飞瓜数据", href: "https://www.feigua.cn/", hint: "抖音/快手电商与短视频数据" },
+			{ name: "艾瑞数据", href: "https://www.iresearch.com.cn/", hint: "互联网行业研究报告" },
 		],
 	},
 	{
 		title: "产品社区",
 		links: [
-			{ name: "人人都是产品经理", href: "https://www.woshipm.com/", hint: "国内最大 PM 社区，模板与干货" },
-			{ name: "PMCAFF", href: "https://www.pmcaff.com/", hint: "PM 垂直社区，案例与求职讨论" },
+			{ name: "人人都是产品经理", href: "https://www.woshipm.com/", hint: "国内最大 PM 学习社区" },
 			{ name: "36氪", href: "https://36kr.com/", hint: "创投与产品动态" },
-			{ name: "鸟哥笔记", href: "https://www.niaogebiji.com/", hint: "运营推广实操" },
+			{ name: "起点课堂", href: "https://www.qidianla.com/", hint: "产品/运营技能培训" },
 		],
 	},
 	{
 		title: "运营增长",
 		links: [
-			{ name: "新榜", href: "https://www.newrank.cn/", hint: "内容榜单与投放参考" },
-			{ name: "飞瓜数据", href: "https://www.feigua.cn/", hint: "直播电商与达人数据" },
-			{ name: "运营研究社", href: "https://www.yysxy.com/", hint: "增长体系化内容" },
-			{ name: "Optimizely", href: "https://www.optimizely.com/", hint: "A/B 实验国际头部工具" },
+			{ name: "新榜", href: "https://www.newrank.cn/", hint: "公众号/抖音/快手内容榜单" },
+			{ name: "粮仓", href: "https://www.liangcang.cc/", hint: "企业微信私域运营助手" },
+			{ name: "易企秀", href: "https://www.eqxiu.com/", hint: "H5/海报营销物料" },
+			{ name: "Optimizely", href: "https://www.optimizely.com/", hint: "A/B 实验与个性化" },
 		],
 	},
 	{
 		title: "效率协作",
 		links: [
-			{ name: "飞书", href: "https://www.feishu.cn/", hint: "文档/多维表格/项目一体" },
+			{ name: "飞书", href: "https://www.feishu.cn/", hint: "文档/表格/会议/项目一体" },
 			{ name: "语雀", href: "https://www.yuque.com/", hint: "结构化知识库" },
-			{ name: "墨刀", href: "https://modao.cc/", hint: "国产原型设计，上手快" },
-			{ name: "Axure / Figma", href: "https://www.figma.com/", hint: "专业原型与协作设计" },
-			{ name: "ProcessOn", href: "https://www.processon.com/", hint: "在线流程图与脑图" },
+			{ name: "墨刀", href: "https://modao.cc/", hint: "在线原型与协作设计" },
+			{ name: "Figma", href: "https://www.figma.com/", hint: "协作式 UI 设计" },
 			{ name: "Notion", href: "https://www.notion.so/", hint: "国际化知识库与数据库" },
 		],
 	},
 	{
 		title: "前沿资讯",
 		links: [
-			{ name: "量子位", href: "https://www.qbitai.com/", hint: "AI 前沿资讯" },
-			{ name: "极客公园", href: "https://www.geekpark.net/", hint: "科技产品观察" },
-			{ name: "虎嗅", href: "https://www.huxiu.com/", hint: "商业与产品深度" },
+			{ name: "极客公园", href: "https://www.geekpark.net/", hint: "科技产品与创新" },
+			{ name: "虎嗅", href: "https://www.huxiu.com/", hint: "商业科技深度" },
+			{ name: "钛媒体", href: "https://www.tmtpost.com/", hint: "科技财经资讯" },
+			{ name: "品玩", href: "https://www.pingwest.com/", hint: "全球化科技内容" },
 		],
 	},
 	{
 		title: "灵感设计",
 		links: [
-			{ name: "站酷", href: "https://www.zcool.com.cn/", hint: "国内设计师社区，找视觉参考" },
-			{ name: "Dribbble / Behance", href: "https://dribbble.com/", hint: "国际设计灵感" },
-			{ name: "UI中国", href: "https://www.ui.cn/", hint: "国内 UI 设计" },
+			{ name: "站酷", href: "https://www.zcool.com.cn/", hint: "国内设计师社区" },
+			{ name: "Dribbble", href: "https://dribbble.com/", hint: "全球设计作品分享" },
+			{ name: "UI中国", href: "https://www.ui.cn/", hint: "国内 UI 设计社区" },
+			{ name: "Awwwards", href: "https://www.awwwards.com/", hint: "网页设计奖项与灵感" },
 		],
 	},
 	{
 		title: "国际方法",
 		links: [
-			{ name: "Product Hunt", href: "https://www.producthunt.com/", hint: "海外每日新品，看产品趋势" },
+			{ name: "Product Hunt", href: "https://www.producthunt.com/", hint: "海外每日新品发现" },
 			{ name: "NN/g", href: "https://www.nngroup.com/", hint: "用户体验权威方法论" },
-			{ name: "Mind the Product", href: "https://www.mindtheproduct.com/", hint: "全球 PM 社区与大会" },
+			{ name: "Mind the Product", href: "https://www.mindtheproduct.com/", hint: "全球 PM 社区" },
+			{ name: "Hacker News", href: "https://news.ycombinator.com/", hint: "硅谷技术新闻" },
 		],
 	},
 	{
-		title: "AI 工具",
+		title: "AI 对话",
 		links: [
-			{ name: "ChatGPT / Claude", href: "https://chatgpt.com/", hint: "通用底座：方案起草、需求拆解、竞品分析" },
-			{ name: "Cursor", href: "https://cursor.com/", hint: "AI 编程，PM 自写原型、脚本、抓数" },
-			{ name: "NotebookLM", href: "https://notebooklm.google.com/", hint: "把资料变问答/播客" },
-			{ name: "Dify / Coze", href: "https://dify.ai/", hint: "搭 AI 工作流与智能体" },
-			{ name: "v0 / Lovable", href: "https://v0.dev/", hint: "自然语言生成前端原型" },
-			{ name: "秘塔 AI 搜索", href: "https://metaso.cn/", hint: "带引用的调研检索" },
-			{ name: "Midjourney / 即梦", href: "https://www.midjourney.com/", hint: "配图与视觉生成" },
+			{ name: "ChatGPT", href: "https://chatgpt.com/", hint: "OpenAI 通用对话底座" },
+			{ name: "Claude", href: "https://claude.ai/", hint: "长文本与推理强" },
+			{ name: "DeepSeek", href: "https://www.deepseek.com/", hint: "国产开源大模型" },
+			{ name: "豆包", href: "https://www.doubao.com/", hint: "字节旗下 AI 助手" },
+			{ name: "Kimi", href: "https://kimi.moonshot.cn/", hint: "长上下文" },
 		],
 	},
 	{
-		title: "国内大模型",
+		title: "AI 编程",
 		links: [
-			{ name: "Kimi", href: "https://kimi.moonshot.cn/", hint: "长文本与本土化" },
-			{ name: "通义千问", href: "https://tongyi.aliyun.com/", hint: "长文本与本土化" },
-			{ name: "豆包", href: "https://www.doubao.com/", hint: "长文本与本土化" },
-			{ name: "智谱", href: "https://chatglm.cn/", hint: "长文本与本土化" },
+			{ name: "Cursor", href: "https://cursor.com/", hint: "AI 编程编辑器" },
+			{ name: "GitHub Copilot", href: "https://github.com/features/copilot", hint: "主流 IDE 编程助手" },
+			{ name: "通义灵码", href: "https://lingma.aliyun.com/", hint: "阿里 AI 编程" },
+			{ name: "Windsurf", href: "https://windsurf.com/", hint: "AI 原生编辑器" },
+		],
+	},
+	{
+		title: "AI 设计",
+		links: [
+			{ name: "Midjourney", href: "https://www.midjourney.com/", hint: "高质量 AI 绘画" },
+			{ name: "即梦", href: "https://jimeng.jianying.com/", hint: "字节 AI 图像/视频" },
+			{ name: "通义万相", href: "https://tongyi.aliyun.com/wanxiang/", hint: "阿里 AI 绘画" },
+			{ name: "Stable Diffusion", href: "https://stability.ai/", hint: "开源图像生成" },
+		],
+	},
+	{
+		title: "AI 视频音频",
+		links: [
+			{ name: "Runway", href: "https://runwayml.com/", hint: "国际 AI 视频头部" },
+			{ name: "可灵", href: "https://klingai.com/", hint: "快手 AI 视频" },
+			{ name: "海螺 AI", href: "https://hailuoai.com/", hint: "MiniMax AI 视频" },
+			{ name: "Suno", href: "https://suno.com/", hint: "AI 音乐生成" },
+		],
+	},
+	{
+		title: "AI 搜索办公",
+		links: [
+			{ name: "Perplexity", href: "https://www.perplexity.ai/", hint: "带引用的 AI 搜索" },
+			{ name: "秘塔 AI 搜索", href: "https://metaso.cn/", hint: "国内 AI 搜索" },
+			{ name: "NotebookLM", href: "https://notebooklm.google.com/", hint: "资料变问答/播客" },
+			{ name: "Gamma", href: "https://gamma.app/", hint: "AI 生成 PPT/文档" },
 		],
 	},
 ];
