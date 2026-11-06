@@ -214,8 +214,11 @@
 .custom-md {
   table {
     @apply my-4;
+    /* 之前是 width: max-content + 单元格 min-width:120px：内容一长表就顶出
+       容器、只能横向滚。改成吃满容器宽、单元格允许压缩换行，正常表格都能
+       在栏内读完；真正没法断行的长串仍会触发滚动容器。 */
     min-width: 100%;
-    width: max-content;
+    width: 100%;
     border-collapse: separate;
     border-spacing: 0;
     border-radius: calc(var(--radius-large) - 0.5rem);
@@ -234,13 +237,28 @@
   th,
   td {
     @apply px-3 py-2 text-left;
-    min-width: 120px;
+    min-width: 0;
     border: none;
     word-break: break-word;
 
     &:not(:last-child) {
       border-right: 1px solid var(--line-color);
     }
+  }
+
+  /* 表格里的代码多是字段名/标签 key，字号收一档，避免在窄列里被从中间截断 */
+  td code,
+  th code {
+    font-size: 0.6875rem;
+    letter-spacing: -0.01em;
+    word-break: keep-all;
+    overflow-wrap: normal;
+  }
+
+  /* 首列多是「中文名 + 字段 key」，给个下限，避免 key 被挤到换行 */
+  td:first-child,
+  th:first-child {
+    min-width: 10rem;
   }
 
   th {
