@@ -156,7 +156,9 @@ export const siteConfig: SiteConfig = {
 	// 页面开关配置 - 控制特定页面的访问权限，设为false会返回404并自动隐藏对应的导航栏菜单项
 
 	// 分类导航栏开关，在首页和归档页顶部显示分类快捷导航
-	categoryBar: true,
+	// 分类导航栏（首页 + 四个一级栏那一条）：已下线 —— 导航栏本身承担了这个职责，
+	// 且它在 swup 切页时会出现重渲染/闪烁。要恢复改回 true 并把 CategoryBar.astro 加回来。
+	categoryBar: false,
 
 	// 分类导航栏按钮样式
 	// "pill"：胶囊，主题色浅底圆角
