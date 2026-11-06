@@ -1,16 +1,16 @@
 ---
 /**
- * 页脚：一条深色收底，带一丝主题青绿。
+ * 页脚：一张和站内其它区块同款的浅色卡片。
  *
- * 设计要点（v4 暗色呼应版）：
- * - 页面从浅色内容区收进深色页脚，像「入山」到「出山」走完一个明暗节奏；
- *   顶部一轮青色微光与 banner 呼应。
- * - 默认只露两行：品牌行 + 版权行，整体约 190px。
- * - 书签导航收进抽屉：收起时一行标题带组数/站点数，展开后按组铺开。
- *   抽屉是访客主动要求才展开的，与「一进门就被塞一墙链接」有本质区别。
- * - 版权三段压成一句，CC 徽章用 9% 白。
+ * 设计要点：
+ * - 用 .card-base（与文章卡、侧栏卡同一套圆角与底色），不用深色收底
+ *   —— 深色带和这个浅色、圆角的页面风格不搭。
+ * - 顶栏：左品牌（站名 + 一句话定位），右上三枚胶囊：
+ *   书签导航 / RSS / 留言板。书签导航的开关放在右上角。
+ * - 书签抽屉默认收起，点开后从左到右铺开分组链接（宽屏 6 列）。
+ * - 版权压成一行，CC BY-NC-SA 4.0 走低对比徽章。
  *
- * 数据在 src/config/footerNavConfig.ts，改链接只动那份配置。
+ * 链接数据在 src/config/footerNavConfig.ts，改链接不用动这个组件。
  * site-footer / pointer-events-auto 是 immersive-reading 与首页 banner 的
  * 样式钩子，别删。
  */
@@ -43,97 +43,70 @@ const SITE_COUNT = RESOURCE_GROUPS.reduce(
 	(sum, group) => sum + group.links.length,
 	0,
 );
-
-/** 顶栏两个胶囊按钮：只留还有用的 */
-const QUICK_LINKS = [
-	{ name: "RSS", href: "/rss.xml", icon: "rss", external: true },
-	{ name: "留言板", href: "/guestbook/", icon: "chat", external: false },
-];
 ---
 
-<footer class="site-footer pointer-events-auto pb-28 pt-10 md:pb-10">
-	<div>
+<footer class="site-footer pointer-events-auto pb-28 md:pb-10">
+	<div class="card-base px-6 py-6 md:px-8 md:py-7">
+		<!-- 顶栏：品牌 + 右上胶囊 -->
 		<div
-			class="footer-band relative overflow-hidden px-6 py-7 md:px-9 md:py-8"
+			class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
 		>
-			<!-- 顶部一轮青色微光，与 banner 收尾呼应 -->
-			<div class="footer-rim" aria-hidden="true"></div>
-
-			<!-- 品牌行 -->
-			<div
-				class="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
-			>
-				<div class="flex flex-wrap items-center gap-x-3 gap-y-1">
-					<div class="flex items-center gap-2">
-						<svg
-							class="h-5 w-5 text-(--primary)"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="1.9"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							aria-hidden="true"
-						>
-							<path d="M3 18l6-9 4 6 3-4 5 7"></path>
-						</svg>
-						<span class="footer-brand text-[0.95rem] font-semibold tracking-wide"
-							>{siteConfig.title}</span
-						>
-					</div>
-					<span class="footer-dim text-xs leading-6"
-						>{siteConfig.subtitle}。把想清楚的写下来，把做过的留个底。</span
-					>
-					{
-						customFooterHtml && (
-							<span class="footer-dim text-xs" set:html={customFooterHtml} />
-						)
-					}
-				</div>
-
+			<div class="flex flex-wrap items-center gap-x-3 gap-y-1">
 				<div class="flex items-center gap-2">
-					{
-						QUICK_LINKS.map((link) => (
-							<a
-								class="footer-pill inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs"
-								href={url(link.href.slice(1))}
-								target={link.external ? "_blank" : undefined}
-								rel={link.external ? "noopener" : undefined}
-							>
-								<svg
-									class="h-3.5 w-3.5 opacity-80"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="1.9"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									aria-hidden="true"
-								>
-									{link.icon === "rss" ? (
-										<path d="M5 19a1 1 0 100-2 1 1 0 000 2zM5 12a7 7 0 017 7M5 5a14 14 0 0114 14" />
-									) : (
-										<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
-									)}
-								</svg>
-								{link.name}
-							</a>
-						))
-					}
+					<svg
+						class="h-5 w-5 text-(--primary)"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="1.9"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<path d="M3 18l6-9 4 6 3-4 5 7"></path>
+					</svg>
+					<span
+						class="transition text-90 text-[0.95rem] font-semibold tracking-wide"
+						>{siteConfig.title}</span
+					>
 				</div>
+				<span class="transition text-50 text-xs leading-6"
+					>{siteConfig.subtitle}。把想清楚的写下来，把做过的留个底。</span
+				>
+				{
+					customFooterHtml && (
+						<span
+							class="transition text-50 text-xs"
+							set:html={customFooterHtml}
+						/>
+					)
+				}
 			</div>
 
-			<!-- 书签导航：抽屉，默认收起 -->
-			<details class="footer-drawer relative mt-5">
-				<summary
-					class="flex cursor-pointer items-center gap-2 text-xs select-none [&::-webkit-details-marker]:hidden"
+			<div class="flex flex-wrap items-center gap-2">
+				<button
+					type="button"
+					id="footer-bookmarks-toggle"
+					class="footer-pill inline-flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1.5 text-xs"
+					aria-expanded="false"
+					aria-controls="footer-bookmarks"
 				>
-					<span class="footer-label font-medium">书签导航</span>
-					<span class="footer-dim"
-						>{GROUP_COUNT} 组 · {SITE_COUNT} 站</span
-					>
 					<svg
-						class="footer-chevron h-3.5 w-3.5 transition-transform duration-200"
+						class="h-3.5 w-3.5 opacity-70"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="1.9"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<path d="M6 3h12a1 1 0 011 1v16l-7-4-7 4V4a1 1 0 011-1z"></path>
+					</svg>
+					书签导航
+					<span class="text-50">{GROUP_COUNT} 组 · {SITE_COUNT} 站</span>
+					<svg
+						class="footer-chevron h-3.5 w-3.5 opacity-70"
 						viewBox="0 0 24 24"
 						fill="none"
 						stroke="currentColor"
@@ -144,162 +117,168 @@ const QUICK_LINKS = [
 					>
 						<path d="M6 9l6 6 6-6"></path>
 					</svg>
-				</summary>
+				</button>
 
-				<div
-					class="mt-4 grid grid-cols-2 gap-x-6 gap-y-5 md:grid-cols-3 lg:grid-cols-6"
+				<a
+					class="footer-pill inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs"
+					href={url("rss.xml")}
+					target="_blank"
+					rel="noopener"
 				>
-					{
-						RESOURCE_GROUPS.map((group) => (
-							<div>
-								<div class="footer-label text-xs font-semibold mb-1.5">
-									{group.title}
-								</div>
-								<ul class="space-y-0.5">
-									{group.links.map((link) => (
-										<li>
-											<a
-												class="footer-link text-xs leading-6"
-												href={link.href}
-												target="_blank"
-												rel="noopener"
-												title={link.hint}
-											>
-												{link.name}
-											</a>
-										</li>
-									))}
-								</ul>
-							</div>
-						))
-					}
-				</div>
-			</details>
+					<svg
+						class="h-3.5 w-3.5 opacity-70"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="1.9"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<path
+							d="M5 19a1 1 0 100-2 1 1 0 000 2zM5 12a7 7 0 017 7M5 5a14 14 0 0114 14"
+						></path>
+					</svg>
+					RSS
+				</a>
 
-			<!-- 底栏 -->
+				<a
+					class="footer-pill inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs"
+					href={url("guestbook/")}
+				>
+					<svg
+						class="h-3.5 w-3.5 opacity-70"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="1.9"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"
+						></path>
+					</svg>
+					留言板
+				</a>
+			</div>
+		</div>
+
+		<!-- 书签抽屉：默认收起，点右上角按钮展开 -->
+		<div id="footer-bookmarks" hidden>
+			<div class="my-5 h-px bg-black/8 dark:bg-white/10"></div>
 			<div
-				class="footer-divider relative mt-6 flex flex-col gap-2 pt-4 text-xs sm:flex-row sm:items-center sm:justify-between"
+				class="grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-3 lg:grid-cols-6"
 			>
-				<div class="footer-dim flex flex-wrap items-center gap-x-2 gap-y-1">
-					<span
-						>&copy; <span id="copyright-year">{currentYear}</span>
-						{profileConfig.name}</span
-					>
-					<span aria-hidden="true">·</span>
-					<span>原创内容，转载请注明出处与链接</span>
-					<span aria-hidden="true">·</span>
-					<span class="footer-badge rounded px-1.5 py-0.5"
-						>CC BY-NC-SA 4.0</span
-					>
-				</div>
+				{
+					RESOURCE_GROUPS.map((group) => (
+						<div>
+							<div class="transition text-90 text-xs font-semibold mb-1.5">
+								{group.title}
+							</div>
+							<ul class="space-y-0.5">
+								{group.links.map((link) => (
+									<li>
+										<a
+											class="transition text-50 text-xs leading-6 hover:text-(--primary)"
+											href={link.href}
+											target="_blank"
+											rel="noopener"
+											title={link.hint}
+										>
+											{link.name}
+										</a>
+									</li>
+								))}
+							</ul>
+						</div>
+					))
+				}
+			</div>
+		</div>
 
-				<div
-					class="footer-dim flex flex-wrap items-center gap-x-2 gap-y-1"
+		<!-- 底栏 -->
+		<div
+			class="mt-6 flex flex-col gap-2 border-t border-dashed border-black/10 pt-4 text-xs sm:flex-row sm:items-center sm:justify-between dark:border-white/15"
+		>
+			<div
+				class="transition text-50 flex flex-wrap items-center gap-x-2 gap-y-1"
+			>
+				<span
+					>&copy; <span id="copyright-year">{currentYear}</span>
+					{profileConfig.name}</span
 				>
-					<!-- 开源署名勿删 -->
-					<span>Powered by</span>
-					<a
-						class="footer-link"
-						target="_blank"
-						rel="noopener"
-						href="https://astro.build">Astro</a
+				<span aria-hidden="true">·</span>
+				<span>原创内容，转载请注明出处与链接</span>
+				<span aria-hidden="true">·</span>
+				<span
+					class="rounded border border-black/10 px-1.5 py-0.5 text-[0.7rem] dark:border-white/15"
+					>CC BY-NC-SA 4.0</span
+				>
+			</div>
+
+			<div
+				class="transition text-50 flex flex-wrap items-center gap-x-2 gap-y-1"
+			>
+				<!-- 开源署名勿删 -->
+				<span>Powered by</span>
+				<a
+					class="transition link text-(--primary)"
+					target="_blank"
+					rel="noopener"
+					href="https://astro.build">Astro</a
+				>
+				<span aria-hidden="true">&amp;</span>
+				<a
+					class="transition link text-(--primary)"
+					target="_blank"
+					rel="noopener"
+					href="https://github.com/CuteLeaf/Firefly">Firefly</a
+				>
+				<span aria-hidden="true">·</span>
+				<a
+					class="transition link text-(--primary)"
+					target="_blank"
+					rel="noopener"
+					href={url("atom.xml")}>Atom</a
+				>
+				<span aria-hidden="true">·</span>
+				<a
+					class="transition link text-(--primary)"
+					target="_blank"
+					rel="noopener"
+					href={url("sitemap-index.xml")}>Sitemap</a
+				>
+				<span aria-hidden="true">·</span>
+				<button
+					type="button"
+					id="footer-back-to-top"
+					class="transition inline-flex cursor-pointer items-center gap-1 hover:text-(--primary)"
+				>
+					回到顶部
+					<svg
+						class="h-3 w-3"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2.2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
 					>
-					<span aria-hidden="true">&amp;</span>
-					<a
-						class="footer-link"
-						target="_blank"
-						rel="noopener"
-						href="https://github.com/CuteLeaf/Firefly">Firefly</a
-					>
-					<span aria-hidden="true">·</span>
-					<a
-						class="footer-link"
-						target="_blank"
-						rel="noopener"
-						href={url("atom.xml")}>Atom</a
-					>
-					<span aria-hidden="true">·</span>
-					<a
-						class="footer-link"
-						target="_blank"
-						rel="noopener"
-						href={url("sitemap-index.xml")}>Sitemap</a
-					>
-					<span aria-hidden="true">·</span>
-					<button
-						type="button"
-						id="footer-back-to-top"
-						class="footer-link inline-flex cursor-pointer items-center gap-1"
-					>
-						回到顶部
-						<svg
-							class="h-3 w-3"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2.2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							aria-hidden="true"
-						>
-							<path d="M12 19V5M5 12l7-7 7 7"></path>
-						</svg>
-					</button>
-				</div>
+						<path d="M12 19V5M5 12l7-7 7 7"></path>
+					</svg>
+				</button>
 			</div>
 		</div>
 	</div>
 </footer>
 
 <style>
-	/* 深色收底：带一丝主题青绿的暗调，顶部一轮青色微光与 banner 呼应 */
-	.footer-band {
-		background: #0f1614;
-		background-image: radial-gradient(
-			120% 90% at 50% -20%,
-			rgba(45, 212, 175, 0.1) 0%,
-			rgba(15, 22, 20, 0) 62%
-		);
-	}
-
-	.footer-rim {
-		position: absolute;
-		inset: 0 0 auto 0;
-		height: 1px;
-		background: linear-gradient(
-			90deg,
-			transparent,
-			rgba(45, 212, 175, 0.45),
-			transparent
-		);
-	}
-
-	.footer-brand {
-		color: #e9f4f0;
-	}
-
-	.footer-label {
-		color: rgba(233, 244, 240, 0.9);
-	}
-
-	.footer-dim {
-		color: rgba(233, 244, 240, 0.52);
-	}
-
-	.footer-link {
-		color: rgba(233, 244, 240, 0.6);
-		transition: color 0.18s ease;
-	}
-
-	.footer-link:hover {
-		color: #2dd4af;
-	}
-
-	/* 胶囊按钮：半透明描边 + 3% 白底，hover 泛起青色光 */
+	/* 胶囊按钮：与站内其它按钮同一套描边与 hover */
 	.footer-pill {
-		border: 1px solid rgba(233, 244, 240, 0.16);
-		background: rgba(255, 255, 255, 0.03);
-		color: rgba(233, 244, 240, 0.78);
+		border: 1px solid rgba(0, 0, 0, 0.09);
+		color: var(--text-75, rgba(0, 0, 0, 0.68));
 		transition:
 			border-color 0.18s ease,
 			color 0.18s ease,
@@ -307,37 +286,36 @@ const QUICK_LINKS = [
 	}
 
 	.footer-pill:hover {
-		border-color: rgba(45, 212, 175, 0.55);
-		color: #2dd4af;
-		background: rgba(45, 212, 175, 0.08);
+		border-color: var(--primary);
+		color: var(--primary);
+		background: color-mix(in oklab, var(--primary) 8%, transparent);
 	}
 
-	.footer-badge {
-		border: 1px solid rgba(255, 255, 255, 0.09);
-		background: rgba(255, 255, 255, 0.045);
-		color: rgba(233, 244, 240, 0.55);
+	.dark .footer-pill {
+		border-color: rgba(255, 255, 255, 0.14);
 	}
 
-	.footer-divider {
-		border-top: 1px solid rgba(233, 244, 240, 0.08);
-	}
-
-	.footer-chevon,
 	.footer-chevron {
-		color: rgba(233, 244, 240, 0.45);
+		transition: transform 0.2s ease;
 	}
 
-	.footer-drawer[open] .footer-chevron {
+	#footer-bookmarks-toggle[aria-expanded="true"] .footer-chevron {
 		transform: rotate(180deg);
-	}
-
-	/* 抽屉标题那行 hover 时整行轻微提亮 */
-	.footer-drawer > summary:hover .footer-label {
-		color: #2dd4af;
 	}
 </style>
 
 <script>
+	const bookmarksToggle = document.getElementById("footer-bookmarks-toggle");
+	const bookmarksPanel = document.getElementById("footer-bookmarks");
+
+	if (bookmarksToggle && bookmarksPanel) {
+		bookmarksToggle.addEventListener("click", () => {
+			const open = bookmarksToggle.getAttribute("aria-expanded") === "true";
+			bookmarksToggle.setAttribute("aria-expanded", open ? "false" : "true");
+			bookmarksPanel.hidden = open;
+		});
+	}
+
 	const backToTop = document.getElementById("footer-back-to-top");
 	backToTop?.addEventListener("click", () => {
 		window.scrollTo({ top: 0, behavior: "smooth" });
