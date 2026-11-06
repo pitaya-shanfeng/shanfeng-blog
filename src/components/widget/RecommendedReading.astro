@@ -242,9 +242,13 @@ const list: PostForList[] = picked
 		if (!category && !tag) {
 			listEl.replaceChildren();
 			widget.classList.add("hidden");
+			// 双保险：书页/文章页上整张卡直接不排版，避免残留一个空标题卡
+			widget.style.display = "none";
 			root.dataset.recRendered = "";
 			return;
 		}
+
+		widget.style.removeProperty("display");
 
 		if (!metaCache) {
 			try {
