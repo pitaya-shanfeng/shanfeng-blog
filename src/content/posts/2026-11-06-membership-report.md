@@ -5,7 +5,7 @@ description: 仓储会员、付费权益、会员分销，三种会员制一次�
 quote: 会员权益种类多不等于有价值，用得上才叫权益。
 image: /assets/library/notes/membership-report/cover.webp
 banner: /assets/library/notes/membership-report/banner.webp
-category: 方法沉淀
+category: 落地实战/调研分析
 tags:
   - 增长
   - 会员

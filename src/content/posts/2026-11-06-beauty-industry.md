@@ -5,7 +5,7 @@ description: 一份写给直男产品经理的美妆课：先测基础知识，�
 quote: 护肤品占了半壁江山，真正的增量在小众彩妆和下沉市场。
 image: /assets/library/notes/beauty-industry/cover.webp
 banner: /assets/library/notes/beauty-industry/banner.webp
-category: 方法沉淀
+category: 落地实战/调研分析
 tags:
   - 增长
   - 美妆
