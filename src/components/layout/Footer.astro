@@ -94,7 +94,7 @@ const SITE_COUNT = RESOURCE_GROUPS.reduce(
 					type="button"
 					id="footer-bookmarks-toggle"
 					class="footer-pill inline-flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1.5 text-xs"
-					aria-expanded="true"
+					aria-expanded="false"
 					aria-controls="footer-bookmarks"
 				>
 					<svg
@@ -171,7 +171,7 @@ const SITE_COUNT = RESOURCE_GROUPS.reduce(
 		</div>
 
 		<!-- 书签抽屉：默认收起，点右上角按钮展开 -->
-		<div id="footer-bookmarks">
+		<div id="footer-bookmarks" hidden>
 			<div class="h-4"></div>
 			<div class="space-y-5">
 				{
@@ -318,12 +318,7 @@ const SITE_COUNT = RESOURCE_GROUPS.reduce(
 	const bookmarksPanel = document.getElementById("footer-bookmarks");
 
 	if (bookmarksToggle && bookmarksPanel) {
-		// 桌面默认展开；手机上 40 个链接太长，先收起
-		if (window.matchMedia("(max-width: 767px)").matches) {
-			bookmarksToggle.setAttribute("aria-expanded", "false");
-			bookmarksPanel.hidden = true;
-		}
-
+		// 默认收起：页脚是收尾，不是入口页。想看再点
 		bookmarksToggle.addEventListener("click", () => {
 			const open = bookmarksToggle.getAttribute("aria-expanded") === "true";
 			bookmarksToggle.setAttribute("aria-expanded", open ? "false" : "true");
