@@ -52,7 +52,24 @@ const className = Astro.props.class;
     <div class="text-center text-neutral-400 mb-2.5 transition">
       {profileConfig.bio}
     </div>
+        {profileConfig.contact && (profileConfig.contact.wechat || profileConfig.contact.email) ? (
+            <div class="flex flex-col items-center gap-1 mb-1 text-sm transition">
+                {profileConfig.contact.wechat && (
+                    <div class="flex items-center gap-1.5 text-neutral-500 dark:text-neutral-400">
+                        <span class="text-neutral-400 dark:text-neutral-500">微信</span>
+                        <span class="select-all font-medium text-neutral-700 dark:text-neutral-200">{profileConfig.contact.wechat}</span>
+                    </div>
+                )}
+                {profileConfig.contact.email && (
+                    <div class="flex items-center gap-1.5 text-neutral-500 dark:text-neutral-400">
+                        <span class="text-neutral-400 dark:text-neutral-500">邮箱</span>
+                        <a class="link font-medium text-(--primary) hover:underline" href={`mailto:${profileConfig.contact.email}`}>{profileConfig.contact.email}</a>
+                    </div>
+                )}
+            </div>
+        ) : (
         <div class="flex flex-wrap gap-2 justify-center mb-1">
+
             {profileConfig.links.length > 1 && profileConfig.links.map(item =>
                     {
                     const showName = item.showName;
@@ -92,5 +109,6 @@ const className = Astro.props.class;
                     }
             })(profileConfig.links[0])}
         </div>
+        )}
   </div>
 </div>

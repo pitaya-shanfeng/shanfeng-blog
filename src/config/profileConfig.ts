@@ -12,7 +12,13 @@ export const profileConfig: ProfileConfig = {
 	name: "余涛（山风）",
 
 	// 个人签名
-	bio: "做个靠谱的产品经理",
+	bio: "12年产品经理经验，持续记录产品思考、业务设计、数据分析和团队管理实践。",
+
+	// 联系方式：卡片底部直接写出微信与邮箱，不再用两个图标入口
+	contact: {
+		wechat: "pitaya_yutou",
+		email: "yt_pitaya@126.com",
+	},
 
 	// 链接配置
 	// 已经预装的图标集：fa7-brands，fa7-regular，fa7-solid，material-symbols，simple-icons
