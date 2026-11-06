@@ -1,17 +1,22 @@
 ---
 /**
- * 推荐阅读（侧栏，合集页）
+ * 推荐阅读（侧栏，分类合集页）
  *
- * 不自己写列表样式——直接复用模版的「相关文章」组件（RelatedPosts）：
- * 序号徽章、标题、箭头、虚线分隔、悬停态全站一套，改一次两处生效。
- * 两处不同：标题换成「推荐阅读」，并且不显示分类标签（这 10 篇跨分类挑的，
- * 标分类会干扰「先读哪篇」）。
+ * 规则：**只推荐本合集内的文章**，不跨分类 —— 合集页的读者是在「这一类里
+ * 找东西」，掺进别的分类会打断这件事。
  *
- * 名单在 src/config/recommendedReadingConfig.ts。
- * 显示范围：合集页显示、文章页与书籍页隐藏（见 SideBar 的 widget-hide-* 规则）。
+ * 排序：先看篇幅（documentPages / words），再看时间。页数多、字数多的通常是
+ * 把一件事讲到底的那几篇；篇幅相同时取新写的。
+ *
+ * 版式不自己写：复用模版的「相关文章」组件，只关掉分类标签（整列同一分类，
+ * 标出来没有信息量），并以静态清单模式渲染（staticList），避免被相关文章的
+ * 客户端脚本接管。
+ *
+ * 左栏是 swup 的静态容器，切页时不会重渲染，所以这里额外带一份客户端逻辑：
+ * 路由变化后按新合集重新取数、重建列表（数据来自 /api/allPostMeta.json）。
  */
 import RelatedPosts from "@/components/widget/RelatedPosts.astro";
-import { RECOMMENDED_READING } from "@/config";
+import { topicPages } from "@/config/topicsConfig";
 import type { WidgetComponentConfig } from "@/types/config";
 import { getSortedPosts, type PostForList } from "@/utils/content-utils";
 
@@ -23,25 +28,229 @@ interface Props {
 
 const { class: className, style, widgetConfig } = Astro.props;
 
-const posts = await getSortedPosts();
-const byId = new Map(posts.map((post) => [post.id, post]));
+/**
+ * 单级栏没有 topicPages 条目，路径与分类单独列。
+ * /picks/ 是「转载精选」，但它在正文里的分类是「学习思考」（合并成一级栏了），
+ * 只能按标签筛。
+ */
+const FIXED_ROUTES: Record<string, string> = {
+	"/notes": "学习思考",
+	"/hotnews": "行业动态",
+};
+const TAG_ROUTES: Record<string, string> = {
+	"/picks": "转载精选",
+};
 
-const list: PostForList[] = RECOMMENDED_READING.flatMap((entry) => {
-	const post = byId.get(entry.slug);
-	return post ? [{ id: post.id, data: post.data }] : [];
-});
+const TOPIC_MAP: Record<string, string> = {};
+for (const page of topicPages) {
+	TOPIC_MAP[`/topics/${page.slug}`] = page.category;
+}
+
+const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
+const currentCategory =
+	FIXED_ROUTES[currentPath] ?? TOPIC_MAP[currentPath] ?? "";
+const currentTag = TAG_ROUTES[currentPath] ?? "";
+
+/** 篇幅：文档类看页数，其余看字数 */
+const depth = (post: PostForList): number => {
+	// documentPages / words 是 loader 与 remark 写进 data 的扩展字段，schema 类型里没有
+	const extra = post.data as { documentPages?: number; words?: number };
+	return (extra.documentPages ?? 0) * 1000 + (extra.words ?? 0);
+};
+
+const LIMIT = 10;
+
+const posts = await getSortedPosts();
+const picked = currentTag
+	? posts.filter((post) => (post.data.tags ?? []).includes(currentTag))
+	: currentCategory
+		? posts.filter(
+				(post) => (post.data.category || "").trim() === currentCategory,
+			)
+		: [];
+
+const list: PostForList[] = picked
+	.sort(
+				(a, b) =>
+					depth(b) - depth(a) ||
+					b.data.published.valueOf() - a.data.published.valueOf(),
+			)
+		.slice(0, LIMIT)
+		.map((post) => ({ id: post.id, data: post.data }));
 ---
 
 {
 	list.length > 0 && (
-		<RelatedPosts
-			posts={list}
-			title="推荐阅读"
-			showCategory={false}
-			widgetId="recommended-reading-widget"
-			widgetConfig={widgetConfig}
-			class={className}
-			style={style}
-		/>
+		<div
+			class="recommended-reading-root"
+			data-rec-category={currentCategory}
+			data-rec-tag={currentTag}
+			data-rec-tags={JSON.stringify(TAG_ROUTES)}
+			data-rec-topics={JSON.stringify(TOPIC_MAP)}
+			data-rec-fixed={JSON.stringify(FIXED_ROUTES)}
+			data-rec-limit={LIMIT}
+		>
+			<RelatedPosts
+				posts={list}
+				title="推荐阅读"
+				showCategory={false}
+				staticList
+				widgetId="recommended-reading-widget"
+				widgetConfig={widgetConfig}
+				class={className}
+				style={style}
+			/>
+		</div>
 	)
 }
+
+<script>
+	// 侧栏在 swup 容器之外，切页时不会重渲染；这里按新路由重算合集并重建列表。
+	const ROOT_SELECTOR = ".recommended-reading-root";
+	const WIDGET_SELECTOR = 'widget-layout[data-id="recommended-reading-widget"]';
+
+	type Meta = {
+		id: string;
+		title: string;
+		category: string;
+		published: number;
+		pages?: number;
+		words?: number;
+		tags?: string[];
+	};
+
+	let metaCache: Meta[] | null = null;
+
+	const normalise = (path: string): string => path.replace(/\/+$/, "") || "/";
+
+	const readJSON = <T,>(raw: string | undefined, fallback: T): T => {
+		try {
+			return raw ? (JSON.parse(raw) as T) : fallback;
+		} catch {
+			return fallback;
+		}
+	};
+
+	const routeForPath = (
+		path: string,
+		root: HTMLElement,
+	): { category: string; tag: string } => {
+		const tagRoutes = readJSON<Record<string, string>>(
+			root.dataset.recTags,
+			{},
+		);
+		if (tagRoutes[path]) return { category: "", tag: tagRoutes[path] };
+		const fixed = readJSON<Record<string, string>>(root.dataset.recFixed, {});
+		if (fixed[path]) return { category: fixed[path], tag: "" };
+		const topics = readJSON<Record<string, string>>(root.dataset.recTopics, {});
+		return { category: topics[path] ?? "", tag: "" };
+	};
+
+	const buildRow = (
+		post: { id: string; title: string },
+		index: number,
+		isLast: boolean,
+	): HTMLAnchorElement => {
+		const a = document.createElement("a");
+		a.href = `/posts/${post.id}/`;
+		a.className =
+			"group flex items-center gap-2.5 px-2 py-2 rounded-lg transition-all hover:bg-black/5 dark:hover:bg-white/5 active:scale-[0.98]" +
+			(isLast ? "" : " border-b border-dashed border-(--line-divider)");
+
+		const num = document.createElement("div");
+		num.className =
+			"shrink-0 w-5 h-5 rounded-md bg-(--enter-btn-bg) text-(--primary) flex items-center justify-center text-xs font-bold transition";
+		num.textContent = String(index + 1);
+
+		const body = document.createElement("div");
+		body.className = "flex-1 min-w-0";
+		const title = document.createElement("div");
+		title.className =
+			"text-sm font-medium text-black/75 dark:text-white/75 truncate transition group-hover:text-(--primary)";
+		title.textContent = post.title;
+		body.appendChild(title);
+
+		const svgNS = "http://www.w3.org/2000/svg";
+		const svg = document.createElementNS(svgNS, "svg");
+		svg.setAttribute("width", "24");
+		svg.setAttribute("height", "24");
+		svg.setAttribute("viewBox", "0 0 24 24");
+		svg.setAttribute(
+			"class",
+			"shrink-0 text-lg text-black/15 dark:text-white/15",
+		);
+		const path = document.createElementNS(svgNS, "path");
+		path.setAttribute("fill", "currentColor");
+		path.setAttribute(
+			"d",
+			"M9.29 6.71a1 1 0 0 0 0 1.41L13.17 12l-3.88 3.88a1 1 0 1 0 1.41 1.41l4.59-4.59a1 1 0 0 0 0-1.41L10.7 6.7a1 1 0 0 0-1.41.01z",
+		);
+		svg.appendChild(path);
+
+		a.append(num, body, svg);
+		return a;
+	};
+
+	const sync = async (): Promise<void> => {
+		const root = document.querySelector<HTMLElement>(ROOT_SELECTOR);
+		const widget = document.querySelector<HTMLElement>(WIDGET_SELECTOR);
+		if (!root || !widget) return;
+
+		const listEl = widget.querySelector<HTMLElement>("[data-rec-list]");
+		if (!listEl) return;
+
+		const { category, tag } = routeForPath(normalise(location.pathname), root);
+		// 服务端渲染的就是这一类、且没换页面 → 不用重建
+		if (root.dataset.recRendered === category) return;
+
+		if (!category && !tag) {
+			listEl.replaceChildren();
+			root.dataset.recRendered = "";
+			return;
+		}
+
+		if (!metaCache) {
+			try {
+				const res = await fetch("/api/allPostMeta.json", { cache: "no-store" });
+				metaCache = (await res.json()) as Meta[];
+			} catch {
+				return;
+			}
+		}
+
+		const limit = Number(root.dataset.recLimit || 10);
+		const depthOf = (p: Meta): number => (p.pages ?? 0) * 1000 + (p.words ?? 0);
+
+		const rows = (metaCache ?? [])
+			.filter((p) =>
+				tag ? (p.tags ?? []).includes(tag) : p.category.trim() === category,
+			)
+			.sort((a, b) => depthOf(b) - depthOf(a) || b.published - a.published)
+			.slice(0, limit);
+
+		listEl.replaceChildren(
+			...rows.map((p, i) => buildRow(p, i, i === rows.length - 1)),
+		);
+		root.dataset.recRendered = category || tag;
+	};
+
+	// 首屏：记下服务端渲染的分类，避免多一次无意义的重建
+	const firstRoot = document.querySelector<HTMLElement>(ROOT_SELECTOR);
+	if (firstRoot) {
+		firstRoot.dataset.recRendered =
+			firstRoot.dataset.recCategory || firstRoot.dataset.recTag || "";
+	}
+
+	void sync();
+	document.addEventListener("swup:page:view", () => void sync());
+	document.addEventListener("swup:contentReplaced", () => void sync());
+	document.addEventListener("swup:content:replace", () => void sync());
+	window.addEventListener("popstate", () => void sync());
+
+	const container = document.getElementById("swup-container");
+	if (container) {
+		new MutationObserver(() => void sync()).observe(container, {
+			childList: true,
+		});
+	}
+</script>

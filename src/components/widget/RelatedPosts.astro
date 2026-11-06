@@ -21,6 +21,8 @@ interface Props {
 	showCategory?: boolean;
 	/** 组件实例 id：换一个就不会被「按当前文章重建相关文章」的脚本接管 */
 	widgetId?: string;
+	/** 静态清单：不输出 data-related-* 属性，客户端脚本不会接管这一份 */
+	staticList?: boolean;
 }
 
 const {
@@ -32,6 +34,7 @@ const {
 	title,
 	showCategory = true,
 	widgetId = "related-posts-widget",
+	staticList = false,
 } = Astro.props;
 
 const showTitle = widgetConfig?.showTitle !== false;
@@ -50,13 +53,16 @@ const emptyText = i18n(I18nKey.noRelatedPosts);
 	contentPadding={false}
 >
 	<div
-		data-related-root
-		data-limit={limit}
-		data-related-api={url("/api/relatedPosts.json")}
-		data-meta-api={url("/api/allPostMeta.json")}
-		data-empty-text={emptyText}
-		data-exclude-categories={JSON.stringify(excludeCategories)}
 		class="flex flex-col px-4 pb-3 -mt-1"
+		data-rec-list={staticList ? "true" : undefined}
+		data-related-root={staticList ? undefined : true}
+		data-limit={staticList ? undefined : limit}
+		data-related-api={staticList ? undefined : url("/api/relatedPosts.json")}
+		data-meta-api={staticList ? undefined : url("/api/allPostMeta.json")}
+		data-empty-text={staticList ? undefined : emptyText}
+		data-exclude-categories={staticList
+			? undefined
+			: JSON.stringify(excludeCategories)}
 	>
 		{
 			list.length > 0 ? (
