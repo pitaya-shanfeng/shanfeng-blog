@@ -125,7 +125,6 @@ const className = Astro.props.class;
 
 <script>
 	// 微信号点击复制：不弹窗，把「已复制」写在原位置，2 秒后还原
-	const hintText = "已复制";
 	document.querySelectorAll<HTMLButtonElement>("[data-copy-wechat]").forEach((btn) => {
 		btn.addEventListener("click", async () => {
 			const value = btn.dataset.copyWechat || "";
