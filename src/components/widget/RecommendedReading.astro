@@ -104,6 +104,26 @@ const list: PostForList[] = picked
 	)
 }
 
+<style>
+	/*
+	 * 条目比「相关文章」高一档：那一栏每行带分类标签是两行，这里只有标题，
+	 * 用同样的 py-2 会挤成一条细线。只调这一处，不动相关文章本身。
+	 */
+	.recommended-reading-root :global(widget-layout a) {
+		padding-top: 0.9rem;
+		padding-bottom: 0.9rem;
+	}
+
+	/* 行高了，序号徽章跟着放大；底色比母版的 --enter-btn-bg 重一点，
+	   否则浅到和卡片底色分不出来，数字像浮在空白上 */
+	.recommended-reading-root :global(widget-layout a > div:first-child) {
+		width: 1.5rem;
+		height: 1.5rem;
+		font-size: 0.78rem;
+		background: color-mix(in oklab, var(--primary) 16%, transparent);
+	}
+</style>
+
 <script>
 	// 侧栏在 swup 容器之外，切页时不会重渲染；这里按新路由重算合集并重建列表。
 	const ROOT_SELECTOR = ".recommended-reading-root";
