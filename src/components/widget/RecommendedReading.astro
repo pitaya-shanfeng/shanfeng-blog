@@ -2,19 +2,18 @@
 /**
  * 推荐阅读（侧栏，合集页）
  *
- * 版式对齐「相关文章」那一路：圆角序号 + 标题 + 右侧箭头，条目之间虚线分隔。
- * 区别只有一个——不带分类标签：这里是跨分类挑的 10 篇，标了分类反而干扰
- * 「先读哪篇」的判断。
+ * 不自己写列表样式——直接复用模版的「相关文章」组件（RelatedPosts）：
+ * 序号徽章、标题、箭头、虚线分隔、悬停态全站一套，改一次两处生效。
+ * 两处不同：标题换成「推荐阅读」，并且不显示分类标签（这 10 篇跨分类挑的，
+ * 标分类会干扰「先读哪篇」）。
  *
- * 名单在 src/config/recommendedReadingConfig.ts，只挑 10 篇。
+ * 名单在 src/config/recommendedReadingConfig.ts。
  * 显示范围：合集页显示、文章页与书籍页隐藏（见 SideBar 的 widget-hide-* 规则）。
  */
-import { Icon } from "astro-icon/components";
-import WidgetLayout from "@/components/common/WidgetLayout.astro";
+import RelatedPosts from "@/components/widget/RelatedPosts.astro";
 import { RECOMMENDED_READING } from "@/config";
 import type { WidgetComponentConfig } from "@/types/config";
-import { getSortedPosts } from "@/utils/content-utils";
-import { getPostUrlBySlug } from "@/utils/url-utils";
+import { getSortedPosts, type PostForList } from "@/utils/content-utils";
 
 interface Props {
 	class?: string;
@@ -24,56 +23,25 @@ interface Props {
 
 const { class: className, style, widgetConfig } = Astro.props;
 
-const showTitle = widgetConfig?.showTitle !== false;
-
 const posts = await getSortedPosts();
 const byId = new Map(posts.map((post) => [post.id, post]));
 
-const list = RECOMMENDED_READING.flatMap((entry) => {
+const list: PostForList[] = RECOMMENDED_READING.flatMap((entry) => {
 	const post = byId.get(entry.slug);
-	return post
-		? [{ id: post.id, title: post.data.title, note: entry.note ?? "" }]
-		: [];
+	return post ? [{ id: post.id, data: post.data }] : [];
 });
 ---
 
 {
 	list.length > 0 && (
-		<WidgetLayout
-			id="recommended-reading-widget"
-			name="推荐阅读"
-			showTitle={showTitle}
+		<RelatedPosts
+			posts={list}
+			title="推荐阅读"
+			showCategory={false}
+			widgetId="recommended-reading-widget"
+			widgetConfig={widgetConfig}
 			class={className}
 			style={style}
-			contentPadding={false}
-		>
-			<div class="flex flex-col px-4 pb-3 -mt-1">
-				{list.map((post, idx) => (
-					<a
-						href={getPostUrlBySlug(post.id)}
-						title={post.note}
-						class:list={[
-							"group flex items-center gap-2.5 px-2 py-2 rounded-lg",
-							"transition-all hover:bg-black/5 dark:hover:bg-white/5 active:scale-[0.98]",
-							idx < list.length - 1 &&
-								"border-b border-dashed border-(--line-divider)",
-						]}
-					>
-						<div class="shrink-0 w-5 h-5 rounded-md bg-(--enter-btn-bg) text-(--primary) flex items-center justify-center text-xs font-bold transition">
-							{idx + 1}
-						</div>
-						<div class="flex-1 min-w-0">
-							<div class="text-sm font-medium text-black/75 dark:text-white/75 truncate transition group-hover:text-(--primary)">
-								{post.title}
-							</div>
-						</div>
-						<Icon
-							name="material-symbols:chevron-right-rounded"
-							class="shrink-0 text-lg text-black/15 dark:text-white/15 transition group-hover:text-(--primary) group-hover:translate-x-0.5"
-						/>
-					</a>
-				))}
-			</div>
-		</WidgetLayout>
+		/>
 	)
 }

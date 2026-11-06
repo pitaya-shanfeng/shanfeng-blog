@@ -15,6 +15,12 @@ interface Props {
 	posts?: PostForList[];
 	/** 这些分类的文章不显示本组件（来自 sidebarConfig 的 specificConfig） */
 	excludeCategories?: string[];
+	/** 覆盖标题（不传则用 i18n 的「相关文章」） */
+	title?: string;
+	/** 是否显示分类标签，默认显示；推荐阅读这类跨分类清单传 false */
+	showCategory?: boolean;
+	/** 组件实例 id：换一个就不会被「按当前文章重建相关文章」的脚本接管 */
+	widgetId?: string;
 }
 
 const {
@@ -23,6 +29,9 @@ const {
 	widgetConfig,
 	posts = [],
 	excludeCategories = [],
+	title,
+	showCategory = true,
+	widgetId = "related-posts-widget",
 } = Astro.props;
 
 const showTitle = widgetConfig?.showTitle !== false;
@@ -33,8 +42,8 @@ const emptyText = i18n(I18nKey.noRelatedPosts);
 ---
 
 <WidgetLayout
-	id="related-posts-widget"
-	name={i18n(I18nKey.relatedPosts)}
+	id={widgetId}
+	name={title ?? i18n(I18nKey.relatedPosts)}
 	showTitle={showTitle}
 	class={className}
 	style={style}
@@ -68,7 +77,7 @@ const emptyText = i18n(I18nKey.noRelatedPosts);
 							<div class="text-sm font-medium text-black/75 dark:text-white/75 truncate transition group-hover:text-(--primary)">
 								{post.data.title}
 							</div>
-							{post.data.category && (
+							{showCategory && post.data.category && (
 								<div class="mt-0.5">
 									<span class="inline-block text-xs px-1.5 py-0.5 rounded-sm bg-black/5 dark:bg-white/10 text-black/40 dark:text-white/40">
 										{post.data.category}
