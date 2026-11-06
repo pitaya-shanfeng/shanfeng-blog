@@ -353,3 +353,28 @@ body.wallpaper-transparent .custom-md {
     0 1px 2px rgb(0 0 0 / 0.5),
     0 10px 28px -12px rgb(0 0 0 / 0.6);
 }
+
+/* 在线原型内嵌（Axhub 等）：满宽，高度按视口取一档，不加外框装饰 */
+.proto-embed {
+  margin: 1.5rem 0 0.75rem;
+}
+
+.proto-embed iframe {
+  width: 100%;
+  height: clamp(520px, 74vh, 820px);
+  border: 1px solid color-mix(in oklab, var(--primary) 18%, transparent);
+  border-radius: 0.75rem;
+  background: #fff;
+}
+
+@media (max-width: 767px) {
+  .proto-embed iframe {
+    height: 66vh;
+  }
+}
+
+.proto-embed-note {
+  margin: 0 0 1.5rem;
+  font-size: 0.8125rem;
+  color: color-mix(in oklab, var(--primary) 45%, #6b7280);
+}
