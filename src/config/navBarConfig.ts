@@ -80,6 +80,8 @@ interface TopicRef {
 }
 
 interface ContentGroupConfig {
+	/** 单级栏目：一级项直接指向页面，不出下拉（如「方法沉淀」「学习思考」） */
+	single?: boolean;
 	name: string;
 	/** 一级项图标：块状语汇里不用图标，留空即可 */
 	icon?: string;
@@ -88,45 +90,32 @@ interface ContentGroupConfig {
 
 const CONTENT_GROUPS: ContentGroupConfig[] = [
 	{
-		name: "写作",
-		// 两本书：一本已成书，一本在写。一级项必须至少两个子项，
-		// 否则 resolveNavMenuLinks 会把子项提到一级、吃掉「写作」这个名字。
+		name: "书籍写作",
+		// 两本书：一本已成书，一本在写。
 		topics: [
-			// name 只是显示名，book 字段才是匹配书页的依据
 			{ name: "见山", book: "见山" },
 			{ name: "增长黑客", book: "增长黑客" },
 		],
 	},
 	{
-		name: "方法",
-		// 每个二级 = 一个分类（category 两级写法），各自有合集页 /topics/<slug>/。
+		name: "方法沉淀",
+		// 单级：一级项直接指向合集页，没有下拉。靠 tag 做细分，不再开二级。
+		single: true,
+		topics: [{ name: "方法沉淀", category: "方法沉淀", url: "/topics/fangfa-chendian/" }],
+	},
+	{
+		name: "落地实战",
 		topics: [
-			{ name: "需求洞察", category: "方法/需求洞察", url: "/topics/xuqiu-dongcha/" },
-			{ name: "产品设计", category: "方法/产品设计", url: "/topics/chanpin-sheji/" },
-			{ name: "商业增长", category: "方法/商业增长", url: "/topics/shangye-zengzhang/" },
+			{ name: "调研分析", category: "落地实战/调研分析", url: "/topics/diaoyan-fenxi/" },
+			{ name: "产品设计", category: "落地实战/产品设计", url: "/topics/chanpin-sheji/" },
+			{ name: "项目复盘", category: "落地实战/项目复盘", url: "/topics/xiangmu-fupan/" },
 		],
 	},
 	{
-		name: "实战",
-		// 同上：各自有合集页 /topics/<slug>/。
-		topics: [
-			{ name: "调研报告", category: "实战/调研报告", url: "/topics/diaoyan-baogao/" },
-			{ name: "方案设计", category: "实战/方案设计", url: "/topics/fangan-sheji/" },
-			{ name: "项目复盘", category: "实战/项目复盘", url: "/topics/xiangmu-fupan/" },
-		],
-	},
-	{
-		name: "拾遗",
-		// 三项各自有独立页面，不走归档筛选：
-		// 归档只能表达「按 tag 筛」，表达不了「栏目刊头 + 按时间倒序的列表」。
-		// 除行业动态是时间线（src/pages/hotnews.astro）外，其余两页版式同源，
-		// 共用 src/components/collection/CollectionPage.astro。
-		// 没有内容的栏目进去是空态，属预期，不是链接坏了。
-		topics: [
-			{ name: "学习笔记", tag: "学习笔记", url: "/notes/" },
-			{ name: "行业动态", tag: "行业动态", url: "/hotnews/" },
-			{ name: "转载精选", tag: "转载精选", url: "/picks/" },
-		],
+		name: "学习思考",
+		// 单级：学习笔记与转载精选合并，靠 tag 区分。
+		single: true,
+		topics: [{ name: "学习思考", category: "学习思考", url: "/notes/" }],
 	},
 ];
 
@@ -166,45 +155,39 @@ export const navCategoryGroups: NavCategoryGroup[] = CONTENT_GROUPS.map(
 	(group) => ({
 		name: group.name,
 		items: group.topics.map((topic) => ({
-			name: topic.name,
+			name: group.single ? group.name : topic.name,
 			url: resolveTopicUrl(topic),
 		})),
 	}),
 );
 
-/** 内容分组 → 导航项（一级 = 分组，二级 = 各索引项） */
-const buildContentGroup = (group: ContentGroupConfig): NavBarLink => ({
-	name: group.name,
-	url: "#",
-	icon: group.icon,
-	children: group.topics.map((topic) => ({
-		name: topic.name,
-		url: resolveTopicUrl(topic),
-	})),
-});
-
-/** 关于分组 */
-const ABOUT_GROUP: NavBarLink = {
-	name: "关于",
-	url: "#",
-	children: [
-		{ name: "个人介绍", url: "/about/" },
-		{ name: "版权声明", url: "/privacy/" },
-		{ name: "书签导航", url: "/booknav/" },
-		{ name: "联系合作", url: "/contact/" },
-	],
-};
+/**
+ * 内容分组 → 导航项。
+ *
+ * 普通分组：一级是下拉容器，children 是各索引项。
+ * 单级分组（single）：一级直接指向那个页面 —— 不能给 children，
+ * 否则「只剩一个子项」会被 resolveNavMenuLinks 提级、把一级名吃掉。
+ */
+const buildContentGroup = (group: ContentGroupConfig): NavBarLink =>
+	group.single
+		? { name: group.name, url: resolveTopicUrl(group.topics[0]), icon: group.icon }
+		: {
+				name: group.name,
+				url: "#",
+				icon: group.icon,
+				children: group.topics.map((topic) => ({
+					name: topic.name,
+					url: resolveTopicUrl(topic),
+				})),
+			};
 
 const getDynamicNavBarConfig = (): NavBarConfig => {
 	const links: NavBarLink[] = [
 		// 主页
 		LinkPresets.Home,
 
-		// 四个内容分组（著书立说 / 方法沉淀 / 实战复盘 / 学海拾遗）
+		// 四个内容入口（书籍写作 / 方法沉淀 / 落地实战 / 学习思考）
 		...CONTENT_GROUPS.map(buildContentGroup),
-
-		// 关于
-		ABOUT_GROUP,
 	];
 
 	// 说明：模板原有的「文章」（归档/分类/标签/系列）、「社交」（友链/留言）、「我的」

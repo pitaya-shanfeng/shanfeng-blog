@@ -5,7 +5,7 @@ description: 一个从大山里的水果做起、用代理分销做到年 GMV �
 quote: 卖的不是水果，是城里人对「产地」的信任。
 image: /assets/library/notes/chenyi-wuyu/cover.webp
 banner: /assets/library/notes/chenyi-wuyu/banner.webp
-category: 实战/调研报告
+category: 落地实战/调研分析
 tags:
   - 产品
   - 调研

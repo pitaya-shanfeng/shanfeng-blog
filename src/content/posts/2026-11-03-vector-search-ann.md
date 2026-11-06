@@ -4,7 +4,7 @@ published: 2026-11-03T12:41:00+08:00
 description: 暴力搜索精度能到 100%，复杂度却是 O(N)，数据一多就慢到不能用。IVF 先聚类分簇、查询只比质心，HNSW 用分层图逐层下探，文末附一张选型对比表。
 quote: 暴力搜索精度 100%、复杂度 O(N)，规模一上来就不可用。
 image: /assets/library/notes/vector-search-ann/cover.webp
-category: 拾遗/学习笔记
+category: 学习思考
 tags:
   - RAG
   - 原理

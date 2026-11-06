@@ -5,7 +5,7 @@ description: 一家靠"正品折扣"做到世界 500 强的零售商：运营费
 quote: 折扣不是清库存，是让顾客觉得这次不买就没了。
 image: /assets/library/notes/tjx-report/cover.webp
 banner: /assets/library/notes/tjx-report/banner.webp
-category: 实战/调研报告
+category: 落地实战/调研分析
 tags:
   - 产品
   - 调研

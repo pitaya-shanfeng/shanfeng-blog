@@ -5,7 +5,7 @@ description: 扫福字、换福卡、送手写福：把春节的社交习惯做�
 quote: 五福真正稀缺的不是卡，是「还差一张」的那点执念。
 image: /assets/library/notes/alipay-wufu/cover.webp
 banner: /assets/library/notes/alipay-wufu/banner.webp
-category: 实战/调研报告
+category: 落地实战/调研分析
 tags:
   - 产品
   - 调研

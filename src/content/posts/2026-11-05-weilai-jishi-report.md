@@ -5,7 +5,7 @@ description: 2019 年的未来集市，一站式全品类圈层电商。按产�
 quote: 7 月开始正式推广放量，目前还处在探索期。
 image: /assets/library/notes/weilai-jishi-report/cover.webp
 banner: /assets/library/notes/weilai-jishi-report/banner.webp
-category: 实战/调研报告
+category: 落地实战/调研分析
 tags:
   - 产品
   - 调研

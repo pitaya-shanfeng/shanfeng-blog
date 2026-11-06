@@ -3,7 +3,7 @@ title: PRD 的那些事
 published: 2026-10-29
 description: 从 PRD 到底用来干啥、有哪些形式与工具，到一体化 PRD 的完整结构：版本说明、项目说明、功能说明、埋点与影响说明，以及前台/后台详细设计。
 image: /assets/library/methods/product-design/prd-writing/cover.webp
-category: 方法/产品设计
+category: 方法沉淀
 tags:
   - PRD
   - 需求文档

@@ -5,7 +5,7 @@ description: 微盛是怎么把企微做成一套运营工具的：素材体系�
 quote: 素材能不能追踪，决定了它是不是“资产”。
 image: /assets/library/notes/weisheng-scrm/cover.webp
 banner: /assets/library/notes/weisheng-scrm/banner.webp
-category: 实战/调研报告
+category: 落地实战/调研分析
 tags:
   - 产品
   - 调研

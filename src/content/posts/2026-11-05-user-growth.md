@@ -5,7 +5,7 @@ description: 经销商在平台里怎么长大：从加入、订货、晋升到�
 quote: 更短时间拿到更多收益，每个阶段该解决的需求并不一样。
 image: /assets/library/notes/user-growth/cover.webp
 banner: /assets/library/notes/user-growth/banner.webp
-category: 实战/调研报告
+category: 落地实战/调研分析
 tags:
   - 产品
   - 调研

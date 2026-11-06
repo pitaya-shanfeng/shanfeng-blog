@@ -5,7 +5,7 @@ description: 双 11 的互动游戏为什么能让人连着半个月每天 9 点
 quote: 参与游戏是要给门票钱的：你在别处的时间，就是这场游戏的入场券。
 image: /assets/library/notes/tmall-miaotang/cover.webp
 banner: /assets/library/notes/tmall-miaotang/banner.webp
-category: 实战/调研报告
+category: 落地实战/调研分析
 tags:
   - 产品
   - 调研

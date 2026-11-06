@@ -5,7 +5,7 @@ description: 两款导购返利型社交电商的对照调研：先看社交电�
 quote: 会员制社交电商的分销机制，正在变。
 image: /assets/library/notes/pinxiang-huasheng/cover.webp
 banner: /assets/library/notes/pinxiang-huasheng/banner.webp
-category: 实战/调研报告
+category: 落地实战/调研分析
 tags:
   - 产品
   - 调研

@@ -5,7 +5,7 @@ description: 云集想做地标美食，先看行业趋势、再跑一轮 2.4 �
 quote: 食品是万亿级市场，也是云集过去两年第二大行业。
 image: /assets/library/notes/food-direction/cover.webp
 banner: /assets/library/notes/food-direction/banner.webp
-category: 方法/商业增长
+category: 方法沉淀
 tags:
   - 增长
   - 美食

@@ -4,7 +4,7 @@ published: 2026-11-04T21:15:00+08:00
 description: 入口质量决定 RAG 上限：五类文档、三大解析范式、ColPali 视觉原生方案，再到分块、Embedding 与向量库的选型决策；下半场是电商客服实战，LoRA 微调、AWQ 量化、vLLM 部署与三区服务。
 quote: 数据先于算法，基线先于优化，工程决定上限。
 image: /assets/library/notes/rag-data-pipeline/cover.webp
-category: 拾遗/学习笔记
+category: 学习思考
 tags:
   - RAG
   - 原理

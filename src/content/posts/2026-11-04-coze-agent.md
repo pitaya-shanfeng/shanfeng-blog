@@ -4,7 +4,7 @@ published: 2026-11-04T16:20:00+08:00
 description: 零代码搭 Bot：先设人设与提示词，再挂插件，把业务逻辑写成工作流（Workflow 与 Chatflow），接上知识库与数据库，最后用「AI 每日资讯」把插件、循环、去重、触发器串成一条自动链路。
 quote: 节点即函数，连起来就是业务流程。
 image: /assets/library/notes/coze-agent/cover.webp
-category: 拾遗/学习笔记
+category: 学习思考
 tags:
   - Agent
   - 工程化

@@ -4,7 +4,7 @@ published: 2026-11-04T15:50:00+08:00
 description: 从「会聊天」到「会做事」：先讲清楚 Agent 的定义、分类与四要素，再拆 Function Calling 的调用过程，然后对比 ReAct、Plan-and-Execute、Self-Reflection 三套框架和五款开发框架，最后用动态 SQL、12306 查票、命理机器人三个实战收口。
 quote: 模型负责想，工具负责做，记忆负责不忘记。
 image: /assets/library/notes/ai-agent-landscape/cover.webp
-category: 拾遗/学习笔记
+category: 学习思考
 tags:
   - Agent
   - 大模型

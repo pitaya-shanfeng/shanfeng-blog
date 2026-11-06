@@ -5,7 +5,7 @@ description: 把企微从“加粉工具”做成一套能支撑多业务方的�
 quote: 第三方都能加粉，难的是把加进来的客户接回自己的账户体系。
 image: /assets/library/notes/wecom-tools/cover.webp
 banner: /assets/library/notes/wecom-tools/banner.webp
-category: 方法/产品设计
+category: 落地实战/产品设计
 tags:
   - 产品
   - 私域

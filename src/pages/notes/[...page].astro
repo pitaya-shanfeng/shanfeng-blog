@@ -17,7 +17,7 @@ import { siteConfig } from "@/config";
 import { bannerQuotes } from "@/utils/banner-quotes-data";
 import { getCollectionPosts } from "@/utils/collection-posts";
 
-const CATEGORY = "学习笔记";
+const CATEGORY = "学习思考";
 
 const LEAD = "把「学会了」拆成能回看的每一步。";
 const DESC =
@@ -31,7 +31,7 @@ const EMPTY_HINT =
  */
 export const getStaticPaths = (async ({ paginate }) => {
 	// 这里不能用 frontmatter 里的 CATEGORY：getStaticPaths 在组件作用域之外求值。
-	const posts = await getCollectionPosts("学习笔记");
+	const posts = await getCollectionPosts("学习思考");
 	if (posts.length === 0) {
 		return [{ params: { page: undefined }, props: { page: null } }];
 	}

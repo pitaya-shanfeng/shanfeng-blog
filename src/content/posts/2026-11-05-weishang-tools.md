@@ -5,7 +5,7 @@ description: 把微商在用的工具盘了一遍：软文、图片海报、视�
 quote: 工具解决的是效率，不是模式。
 image: /assets/library/notes/weishang-tools/cover.webp
 banner: /assets/library/notes/weishang-tools/banner.webp
-category: 实战/调研报告
+category: 落地实战/调研分析
 tags:
   - 产品
   - 调研

@@ -5,7 +5,7 @@ description: 一家从青岛线下服饰批发起家、2017 年转做社交电�
 quote: 服饰批发的老底子，成了做 ODM 的底气。
 image: /assets/library/notes/jiangpin-report/cover.webp
 banner: /assets/library/notes/jiangpin-report/banner.webp
-category: 实战/调研报告
+category: 落地实战/调研分析
 tags:
   - 产品
   - 调研

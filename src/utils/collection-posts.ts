@@ -49,6 +49,21 @@ export function makeCategoryFilter(category: string) {
  * htmlPosts 的 entry 类型与 posts 不同，但 loader 写出的 data 形状一致
  * （content.config.ts 里两个 collection 共用 postSchema），这里 cast 一次。
  */
+/** 按 tag 取文章：与分类筛选同源，供「转载精选」这类靠标签归栏的页面用 */
+export async function getCollectionPostsByTag(
+	tag: string,
+): Promise<CollectionPost[]> {
+	const mdPosts = await getCollection("posts", ({ data }) =>
+		!data.draft && (data.tags ?? []).includes(tag),
+	);
+	const htmlPosts = await getCollection("htmlPosts", ({ data }) =>
+		!data.draft && (data.tags ?? []).includes(tag),
+	);
+	return [...mdPosts, ...(htmlPosts as unknown as typeof mdPosts)].sort(
+		(a, b) => b.data.published.valueOf() - a.data.published.valueOf(),
+	);
+}
+
 export async function getCollectionPosts(
 	category: string,
 ): Promise<CollectionPost[]> {

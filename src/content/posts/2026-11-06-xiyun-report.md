@@ -5,7 +5,7 @@ description: 国货护肤品牌怎么做社群生意：分销机制、企业微�
 quote: 护肤品的复购，靠的不是广告，是那个一直回消息的人。
 image: /assets/library/notes/xiyun-report/cover.webp
 banner: /assets/library/notes/xiyun-report/banner.webp
-category: 实战/调研报告
+category: 落地实战/调研分析
 tags:
   - 产品
   - 调研

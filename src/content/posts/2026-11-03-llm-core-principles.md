@@ -4,7 +4,7 @@ published: 2025-12-02T18:00:00+08:00
 description: 模型只做一件事：根据上文猜下一个词。分词、词嵌入、注意力、生成四步拆开讲，用「国王有个女儿」走一遍；训练三阶段是预训练、SFT、RLHF。
 quote: 模型只做一件事：根据上文猜下一个词。
 image: /assets/library/notes/llm-core-principles/cover.webp
-category: 拾遗/学习笔记
+category: 学习思考
 tags:
   - 大模型
   - 原理

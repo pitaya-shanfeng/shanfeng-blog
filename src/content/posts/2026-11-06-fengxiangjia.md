@@ -5,7 +5,7 @@ description: 鲸灵集团旗下的品牌特卖平台，掌柜靠分享赚佣金�
 quote: 低价特卖 + 高佣金，是掌柜愿意转发的那点理由。
 image: /assets/library/notes/fengxiangjia/cover.webp
 banner: /assets/library/notes/fengxiangjia/banner.webp
-category: 实战/调研报告
+category: 落地实战/调研分析
 tags:
   - 产品
   - 调研

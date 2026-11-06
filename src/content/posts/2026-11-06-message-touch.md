@@ -5,7 +5,7 @@ description: 云集想把 8000 万用户真正联系起来：五个通道各管�
 quote: 通道没打通，发得多不等于触达得到。
 image: /assets/library/notes/message-touch/cover.webp
 banner: /assets/library/notes/message-touch/banner.webp
-category: 方法/商业增长
+category: 方法沉淀
 tags:
   - 增长
   - 触达

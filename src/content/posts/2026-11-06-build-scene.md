@@ -5,7 +5,7 @@ description: 62 页讲清一件事：场是空间，场景是情景。从场景�
 quote: 场是空间，场景是情景——差的不是那块地，是那一刻。
 image: /assets/library/notes/build-scene/cover.webp
 banner: /assets/library/notes/build-scene/banner.webp
-category: 方法/商业增长
+category: 方法沉淀
 tags:
   - 增长
   - 场景

@@ -5,7 +5,7 @@ description: 抖音生态里有一类中间商：团长和抖客。这份 25 页
 quote: 团长赚的是信息差，抖客赚的是流量差。
 image: /assets/library/notes/dou-ecosystem/cover.webp
 banner: /assets/library/notes/dou-ecosystem/banner.webp
-category: 实战/调研报告
+category: 落地实战/调研分析
 tags:
   - 产品
   - 调研

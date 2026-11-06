@@ -4,7 +4,7 @@ published: 2026-11-03T13:08:00+08:00
 description: 初步检索能召回，却不一定排得准。重排序是第二道过滤：Cross-Encoder 把问题和文档成对送进模型打分，再按分数重排，文末还算了一笔延迟成本。
 quote: 初步检索「召得回」，但不一定「排得好」。
 image: /assets/library/notes/rerank-principles/cover.webp
-category: 拾遗/学习笔记
+category: 学习思考
 tags:
   - RAG
   - 原理

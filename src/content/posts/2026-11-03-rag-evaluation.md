@@ -4,7 +4,7 @@ published: 2026-11-03T13:12:00+08:00
 description: RAG 的输出不确定、知识库还在变，所以得先有评估依据：检索测上下文相关性与召回率，生成测忠实度与答案相关性。工具用 Ragas 和 TruLens，然后拿医疗问答、知识块大小、智能汽车挑战赛三个实战，把指标怎么指导优化走一遍。
 quote: 四个指标不是孤立的，检索器是生成器的地基。
 image: /assets/library/notes/rag-evaluation/cover.webp
-category: 拾遗/学习笔记
+category: 学习思考
 tags:
   - RAG
   - 工程化

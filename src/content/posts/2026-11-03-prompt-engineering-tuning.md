@@ -4,7 +4,7 @@ published: 2026-10-20T10:00:00+08:00
 description: 提示词其实只解决两件事：把背景给足，把任务拆开。六种技巧按代价排开，后半段转到防守，讲注入、泄露、越狱怎么防，也讲 Coze 和百炼怎么跑通。
 quote: 提示词只解决两件事：把背景信息给足，把复杂任务拆成步骤。
 image: /assets/library/notes/prompt-engineering-tuning/cover.webp
-category: 拾遗/学习笔记
+category: 学习思考
 tags:
   - 提示词
   - 工程化

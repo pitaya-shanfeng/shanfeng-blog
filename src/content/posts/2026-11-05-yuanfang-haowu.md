@@ -5,7 +5,7 @@ description: 一家靠有机食品做私域的平台，上线五个月做到 550
 quote: 无层级模式、有机心智、溯源内容，是远方好物的三把利剑。
 image: /assets/library/notes/yuanfang-haowu/cover.webp
 banner: /assets/library/notes/yuanfang-haowu/banner.webp
-category: 实战/调研报告
+category: 落地实战/调研分析
 tags:
   - 产品
   - 调研

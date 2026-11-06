@@ -5,7 +5,7 @@ description: 竞品分析最容易停在“看得见的功能”，这份 19 页
 quote: 竞品分析切忌停留在看得见的功能、界面、交互层面。
 image: /assets/library/notes/competitive-analysis/cover.webp
 banner: /assets/library/notes/competitive-analysis/banner.webp
-category: 方法/产品设计
+category: 方法沉淀
 tags:
   - 产品
   - 方法论

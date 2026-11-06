@@ -5,7 +5,7 @@ description: 安利这套体系跑了六十多年：靠一款清洁剂起步，�
 quote: 没有会议就没有安利——成交发生在客厅，不在货架。
 image: /assets/library/notes/amway-report/cover.webp
 banner: /assets/library/notes/amway-report/banner.webp
-category: 实战/调研报告
+category: 落地实战/调研分析
 tags:
   - 产品
   - 调研

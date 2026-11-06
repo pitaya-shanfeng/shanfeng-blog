@@ -5,7 +5,7 @@ description: 云鸡农场要跟多多果园比一比：一条主线任务怎么�
 quote: 种树不是目的，让人每天回来点一下才是。
 image: /assets/library/notes/duoduo-farm/cover.webp
 banner: /assets/library/notes/duoduo-farm/banner.webp
-category: 实战/调研报告
+category: 落地实战/调研分析
 tags:
   - 产品
   - 调研

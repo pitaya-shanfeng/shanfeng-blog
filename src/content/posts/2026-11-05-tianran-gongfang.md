@@ -5,7 +5,7 @@ description: 一个靠竹妃单点打穿的环保健康平台：会员与佣金�
 quote: 单款爆品撑起千万粉丝，模式简单到值得拆一遍。
 image: /assets/library/notes/tianran-gongfang/cover.webp
 banner: /assets/library/notes/tianran-gongfang/banner.webp
-category: 实战/调研报告
+category: 落地实战/调研分析
 tags:
   - 产品
   - 调研

@@ -5,7 +5,7 @@ description: 早团想给优质用户做免费试用，于是把淘宝、贝店�
 quote: 试用中心不生成商品订单，避免干扰原分佣与补货逻辑。
 image: /assets/library/notes/shiyong-zhongxin/cover.webp
 banner: /assets/library/notes/shiyong-zhongxin/banner.webp
-category: 实战/调研报告
+category: 落地实战/调研分析
 tags:
   - 产品
   - 调研

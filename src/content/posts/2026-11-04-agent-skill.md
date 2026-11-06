@@ -4,7 +4,7 @@ published: 2026-11-04T17:00:00+08:00
 description: Agent「能聊不能干」，缺的是手和脚。Skill 用一个文件夹封装能力：SKILL.md 写元数据与步骤、脚本负责执行，靠渐进式披露省 token；再讲两种调用模式、三条编写铁律与工程化落地。
 quote: 渐进式披露：先给元数据，再按需加载正文。
 image: /assets/library/notes/agent-skill/cover.webp
-category: 拾遗/学习笔记
+category: 学习思考
 tags:
   - Agent
   - 工程化
