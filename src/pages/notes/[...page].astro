@@ -5,15 +5,14 @@
  * 对象是「自己的理解过程」：不总结别人的书，只记这个知识点怎么啃下来的。
  * 版式与取数在 src/components/collection/CollectionPage.astro。
  *
- * 分页说明：
- * 本页是唯一的「拾遗」分页页，其余栏目（/hotnews/、/picks/）仍是一次性列表。
- * 之所以要把路由写成 [...page]，是因为 Astro 的 paginate() 只能在带 rest 参数的
- * 页面里用；第一页的地址仍是 /notes/，动态段为空，对外链接不变。
+ * 分页说明：不再分页。
+ * 合集页的读者是「把这一类扫一遍」，分页会把列表切碎、还要多一次点击；
+ * 34 篇一次性铺开比翻四页更好用。路由仍保留 [...page] 形式（沿用原文件名），
+ * 但只产出 /notes/ 一个地址，第二页起不再生成。
  */
 
 import type { GetStaticPaths } from "astro";
 import CollectionPage from "@/components/collection/CollectionPage.astro";
-import { siteConfig } from "@/config";
 import { bannerQuotes } from "@/utils/banner-quotes-data";
 import { getCollectionPosts } from "@/utils/collection-posts";
 
@@ -25,22 +24,14 @@ const DESC =
 const EMPTY_HINT =
 	"第一篇大概会从一个具体的卡点开始——哪个概念没想通、试了什么、后来怎么绕过去的。";
 
-/**
- * 空栏目要单独兜底：paginate() 遇到空数组会抛错，
- * 而栏目刚建好、一篇都还没写的时候仍然要能访问（现在是 /picks/ 的处境）。
- */
-export const getStaticPaths = (async ({ paginate }) => {
-	// 这里不能用 frontmatter 里的 CATEGORY：getStaticPaths 在组件作用域之外求值。
-	const posts = await getCollectionPosts("学习思考");
-	if (posts.length === 0) {
-		return [{ params: { page: undefined }, props: { page: null } }];
-	}
-	return paginate(posts, { pageSize: siteConfig.pagination.postsPerPage });
+export const getStaticPaths = (() => {
+	// 只产出 /notes/ 这一条路由：合集页不分页
+	return [{ params: { page: undefined }, props: { page: null } }];
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props;
 
-/** 盘口的篇数、字数按全量算，翻页不该让「共多少篇」跟着变 */
+/** 盘口的篇数、字数按全量算 */
 const posts = await getCollectionPosts(CATEGORY);
 ---
 
