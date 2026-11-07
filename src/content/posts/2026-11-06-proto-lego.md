@@ -14,15 +14,6 @@ draft: false
 comment: false
 hideSidebar: true
 prototypeDir: lego
+prototypePages: 22
 ---
-
-<div class="proto-embed">
-  <iframe
-    src="/proto/lego/entry.html"
-    title="乐高 V4.0 改版方案 · 可交互原型"
-    loading="lazy"
-    allowfullscreen
-  ></iframe>
-</div>
-
 ![乐高系统产品结构图：现状是页面搭建、投放规则、数据管理；计划是场景搭建、数据中心与规则中心](/assets/library/notes/proto-lego/structure.webp)

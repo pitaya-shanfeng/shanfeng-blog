@@ -30,6 +30,10 @@ import utc from "dayjs/plugin/utc";
 import CoverImage from "@/components/common/CoverImage.astro";
 import PostMetadata from "@/components/layout/PostMeta.astro";
 import { countPrototypePages } from "@/utils/prototype-pages";
+import {
+	prototypeEntryUrl,
+	PROTOTYPE_CDN_BASE,
+} from "@/config/prototypeConfig";
 import EmbedReader from "@/components/misc/EmbedReader.astro";
 import ReportBrief from "@/components/misc/ReportBrief.astro";
 import SeriesNav from "@/components/misc/SeriesNav.astro";
@@ -130,6 +134,8 @@ const postMinutes = entry.data.minutes ?? remarkPluginFrontmatter.minutes;
  * 原型类文章的字数没有意义（正文只有一个 iframe），改成报「页数」：
  * 从镜像目录 public/proto/<dir>/ 里数页面 HTML 得出，不用手填。
  */
+const prototypeDir = (entry.data as { prototypeDir?: string }).prototypeDir ?? "";
+const prototypeSrc = prototypeEntryUrl(prototypeDir);
 const prototypePages = countPrototypePages(
 	(entry.data as { prototypeDir?: string }).prototypeDir ?? "",
 	(entry.data as { prototypePages?: number }).prototypePages,
@@ -653,9 +659,25 @@ const postBanner =
               关键数字与「为什么收它」必须放在第一屏。 */}
           <ReportBrief report={entry.data.report} />
 
-          <Markdown class={markdownClass}>
-            <Content />
-          </Markdown>
+          {/*
+            原型文章：iframe 由页面渲染，不写在 markdown 里。
+            src 走 prototypeEntryUrl()，配了 CDN 就指向 CDN，
+            这样仓库里不用再放几十 MB 的原型文件。
+          */}
+          {prototypeSrc ? (
+            <div class="proto-embed">
+              <iframe
+                src={prototypeSrc}
+                title={`${entry.data.title} · 可交互原型`}
+                loading="lazy"
+                allowfullscreen
+              />
+            </div>
+          ) : (
+            <Markdown class={markdownClass}>
+              <Content />
+            </Markdown>
+          )}
 
           {/* 外链型转载：正文之后挂内置阅读器，让读者不必离站 */}
           {entry.data.report?.embed && entry.data.report.href && (

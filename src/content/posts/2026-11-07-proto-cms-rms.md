@@ -17,12 +17,3 @@ prototypeDir: cms-rms
 # Axure 站点树里是 35 页（目录里多一个「项目说明（草稿）」未发布）
 prototypePages: 35
 ---
-
-<div class="proto-embed">
-  <iframe
-    src="/proto/cms-rms/entry.html"
-    title="CMS/RMS案例 · 可交互原型"
-    loading="lazy"
-    allowfullscreen
-  ></iframe>
-</div>

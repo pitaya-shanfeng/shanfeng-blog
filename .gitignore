@@ -51,3 +51,6 @@ package/
 # 本地一次性调试脚本与临时产出，不进仓库
 repro*.mjs
 outputs/
+
+# 原型镜像（几十 MB 一套）不进仓库，放对象存储 + CDN
+public/proto/
