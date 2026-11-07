@@ -23,14 +23,13 @@ comment: false
 
 ## 怎么看
 
-左下角的站点树直接切页面，「产品结构」那一页是整体结构图；画布内可以拖动、点击。
+左侧是 22 个页面的目录，点一项就切一页；原型本体在右侧，可以直接点、直接拖。
 
-<div class="proto-card">
-  <a class="proto-card-shot" href="https://axhub.im/ax9/c5b479fb17db22a2/#g=1" target="_blank" rel="noopener noreferrer">
-    <img src="/assets/library/notes/proto-lego/preview.webp" alt="乐高 V4.0 改版方案原型截图：左侧站点树与产品结构图" loading="lazy" />
-  </a>
-  <div class="proto-card-bar">
-    <a class="proto-card-btn" href="https://axhub.im/ax9/c5b479fb17db22a2/#g=1" target="_blank" rel="noopener noreferrer">打开原型</a>
-    <span class="proto-card-hint">原型托管在 Axhub，点开后可拖动、切页面</span>
-  </div>
+<div class="proto-embed">
+  <iframe
+    src="/proto/lego/index.html"
+    title="乐高 V4.0 改版方案 · 可交互原型"
+    loading="lazy"
+    allowfullscreen
+  ></iframe>
 </div>

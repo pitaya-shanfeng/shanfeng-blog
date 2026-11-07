@@ -372,6 +372,13 @@ export default defineConfig({
 			watch: {
 				ignored: ["**/package/**", "**/Firefly-docs/**"],
 			},
+			/**
+			 * 在线原型（Axhub）反代到本站路径下。
+			 * 原型是「外层 HTML + 内层 iframe 画布」，画布资源带 cookie 鉴权，
+			 * 直接跨站 iframe 只会出来左侧站点树。同源反代之后浏览器认为资源
+			 * 都在本站，cookie 与相对路径都成立，原型就能在文章里正常操作。
+			 * 生产环境对应 vercel.json 里的 rewrite。
+			 */
 		},
 		resolve: {
 			alias: {
