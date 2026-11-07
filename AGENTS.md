@@ -32,3 +32,12 @@ Use Conventional Commits, matching the current history: `feat: ...`, `fix: ...`,
 ## Security & Configuration Tips
 
 Do not commit secrets, tokens, or service keys in config files. Keep deployment-specific settings in the target platform environment, and review generated files such as `dist`, `src/constants/lqips.json`, and `src/constants/icons.ts` before committing them.
+
+## 部署策略（2026-11-07 起）
+
+**默认只本地提交，不推送、不部署。**
+
+- 改完代码/内容，`git commit` 就停在本地，**不要 `git push`**
+- Cloudflare Pages 绑着 `pitaya-shanfeng/shanfeng-blog` 的 `main`，一推就会自动构建部署（一次要几分钟）
+- 等用户明说「更新」「发布」「推上去」时，才 `git push origin master:main`，然后验证线上
+- 原因：备案审核中，自定义域名暂停解析，只能走 pages.dev，没必要每次都部署
