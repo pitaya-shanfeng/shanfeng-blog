@@ -8,6 +8,7 @@ import KatexManager from "@components/features/KatexManager.astro";
 import License from "@components/misc/License.astro";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
+import { readdirSync } from "node:fs";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
 import "@/styles/banner-post.css";
 import {
@@ -125,13 +126,32 @@ const bannerQuote =
 const postWords = entry.data.words ?? remarkPluginFrontmatter.words;
 const postMinutes = entry.data.minutes ?? remarkPluginFrontmatter.minutes;
 
+/**
+ * 原型类文章的字数没有意义（正文只有一个 iframe），改成报「页数」：
+ * 从镜像目录 public/proto/<dir>/ 里数页面 HTML 得出，不用手填。
+ */
+const prototypeDir = (entry.data as { prototypeDir?: string }).prototypeDir ?? "";
+const prototypePages = (() => {
+	if (!prototypeDir) return 0;
+	try {
+		const dir = `public/proto/${prototypeDir}`;
+		return readdirSync(dir)
+			.filter((f) => f.endsWith(".html"))
+			.filter((f) => !/^(index|entry|start)/.test(f)).length;
+	} catch {
+		return 0;
+	}
+})();
+
 const bannerPostMeta = {
 	title: entry.data.title,
 	description: bannerQuote,
 	published: entry.data.published,
 	updated: entry.data.updated,
-	words: postWords,
-	minutes: postMinutes,
+	words: prototypePages ? undefined : postWords,
+	pages: prototypePages || undefined,
+	// 原型文章不报阅读时长：它是拿来点的，不是拿来读的
+	minutes: prototypePages ? undefined : postMinutes,
 	category: entry.data.category || undefined,
 	series: (entry.data as { series?: string }).series || undefined,
 	tags: entry.data.tags,
@@ -382,19 +402,23 @@ const postBanner =
             />
             <div class="absolute inset-x-4 top-3 z-10 flex flex-wrap items-center justify-end gap-x-3 gap-y-1 text-xs font-medium text-white drop-shadow-[0_1px_2px_rgb(0_0_0/0.9)]">
               <div class="flex items-center gap-1 whitespace-nowrap">
-                <Icon name="material-symbols:notes-rounded" class="text-base" />
+                <Icon
+                  name={prototypePages ? "material-symbols:layers-outline-rounded" : "material-symbols:notes-rounded"}
+                  class="text-base"
+                />
                 <span>
-                  {postWords}
-                  {" " + i18n(postWords === 1 ? I18nKey.wordCount : I18nKey.wordsCount)}
+                  {prototypePages ? `${prototypePages} 页原型` : `${postWords} ${i18n(postWords === 1 ? I18nKey.wordCount : I18nKey.wordsCount)}`}
                 </span>
               </div>
-              <div class="flex items-center gap-1 whitespace-nowrap">
-                <Icon name="material-symbols:schedule-outline-rounded" class="text-base" />
-                <span>
-                  {postMinutes}
-                  {" " + i18n(postMinutes === 1 ? I18nKey.minuteCount : I18nKey.minutesCount)}
-                </span>
-              </div>
+              {!prototypePages && (
+                <div class="flex items-center gap-1 whitespace-nowrap">
+                  <Icon name="material-symbols:schedule-outline-rounded" class="text-base" />
+                  <span>
+                    {postMinutes}
+                    {" " + i18n(postMinutes === 1 ? I18nKey.minuteCount : I18nKey.minutesCount)}
+                  </span>
+                </div>
+              )}
               {entry.data.password && (
                 <div class="flex items-center gap-1 whitespace-nowrap">
                   <Icon name="material-symbols:lock-outline" class="text-base" />
@@ -439,13 +463,13 @@ const postBanner =
               <div
                 class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center mr-2"
               >
-                <Icon name="material-symbols:notes-rounded" />
+                <Icon name={prototypePages ? "material-symbols:layers-outline-rounded" : "material-symbols:notes-rounded"} />
               </div>
               <div class="text-sm">
-                {postWords}
-                {" " + i18n(I18nKey.wordsCount)}
+                {prototypePages ? `${prototypePages} 页原型` : `${postWords} ${i18n(I18nKey.wordsCount)}`}
               </div>
             </div>
+            {!prototypePages && (
             <div class="flex flex-row items-center">
               <div
                 class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center mr-2"
@@ -464,6 +488,7 @@ const postBanner =
                 }
               </div>
             </div>
+            )}
             {entry.data.password && (
               <div class="flex flex-row items-center">
                 <div

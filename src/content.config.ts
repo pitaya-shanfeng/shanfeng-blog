@@ -79,6 +79,8 @@ const postSchema = z.object({
 	banner: z.string().optional().default(""),
 	/** 详情页藏掉侧栏、正文铺满。给原型/全宽内容这类文章用 */
 	hideSidebar: z.boolean().optional().default(false),
+	/** 原型文章：指向 public/proto/<dir>/，构建时数出页数用于盘口 */
+	prototypeDir: z.string().optional().default(""),
 	tags: z.array(z.string()).optional().default([]),
 	category: z.string().optional().nullable().default(""),
 	lang: z.string().optional().default(""),

@@ -89,21 +89,31 @@ const {
                                     <span>{bannerPostMeta.tags.join(" / ")}</span>
                                 </span>
                             )}
-                            {typeof bannerPostMeta.words === "number" && (
+                            {typeof bannerPostMeta.pages === "number" ? (
                                 <span class="inline-flex items-center gap-1.5">
                                     <Icon
-                                        name="material-symbols:notes-rounded"
+                                        name="material-symbols:layers-outline-rounded"
                                         class="text-[1.05em]"
                                     />
-                                    <span>
-                                        {bannerPostMeta.words}{" "}
-                                        {i18n(
-                                            bannerPostMeta.words === 1
-                                                ? I18nKey.wordCount
-                                                : I18nKey.wordsCount,
-                                        )}
-                                    </span>
+                                    <span>{bannerPostMeta.pages} 页原型</span>
                                 </span>
+                            ) : (
+                                typeof bannerPostMeta.words === "number" && (
+                                    <span class="inline-flex items-center gap-1.5">
+                                        <Icon
+                                            name="material-symbols:notes-rounded"
+                                            class="text-[1.05em]"
+                                        />
+                                        <span>
+                                            {bannerPostMeta.words}{" "}
+                                            {i18n(
+                                                bannerPostMeta.words === 1
+                                                    ? I18nKey.wordCount
+                                                    : I18nKey.wordsCount,
+                                            )}
+                                        </span>
+                                    </span>
+                                )
                             )}
                             {typeof bannerPostMeta.minutes === "number" && (
                                 <span class="inline-flex items-center gap-1.5">
@@ -138,9 +148,11 @@ const {
                             )}
                         {typeof bannerPostMeta.words === "number" && (
                             <span class="inline-flex items-center gap-1.5">
-                                <Icon name="material-symbols:ink-pen-outline-rounded" class="text-[1.05em]" />
+                                <Icon name={bannerPostMeta.pages ? "material-symbols:layers-outline-rounded" : "material-symbols:ink-pen-outline-rounded"} class="text-[1.05em]" />
                                 <span>
-                                    {bannerPostMeta.words} {i18n(bannerPostMeta.words === 1 ? I18nKey.wordCount : I18nKey.wordsCount)}
+                                    {bannerPostMeta.pages
+                                        ? `${bannerPostMeta.pages} 页原型`
+                                        : `${bannerPostMeta.words} ${i18n(bannerPostMeta.words === 1 ? I18nKey.wordCount : I18nKey.wordsCount)}`}
                                 </span>
                             </span>
                         )}

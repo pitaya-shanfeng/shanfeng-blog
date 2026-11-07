@@ -13,6 +13,7 @@ banner: /assets/library/notes/proto-lego/banner.webp
 draft: false
 comment: false
 hideSidebar: true
+prototypeDir: lego
 ---
 
 <div class="proto-embed">

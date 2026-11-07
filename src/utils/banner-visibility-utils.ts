@@ -9,6 +9,8 @@ export interface BannerPostMeta {
 	published: Date;
 	updated?: Date;
 	words?: number;
+	/** 原型类文章的页数：有值时盘口显示「N 页」，不再显示字数 */
+	pages?: number;
 	minutes?: number;
 	category?: string;
 	/** 系列名：和 category 一起显示成「一级 / 二级」 */
