@@ -52,9 +52,8 @@ package/
 repro*.mjs
 outputs/
 
-# 原型镜像（几十 MB 一套）不进仓库，放对象存储 + CDN
-public/proto/
-
+# 原型镜像暂由站点自己托管（COS 对 html 有防钓鱼强制下载，
+# 等备案完成挂上 CDN 后改成 CDN 地址，届时再把这里加回忽略）
 # 正文图片（800MB 级）走对象存储 COS，不进仓库；
 # 但字体（构建期要读本地文件做子集化）和音乐（体积很小）保留在仓库
 public/assets/*

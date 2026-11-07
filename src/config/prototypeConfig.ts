@@ -10,7 +10,7 @@
  *
  * 例：export const PROTOTYPE_CDN_BASE = "https://proto.shanfengpm.com";
  */
-export const PROTOTYPE_CDN_BASE = "https://shanfeng-assets-1524458506.cos.ap-shanghai.myqcloud.com/proto";
+export const PROTOTYPE_CDN_BASE = "";
 
 /** 某个原型目录的入口地址（带不带 CDN 都走这里，调用方不用关心） */
 export function prototypeEntryUrl(dir: string): string {
