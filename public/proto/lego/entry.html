@@ -7,8 +7,7 @@
 <style>
   html, body { height: 100%; margin: 0; }
   body { display: flex; flex-direction: column; background: #fff; }
-  /* 舞台：Axure 画布是固定宽度（约 1440），这里按容器宽度整体缩放，
-     避免窄屏只能左右拖着看 */
+  /* 舞台：Axure 画布是固定宽度，按容器宽度整体缩放 */
   .stage { position: relative; flex: 1; overflow: hidden; }
   .stage.scrollable { overflow-x: auto; overflow-y: hidden; }
   .stage iframe { border: 0; display: block; transform-origin: 0 0; }
@@ -42,8 +41,11 @@
 </div>
 <script>
   (function () {
-    var DESIGN_W = 1600;       // Axure 画布的固定宽度（比画布本身再宽一点，缩放后能多看到内容）
-    var MIN_SCALE = 0.5;       // 再小就太小了，宁可行内横向滚动
+    // 画布宽度：桌面原型取 1600~1700（只显示主体，注解留作横向拖动），
+    // 移动端原型取 1000（手机 375 + 一列注解）
+    var DESIGN_W = 1600;
+    var MIN_SCALE = 0.5;   // 再小就看不清了，宁可行内横向滚动
+    var MAX_SCALE = 1.6;   // 再放大就糊了，超出的宽度改为「多看内容」
     var page = "产品结构";
     var url = "start.html#g=1&p=" + encodeURIComponent(page);
     var stage = document.getElementById("stage");
@@ -57,10 +59,14 @@
     function fit() {
       var w = stage.clientWidth;
       var h = stage.clientHeight;
-      var scale = Math.min(1, w / DESIGN_W);
-      var clamped = scale < MIN_SCALE;
-      if (clamped) scale = MIN_SCALE;
-      f.style.width = DESIGN_W + "px";
+      var scale = w / DESIGN_W;
+      var clamped = false;
+      if (scale < MIN_SCALE) { scale = MIN_SCALE; clamped = true; }
+      if (scale > MAX_SCALE) { scale = MAX_SCALE; }
+      // 关键：逻辑宽度不小于「缩放后正好铺满容器」所需的宽度，
+      // 否则全屏时右侧会留出一条空白
+      var logicalW = Math.max(DESIGN_W, Math.ceil(w / scale));
+      f.style.width = logicalW + "px";
       f.style.height = Math.ceil(h / scale) + "px";
       f.style.transform = "scale(" + scale + ")";
       stage.classList.toggle("scrollable", clamped);
@@ -74,7 +80,8 @@
     var btn = document.getElementById("fs-btn");
     function sync() {
       btn.textContent = document.fullscreenElement ? "退出全屏" : "全屏";
-      fit();
+      // 全屏切换时布局尺寸还没稳定，等一帧再量
+      requestAnimationFrame(fit);
     }
     btn.addEventListener("click", function () {
       if (document.fullscreenElement) {
