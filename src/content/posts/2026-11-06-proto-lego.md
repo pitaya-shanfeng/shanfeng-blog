@@ -23,11 +23,11 @@ comment: false
 
 ## 怎么看
 
-左侧是 22 个页面的目录，点一项就切一页；原型本体在右侧，可以直接点、直接拖。
+左侧是 Axure 自带的站点树（22 页），点一项就切一页；原型本体在右侧，可以直接点、直接拖。
 
 <div class="proto-embed">
   <iframe
-    src="/proto/lego/index.html"
+    src="/proto/lego/entry.html"
     title="乐高 V4.0 改版方案 · 可交互原型"
     loading="lazy"
     allowfullscreen
