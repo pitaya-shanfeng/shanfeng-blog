@@ -1,7 +1,11 @@
 {
-	"name": "firefly",
+	// Cloudflare Pages 读这个文件来定构建产物目录（wrangler >= 3.45 的 Pages 支持）。
+	// 没有 pages_build_output_dir 时 Pages 会报 "Wrangler configuration file
+	// does not appear to be valid" 并跳过，转而用控制台里的构建配置。
+	"name": "shanfeng-blog",
 	"compatibility_date": "2025-01-01",
 	"compatibility_flags": ["nodejs_compat"],
+	"pages_build_output_dir": "./dist",
 	"assets": {
 		"directory": "./dist"
 	}
