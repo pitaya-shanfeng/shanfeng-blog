@@ -1,7 +1,11 @@
 import { readdirSync } from "node:fs";
 
-/** 一页原型按几分钟估算（与原型的交互复杂度对齐，5 分钟够把一页看明白） */
-export const MINUTES_PER_PROTOTYPE_PAGE = 5;
+/**
+ * 一页原型按几分钟估算。
+ * 原型是扫一眼就往下翻的，不是逐字读的文档，2~3 分钟一页更贴近实际；
+ * 取 3 分钟（组件页信息密度偏高，纯图页会偏保守，整体误差可接受）。
+ */
+export const MINUTES_PER_PROTOTYPE_PAGE = 3;
 
 const ROOT = "public/proto";
 
