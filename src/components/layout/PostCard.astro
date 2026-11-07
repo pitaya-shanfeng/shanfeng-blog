@@ -8,6 +8,10 @@ import PostStats from "@/components/layout/PostStats.astro";
 import { siteConfig } from "@/config";
 import { getApiUrlList, processCoverImageSync } from "@/utils/image-utils";
 import { getCategoryUrl, getFileDirFromPath, getTagUrl } from "@/utils/url-utils";
+import {
+	countPrototypePages,
+	MINUTES_PER_PROTOTYPE_PAGE,
+} from "@/utils/prototype-pages";
 
 interface Props {
 	class?: string;
@@ -136,6 +140,16 @@ const descriptionText = description || remarkPluginFrontmatter.excerpt || "";
 // HTML 文章没有 markdown 渲染流程，字数/时长由 loader 写在 data 上
 const words = entry.data.words ?? remarkPluginFrontmatter.words;
 const minutes = entry.data.minutes ?? remarkPluginFrontmatter.minutes;
+
+// 原型文章：字数没意义，改报页数，时长按「页数 × 每页分钟」算，与详情页/合集页口径一致
+const prototypePages = countPrototypePages(
+	(entry.data as { prototypeDir?: string }).prototypeDir ?? "",
+	(entry.data as { prototypePages?: number }).prototypePages,
+);
+const cardPages = prototypePages || undefined;
+const cardMinutes = prototypePages
+	? prototypePages * MINUTES_PER_PROTOTYPE_PAGE
+	: minutes;
 ---
 
 <div
@@ -194,7 +208,8 @@ const minutes = entry.data.minutes ?? remarkPluginFrontmatter.minutes;
       category={category || undefined}
       pinned={pinned}
       words={words}
-      minutes={minutes}
+      pages={cardPages}
+      minutes={cardMinutes}
       showWords={metaShowWords}
       showReadingTime={metaShowReadingTime}
       className="mb-4 post-meta card-header-meta"
@@ -275,7 +290,8 @@ const minutes = entry.data.minutes ?? remarkPluginFrontmatter.minutes;
       <PostStats
         published={published}
         words={words}
-        minutes={minutes}
+        pages={cardPages}
+        minutes={cardMinutes}
         showPublished={statsShowPublished}
         showWords={statsShowWords}
         showReadingTime={statsShowReadingTime}

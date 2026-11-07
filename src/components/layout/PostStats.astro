@@ -8,6 +8,8 @@ export interface Props {
 	published: Date;
 	words?: number;
 	minutes?: number;
+	/** 原型文章：有值时显示「N 页原型」而不是字数 */
+	pages?: number;
 	showPublished?: boolean;
 	showWords?: boolean;
 	showReadingTime?: boolean;
@@ -19,6 +21,7 @@ const {
 	published,
 	words,
 	minutes,
+	pages,
 	showPublished = true,
 	showWords = true,
 	showReadingTime = true,
@@ -27,8 +30,14 @@ const {
 } = Astro.props;
 
 const hasPublished = showPublished;
+const hasPages = showWords && typeof pages === "number" && pages > 0;
 const hasWords = showWords && typeof words === "number";
 const hasMinutes = showReadingTime && typeof minutes === "number";
+// 原型文章按页折算出来的时长往往上小时，直接给「105 分钟」不好读
+const minutesLabel =
+	hasPages && typeof minutes === "number" && minutes >= 60
+		? `${(minutes / 60).toFixed(1)} 小时`
+		: null;
 const textClass = "text-xs font-medium";
 const dividerClass = "text-xs font-medium text-black/20 dark:text-white/20";
 const iconWrapperClass =
@@ -50,9 +59,20 @@ const iconClass = "text-sm";
     </div>
   )}
 
-  {hasPublished && hasWords && <span class={dividerClass}>|</span>}
+  {hasPublished && (hasPages || hasWords) && <span class={dividerClass}>|</span>}
 
-  {hasWords && (
+  {hasPages && (
+    <div class="flex items-center">
+      {showIcons && (
+        <div class={iconWrapperClass}>
+          <Icon name="material-symbols:layers-outline-rounded" class={iconClass} />
+        </div>
+      )}
+      <span class={textClass}>{pages} 页原型</span>
+    </div>
+  )}
+
+  {!hasPages && hasWords && (
     <div class="flex items-center">
       {showIcons && (
         <div class={iconWrapperClass}>
@@ -65,7 +85,7 @@ const iconClass = "text-sm";
     </div>
   )}
 
-  {(hasPublished || hasWords) && hasMinutes && <span class={dividerClass}>|</span>}
+  {(hasPublished || hasWords || hasPages) && hasMinutes && <span class={dividerClass}>|</span>}
 
   {hasMinutes && (
     <div class="flex items-center">
@@ -75,7 +95,7 @@ const iconClass = "text-sm";
         </div>
       )}
       <span class={textClass}>
-        {minutes} {i18n(minutes === 1 ? I18nKey.minuteCount : I18nKey.minutesCount)}
+        {minutesLabel ?? `${minutes} ${i18n(minutes === 1 ? I18nKey.minuteCount : I18nKey.minutesCount)}`}
       </span>
     </div>
   )}
