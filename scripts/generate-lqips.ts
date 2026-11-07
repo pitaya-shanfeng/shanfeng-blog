@@ -89,12 +89,9 @@ async function main() {
 
 	// 正文图片搬到 CDN 后，本地 public/assets 在 CI 里并不存在，
 	// 这时不能按「文件不存在」清掉它们的占位色，否则线上全部丢失。
-	const assetsExternal = (() => {
+	const assetsExternal = await (async () => {
 		try {
-			const cfg = require("node:fs").readFileSync(
-				"src/config/assetsConfig.ts",
-				"utf8",
-			) as string;
+			const cfg = await fs.readFile("src/config/assetsConfig.ts", "utf8");
 			const m = cfg.match(/ASSETS_CDN_BASE\s*=\s*"([^"]*)"/);
 			return Boolean(m && m[1]);
 		} catch {
