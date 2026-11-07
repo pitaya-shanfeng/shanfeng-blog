@@ -425,3 +425,15 @@ body.wallpaper-transparent .custom-md {
   font-size: 0.8125rem;
   color: color-mix(in oklab, var(--primary) 45%, #6b7280);
 }
+
+/* 原型文章开头的结构图：跟正文同宽，不加外框装饰，留一点上下间距 */
+.proto-figure {
+  margin: 0 0 1.5rem;
+}
+
+.proto-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+}
