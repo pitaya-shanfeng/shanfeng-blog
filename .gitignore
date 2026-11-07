@@ -54,3 +54,6 @@ outputs/
 
 # 原型镜像（几十 MB 一套）不进仓库，放对象存储 + CDN
 public/proto/
+
+# 正文图片（800MB 级）走对象存储，不进仓库
+public/assets/

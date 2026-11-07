@@ -87,11 +87,29 @@ async function main() {
 		return;
 	}
 
+	// 正文图片搬到 CDN 后，本地 public/assets 在 CI 里并不存在，
+	// 这时不能按「文件不存在」清掉它们的占位色，否则线上全部丢失。
+	const assetsExternal = (() => {
+		try {
+			const cfg = require("node:fs").readFileSync(
+				"src/config/assetsConfig.ts",
+				"utf8",
+			) as string;
+			const m = cfg.match(/ASSETS_CDN_BASE\s*=\s*"([^"]*)"/);
+			return Boolean(m && m[1]);
+		} catch {
+			return false;
+		}
+	})();
+
 	// 移除已不存在的图片数据
 	const currentKeys = new Set(files.map((file) => filePathToKey(file)));
-	const removedKeys = Object.keys(existingLqips).filter(
-		(key) => !currentKeys.has(key),
-	);
+	const removedKeys = Object.keys(existingLqips).filter((key) => {
+		if (currentKeys.has(key)) return false;
+		// 图片托管在 CDN 时，public/assets 下的条目不能因为本地缺文件被删
+		if (assetsExternal && key.startsWith("public:assets/")) return false;
+		return true;
+	});
 	for (const key of removedKeys) {
 		delete existingLqips[key];
 	}
