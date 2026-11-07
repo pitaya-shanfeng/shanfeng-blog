@@ -257,3 +257,22 @@
     opacity 0.35s ease-in-out,
     transform 0.35s ease-in-out;
 }
+
+/* 原型类文章：详情页收掉左栏，正文铺满。
+   用 :has 判断正文区里的标记，而不是服务端改 #main-grid 的属性/列宽 ——
+   #main-grid 是 swup 的静态容器，切页时不替换，一旦按某一页写死，
+   跳到合集页或别的文章仍会保持「无侧栏」。:has 会随内容替换重新计算。 */
+@media (min-width: 768px) {
+  html:has(#swup-container [data-fullwidth-post]) #main-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  html:has(#swup-container [data-fullwidth-post]) #main-grid > #left-sidebar-wrapper,
+  html:has(#swup-container [data-fullwidth-post]) #main-grid > #left-sidebar-dynamic {
+    display: none !important;
+  }
+
+  html:has(#swup-container [data-fullwidth-post]) #main-grid > #content-column {
+    max-width: 100% !important;
+  }
+}

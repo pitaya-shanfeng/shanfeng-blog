@@ -305,13 +305,17 @@ const postBanner =
   bannerPostMeta={bannerPostMeta}
   postBanner={postBanner}
   relatedPostList={relatedPosts}
-  hideSidebar={entry.data.hideSidebar === true}
 >
     <!--
       导航栏的当前栏判定要用到这个（客户端脚本读它）：
       文章属于哪本书（series）与带哪些标签。放在 swup 容器内，
       换页后客户端能读到新页面的值。
     -->
+    {/* 原型/全宽文章：在 swup 容器内打标记，由 layout-base.css 用 :has 收掉左栏。
+        不能用布局的 hideSidebar 属性 —— #main-grid 是 swup 的静态元素，
+        按某一页写死之后，站内切到别的页面不会恢复。 */}
+    {entry.data.hideSidebar === true && <div hidden data-fullwidth-post></div>}
+
     <div
       hidden
       data-nav-post
