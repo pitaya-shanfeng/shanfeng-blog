@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>集卡赢大奖 · 原型</title>
+<style>
+  html, body { height: 100%; margin: 0; }
+  body { display: flex; flex-direction: column; background: #fff; }
+  /* 舞台：Axure 画布是固定宽度（约 1440），这里按容器宽度整体缩放，
+     避免窄屏只能左右拖着看 */
+  .stage { position: relative; flex: 1; overflow: hidden; }
+  .stage.scrollable { overflow-x: auto; overflow-y: hidden; }
+  .stage iframe { border: 0; display: block; transform-origin: 0 0; }
+  .proto-bar {
+    position: fixed; right: 12px; bottom: 12px; z-index: 9;
+    display: flex; gap: 8px;
+    font: 12px/1 -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+  .proto-bar button, .proto-bar a {
+    display: inline-flex; align-items: center; gap: 4px;
+    height: 28px; padding: 0 10px; border-radius: 6px; cursor: pointer;
+    background: rgba(17, 24, 39, .72); color: #fff; text-decoration: none;
+    border: 0; backdrop-filter: blur(4px);
+  }
+  .proto-bar button:hover, .proto-bar a:hover { background: rgba(17, 24, 39, .88); }
+  .proto-hint {
+    position: fixed; left: 12px; bottom: 12px; z-index: 9;
+    display: none; padding: 4px 8px; border-radius: 6px;
+    background: rgba(17, 24, 39, .72); color: #fff;
+    font: 11px/1.4 -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+  .proto-hint.show { display: block; }
+</style>
+</head>
+<body>
+<div class="stage" id="stage"></div>
+<div class="proto-hint" id="hint">左右滑动查看，或点右下角「全屏」</div>
+<div class="proto-bar">
+  <button type="button" id="fs-btn">全屏</button>
+  <a href="start.html" target="_blank" rel="noopener">新窗口</a>
+</div>
+<script>
+  (function () {
+    var DESIGN_W = 1000;       // 移动端画布：手机（375）+ 右侧注解一列，窄屏再整体缩小
+    var MIN_SCALE = 0.5;       // 再小就太小了，宁可行内横向滚动
+    var page = "活动主页（进行中）";
+    var url = "start.html#g=1&p=" + encodeURIComponent(page);
+    var stage = document.getElementById("stage");
+
+    var f = document.createElement("iframe");
+    f.src = url;
+    f.title = "集卡赢大奖原型";
+    f.setAttribute("allowfullscreen", "");
+    stage.appendChild(f);
+
+    function fit() {
+      var w = stage.clientWidth;
+      var h = stage.clientHeight;
+      var scale = Math.min(1, w / DESIGN_W);
+      var clamped = scale < MIN_SCALE;
+      if (clamped) scale = MIN_SCALE;
+      f.style.width = Math.max(DESIGN_W, w) + "px";
+      f.style.height = Math.ceil(h / scale) + "px";
+      f.style.transform = "scale(" + scale + ")";
+      stage.classList.toggle("scrollable", clamped);
+      document.getElementById("hint").classList.toggle("show", clamped);
+    }
+
+    fit();
+    window.addEventListener("resize", fit);
+    window.addEventListener("orientationchange", fit);
+
+    var btn = document.getElementById("fs-btn");
+    function sync() {
+      btn.textContent = document.fullscreenElement ? "退出全屏" : "全屏";
+      fit();
+    }
+    btn.addEventListener("click", function () {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(function () {
+          window.open(url, "_blank");
+        });
+      } else {
+        window.open(url, "_blank");
+      }
+    });
+    document.addEventListener("fullscreenchange", sync);
+  })();
+</script>
+</body>
+</html>

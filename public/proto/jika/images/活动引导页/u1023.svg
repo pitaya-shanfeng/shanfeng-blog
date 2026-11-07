@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="40px" height="40px" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <mask fill="white" id="clip167">
+      <path d="M 0 15  C 0 8.2422223193077  4.27162543365898 2.64943339324964  10.3155953472229 0.720914175579821  C 11.7843536814365 0.252260506856771  13.3577776806923 0  15 0  C 23.4 0  30 6.60000000000002  30 15  C 30 23.4  23.4 30  15 30  C 6.60000000000002 30  0 23.4  0 15  Z " fill-rule="evenodd" />
+    </mask>
+    <filter x="436px" y="412px" width="40px" height="40px" filterUnits="userSpaceOnUse" id="filter168">
+      <feOffset dx="1" dy="1" in="SourceAlpha" result="shadowOffsetInner" />
+      <feGaussianBlur stdDeviation="2.5" in="shadowOffsetInner" result="shadowGaussian" />
+      <feComposite in2="shadowGaussian" operator="atop" in="SourceAlpha" result="shadowComposite" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.698039215686274 0  " in="shadowComposite" />
+    </filter>
+    <g id="widget169">
+      <path d="M 0 15  C 0 8.2422223193077  4.27162543365898 2.64943339324964  10.3155953472229 0.720914175579821  C 11.7843536814365 0.252260506856771  13.3577776806923 0  15 0  C 23.4 0  30 6.60000000000002  30 15  C 30 23.4  23.4 30  15 30  C 6.60000000000002 30  0 23.4  0 15  Z " fill-rule="nonzero" fill="#009dd9" stroke="none" transform="matrix(1 0 0 1 440 416 )" />
+      <path d="M 0 15  C 0 8.2422223193077  4.27162543365898 2.64943339324964  10.3155953472229 0.720914175579821  C 11.7843536814365 0.252260506856771  13.3577776806923 0  15 0  C 23.4 0  30 6.60000000000002  30 15  C 30 23.4  23.4 30  15 30  C 6.60000000000002 30  0 23.4  0 15  Z " stroke-width="2" stroke="#ffffff" fill="none" transform="matrix(1 0 0 1 440 416 )" mask="url(#clip167)" />
+    </g>
+  </defs>
+  <g transform="matrix(1 0 0 1 -436 -412 )">
+    <use xlink:href="#widget169" filter="url(#filter168)" />
+    <use xlink:href="#widget169" />
+  </g>
+</svg>
