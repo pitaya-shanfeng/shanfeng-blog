@@ -11,4 +11,4 @@
  *
  * 改写逻辑在 scripts/rewrite-assets-cdn.mjs，构建后自动跑（见 package.json）。
  */
-export const ASSETS_CDN_BASE = "";
+export const ASSETS_CDN_BASE = "https://shanfeng-assets-1524458506.cos.ap-shanghai.myqcloud.com";
