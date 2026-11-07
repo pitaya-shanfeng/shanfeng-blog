@@ -18,6 +18,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { RESOURCE_GROUPS, profileConfig, siteConfig } from "@/config";
 import { url } from "@/utils/url-utils";
+import { icpConfig, ICP_QUERY_URL } from "@/config/icpConfig";
 
 const currentYear = new Date().getFullYear();
 
@@ -224,6 +225,18 @@ const SITE_COUNT = RESOURCE_GROUPS.reduce(
 					class="rounded border border-black/10 px-1.5 py-0.5 text-[0.7rem] dark:border-white/15"
 					>CC BY-NC-SA 4.0</span
 				>
+				{icpConfig.number && (
+					<>
+						<span aria-hidden="true">·</span>
+						<a
+							class="transition hover:text-(--primary)"
+							href={ICP_QUERY_URL}
+							target="_blank"
+							rel="noopener noreferrer"
+							>{icpConfig.number}</a
+						>
+					</>
+				)}
 			</div>
 
 			<div
