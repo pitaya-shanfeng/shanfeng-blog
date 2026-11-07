@@ -65,6 +65,10 @@ const items = encrypted
 		: computeTocItems(headings, { maxLevel: 3 });
 ---
 
+{/* 没有标题又没有加密的页面（例如正文只有一段内嵌原型的文章）整张卡不渲染，
+    否则会留一个只有标题、里面写着「当前页面没有目录」的空壳。
+    注意不能用 class 控制：SideBar 会把自己的 class 传进来，会把 hidden 覆盖掉。 */}
+{(!encrypted && items.length === 0) ? null : (
 <WidgetLayout
   name={title ?? i18n(I18nKey.tableOfContents)}
   showTitle={showTitle}
@@ -117,6 +121,7 @@ const items = encrypted
     </div>
   </div>
 </WidgetLayout>
+)}
 
 <style lang="stylus">
 /* SidebarTOC 特定样式 */

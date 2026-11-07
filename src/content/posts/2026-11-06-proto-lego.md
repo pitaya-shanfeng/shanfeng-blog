@@ -13,18 +13,6 @@ banner: /assets/library/notes/proto-lego/banner.webp
 draft: false
 comment: false
 ---
-
-## 这份原型是什么
-
-乐高系统 V4.0 的改版方案，22 个页面，分前后台两条线：
-
-- **前台**：图片、富文本、媒体、导航、tab、魔方、弹窗、专题、种草，九类组件
-- **后台**：专题编辑（页面编辑 → 各组件配置）与投放规则（渠道、人群）
-
-## 怎么看
-
-左侧是 Axure 自带的站点树（22 页），点一项就切一页；原型本体在右侧，可以直接点、直接拖。
-
 <div class="proto-embed">
   <iframe
     src="/proto/lego/entry.html"
