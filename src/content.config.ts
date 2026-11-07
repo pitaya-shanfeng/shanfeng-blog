@@ -77,6 +77,8 @@ const postSchema = z.object({
 	image: z.string().optional().default(""),
 	/** 文章自己的 banner 壁纸（覆盖全局）。给某章单独做一张横幅时用 */
 	banner: z.string().optional().default(""),
+	/** 详情页藏掉侧栏、正文铺满。给原型/全宽内容这类文章用 */
+	hideSidebar: z.boolean().optional().default(false),
 	tags: z.array(z.string()).optional().default([]),
 	category: z.string().optional().nullable().default(""),
 	lang: z.string().optional().default(""),

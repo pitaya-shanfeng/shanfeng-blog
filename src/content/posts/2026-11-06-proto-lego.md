@@ -12,6 +12,7 @@ image: /assets/library/notes/proto-lego/cover.webp
 banner: /assets/library/notes/proto-lego/banner.webp
 draft: false
 comment: false
+hideSidebar: true
 ---
 
 ![乐高系统产品结构图：现状是页面搭建、投放规则、数据管理；计划是场景搭建、数据中心与规则中心](/assets/library/notes/proto-lego/structure.webp)
