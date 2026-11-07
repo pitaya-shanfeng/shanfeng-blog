@@ -17,7 +17,12 @@ const SHELL_FILES = /^(index|entry|start)/;
  * Axure 发布时一页对应一个 HTML，所以文件数就是页数。
  * 目录不存在或读不到时返回 0，调用方按「非原型文章」处理。
  */
-export function countPrototypePages(dir: string): number {
+export function countPrototypePages(
+	dir: string,
+	/** 手工指定的页数：目录里混了未发布/草稿页时以手工值为准 */
+	override?: number,
+): number {
+	if (typeof override === "number" && override > 0) return override;
 	if (!dir) return 0;
 	try {
 		return readdirSync(`${ROOT}/${dir}`)

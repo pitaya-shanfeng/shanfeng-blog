@@ -130,7 +130,10 @@ async function statsOf(post: (typeof posts)[number]) {
 	const prototypeDir =
 		(post.data as { prototypeDir?: string }).prototypeDir ?? "";
 	if (prototypeDir) {
-		const pages = countPrototypePages(prototypeDir);
+		const pages = countPrototypePages(
+			prototypeDir,
+			(post.data as { prototypePages?: number }).prototypePages,
+		);
 		if (pages > 0) {
 			return {
 				words: 0,

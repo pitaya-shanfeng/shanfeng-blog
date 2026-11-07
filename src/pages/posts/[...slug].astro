@@ -132,6 +132,7 @@ const postMinutes = entry.data.minutes ?? remarkPluginFrontmatter.minutes;
  */
 const prototypePages = countPrototypePages(
 	(entry.data as { prototypeDir?: string }).prototypeDir ?? "",
+	(entry.data as { prototypePages?: number }).prototypePages,
 );
 
 const bannerPostMeta = {

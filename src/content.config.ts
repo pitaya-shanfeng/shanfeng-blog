@@ -81,6 +81,8 @@ const postSchema = z.object({
 	hideSidebar: z.boolean().optional().default(false),
 	/** 原型文章：指向 public/proto/<dir>/，构建时数出页数用于盘口 */
 	prototypeDir: z.string().optional().default(""),
+	/** 手工指定原型页数（页面 HTML 里有草稿/未发布页时，以 Axure 站点树为准） */
+	prototypePages: z.number().optional(),
 	tags: z.array(z.string()).optional().default([]),
 	category: z.string().optional().nullable().default(""),
 	lang: z.string().optional().default(""),
