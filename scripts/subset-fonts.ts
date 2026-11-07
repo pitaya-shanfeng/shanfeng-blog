@@ -241,7 +241,15 @@ async function main() {
 
 		console.log(`⏳ Generating subset for '${font.id}' (${font.family})...`);
 
-		const fontBuffer = await fs.readFile(fontPath);
+		// 字体源文件可能不在构建环境里（例如只保留了 dist 里的产物），
+		// 这种情况下跳过而不是把整个构建打断
+		let fontBuffer: Buffer;
+		try {
+			fontBuffer = await fs.readFile(fontPath);
+		} catch {
+			console.warn(`   ⚠ 跳过 ${fontPath}：本地缺少源字体文件`);
+			continue;
+		}
 		const originalFormat = detectFontFormat(fontPath);
 
 		try {
