@@ -8,7 +8,6 @@ import KatexManager from "@components/features/KatexManager.astro";
 import License from "@components/misc/License.astro";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
-import { readdirSync } from "node:fs";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
 import "@/styles/banner-post.css";
 import {
@@ -30,6 +29,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import CoverImage from "@/components/common/CoverImage.astro";
 import PostMetadata from "@/components/layout/PostMeta.astro";
+import { countPrototypePages } from "@/utils/prototype-pages";
 import EmbedReader from "@/components/misc/EmbedReader.astro";
 import ReportBrief from "@/components/misc/ReportBrief.astro";
 import SeriesNav from "@/components/misc/SeriesNav.astro";
@@ -130,18 +130,9 @@ const postMinutes = entry.data.minutes ?? remarkPluginFrontmatter.minutes;
  * 原型类文章的字数没有意义（正文只有一个 iframe），改成报「页数」：
  * 从镜像目录 public/proto/<dir>/ 里数页面 HTML 得出，不用手填。
  */
-const prototypeDir = (entry.data as { prototypeDir?: string }).prototypeDir ?? "";
-const prototypePages = (() => {
-	if (!prototypeDir) return 0;
-	try {
-		const dir = `public/proto/${prototypeDir}`;
-		return readdirSync(dir)
-			.filter((f) => f.endsWith(".html"))
-			.filter((f) => !/^(index|entry|start)/.test(f)).length;
-	} catch {
-		return 0;
-	}
-})();
+const prototypePages = countPrototypePages(
+	(entry.data as { prototypeDir?: string }).prototypeDir ?? "",
+);
 
 const bannerPostMeta = {
 	title: entry.data.title,

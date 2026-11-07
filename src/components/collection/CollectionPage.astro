@@ -39,6 +39,10 @@ import MainGridLayout from "@/layouts/MainGridLayout.astro";
 import { type CollectionPost, getCollectionPosts } from "@/utils/collection-posts";
 import { getPostUrlBySlug } from "@/utils/url-utils";
 import type { BannerQuote } from "@/utils/banner-quotes-data";
+import {
+	countPrototypePages,
+	MINUTES_PER_PROTOTYPE_PAGE,
+} from "@/utils/prototype-pages";
 // 霞鹜文楷按 unicode-range 切成 97 片，浏览器只会拉当前文案命中的那几片。
 // 只在这个组件里 import，字体 CSS 就只进合集页的样式表，首页不受影响。
 import "@/styles/lxgw-wenkai.css";
@@ -122,9 +126,22 @@ const pagePosts: CollectionPost[] = page ? (page.data as CollectionPost[]) : pos
  * 否则盘口的总字数会和每张卡上的数字对不上。
  */
 async function statsOf(post: (typeof posts)[number]) {
+	// 原型文章：字数没有意义，按页数折算时长（一页 5 分钟）
+	const prototypeDir =
+		(post.data as { prototypeDir?: string }).prototypeDir ?? "";
+	if (prototypeDir) {
+		const pages = countPrototypePages(prototypeDir);
+		if (pages > 0) {
+			return {
+				words: 0,
+				minutes: pages * MINUTES_PER_PROTOTYPE_PAGE,
+				pages,
+			};
+		}
+	}
 	let words = post.data.words ?? 0;
 	let minutes = post.data.minutes ?? 0;
-	if (words > 0) return { words, minutes };
+	if (words > 0) return { words, minutes, pages: 0 };
 	try {
 		const { remarkPluginFrontmatter } = await render(post as never);
 		words = remarkPluginFrontmatter.words ?? 0;
@@ -132,15 +149,17 @@ async function statsOf(post: (typeof posts)[number]) {
 	} catch {
 		/* HTML 文章没有 markdown 渲染流程，保持 data 里的值 */
 	}
-	return { words, minutes };
+	return { words, minutes, pages: 0 };
 }
 
 let totalWords = 0;
 let totalMinutes = 0;
+let totalPrototypePages = 0;
 for (const post of posts) {
 	const stats = await statsOf(post);
 	totalWords += stats.words;
 	totalMinutes += stats.minutes;
+	totalPrototypePages += stats.pages ?? 0;
 }
 
 /**
@@ -157,7 +176,13 @@ const wordStat =
 			: null;
 const timeStat =
 	totalMinutes >= 60
-		? { n: String(Math.round(totalMinutes / 60)), u: "小时" }
+		? {
+				n:
+					totalMinutes < 600
+						? (totalMinutes / 60).toFixed(1)
+						: String(Math.round(totalMinutes / 60)),
+				u: "小时",
+			}
 		: totalMinutes > 0
 			? { n: String(Math.max(1, Math.round(totalMinutes))), u: "分钟" }
 			: null;
@@ -236,10 +261,16 @@ const shareDate = latest ? latest.data.published.toISOString().slice(0, 10) : ""
                                         约 <b>{wordStat.n}</b> {wordStat.u}
                                     </>
                                 )}
+                                {totalPrototypePages > 0 && (
+                                    <>
+                                        <span class="sep" />
+                                        <b>{totalPrototypePages}</b> 页原型
+                                    </>
+                                )}
                                 {timeStat && (
                                     <>
                                         <span class="sep" />
-                                        读完约 <b>{timeStat.n}</b> {timeStat.u}
+                                        {totalPrototypePages > 0 ? "浏览约" : "读完约"} <b>{timeStat.n}</b> {timeStat.u}
                                     </>
                                 )}
                             </>
