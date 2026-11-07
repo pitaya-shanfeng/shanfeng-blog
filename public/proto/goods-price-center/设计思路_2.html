@@ -1,0 +1,1436 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title>设计思路</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/设计思路_2/styles.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.2.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/设计思路_2/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4294" class="ax_default _二级标题">
+        <div id="u4294_div" class=""></div>
+        <div id="u4294_text" class="text ">
+          <p><span>设计思路</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (表格) -->
+      <div id="u4295" class="ax_default">
+
+        <!-- Unnamed (单元格) -->
+        <div id="u4296" class="ax_default table_cell">
+          <img id="u4296_img" class="img " src="images/设计思路_2/u4296.png"/>
+          <div id="u4296_text" class="text ">
+            <p><span>总体概览</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u4297" class="ax_default table_cell">
+          <img id="u4297_img" class="img " src="images/设计思路_2/u4297.png"/>
+          <div id="u4297_text" class="text ">
+            <p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;">一、概念定义</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">本质上是约定不同类目下的信息结构，通过定义基础字段</span><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;">/</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">结构</span><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;">+</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">属性的引用形成的标准规则，对应类目下的商</span><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;">/</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">货品均通过模版进行创建及维护，保障同类目商</span><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;">/</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">货品结构统一化、不同类目商</span><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;">/</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">货结构差异化</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;color:#D9001B;">注：帮助说明、质检报告等不在模版和档案中进行维护，仍然由上下游系统自己处理，后期提炼共性后，逐渐纳入中台进行模块管理</span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;">二、设计思想</span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;">1</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">、类型区分</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">商品模版面向商品的创建</span><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;">/</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">维护，商品主要维护需要对用户表达的内容，例如：主图、商户等销售信息</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">货品模版面向货品的创建</span><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;">/</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">维护，货品主要维护需要供应链承接的内容，例如：供应商、物流等履约信息</span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;">2</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">、多对多关联</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">模版作为商</span><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;">/</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">货品创建的基础，关联了大量属性的同时也挂靠在不同的后台</span><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;">3</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">级类目下，与商</span><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;">/</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">货品、属性、后台类目均是多对多关系</span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;color:#D9001B;">注：原则上一个类目下只能有</span><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;color:#D9001B;">1</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;color:#D9001B;">个商品模版</span><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;color:#D9001B;">+1</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;color:#D9001B;">个货品模版，但考虑到初期赊销、租赁等业务线差异，灵活支持配置一个类目下可以存在多个模版，具体规范由运营定义</span><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;color:#D9001B;">SOP</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;color:#D9001B;">流程规范</span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;"><br></span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u4298" class="ax_default table_cell">
+          <img id="u4298_img" class="img " src="images/设计思路_2/u4298.png"/>
+          <div id="u4298_text" class="text ">
+            <p><span>货品模版</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u4299" class="ax_default table_cell">
+          <img id="u4299_img" class="img " src="images/设计思路_2/u4299.png"/>
+          <div id="u4299_text" class="text ">
+            <p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#000000;">一、概念解释</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#000000;">货品模版是货品创建/维护的基础，货品模版给对应货品提供一个可复用且可批量预设字段的能力，一般情况下不会轻易变更或删除</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#000000;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#000000;">1、使用角色：货品模版的创建方可以是产品/运营侧，实际的使用方主要包含运营侧、供应链侧</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#7F7F7F;">注：产品侧接收需求创建模版并定义规则；运营侧、供应链侧通过该模版创建货品或对已关联的货品进行字段的补齐、变更</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#000000;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#000000;">2、关联模块：货品模版由预设的基础字段+自由选取的属性字段组成，关联在后台3级类目，货品通过模版创建形成模版:货品=1:N</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#7F7F7F;">注：基础字段是根据预设好的字段对所有货品均是一致的规则，属性字段是根据业务实际需求进行灵活组装的字段</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#000000;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#000000;">3、层级结构：货品模版之间没有上下层级，一个3级类目下允许存在多个货品模版，互相之间不冲突不产生影响的，独立存在</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#7F7F7F;">注：一般而言，一个3级类目下仅有一个货品模版，依赖运营的SOP规范控制，某模版的调整仅会影响根据该模版创建的货品</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#000000;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#000000;">二、信息结构</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#000000;"><br></span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u4300" class="ax_default table_cell">
+          <img id="u4300_img" class="img " src="images/设计思路_2/u4300.png"/>
+          <div id="u4300_text" class="text ">
+            <p><span>商品模版</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u4301" class="ax_default table_cell">
+          <img id="u4301_img" class="img " src="images/设计思路_2/u4301.png"/>
+          <div id="u4301_text" class="text ">
+            <p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#000000;">一、概念解释</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#000000;">商品模版是商品创建/维护的基础，商品模版给对应商品提供一个可复用且可批量预设字段的能力，一般情况下不会轻易变更或删除</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#000000;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#000000;">1、使用角色：商品模版的创建方可以是产品/运营侧，实际的使用放主要包含运营侧、商户侧</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#7F7F7F;">注：产品侧接收需求创建模版并定义规则；运营侧、商户侧通过该模版创建商品或对已关联该模版的商品进行字段的补齐、变更</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#000000;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#000000;">2、关联模块：商品模版由预设的基础字段+自由选取的属性字段组成，关联在后台3级类目，商品通过模版创建形成模版:商品=1:N</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#7F7F7F;">注：基础字段是根据预设好的字段对所有商品均是一致的规则，属性字段是根据业务实际需求进行灵活组装的字段</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#000000;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#000000;">3、层级结构：商品模版之间没有上下层级，一个3级类目下允许存在多个商品模版，互相之间不冲突不产生影响的，独立存在</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#7F7F7F;">注：一般而言，一个3级类目下仅有一个商品模版，依赖运营的SOP规范控制，某模版的调整仅会影响根据该模版创建的商品</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#000000;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#000000;">二、信息结构</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;color:#000000;"><br></span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4302" class="ax_default label">
+        <div id="u4302_div" class=""></div>
+        <div id="u4302_text" class="text ">
+          <p><span>以下内容仅供快速了解“商品中心1.0-模版管理”的建设思路，具体规则逻辑等以各页面说明为准</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (组合) -->
+      <div id="u4303" class="ax_default" data-left="0" data-top="0" data-width="0" data-height="0">
+      </div>
+
+      <!-- Unnamed (表格) -->
+      <div id="u4304" class="ax_default">
+
+        <!-- Unnamed (单元格) -->
+        <div id="u4305" class="ax_default table_cell">
+          <img id="u4305_img" class="img " src="images/设计思路/u370.png"/>
+          <div id="u4305_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u4306" class="ax_default table_cell">
+          <img id="u4306_img" class="img " src="images/设计思路/u371.png"/>
+          <div id="u4306_text" class="text ">
+            <p><span>一对一关联</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u4307" class="ax_default table_cell">
+          <img id="u4307_img" class="img " src="images/设计思路/u371.png"/>
+          <div id="u4307_text" class="text ">
+            <p><span>一对多关联</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u4308" class="ax_default table_cell">
+          <img id="u4308_img" class="img " src="images/设计思路/u373.png"/>
+          <div id="u4308_text" class="text ">
+            <p><span>多对一关联</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u4309" class="ax_default table_cell">
+          <img id="u4309_img" class="img " src="images/设计思路_1/u2851.png"/>
+          <div id="u4309_text" class="text ">
+            <p><span>定义</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u4310" class="ax_default table_cell">
+          <img id="u4310_img" class="img " src="images/设计思路_1/u2852.png"/>
+          <div id="u4310_text" class="text ">
+            <p><span>模版与类目/商品/货品是1:1关系，一个模版只关联至一个后台3级类目</span></p><p><span style="color:#AAAAAA;">注：概率较低，最可能出现在业务对某类商品特殊业务处理</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u4311" class="ax_default table_cell">
+          <img id="u4311_img" class="img " src="images/设计思路_1/u2852.png"/>
+          <div id="u4311_text" class="text ">
+            <p><span>模版与类目/商品/货品是1:N关系，一个模版关联至多个后台3级类目</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u4312" class="ax_default table_cell">
+          <img id="u4312_img" class="img " src="images/设计思路_1/u2854.png"/>
+          <div id="u4312_text" class="text ">
+            <p><span>模版与类目是N:1关系，多个模版关联至1个后台3级类目</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u4313" class="ax_default table_cell">
+          <img id="u4313_img" class="img " src="images/设计思路_1/u2855.png"/>
+          <div id="u4313_text" class="text ">
+            <p><span>案例</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u4314" class="ax_default table_cell">
+          <img id="u4314_img" class="img " src="images/设计思路_1/u2856.png"/>
+          <div id="u4314_text" class="text ">
+            <p><span>商品模版：话费充值卡（虚拟）模版</span></p><p><span>后台类目：话费充值卡</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u4315" class="ax_default table_cell">
+          <img id="u4315_img" class="img " src="images/设计思路_1/u2856.png"/>
+          <div id="u4315_text" class="text ">
+            <p><span>商品模版：手机租赁模版</span></p><p><span>后台类目：全新手机、二手手机</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u4316" class="ax_default table_cell">
+          <img id="u4316_img" class="img " src="images/设计思路_1/u2858.png"/>
+          <div id="u4316_text" class="text ">
+            <p><span>商品模版：手机租赁模版、手机赊销模版</span></p><p><span>货品模版：手机模版</span></p><p><span>后台类目：全新手机</span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4317" class="ax_default box_2">
+        <img id="u4317_img" class="img " src="images/设计思路_2/u4317.svg"/>
+        <div id="u4317_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4318" class="ax_default _三级标题">
+        <div id="u4318_div" class=""></div>
+        <div id="u4318_text" class="text ">
+          <p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;">商品中心</span><span style="font-family:'Arial-BoldMT', 'Arial Bold', 'Arial', sans-serif;font-weight:700;">1.0 ——</span><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;">模版管理</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4319" class="ax_default box_1">
+        <div id="u4319_div" class=""></div>
+        <div id="u4319_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4320" class="ax_default box_1">
+        <img id="u4320_img" class="img " src="images/设计思路_2/u4320.svg"/>
+        <div id="u4320_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4321" class="ax_default label">
+        <div id="u4321_div" class=""></div>
+        <div id="u4321_text" class="text ">
+          <p><span>商</span></p><p><span>品</span></p><p><span>中</span></p><p><span>心</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4322" class="ax_default box_1">
+        <img id="u4322_img" class="img " src="images/项目说明/u294.svg"/>
+        <div id="u4322_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4323" class="ax_default label">
+        <div id="u4323_div" class=""></div>
+        <div id="u4323_text" class="text ">
+          <p><span>类目管理</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4324" class="ax_default box_1">
+        <img id="u4324_img" class="img " src="images/项目说明/u294.svg"/>
+        <div id="u4324_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4325" class="ax_default label">
+        <div id="u4325_div" class=""></div>
+        <div id="u4325_text" class="text ">
+          <p><span>模版管理</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4326" class="ax_default box_1">
+        <img id="u4326_img" class="img " src="images/项目说明/u294.svg"/>
+        <div id="u4326_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4327" class="ax_default label">
+        <div id="u4327_div" class=""></div>
+        <div id="u4327_text" class="text ">
+          <p><span>档案管理</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (图片 ) -->
+      <div id="u4328" class="ax_default image">
+        <img id="u4328_img" class="img " src="images/项目说明/u337.png"/>
+        <div id="u4328_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (图片 ) -->
+      <div id="u4329" class="ax_default image">
+        <img id="u4329_img" class="img " src="images/项目说明/u337.png"/>
+        <div id="u4329_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (图片 ) -->
+      <div id="u4330" class="ax_default image">
+        <img id="u4330_img" class="img " src="images/项目说明/u337.png"/>
+        <div id="u4330_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (图片 ) -->
+      <div id="u4331" class="ax_default image">
+        <img id="u4331_img" class="img " src="images/设计思路/u478.png"/>
+        <div id="u4331_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4332" class="ax_default box_1">
+        <img id="u4332_img" class="img " src="images/项目说明/u294.svg"/>
+        <div id="u4332_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4333" class="ax_default label">
+        <div id="u4333_div" class=""></div>
+        <div id="u4333_text" class="text ">
+          <p><span>属性管理</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4334" class="ax_default box_2">
+        <div id="u4334_div" class=""></div>
+        <div id="u4334_text" class="text ">
+          <p><span>基础字段</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4335" class="ax_default box_2">
+        <div id="u4335_div" class=""></div>
+        <div id="u4335_text" class="text ">
+          <p><span>属性字段</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4336" class="ax_default box_2">
+        <div id="u4336_div" class=""></div>
+        <div id="u4336_text" class="text ">
+          <p><span>商/货模版</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4337" class="ax_default _连接">
+        <img id="u4337_seg0" class="img " src="images/设计思路_2/u4337_seg0.svg" alt="u4337_seg0"/>
+        <img id="u4337_seg1" class="img " src="images/设计思路_2/u4337_seg1.svg" alt="u4337_seg1"/>
+        <div id="u4337_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (图片 ) -->
+      <div id="u4338" class="ax_default image">
+        <img id="u4338_img" class="img " src="images/项目说明/u319.png"/>
+        <div id="u4338_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4339" class="ax_default box_1">
+        <img id="u4339_img" class="img " src="images/设计思路_2/u4339.svg"/>
+        <div id="u4339_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4340" class="ax_default label">
+        <div id="u4340_div" class=""></div>
+        <div id="u4340_text" class="text ">
+          <p><span>后台类目</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (圆形) -->
+      <div id="u4341" class="ax_default ellipse">
+        <img id="u4341_img" class="img " src="images/设计思路/u462.svg"/>
+        <div id="u4341_text" class="text ">
+          <p><span>A</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (圆形) -->
+      <div id="u4342" class="ax_default ellipse">
+        <img id="u4342_img" class="img " src="images/设计思路/u462.svg"/>
+        <div id="u4342_text" class="text ">
+          <p><span>B</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (圆形) -->
+      <div id="u4343" class="ax_default ellipse">
+        <img id="u4343_img" class="img " src="images/设计思路/u462.svg"/>
+        <div id="u4343_text" class="text ">
+          <p><span>C</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (圆形) -->
+      <div id="u4344" class="ax_default ellipse">
+        <img id="u4344_img" class="img " src="images/设计思路/u462.svg"/>
+        <div id="u4344_text" class="text ">
+          <p><span>D</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (圆形) -->
+      <div id="u4345" class="ax_default ellipse">
+        <img id="u4345_img" class="img " src="images/设计思路/u462.svg"/>
+        <div id="u4345_text" class="text ">
+          <p><span>E</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (圆形) -->
+      <div id="u4346" class="ax_default ellipse">
+        <img id="u4346_img" class="img " src="images/设计思路/u462.svg"/>
+        <div id="u4346_text" class="text ">
+          <p><span>F</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4347" class="ax_default box_1">
+        <img id="u4347_img" class="img " src="images/设计思路_2/u4347.svg"/>
+        <div id="u4347_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4348" class="ax_default label">
+        <div id="u4348_div" class=""></div>
+        <div id="u4348_text" class="text ">
+          <p><span>基础字段（即商/货品的必备字段）</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4349" class="ax_default box_1">
+        <img id="u4349_img" class="img " src="images/设计思路_2/u4347.svg"/>
+        <div id="u4349_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4350" class="ax_default label">
+        <div id="u4350_div" class=""></div>
+        <div id="u4350_text" class="text ">
+          <p><span>属性字段</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4351" class="ax_default box_1">
+        <img id="u4351_img" class="img " src="images/设计思路_2/u4351.svg"/>
+        <div id="u4351_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4352" class="ax_default box_1">
+        <img id="u4352_img" class="img " src="images/设计思路_2/u4351.svg"/>
+        <div id="u4352_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4353" class="ax_default label">
+        <div id="u4353_div" class=""></div>
+        <div id="u4353_text" class="text ">
+          <p><span>货品模版</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4354" class="ax_default label">
+        <div id="u4354_div" class=""></div>
+        <div id="u4354_text" class="text ">
+          <p><span>商品模版</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (圆形) -->
+      <div id="u4355" class="ax_default ellipse">
+        <img id="u4355_img" class="img " src="images/设计思路/u462.svg"/>
+        <div id="u4355_text" class="text ">
+          <p><span>m1</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (圆形) -->
+      <div id="u4356" class="ax_default ellipse">
+        <img id="u4356_img" class="img " src="images/设计思路/u462.svg"/>
+        <div id="u4356_text" class="text ">
+          <p><span>m2</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (圆形) -->
+      <div id="u4357" class="ax_default ellipse">
+        <img id="u4357_img" class="img " src="images/设计思路/u462.svg"/>
+        <div id="u4357_text" class="text ">
+          <p><span>m2</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (圆形) -->
+      <div id="u4358" class="ax_default ellipse">
+        <img id="u4358_img" class="img " src="images/设计思路/u462.svg"/>
+        <div id="u4358_text" class="text ">
+          <p><span>a</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (圆形) -->
+      <div id="u4359" class="ax_default ellipse">
+        <img id="u4359_img" class="img " src="images/设计思路/u462.svg"/>
+        <div id="u4359_text" class="text ">
+          <p><span>b</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (圆形) -->
+      <div id="u4360" class="ax_default ellipse">
+        <img id="u4360_img" class="img " src="images/设计思路/u462.svg"/>
+        <div id="u4360_text" class="text ">
+          <p><span>c</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (圆形) -->
+      <div id="u4361" class="ax_default ellipse">
+        <img id="u4361_img" class="img " src="images/设计思路/u462.svg"/>
+        <div id="u4361_text" class="text ">
+          <p><span>a</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (圆形) -->
+      <div id="u4362" class="ax_default ellipse">
+        <img id="u4362_img" class="img " src="images/设计思路/u462.svg"/>
+        <div id="u4362_text" class="text ">
+          <p><span>b</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4363" class="ax_default label">
+        <div id="u4363_div" class=""></div>
+        <div id="u4363_text" class="text ">
+          <p><span>key</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4364" class="ax_default label">
+        <div id="u4364_div" class=""></div>
+        <div id="u4364_text" class="text ">
+          <p><span>value</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4365" class="ax_default label">
+        <div id="u4365_div" class=""></div>
+        <div id="u4365_text" class="text ">
+          <p><span>组件规则</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4366" class="ax_default label">
+        <div id="u4366_div" class=""></div>
+        <div id="u4366_text" class="text ">
+          <p><span>key</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4367" class="ax_default label">
+        <div id="u4367_div" class=""></div>
+        <div id="u4367_text" class="text ">
+          <p><span>value</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4368" class="ax_default label">
+        <div id="u4368_div" class=""></div>
+        <div id="u4368_text" class="text ">
+          <p><span>组件规则</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4369" class="ax_default box_2">
+        <div id="u4369_div" class=""></div>
+        <div id="u4369_text" class="text ">
+          <p><span>信息库（初期不提供）</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4370" class="ax_default box_2">
+        <div id="u4370_div" class=""></div>
+        <div id="u4370_text" class="text ">
+          <p><span>自定义</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4371" class="ax_default box_2">
+        <div id="u4371_div" class=""></div>
+        <div id="u4371_text" class="text ">
+          <p><span>根据SPU/SKU具体字段预设</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4372" class="ax_default box_2">
+        <div id="u4372_div" class=""></div>
+        <div id="u4372_text" class="text ">
+          <p><span>单选/多选/文本/数值/日期+默认值/自定义</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4373" class="ax_default box_2">
+        <div id="u4373_div" class=""></div>
+        <div id="u4373_text" class="text ">
+          <p><span>枚举值/布尔值/文本范围/数值范围/自定义值</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4374" class="ax_default _连接">
+        <img id="u4374_seg0" class="img " src="images/设计思路_2/u4374_seg0.svg" alt="u4374_seg0"/>
+        <img id="u4374_seg1" class="img " src="images/设计思路_2/u4374_seg1.svg" alt="u4374_seg1"/>
+        <img id="u4374_seg2" class="img " src="images/设计思路_2/u4374_seg2.svg" alt="u4374_seg2"/>
+        <div id="u4374_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4375" class="ax_default _连接">
+        <img id="u4375_seg0" class="img " src="images/设计思路_2/u4375_seg0.svg" alt="u4375_seg0"/>
+        <div id="u4375_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4376" class="ax_default _连接">
+        <img id="u4376_seg0" class="img " src="images/设计思路_2/u4376_seg0.svg" alt="u4376_seg0"/>
+        <div id="u4376_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4377" class="ax_default _连接">
+        <img id="u4377_seg0" class="img " src="images/设计思路_2/u4377_seg0.svg" alt="u4377_seg0"/>
+        <div id="u4377_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (圆形) -->
+      <div id="u4378" class="ax_default ellipse">
+        <img id="u4378_img" class="img " src="images/设计思路/u462.svg"/>
+        <div id="u4378_text" class="text ">
+          <p><span>M1</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (圆形) -->
+      <div id="u4379" class="ax_default ellipse">
+        <img id="u4379_img" class="img " src="images/设计思路/u462.svg"/>
+        <div id="u4379_text" class="text ">
+          <p><span>M2</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (圆形) -->
+      <div id="u4380" class="ax_default ellipse">
+        <img id="u4380_img" class="img " src="images/设计思路/u462.svg"/>
+        <div id="u4380_text" class="text ">
+          <p><span>M3</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4381" class="ax_default _连接">
+        <img id="u4381_seg0" class="img " src="images/设计思路_2/u4381_seg0.svg" alt="u4381_seg0"/>
+        <div id="u4381_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4382" class="ax_default _连接">
+        <img id="u4382_seg0" class="img " src="images/设计思路_2/u4382_seg0.svg" alt="u4382_seg0"/>
+        <div id="u4382_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4383" class="ax_default _连接">
+        <img id="u4383_seg0" class="img " src="images/设计思路_2/u4383_seg0.svg" alt="u4383_seg0"/>
+        <div id="u4383_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4384" class="ax_default _连接">
+        <img id="u4384_seg0" class="img " src="images/设计思路_2/u4384_seg0.svg" alt="u4384_seg0"/>
+        <div id="u4384_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4385" class="ax_default _连接">
+        <img id="u4385_seg0" class="img " src="images/设计思路_2/u4385_seg0.svg" alt="u4385_seg0"/>
+        <div id="u4385_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4386" class="ax_default _连接">
+        <img id="u4386_seg0" class="img " src="images/设计思路_2/u4386_seg0.svg" alt="u4386_seg0"/>
+        <div id="u4386_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4387" class="ax_default _连接">
+        <img id="u4387_seg0" class="img " src="images/设计思路_2/u4387_seg0.svg" alt="u4387_seg0"/>
+        <div id="u4387_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4388" class="ax_default _连接">
+        <img id="u4388_seg0" class="img " src="images/设计思路_2/u4388_seg0.svg" alt="u4388_seg0"/>
+        <div id="u4388_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4389" class="ax_default _连接">
+        <img id="u4389_seg0" class="img " src="images/设计思路_2/u4389_seg0.svg" alt="u4389_seg0"/>
+        <div id="u4389_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4390" class="ax_default _连接">
+        <img id="u4390_seg0" class="img " src="images/设计思路_2/u4390_seg0.svg" alt="u4390_seg0"/>
+        <div id="u4390_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4391" class="ax_default _连接">
+        <img id="u4391_seg0" class="img " src="images/设计思路_2/u4391_seg0.svg" alt="u4391_seg0"/>
+        <div id="u4391_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4392" class="ax_default _连接">
+        <img id="u4392_seg0" class="img " src="images/设计思路_2/u4392_seg0.svg" alt="u4392_seg0"/>
+        <div id="u4392_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4393" class="ax_default _连接">
+        <img id="u4393_seg0" class="img " src="images/设计思路_2/u4393_seg0.svg" alt="u4393_seg0"/>
+        <div id="u4393_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4394" class="ax_default _连接">
+        <img id="u4394_seg0" class="img " src="images/设计思路_2/u4394_seg0.svg" alt="u4394_seg0"/>
+        <div id="u4394_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4395" class="ax_default _连接">
+        <img id="u4395_seg0" class="img " src="images/设计思路_2/u4395_seg0.svg" alt="u4395_seg0"/>
+        <div id="u4395_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4396" class="ax_default _连接">
+        <img id="u4396_seg0" class="img " src="images/设计思路_2/u4396_seg0.svg" alt="u4396_seg0"/>
+        <div id="u4396_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4397" class="ax_default _连接">
+        <img id="u4397_seg0" class="img " src="images/设计思路_2/u4397_seg0.svg" alt="u4397_seg0"/>
+        <div id="u4397_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4398" class="ax_default _连接">
+        <img id="u4398_seg0" class="img " src="images/设计思路_2/u4398_seg0.svg" alt="u4398_seg0"/>
+        <div id="u4398_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4399" class="ax_default _连接">
+        <img id="u4399_seg0" class="img " src="images/设计思路_2/u4399_seg0.svg" alt="u4399_seg0"/>
+        <div id="u4399_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4400" class="ax_default _连接">
+        <img id="u4400_seg0" class="img " src="images/设计思路_2/u4400_seg0.svg" alt="u4400_seg0"/>
+        <div id="u4400_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4401" class="ax_default _连接">
+        <img id="u4401_seg0" class="img " src="images/设计思路_2/u4401_seg0.svg" alt="u4401_seg0"/>
+        <div id="u4401_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4402" class="ax_default _连接">
+        <img id="u4402_seg0" class="img " src="images/设计思路_2/u4402_seg0.svg" alt="u4402_seg0"/>
+        <div id="u4402_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4403" class="ax_default _连接">
+        <img id="u4403_seg0" class="img " src="images/设计思路_2/u4403_seg0.svg" alt="u4403_seg0"/>
+        <div id="u4403_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4404" class="ax_default _连接">
+        <img id="u4404_seg0" class="img " src="images/设计思路_2/u4404_seg0.svg" alt="u4404_seg0"/>
+        <div id="u4404_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4405" class="ax_default _连接">
+        <img id="u4405_seg0" class="img " src="images/设计思路_2/u4405_seg0.svg" alt="u4405_seg0"/>
+        <div id="u4405_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4406" class="ax_default _连接">
+        <img id="u4406_seg0" class="img " src="images/设计思路_2/u4406_seg0.svg" alt="u4406_seg0"/>
+        <div id="u4406_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4407" class="ax_default _连接">
+        <img id="u4407_seg0" class="img " src="images/设计思路_2/u4407_seg0.svg" alt="u4407_seg0"/>
+        <div id="u4407_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4408" class="ax_default _连接">
+        <img id="u4408_seg0" class="img " src="images/设计思路_2/u4408_seg0.svg" alt="u4408_seg0"/>
+        <div id="u4408_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4409" class="ax_default _连接">
+        <img id="u4409_seg0" class="img " src="images/设计思路_2/u4409_seg0.svg" alt="u4409_seg0"/>
+        <div id="u4409_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4410" class="ax_default _连接">
+        <img id="u4410_seg0" class="img " src="images/设计思路_2/u4410_seg0.svg" alt="u4410_seg0"/>
+        <div id="u4410_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4411" class="ax_default _连接">
+        <img id="u4411_seg0" class="img " src="images/设计思路_2/u4411_seg0.svg" alt="u4411_seg0"/>
+        <div id="u4411_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4412" class="ax_default _连接">
+        <img id="u4412_seg0" class="img " src="images/设计思路_2/u4412_seg0.svg" alt="u4412_seg0"/>
+        <div id="u4412_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4413" class="ax_default _连接">
+        <img id="u4413_seg0" class="img " src="images/设计思路_2/u4413_seg0.svg" alt="u4413_seg0"/>
+        <div id="u4413_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4414" class="ax_default flow_shape">
+        <div id="u4414_div" class=""></div>
+        <div id="u4414_text" class="text ">
+          <p><span>后台三级类目</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4415" class="ax_default box_1">
+        <img id="u4415_img" class="img " src="images/设计思路_1/u2938.svg"/>
+        <div id="u4415_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4416" class="ax_default flow_shape">
+        <div id="u4416_div" class=""></div>
+        <div id="u4416_text" class="text ">
+          <p><span>模版</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4417" class="ax_default flow_shape">
+        <div id="u4417_div" class=""></div>
+        <div id="u4417_text" class="text ">
+          <p><span>货品1</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4418" class="ax_default flow_shape">
+        <div id="u4418_div" class=""></div>
+        <div id="u4418_text" class="text ">
+          <p><span>货品3</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4419" class="ax_default flow_shape">
+        <div id="u4419_div" class=""></div>
+        <div id="u4419_text" class="text ">
+          <p><span>货品3</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4420" class="ax_default flow_shape">
+        <div id="u4420_div" class=""></div>
+        <div id="u4420_text" class="text ">
+          <p><span>货品4</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4421" class="ax_default flow_shape">
+        <div id="u4421_div" class=""></div>
+        <div id="u4421_text" class="text ">
+          <p><span>模版</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4422" class="ax_default flow_shape">
+        <div id="u4422_div" class=""></div>
+        <div id="u4422_text" class="text ">
+          <p><span>基础字段</span></p><p><span>A、B、C</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4423" class="ax_default flow_shape">
+        <div id="u4423_div" class=""></div>
+        <div id="u4423_text" class="text ">
+          <p><span>属性字段</span></p><p><span>a、b、c</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4424" class="ax_default flow_shape">
+        <div id="u4424_div" class=""></div>
+        <div id="u4424_text" class="text ">
+          <p><span>基础字段</span></p><p><span>A、B、C</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4425" class="ax_default flow_shape">
+        <div id="u4425_div" class=""></div>
+        <div id="u4425_text" class="text ">
+          <p><span>属性字段</span></p><p><span>d、e、f</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (组合) -->
+      <div id="u4426" class="ax_default" data-left="930" data-top="2206" data-width="355" data-height="47">
+
+        <!-- Unnamed (矩形) -->
+        <div id="u4427" class="ax_default box_2">
+          <div id="u4427_div" class=""></div>
+          <div id="u4427_text" class="text ">
+            <p><span>基础信息</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (矩形) -->
+        <div id="u4428" class="ax_default box_2">
+          <div id="u4428_div" class=""></div>
+          <div id="u4428_text" class="text ">
+            <p><span>ID、名称、类型、基础字段</span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4429" class="ax_default box_2">
+        <div id="u4429_div" class=""></div>
+        <div id="u4429_text" class="text ">
+          <p><span>信息关联</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4430" class="ax_default box_2">
+        <div id="u4430_div" class=""></div>
+        <div id="u4430_text" class="text ">
+          <p><span>后台类目、属性、货品档案</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4431" class="ax_default _连接">
+        <img id="u4431_seg0" class="img " src="images/设计思路_2/u4431_seg0.svg" alt="u4431_seg0"/>
+        <img id="u4431_seg1" class="img " src="images/设计思路_2/u4431_seg1.svg" alt="u4431_seg1"/>
+        <div id="u4431_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4432" class="ax_default _连接">
+        <img id="u4432_seg0" class="img " src="images/设计思路_2/u4432_seg0.svg" alt="u4432_seg0"/>
+        <img id="u4432_seg1" class="img " src="images/设计思路_2/u4432_seg1.svg" alt="u4432_seg1"/>
+        <div id="u4432_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4433" class="ax_default _连接">
+        <img id="u4433_seg0" class="img " src="images/设计思路_2/u4433_seg0.svg" alt="u4433_seg0"/>
+        <div id="u4433_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4434" class="ax_default _连接">
+        <img id="u4434_seg0" class="img " src="images/设计思路_2/u4434_seg0.svg" alt="u4434_seg0"/>
+        <img id="u4434_seg1" class="img " src="images/设计思路_2/u4434_seg1.svg" alt="u4434_seg1"/>
+        <div id="u4434_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4435" class="ax_default _连接">
+        <img id="u4435_seg0" class="img " src="images/设计思路_2/u4435_seg0.svg" alt="u4435_seg0"/>
+        <img id="u4435_seg1" class="img " src="images/设计思路_2/u4435_seg1.svg" alt="u4435_seg1"/>
+        <div id="u4435_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4436" class="ax_default _连接">
+        <img id="u4436_seg0" class="img " src="images/设计思路_2/u4436_seg0.svg" alt="u4436_seg0"/>
+        <div id="u4436_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4437" class="ax_default _连接">
+        <img id="u4437_seg0" class="img " src="images/设计思路_2/u4437_seg0.svg" alt="u4437_seg0"/>
+        <div id="u4437_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4438" class="ax_default _连接">
+        <img id="u4438_seg0" class="img " src="images/设计思路_2/u4438_seg0.svg" alt="u4438_seg0"/>
+        <div id="u4438_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4439" class="ax_default _连接">
+        <img id="u4439_seg0" class="img " src="images/设计思路_2/u4439_seg0.svg" alt="u4439_seg0"/>
+        <div id="u4439_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4440" class="ax_default _连接">
+        <img id="u4440_seg0" class="img " src="images/设计思路_2/u4440_seg0.svg" alt="u4440_seg0"/>
+        <div id="u4440_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4441" class="ax_default flow_shape">
+        <div id="u4441_div" class=""></div>
+        <div id="u4441_text" class="text ">
+          <p><span>后台三级类目</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4442" class="ax_default box_1">
+        <img id="u4442_img" class="img " src="images/设计思路_1/u2938.svg"/>
+        <div id="u4442_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4443" class="ax_default flow_shape">
+        <div id="u4443_div" class=""></div>
+        <div id="u4443_text" class="text ">
+          <p><span>模版</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4444" class="ax_default flow_shape">
+        <div id="u4444_div" class=""></div>
+        <div id="u4444_text" class="text ">
+          <p><span>商品1</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4445" class="ax_default flow_shape">
+        <div id="u4445_div" class=""></div>
+        <div id="u4445_text" class="text ">
+          <p><span>商品2</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4446" class="ax_default flow_shape">
+        <div id="u4446_div" class=""></div>
+        <div id="u4446_text" class="text ">
+          <p><span>商品3</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4447" class="ax_default flow_shape">
+        <div id="u4447_div" class=""></div>
+        <div id="u4447_text" class="text ">
+          <p><span>商品4</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4448" class="ax_default flow_shape">
+        <div id="u4448_div" class=""></div>
+        <div id="u4448_text" class="text ">
+          <p><span>模版</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4449" class="ax_default flow_shape">
+        <div id="u4449_div" class=""></div>
+        <div id="u4449_text" class="text ">
+          <p><span>基础字段</span></p><p><span>A、B、C</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4450" class="ax_default flow_shape">
+        <div id="u4450_div" class=""></div>
+        <div id="u4450_text" class="text ">
+          <p><span>属性字段</span></p><p><span>a、b、c</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4451" class="ax_default flow_shape">
+        <div id="u4451_div" class=""></div>
+        <div id="u4451_text" class="text ">
+          <p><span>基础字段</span></p><p><span>A、B、C</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4452" class="ax_default flow_shape">
+        <div id="u4452_div" class=""></div>
+        <div id="u4452_text" class="text ">
+          <p><span>属性字段</span></p><p><span>d、e、f</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (组合) -->
+      <div id="u4453" class="ax_default" data-left="930" data-top="2931" data-width="355" data-height="47">
+
+        <!-- Unnamed (矩形) -->
+        <div id="u4454" class="ax_default box_2">
+          <div id="u4454_div" class=""></div>
+          <div id="u4454_text" class="text ">
+            <p><span>基础信息</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (矩形) -->
+        <div id="u4455" class="ax_default box_2">
+          <div id="u4455_div" class=""></div>
+          <div id="u4455_text" class="text ">
+            <p><span>ID、名称、类型、基础字段</span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4456" class="ax_default box_2">
+        <div id="u4456_div" class=""></div>
+        <div id="u4456_text" class="text ">
+          <p><span>信息关联</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4457" class="ax_default box_2">
+        <div id="u4457_div" class=""></div>
+        <div id="u4457_text" class="text ">
+          <p><span>后台类目、属性、商品档案</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4458" class="ax_default _连接">
+        <img id="u4458_seg0" class="img " src="images/设计思路_2/u4458_seg0.svg" alt="u4458_seg0"/>
+        <img id="u4458_seg1" class="img " src="images/设计思路_2/u4458_seg1.svg" alt="u4458_seg1"/>
+        <div id="u4458_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4459" class="ax_default _连接">
+        <img id="u4459_seg0" class="img " src="images/设计思路_2/u4459_seg0.svg" alt="u4459_seg0"/>
+        <img id="u4459_seg1" class="img " src="images/设计思路_2/u4459_seg1.svg" alt="u4459_seg1"/>
+        <div id="u4459_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4460" class="ax_default _连接">
+        <img id="u4460_seg0" class="img " src="images/设计思路_2/u4460_seg0.svg" alt="u4460_seg0"/>
+        <div id="u4460_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4461" class="ax_default _连接">
+        <img id="u4461_seg0" class="img " src="images/设计思路_2/u4461_seg0.svg" alt="u4461_seg0"/>
+        <img id="u4461_seg1" class="img " src="images/设计思路_2/u4461_seg1.svg" alt="u4461_seg1"/>
+        <div id="u4461_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4462" class="ax_default _连接">
+        <img id="u4462_seg0" class="img " src="images/设计思路_2/u4462_seg0.svg" alt="u4462_seg0"/>
+        <img id="u4462_seg1" class="img " src="images/设计思路_2/u4462_seg1.svg" alt="u4462_seg1"/>
+        <div id="u4462_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4463" class="ax_default _连接">
+        <img id="u4463_seg0" class="img " src="images/设计思路_2/u4463_seg0.svg" alt="u4463_seg0"/>
+        <div id="u4463_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4464" class="ax_default _连接">
+        <img id="u4464_seg0" class="img " src="images/设计思路_2/u4464_seg0.svg" alt="u4464_seg0"/>
+        <div id="u4464_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4465" class="ax_default _连接">
+        <img id="u4465_seg0" class="img " src="images/设计思路_2/u4465_seg0.svg" alt="u4465_seg0"/>
+        <div id="u4465_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4466" class="ax_default _连接">
+        <img id="u4466_seg0" class="img " src="images/设计思路_2/u4466_seg0.svg" alt="u4466_seg0"/>
+        <div id="u4466_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u4467" class="ax_default _连接">
+        <img id="u4467_seg0" class="img " src="images/设计思路_2/u4467_seg0.svg" alt="u4467_seg0"/>
+        <div id="u4467_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+    </div>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

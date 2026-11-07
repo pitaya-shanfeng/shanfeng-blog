@@ -1,0 +1,324 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title>保证金</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/保证金/styles.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.2.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/保证金/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+
+      <!-- Unnamed (矩形) -->
+      <div id="u9092" class="ax_default _二级标题">
+        <div id="u9092_div" class=""></div>
+        <div id="u9092_text" class="text ">
+          <p><span>“履约保证金”说明</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (表格) -->
+      <div id="u9093" class="ax_default">
+
+        <!-- Unnamed (单元格) -->
+        <div id="u9094" class="ax_default table_cell">
+          <img id="u9094_img" class="img " src="images/保证金/u9094.png"/>
+          <div id="u9094_text" class="text ">
+            <p><span>处理方案</span></p><p><span>@风控侧</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u9095" class="ax_default table_cell">
+          <img id="u9095_img" class="img " src="images/保证金/u9095.png"/>
+          <div id="u9095_text" class="text ">
+            <p><span>一、说明：保证金/补押金是基于用户风险，需要用户提前支付的一笔费用，对于租赁不影响账单；对于赊销会直接影响账单；目前是否支付保证金均是业务系统自己控制，风控仅返回一个系数，对于租赁/赊销业务系统均是通过账单金额（1期）*系数向用户收取保证金</span></p><p><span style="color:#D9001B;">注：目前赊销侧决定不再存在保证金，仅租赁仍然存在保证金，即履约保证金</span></p><p><span><br></span></p><p><span>二、方案：经沟通在未来大平台构建中，保证金/补押金由风控收口，价格中心提供相关信息至业务系统，风控通过在炼金中进行特征、策略加工，在业务系统发起请求时直接返回是否需要支付履约保证金及具体系数，业务系统通过风控返回的系数*账单金额（1期）进行履约保证金收取</span></p><p><span><br></span></p><p><span><br></span></p><p><span><br></span></p><p><span><br></span></p><p><span><br></span></p><p><span><br></span></p><p><span><br></span></p><p><span><br></span></p><p><span><br></span></p><p><span>三、交互流程：用户在前台选择SKU及租赁方案创建订单至后置风控过后，根据风控要求进行用户/商品/售卖相关信息入参后，如需要支付保证金，则风控返回具体的保证金系数供业务端进行保证金收取及账单更新</span></p><p><span><br></span></p><p><span><br></span></p><p><span><br></span></p><p><span><br></span></p><p><span><br></span></p><p><span><br></span></p><p><span><br></span></p><p><span><br></span></p><p><span><br></span></p><p><span><br></span></p><p><span><br></span></p><p><span>注：存在保证金时，租赁的账单不会产生更新，对于赊销而言不存在履约保证金，不再会更新账单信息</span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u9096" class="ax_default label">
+        <div id="u9096_div" class=""></div>
+        <div id="u9096_text" class="text ">
+          <p><span>以下内容仅供快速了解“价格中心1.0”对“履约保证金”的处理方案</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (表格) -->
+      <div id="u9097" class="ax_default">
+
+        <!-- Unnamed (单元格) -->
+        <div id="u9098" class="ax_default table_cell">
+          <img id="u9098_img" class="img " src="images/押金/u9055.png"/>
+          <div id="u9098_text" class="text ">
+            <p><span>中台提供价格信息至业务系统，业务系统调用风控入参</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u9099" class="ax_default table_cell">
+          <img id="u9099_img" class="img " src="images/押金/u9056.png"/>
+          <div id="u9099_text" class="text ">
+            <p><span>风控出参</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u9100" class="ax_default table_cell">
+          <img id="u9100_img" class="img " src="images/前台类目/u1362.png"/>
+          <div id="u9100_text" class="text ">
+            <p><span>用户信息：行为（埋点）、来源、历史订单</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u9101" class="ax_default table_cell">
+          <img id="u9101_img" class="img " src="images/前台类目/u1314.png"/>
+          <div id="u9101_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u9102" class="ax_default table_cell">
+          <img id="u9102_img" class="img " src="images/前台类目/u1362.png"/>
+          <div id="u9102_text" class="text ">
+            <p><span>商品信息：商品SPU/SKU、类目、商户</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u9103" class="ax_default table_cell">
+          <img id="u9103_img" class="img " src="images/前台类目/u1314.png"/>
+          <div id="u9103_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u9104" class="ax_default table_cell">
+          <img id="u9104_img" class="img " src="images/前台类目/u1389.png"/>
+          <div id="u9104_text" class="text ">
+            <p><span>售卖信息：应用（渠道）、商户、租赁方案（日租金/租期等）</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u9105" class="ax_default table_cell">
+          <img id="u9105_img" class="img " src="images/前台类目/u1354.png"/>
+          <div id="u9105_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u9106" class="ax_default box_2">
+        <div id="u9106_div" class=""></div>
+        <div id="u9106_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u9107" class="ax_default label">
+        <div id="u9107_div" class=""></div>
+        <div id="u9107_text" class="text ">
+          <p><span>是否需要支付保证金：0-不需要、1-需要</span></p><p><span><br></span></p><p><span>保证金系数：具体的系数</span></p><p><span><br></span></p><p><span style="color:#D9001B;">注：在需要保证金时，需要风控考虑到一种异常场景，如对应策略</span></p><p><span style="color:#D9001B;">没有输出具体的系数时，风控需要有兜底方案，返回对应值</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u9108" class="ax_default flow_shape">
+        <div id="u9108_div" class=""></div>
+        <div id="u9108_text" class="text ">
+          <p><span>开始</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u9109" class="ax_default flow_shape">
+        <div id="u9109_div" class=""></div>
+        <div id="u9109_text" class="text ">
+          <p><span>结束</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u9110" class="ax_default flow_shape">
+        <div id="u9110_div" class=""></div>
+        <div id="u9110_text" class="text ">
+          <p><span>商品SKU选择</span></p><p><span>@</span><span>用户</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u9111" class="ax_default flow_shape">
+        <div id="u9111_div" class=""></div>
+        <div id="u9111_text" class="text ">
+          <p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">租赁方案选择</span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;">@</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">用户</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u9112" class="ax_default flow_shape">
+        <div id="u9112_div" class=""></div>
+        <div id="u9112_text" class="text ">
+          <p><span>创建订单</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u9113" class="ax_default flow_shape">
+        <div id="u9113_div" class=""></div>
+        <div id="u9113_text" class="text ">
+          <p><span>保证金计算</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u9114" class="ax_default flow_shape">
+        <div id="u9114_div" class=""></div>
+        <div id="u9114_text" class="text ">
+          <p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">保证金支付</span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;">@</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">用户</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u9115" class="ax_default flow_shape">
+        <div id="u9115_div" class=""></div>
+        <div id="u9115_text" class="text ">
+          <p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">按期还款</span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;">@</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">用户</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u9116" class="ax_default _连接">
+        <img id="u9116_seg0" class="img " src="images/保证金/u9116_seg0.svg" alt="u9116_seg0"/>
+        <div id="u9116_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u9117" class="ax_default _连接">
+        <img id="u9117_seg0" class="img " src="images/保证金/u9117_seg0.svg" alt="u9117_seg0"/>
+        <div id="u9117_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u9118" class="ax_default _连接">
+        <img id="u9118_seg0" class="img " src="images/保证金/u9118_seg0.svg" alt="u9118_seg0"/>
+        <div id="u9118_text" class="text ">
+          <p><span>订单准入</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u9119" class="ax_default _连接">
+        <img id="u9119_seg0" class="img " src="images/保证金/u9119_seg0.svg" alt="u9119_seg0"/>
+        <div id="u9119_text" class="text ">
+          <p><span>后置风控通过</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u9120" class="ax_default _连接">
+        <img id="u9120_seg0" class="img " src="images/保证金/u9120_seg0.svg" alt="u9120_seg0"/>
+        <img id="u9120_seg1" class="img " src="images/保证金/u9120_seg1.svg" alt="u9120_seg1"/>
+        <div id="u9120_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u9121" class="ax_default _连接">
+        <img id="u9121_seg0" class="img " src="images/保证金/u9121_seg0.svg" alt="u9121_seg0"/>
+        <img id="u9121_seg1" class="img " src="images/保证金/u9121_seg1.svg" alt="u9121_seg1"/>
+        <div id="u9121_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u9122" class="ax_default _连接">
+        <img id="u9122_seg0" class="img " src="images/保证金/u9122_seg0.svg" alt="u9122_seg0"/>
+        <img id="u9122_seg1" class="img " src="images/保证金/u9122_seg1.svg" alt="u9122_seg1"/>
+        <div id="u9122_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u9123" class="ax_default _连接">
+        <img id="u9123_seg0" class="img " src="images/保证金/u9123_seg0.svg" alt="u9123_seg0"/>
+        <img id="u9123_seg1" class="img " src="images/保证金/u9123_seg1.svg" alt="u9123_seg1"/>
+        <img id="u9123_seg2" class="img " src="images/保证金/u9123_seg2.svg" alt="u9123_seg2"/>
+        <div id="u9123_text" class="text ">
+          <p><span>是否需要履约保证金</span></p><p><span>具体保证金系数</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (形状) -->
+      <div id="u9124" class="ax_default flow_shape">
+        <img id="u9124_img" class="img " src="images/押金/u9084.svg"/>
+        <div id="u9124_text" class="text ">
+          <p><span>风控接口</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u9125" class="ax_default _连接">
+        <img id="u9125_seg0" class="img " src="images/保证金/u9125_seg0.svg" alt="u9125_seg0"/>
+        <img id="u9125_seg1" class="img " src="images/保证金/u9125_seg1.svg" alt="u9125_seg1"/>
+        <img id="u9125_seg2" class="img " src="images/保证金/u9125_seg2.svg" alt="u9125_seg2"/>
+        <div id="u9125_text" class="text ">
+          <p><span>是否需要履约保证金</span></p><p><span>具体保证金系数</span></p>
+        </div>
+      </div>
+    </div>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>
