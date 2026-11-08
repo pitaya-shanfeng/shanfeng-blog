@@ -41,7 +41,5 @@ order: 3
 <img src="/assets/library/notes/shangpin-ko/pages/page-06.webp" alt="商品中心 KO：商 / 货品中台怎么搭第 6 页" loading="lazy" decoding="async" draggable="false" />
 <img src="/assets/library/notes/shangpin-ko/pages/page-07.webp" alt="商品中心 KO：商 / 货品中台怎么搭第 7 页" loading="lazy" decoding="async" draggable="false" />
 <img src="/assets/library/notes/shangpin-ko/pages/page-08.webp" alt="商品中心 KO：商 / 货品中台怎么搭第 8 页" loading="lazy" decoding="async" draggable="false" />
-<img src="/assets/library/notes/shangpin-ko/pages/page-09.webp" alt="商品中心 KO：商 / 货品中台怎么搭第 9 页" loading="lazy" decoding="async" draggable="false" />
-<img src="/assets/library/notes/shangpin-ko/pages/page-10.webp" alt="商品中心 KO：商 / 货品中台怎么搭第 10 页" loading="lazy" decoding="async" draggable="false" />
 <img src="/assets/library/notes/shangpin-ko/pages/page-11.webp" alt="商品中心 KO：商 / 货品中台怎么搭第 11 页" loading="lazy" decoding="async" draggable="false" />
 </div>
