@@ -10,40 +10,6 @@
   .stage { position: relative; flex: 1; overflow: hidden; }
   .stage.scrollable { overflow-x: auto; overflow-y: hidden; }
   .stage iframe { border: 0; display: block; transform-origin: 0 0; background: #fff; }
-
-  /* 页面菜单：仿 Axure 播放器左侧的页面树 */
-  .page-panel {
-    position: fixed; left: 0; top: 0; bottom: 0; z-index: 20;
-    width: 248px; display: flex; flex-direction: column;
-    background: #fff; border-right: 1px solid rgba(0, 0, 0, .12);
-    box-shadow: 0 8px 28px rgba(15, 23, 42, .16);
-    transform: translateX(-100%); transition: transform .18s ease;
-    font: 12px/1.5 -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
-  }
-  .page-panel.open { transform: translateX(0); }
-  .page-panel-head {
-    display: flex; align-items: center; gap: 8px;
-    padding: 10px 12px; border-bottom: 1px solid rgba(0, 0, 0, .08);
-    font-weight: 600; color: #111827;
-  }
-  .page-panel-head .close {
-    margin-left: auto; border: 0; background: transparent; cursor: pointer;
-    font-size: 16px; line-height: 1; color: #6b7280; padding: 2px 4px;
-  }
-  .page-search {
-    margin: 8px 12px; padding: 5px 8px; border: 1px solid rgba(0, 0, 0, .14);
-    border-radius: 5px; font: inherit; outline: none; color: #111827;
-  }
-  .page-list { overflow: auto; padding: 4px 0 12px; flex: 1; }
-  .page-item {
-    display: block; width: 100%; text-align: left; cursor: pointer;
-    padding: 4px 12px 4px 20px; border: 0; background: transparent;
-    color: #374151; font: inherit; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-  .page-item:hover { background: rgba(59, 130, 246, .10); }
-  .page-item.active { background: rgba(59, 130, 246, .16); color: #1d4ed8; font-weight: 600; }
-  .page-empty { padding: 8px 20px; color: #9ca3af; }
-
   .proto-bar {
     position: fixed; right: 12px; bottom: 12px; z-index: 9;
     display: flex; align-items: center; gap: 8px;
@@ -67,93 +33,51 @@
 </head>
 <body>
 <div class="stage" id="stage"></div>
-
-<aside class="page-panel" id="page-panel">
-  <div class="page-panel-head">
-    <span>页面</span>
-    <button class="close" id="panel-close" type="button" aria-label="关闭">×</button>
-  </div>
-  <input class="page-search" id="page-search" type="search" placeholder="搜索页面" />
-  <div class="page-list" id="page-list"></div>
-</aside>
-
 <div class="proto-hint" id="hint">左右滑动查看，或点右下角「全屏」</div>
 <div class="proto-bar">
-  <button type="button" id="pages-btn">页面</button>
+  <button type="button" id="menu-btn">页面菜单</button>
   <button type="button" id="fs-btn">全屏</button>
-  <a id="open-link" target="_blank" rel="noopener">新窗口</a>
+  <a href="start.html#g=1&p=%E4%B8%93%E9%A2%98%E7%AE%A1%E7%90%86" target="_blank" rel="noopener">新窗口</a>
 </div>
 <script>
   (function () {
-    // 画布宽度：统一按 1980 的视口宽度来（用户要求先看这个效果）
+    // 画布宽度：按 1980 的视口宽度铺开
     var DESIGN_W = 1980;
     var MIN_SCALE = 0.5;
     var MAX_SCALE = 1.6;
-    var PAGES = ["版本说明.html", "功能说明.html", "专题管理.html", "专题详情（页面）.html", "专题详情（图片）.html", "专题详情（商品）.html", "专题详情（魔方）.html", "专题详情（导航）.html", "专题详情（金刚区）.html", "专题详情（弹窗）.html", "专题详情（浮标）.html", "频道管理.html", "频道详情（首页）.html", "频道详情（分类）.html", "频道详情（严选）.html", "频道详情（我的）.html", "频道详情（搜索）.html", "频道详情（搜索结果）.html", "频道详情（商详）.html", "频道详情（图片）.html", "频道详情（商品）.html", "频道详情（魔方）.html", "频道详情（导航）.html", "频道详情（金刚区）.html", "频道详情（弹窗）.html", "频道详情（浮标）.html", "底纹词.html", "热搜词.html", "热搜榜.html", "热搜榜详情（商品）.html", "热搜榜详情（词条）.html", "商品推荐.html", "推荐详情.html", "商品榜单.html", "榜单详情.html"];
-    var DEFAULT = "专题管理.html";
+    var page = "专题管理";
+    var url = "start.html#g=1&p=" + encodeURIComponent(page);
     var stage = document.getElementById("stage");
-    var panel = document.getElementById("page-panel");
-    var listEl = document.getElementById("page-list");
-    var searchEl = document.getElementById("page-search");
-    var current = DEFAULT;
 
     var f = document.createElement("iframe");
+    f.src = url;
     f.title = "CMS/RMS案例原型";
     f.setAttribute("allowfullscreen", "");
     stage.appendChild(f);
 
-    function show(name) {
-      current = name;
-      f.src = encodeURIComponent(name);
-      document.getElementById("open-link").href = encodeURIComponent(name);
-      Array.prototype.forEach.call(listEl.children, function (el) {
-        if (el.dataset && el.dataset.page === name) el.classList.add("active");
-        else if (el.classList) el.classList.remove("active");
-      });
-      var active = listEl.querySelector(".page-item.active");
-      if (active && active.scrollIntoView) active.scrollIntoView({ block: "nearest" });
-    }
-
-    function render(keyword) {
-      var k = (keyword || "").trim().toLowerCase();
-      listEl.textContent = "";
-      var shown = 0;
-      PAGES.forEach(function (p) {
-        var label = p.replace(/\.html$/, "");
-        if (k && label.toLowerCase().indexOf(k) < 0) return;
-        shown++;
-        var b = document.createElement("button");
-        b.type = "button";
-        b.className = "page-item" + (label + ".html" === current ? " active" : "");
-        b.textContent = label;
-        b.dataset.page = p;
-        b.addEventListener("click", function () { show(p); });
-        listEl.appendChild(b);
-      });
-      if (!shown) {
-        var d = document.createElement("div");
-        d.className = "page-empty";
-        d.textContent = "没有匹配的页面";
-        listEl.appendChild(d);
+    // Axure 播放器的「页面」侧栏默认展开，会盖住画布左边一块。
+    // 这里点一下它自带的折叠按钮（左上角那个），保留原生交互——
+    // 之后读者随时可以点左边那个标签把它展开。
+    var folded = false;
+    function foldSidebar() {
+      if (folded) return;
+      try {
+        var doc = f.contentDocument;
+        if (!doc) return;
+        var host = doc.getElementById("sitemapHost");
+        if (host && getComputedStyle(host).display === "none") { folded = true; return; }
+        var btn = doc.getElementById("minimizeArrow");
+        if (btn && host) { btn.click(); folded = true; }
+      } catch (e) {
+        /* 忽略 */
       }
     }
-
-    function togglePanel(open) {
-      panel.classList.toggle("open", open);
-      if (open) { searchEl.value = ""; render(""); searchEl.focus(); }
-    }
-
-    document.getElementById("pages-btn").addEventListener("click", function () {
-      togglePanel(!panel.classList.contains("open"));
+    f.addEventListener("load", function () {
+      folded = false;
+      foldSidebar();
+      setTimeout(foldSidebar, 600);
+      setTimeout(foldSidebar, 1800);
     });
-    document.getElementById("panel-close").addEventListener("click", function () { togglePanel(false); });
-    searchEl.addEventListener("input", function () { render(searchEl.value); });
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") togglePanel(false);
-    });
-
-    render("");
-    show(DEFAULT);
 
     function fit() {
       var w = stage.clientWidth;
@@ -162,6 +86,7 @@
       var clamped = false;
       if (scale < MIN_SCALE) { scale = MIN_SCALE; clamped = true; }
       if (scale > MAX_SCALE) { scale = MAX_SCALE; }
+      // 逻辑宽度不小于「缩放后正好铺满」的宽度，否则全屏时右侧留白
       var logicalW = Math.max(DESIGN_W, Math.ceil(w / scale));
       f.style.width = logicalW + "px";
       f.style.height = Math.ceil(h / scale) + "px";
@@ -174,6 +99,26 @@
     window.addEventListener("resize", fit);
     window.addEventListener("orientationchange", fit);
 
+    // 用播放器自带的两个按钮做开合，菜单样式保持 Axure 原生
+    var menuBtn = document.getElementById("menu-btn");
+    menuBtn.addEventListener("click", function () {
+      try {
+        var doc = f.contentDocument;
+        if (!doc) return;
+        var host = doc.getElementById("sitemapHost");
+        var open = host && getComputedStyle(host).display !== "none";
+        if (open) {
+          var min = doc.getElementById("minimizeArrow");
+          if (min) min.click();
+        } else {
+          var max = doc.getElementById("maximizePanel");
+          if (max) max.click();
+        }
+      } catch (e) {
+        /* 忽略 */
+      }
+    });
+
     var btn = document.getElementById("fs-btn");
     function sync() {
       btn.textContent = document.fullscreenElement ? "退出全屏" : "全屏";
@@ -184,10 +129,10 @@
         document.exitFullscreen();
       } else if (document.documentElement.requestFullscreen) {
         document.documentElement.requestFullscreen().catch(function () {
-          window.open(encodeURIComponent(current), "_blank");
+          window.open(url, "_blank");
         });
       } else {
-        window.open(encodeURIComponent(current), "_blank");
+        window.open(url, "_blank");
       }
     });
     document.addEventListener("fullscreenchange", sync);
