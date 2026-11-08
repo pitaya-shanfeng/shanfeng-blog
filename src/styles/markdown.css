@@ -359,6 +359,21 @@ body.wallpaper-transparent .custom-md {
 
 /* 在线原型内嵌：原型已镜像到本站 /proto/lego/（同源静态文件），
    这里只负责给 iframe 一个合适的框，不加手机壳等装饰。 */
+/* 文章内大板块之间的分隔线：默认的 hr 只有 8% 透明度，几乎看不见，
+   这里用一条带渐隐的主色细线，明确切开「产品架构 / OneID / 标签体系」几块 */
+.custom-md .block-divider {
+  height: 2px;
+  margin: 3.25rem 0 2.75rem;
+  border-radius: 2px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in oklab, var(--primary) 38%, transparent) 18%,
+    color-mix(in oklab, var(--primary) 38%, transparent) 82%,
+    transparent
+  );
+}
+
 .proto-embed {
   margin: 1.5rem 0 1.75rem;
 }

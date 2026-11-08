@@ -16,8 +16,13 @@ hideSidebar: true
 # 合集里第 2 篇
 order: 2
 ---
+## 一、产品架构图
 
 ![青年优品·用户中心：建设思路、产品架构、能力边界与关键指标](/assets/library/notes/user-center/arch.webp)
+
+<div class="block-divider"></div>
+
+## 二、OneID方案
 
 <div class="oneid-doc not-prose">
 <main class="page">
@@ -289,7 +294,9 @@ order: 2
 </main>
 </div>
 
-## 标签体系建设规划
+<div class="block-divider"></div>
+
+## 三、标签体系规划
 
 ### 一、标签体系架构总览
 
@@ -653,7 +660,7 @@ MERCHANT 域面向商户。首版可保留基础事实，后续按商户运营�
 
 ![标签系统界面](/assets/library/notes/tag-system/images/image-1.png)
 
-## 附：标签系统 Demo
+### 附：标签系统 Demo
 
 <div class="proto-embed">
 <iframe src="/proto/tag-system/prototype.html" title="标签系统原型：标签管理 / 标签详情 / 圈选配置 / 人群包管理" loading="lazy" allowfullscreen></iframe>
