@@ -72,8 +72,22 @@ export async function getCollectionPosts(
 	const inCategory = makeCategoryFilter(category);
 	const mdPosts = await getCollection("posts", inCategory);
 	const htmlPosts = await getCollection("htmlPosts", inCategory);
-	return [...mdPosts, ...(htmlPosts as unknown as typeof mdPosts)].sort((a, b) => {
-		const diff = a.data.published.valueOf() - b.data.published.valueOf();
-		return sort === "asc" ? diff : -diff;
-	});
+	const all = [...mdPosts, ...(htmlPosts as unknown as typeof mdPosts)];
+	if (sort === "asc") {
+		// 正序：写了 order 的按 order 排在最前（1 = 第一篇），
+		// 其余按发布时间从早到晚；新文章不给 order 就自然接在最后。
+		const key = (p: (typeof all)[number]) => {
+			const o = (p.data as { order?: number }).order;
+			return typeof o === "number" ? o : Number.POSITIVE_INFINITY;
+		};
+		return all.sort((a, b) => {
+			const ka = key(a);
+			const kb = key(b);
+			if (ka !== kb) return ka - kb;
+			return a.data.published.valueOf() - b.data.published.valueOf();
+		});
+	}
+	return all.sort(
+		(a, b) => b.data.published.valueOf() - a.data.published.valueOf(),
+	);
 }
