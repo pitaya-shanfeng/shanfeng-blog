@@ -7,22 +7,23 @@
 <style>
   html, body { height: 100%; margin: 0; }
   body { display: flex; flex-direction: column; background: #fff; }
-  /* 舞台：Axure 画布是固定宽度，按容器宽度整体缩放 */
   .stage { position: relative; flex: 1; overflow: hidden; }
   .stage.scrollable { overflow-x: auto; overflow-y: hidden; }
-  .stage iframe { border: 0; display: block; transform-origin: 0 0; }
+  .stage iframe { border: 0; display: block; transform-origin: 0 0; background: #fff; }
   .proto-bar {
     position: fixed; right: 12px; bottom: 12px; z-index: 9;
-    display: flex; gap: 8px;
+    display: flex; align-items: center; gap: 8px;
     font: 12px/1 -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
   }
-  .proto-bar button, .proto-bar a {
+  .proto-bar select, .proto-bar button, .proto-bar a {
     display: inline-flex; align-items: center; gap: 4px;
     height: 28px; padding: 0 10px; border-radius: 6px; cursor: pointer;
     background: rgba(17, 24, 39, .72); color: #fff; text-decoration: none;
-    border: 0; backdrop-filter: blur(4px);
+    border: 0; backdrop-filter: blur(4px); font: inherit;
   }
-  .proto-bar button:hover, .proto-bar a:hover { background: rgba(17, 24, 39, .88); }
+  .proto-bar select { max-width: 220px; }
+  .proto-bar select option { color: #111; }
+  .proto-bar button:hover, .proto-bar a:hover, .proto-bar select:hover { background: rgba(17, 24, 39, .88); }
   .proto-hint {
     position: fixed; left: 12px; bottom: 12px; z-index: 9;
     display: none; padding: 4px 8px; border-radius: 6px;
@@ -36,25 +37,42 @@
 <div class="stage" id="stage"></div>
 <div class="proto-hint" id="hint">左右滑动查看，或点右下角「全屏」</div>
 <div class="proto-bar">
+  <select id="page-select" title="切换页面"></select>
   <button type="button" id="fs-btn">全屏</button>
-  <a href="start.html#g=1&p=%E5%95%86%E5%93%81%E7%AE%A1%E7%90%86%EF%BC%88spu%EF%BC%89" target="_blank" rel="noopener">新窗口</a>
+  <a id="open-link" target="_blank" rel="noopener">新窗口</a>
 </div>
 <script>
   (function () {
-    // 画布宽度：桌面原型取 1600~1700（只显示主体，注解留作横向拖动），
-    // 移动端原型取 1000（手机 375 + 一列注解）
+    // 画布宽度：桌面原型取 1700（显示主体，注解靠横向拖动）；
+    // 移动端取 1040（一屏放得下两台手机 + 中间留白）
     var DESIGN_W = 1700;
-    var MIN_SCALE = 0.5;   // 再小就看不清了，宁可行内横向滚动
-    var MAX_SCALE = 1.6;   // 再放大就糊了，超出的宽度改为「多看内容」
-    var page = "商品管理（spu）";
-    var url = "start.html#g=1&p=" + encodeURIComponent(page);
+    var MIN_SCALE = 0.5;
+    var MAX_SCALE = 1.6;
+    var PAGES = ["版本说明.html", "项目说明.html", "功能说明.html", "影响说明.html", "特殊场景.html", "逻辑说明.html", "后台类目.html", "前台类目.html", "数据处理.html", "逻辑说明_1.html", "属性管理.html", "数据处理_1.html", "逻辑说明_2.html", "货品管理（spu）.html", "货品管理（sku）.html", "数据处理_2.html", "逻辑说明_3.html", "商品管理（spu）.html", "商品管理（sku）.html", "数据处理_3.html", "售卖管理.html", "售卖详情.html", "价格调整.html"];      // Axure 站点树顺序
+    var DEFAULT = "商品管理（spu）.html";
     var stage = document.getElementById("stage");
 
     var f = document.createElement("iframe");
-    f.src = url;
     f.title = "商品中心原型";
     f.setAttribute("allowfullscreen", "");
     stage.appendChild(f);
+
+    function urlOf(name) { return encodeURIComponent(name); }
+
+    function show(name) {
+      f.src = urlOf(name);
+      document.getElementById("open-link").href = urlOf(name);
+    }
+
+    var sel = document.getElementById("page-select");
+    PAGES.forEach(function (p) {
+      var o = document.createElement("option");
+      o.value = p; o.textContent = p.replace(/\.html$/, "");
+      sel.appendChild(o);
+    });
+    sel.value = DEFAULT;
+    sel.addEventListener("change", function () { show(sel.value); });
+    show(DEFAULT);
 
     function fit() {
       var w = stage.clientWidth;
@@ -63,8 +81,7 @@
       var clamped = false;
       if (scale < MIN_SCALE) { scale = MIN_SCALE; clamped = true; }
       if (scale > MAX_SCALE) { scale = MAX_SCALE; }
-      // 关键：逻辑宽度不小于「缩放后正好铺满容器」所需的宽度，
-      // 否则全屏时右侧会留出一条空白
+      // 逻辑宽度不小于「缩放后正好铺满」的宽度，否则全屏时右侧留白
       var logicalW = Math.max(DESIGN_W, Math.ceil(w / scale));
       f.style.width = logicalW + "px";
       f.style.height = Math.ceil(h / scale) + "px";
@@ -80,7 +97,6 @@
     var btn = document.getElementById("fs-btn");
     function sync() {
       btn.textContent = document.fullscreenElement ? "退出全屏" : "全屏";
-      // 全屏切换时布局尺寸还没稳定，等一帧再量
       requestAnimationFrame(fit);
     }
     btn.addEventListener("click", function () {
@@ -88,10 +104,10 @@
         document.exitFullscreen();
       } else if (document.documentElement.requestFullscreen) {
         document.documentElement.requestFullscreen().catch(function () {
-          window.open(url, "_blank");
+          window.open(urlOf(sel.value), "_blank");
         });
       } else {
-        window.open(url, "_blank");
+        window.open(urlOf(sel.value), "_blank");
       }
     });
     document.addEventListener("fullscreenchange", sync);
