@@ -27,3 +27,21 @@ order: 3
 <div class="proto-embed">
 <iframe src="/proto/goods-center-nonretail/entry.html" title="商品中心（非零售）原型：类目管理 / 属性管理 / 模板管理 / 档案管理 / 售卖管理 / 价格中心" loading="lazy" allowfullscreen></iframe>
 </div>
+
+<div class="block-divider"></div>
+
+## 三、建设方案
+
+<div class="document-page-stream" aria-label="商品中心 KO：商 / 货品中台怎么搭在线预览">
+<img src="/assets/library/notes/shangpin-ko/pages/page-01.webp" alt="商品中心 KO：商 / 货品中台怎么搭第 1 页" loading="lazy" decoding="async" draggable="false" />
+<img src="/assets/library/notes/shangpin-ko/pages/page-02.webp" alt="商品中心 KO：商 / 货品中台怎么搭第 2 页" loading="lazy" decoding="async" draggable="false" />
+<img src="/assets/library/notes/shangpin-ko/pages/page-03.webp" alt="商品中心 KO：商 / 货品中台怎么搭第 3 页" loading="lazy" decoding="async" draggable="false" />
+<img src="/assets/library/notes/shangpin-ko/pages/page-04.webp" alt="商品中心 KO：商 / 货品中台怎么搭第 4 页" loading="lazy" decoding="async" draggable="false" />
+<img src="/assets/library/notes/shangpin-ko/pages/page-05.webp" alt="商品中心 KO：商 / 货品中台怎么搭第 5 页" loading="lazy" decoding="async" draggable="false" />
+<img src="/assets/library/notes/shangpin-ko/pages/page-06.webp" alt="商品中心 KO：商 / 货品中台怎么搭第 6 页" loading="lazy" decoding="async" draggable="false" />
+<img src="/assets/library/notes/shangpin-ko/pages/page-07.webp" alt="商品中心 KO：商 / 货品中台怎么搭第 7 页" loading="lazy" decoding="async" draggable="false" />
+<img src="/assets/library/notes/shangpin-ko/pages/page-08.webp" alt="商品中心 KO：商 / 货品中台怎么搭第 8 页" loading="lazy" decoding="async" draggable="false" />
+<img src="/assets/library/notes/shangpin-ko/pages/page-09.webp" alt="商品中心 KO：商 / 货品中台怎么搭第 9 页" loading="lazy" decoding="async" draggable="false" />
+<img src="/assets/library/notes/shangpin-ko/pages/page-10.webp" alt="商品中心 KO：商 / 货品中台怎么搭第 10 页" loading="lazy" decoding="async" draggable="false" />
+<img src="/assets/library/notes/shangpin-ko/pages/page-11.webp" alt="商品中心 KO：商 / 货品中台怎么搭第 11 页" loading="lazy" decoding="async" draggable="false" />
+</div>
