@@ -35,7 +35,6 @@
 <div class="stage" id="stage"></div>
 <div class="proto-hint" id="hint">左右滑动查看，或点右下角「全屏」</div>
 <div class="proto-bar">
-  <button type="button" id="menu-btn">页面菜单</button>
   <button type="button" id="fs-btn">全屏</button>
   <a href="start.html#g=1&p=%E7%BA%A2%E5%8C%85%E5%BC%80%E5%90%AF" target="_blank" rel="noopener">新窗口</a>
 </div>
@@ -55,33 +54,23 @@
     f.setAttribute("allowfullscreen", "");
     stage.appendChild(f);
 
-    // Axure 播放器的「页面」侧栏默认展开，会盖住画布左边一块。
-    // 这里点一下它自带的折叠按钮（左上角那个），保留原生交互——
-    // 之后读者随时可以点左边那个标签把它展开。
-    var folded = false;
-    function foldSidebar() {
-      if (folded) return;
-      try {
-        var doc = f.contentDocument;
-        if (!doc) return;
-        var host = doc.getElementById("sitemapHost");
-        if (host && getComputedStyle(host).display === "none") { folded = true; return; }
-        var btn = doc.getElementById("minimizeArrow");
-        if (btn && host) { btn.click(); folded = true; }
-      } catch (e) {
-        /* 忽略 */
-      }
-    }
-    f.addEventListener("load", function () {
-      folded = false;
-      foldSidebar();
-      setTimeout(foldSidebar, 600);
-      setTimeout(foldSidebar, 1800);
-    });
+    // 侧栏保持 Axure 原生状态（默认展开），不干预
 
     function fit() {
       var w = stage.clientWidth;
       var h = stage.clientHeight;
+
+      // 全屏时不做缩放：1:1 铺满浏览器视口，和「新窗口」看到的比例一致，
+      // 超出部分靠原生滚动
+      if (document.fullscreenElement) {
+        f.style.width = w + "px";
+        f.style.height = h + "px";
+        f.style.transform = "none";
+        stage.classList.add("scrollable");
+        document.getElementById("hint").classList.remove("show");
+        return;
+      }
+
       var scale = w / DESIGN_W;
       var clamped = false;
       if (scale < MIN_SCALE) { scale = MIN_SCALE; clamped = true; }
@@ -99,25 +88,7 @@
     window.addEventListener("resize", fit);
     window.addEventListener("orientationchange", fit);
 
-    // 用播放器自带的两个按钮做开合，菜单样式保持 Axure 原生
-    var menuBtn = document.getElementById("menu-btn");
-    menuBtn.addEventListener("click", function () {
-      try {
-        var doc = f.contentDocument;
-        if (!doc) return;
-        var host = doc.getElementById("sitemapHost");
-        var open = host && getComputedStyle(host).display !== "none";
-        if (open) {
-          var min = doc.getElementById("minimizeArrow");
-          if (min) min.click();
-        } else {
-          var max = doc.getElementById("maximizePanel");
-          if (max) max.click();
-        }
-      } catch (e) {
-        /* 忽略 */
-      }
-    });
+    // 只保留全屏与新窗口
 
     var btn = document.getElementById("fs-btn");
     function sync() {
