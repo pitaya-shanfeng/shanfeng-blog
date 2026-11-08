@@ -1,0 +1,390 @@
+/* OneID 方案讨论材料：正文内嵌 HTML 的样式，全部限定在 .oneid-doc 作用域内 */
+
+.oneid-doc {
+  --ink: #172b4d;
+  --muted: #526581;
+  --line: #d9e1ea;
+  --paper: #ffffff;
+  --ground: #f4f7fa;
+  --blue: #155eef;
+  --blue-soft: #edf4ff;
+  --green: #067647;
+  --green-soft: #ecfdf3;
+  --orange: #b54708;
+  --orange-soft: #fff6ed;
+  --red: #b42318;
+  --red-soft: #fff1f0;
+  --purple: #6941c6;
+  --purple-soft: #f4f3ff;
+}
+
+.oneid-doc * {
+  box-sizing: border-box;
+}
+
+.oneid-doc {
+  margin: 0;
+  color: var(--ink);
+  background: var(--ground);
+  font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.oneid-doc .page {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 40px 28px 72px;
+}
+
+.oneid-doc header {
+  border-bottom: 3px solid var(--blue);
+  padding: 8px 0 26px;
+}
+
+.oneid-doc .eyebrow {
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.oneid-doc h1 {
+  margin: 6px 0 8px;
+  font-size: 34px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.oneid-doc .subtitle {
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.oneid-doc .meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.oneid-doc .meta span, .oneid-doc .chip {
+  border: 1px solid var(--line);
+  background: var(--paper);
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.oneid-doc section {
+  margin-top: 32px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 26px;
+}
+
+.oneid-doc h2 {
+  font-size: 21px;
+  margin: 0 0 16px;
+  line-height: 1.4;
+}
+
+.oneid-doc h3 {
+  font-size: 16px;
+  margin: 0 0 8px;
+  line-height: 1.5;
+}
+
+.oneid-doc p {
+  margin: 8px 0;
+}
+
+.oneid-doc .lead {
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+.oneid-doc .callout {
+  border-left: 4px solid var(--blue);
+  background: var(--blue-soft);
+  padding: 16px 18px;
+  margin: 16px 0;
+}
+
+.oneid-doc .callout strong {
+  color: var(--blue);
+}
+
+.oneid-doc .callout.warn {
+  border-color: var(--orange);
+  background: var(--orange-soft);
+}
+
+.oneid-doc .callout.warn strong {
+  color: var(--orange);
+}
+
+.oneid-doc .callout.good {
+  border-color: var(--green);
+  background: var(--green-soft);
+}
+
+.oneid-doc .callout.good strong {
+  color: var(--green);
+}
+
+.oneid-doc .summary-grid, .oneid-doc .option-grid, .oneid-doc .phase-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.oneid-doc .summary-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.oneid-doc .option-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.oneid-doc .phase-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.oneid-doc .fact, .oneid-doc .option, .oneid-doc .phase {
+  border: 1px solid var(--line);
+  padding: 16px;
+  background: #fff;
+}
+
+.oneid-doc .fact .num {
+  font-size: 25px;
+  font-weight: 700;
+  color: var(--blue);
+  line-height: 1.2;
+}
+
+.oneid-doc .fact .label {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+
+.oneid-doc .option.bad {
+  border-top: 4px solid var(--red);
+}
+
+.oneid-doc .option.good {
+  border-top: 4px solid var(--green);
+}
+
+.oneid-doc .option.bad h3 {
+  color: var(--red);
+}
+
+.oneid-doc .option.good h3 {
+  color: var(--green);
+}
+
+.oneid-doc ul {
+  padding-left: 20px;
+  margin: 8px 0;
+}
+
+.oneid-doc li {
+  margin: 5px 0;
+}
+
+.oneid-doc table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  table-layout: fixed;
+}
+
+.oneid-doc th, .oneid-doc td {
+  border: 1px solid var(--line);
+  padding: 10px 12px;
+  vertical-align: top;
+  text-align: left;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.oneid-doc th {
+  background: #f7f9fc;
+  color: #344054;
+  font-weight: 700;
+}
+
+.oneid-doc .flow {
+  display: grid;
+  grid-template-columns: 1fr 42px 1fr 42px 1fr;
+  align-items: stretch;
+  margin: 18px 0;
+}
+
+.oneid-doc .node {
+  border: 1px solid var(--line);
+  padding: 15px;
+  min-height: 108px;
+  background: #fff;
+}
+
+.oneid-doc .node.user {
+  border-top: 4px solid var(--blue);
+}
+
+.oneid-doc .node.one {
+  border-top: 4px solid var(--green);
+  background: var(--green-soft);
+}
+
+.oneid-doc .node.data {
+  border-top: 4px solid var(--purple);
+  background: var(--purple-soft);
+}
+
+.oneid-doc .arrow {
+  display: grid;
+  place-items: center;
+  color: #73849b;
+  font-size: 25px;
+}
+
+.oneid-doc .code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  background: #f3f6f9;
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+.oneid-doc .recommend {
+  border: 2px solid var(--green);
+  padding: 18px;
+  background: var(--green-soft);
+  margin: 16px 0;
+}
+
+.oneid-doc .recommend h3 {
+  color: var(--green);
+}
+
+.oneid-doc .phase {
+  border-top: 4px solid var(--blue);
+}
+
+.oneid-doc .phase:nth-child(2) {
+  border-top-color: var(--purple);
+}
+
+.oneid-doc .phase:nth-child(3) {
+  border-top-color: var(--orange);
+}
+
+.oneid-doc .source {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 14px;
+}
+
+.oneid-doc .decision-list {
+  counter-reset: item;
+  list-style: none;
+  padding: 0;
+}
+
+.oneid-doc .decision-list li {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 8px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.oneid-doc .decision-list li::before {
+  counter-increment: item;
+  content: counter(item);
+  color: var(--blue);
+  font-weight: 700;
+}
+
+@media (max-width: 760px) {
+  .oneid-doc, .oneid-doc, .oneid-doc .page, .oneid-doc section {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .oneid-doc {
+    overflow-x: hidden;
+  }
+  .oneid-doc .page {
+    width: 100vw;
+    max-width: 100vw;
+    padding: 24px 14px 48px;
+  }
+  .oneid-doc header, .oneid-doc section, .oneid-doc h1, .oneid-doc .subtitle, .oneid-doc .callout {
+    width: 100%;
+    max-width: 100%;
+  }
+  .oneid-doc h1 {
+    font-size: 22px;
+    word-break: break-all;
+    white-space: normal;
+  }
+  .oneid-doc .subtitle, .oneid-doc p, .oneid-doc .callout {
+    overflow-wrap: anywhere;
+    word-break: break-all;
+  }
+  .oneid-doc section {
+    padding: 19px;
+  }
+  .oneid-doc .summary-grid, .oneid-doc .option-grid, .oneid-doc .phase-grid {
+    grid-template-columns: 1fr;
+  }
+  .oneid-doc .flow {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .oneid-doc .arrow {
+    transform: rotate(90deg);
+    min-height: 25px;
+  }
+  .oneid-doc table {
+    display: block;
+    overflow-x: auto;
+    font-size: 13px;
+  }
+  .oneid-doc th, .oneid-doc td {
+    padding: 8px;
+  }
+}
+/* 嵌进文章后的收尾：不要再套一层页面留白，改成一张带边框的卡 */
+.oneid-doc .page { max-width: none; padding: 0; }
+.oneid-doc { background: #f7f9fc; border: 1px solid rgb(0 0 0 / .08); border-radius: 12px; padding: 22px 24px 26px; margin: 8px 0 24px; }
+.oneid-doc .oneid-title { margin: 6px 0 8px; font-size: 26px; line-height: 1.32; }
+/* 这份材料本身就是浅色文档，深色模式下也保持原样，不做反色 */
+.dark .oneid-doc { border-color: rgb(255 255 255 / .14); }
+
+/* ---- 压住正文（.custom-md）自带的表格样式 ----
+   .custom-md 会给 th/td 套主题色（深色模式下整块变暗），
+   这里用更高优先级把文档自己的配色盖回来。 */
+.custom-md .oneid-doc table th {
+  background: #f7f9fc;
+  color: #344054;
+  border: 1px solid var(--line);
+}
+.custom-md .oneid-doc table td {
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+.custom-md .oneid-doc table tr:nth-child(even) td {
+  background: #fbfcfd;
+}
+.custom-md .oneid-doc table {
+  border-collapse: collapse;
+  border-radius: 0;
+  overflow: visible;
+}
