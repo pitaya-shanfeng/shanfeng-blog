@@ -16,7 +16,7 @@ hideSidebar: true
 # 合集里第 2 篇
 order: 2
 ---
-## 一、产品架构图
+## 一、产品架构
 
 ![青年优品·用户中心：建设思路、产品架构、能力边界与关键指标](/assets/library/notes/user-center/arch.webp)
 
