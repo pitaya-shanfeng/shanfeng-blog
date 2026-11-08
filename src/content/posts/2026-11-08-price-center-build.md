@@ -20,3 +20,19 @@ order: 4
 ## 一、产品架构
 
 ![青年优品·价格中心：建设思路、产品架构、能力边界与关键指标](/assets/library/notes/price-center-build/arch.webp)
+
+<div class="block-divider"></div>
+
+## 二、思路与设计（1.0）
+
+<div class="proto-embed">
+<iframe src="/proto/price-center-v1/entry.html" title="价格中心（非零售）1.0 原型：售卖详情 / 平台售卖 / 成本管理 / 保证金押金溢价金" loading="lazy" allowfullscreen></iframe>
+</div>
+
+<div class="block-divider"></div>
+
+## 三、思路与设计（2.0）
+
+<div class="proto-embed">
+<iframe src="/proto/price-center-v2/entry.html" title="价格中心（非零售）2.0 原型：售卖详情 / 租金租期 / 买断金 / 逾期与违约金 / 商品同步" loading="lazy" allowfullscreen></iframe>
+</div>
