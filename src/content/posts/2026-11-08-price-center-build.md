@@ -25,19 +25,13 @@ order: 4
 
 ## 二、思路与设计
 
-### 价格中心（非零售）1.0
-
 <div class="proto-embed">
 <iframe src="/proto/price-center-v1/entry.html" title="价格中心（非零售）1.0：售卖详情 / 平台售卖 / 成本管理 / 保证金押金溢价金" loading="lazy" allowfullscreen></iframe>
 </div>
 
-### 价格中心（非零售）2.0
-
 <div class="proto-embed">
 <iframe src="/proto/price-center-v2/entry.html" title="价格中心（非零售）2.0：售卖详情 / 租金租期 / 买断金 / 逾期与违约金 / 商品同步" loading="lazy" allowfullscreen></iframe>
 </div>
-
-### 价格中心（竞品价格监控）
 
 <div class="proto-embed">
 <iframe src="/proto/price-center/entry.html" title="价格中心：数据采集 / 数据清洗 / 市场监控 / 竞品对比 / 竞对管理" loading="lazy" allowfullscreen></iframe>
