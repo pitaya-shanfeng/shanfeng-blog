@@ -66,11 +66,14 @@ export async function getCollectionPostsByTag(
 
 export async function getCollectionPosts(
 	category: string,
+	/** 排序方向：asc 正序（老→新，新文章默认排在最后）/ desc 倒序（默认） */
+	sort: "asc" | "desc" = "desc",
 ): Promise<CollectionPost[]> {
 	const inCategory = makeCategoryFilter(category);
 	const mdPosts = await getCollection("posts", inCategory);
 	const htmlPosts = await getCollection("htmlPosts", inCategory);
-	return [...mdPosts, ...(htmlPosts as unknown as typeof mdPosts)].sort(
-		(a, b) => b.data.published.valueOf() - a.data.published.valueOf(),
-	);
+	return [...mdPosts, ...(htmlPosts as unknown as typeof mdPosts)].sort((a, b) => {
+		const diff = a.data.published.valueOf() - b.data.published.valueOf();
+		return sort === "asc" ? diff : -diff;
+	});
 }

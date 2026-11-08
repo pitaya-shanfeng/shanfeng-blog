@@ -29,6 +29,11 @@ export interface TopicPageConfig {
 	icon: string;
 	/** 盘口单位 */
 	unit?: string;
+	/**
+	 * 列表顺序：正序（老的在上面，新文章默认接在最后）或倒序（默认）。
+	 * 产品设计这类按系列读的栏目用正序，读者从第 1 篇往下走。
+	 */
+	sort?: "asc" | "desc";
 }
 
 export const topicPages: TopicPageConfig[] = [
@@ -63,6 +68,7 @@ export const topicPages: TopicPageConfig[] = [
 		emptyHint: "第一篇大概会从一次结构重写开始：为什么推倒，重写后哪些问题消失了。",
 		banner: "/assets/images/topics/chanpin-sheji-banner.webp",
 		icon: "material-symbols:widgets-rounded",
+		sort: "asc",
 	},
 	{
 		slug: "xiangmu-fupan",

@@ -22,7 +22,7 @@ export const getStaticPaths = (() =>
 	}))) satisfies GetStaticPaths;
 
 const { topic } = Astro.props;
-const posts = await getCollectionPosts(topic.category);
+const posts = await getCollectionPosts(topic.category, topic.sort ?? "desc");
 ---
 
 <CollectionPage
