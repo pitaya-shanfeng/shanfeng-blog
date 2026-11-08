@@ -659,9 +659,3 @@ MERCHANT 域面向商户。首版可保留基础事实，后续按商户运营�
 ![标签系统界面 · 人群圈选配置](/assets/library/notes/tag-system/images/image.png)
 
 ![标签系统界面](/assets/library/notes/tag-system/images/image-1.png)
-
-### 附：标签系统 Demo
-
-<div class="proto-embed">
-<iframe src="/proto/tag-system/prototype.html" title="标签系统原型：标签管理 / 标签详情 / 圈选配置 / 人群包管理" loading="lazy" allowfullscreen></iframe>
-</div>
