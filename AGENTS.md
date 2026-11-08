@@ -41,3 +41,13 @@ Do not commit secrets, tokens, or service keys in config files. Keep deployment-
 - Cloudflare Pages 绑着 `pitaya-shanfeng/shanfeng-blog` 的 `main`，一推就会自动构建部署（一次要几分钟）
 - 等用户明说「更新」「发布」「推上去」时，才 `git push origin master:main`，然后验证线上
 - 原因：备案审核中，自定义域名暂停解析，只能走 pages.dev，没必要每次都部署
+
+### 部署目标（补充说明）
+
+Cloudflare Pages 只是**备案期间的临时预览通道**，不是最终形态。
+
+- 最终部署在**腾讯云**（轻量应用服务器 `lhins-qoawfaso`，上海；备案挂在腾讯云）
+- ICP 备案下来后：域名解析切回、站点挂在腾讯云上、页脚填备案号
+- 因此 **Cloudflare Pages 单次部署 20,000 文件的上限不必再纠结**：
+  不要再为这个上限去删原型、拆项目或压缩内容；该加的原型照加
+- 真正需要留意的是腾讯云那台机器的资源（2 核 2G、3 Mbps、40G 盘）与访问速度
