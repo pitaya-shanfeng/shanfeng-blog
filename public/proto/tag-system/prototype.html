@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>标签系统 - 产品原型</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; background:#f5f6f8; color:#1f2329; font-size:14px; }
+
+/* ===== 顶部导航 ===== */
+.top-bar { background:#fff; border-bottom:1px solid #e5e6eb; height:56px; display:flex; align-items:center; padding:0 24px; position:fixed; top:0; left:0; right:0; z-index:100; }
+.top-bar .logo { font-size:16px; font-weight:600; color:#1f2329; display:flex; align-items:center; gap:8px; }
+.top-bar .logo svg { width:24px; height:24px; }
+.top-bar .nav-tabs { display:flex; gap:4px; margin-left:48px; }
+.top-bar .nav-tab { padding:8px 16px; border-radius:6px; cursor:pointer; font-size:14px; color:#646a73; transition:all .15s; }
+.top-bar .nav-tab:hover { background:#f2f3f5; color:#1f2329; }
+.top-bar .nav-tab.active { background:#e8f0fe; color:#1a56db; font-weight:500; }
+.top-bar .user-info { margin-left:auto; display:flex; align-items:center; gap:12px; }
+.top-bar .avatar { width:32px; height:32px; border-radius:50%; background:#1a56db; color:#fff; display:flex; align-items:center; justify-content:center; font-size:13px; }
+
+/* ===== 主内容区 ===== */
+.main { margin-top:56px; padding:24px; max-width:1400px; margin-left:auto; margin-right:auto; }
+
+/* ===== 页面切换 ===== */
+.page { display:none; }
+.page.active { display:block; }
+
+/* ===== 通用组件 ===== */
+.card { background:#fff; border-radius:8px; border:1px solid #e5e6eb; }
+.card-header { padding:16px 20px; border-bottom:1px solid #e5e6eb; display:flex; align-items:center; justify-content:space-between; }
+.card-header h3 { font-size:15px; font-weight:600; }
+.card-body { padding:20px; }
+
+.btn { display:inline-flex; align-items:center; gap:6px; padding:6px 16px; border-radius:6px; font-size:13px; cursor:pointer; border:1px solid #e5e6eb; background:#fff; color:#1f2329; transition:all .15s; }
+.btn:hover { border-color:#c9cdd4; background:#f7f8fa; }
+.btn-primary { background:#1a56db; color:#fff; border-color:#1a56db; }
+.btn-primary:hover { background:#1648b8; }
+.btn-sm { padding:4px 10px; font-size:12px; }
+.btn-danger { color:#d54941; border-color:#d54941; }
+.btn-danger:hover { background:#fef2f2; }
+
+.tag { display:inline-flex; align-items:center; padding:2px 8px; border-radius:4px; font-size:12px; }
+.tag-blue { background:#e8f0fe; color:#1a56db; }
+.tag-green { background:#e8f7e8; color:#22a06b; }
+.tag-orange { background:#fff3e0; color:#d97706; }
+.tag-red { background:#fef2f2; color:#d54941; }
+.tag-gray { background:#f2f3f5; color:#646a73; }
+.tag-purple { background:#f3e8ff; color:#7c3aed; }
+
+.input { padding:6px 12px; border:1px solid #e5e6eb; border-radius:6px; font-size:13px; outline:none; transition:border-color .15s; }
+.input:focus { border-color:#1a56db; box-shadow:0 0 0 2px rgba(26,86,219,.1); }
+.select { padding:6px 12px; border:1px solid #e5e6eb; border-radius:6px; font-size:13px; outline:none; background:#fff; cursor:pointer; }
+
+/* ===== 标签列表页 ===== */
+.filter-bar { display:flex; gap:12px; align-items:center; margin-bottom:16px; flex-wrap:wrap; }
+.domain-tabs { display:flex; gap:2px; background:#f2f3f5; border-radius:8px; padding:3px; margin-bottom:16px; }
+.domain-tab { padding:8px 20px; border-radius:6px; cursor:pointer; font-size:13px; color:#646a73; transition:all .15s; }
+.domain-tab:hover { color:#1f2329; }
+.domain-tab.active { background:#fff; color:#1a56db; font-weight:500; box-shadow:0 1px 3px rgba(0,0,0,.08); }
+
+.tag-table { width:100%; border-collapse:collapse; }
+.tag-table th { text-align:left; padding:10px 16px; font-size:12px; color:#8f959e; font-weight:500; border-bottom:1px solid #e5e6eb; background:#fafbfc; }
+.tag-table td { padding:12px 16px; border-bottom:1px solid #f2f3f5; font-size:13px; }
+.tag-table tr:hover td { background:#fafbfc; }
+.tag-table .tag-name { font-weight:500; color:#1a56db; cursor:pointer; }
+.tag-table .tag-name:hover { text-decoration:underline; }
+
+.pagination { display:flex; align-items:center; justify-content:space-between; padding:12px 0; }
+.pagination .info { font-size:12px; color:#8f959e; }
+.pagination .pages { display:flex; gap:4px; }
+.pagination .page-btn { width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:4px; border:1px solid #e5e6eb; cursor:pointer; font-size:12px; }
+.pagination .page-btn.active { background:#1a56db; color:#fff; border-color:#1a56db; }
+
+/* ===== 标签详情页 ===== */
+.detail-header { display:flex; align-items:flex-start; gap:16px; margin-bottom:24px; }
+.detail-header .back-btn { cursor:pointer; color:#646a73; font-size:18px; margin-top:2px; }
+.detail-header .back-btn:hover { color:#1a56db; }
+.detail-meta { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:24px; }
+.meta-item { background:#fafbfc; border-radius:8px; padding:14px 16px; }
+.meta-item .label { font-size:12px; color:#8f959e; margin-bottom:4px; }
+.meta-item .value { font-size:14px; font-weight:500; }
+
+.rule-block { background:#fafbfc; border:1px solid #e5e6eb; border-radius:8px; padding:16px; margin-bottom:12px; }
+.rule-block .rule-title { font-size:13px; font-weight:600; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+.rule-condition { display:flex; align-items:center; gap:8px; padding:8px 12px; background:#fff; border:1px solid #e5e6eb; border-radius:6px; margin-bottom:6px; font-size:13px; }
+.rule-condition .field { color:#1a56db; font-weight:500; }
+.rule-condition .op { color:#d54941; font-weight:600; font-size:12px; background:#fef2f2; padding:2px 6px; border-radius:3px; }
+.rule-condition .val { color:#1f2329; }
+.rule-connector { display:flex; align-items:center; justify-content:center; padding:4px 0; }
+.rule-connector .conn { font-size:11px; font-weight:700; padding:3px 12px; border-radius:12px; }
+.conn-and { background:#e8f0fe; color:#1a56db; }
+.conn-or { background:#fff3e0; color:#d97706; }
+.conn-not { background:#fef2f2; color:#d54941; }
+
+/* ===== 圈选配置页 ===== */
+.audience-builder { display:grid; grid-template-columns:1fr 320px; gap:20px; }
+.condition-group { border:1px solid #e5e6eb; border-radius:8px; margin-bottom:16px; overflow:hidden; }
+.condition-group-header { background:#fafbfc; padding:10px 16px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #e5e6eb; }
+.condition-group-header .group-logic { display:flex; gap:4px; }
+.logic-btn { padding:3px 10px; border-radius:4px; font-size:12px; cursor:pointer; border:1px solid #e5e6eb; background:#fff; }
+.logic-btn.active-and { background:#e8f0fe; color:#1a56db; border-color:#1a56db; }
+.logic-btn.active-or { background:#fff3e0; color:#d97706; border-color:#d97706; }
+.condition-row { display:flex; align-items:center; gap:8px; padding:10px 16px; border-bottom:1px solid #f2f3f5; }
+.condition-row:last-child { border-bottom:none; }
+.condition-row .seq { width:20px; height:20px; border-radius:50%; background:#f2f3f5; display:flex; align-items:center; justify-content:center; font-size:11px; color:#646a73; flex-shrink:0; }
+.condition-row .field-select { width:180px; }
+.condition-row .op-select { width:100px; }
+.condition-row .value-input { flex:1; }
+.condition-row .remove-btn { color:#d54941; cursor:pointer; font-size:16px; flex-shrink:0; }
+
+.estimate-panel { position:sticky; top:80px; }
+.estimate-number { font-size:32px; font-weight:700; color:#1a56db; margin:8px 0; }
+.estimate-bar { height:8px; background:#f2f3f5; border-radius:4px; overflow:hidden; margin:12px 0; }
+.estimate-bar .fill { height:100%; background:linear-gradient(90deg,#1a56db,#22a06b); border-radius:4px; transition:width .3s; }
+
+/* ===== 人群包管理页 ===== */
+.crowd-card { border:1px solid #e5e6eb; border-radius:8px; padding:16px; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; }
+.crowd-card:hover { border-color:#c9cdd4; box-shadow:0 2px 8px rgba(0,0,0,.06); }
+.crowd-info h4 { font-size:14px; font-weight:600; margin-bottom:4px; }
+.crowd-info p { font-size:12px; color:#8f959e; }
+.crowd-stats { display:flex; gap:24px; text-align:center; }
+.crowd-stat .num { font-size:18px; font-weight:600; color:#1f2329; }
+.crowd-stat .label { font-size:11px; color:#8f959e; }
+.crowd-actions { display:flex; gap:8px; }
+
+/* ===== 面包屑 ===== */
+.breadcrumb { display:flex; align-items:center; gap:6px; font-size:13px; color:#8f959e; margin-bottom:16px; }
+.breadcrumb a { color:#1a56db; text-decoration:none; cursor:pointer; }
+.breadcrumb a:hover { text-decoration:underline; }
+
+/* ===== 空状态 ===== */
+.empty { text-align:center; padding:48px 0; color:#8f959e; }
+.empty svg { width:64px; height:64px; margin-bottom:12px; opacity:.4; }
+
+/* ===== 标签类型筛选 ===== */
+.type-filter { display:flex; gap:8px; margin-bottom:16px; }
+.type-chip { padding:4px 12px; border-radius:16px; font-size:12px; cursor:pointer; border:1px solid #e5e6eb; background:#fff; color:#646a73; }
+.type-chip.active { background:#1a56db; color:#fff; border-color:#1a56db; }
+</style>
+</head>
+<body>
+
+<!-- 顶部导航 -->
+<div class="top-bar">
+  <div class="logo">
+    <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" fill="#1a56db"/><rect x="14" y="3" width="7" height="7" rx="1.5" fill="#1a56db" opacity=".6"/><rect x="3" y="14" width="7" height="7" rx="1.5" fill="#1a56db" opacity=".6"/><rect x="14" y="14" width="7" height="7" rx="1.5" fill="#1a56db" opacity=".3"/></svg>
+    标签系统
+  </div>
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="showPage('tagList')">标签管理</div>
+    <div class="nav-tab" onclick="showPage('tagDetail')">标签详情</div>
+    <div class="nav-tab" onclick="showPage('audienceBuilder')">圈选配置</div>
+    <div class="nav-tab" onclick="showPage('crowdManage')">人群包管理</div>
+  </div>
+  <div class="user-info">
+    <span style="font-size:13px;color:#646a73">运营中心</span>
+    <div class="avatar">运</div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ==================== 页面1：标签列表 ==================== -->
+<div class="page active" id="page-tagList">
+  <div class="breadcrumb">标签系统 / <span style="color:#1f2329">标签管理</span></div>
+  
+  <!-- 域切换 -->
+  <div class="domain-tabs">
+    <div class="domain-tab active">全部</div>
+    <div class="domain-tab">USER 用户域</div>
+    <div class="domain-tab">PERSON 身份域</div>
+    <div class="domain-tab">ORDER 订单域</div>
+    <div class="domain-tab">PRODUCT 商品域</div>
+    <div class="domain-tab">MERCHANT 商户域</div>
+  </div>
+
+  <!-- 筛选栏 -->
+  <div class="filter-bar">
+    <input class="input" placeholder="搜索标签名称 / 中文名..." style="width:240px">
+    <select class="select">
+      <option>全部类型</option>
+      <option>基础字段</option>
+      <option>原子级标签</option>
+      <option>非原子级标签</option>
+    </select>
+    <select class="select">
+      <option>全部更新频率</option>
+      <option>T+1</option>
+      <option>一次性</option>
+      <option>周</option>
+      <option>月</option>
+    </select>
+    <select class="select">
+      <option>全部数据类型</option>
+      <option>布尔</option>
+      <option>枚举</option>
+      <option>数值</option>
+      <option>文本</option>
+      <option>日期时间</option>
+    </select>
+    <div style="margin-left:auto">
+      <button class="btn btn-primary">+ 新建标签</button>
+    </div>
+  </div>
+
+  <!-- 类型筛选 -->
+  <div class="type-filter">
+    <div class="type-chip active">全部 (86)</div>
+    <div class="type-chip">基础字段 (23)</div>
+    <div class="type-chip">原子级标签 (41)</div>
+    <div class="type-chip">非原子级标签 (22)</div>
+  </div>
+
+  <!-- 标签表格 -->
+  <div class="card">
+    <table class="tag-table">
+      <thead>
+        <tr>
+          <th style="width:180px">标签名称</th>
+          <th style="width:140px">标签中文名</th>
+          <th style="width:80px">所属域</th>
+          <th style="width:90px">类型</th>
+          <th style="width:80px">数据类型</th>
+          <th style="width:80px">更新频率</th>
+          <th>标签值 / 业务含义</th>
+          <th style="width:100px">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tag-name" onclick="showPage('tagDetail')">is_registered_user</span></td>
+          <td>是否注册用户</td>
+          <td><span class="tag tag-blue">USER</span></td>
+          <td><span class="tag tag-green">原子级</span></td>
+          <td>布尔</td>
+          <td>T+1</td>
+          <td style="color:#646a73">区分游客、已注册用户，用于首单转化、注册后未下单召回</td>
+          <td><button class="btn btn-sm" onclick="showPage('tagDetail')">详情</button></td>
+        </tr>
+        <tr>
+          <td><span class="tag-name">first_visit_app</span></td>
+          <td>首次访问应用</td>
+          <td><span class="tag tag-blue">USER</span></td>
+          <td><span class="tag tag-green">原子级</span></td>
+          <td>枚举</td>
+          <td>一次性</td>
+          <td style="color:#646a73">支付宝-优品租 / 微信-优品租 / 字节-优品租 / 其他</td>
+          <td><button class="btn btn-sm">详情</button></td>
+        </tr>
+        <tr>
+          <td><span class="tag-name">real_name_auth_status</span></td>
+          <td>实名认证状态</td>
+          <td><span class="tag tag-purple">PERSON</span></td>
+          <td><span class="tag tag-green">原子级</span></td>
+          <td>枚举</td>
+          <td>T+1</td>
+          <td style="color:#646a73">判断用户是否具备进入交易、审核、履约的基础身份条件</td>
+          <td><button class="btn btn-sm">详情</button></td>
+        </tr>
+        <tr>
+          <td><span class="tag-name">lifecycle_stage</span></td>
+          <td>生命周期阶段</td>
+          <td><span class="tag tag-blue">USER</span></td>
+          <td><span class="tag tag-orange">非原子级</span></td>
+          <td>枚举</td>
+          <td>T+1</td>
+          <td style="color:#646a73">未注册 / 已注册未下单 / 首单转化期 / 履约中 / 历史成交 / 沉默 / 流失</td>
+          <td><button class="btn btn-sm">详情</button></td>
+        </tr>
+        <tr>
+          <td><span class="tag-name">repurchase_intent_level</span></td>
+          <td>复购意向等级</td>
+          <td><span class="tag tag-blue">USER</span></td>
+          <td><span class="tag tag-orange">非原子级</span></td>
+          <td>枚举</td>
+          <td>T+1</td>
+          <td style="color:#646a73">高 / 中 / 低 / 无法判断，用于筛选更值得优先承接的复购人群</td>
+          <td><button class="btn btn-sm">详情</button></td>
+        </tr>
+        <tr>
+          <td><span class="tag-name">current_active_order_status</span></td>
+          <td>当前进行中订单状态</td>
+          <td><span class="tag tag-red">ORDER</span></td>
+          <td><span class="tag tag-green">原子级</span></td>
+          <td>枚举</td>
+          <td>T+1</td>
+          <td style="color:#646a73">无进行中订单 / 待支付 / 待审核 / 待发货 / 待签收 / 还款中 / 已逾期 / 归还中</td>
+          <td><button class="btn btn-sm">详情</button></td>
+        </tr>
+        <tr>
+          <td><span class="tag-name">category_preference</span></td>
+          <td>品类偏好</td>
+          <td><span class="tag tag-blue">USER</span></td>
+          <td><span class="tag tag-orange">非原子级</span></td>
+          <td>枚举</td>
+          <td>周</td>
+          <td style="color:#646a73">手机 / 电脑整机 / 平板设备 / 摄影航拍 / 智能穿戴 / 游戏装备 / 混合 / 无偏好</td>
+          <td><button class="btn btn-sm">详情</button></td>
+        </tr>
+        <tr>
+          <td><span class="tag-name">product_sales_mode_available</span></td>
+          <td>商品支持销售模式</td>
+          <td><span class="tag tag-gray">PRODUCT</span></td>
+          <td><span class="tag tag-green">原子级</span></td>
+          <td>多值枚举</td>
+          <td>T+1</td>
+          <td style="color:#646a73">长租 / 短租 / 赊销 / 零售，是推荐匹配的基础</td>
+          <td><button class="btn btn-sm">详情</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pagination" style="padding:12px 16px">
+      <div class="info">共 86 个标签，当前第 1 / 11 页</div>
+      <div class="pages">
+        <div class="page-btn active">1</div>
+        <div class="page-btn">2</div>
+        <div class="page-btn">3</div>
+        <div class="page-btn">...</div>
+        <div class="page-btn">11</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 页面2：标签详情 ==================== -->
+<div class="page" id="page-tagDetail">
+  <div class="breadcrumb"><a onclick="showPage('tagList')">标签管理</a> / <span style="color:#1f2329">标签详情</span></div>
+  
+  <div class="detail-header">
+    <span class="back-btn" onclick="showPage('tagList')">&#8592;</span>
+    <div>
+      <h2 style="font-size:18px;font-weight:600">lifecycle_stage <span style="font-weight:400;color:#646a73;font-size:14px">生命周期阶段</span></h2>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <span class="tag tag-blue">USER 用户域</span>
+        <span class="tag tag-orange">非原子级标签</span>
+        <span class="tag tag-gray">T+1 更新</span>
+      </div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:8px">
+      <button class="btn">编辑口径</button>
+      <button class="btn btn-primary" onclick="showPage('audienceBuilder')">用于圈选</button>
+    </div>
+  </div>
+
+  <!-- 元信息 -->
+  <div class="detail-meta">
+    <div class="meta-item">
+      <div class="label">数据类型</div>
+      <div class="value">枚举</div>
+    </div>
+    <div class="meta-item">
+      <div class="label">更新频率</div>
+      <div class="value">T+1</div>
+    </div>
+    <div class="meta-item">
+      <div class="label">覆盖用户数</div>
+      <div class="value">128,456</div>
+    </div>
+    <div class="meta-item">
+      <div class="label">最近计算时间</div>
+      <div class="value">2026-08-27 02:30</div>
+    </div>
+  </div>
+
+  <!-- 标签值分布 -->
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-header"><h3>标签值分布</h3></div>
+    <div class="card-body">
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <div style="flex:1;min-width:120px;background:#fafbfc;border-radius:6px;padding:12px;text-align:center">
+          <div style="font-size:20px;font-weight:600;color:#1a56db">32,180</div>
+          <div style="font-size:12px;color:#8f959e;margin-top:4px">已注册未下单</div>
+        </div>
+        <div style="flex:1;min-width:120px;background:#fafbfc;border-radius:6px;padding:12px;text-align:center">
+          <div style="font-size:20px;font-weight:600;color:#d97706">18,942</div>
+          <div style="font-size:12px;color:#8f959e;margin-top:4px">首单转化期</div>
+        </div>
+        <div style="flex:1;min-width:120px;background:#fafbfc;border-radius:6px;padding:12px;text-align:center">
+          <div style="font-size:20px;font-weight:600;color:#22a06b">45,230</div>
+          <div style="font-size:12px;color:#8f959e;margin-top:4px">履约中</div>
+        </div>
+        <div style="flex:1;min-width:120px;background:#fafbfc;border-radius:6px;padding:12px;text-align:center">
+          <div style="font-size:20px;font-weight:600;color:#7c3aed">21,876</div>
+          <div style="font-size:12px;color:#8f959e;margin-top:4px">历史成交</div>
+        </div>
+        <div style="flex:1;min-width:120px;background:#fafbfc;border-radius:6px;padding:12px;text-align:center">
+          <div style="font-size:20px;font-weight:600;color:#8f959e">8,420</div>
+          <div style="font-size:12px;color:#8f959e;margin-top:4px">沉默</div>
+        </div>
+        <div style="flex:1;min-width:120px;background:#fafbfc;border-radius:6px;padding:12px;text-align:center">
+          <div style="font-size:20px;font-weight:600;color:#d54941">1,808</div>
+          <div style="font-size:12px;color:#8f959e;margin-top:4px">流失</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 计算规则 -->
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-header"><h3>计算规则</h3><span style="font-size:12px;color:#8f959e">按顺序匹配，命中即停止</span></div>
+    <div class="card-body">
+      
+      <!-- 规则1 -->
+      <div class="rule-block">
+        <div class="rule-title"><span class="tag tag-blue">规则 1</span> 未注册</div>
+        <div class="rule-condition">
+          <span class="field">is_registered_user</span>
+          <span class="op">==</span>
+          <span class="val">"否"</span>
+        </div>
+      </div>
+
+      <!-- 规则2 -->
+      <div class="rule-block">
+        <div class="rule-title"><span class="tag tag-blue">规则 2</span> 已注册未下单</div>
+        <div class="rule-condition">
+          <span class="field">is_registered_user</span>
+          <span class="op">==</span>
+          <span class="val">"是"</span>
+        </div>
+        <div class="rule-connector"><span class="conn conn-and">AND</span></div>
+        <div class="rule-condition">
+          <span class="field">total_valid_order_count</span>
+          <span class="op">==</span>
+          <span class="val">0</span>
+        </div>
+      </div>
+
+      <!-- 规则3 -->
+      <div class="rule-block" style="border-color:#d97706;background:#fffbeb">
+        <div class="rule-title"><span class="tag tag-orange">规则 3</span> 首单转化期 <span style="font-size:11px;color:#d97706;font-weight:400">（当前示例）</span></div>
+        <div class="rule-condition">
+          <span class="field">total_valid_order_count</span>
+          <span class="op">==</span>
+          <span class="val">1</span>
+        </div>
+        <div class="rule-connector"><span class="conn conn-and">AND</span></div>
+        <div class="rule-condition">
+          <span class="field">当前日期 - last_order_time</span>
+          <span class="op">&lt;=</span>
+          <span class="val">30 天</span>
+        </div>
+      </div>
+
+      <!-- 规则4 -->
+      <div class="rule-block">
+        <div class="rule-title"><span class="tag tag-blue">规则 4</span> 履约中</div>
+        <div class="rule-condition">
+          <span class="field">current_active_order_status</span>
+          <span class="op">IN</span>
+          <span class="val">["待支付","待审核","待发货","待签收","还款中","已逾期","归还中"]</span>
+        </div>
+      </div>
+
+      <!-- 规则5 -->
+      <div class="rule-block">
+        <div class="rule-title"><span class="tag tag-blue">规则 5</span> 沉默</div>
+        <div class="rule-condition">
+          <span class="field">total_valid_order_count</span>
+          <span class="op">&gt;=</span>
+          <span class="val">1</span>
+        </div>
+        <div class="rule-connector"><span class="conn conn-and">AND</span></div>
+        <div class="rule-condition">
+          <span class="field">当前日期 - last_visit_time</span>
+          <span class="op">&gt;</span>
+          <span class="val">30 天</span>
+        </div>
+        <div class="rule-connector"><span class="conn conn-and">AND</span></div>
+        <div class="rule-condition">
+          <span class="field">当前日期 - last_visit_time</span>
+          <span class="op">&lt;=</span>
+          <span class="val">90 天</span>
+        </div>
+      </div>
+
+      <!-- 规则6 -->
+      <div class="rule-block">
+        <div class="rule-title"><span class="tag tag-blue">规则 6</span> 流失</div>
+        <div class="rule-condition">
+          <span class="field">当前日期 - last_visit_time</span>
+          <span class="op">&gt;</span>
+          <span class="val">90 天</span>
+        </div>
+        <div class="rule-connector"><span class="conn conn-and">AND</span></div>
+        <div class="rule-condition">
+          <span class="field">total_valid_order_count</span>
+          <span class="op">&gt;=</span>
+          <span class="val">1</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 依赖标签 -->
+  <div class="card">
+    <div class="card-header"><h3>依赖标签</h3></div>
+    <div class="card-body">
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <span class="tag tag-green" style="padding:6px 12px;font-size:13px">is_registered_user 是否注册用户</span>
+        <span class="tag tag-green" style="padding:6px 12px;font-size:13px">total_valid_order_count 历史有效订单数</span>
+        <span class="tag tag-green" style="padding:6px 12px;font-size:13px">last_order_time 最近下单时间</span>
+        <span class="tag tag-green" style="padding:6px 12px;font-size:13px">last_visit_time 最近访问时间</span>
+        <span class="tag tag-green" style="padding:6px 12px;font-size:13px">current_active_order_status 当前进行中订单状态</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 页面3：圈选配置 ==================== -->
+<div class="page" id="page-audienceBuilder">
+  <div class="breadcrumb"><a onclick="showPage('tagList')">标签管理</a> / <span style="color:#1f2329">圈选配置</span></div>
+  
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+    <div>
+      <h2 style="font-size:18px;font-weight:600">新建人群包</h2>
+      <p style="font-size:13px;color:#8f959e;margin-top:4px">通过标签条件组合圈选目标用户群体</p>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn">保存草稿</button>
+      <button class="btn btn-primary">预估并保存</button>
+    </div>
+  </div>
+
+  <div class="audience-builder">
+    <!-- 左侧：条件配置 -->
+    <div>
+      <!-- 条件组1 -->
+      <div class="condition-group">
+        <div class="condition-group-header">
+          <span style="font-size:13px;font-weight:600">条件组 1</span>
+          <div class="group-logic">
+            <span class="logic-btn active-and">且 AND</span>
+            <span class="logic-btn">或 OR</span>
+          </div>
+        </div>
+        <div class="condition-row">
+          <span class="seq">1</span>
+          <select class="select field-select">
+            <option>lifecycle_stage 生命周期阶段</option>
+          </select>
+          <select class="select op-select">
+            <option>等于</option>
+          </select>
+          <select class="select value-input">
+            <option>首单转化期</option>
+          </select>
+          <span class="remove-btn">&times;</span>
+        </div>
+        <div class="condition-row">
+          <span class="seq">2</span>
+          <select class="select field-select">
+            <option>real_name_auth_status 实名认证状态</option>
+          </select>
+          <select class="select op-select">
+            <option>等于</option>
+          </select>
+          <select class="select value-input">
+            <option>已实名</option>
+          </select>
+          <span class="remove-btn">&times;</span>
+        </div>
+        <div class="condition-row">
+          <span class="seq">3</span>
+          <select class="select field-select">
+            <option>last_browse_category 最近浏览类目</option>
+          </select>
+          <select class="select op-select">
+            <option>包含</option>
+          </select>
+          <select class="select value-input">
+            <option>手机</option>
+          </select>
+          <span class="remove-btn">&times;</span>
+        </div>
+        <div style="padding:10px 16px">
+          <button class="btn btn-sm" style="color:#1a56db;border-color:#1a56db">+ 添加条件</button>
+        </div>
+      </div>
+
+      <!-- 条件组2 -->
+      <div class="condition-group">
+        <div class="condition-group-header">
+          <span style="font-size:13px;font-weight:600">条件组 2 <span class="tag tag-gray" style="margin-left:8px">排除条件</span></span>
+          <div class="group-logic">
+            <span class="logic-btn active-or">或 OR</span>
+            <span class="logic-btn">且 AND</span>
+          </div>
+        </div>
+        <div class="condition-row">
+          <span class="seq">1</span>
+          <select class="select field-select">
+            <option>current_active_order_status 当前进行中订单状态</option>
+          </select>
+          <select class="select op-select">
+            <option>等于</option>
+          </select>
+          <select class="select value-input">
+            <option>履约中</option>
+          </select>
+          <span class="remove-btn">&times;</span>
+        </div>
+        <div class="condition-row">
+          <span class="seq">2</span>
+          <select class="select field-select">
+            <option>is_current_overdue 当前是否逾期</option>
+          </select>
+          <select class="select op-select">
+            <option>等于</option>
+          </select>
+          <select class="select value-input">
+            <option>是</option>
+          </select>
+          <span class="remove-btn">&times;</span>
+        </div>
+        <div style="padding:10px 16px">
+          <button class="btn btn-sm" style="color:#1a56db;border-color:#1a56db">+ 添加条件</button>
+        </div>
+      </div>
+
+      <button class="btn" style="width:100%;justify-content:center;border-style:dashed">+ 添加条件组</button>
+    </div>
+
+    <!-- 右侧：预估面板 -->
+    <div class="estimate-panel">
+      <div class="card">
+        <div class="card-header"><h3>人群预估</h3></div>
+        <div class="card-body" style="text-align:center">
+          <div style="font-size:12px;color:#8f959e">预估覆盖用户数</div>
+          <div class="estimate-number">12,847</div>
+          <div style="font-size:12px;color:#8f959e">占总用户 10.0%</div>
+          <div class="estimate-bar"><div class="fill" style="width:10%"></div></div>
+          <div style="font-size:11px;color:#8f959e;margin-bottom:16px">基于 T+1 数据预估，实际以计算结果为准</div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center">立即计算</button>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <div class="card-header"><h3>条件摘要</h3></div>
+        <div class="card-body" style="font-size:12px;color:#646a73;line-height:1.8">
+          <p><b>包含：</b>生命周期 = 首单转化期 <b>且</b> 已实名 <b>且</b> 最近浏览类目包含手机</p>
+          <p style="margin-top:8px"><b>排除：</b>当前订单状态 = 履约中 <b>或</b> 当前逾期 = 是</p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <div class="card-header"><h3>更新设置</h3></div>
+        <div class="card-body">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <span style="font-size:13px">自动更新</span>
+            <div style="width:36px;height:20px;background:#1a56db;border-radius:10px;position:relative;cursor:pointer">
+              <div style="width:16px;height:16px;background:#fff;border-radius:50%;position:absolute;right:2px;top:2px"></div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:13px">更新频率</span>
+            <select class="select" style="width:100px">
+              <option>T+1</option>
+              <option>周</option>
+              <option>月</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 页面4：人群包管理 ==================== -->
+<div class="page" id="page-crowdManage">
+  <div class="breadcrumb">标签系统 / <span style="color:#1f2329">人群包管理</span></div>
+  
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+    <div style="display:flex;gap:12px;align-items:center">
+      <input class="input" placeholder="搜索人群包名称..." style="width:240px">
+      <select class="select">
+        <option>全部状态</option>
+        <option>生效中</option>
+        <option>已暂停</option>
+        <option>已过期</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" onclick="showPage('audienceBuilder')">+ 新建人群包</button>
+  </div>
+
+  <!-- 统计卡片 -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px">
+    <div class="card" style="padding:16px;text-align:center">
+      <div style="font-size:24px;font-weight:700;color:#1a56db">12</div>
+      <div style="font-size:12px;color:#8f959e;margin-top:4px">人群包总数</div>
+    </div>
+    <div class="card" style="padding:16px;text-align:center">
+      <div style="font-size:24px;font-weight:700;color:#22a06b">8</div>
+      <div style="font-size:12px;color:#8f959e;margin-top:4px">生效中</div>
+    </div>
+    <div class="card" style="padding:16px;text-align:center">
+      <div style="font-size:24px;font-weight:700;color:#d97706">3</div>
+      <div style="font-size:12px;color:#8f959e;margin-top:4px">已暂停</div>
+    </div>
+    <div class="card" style="padding:16px;text-align:center">
+      <div style="font-size:24px;font-weight:700;color:#1f2329">156,230</div>
+      <div style="font-size:12px;color:#8f959e;margin-top:4px">总覆盖用户数</div>
+    </div>
+  </div>
+
+  <!-- 人群包列表 -->
+  <div class="crowd-card">
+    <div class="crowd-info">
+      <h4>首单转化-手机品类高意向用户</h4>
+      <p>生命周期=首单转化期 且 已实名 且 最近浏览类目包含手机 且 排除履约中/逾期用户</p>
+      <div style="display:flex;gap:6px;margin-top:6px">
+        <span class="tag tag-green">生效中</span>
+        <span class="tag tag-gray">T+1 更新</span>
+        <span class="tag tag-gray">创建人：张运营</span>
+      </div>
+    </div>
+    <div class="crowd-stats">
+      <div class="crowd-stat"><div class="num">12,847</div><div class="label">覆盖用户</div></div>
+      <div class="crowd-stat"><div class="num">2026-08-27</div><div class="label">最近计算</div></div>
+    </div>
+    <div class="crowd-actions">
+      <button class="btn btn-sm">详情</button>
+      <button class="btn btn-sm">编辑</button>
+      <button class="btn btn-sm btn-danger">暂停</button>
+    </div>
+  </div>
+
+  <div class="crowd-card">
+    <div class="crowd-info">
+      <h4>租赁转赊销高潜用户</h4>
+      <p>有租赁订单 且 无赊销订单 且 赊销可用额度>0 且 近30天活跃</p>
+      <div style="display:flex;gap:6px;margin-top:6px">
+        <span class="tag tag-green">生效中</span>
+        <span class="tag tag-gray">T+1 更新</span>
+        <span class="tag tag-gray">创建人：李产品</span>
+      </div>
+    </div>
+    <div class="crowd-stats">
+      <div class="crowd-stat"><div class="num">5,623</div><div class="label">覆盖用户</div></div>
+      <div class="crowd-stat"><div class="num">2026-08-27</div><div class="label">最近计算</div></div>
+    </div>
+    <div class="crowd-actions">
+      <button class="btn btn-sm">详情</button>
+      <button class="btn btn-sm">编辑</button>
+      <button class="btn btn-sm btn-danger">暂停</button>
+    </div>
+  </div>
+
+  <div class="crowd-card">
+    <div class="crowd-info">
+      <h4>高价值沉默用户召回</h4>
+      <p>用户价值分层=高价值 且 生命周期=沉默 且 可触达</p>
+      <div style="display:flex;gap:6px;margin-top:6px">
+        <span class="tag tag-green">生效中</span>
+        <span class="tag tag-gray">周更新</span>
+        <span class="tag tag-gray">创建人：张运营</span>
+      </div>
+    </div>
+    <div class="crowd-stats">
+      <div class="crowd-stat"><div class="num">3,218</div><div class="label">覆盖用户</div></div>
+      <div class="crowd-stat"><div class="num">2026-08-25</div><div class="label">最近计算</div></div>
+    </div>
+    <div class="crowd-actions">
+      <button class="btn btn-sm">详情</button>
+      <button class="btn btn-sm">编辑</button>
+      <button class="btn btn-sm btn-danger">暂停</button>
+    </div>
+  </div>
+
+  <div class="crowd-card">
+    <div class="crowd-info">
+      <h4>租后买断意向用户</h4>
+      <p>买断意向=高 且 当前无逾期 且 消息可触达</p>
+      <div style="display:flex;gap:6px;margin-top:6px">
+        <span class="tag tag-orange">已暂停</span>
+        <span class="tag tag-gray">T+1 更新</span>
+        <span class="tag tag-gray">创建人：王运营</span>
+      </div>
+    </div>
+    <div class="crowd-stats">
+      <div class="crowd-stat"><div class="num">2,847</div><div class="label">覆盖用户</div></div>
+      <div class="crowd-stat"><div class="num">2026-08-20</div><div class="label">最近计算</div></div>
+    </div>
+    <div class="crowd-actions">
+      <button class="btn btn-sm">详情</button>
+      <button class="btn btn-sm">编辑</button>
+      <button class="btn btn-sm" style="color:#22a06b;border-color:#22a06b">启用</button>
+    </div>
+  </div>
+
+  <div class="crowd-card">
+    <div class="crowd-info">
+      <h4>短租转长租潜力用户</h4>
+      <p>历史短租成交 且 浏览长租商品或选择长租租期 且 当前订单已完结</p>
+      <div style="display:flex;gap:6px;margin-top:6px">
+        <span class="tag tag-green">生效中</span>
+        <span class="tag tag-gray">T+1 更新</span>
+        <span class="tag tag-gray">创建人：李产品</span>
+      </div>
+    </div>
+    <div class="crowd-stats">
+      <div class="crowd-stat"><div class="num">1,956</div><div class="label">覆盖用户</div></div>
+      <div class="crowd-stat"><div class="num">2026-08-27</div><div class="label">最近计算</div></div>
+    </div>
+    <div class="crowd-actions">
+      <button class="btn btn-sm">详情</button>
+      <button class="btn btn-sm">编辑</button>
+      <button class="btn btn-sm btn-danger">暂停</button>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<script>
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  const tabMap = { tagList: 0, tagDetail: 1, audienceBuilder: 2, crowdManage: 3 };
+  document.querySelectorAll('.nav-tab')[tabMap[name]].classList.add('active');
+}
+
+// 域切换交互
+document.querySelectorAll('.domain-tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.domain-tab').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// 类型筛选交互
+document.querySelectorAll('.type-chip').forEach(chip => {
+  chip.addEventListener('click', function() {
+    document.querySelectorAll('.type-chip').forEach(c => c.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// 逻辑按钮交互
+document.querySelectorAll('.group-logic').forEach(group => {
+  group.querySelectorAll('.logic-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      group.querySelectorAll('.logic-btn').forEach(b => { b.className = 'logic-btn'; });
+      if (this.textContent.includes('AND')) this.classList.add('active-and');
+      else this.classList.add('active-or');
+    });
+  });
+});
+</script>
+</body>
+</html>

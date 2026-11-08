@@ -288,3 +288,9 @@ order: 2
 </section>
 </main>
 </div>
+
+## 附：标签系统 Demo
+
+<div class="proto-embed">
+<iframe src="/proto/tag-system/prototype.html" title="标签系统原型：标签管理 / 标签详情 / 圈选配置 / 人群包管理" loading="lazy" allowfullscreen></iframe>
+</div>
