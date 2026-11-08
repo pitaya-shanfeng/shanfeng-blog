@@ -16,5 +16,14 @@ hideSidebar: true
 # 合集里第 3 篇
 order: 3
 ---
+## 一、产品架构
 
 ![青年优品·商品中心：建设思路、产品架构、能力边界与关键指标](/assets/library/notes/goods-center-build/arch.webp)
+
+<div class="block-divider"></div>
+
+## 二、产品原型
+
+<div class="proto-embed">
+<iframe src="/proto/goods-center-nonretail/entry.html" title="商品中心（非零售）原型：类目管理 / 属性管理 / 模板管理 / 档案管理 / 售卖管理 / 价格中心" loading="lazy" allowfullscreen></iframe>
+</div>

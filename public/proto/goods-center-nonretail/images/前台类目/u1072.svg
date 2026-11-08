@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="40px" height="50px" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter x="2021px" y="1088px" width="40px" height="50px" filterUnits="userSpaceOnUse" id="filter3849">
+      <feOffset dx="1" dy="1" in="SourceAlpha" result="shadowOffsetInner" />
+      <feGaussianBlur stdDeviation="2.5" in="shadowOffsetInner" result="shadowGaussian" />
+      <feComposite in2="shadowGaussian" operator="atop" in="SourceAlpha" result="shadowComposite" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.698039215686274 0  " in="shadowComposite" />
+    </filter>
+    <g id="widget3850">
+      <path d="M 2040 1131.03692846835  C 2034.2 1121.40734059591  2025.5 1115.62958787244  2025.5 1106  C 2025.5 1100.98571428571  2028.4 1092.5  2040 1092.5  C 2051.6 1092.5  2054.5 1100.98571428571  2054.5 1106  C 2054.5 1115.62958787244  2045.8 1121.40734059591  2040 1131.03692846835  Z " fill-rule="nonzero" fill="#009dd9" stroke="none" />
+      <path d="M 2040 1132  C 2034 1122  2025 1116  2025 1106  C 2025 1100.8  2028 1092  2040 1092  C 2052 1092  2055 1100.8  2055 1106  C 2055 1116  2046 1122  2040 1132  Z M 2040 1130.07385693671  C 2045.6 1120.81468119182  2054 1115.25917574489  2054 1106  C 2054 1101.17142857143  2051.2 1093  2040 1093  C 2028.8 1093  2026 1101.17142857143  2026 1106  C 2026 1115.25917574489  2034.4 1120.81468119182  2040 1130.07385693671  Z " fill-rule="nonzero" fill="#ffffff" stroke="none" />
+    </g>
+  </defs>
+  <g transform="matrix(1 0 0 1 -2021 -1088 )">
+    <use xlink:href="#widget3850" filter="url(#filter3849)" />
+    <use xlink:href="#widget3850" />
+  </g>
+</svg>
