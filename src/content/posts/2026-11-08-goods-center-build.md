@@ -22,7 +22,7 @@ order: 3
 
 <div class="block-divider"></div>
 
-## 二、思路与设计
+## 二、思路与设计（标品）
 
 <div class="proto-embed">
 <iframe src="/proto/goods-center-nonretail/entry.html" title="商品中心（非零售）原型：类目管理 / 属性管理 / 模板管理 / 档案管理 / 售卖管理 / 价格中心" loading="lazy" allowfullscreen></iframe>
@@ -42,4 +42,12 @@ order: 3
 <img src="/assets/library/notes/shangpin-ko/pages/page-07.webp" alt="商品中心 KO：商 / 货品中台怎么搭第 7 页" loading="lazy" decoding="async" draggable="false" />
 <img src="/assets/library/notes/shangpin-ko/pages/page-08.webp" alt="商品中心 KO：商 / 货品中台怎么搭第 8 页" loading="lazy" decoding="async" draggable="false" />
 <img src="/assets/library/notes/shangpin-ko/pages/page-11.webp" alt="商品中心 KO：商 / 货品中台怎么搭第 11 页" loading="lazy" decoding="async" draggable="false" />
+</div>
+
+<div class="block-divider"></div>
+
+## 四、思路与设计（非标品）
+
+<div class="proto-embed">
+<iframe src="/proto/goods-center-nonstd/entry.html" title="商品中心（非标品）原型：类目管理 / 属性管理 / 商品与货品 / 售卖管理 / 价格调整" loading="lazy" allowfullscreen></iframe>
 </div>

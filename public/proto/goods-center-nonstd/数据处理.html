@@ -1,0 +1,609 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title>数据处理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/数据处理/styles.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.2.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/数据处理/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1346" class="ax_default box_2">
+        <div id="u1346_div" class=""></div>
+        <div id="u1346_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1347" class="ax_default label">
+        <div id="u1347_div" class=""></div>
+        <div id="u1347_text" class="text ">
+          <p><span>一、鲜沐历史数据/模块处理</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1348" class="ax_default label">
+        <div id="u1348_div" class=""></div>
+        <div id="u1348_text" class="text ">
+          <p><span>1、脏数据处理</span></p><p><span><br></span></p><p><span>针对线上已经存在的后台/前台类目中存在一些脏数据，进行作废处理，不迁移至新的类目库中</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1349" class="ax_default label">
+        <div id="u1349_div" class=""></div>
+        <div id="u1349_text" class="text ">
+          <p><span>二、SaaS历史数据/模块处理</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1350" class="ax_default label">
+        <div id="u1350_div" class=""></div>
+        <div id="u1350_text" class="text ">
+          <p><span>1、常规数据处理</span></p><p><span><br></span></p><p><span>针对线上各个品牌商城在正常使用的后台类目、前台类目（商品分组），按照原先的层级结构进行迁移至新的类目库中</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1351" class="ax_default label">
+        <div id="u1351_div" class=""></div>
+        <div id="u1351_text" class="text ">
+          <p><span>2、后续数据交互</span></p><p><span><br></span></p><p><span>原前台类目（商品分组）、后台类目两个管理模块均采用类目库提供的相关接口，增删查改相关信息</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1352" class="ax_default label">
+        <div id="u1352_div" class=""></div>
+        <div id="u1352_text" class="text ">
+          <p><span>2、常规数据处理</span></p><p><span><br></span></p><p><span>针对线上正常使用的后台类目/前台类目，按照原先的层级结构进行迁移至新的类目库中</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1353" class="ax_default label">
+        <div id="u1353_div" class=""></div>
+        <div id="u1353_text" class="text ">
+          <p><span>3、原前台类目、后台类目模块下线</span></p><p><span><br></span></p><p><span>针对线上原前台类目、后台类目两个管理模块进行下线处理，并且相关功能需要商城额外处理</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (表格) -->
+      <div id="u1354" class="ax_default">
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1355" class="ax_default table_cell">
+          <img id="u1355_img" class="img " src="images/数据处理/u1355.png"/>
+          <div id="u1355_text" class="text ">
+            <p><span>类型</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1356" class="ax_default table_cell">
+          <img id="u1356_img" class="img " src="images/数据处理/u1356.png"/>
+          <div id="u1356_text" class="text ">
+            <p><span>内容</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1357" class="ax_default table_cell">
+          <img id="u1357_img" class="img " src="images/数据处理/u1357.png"/>
+          <div id="u1357_text" class="text ">
+            <p><span>处理方式</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1358" class="ax_default table_cell">
+          <img id="u1358_img" class="img " src="images/数据处理/u1358.png"/>
+          <div id="u1358_text" class="text ">
+            <p><span>测试类目</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1359" class="ax_default table_cell">
+          <img id="u1359_img" class="img " src="images/数据处理/u1359.png"/>
+          <div id="u1359_text" class="text ">
+            <p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">包含</span><span style="font-family:'ArialMT', 'Arial', sans-serif;">“</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">测试</span><span style="font-family:'ArialMT', 'Arial', sans-serif;">”</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">字样或“人员名称”等明显属于测试类型的类目</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1360" class="ax_default table_cell">
+          <img id="u1360_img" class="img " src="images/数据处理/u1360.png"/>
+          <div id="u1360_text" class="text ">
+            <p><span>研发拉取出属于该测试类型的类目明细，</span></p><p><span>通过产品/业务确认后，进行作废处理，不进行迁移</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1361" class="ax_default table_cell">
+          <img id="u1361_img" class="img " src="images/数据处理/u1361.png"/>
+          <div id="u1361_text" class="text ">
+            <p><span>弃用类目</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1362" class="ax_default table_cell">
+          <img id="u1362_img" class="img " src="images/数据处理/u1362.png"/>
+          <div id="u1362_text" class="text ">
+            <p><span>当前类目下不存在任何商品/货品内容的类目</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1363" class="ax_default table_cell">
+          <img id="u1363_img" class="img " src="images/数据处理/u1363.png"/>
+          <div id="u1363_text" class="text ">
+            <p><span>研发拉取出属于该弃用类型的类目明细，</span></p><p><span>通过产品/业务确认后，进行作废处理，不进行迁移</span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (表格) -->
+      <div id="u1364" class="ax_default">
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1365" class="ax_default table_cell">
+          <img id="u1365_img" class="img " src="images/数据处理/u1355.png"/>
+          <div id="u1365_text" class="text ">
+            <p><span>类型</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1366" class="ax_default table_cell">
+          <img id="u1366_img" class="img " src="images/数据处理/u1356.png"/>
+          <div id="u1366_text" class="text ">
+            <p><span>内容</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1367" class="ax_default table_cell">
+          <img id="u1367_img" class="img " src="images/数据处理/u1357.png"/>
+          <div id="u1367_text" class="text ">
+            <p><span>处理方式</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1368" class="ax_default table_cell">
+          <img id="u1368_img" class="img " src="images/数据处理/u1358.png"/>
+          <div id="u1368_text" class="text ">
+            <p><span>基本信息</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1369" class="ax_default table_cell">
+          <img id="u1369_img" class="img " src="images/数据处理/u1359.png"/>
+          <div id="u1369_text" class="text ">
+            <p><span>类目名称（类目图标）、类目性质、类目类型、类目级别</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1370" class="ax_default table_cell">
+          <img id="u1370_img" class="img " src="images/数据处理/u1360.png"/>
+          <div id="u1370_text" class="text ">
+            <p><span>全部迁移至新的类目库，按原结构进行数据初始化</span></p><p><span style="color:#D9001B;">注：现有后台类目性质全部为“通用”；前台类目全部为“自定义”</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1371" class="ax_default table_cell">
+          <img id="u1371_img" class="img " src="images/数据处理/u1358.png"/>
+          <div id="u1371_text" class="text ">
+            <p><span>关联税率</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1372" class="ax_default table_cell">
+          <img id="u1372_img" class="img " src="images/数据处理/u1359.png"/>
+          <div id="u1372_text" class="text ">
+            <p><span>税率编码、商品税率</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1373" class="ax_default table_cell">
+          <img id="u1373_img" class="img " src="images/数据处理/u1360.png"/>
+          <div id="u1373_text" class="text ">
+            <p><span>根据财务模块维护的税率编码，同步关联关系至新的类目库，商品税率跟随税率编码</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1374" class="ax_default table_cell">
+          <img id="u1374_img" class="img " src="images/数据处理/u1361.png"/>
+          <div id="u1374_text" class="text ">
+            <p><span>关联属性</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1375" class="ax_default table_cell">
+          <img id="u1375_img" class="img " src="images/数据处理/u1362.png"/>
+          <div id="u1375_text" class="text ">
+            <p><span>属性、属性值</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1376" class="ax_default table_cell">
+          <img id="u1376_img" class="img " src="images/数据处理/u1363.png"/>
+          <div id="u1376_text" class="text ">
+            <p><span>属性库初始化后，按照原属性挂靠关系，研发直接初始化处理</span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (表格) -->
+      <div id="u1377" class="ax_default">
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1378" class="ax_default table_cell">
+          <img id="u1378_img" class="img " src="images/数据处理/u1355.png"/>
+          <div id="u1378_text" class="text ">
+            <p><span>类型</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1379" class="ax_default table_cell">
+          <img id="u1379_img" class="img " src="images/数据处理/u1356.png"/>
+          <div id="u1379_text" class="text ">
+            <p><span>内容</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1380" class="ax_default table_cell">
+          <img id="u1380_img" class="img " src="images/数据处理/u1357.png"/>
+          <div id="u1380_text" class="text ">
+            <p><span>处理方式</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1381" class="ax_default table_cell">
+          <img id="u1381_img" class="img " src="images/数据处理/u1358.png"/>
+          <div id="u1381_text" class="text ">
+            <p><span>后台类目</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1382" class="ax_default table_cell">
+          <img id="u1382_img" class="img " src="images/数据处理/u1359.png"/>
+          <div id="u1382_text" class="text ">
+            <p><span>整个类目模块，含一、二、三级类目内容</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1383" class="ax_default table_cell">
+          <img id="u1383_img" class="img " src="images/数据处理/u1360.png"/>
+          <div id="u1383_text" class="text ">
+            <p><span>整体下线</span></p><p><span>（前提是研发侧建立新的类目库，如是在原基础上升级，则仅替代当前管理模块）</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1384" class="ax_default table_cell">
+          <img id="u1384_img" class="img " src="images/数据处理/u1358.png"/>
+          <div id="u1384_text" class="text ">
+            <p><span>品牌管理</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1385" class="ax_default table_cell">
+          <img id="u1385_img" class="img " src="images/数据处理/u1359.png"/>
+          <div id="u1385_text" class="text ">
+            <p><span>整个品牌管理模块</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1386" class="ax_default table_cell">
+          <img id="u1386_img" class="img " src="images/数据处理/u1360.png"/>
+          <div id="u1386_text" class="text ">
+            <p><span>整体下线</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1387" class="ax_default table_cell">
+          <img id="u1387_img" class="img " src="images/数据处理/u1387.png"/>
+          <div id="u1387_text" class="text ">
+            <p><span>前台类目</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1388" class="ax_default table_cell">
+          <img id="u1388_img" class="img " src="images/数据处理/u1388.png"/>
+          <div id="u1388_text" class="text ">
+            <p><span>整个类目模块，含一、二级类目内容（除如下特殊内容）</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1389" class="ax_default table_cell">
+          <img id="u1389_img" class="img " src="images/数据处理/u1389.png"/>
+          <div id="u1389_text" class="text ">
+            <p><span>整体下线</span></p><p><span>（前提是研发侧建立新的类目库，如是在原基础上升级，则仅替代当前管理模块）</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1390" class="ax_default table_cell">
+          <img id="u1390_img" class="img " src="images/数据处理/u1361.png"/>
+          <div id="u1390_text" class="text ">
+            <p><span>前台类目</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1391" class="ax_default table_cell">
+          <img id="u1391_img" class="img " src="images/数据处理/u1362.png"/>
+          <div id="u1391_text" class="text ">
+            <p><span>资源位展示/排序、商品排序</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1392" class="ax_default table_cell">
+          <img id="u1392_img" class="img " src="images/数据处理/u1363.png"/>
+          <div id="u1392_text" class="text ">
+            <p><span>商城端升级资源位或商城装修模块，完成业务解耦</span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (表格) -->
+      <div id="u1393" class="ax_default">
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1394" class="ax_default table_cell">
+          <img id="u1394_img" class="img " src="images/数据处理/u1355.png"/>
+          <div id="u1394_text" class="text ">
+            <p><span>类型</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1395" class="ax_default table_cell">
+          <img id="u1395_img" class="img " src="images/数据处理/u1356.png"/>
+          <div id="u1395_text" class="text ">
+            <p><span>内容</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1396" class="ax_default table_cell">
+          <img id="u1396_img" class="img " src="images/数据处理/u1357.png"/>
+          <div id="u1396_text" class="text ">
+            <p><span>处理方式</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1397" class="ax_default table_cell">
+          <img id="u1397_img" class="img " src="images/数据处理/u1358.png"/>
+          <div id="u1397_text" class="text ">
+            <p><span>后台类目</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1398" class="ax_default table_cell">
+          <img id="u1398_img" class="img " src="images/数据处理/u1359.png"/>
+          <div id="u1398_text" class="text ">
+            <p><span>整个类目模块，含一、二、三级类目内容</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1399" class="ax_default table_cell">
+          <img id="u1399_img" class="img " src="images/数据处理/u1360.png"/>
+          <div id="u1399_text" class="text ">
+            <p><span>全部通过类目提供相关接口，实现SaaS后台类目管理</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1400" class="ax_default table_cell">
+          <img id="u1400_img" class="img " src="images/数据处理/u1358.png"/>
+          <div id="u1400_text" class="text ">
+            <p><span>商品分组</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1401" class="ax_default table_cell">
+          <img id="u1401_img" class="img " src="images/数据处理/u1359.png"/>
+          <div id="u1401_text" class="text ">
+            <p><span>整个类目模块，含一、二级类目内容（除如下特殊内容）</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1402" class="ax_default table_cell">
+          <img id="u1402_img" class="img " src="images/数据处理/u1360.png"/>
+          <div id="u1402_text" class="text ">
+            <p><span>全部通过类目提供相关接口，实现SaaS商品分组管理</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1403" class="ax_default table_cell">
+          <img id="u1403_img" class="img " src="images/数据处理/u1361.png"/>
+          <div id="u1403_text" class="text ">
+            <p><span>商品分组</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1404" class="ax_default table_cell">
+          <img id="u1404_img" class="img " src="images/数据处理/u1362.png"/>
+          <div id="u1404_text" class="text ">
+            <p><span>商品分组展示/排序、商品排序</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1405" class="ax_default table_cell">
+          <img id="u1405_img" class="img " src="images/数据处理/u1363.png"/>
+          <div id="u1405_text" class="text ">
+            <p><span>SaaS端独立处理，完成业务解耦</span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (表格) -->
+      <div id="u1406" class="ax_default">
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1407" class="ax_default table_cell">
+          <img id="u1407_img" class="img " src="images/数据处理/u1355.png"/>
+          <div id="u1407_text" class="text ">
+            <p><span>类型</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1408" class="ax_default table_cell">
+          <img id="u1408_img" class="img " src="images/数据处理/u1356.png"/>
+          <div id="u1408_text" class="text ">
+            <p><span>内容</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1409" class="ax_default table_cell">
+          <img id="u1409_img" class="img " src="images/数据处理/u1357.png"/>
+          <div id="u1409_text" class="text ">
+            <p><span>处理方式</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1410" class="ax_default table_cell">
+          <img id="u1410_img" class="img " src="images/数据处理/u1358.png"/>
+          <div id="u1410_text" class="text ">
+            <p><span>后台类目</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1411" class="ax_default table_cell">
+          <img id="u1411_img" class="img " src="images/数据处理/u1359.png"/>
+          <div id="u1411_text" class="text ">
+            <p><span>类目名称、类目性质、类目类型、类目级别</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1412" class="ax_default table_cell">
+          <img id="u1412_img" class="img " src="images/数据处理/u1360.png"/>
+          <div id="u1412_text" class="text ">
+            <p><span>全部迁移至新的类目库，按原结构进行数据初始化</span></p><p><span style="color:#D9001B;">注：现有后台类目性质全部为“通用”</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1413" class="ax_default table_cell">
+          <img id="u1413_img" class="img " src="images/数据处理/u1361.png"/>
+          <div id="u1413_text" class="text ">
+            <p><span>前台类目</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1414" class="ax_default table_cell">
+          <img id="u1414_img" class="img " src="images/数据处理/u1362.png"/>
+          <div id="u1414_text" class="text ">
+            <p><span>类目名称、类目图标、类目性质、类目级别</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u1415" class="ax_default table_cell">
+          <img id="u1415_img" class="img " src="images/数据处理/u1363.png"/>
+          <div id="u1415_text" class="text ">
+            <p><span>全部迁移至新的类目库，按原结构进行数据初始化</span></p><p><span style="color:#D9001B;">注：现有前台类目全部为“自定义”</span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1416" class="ax_default _二级标题">
+        <div id="u1416_div" class=""></div>
+        <div id="u1416_text" class="text ">
+          <p><span>数据处理</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1417" class="ax_default label">
+        <div id="u1417_div" class=""></div>
+        <div id="u1417_text" class="text ">
+          <p><span>完成类目库基础能力及信息结构建设后，需要实现业务系统与中台模块的对接及数据处理</span></p>
+        </div>
+      </div>
+    </div>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

@@ -1,0 +1,889 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title>逻辑说明</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/逻辑说明_2/styles.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/jquery-3.2.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/逻辑说明_2/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2369" class="ax_default _二级标题">
+        <div id="u2369_div" class=""></div>
+        <div id="u2369_text" class="text ">
+          <p><span>逻辑说明</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (表格) -->
+      <div id="u2370" class="ax_default">
+
+        <!-- Unnamed (单元格) -->
+        <div id="u2371" class="ax_default table_cell">
+          <img id="u2371_img" class="img " src="images/逻辑说明_2/u2371.png"/>
+          <div id="u2371_text" class="text ">
+            <p><span>概览</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u2372" class="ax_default table_cell">
+          <img id="u2372_img" class="img " src="images/逻辑说明_2/u2372.png"/>
+          <div id="u2372_text" class="text ">
+            <p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;">一、概念定义</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">货品本质是线下实际的实物产品，对于客户而言，货品不涉及线上交易环节；对于平台而言，货品面对采、仓、配相关环节，方便线下业务根据供应链规则更好的维护、作业等</span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;">二、设计思想</span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;">1</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">、独立管理</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">彻底实现货品与商品的拆分，货品拥有自己的货品库，作为商城、SaaS、大客户等业务的底层通用模块，仅在供应链相关体系中进行货品管理与流转，不受前台销售相关业务影响，实物商品的建立以货品建立为前提，商品与货品依赖规格数量转换实现关联关系</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">2、多规格维护</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">货品支持多级规格单位（最多3级，小单位、中单位、大单位），即未来期望货品以销售的最小规格作为最小存货规格单位管理，此单位为仓库作业最小规格，不可再拆分。</span><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;"> </span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">支持货品定义多规格，存在不同规格单位之间的换算关系，避免重复创建进而导致商品与货品管理的复杂性</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">注：货品模型支持多级规格单位，最多支持3级单位，</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;color:#D9001B;">本期不支持多级规格单位的填写，仅支持一级规格单位，默认为存储的最小单位</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">3、多对多映射</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">货品的建立本质是为了商品的售卖，在创建货品时无需绑定对应商品，但是创建实物商品时必须要关货品，一个货品可以关联至多个商品</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;color:#D9001B;">注：本期仅实现一对一映射及一对多映射，支持一个货品对应多个商品但数量仅能为1</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'ArialMT', 'Arial', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;color:#D9001B;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;color:#D9001B;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;">三、系统结构</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">1、货品库-区分渠道管理</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">货品库具备”渠道“概念，针对鲜沐商城、SaaS品牌客户在线下管理场景中，货品的组成结构及信息内容差异较大，商货中心提供不同渠道的货品模块进行管理，但其背后货品库信息结构及功能服务是一致的</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;color:#D9001B;">（商货中心针对非鲜沐渠道的货品库，后台操作可禁用，仅允许业务系统通过接口调用控制）</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;color:#D9001B;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;color:#D9001B;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;color:#D9001B;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;color:#D9001B;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;color:#D9001B;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;color:#D9001B;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;color:#D9001B;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;color:#D9001B;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;color:#D9001B;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;color:#D9001B;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;color:#D9001B;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">2、货品结构-SPU/SKU+SKU商品对应</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">货品库的结构仍然区分SPU与SKU，SPU仅作为SKU信息的聚合方便后台进行操作、分类、查询等场景，其中商品SKU通过关联货品SKU实现映射与维护</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u2373" class="ax_default table_cell">
+          <img id="u2373_img" class="img " src="images/逻辑说明_2/u2373.png"/>
+          <div id="u2373_text" class="text ">
+            <p><span>SPU</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u2374" class="ax_default table_cell">
+          <img id="u2374_img" class="img " src="images/逻辑说明_2/u2374.png"/>
+          <div id="u2374_text" class="text ">
+            <p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;">一、信息结构</span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;">二、能力边界</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">货品库仅提供货品SPU的信息管理、增删查改操作及其他中台模块的数据交互，与业务侧相关的功能由各业务侧实现</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;"><br></span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u2375" class="ax_default table_cell">
+          <img id="u2375_img" class="img " src="images/逻辑说明_2/u2375.png"/>
+          <div id="u2375_text" class="text ">
+            <p><span>SKU</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u2376" class="ax_default table_cell">
+          <img id="u2376_img" class="img " src="images/逻辑说明_2/u2376.png"/>
+          <div id="u2376_text" class="text ">
+            <p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;">一、信息结构</span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;">二、能力边界</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;font-weight:400;">货品库仅提供货品SKU的信息管理、增删查改操作及其他中台模块的数据交互，与业务侧相关的功能由各业务侧实现</span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;"><br></span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2377" class="ax_default label">
+        <div id="u2377_div" class=""></div>
+        <div id="u2377_text" class="text ">
+          <p><span>以下内容仅供快速了解“商货中心-货品库”的建设思路，具体规则逻辑等以各页面说明为准</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2378" class="ax_default box_2">
+        <div id="u2378_div" class=""></div>
+        <div id="u2378_text" class="text ">
+          <p><span>基础信息</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2379" class="ax_default box_2">
+        <div id="u2379_div" class=""></div>
+        <div id="u2379_text" class="text ">
+          <p><span>SPUID、货品名称、货品描述、主图、详情图等</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2380" class="ax_default box_2">
+        <div id="u2380_div" class=""></div>
+        <div id="u2380_text" class="text ">
+          <p><span>后台类目、货品SKU、属性</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2381" class="ax_default box_2">
+        <div id="u2381_div" class=""></div>
+        <div id="u2381_text" class="text ">
+          <p><span>关联信息</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2382" class="ax_default box_2">
+        <div id="u2382_div" class=""></div>
+        <div id="u2382_text" class="text ">
+          <p><span>基础信息</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2383" class="ax_default box_2">
+        <div id="u2383_div" class=""></div>
+        <div id="u2383_text" class="text ">
+          <p><span>SKUID、货品名称、货品描述、规格、包装、主图、详情图等</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2384" class="ax_default box_2">
+        <div id="u2384_div" class=""></div>
+        <div id="u2384_text" class="text ">
+          <p><span>属性、商品SKU</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2385" class="ax_default box_2">
+        <div id="u2385_div" class=""></div>
+        <div id="u2385_text" class="text ">
+          <p><span>关联信息</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2386" class="ax_default box_2">
+        <div id="u2386_div" class=""></div>
+        <div id="u2386_text" class="text ">
+          <p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">鲜沐</span><span style="font-family:'ArialMT', 'Arial', sans-serif;">Mall-</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">货品</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2387" class="ax_default box_2">
+        <div id="u2387_div" class=""></div>
+        <div id="u2387_text" class="text ">
+          <p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">帆台</span><span style="font-family:'ArialMT', 'Arial', sans-serif;">SaaS-</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">货品</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2388" class="ax_default box_2">
+        <div id="u2388_div" class=""></div>
+        <div id="u2388_text" class="text ">
+          <p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">鲜沐</span><span style="font-family:'ArialMT', 'Arial', sans-serif;">Mall-</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">货品SPU</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2389" class="ax_default box_2">
+        <div id="u2389_div" class=""></div>
+        <div id="u2389_text" class="text ">
+          <p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">帆台</span><span style="font-family:'ArialMT', 'Arial', sans-serif;">SaaS-</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">货品SPU</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">（某渠道）</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2390" class="ax_default box_2">
+        <div id="u2390_div" class=""></div>
+        <div id="u2390_text" class="text ">
+          <p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">鲜沐</span><span style="font-family:'ArialMT', 'Arial', sans-serif;">Mall-</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">货品SKU</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2391" class="ax_default box_2">
+        <div id="u2391_div" class=""></div>
+        <div id="u2391_text" class="text ">
+          <p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">帆台</span><span style="font-family:'ArialMT', 'Arial', sans-serif;">SaaS-</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">货品SKU</span></p><p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">（某渠道）</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2392" class="ax_default box_2">
+        <div id="u2392_div" class=""></div>
+        <div id="u2392_text" class="text ">
+          <p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">鲜沐</span><span style="font-family:'ArialMT', 'Arial', sans-serif;">Mall-</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">商品SKU</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2393" class="ax_default box_2">
+        <div id="u2393_div" class=""></div>
+        <div id="u2393_text" class="text ">
+          <p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">帆台</span><span style="font-family:'ArialMT', 'Arial', sans-serif;">SaaS-</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">商品SKU（某渠道）</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2394" class="ax_default box_2">
+        <div id="u2394_div" class=""></div>
+        <div id="u2394_text" class="text ">
+          <p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">鲜沐</span><span style="font-family:'ArialMT', 'Arial', sans-serif;">Mall-</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">货品库</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2395" class="ax_default box_2">
+        <div id="u2395_div" class=""></div>
+        <div id="u2395_text" class="text ">
+          <p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">帆台</span><span style="font-family:'ArialMT', 'Arial', sans-serif;">SaaS-</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">货品库</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2396" class="ax_default box_2">
+        <div id="u2396_div" class=""></div>
+        <div id="u2396_text" class="text ">
+          <p><span>货品库（多渠道支持）-“渠道”细化至具体货品</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2397" class="ax_default _连接">
+        <img id="u2397_seg0" class="img " src="images/逻辑说明_2/u2397_seg0.svg" alt="u2397_seg0"/>
+        <img id="u2397_seg1" class="img " src="images/逻辑说明_2/u2397_seg1.svg" alt="u2397_seg1"/>
+        <div id="u2397_text" class="text ">
+          <p><span>N:1</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2398" class="ax_default _连接">
+        <img id="u2398_seg0" class="img " src="images/逻辑说明_2/u2398_seg0.svg" alt="u2398_seg0"/>
+        <img id="u2398_seg1" class="img " src="images/逻辑说明_2/u2398_seg1.svg" alt="u2398_seg1"/>
+        <div id="u2398_text" class="text ">
+          <p><span>N:1</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2399" class="ax_default _连接">
+        <img id="u2399_seg0" class="img " src="images/逻辑说明_2/u2399_seg0.svg" alt="u2399_seg0"/>
+        <img id="u2399_seg1" class="img " src="images/逻辑说明_2/u2399_seg1.svg" alt="u2399_seg1"/>
+        <img id="u2399_seg2" class="img " src="images/逻辑说明_2/u2399_seg2.svg" alt="u2399_seg2"/>
+        <img id="u2399_seg3" class="img " src="images/逻辑说明_2/u2399_seg3.svg" alt="u2399_seg3"/>
+        <div id="u2399_text" class="text ">
+          <p><span>1:1</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2400" class="ax_default _连接">
+        <img id="u2400_seg0" class="img " src="images/逻辑说明_2/u2400_seg0.svg" alt="u2400_seg0"/>
+        <img id="u2400_seg1" class="img " src="images/逻辑说明_2/u2400_seg1.svg" alt="u2400_seg1"/>
+        <img id="u2400_seg2" class="img " src="images/逻辑说明_2/u2400_seg2.svg" alt="u2400_seg2"/>
+        <img id="u2400_seg3" class="img " src="images/逻辑说明_2/u2400_seg3.svg" alt="u2400_seg3"/>
+        <div id="u2400_text" class="text ">
+          <p><span>1:N</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2401" class="ax_default _连接">
+        <img id="u2401_seg0" class="img " src="images/逻辑说明_2/u2401_seg0.svg" alt="u2401_seg0"/>
+        <img id="u2401_seg1" class="img " src="images/逻辑说明_2/u2401_seg1.svg" alt="u2401_seg1"/>
+        <div id="u2401_text" class="text ">
+          <p><span style="font-family:'ArialMT', 'Arial', sans-serif;">1</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">：</span><span style="font-family:'ArialMT', 'Arial', sans-serif;">N</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2402" class="ax_default _连接">
+        <img id="u2402_seg0" class="img " src="images/逻辑说明_2/u2402_seg0.svg" alt="u2402_seg0"/>
+        <img id="u2402_seg1" class="img " src="images/逻辑说明_2/u2402_seg1.svg" alt="u2402_seg1"/>
+        <div id="u2402_text" class="text ">
+          <p><span style="font-family:'ArialMT', 'Arial', sans-serif;">1</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">：</span><span style="font-family:'ArialMT', 'Arial', sans-serif;">N</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2403" class="ax_default _连接">
+        <img id="u2403_seg0" class="img " src="images/逻辑说明_2/u2403_seg0.svg" alt="u2403_seg0"/>
+        <img id="u2403_seg1" class="img " src="images/逻辑说明_2/u2403_seg1.svg" alt="u2403_seg1"/>
+        <div id="u2403_text" class="text ">
+          <p><span style="font-family:'ArialMT', 'Arial', sans-serif;">1</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">：</span><span style="font-family:'ArialMT', 'Arial', sans-serif;">N</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2404" class="ax_default _连接">
+        <img id="u2404_seg0" class="img " src="images/逻辑说明_2/u2404_seg0.svg" alt="u2404_seg0"/>
+        <img id="u2404_seg1" class="img " src="images/逻辑说明_2/u2404_seg1.svg" alt="u2404_seg1"/>
+        <div id="u2404_text" class="text ">
+          <p><span style="font-family:'ArialMT', 'Arial', sans-serif;">1</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">：</span><span style="font-family:'ArialMT', 'Arial', sans-serif;">N</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2405" class="ax_default flow_shape1">
+        <div id="u2405_div" class=""></div>
+        <div id="u2405_text" class="text ">
+          <p><span>人工操作</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2406" class="ax_default flow_shape1">
+        <div id="u2406_div" class=""></div>
+        <div id="u2406_text" class="text ">
+          <p><span>接口能力</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2407" class="ax_default flow_shape1">
+        <div id="u2407_div" class=""></div>
+        <div id="u2407_text" class="text ">
+          <p><span>查询SKU</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2408" class="ax_default flow_shape1">
+        <div id="u2408_div" class=""></div>
+        <div id="u2408_text" class="text ">
+          <p><span>新增SKU</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2409" class="ax_default flow_shape1">
+        <div id="u2409_div" class=""></div>
+        <div id="u2409_text" class="text ">
+          <p><span>删除SKU</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2410" class="ax_default flow_shape1">
+        <div id="u2410_div" class=""></div>
+        <div id="u2410_text" class="text ">
+          <p><span>修改SKU</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2411" class="ax_default flow_shape1">
+        <div id="u2411_div" class=""></div>
+        <div id="u2411_text" class="text ">
+          <p><span>属性维护</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2412" class="ax_default flow_shape1">
+        <div id="u2412_div" class=""></div>
+        <div id="u2412_text" class="text ">
+          <p><span>商品关联</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2413" class="ax_default _连接">
+        <img id="u2413_seg0" class="img " src="images/逻辑说明_2/u2413_seg0.svg" alt="u2413_seg0"/>
+        <img id="u2413_seg1" class="img " src="images/逻辑说明_2/u2413_seg1.svg" alt="u2413_seg1"/>
+        <img id="u2413_seg2" class="img " src="images/逻辑说明_2/u2413_seg2.svg" alt="u2413_seg2"/>
+        <div id="u2413_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2414" class="ax_default _连接">
+        <img id="u2414_seg0" class="img " src="images/逻辑说明_2/u2414_seg0.svg" alt="u2414_seg0"/>
+        <img id="u2414_seg1" class="img " src="images/逻辑说明_2/u2414_seg1.svg" alt="u2414_seg1"/>
+        <img id="u2414_seg2" class="img " src="images/逻辑说明_2/u2414_seg2.svg" alt="u2414_seg2"/>
+        <div id="u2414_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2415" class="ax_default _连接">
+        <img id="u2415_seg0" class="img " src="images/逻辑说明_2/u2415_seg0.svg" alt="u2415_seg0"/>
+        <img id="u2415_seg1" class="img " src="images/逻辑说明_2/u2415_seg1.svg" alt="u2415_seg1"/>
+        <img id="u2415_seg2" class="img " src="images/逻辑说明_2/u2415_seg2.svg" alt="u2415_seg2"/>
+        <div id="u2415_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2416" class="ax_default _连接">
+        <img id="u2416_seg0" class="img " src="images/逻辑说明_2/u2416_seg0.svg" alt="u2416_seg0"/>
+        <img id="u2416_seg1" class="img " src="images/逻辑说明_2/u2416_seg1.svg" alt="u2416_seg1"/>
+        <img id="u2416_seg2" class="img " src="images/逻辑说明_2/u2416_seg2.svg" alt="u2416_seg2"/>
+        <div id="u2416_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2417" class="ax_default _连接">
+        <img id="u2417_seg0" class="img " src="images/逻辑说明_2/u2417_seg0.svg" alt="u2417_seg0"/>
+        <img id="u2417_seg1" class="img " src="images/逻辑说明_2/u2417_seg1.svg" alt="u2417_seg1"/>
+        <img id="u2417_seg2" class="img " src="images/逻辑说明_2/u2417_seg2.svg" alt="u2417_seg2"/>
+        <div id="u2417_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2418" class="ax_default _连接">
+        <img id="u2418_seg0" class="img " src="images/逻辑说明_2/u2418_seg0.svg" alt="u2418_seg0"/>
+        <img id="u2418_seg1" class="img " src="images/逻辑说明_2/u2418_seg1.svg" alt="u2418_seg1"/>
+        <img id="u2418_seg2" class="img " src="images/逻辑说明_2/u2418_seg2.svg" alt="u2418_seg2"/>
+        <div id="u2418_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2419" class="ax_default _连接">
+        <img id="u2419_seg0" class="img " src="images/逻辑说明_2/u2419_seg0.svg" alt="u2419_seg0"/>
+        <img id="u2419_seg1" class="img " src="images/逻辑说明_2/u2419_seg1.svg" alt="u2419_seg1"/>
+        <img id="u2419_seg2" class="img " src="images/逻辑说明_2/u2419_seg2.svg" alt="u2419_seg2"/>
+        <div id="u2419_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2420" class="ax_default _连接">
+        <img id="u2420_seg0" class="img " src="images/逻辑说明_2/u2420_seg0.svg" alt="u2420_seg0"/>
+        <img id="u2420_seg1" class="img " src="images/逻辑说明_2/u2420_seg1.svg" alt="u2420_seg1"/>
+        <img id="u2420_seg2" class="img " src="images/逻辑说明_2/u2420_seg2.svg" alt="u2420_seg2"/>
+        <div id="u2420_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2421" class="ax_default _连接">
+        <img id="u2421_seg0" class="img " src="images/逻辑说明_2/u2421_seg0.svg" alt="u2421_seg0"/>
+        <img id="u2421_seg1" class="img " src="images/逻辑说明_2/u2421_seg1.svg" alt="u2421_seg1"/>
+        <img id="u2421_seg2" class="img " src="images/逻辑说明_2/u2421_seg2.svg" alt="u2421_seg2"/>
+        <div id="u2421_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2422" class="ax_default _连接">
+        <img id="u2422_seg0" class="img " src="images/逻辑说明_2/u2422_seg0.svg" alt="u2422_seg0"/>
+        <img id="u2422_seg1" class="img " src="images/逻辑说明_2/u2422_seg1.svg" alt="u2422_seg1"/>
+        <img id="u2422_seg2" class="img " src="images/逻辑说明_2/u2422_seg2.svg" alt="u2422_seg2"/>
+        <div id="u2422_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2423" class="ax_default _连接">
+        <img id="u2423_seg0" class="img " src="images/逻辑说明_2/u2423_seg0.svg" alt="u2423_seg0"/>
+        <img id="u2423_seg1" class="img " src="images/逻辑说明_2/u2423_seg1.svg" alt="u2423_seg1"/>
+        <img id="u2423_seg2" class="img " src="images/逻辑说明_2/u2423_seg2.svg" alt="u2423_seg2"/>
+        <div id="u2423_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2424" class="ax_default _连接">
+        <img id="u2424_seg0" class="img " src="images/逻辑说明_2/u2424_seg0.svg" alt="u2424_seg0"/>
+        <img id="u2424_seg1" class="img " src="images/逻辑说明_2/u2424_seg1.svg" alt="u2424_seg1"/>
+        <img id="u2424_seg2" class="img " src="images/逻辑说明_2/u2424_seg2.svg" alt="u2424_seg2"/>
+        <div id="u2424_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2425" class="ax_default flow_shape1">
+        <div id="u2425_div" class=""></div>
+        <div id="u2425_text" class="text ">
+          <p><span>人工操作</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2426" class="ax_default flow_shape1">
+        <div id="u2426_div" class=""></div>
+        <div id="u2426_text" class="text ">
+          <p><span>接口能力</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2427" class="ax_default flow_shape1">
+        <div id="u2427_div" class=""></div>
+        <div id="u2427_text" class="text ">
+          <p><span>查询SPU</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2428" class="ax_default flow_shape1">
+        <div id="u2428_div" class=""></div>
+        <div id="u2428_text" class="text ">
+          <p><span>新增SPU</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2429" class="ax_default flow_shape1">
+        <div id="u2429_div" class=""></div>
+        <div id="u2429_text" class="text ">
+          <p><span>删除SPU</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2430" class="ax_default flow_shape1">
+        <div id="u2430_div" class=""></div>
+        <div id="u2430_text" class="text ">
+          <p><span>修改SPU</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2431" class="ax_default flow_shape1">
+        <div id="u2431_div" class=""></div>
+        <div id="u2431_text" class="text ">
+          <p><span>属性维护</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2432" class="ax_default flow_shape1">
+        <div id="u2432_div" class=""></div>
+        <div id="u2432_text" class="text ">
+          <p><span>类目关联</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2433" class="ax_default _连接">
+        <img id="u2433_seg0" class="img " src="images/逻辑说明_2/u2433_seg0.svg" alt="u2433_seg0"/>
+        <img id="u2433_seg1" class="img " src="images/逻辑说明_2/u2433_seg1.svg" alt="u2433_seg1"/>
+        <img id="u2433_seg2" class="img " src="images/逻辑说明_2/u2433_seg2.svg" alt="u2433_seg2"/>
+        <div id="u2433_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2434" class="ax_default _连接">
+        <img id="u2434_seg0" class="img " src="images/逻辑说明_2/u2434_seg0.svg" alt="u2434_seg0"/>
+        <img id="u2434_seg1" class="img " src="images/逻辑说明_2/u2434_seg1.svg" alt="u2434_seg1"/>
+        <img id="u2434_seg2" class="img " src="images/逻辑说明_2/u2434_seg2.svg" alt="u2434_seg2"/>
+        <div id="u2434_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2435" class="ax_default _连接">
+        <img id="u2435_seg0" class="img " src="images/逻辑说明_2/u2435_seg0.svg" alt="u2435_seg0"/>
+        <img id="u2435_seg1" class="img " src="images/逻辑说明_2/u2435_seg1.svg" alt="u2435_seg1"/>
+        <img id="u2435_seg2" class="img " src="images/逻辑说明_2/u2435_seg2.svg" alt="u2435_seg2"/>
+        <div id="u2435_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2436" class="ax_default _连接">
+        <img id="u2436_seg0" class="img " src="images/逻辑说明_2/u2436_seg0.svg" alt="u2436_seg0"/>
+        <img id="u2436_seg1" class="img " src="images/逻辑说明_2/u2436_seg1.svg" alt="u2436_seg1"/>
+        <img id="u2436_seg2" class="img " src="images/逻辑说明_2/u2436_seg2.svg" alt="u2436_seg2"/>
+        <div id="u2436_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2437" class="ax_default _连接">
+        <img id="u2437_seg0" class="img " src="images/逻辑说明_2/u2437_seg0.svg" alt="u2437_seg0"/>
+        <img id="u2437_seg1" class="img " src="images/逻辑说明_2/u2437_seg1.svg" alt="u2437_seg1"/>
+        <img id="u2437_seg2" class="img " src="images/逻辑说明_2/u2437_seg2.svg" alt="u2437_seg2"/>
+        <div id="u2437_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2438" class="ax_default _连接">
+        <img id="u2438_seg0" class="img " src="images/逻辑说明_2/u2438_seg0.svg" alt="u2438_seg0"/>
+        <img id="u2438_seg1" class="img " src="images/逻辑说明_2/u2438_seg1.svg" alt="u2438_seg1"/>
+        <img id="u2438_seg2" class="img " src="images/逻辑说明_2/u2438_seg2.svg" alt="u2438_seg2"/>
+        <div id="u2438_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2439" class="ax_default _连接">
+        <img id="u2439_seg0" class="img " src="images/逻辑说明_2/u2439_seg0.svg" alt="u2439_seg0"/>
+        <img id="u2439_seg1" class="img " src="images/逻辑说明_2/u2439_seg1.svg" alt="u2439_seg1"/>
+        <img id="u2439_seg2" class="img " src="images/逻辑说明_2/u2439_seg2.svg" alt="u2439_seg2"/>
+        <div id="u2439_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2440" class="ax_default _连接">
+        <img id="u2440_seg0" class="img " src="images/逻辑说明_2/u2440_seg0.svg" alt="u2440_seg0"/>
+        <img id="u2440_seg1" class="img " src="images/逻辑说明_2/u2440_seg1.svg" alt="u2440_seg1"/>
+        <img id="u2440_seg2" class="img " src="images/逻辑说明_2/u2440_seg2.svg" alt="u2440_seg2"/>
+        <div id="u2440_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2441" class="ax_default _连接">
+        <img id="u2441_seg0" class="img " src="images/逻辑说明_2/u2441_seg0.svg" alt="u2441_seg0"/>
+        <img id="u2441_seg1" class="img " src="images/逻辑说明_2/u2441_seg1.svg" alt="u2441_seg1"/>
+        <img id="u2441_seg2" class="img " src="images/逻辑说明_2/u2441_seg2.svg" alt="u2441_seg2"/>
+        <div id="u2441_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2442" class="ax_default _连接">
+        <img id="u2442_seg0" class="img " src="images/逻辑说明_2/u2442_seg0.svg" alt="u2442_seg0"/>
+        <img id="u2442_seg1" class="img " src="images/逻辑说明_2/u2442_seg1.svg" alt="u2442_seg1"/>
+        <img id="u2442_seg2" class="img " src="images/逻辑说明_2/u2442_seg2.svg" alt="u2442_seg2"/>
+        <div id="u2442_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2443" class="ax_default _连接">
+        <img id="u2443_seg0" class="img " src="images/逻辑说明_2/u2443_seg0.svg" alt="u2443_seg0"/>
+        <img id="u2443_seg1" class="img " src="images/逻辑说明_2/u2443_seg1.svg" alt="u2443_seg1"/>
+        <img id="u2443_seg2" class="img " src="images/逻辑说明_2/u2443_seg2.svg" alt="u2443_seg2"/>
+        <div id="u2443_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (连接) -->
+      <div id="u2444" class="ax_default _连接">
+        <img id="u2444_seg0" class="img " src="images/逻辑说明_2/u2444_seg0.svg" alt="u2444_seg0"/>
+        <img id="u2444_seg1" class="img " src="images/逻辑说明_2/u2444_seg1.svg" alt="u2444_seg1"/>
+        <img id="u2444_seg2" class="img " src="images/逻辑说明_2/u2444_seg2.svg" alt="u2444_seg2"/>
+        <div id="u2444_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2445" class="ax_default box_1">
+        <div id="u2445_div" class=""></div>
+        <div id="u2445_text" class="text ">
+          <p><span>基础信息</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (图片 ) -->
+      <div id="u2446" class="ax_default _图片_">
+        <img id="u2446_img" class="img " src="images/逻辑说明_2/u2446.png"/>
+        <div id="u2446_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (图片 ) -->
+      <div id="u2447" class="ax_default _图片_">
+        <img id="u2447_img" class="img " src="images/逻辑说明_2/u2447.png"/>
+        <div id="u2447_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (表格) -->
+      <div id="u2448" class="ax_default">
+
+        <!-- Unnamed (单元格) -->
+        <div id="u2449" class="ax_default table_cell">
+          <img id="u2449_img" class="img " src="images/逻辑说明_2/u2449.png"/>
+          <div id="u2449_text" class="text ">
+            <p><span style="font-family:'Arial-BoldMT', 'Arial Bold', 'Arial', sans-serif;font-weight:700;">SKU</span><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;">规格</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u2450" class="ax_default table_cell">
+          <img id="u2450_img" class="img " src="images/逻辑说明_2/u2449.png"/>
+          <div id="u2450_text" class="text ">
+            <p><span>单位</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u2451" class="ax_default table_cell">
+          <img id="u2451_img" class="img " src="images/逻辑说明_2/u2449.png"/>
+          <div id="u2451_text" class="text ">
+            <p><span>比例</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u2452" class="ax_default table_cell">
+          <img id="u2452_img" class="img " src="images/逻辑说明_2/u2452.png"/>
+          <div id="u2452_text" class="text ">
+            <p><span>描述</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u2453" class="ax_default table_cell">
+          <img id="u2453_img" class="img " src="images/逻辑说明_2/u2449.png"/>
+          <div id="u2453_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u2454" class="ax_default table_cell">
+          <img id="u2454_img" class="img " src="images/逻辑说明_2/u2449.png"/>
+          <div id="u2454_text" class="text ">
+            <p><span>瓶（小单位）</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u2455" class="ax_default table_cell">
+          <img id="u2455_img" class="img " src="images/逻辑说明_2/u2449.png"/>
+          <div id="u2455_text" class="text ">
+            <p><span>12</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u2456" class="ax_default table_cell">
+          <img id="u2456_img" class="img " src="images/逻辑说明_2/u2452.png"/>
+          <div id="u2456_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u2457" class="ax_default table_cell">
+          <img id="u2457_img" class="img " src="images/逻辑说明_2/u2449.png"/>
+          <div id="u2457_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u2458" class="ax_default table_cell">
+          <img id="u2458_img" class="img " src="images/逻辑说明_2/u2449.png"/>
+          <div id="u2458_text" class="text ">
+            <p><span>组（中单位）</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u2459" class="ax_default table_cell">
+          <img id="u2459_img" class="img " src="images/逻辑说明_2/u2449.png"/>
+          <div id="u2459_text" class="text ">
+            <p><span>6</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u2460" class="ax_default table_cell">
+          <img id="u2460_img" class="img " src="images/逻辑说明_2/u2452.png"/>
+          <div id="u2460_text" class="text ">
+            <p><span style="font-family:'ArialMT', 'Arial', sans-serif;">1</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">组</span><span style="font-family:'ArialMT', 'Arial', sans-serif;">=2</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">瓶</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u2461" class="ax_default table_cell">
+          <img id="u2461_img" class="img " src="images/逻辑说明_2/u2461.png"/>
+          <div id="u2461_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u2462" class="ax_default table_cell">
+          <img id="u2462_img" class="img " src="images/逻辑说明_2/u2461.png"/>
+          <div id="u2462_text" class="text ">
+            <p><span>箱（大单位）</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u2463" class="ax_default table_cell">
+          <img id="u2463_img" class="img " src="images/逻辑说明_2/u2461.png"/>
+          <div id="u2463_text" class="text ">
+            <p><span>1</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (单元格) -->
+        <div id="u2464" class="ax_default table_cell">
+          <img id="u2464_img" class="img " src="images/逻辑说明_2/u2464.png"/>
+          <div id="u2464_text" class="text ">
+            <p><span style="font-family:'ArialMT', 'Arial', sans-serif;">1</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">箱</span><span style="font-family:'ArialMT', 'Arial', sans-serif;">=6</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">组</span><span style="font-family:'ArialMT', 'Arial', sans-serif;">=12</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">瓶</span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2465" class="ax_default box_1">
+        <div id="u2465_div" class=""></div>
+        <div id="u2465_text" class="text ">
+          <p><span>爱乐薇淡奶油 1L</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (图片 ) -->
+      <div id="u2466" class="ax_default _图片_">
+        <img id="u2466_img" class="img " src="images/逻辑说明_2/u2466.png"/>
+        <div id="u2466_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+    </div>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>
