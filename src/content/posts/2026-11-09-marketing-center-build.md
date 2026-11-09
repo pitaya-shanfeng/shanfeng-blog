@@ -51,3 +51,19 @@ order: 6
 <img src="/assets/library/notes/marketing-mid/pages/page-23.webp" alt="营销中台规划方案：CDP、人群与自动化触达第 23 页" loading="lazy" decoding="async" draggable="false" />
 <img src="/assets/library/notes/marketing-mid/pages/page-24.webp" alt="营销中台规划方案：CDP、人群与自动化触达第 24 页" loading="lazy" decoding="async" draggable="false" />
 </div>
+
+<div class="block-divider"></div>
+
+## 三、相关原型
+
+<div class="proto-embed">
+<iframe src="/proto/lego/entry.html" title="CMS 组件集合：图片 / 富文本 / 媒体 / 导航 / tab / 魔方 / 弹窗 / 专题 / 种草九类组件" loading="lazy" allowfullscreen></iframe>
+</div>
+
+<div class="proto-embed">
+<iframe src="/proto/cms-rms/entry.html" title="CMS/RMS：专题管理、频道管理，以及各类组件的配置项与投放规则" loading="lazy" allowfullscreen></iframe>
+</div>
+
+<div class="proto-embed">
+<iframe src="/proto/coupon/entry.html" title="优惠券：平台券与三方券的发放、领取、核销，以及短信与订阅触达" loading="lazy" allowfullscreen></iframe>
+</div>
