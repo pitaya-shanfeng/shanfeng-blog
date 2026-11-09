@@ -70,7 +70,9 @@ function textOnlyTree(node) {
 export function remarkReadingTime() {
 	return (tree, { data }) => {
 		const textOnPage = toString(textOnlyTree(tree));
-		const m = measure(textOnPage, countImages(tree));
+		const images = countImages(tree);
+		const m = measure(textOnPage, images);
+		data.astro.frontmatter.images = images;
 		data.astro.frontmatter.words = m.words;
 		data.astro.frontmatter.chars = m.chars;
 		data.astro.frontmatter.minutes = m.minutes;

@@ -27,6 +27,8 @@ export interface Props {
 	pinned?: boolean;
 	password?: boolean;
 	words?: number;
+	/** 只有图没有字的文章：显示「N 张图」 */
+	images?: number;
 	/** 含原型/PPT 的文章：有值时显示「N 页」而不是字数 */
 	pages?: number;
 	minutes?: number;
@@ -54,6 +56,7 @@ const {
 	customPath,
 	pinned,
 	words,
+	images,
 	pages,
 	minutes,
 	showWords = false,
@@ -269,7 +272,22 @@ const visibleTags =
   }
 
   {
-    showWords && !(typeof pages === "number" && pages > 0) && typeof words === "number" && (
+    showWords &&
+      !(typeof pages === "number" && pages > 0) &&
+      !(typeof words === "number" && words > 0) &&
+      typeof images === "number" &&
+      images > 0 && (
+        <div class="flex items-center">
+          <div class="meta-icon">
+            <Icon name="material-symbols:image-outline-rounded" class="text-xl" />
+          </div>
+          <span class="text-50 text-sm font-medium">{images} 张图</span>
+        </div>
+      )
+  }
+
+  {
+    showWords && !(typeof pages === "number" && pages > 0) && typeof words === "number" && words > 0 && (
       <div class="flex items-center">
         <div class="meta-icon">
           <Icon name="material-symbols:notes-rounded" class="text-xl" />

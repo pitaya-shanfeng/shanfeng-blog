@@ -45,6 +45,7 @@ export const topicPages: TopicPageConfig[] = [
 		lead: "把想清楚的落成能复用的做法。",
 		desc: "需求、设计、增长、分析工具，写的是「下次还能照着做」的那一层：边界在哪、代价是什么、什么时候不该用。",
 		emptyHint: "陆续整理中：先把已经跑通的几套方法写出来。",
+		banner: "/assets/images/topics/fangfa-chendian-banner.webp",
 		icon: "material-symbols:menu-book-rounded",
 	},
 	{

@@ -139,6 +139,7 @@ const { remarkPluginFrontmatter } = await render(entry);
 const descriptionText = description || remarkPluginFrontmatter.excerpt || "";
 // HTML 文章没有 markdown 渲染流程，字数/时长由 loader 写在 data 上
 const words = entry.data.words ?? remarkPluginFrontmatter.words;
+const images = entry.data.images ?? remarkPluginFrontmatter.images;
 const minutes = entry.data.minutes ?? remarkPluginFrontmatter.minutes;
 
 // 含原型 / 内嵌 PPT 的文章：字数没意义，改报「页内容」，
@@ -210,6 +211,7 @@ const cardMinutes = prototypePages
       category={category || undefined}
       pinned={pinned}
       words={words}
+      images={images}
       pages={cardPages}
       minutes={cardMinutes}
       showWords={metaShowWords}
@@ -292,6 +294,7 @@ const cardMinutes = prototypePages
       <PostStats
         published={published}
         words={words}
+        images={images}
         pages={cardPages}
         minutes={cardMinutes}
         showPublished={statsShowPublished}

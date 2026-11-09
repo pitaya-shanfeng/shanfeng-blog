@@ -10,6 +10,8 @@ export interface Props {
 	minutes?: number;
 	/** 含原型/PPT 的文章：有值时显示「N 页」而不是字数 */
 	pages?: number;
+	/** 只有图没有字的文章：显示「N 张图」 */
+	images?: number;
 	showPublished?: boolean;
 	showWords?: boolean;
 	showReadingTime?: boolean;
@@ -22,6 +24,7 @@ const {
 	words,
 	minutes,
 	pages,
+	images,
 	showPublished = true,
 	showWords = true,
 	showReadingTime = true,
@@ -31,7 +34,8 @@ const {
 
 const hasPublished = showPublished;
 const hasPages = showWords && typeof pages === "number" && pages > 0;
-const hasWords = showWords && typeof words === "number";
+const hasWords = showWords && typeof words === "number" && words > 0;
+const hasImages = showWords && !hasPages && !hasWords && typeof images === "number" && images > 0;
 const hasMinutes = showReadingTime && typeof minutes === "number";
 const textClass = "text-xs font-medium";
 const dividerClass = "text-xs font-medium text-black/20 dark:text-white/20";
@@ -67,7 +71,18 @@ const iconClass = "text-sm";
     </div>
   )}
 
-  {!hasPages && hasWords && (
+  {hasImages && (
+    <div class="flex items-center">
+      {showIcons && (
+        <div class={iconWrapperClass}>
+          <Icon name="material-symbols:image-outline-rounded" class={iconClass} />
+        </div>
+      )}
+      <span class={textClass}>{images} 张图</span>
+    </div>
+  )}
+
+  {!hasPages && !hasImages && hasWords && (
     <div class="flex items-center">
       {showIcons && (
         <div class={iconWrapperClass}>
