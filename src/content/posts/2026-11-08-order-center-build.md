@@ -34,7 +34,6 @@ order: 5
 <span class="tag">状态机编排</span><span class="tag">节点编排</span><span class="tag">任务编排</span><span class="tag">条件路由</span>
 </div>
 </div>
-<div class="meta">定位：订单中心 1.0 中台能力设计文档 ｜ 配套：青年优品·订单中心 产品架构图 1.0 ｜ 版本：思考稿 v1.0</div>
 <!-- ═══════════ 1 ═══════════ -->
 <h2><span class="no">01</span>为什么需要订单路由</h2>
 <div class="lead">订单中心要同时承接<b>租赁、赊销、零售</b>三种销售方式，且业务形态还在持续增加：长租、短租、转租赁、三方渠道单（美团短租）、大平台迁移后的商户单……如果每接一个新业务就在代码里硬编码一条新链路，订单中心会迅速变成改不动的单体。</div>
@@ -317,7 +316,6 @@ order: 5
 <span class="tag">准入</span><span class="tag">商家过滤</span><span class="tag">分配策略</span><span class="tag">召回兜底</span><span class="tag">商户等级</span>
 </div>
 </div>
-<div class="meta">定位：订单中心 1.0 中台能力设计文档 ｜ 配套：青年优品·订单中心 产品架构图 1.0 ｜ 版本：思考稿 v1.0</div>
 <!-- ═══════════ 1 ═══════════ -->
 <h2><span class="no">01</span>为什么需要分流引擎</h2>
 <div class="lead">大平台模式落地后，<b>自营降级为商户</b>，与 KA、普通商户在同一池子里竞争接单。订单不再天然属于某一家——每一单都要回答：这么多的商户，谁来接这一单最合适？人工派单和固定归属模式在千级商户规模下必然失效。</div>

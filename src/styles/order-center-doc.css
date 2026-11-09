@@ -704,3 +704,8 @@
   overflow-x: auto;
 }
 .dark .order-route-doc, .dark .split-engine-doc { border-color: rgb(255 255 255 / .12); }
+
+/* 「定位：…｜配套：…｜版本：…」那行元信息已从正文删除；
+   顺手把 hero 下沿的分隔线上移一点，避免留一道空线 */
+.order-route-doc .hero,
+.split-engine-doc .hero { margin-bottom: 0; }
