@@ -17,4 +17,6 @@ hideSidebar: true
 order: 9
 ---
 
-（内容整理中，材料陆续补充。）
+## 一、产品架构
+
+![供应链开放平台：开放平台业务架构、开放平台矩阵、鲜果业务与底层服务能力、能力封装、Open API，以及客户经营全流程](/assets/library/notes/supply-chain-build/arch.webp)
