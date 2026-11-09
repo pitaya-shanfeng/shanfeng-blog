@@ -17,6 +17,7 @@ hideSidebar: true
 order: 7
 # 内嵌任务中心1.0 原型（22 页）
 prototypePages: 22
+deckPages: 16
 ---
 
 

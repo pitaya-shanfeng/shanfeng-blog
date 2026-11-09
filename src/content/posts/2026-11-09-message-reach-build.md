@@ -17,6 +17,7 @@ hideSidebar: true
 order: 8
 # 内嵌三个原型：触达管理 17 页 + 订阅短信 9 页 + 外呼 10 页
 prototypePages: 36
+deckPages: 9
 ---
 
 ## 一、产品架构

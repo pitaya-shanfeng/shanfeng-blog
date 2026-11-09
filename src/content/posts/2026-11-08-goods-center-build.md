@@ -17,6 +17,7 @@ hideSidebar: true
 order: 3
 # 内嵌两个原型：商品中心（非零售）21 页 + 商品中心（非标）23 页
 prototypePages: 44
+deckPages: 9
 ---
 ## 一、产品架构
 

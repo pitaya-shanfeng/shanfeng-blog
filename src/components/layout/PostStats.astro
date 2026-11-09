@@ -8,7 +8,7 @@ export interface Props {
 	published: Date;
 	words?: number;
 	minutes?: number;
-	/** 原型文章：有值时显示「N 页原型」而不是字数 */
+	/** 含原型/PPT 的文章：有值时显示「N 页」而不是字数 */
 	pages?: number;
 	showPublished?: boolean;
 	showWords?: boolean;
@@ -63,7 +63,7 @@ const iconClass = "text-sm";
           <Icon name="material-symbols:layers-outline-rounded" class={iconClass} />
         </div>
       )}
-      <span class={textClass}>{pages} 页原型</span>
+      <span class={textClass}>{pages} 页</span>
     </div>
   )}
 

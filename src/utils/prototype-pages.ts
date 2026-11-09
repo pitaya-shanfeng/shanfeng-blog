@@ -32,3 +32,19 @@ export function countPrototypePages(
 		return 0;
 	}
 }
+
+/**
+ * 「页内容」总数 = 原型页 + 内嵌 PPT / 长图页。
+ *
+ * 有些文章既有可交互原型，又挂了 PPT 切换器（比如商品中心建设：44 页原型 + 9 页 KO），
+ * 只算原型会把 PPT 漏掉；所以两边都算进来，页数口径才一致。
+ */
+export function countContentPages(options: {
+	dir?: string;
+	prototypePages?: number;
+	deckPages?: number;
+}): { prototype: number; deck: number; total: number } {
+	const prototype = countPrototypePages(options.dir ?? "", options.prototypePages);
+	const deck = options.deckPages && options.deckPages > 0 ? options.deckPages : 0;
+	return { prototype, deck, total: prototype + deck };
+}

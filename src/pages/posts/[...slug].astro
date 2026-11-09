@@ -29,7 +29,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import CoverImage from "@/components/common/CoverImage.astro";
 import PostMetadata from "@/components/layout/PostMeta.astro";
-import { countPrototypePages } from "@/utils/prototype-pages";
+import { countContentPages } from "@/utils/prototype-pages";
 import {
 	prototypeEntryUrl,
 	PROTOTYPE_CDN_BASE,
@@ -137,10 +137,12 @@ const postMinutes = entry.data.minutes ?? remarkPluginFrontmatter.minutes;
 const hasBody = Boolean((entry.body ?? "").trim());
 const prototypeDir = (entry.data as { prototypeDir?: string }).prototypeDir ?? "";
 const prototypeSrc = prototypeEntryUrl(prototypeDir);
-const prototypePages = countPrototypePages(
-	(entry.data as { prototypeDir?: string }).prototypeDir ?? "",
-	(entry.data as { prototypePages?: number }).prototypePages,
-);
+const contentPages = countContentPages({
+	dir: prototypeDir,
+	prototypePages: (entry.data as { prototypePages?: number }).prototypePages,
+	deckPages: (entry.data as { deckPages?: number }).deckPages,
+});
+const prototypePages = contentPages.total;
 
 const bannerPostMeta = {
 	title: entry.data.title,

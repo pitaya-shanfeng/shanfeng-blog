@@ -83,6 +83,8 @@ const postSchema = z.object({
 	prototypeDir: z.string().optional().default(""),
 	/** 手工指定原型页数（页面 HTML 里有草稿/未发布页时，以 Axure 站点树为准） */
 	prototypePages: z.number().optional(),
+	/** 内嵌 PPT / 长图切换器的总页数（和原型页数一起算「页内容」） */
+	deckPages: z.number().optional(),
 	/**
 	 * 合集里的固定位次（1 = 第一篇）。
 	 * 只影响「正序」栏目（如产品设计）；不写则按发布时间排。

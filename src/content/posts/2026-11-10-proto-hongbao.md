@@ -17,6 +17,7 @@ hideSidebar: true
 prototypePages: 43
 # 活动类文章固定在建设系列（1–10）之后
 order: 13
+deckPages: 15
 ---
 
 ## 一、1.0 原型

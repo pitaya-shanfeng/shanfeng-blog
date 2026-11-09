@@ -40,7 +40,7 @@ import { type CollectionPost, getCollectionPosts } from "@/utils/collection-post
 import { getPostUrlBySlug } from "@/utils/url-utils";
 import type { BannerQuote } from "@/utils/banner-quotes-data";
 import {
-	countPrototypePages,
+	countContentPages,
 	MINUTES_PER_PROTOTYPE_PAGE,
 } from "@/utils/prototype-pages";
 // 霞鹜文楷按 unicode-range 切成 97 片，浏览器只会拉当前文案命中的那几片。
@@ -133,8 +133,13 @@ async function statsOf(post: (typeof posts)[number]) {
 		(post.data as { prototypeDir?: string }).prototypeDir ?? "";
 	const overridePages = (post.data as { prototypePages?: number })
 		.prototypePages;
-	if (prototypeDir || (overridePages ?? 0) > 0) {
-		const pages = countPrototypePages(prototypeDir, overridePages);
+	const deckPages = (post.data as { deckPages?: number }).deckPages ?? 0;
+	if (prototypeDir || (overridePages ?? 0) > 0 || deckPages > 0) {
+		const pages = countContentPages({
+			dir: prototypeDir,
+			prototypePages: overridePages,
+			deckPages,
+		}).total;
 		if (pages > 0) {
 			return {
 				words: 0,
@@ -268,7 +273,7 @@ const shareDate = latest ? latest.data.published.toISOString().slice(0, 10) : ""
                                 {totalPrototypePages > 0 && (
                                     <>
                                         <span class="sep" />
-                                        <b>{totalPrototypePages}</b> 页原型
+                                        <b>{totalPrototypePages}</b> 页内容
                                     </>
                                 )}
                                 {timeStat && (

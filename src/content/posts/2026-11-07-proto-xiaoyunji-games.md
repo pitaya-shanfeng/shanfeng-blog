@@ -17,6 +17,7 @@ prototypeDir: xiaoyunji-games
 prototypePages: 46
 # 活动类文章固定在建设系列（1–10）之后
 order: 12
+deckPages: 8
 ---
 
 <div class="block-divider"></div>

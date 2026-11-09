@@ -17,6 +17,7 @@ hideSidebar: true
 order: 6
 # 内嵌三个原型：CMS组件集合 22 页 + CMS/RMS 35 页 + 优惠券 13 页
 prototypePages: 70
+deckPages: 24
 ---
 
 ## 一、产品架构

@@ -17,6 +17,7 @@ order: 10
 # 内嵌埋点系统 1.0 原型（8 页）
 prototypePages: 8
 published: 2026-11-09T19:40:00+08:00
+deckPages: 71
 ---
 
 ## 一、埋点规范

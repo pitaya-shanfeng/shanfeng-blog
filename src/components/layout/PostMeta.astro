@@ -27,7 +27,7 @@ export interface Props {
 	pinned?: boolean;
 	password?: boolean;
 	words?: number;
-	/** 原型文章：有值时显示「N 页原型」而不是字数 */
+	/** 含原型/PPT 的文章：有值时显示「N 页」而不是字数 */
 	pages?: number;
 	minutes?: number;
 	showWords?: boolean;
@@ -263,7 +263,7 @@ const visibleTags =
         <div class="meta-icon">
           <Icon name="material-symbols:layers-outline-rounded" class="text-xl" />
         </div>
-        <span class="text-50 text-sm font-medium">{pages} 页原型</span>
+        <span class="text-50 text-sm font-medium">{pages} 页</span>
       </div>
     )
   }
