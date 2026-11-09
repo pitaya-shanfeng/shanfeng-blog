@@ -134,6 +134,7 @@ const postMinutes = entry.data.minutes ?? remarkPluginFrontmatter.minutes;
  * 原型类文章的字数没有意义（正文只有一个 iframe），改成报「页数」：
  * 从镜像目录 public/proto/<dir>/ 里数页面 HTML 得出，不用手填。
  */
+const hasBody = Boolean((entry.body ?? "").trim());
 const prototypeDir = (entry.data as { prototypeDir?: string }).prototypeDir ?? "";
 const prototypeSrc = prototypeEntryUrl(prototypeDir);
 const prototypePages = countPrototypePages(
@@ -664,7 +665,7 @@ const postBanner =
             src 走 prototypeEntryUrl()，配了 CDN 就指向 CDN，
             这样仓库里不用再放几十 MB 的原型文件。
           */}
-          {prototypeSrc ? (
+          {prototypeSrc && (
             <div class="proto-embed">
               <iframe
                 src={prototypeSrc}
@@ -673,7 +674,11 @@ const postBanner =
                 allowfullscreen
               />
             </div>
-          ) : (
+          )}
+          {/* 原型文章的正文通常为空；但有的文章在原型之外还要写方案
+              （比如「大促玩法：集卡赢大奖」后面跟一份 PPT），
+              所以正文非空时也要渲染，不能因为有 prototypeDir 就整块丢掉。 */}
+          {(hasBody || !prototypeSrc) && (
             <Markdown class={markdownClass}>
               <Content />
             </Markdown>
