@@ -17,4 +17,7 @@ hideSidebar: true
 order: 7
 ---
 
-（内容整理中，材料陆续补充。）
+
+## 一、产品架构
+
+![云集·玩法矩阵架构图：模板中心的玩法资产、规则中心 / 任务中心 / 奖励中心 / 数据中心，以及支撑承接与建设演进](/assets/library/notes/game-matrix-build/arch.webp)
