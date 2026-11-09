@@ -30,9 +30,46 @@ function countImages(node) {
  *
  * 纯文本由 mdast 树转出，已去掉标题/列表/表格/链接等 markdown 语法与脚注标记。
  */
+
+/**
+ * 把 md 里直接写的 HTML 块变成「可见文字」再统计。
+ *
+ * 原来直接用 toString(tree)，html 节点的 value 是**原始源码**，
+ * <div class="callout"> 里的 div / class / callout 会被当英文单词数进去，
+ * 内嵌文档（OneID、订单路由、乐乐茶方案）的 style/script 也一并算，
+ * 字数会虚高。这里先剥掉标签、样式与脚本，只留人眼能看到的字。
+ */
+function stripHtml(value) {
+	let s = value;
+	s = s.replace(/<style[\s\S]*?<\/style>/gi, " ");
+	s = s.replace(/<script[\s\S]*?<\/script>/gi, " ");
+	s = s.replace(/<br\s*\/?>/gi, " ");
+	s = s.replace(/<\/(p|div|li|tr|h[1-6]|table|section)>/gi, " ");
+	s = s.replace(/<[^>]+>/g, " ");
+	s = s
+		.replace(/&nbsp;/g, " ")
+		.replace(/&amp;/g, "&")
+		.replace(/&lt;/g, "<")
+		.replace(/&gt;/g, ">")
+		.replace(/&quot;/g, '"');
+	return s.replace(/[ \t]+/g, " ");
+}
+
+/** 深拷贝一份树，仅把 html 节点换成纯文本，其余原样 */
+function textOnlyTree(node) {
+	if (!node || typeof node !== "object") return node;
+	if (node.type === "html" && typeof node.value === "string") {
+		return { ...node, value: stripHtml(node.value) };
+	}
+	if (Array.isArray(node.children)) {
+		return { ...node, children: node.children.map(textOnlyTree) };
+	}
+	return node;
+}
+
 export function remarkReadingTime() {
 	return (tree, { data }) => {
-		const textOnPage = toString(tree);
+		const textOnPage = toString(textOnlyTree(tree));
 		const m = measure(textOnPage, countImages(tree));
 		data.astro.frontmatter.words = m.words;
 		data.astro.frontmatter.chars = m.chars;
