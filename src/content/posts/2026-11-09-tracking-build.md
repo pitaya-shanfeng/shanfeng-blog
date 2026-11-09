@@ -19,11 +19,12 @@ prototypePages: 8
 published: 2026-11-09T19:40:00+08:00
 ---
 
-<div class="block-divider"></div>
-
 ## 一、埋点规范
 
-<div class="deck-viewer" data-deck-viewer tabindex="0" aria-label="埋点体系规范 幻灯片切换器">
+<div class="deck-viewer" data-deck-viewer tabindex="0"
+     data-deck-base="/assets/library/notes/tracking-ko/pages"
+     data-deck-pages='["page-01.webp","page-02.webp","page-03.webp","page-04.webp","page-05.webp","page-06.webp","page-07.webp","page-08.webp","page-09.webp","page-10.webp","page-11.webp"]'
+     aria-label="埋点体系规范 幻灯片切换器">
   <div class="deck-stage">
     <img class="deck-slide" data-deck-img src="/assets/library/notes/tracking-ko/pages/page-01.webp" alt="埋点体系规范 第 1 页" loading="lazy" decoding="async" />
   </div>
@@ -38,8 +39,38 @@ published: 2026-11-09T19:40:00+08:00
   <p class="deck-hint">点画面左右两侧、或用下面箭头 / 键盘 ← → 翻页</p>
 </div>
 
+<div class="block-divider"></div>
+
+## 二、相关原型
+
+<div class="proto-embed">
+<iframe src="/proto/tracking-system/entry.html" title="埋点系统 1.0：埋点需求、事件与属性、埋点校验与报表" loading="lazy" allowfullscreen></iframe>
+</div>
+
+<div class="block-divider"></div>
+
+## 三、数据埋点与应用
+
+<div class="deck-viewer" data-deck-viewer tabindex="0"
+     data-deck-base="/assets/library/notes/tracking-build/decks/course"
+     data-deck-pages='["01.webp","02.webp","03.webp","04.webp","05.webp","06.webp","07.webp","08.webp","09.webp","10.webp","11.webp","12.webp","13.webp","14.webp","15.webp","16.webp","17.webp","18.webp","19.webp","20.webp","21.webp","22.webp","23.webp","24.webp","25.webp","26.webp","27.webp","28.webp","29.webp","30.webp","31.webp","32.webp","33.webp","34.webp","35.webp","36.webp","37.webp","38.webp","39.webp","40.webp","41.webp","42.webp","43.webp","44.webp","45.webp","46.webp","47.webp","48.webp","49.webp","50.webp","51.webp","52.webp","53.webp","54.webp","55.webp","56.webp","57.webp","58.webp","59.webp","60.webp"]'
+     aria-label="数据埋点与应用 幻灯片切换器">
+  <div class="deck-stage">
+    <img class="deck-slide" data-deck-img src="/assets/library/notes/tracking-build/decks/course/01.webp" alt="数据埋点与应用 第 1 页" loading="lazy" decoding="async" />
+  </div>
+
+  <div class="deck-bar">
+    <button type="button" class="deck-nav" data-deck-prev aria-label="上一页">‹</button>
+    <span class="deck-count" data-deck-count>1 / 60</span>
+    <button type="button" class="deck-nav" data-deck-next aria-label="下一页">›</button>
+    <span class="deck-title">数据埋点与应用 · 60 页</span>
+  </div>
+
+  <p class="deck-hint">点画面左右两侧、或用下面箭头 / 键盘 ← → 翻页</p>
+</div>
+
 <style>
-  /* 本节专用：PPT 逐页切换，不涉及站内其它页面 */
+  /* 本文专用：PPT 逐页切换（每个切换器自带 base 与页序，互不干扰） */
   .deck-viewer {
     background: #f4f6f4;
     border: 1px solid #e0e8e2;
@@ -105,48 +136,46 @@ published: 2026-11-09T19:40:00+08:00
 </style>
 
 <script>
+  // 一篇里可能有多个切换器：每个自己带 base + 页序，统一在这里初始化
   (function () {
     if (window.__trackingDeckInit) return;
     window.__trackingDeckInit = true;
 
-    var BASE = "/assets/library/notes/tracking-ko/pages";
-    var PAGES = ["page-01.webp", "page-02.webp", "page-03.webp", "page-04.webp", "page-05.webp", "page-06.webp", "page-07.webp", "page-08.webp", "page-09.webp", "page-10.webp", "page-11.webp"];
-    var TOTAL = PAGES.length;
-
     function setup(viewer) {
+      var base = viewer.dataset.deckBase;
+      var pages = JSON.parse(viewer.dataset.deckPages);
+      var total = pages.length;
       var img = viewer.querySelector("[data-deck-img]");
       var countEl = viewer.querySelector("[data-deck-count]");
+      var titleEl = viewer.querySelector(".deck-title");
       var prev = viewer.querySelector("[data-deck-prev]");
       var next = viewer.querySelector("[data-deck-next]");
       var page = 0;
 
+      function src(i) { return base + "/" + pages[i]; }
+
       function render() {
-        img.src = BASE + "/" + PAGES[page];
-        img.alt = "埋点体系规范 第 " + (page + 1) + " 页";
-        countEl.textContent = (page + 1) + " / " + TOTAL;
+        img.src = src(page);
+        countEl.textContent = (page + 1) + " / " + total;
         prev.disabled = page === 0;
-        next.disabled = page === TOTAL - 1;
-        if (page + 1 < TOTAL) {
-          var pre = new Image();
-          pre.src = BASE + "/" + PAGES[page + 1];
+        next.disabled = page === total - 1;
+        if (titleEl) {
+          titleEl.textContent = titleEl.textContent.replace(/\d+ \/ \d+/, "");
         }
+        if (page + 1 < total) { var pre = new Image(); pre.src = src(page + 1); }
       }
 
-      prev.addEventListener("click", function () {
-        if (page > 0) { page--; render(); }
-      });
-      next.addEventListener("click", function () {
-        if (page < TOTAL - 1) { page++; render(); }
-      });
+      prev.addEventListener("click", function () { if (page > 0) { page--; render(); } });
+      next.addEventListener("click", function () { if (page < total - 1) { page++; render(); } });
       img.addEventListener("click", function (e) {
-        var rect = img.getBoundingClientRect();
-        var right = e.clientX - rect.left > rect.width / 2;
-        if (right && page < TOTAL - 1) { page++; render(); }
+        var r = img.getBoundingClientRect();
+        var right = e.clientX - r.left > r.width / 2;
+        if (right && page < total - 1) { page++; render(); }
         else if (!right && page > 0) { page--; render(); }
       });
       viewer.addEventListener("keydown", function (e) {
         if (e.key === "ArrowLeft" && page > 0) { page--; render(); e.preventDefault(); }
-        if (e.key === "ArrowRight" && page < TOTAL - 1) { page++; render(); e.preventDefault(); }
+        if (e.key === "ArrowRight" && page < total - 1) { page++; render(); e.preventDefault(); }
       });
 
       render();
@@ -170,11 +199,3 @@ published: 2026-11-09T19:40:00+08:00
     document.addEventListener("astro:page-load", boot);
   })();
 </script>
-
-<div class="block-divider"></div>
-
-## 二、相关原型
-
-<div class="proto-embed">
-<iframe src="/proto/tracking-system/entry.html" title="埋点系统 1.0：埋点需求、事件与属性、埋点校验与报表" loading="lazy" allowfullscreen></iframe>
-</div>
