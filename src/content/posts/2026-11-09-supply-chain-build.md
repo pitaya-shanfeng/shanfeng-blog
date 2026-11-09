@@ -36,7 +36,7 @@ order: 9
   </div>
 
   <div class="deck-stage">
-    <img class="deck-slide" data-deck-img src="/assets/library/notes/supply-chain-build/decks/xicha/01.webp" alt="喜茶 × 鲜沐 合作汇报 第 1 页" loading="lazy" decoding="async" />
+    <img class="deck-slide" data-deck-img src="/assets/library/notes/supply-chain-build/decks/xicha/01.webp?v=2" alt="喜茶 × 鲜沐 合作汇报 第 1 页" loading="lazy" decoding="async" />
   </div>
 
   <div class="deck-bar">
@@ -180,7 +180,8 @@ order: 9
     var BASE = "/assets/library/notes/supply-chain-build/decks";
 
     function slideSrc(deckId, i) {
-      return BASE + "/" + deckId + "/" + String(i + 1).padStart(2, "0") + ".webp";
+      // ?v=2 让浏览器把旧的低清图当新地址重新拉（否则 7 天缓存里还是模糊那版）
+      return BASE + "/" + deckId + "/" + String(i + 1).padStart(2, "0") + ".webp?v=2";
     }
 
     function setup(viewer) {
