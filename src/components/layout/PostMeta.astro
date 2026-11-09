@@ -288,9 +288,7 @@ const visibleTags =
           <Icon name="material-symbols:schedule-outline-rounded" class="text-xl" />
         </div>
         <span class="text-50 text-sm font-medium">
-          {typeof pages === "number" && pages > 0 && minutes >= 60
-            ? `${(minutes / 60).toFixed(1)} 小时`
-            : `${minutes} ${i18n(minutes === 1 ? I18nKey.minuteCount : I18nKey.minutesCount)}`}
+          {minutes} {i18n(minutes === 1 ? I18nKey.minuteCount : I18nKey.minutesCount)}
         </span>
       </div>
     )

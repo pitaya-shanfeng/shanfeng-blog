@@ -33,11 +33,6 @@ const hasPublished = showPublished;
 const hasPages = showWords && typeof pages === "number" && pages > 0;
 const hasWords = showWords && typeof words === "number";
 const hasMinutes = showReadingTime && typeof minutes === "number";
-// 原型文章按页折算出来的时长往往上小时，直接给「105 分钟」不好读
-const minutesLabel =
-	hasPages && typeof minutes === "number" && minutes >= 60
-		? `${(minutes / 60).toFixed(1)} 小时`
-		: null;
 const textClass = "text-xs font-medium";
 const dividerClass = "text-xs font-medium text-black/20 dark:text-white/20";
 const iconWrapperClass =
@@ -95,7 +90,7 @@ const iconClass = "text-sm";
         </div>
       )}
       <span class={textClass}>
-        {minutesLabel ?? `${minutes} ${i18n(minutes === 1 ? I18nKey.minuteCount : I18nKey.minutesCount)}`}
+        {minutes} {i18n(minutes === 1 ? I18nKey.minuteCount : I18nKey.minutesCount)}
       </span>
     </div>
   )}
