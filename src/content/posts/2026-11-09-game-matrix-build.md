@@ -21,3 +21,26 @@ order: 7
 ## 一、产品架构
 
 ![云集·玩法矩阵架构图：模板中心的玩法资产、规则中心 / 任务中心 / 奖励中心 / 数据中心，以及支撑承接与建设演进](/assets/library/notes/game-matrix-build/arch.webp)
+
+<div class="block-divider"></div>
+
+## 二、建设方案
+
+<div class="document-page-stream" aria-label="玩法矩阵战役在线预览">
+<img src="/assets/library/notes/play-matrix/pages/page-01.webp" alt="玩法矩阵战役第 1 页" loading="lazy" decoding="async" draggable="false" />
+<img src="/assets/library/notes/play-matrix/pages/page-02.webp" alt="玩法矩阵战役第 2 页" loading="lazy" decoding="async" draggable="false" />
+<img src="/assets/library/notes/play-matrix/pages/page-03.webp" alt="玩法矩阵战役第 3 页" loading="lazy" decoding="async" draggable="false" />
+<img src="/assets/library/notes/play-matrix/pages/page-04.webp" alt="玩法矩阵战役第 4 页" loading="lazy" decoding="async" draggable="false" />
+<img src="/assets/library/notes/play-matrix/pages/page-05.webp" alt="玩法矩阵战役第 5 页" loading="lazy" decoding="async" draggable="false" />
+<img src="/assets/library/notes/play-matrix/pages/page-06.webp" alt="玩法矩阵战役第 6 页" loading="lazy" decoding="async" draggable="false" />
+<img src="/assets/library/notes/play-matrix/pages/page-07.webp" alt="玩法矩阵战役第 7 页" loading="lazy" decoding="async" draggable="false" />
+<img src="/assets/library/notes/play-matrix/pages/page-08.webp" alt="玩法矩阵战役第 8 页" loading="lazy" decoding="async" draggable="false" />
+<img src="/assets/library/notes/play-matrix/pages/page-09.webp" alt="玩法矩阵战役第 9 页" loading="lazy" decoding="async" draggable="false" />
+<img src="/assets/library/notes/play-matrix/pages/page-10.webp" alt="玩法矩阵战役第 10 页" loading="lazy" decoding="async" draggable="false" />
+<img src="/assets/library/notes/play-matrix/pages/page-11.webp" alt="玩法矩阵战役第 11 页" loading="lazy" decoding="async" draggable="false" />
+<img src="/assets/library/notes/play-matrix/pages/page-12.webp" alt="玩法矩阵战役第 12 页" loading="lazy" decoding="async" draggable="false" />
+<img src="/assets/library/notes/play-matrix/pages/page-13.webp" alt="玩法矩阵战役第 13 页" loading="lazy" decoding="async" draggable="false" />
+<img src="/assets/library/notes/play-matrix/pages/page-14.webp" alt="玩法矩阵战役第 14 页" loading="lazy" decoding="async" draggable="false" />
+<img src="/assets/library/notes/play-matrix/pages/page-15.webp" alt="玩法矩阵战役第 15 页" loading="lazy" decoding="async" draggable="false" />
+<img src="/assets/library/notes/play-matrix/pages/page-16.webp" alt="玩法矩阵战役第 16 页" loading="lazy" decoding="async" draggable="false" />
+</div>
