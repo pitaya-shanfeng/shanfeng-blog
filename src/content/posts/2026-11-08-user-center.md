@@ -37,7 +37,7 @@ order: 2
 </div>
 </header>
 <section>
-<h2>2.1 这次会需要确认什么</h2>
+<h2><span class="no">2.1</span>这次会需要确认什么</h2>
 <p class="lead">同一手机号在不同项目线会产生多个 <span class="code">user_id</span>。这次需要确定：是清洗并合并现有账号，还是新增 OneID 统一关联；以及用户中心、业务线和数据平台分别怎么做。</p>
 <div class="callout">
 <strong>讨论前提：</strong>OneID 用于统一同一手机号下、跨项目线的注册账号。它不以 <span class="code">person_id</span> 做自然人合并，也不处理游客 <span class="code">open_id</span>。
@@ -50,7 +50,7 @@ order: 2
 </div>
 </section>
 <section>
-<h2>2.2 当前生产事实</h2>
+<h2><span class="no">2.2</span>当前生产事实</h2>
 <div class="summary-grid">
 <div class="fact"><div class="num">约 1,625 万</div><div class="label">用户中心 <span class="code">qnvip_user.user</span> 表元数据行数</div></div>
 <div class="fact"><div class="num">0</div><div class="label">已查 <span class="code">qnvip%</span> 生产 schema 中的 <span class="code">one_id</span> 字段</div></div>
@@ -71,7 +71,7 @@ order: 2
 <div class="callout warn"><strong>补充事实：</strong>用户中心 <span class="code">user</span> 表存在 <span class="code">(mobile, biz_type, unregister_time)</span> 唯一索引，当前按项目线拆分账号是库级事实；<span class="code">user_history</span> 已有“账号合并”历史类型，方案一必须先专项核验既有实现和存量量级。</div>
 </section>
 <section>
-<h2>2.3 现在卡在哪里</h2>
+<h2><span class="no">2.3</span>现在卡在哪里</h2>
 <div class="flow">
 <div class="node user"><h3>项目线账号</h3><p>手机号 A 在租赁、赊销、零售分别注册，产生多个 <span class="code">user_id</span>。</p></div>
 <div class="arrow">→</div>
@@ -87,7 +87,7 @@ order: 2
 </ul>
 </section>
 <section>
-<h2>2.4 影响范围：不只是业务表</h2>
+<h2><span class="no">2.4</span>影响范围：不只是业务表</h2>
 <table>
 <thead><tr><th>影响域</th><th>当前事实</th><th>若选择新增 OneID 映射后的承接方式</th><th>边界</th></tr></thead>
 <tbody>
@@ -111,7 +111,7 @@ order: 2
 <div class="callout warn"><strong>贷后特殊边界：</strong><span class="code">tbl_member</span> 按身份证去重，更接近自然人层；OneID 不按身份证归并。OneID 应落在带项目线和用户中心 user_id 的 <span class="code">tbl_customer</span>，借据、还款、催收案件等先经源客户关系解析后再补 OneID，不能直接依据 member_id 写入。</div>
 </section>
 <section>
-<h2>2.5 方案一：清洗并合并存量 user_id</h2>
+<h2><span class="no">2.5</span>方案一：清洗并合并存量 user_id</h2>
 <div class="option bad">
 <h3>方案描述</h3>
 <p>选定一个存量 <span class="code">user_id</span> 作为保留账号，将同手机号、跨项目线的其他 <span class="code">user_id</span> 改写、合并或失效；下游表和接口统一改为保留账号。</p>
@@ -163,7 +163,7 @@ order: 2
 <div class="callout warn"><strong>关键风险：</strong>历史 Kafka 消息、缓存键、神策 distinctId、已导出名单与外部渠道无法靠数据库回写一并修正；需要长期兼容与重算。</div>
 </section>
 <section>
-<h2>2.6 方案二：新增 OneID 统一身份层</h2>
+<h2><span class="no">2.6</span>方案二：新增 OneID 统一身份层</h2>
 <div class="option good">
 <h3>方案描述</h3>
 <p>保留每个项目线账号的 <span class="code">user_id</span>，由用户中心统一维护 <span class="code">one_id ↔ user_id</span> 映射。相同手机号下的有效跨项目线账号归属同一个 OneID。</p>
@@ -227,7 +227,7 @@ order: 2
 <div class="callout good"><strong>方案二回滚原则：</strong>优先关闭 OneID 的下游读写开关，回退到原 user_id 口径；不删除已生成 OneID、映射和回填字段。通过映射版本、事件序号和回填批次定向重算或重新绑定。</div>
 </section>
 <section>
-<h2>2.7 方案二的分层影响与改造节奏</h2>
+<h2><span class="no">2.7</span>方案二的分层影响与改造节奏</h2>
 <table>
 <thead><tr><th>层级</th><th>一期是否改造</th><th>需要做什么</th><th>不做什么</th></tr></thead>
 <tbody>
@@ -242,7 +242,7 @@ order: 2
 <div class="callout warn"><strong>关键原则：</strong>业务线可以消费和按计划存储 OneID，但不得自行计算 OneID。所有新增/变更数据均应双写 <span class="code">user_id + one_id</span>，完成校验后再切换用户级查询与统计口径。</div>
 </section>
 <section>
-<h2>2.8 数仓与未来标签工厂必须以前置方式纳入方案</h2>
+<h2><span class="no">2.8</span>数仓与未来标签工厂必须以前置方式纳入方案</h2>
 <p>OneID 是未来标签工厂的前置数据底座。用户中心一期方案需同步明确数仓 USER 域的承接方式，标签工厂在 OneID 映射与数仓聚合稳定后再启动建设：</p>
 <div class="flow">
 <div class="node one"><h3>用户中心映射</h3><p>全量基线 + 可重放增量：OneID、user_id、项目线、账号状态、生效时间。</p></div>
@@ -254,7 +254,7 @@ order: 2
 <p><strong>需要架构和数仓确认：</strong>映射事件、增量同步方式、回放机制、USER 域宽表模型，以及为未来标签工厂准备的 OneID 数据契约、活动快照和归因边界。</p>
 </section>
 <section>
-<h2>2.9 如果选择方案二，建议这样推进</h2>
+<h2><span class="no">2.9</span>如果选择方案二，建议这样推进</h2>
 <div class="phase-grid">
 <div class="phase"><h3>阶段 0：方案定界</h3><p>确认 OneID 规则、项目线范围、注销/换绑/重注册口径、异常数据处理原则；完成 C 端字段语义清单。</p></div>
 <div class="phase"><h3>阶段 1：用户中心底座</h3><p>建映射、实时维护、存量回填、数据校验、映射全量与增量契约。所有历史 user_id 保留。</p></div>
@@ -274,7 +274,7 @@ order: 2
 <div class="callout good"><strong>建议验收：</strong>同一手机号跨项目线的有效 user_id 查询到同一个 OneID；单账号注销不影响其他账号；全部注销后重注册不继承旧 OneID；业务表双写完整；数仓和营销频控按 OneID 不重复统计。标签工厂启动条件：OneID 映射、数仓 USER 域与数据校验均已稳定。</div>
 </section>
 <section>
-<h2>2.10 会上需要确定的事项</h2>
+<h2><span class="no">2.10</span>会上需要确定的事项</h2>
 <ol class="decision-list">
 <li><div><strong>存量数据刷取方案：</strong>明确存量数据的刷取范围、处理规则和校验方式。</div></li>
 <li><div><strong>上线后的兼容方案：</strong>明确上线后的双写、兼容和回退方案。</div></li>
@@ -287,7 +287,7 @@ order: 2
 </ol>
 </section>
 <section>
-<h2>2.11 会议结论模板</h2>
+<h2><span class="no">2.11</span>会议结论模板</h2>
 <p class="lead"><strong>本报告不预设最终方案。</strong>方案一是“清洗并统一现有账号”，方案二是“新增 OneID 映射，再分批接入”。会上需根据账号模型、迁移能力、消息与埋点兼容、回滚成本确定方案，并明确后续负责人和时间安排。</p>
 <p class="source">事实来源：用户中心、订单、商户、商贸、客服、营销、S3、租赁、赊销、导流与埋点相关生产库元数据只读核验；用户中心、订单、营销等静态代码核验。表行数为 information_schema 近似值。标签工厂尚未建设；历史标签项目仅作设计参考。离线数仓、ES、MQ 消费组、神策项目及小程序前端埋点未被当前仓库完整覆盖，需由数仓/数据平台补充核验。</p>
 </section>

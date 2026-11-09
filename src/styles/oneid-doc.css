@@ -370,21 +370,134 @@
 /* ---- 压住正文（.custom-md）自带的表格样式 ----
    .custom-md 会给 th/td 套主题色（深色模式下整块变暗），
    这里用更高优先级把文档自己的配色盖回来。 */
+/* 绿底表头 + 白底单元格，与《订单中心建设》那套一致 */
 .custom-md .oneid-doc table th {
-  background: #f7f9fc;
-  color: #344054;
-  border: 1px solid var(--line);
+  background: #3FA06D;
+  color: #fff;
+  border: 1px solid #3FA06D;
 }
 .custom-md .oneid-doc table td {
-  background: var(--paper);
-  color: var(--ink);
-  border: 1px solid var(--line);
+  background: #fff;
+  color: #24312A;
+  border: 1px solid #DCE5DE;
 }
 .custom-md .oneid-doc table tr:nth-child(even) td {
-  background: #fbfcfd;
+  background: #F7FAF8;
 }
+.custom-md .oneid-doc table td b,
+.custom-md .oneid-doc table td strong { color: #1E5C3D; }
 .custom-md .oneid-doc table {
   border-collapse: collapse;
   border-radius: 0;
   overflow: visible;
 }
+
+/* ============================================================
+   统一成《订单中心建设》那套绿白文档样式
+   （原来的蓝/橙/红 callout 与细体标题换成绿色体系）
+   ============================================================ */
+.oneid-doc {
+  --ink: #24312A;
+  --muted: #5C6B63;
+  --line: #DCE5DE;
+  --paper: #FFFFFF;
+  --ground: #F4F6F4;
+  --blue: #3FA06D;
+  --blue-soft: #F1F8F4;
+  --green: #2E7D53;
+  --green-soft: #F1F8F4;
+  --orange: #3FA06D;
+  --orange-soft: #F1F8F4;
+  --red: #B42318;
+  --red-soft: #FFF6F5;
+  background: #F4F6F4;
+  color: #24312A;
+  line-height: 1.85;
+}
+
+.oneid-doc h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 19px;
+  font-weight: 700;
+  color: #1E5C3D;
+  margin: 30px 0 12px;
+  padding-left: 12px;
+  border-left: 4px solid #3FA06D;
+  line-height: 1.45;
+}
+
+.oneid-doc h2 .no {
+  color: #3FA06D;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+  flex: 0 0 auto;
+}
+
+.oneid-doc h2.oneid-title {
+  display: block;
+  font-size: 24px;
+  color: #1B4B33;
+  border-left: 0;
+  padding-left: 0;
+  margin: 4px 0 10px;
+}
+
+.oneid-doc h3 {
+  font-size: 15.5px;
+  font-weight: 700;
+  color: #2E7D53;
+  margin: 22px 0 8px;
+}
+
+.oneid-doc p { color: #24312A; }
+.oneid-doc .muted, .oneid-doc .subtitle { color: #5C6B63; }
+
+/* 提示块：统一浅绿 */
+.oneid-doc .callout,
+.oneid-doc .callout.warn,
+.oneid-doc .callout.good {
+  border-left: 4px solid #3FA06D;
+  background: #F1F8F4;
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin: 16px 0;
+}
+.oneid-doc .callout strong,
+.oneid-doc .callout.warn strong,
+.oneid-doc .callout.good strong { color: #1E5C3D; }
+
+/* 表格：绿底表头 + 白底单元格 */
+.oneid-doc table { border-collapse: collapse; }
+.oneid-doc th {
+  background: #3FA06D;
+  color: #fff;
+  font-weight: 700;
+  border: 1px solid #3FA06D;
+}
+.oneid-doc td {
+  background: #fff;
+  border: 1px solid #DCE5DE;
+}
+.oneid-doc tr:nth-child(even) td { background: #F7FAF8; }
+.oneid-doc td b, .oneid-doc td strong { color: #1E5C3D; }
+
+/* 行内代码 */
+.oneid-doc .code {
+  background: #EAF4EE;
+  color: #1E5C3D;
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+/* 数字卡片 / 选项卡片统一绿调 */
+.oneid-doc .fact, .oneid-doc .option, .oneid-doc .phase {
+  border: 1px solid #DCE5DE;
+  background: #fff;
+  border-radius: 8px;
+}
+.oneid-doc .fact .num { color: #2E7D53; }
+.oneid-doc .option.bad { border-color: #E9C9C5; background: #FFF6F5; }
+.oneid-doc .option.good { border-color: #BBDCC8; background: #F1F8F4; }
