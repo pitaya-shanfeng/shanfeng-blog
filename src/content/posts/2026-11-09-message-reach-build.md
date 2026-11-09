@@ -17,4 +17,6 @@ hideSidebar: true
 order: 8
 ---
 
-（内容整理中，材料陆续补充。）
+## 一、产品架构
+
+![消息中台 · 消息触达产品架构：触发来源、消息中台内核、通道层、用户触达、支撑能力、回流报表，以及建设三阶段](/assets/library/notes/message-reach-build/arch.webp)
