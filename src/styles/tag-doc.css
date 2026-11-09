@@ -1,0 +1,118 @@
+/*
+ * 《用户中心建设》第三节「标签体系规划」的文档版式
+ *
+ * 用和 OneID / 订单中心那两份内嵌 HTML 一样的读法：
+ * 外层一圈浅灰绿，正文收进 960px 白卡居中，绿色标题条 + 绿底表头。
+ * 只作用于 .tag-doc，站内其它文章不受影响。
+ */
+.tag-doc {
+  background: #F4F6F4;
+  border: 1px solid #E0E8E2;
+  border-radius: 12px;
+  padding: 14px;
+  margin: 10px 0 26px;
+}
+
+.tag-doc-inner {
+  background: #FFFFFF;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 34px 40px 52px;
+  color: #24312A;
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+/* 小标题：绿色竖条 + 绿色编号 */
+.tag-doc-inner h3 {
+  font-size: 19px;
+  font-weight: 700;
+  color: #1E5C3D;
+  margin: 34px 0 12px;
+  padding-left: 12px;
+  border-left: 4px solid #3FA06D;
+  line-height: 1.45;
+}
+.tag-doc-inner h3:first-of-type { margin-top: 4px; }
+
+.tag-doc-inner h4 {
+  font-size: 15.5px;
+  font-weight: 700;
+  color: #2E7D53;
+  margin: 22px 0 8px;
+}
+
+.tag-doc-inner p { margin: 8px 0; color: #24312A; }
+
+.tag-doc-inner ul, .tag-doc-inner ol {
+  margin: 8px 0 8px 1.2em;
+  padding: 0;
+}
+.tag-doc-inner li { margin: 4px 0; }
+
+/* 表格：绿底表头 + 白底单元格 */
+.tag-doc-inner table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0 18px;
+  font-size: 14px;
+  table-layout: fixed;
+}
+.tag-doc-inner th {
+  background: #3FA06D;
+  color: #fff;
+  font-weight: 700;
+  border: 1px solid #3FA06D;
+  padding: 9px 12px;
+  text-align: left;
+}
+.tag-doc-inner td {
+  background: #fff;
+  border: 1px solid #DCE5DE;
+  padding: 8px 12px;
+  vertical-align: top;
+  color: #24312A;
+}
+.tag-doc-inner tr:nth-child(even) td { background: #F7FAF8; }
+.tag-doc-inner td b, .tag-doc-inner td strong { color: #1E5C3D; }
+
+/* 行内代码 */
+.tag-doc-inner code {
+  background: #EAF4EE;
+  color: #1E5C3D;
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 0.92em;
+}
+
+/* 图片：铺满卡片、圆角、配一行图注 */
+.tag-doc-inner img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #E6EEE9;
+  border-radius: 8px;
+  margin: 14px 0 6px;
+}
+.tag-doc-inner figcaption {
+  color: #5C6B63;
+  font-size: 12.5px;
+  text-align: center;
+  margin: 0 0 18px;
+}
+
+/* 引用 */
+.tag-doc-inner blockquote {
+  margin: 14px 0;
+  padding: 12px 16px;
+  border-left: 4px solid #3FA06D;
+  background: #F1F8F4;
+  border-radius: 6px;
+  color: #1E5C3D;
+}
+
+@media (max-width: 767px) {
+  .tag-doc { padding: 8px; }
+  .tag-doc-inner { padding: 22px 18px 32px; }
+  .tag-doc-inner table { display: block; overflow-x: auto; }
+}

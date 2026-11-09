@@ -298,6 +298,9 @@ order: 2
 
 ## 三、标签体系规划
 
+<div class="tag-doc">
+<div class="tag-doc-inner">
+
 ### 3.1 标签体系架构总览
 
 标签体系按打标对象划分为五个域。每个域内部再区分“基础字段”和“标签”。
@@ -659,6 +662,9 @@ MERCHANT 域面向商户。首版可保留基础事实，后续按商户运营�
 ![标签系统界面 · 人群圈选配置](/assets/library/notes/tag-system/images/image.png)
 
 ![标签系统界面](/assets/library/notes/tag-system/images/image-1.png)
+
+</div>
+</div>
 
 <div class="block-divider"></div>
 

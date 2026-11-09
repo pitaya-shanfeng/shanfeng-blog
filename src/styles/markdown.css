@@ -3,6 +3,7 @@
 /* OneID 方案讨论材料（正文内嵌 HTML）的样式，全部限定在 .oneid-doc 内 */
 @import "./oneid-doc.css";
 @import "./order-center-doc.css";
+@import "./tag-doc.css";
 
 /* 正文宽度：不用自定义 max-width，保持模板默认 ——
    容器类上的 max-w-none! 会让正文直接铺满所在卡片（只留卡片自身内边距）。
