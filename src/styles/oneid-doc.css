@@ -501,3 +501,37 @@
 .oneid-doc .fact .num { color: #2E7D53; }
 .oneid-doc .option.bad { border-color: #E9C9C5; background: #FFF6F5; }
 .oneid-doc .option.good { border-color: #BBDCC8; background: #F1F8F4; }
+
+/* ============================================================
+   外层留白 + 内层白卡：与《订单中心建设》里那份文档同一套「框住」的读法
+   —— 外面一圈浅灰绿，正文收进 960px 的白色卡片里居中
+   ============================================================ */
+.oneid-doc {
+  background: #F4F6F4;
+  border: 1px solid #E0E8E2;
+  border-radius: 12px;
+  padding: 0;
+  overflow: hidden;
+  margin: 10px 0 26px;
+}
+
+.oneid-doc .page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 34px 40px 56px;
+  background: #FFFFFF;
+}
+
+@media (max-width: 767px) {
+  .oneid-doc .page { padding: 22px 18px 32px; }
+}
+
+/* 外框里再套一层 section 边框会变成「盒子里装盒子」，
+   去掉 section 自身的边框与底色，靠间距和绿色标题分节（与订单中心文档一致） */
+.oneid-doc section {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin-top: 36px;
+}
+.oneid-doc section:first-of-type { margin-top: 26px; }
