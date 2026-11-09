@@ -4,7 +4,10 @@
 
 <script>
   let Fancybox: any;
-  const IMG_SELECTOR = ".custom-md img:not(.card-wiki-link img), #post-cover img, .moment-images img";
+  // .deck-slide 是文章里的 PPT 切换器：点击由切换器自己接管（翻页），
+  // 不要再被灯箱抢走，否则一翻页就弹出一张放大图。
+  const IMG_SELECTOR =
+    ".custom-md img:not(.card-wiki-link img):not(.deck-slide), #post-cover img, .moment-images img";
   const LINK_SELECTOR = ".moment-images a[data-fancybox], [data-fancybox]:not(.moment-images a)";
   const svgBlobUrlCache = new Map<string, string>();
 
