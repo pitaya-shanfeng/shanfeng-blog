@@ -30,77 +30,150 @@ const { class: className, style } = Astro.props;
 const currentBookId = Astro.url.pathname.match(/^\/books\/([^/]+)\/?$/)?.[1];
 const book =
 	booksConfig.find((item) => item.id === currentBookId) ?? booksConfig[0];
-const posts = await getSeriesPostsOf(book.title);
-const byOrder = new Map(posts.map((post) => [post.data.seriesOrder ?? 0, post]));
+const seriesCache = new Map<
+	string,
+	Map<number, Awaited<ReturnType<typeof getSeriesPostsOf>>[number]>
+>();
+const byOrderOf = async (target: typeof book) => {
+	const hit = seriesCache.get(target.title);
+	if (hit) return hit;
+	const posts = await getSeriesPostsOf(target.title);
+	const map = new Map(posts.map((post) => [post.data.seriesOrder ?? 0, post]));
+	seriesCache.set(target.title, map);
+	return map;
+};
 
-/** 目录连续编号：序是 01，第 1 章是 02，依次顺延 */
-const nextBadge = () => String(items.length + 1).padStart(2, "0");
+/** 当前页是书页时，用它决定哪一组默认展开 */
+const activeBookId = book.id;
 
-const items: {
-	badge: string;
-	text: string;
-	href: string;
-	depthLevel: number;
-	badgeKind: "index" | "dot";
-	anchor: string;
-}[] = [];
+/**
+ * 按一本书算出目录项。
+ * 抽成函数是因为侧栏里要把**每一本书**的目录都渲染出来：
+ * 侧栏在 swup 容器之外、站内跳转不重建 DOM，只渲染当前书会导致
+ * 从见山跳到增长黑客时目录停在上本书（现在这个 bug 的根因）。
+ */
+function buildItems(
+	target: typeof book,
+	targetPosts: Awaited<ReturnType<typeof byOrderOf>>,
+) {
+	const items: {
+		badge: string;
+		text: string;
+		href: string;
+		depthLevel: number;
+		badgeKind: "index" | "dot";
+		anchor: string;
+	}[] = [];
+	/** 目录连续编号：序是 01，第 1 章是 02，依次顺延 */
+	const nextBadge = () => String(items.length + 1).padStart(2, "0");
 
-if (book.preface) {
-	const post = byOrder.get(book.preface.order);
-	if (post) {
-		items.push({
-			badge: nextBadge(),
-			text: post.data.title,
-			href: getPostUrlBySlug(post.id),
-			// 目录是 01–23 的扁平清单，序 / 章 / 后记同级；用 1 会缩进 8.6px 导致整列错开
-			depthLevel: 2,
-			badgeKind: "index",
-			anchor: `ch-${post.id}`,
-		});
+	if (target.preface) {
+		const post = targetPosts.get(target.preface.order);
+		if (post) {
+			items.push({
+				badge: nextBadge(),
+				text: post.data.title,
+				href: getPostUrlBySlug(post.id),
+				depthLevel: 2,
+				badgeKind: "index",
+				anchor: `ch-${post.id}`,
+			});
+		}
 	}
+
+	for (const part of target.parts) {
+		for (const entry of part.entries) {
+			// 「附」是上一篇的附属，不是一章，不进目录
+			if (entry.label.includes("附")) continue;
+			const post = targetPosts.get(entry.order);
+			if (!post) continue;
+			items.push({
+				badge: nextBadge(),
+				text: post.data.title,
+				href: getPostUrlBySlug(post.id),
+				depthLevel: 2,
+				badgeKind: "index",
+				anchor: `ch-${post.id}`,
+			});
+		}
+	}
+
+	if (target.afterword) {
+		const post = targetPosts.get(target.afterword.order);
+		if (post) {
+			items.push({
+				badge: nextBadge(),
+				text: post.data.title,
+				href: getPostUrlBySlug(post.id),
+				depthLevel: 2,
+				badgeKind: "index",
+				anchor: `ch-${post.id}`,
+			});
+		}
+	}
+	return items;
 }
 
-for (const part of book.parts) {
-	for (const entry of part.entries) {
-		// 「附」是上一篇的附属，不是一章，不进目录
-		if (entry.label.includes("附")) continue;
-		const post = byOrder.get(entry.order);
-		if (!post) continue;
-		items.push({
-			badge: nextBadge(),
-			text: post.data.title,
-			href: getPostUrlBySlug(post.id),
-			depthLevel: 2,
-			badgeKind: "index",
-			anchor: `ch-${post.id}`,
-		});
-	}
+const groups: { id: string; items: ReturnType<typeof buildItems> }[] = [];
+for (const b of booksConfig) {
+	groups.push({ id: b.id, items: buildItems(b, await byOrderOf(b)) });
 }
 
-if (book.afterword) {
-	const post = byOrder.get(book.afterword.order);
-	if (post) {
-		items.push({
-			badge: nextBadge(),
-			text: post.data.title,
-			href: getPostUrlBySlug(post.id),
-			// 同序言：与章节同级，保证徽章与文字左右都对齐
-			depthLevel: 2,
-			badgeKind: "index",
-			anchor: `ch-${post.id}`,
-		});
-	}
-}
 ---
 
 <SidebarTOC
-  items={items}
+  groups={groups}
+  activeGroup={activeBookId}
   mode="link"
   title="本书目录"
   contentId="book-toc-content"
+  id="book-toc-card"
   class={className}
   style={style}
 />
+
+<script>
+  /**
+   * 侧栏在 swup 容器之外：站内跳转只换 #swup-container，侧栏 DOM 原样保留。
+   * 所以这里把所有书的目录一次渲染好，切页后按 URL 显示对应那一组 ——
+   * 和「往期目录」（HotnewsIndex）的显隐同步是同一套做法。
+   */
+  (function () {
+    if (window.__bookTocSync) return;
+    window.__bookTocSync = true;
+
+    function sync() {
+      const card = document.getElementById("book-toc-card");
+      if (!card) return;
+      const m = window.location.pathname.match(/^\/books\/([^/]+)\/?$/);
+      const groups = card.querySelectorAll<HTMLElement>(".toc-group[data-book-id]");
+      if (!m) {
+        // 非书页：整张卡由 .widget-hide-on-non-book 的同步逻辑收起，
+        // 这里只保证下次进书页时分组是对的那一本。
+        return;
+      }
+      const id = m[1];
+      groups.forEach((g) => {
+        g.hidden = g.dataset.bookId !== id;
+      });
+      // 目录换了，当前章的标记要按新页重算
+      document.dispatchEvent(new CustomEvent("book-toc:switched"));
+    }
+
+    sync();
+
+    document.addEventListener("swup:page:view", sync);
+    document.addEventListener("swup:contentReplaced", sync);
+    document.addEventListener("swup:content:replace", sync);
+    window.addEventListener("popstate", sync);
+
+    // 兜底：不依赖 swup 的事件名，容器一被替换就重算
+    const container = document.getElementById("swup-container");
+    if (container) {
+      new MutationObserver(sync).observe(container, { childList: true });
+    }
+  })();
+</script>
 
 <style>
   /*

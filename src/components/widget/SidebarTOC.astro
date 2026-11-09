@@ -31,6 +31,16 @@ interface Props {
 	headings?: MarkdownHeading[];
 	/** 传入 items 时按外链目录渲染（不做页内 scrollspy） */
 	items?: TocLinkItem[];
+	/**
+	 * 多组目录：书页侧栏需要把「每一本书」的章节都渲染进来。
+	 * 侧栏在 swup 容器之外、站内跳转不重建 DOM，只渲染当前书的话，
+	 * 从见山跳到增长黑客时目录会停在上一本（书页目录不切换的根因）。
+	 */
+	groups?: { id: string; items: TocLinkItem[] }[];
+	/** 当前应展示哪一组（SSR 用，客户端会按 URL 再同步一次） */
+	activeGroup?: string;
+	/** 卡片 id（同一页可能出现两张目录卡，book 页用它单独定位） */
+	id?: string;
 	/** anchor = 页内目录（默认）；link = 跨页目录 */
 	mode?: "anchor" | "link";
 	/** 覆盖组件标题 */
@@ -46,6 +56,9 @@ interface Props {
 const {
 	headings = [],
 	items: linkItems,
+	groups,
+	activeGroup,
+	id: cardId,
 	mode = "anchor",
 	title,
 	contentId = "sidebar-toc-content",
@@ -63,16 +76,22 @@ const items = encrypted
 	: mode === "link"
 		? (linkItems ?? [])
 		: computeTocItems(headings, { maxLevel: 3 });
+
+/** 统一成「组」渲染：单目录就是一组（id 为空），书页是多组（id = 书 id） */
+const renderGroups: { id: string; items: typeof items }[] = groups?.length
+	? groups
+	: [{ id: "", items }];
+const totalItems = renderGroups.reduce((n, g) => n + g.items.length, 0);
 ---
 
 {/* 没有标题又没有加密的页面（例如正文只有一段内嵌原型的文章）整张卡不渲染，
     否则会留一个只有标题、里面写着「当前页面没有目录」的空壳。
     注意不能用 class 控制：SideBar 会把自己的 class 传进来，会把 hidden 覆盖掉。 */}
-{(!encrypted && items.length === 0) ? null : (
+{(!encrypted && totalItems === 0) ? null : (
 <WidgetLayout
   name={title ?? i18n(I18nKey.tableOfContents)}
   showTitle={showTitle}
-  id="sidebar-toc"
+  id={cardId ?? "sidebar-toc"}
   class={className}
   style={style}
 >
@@ -81,9 +100,15 @@ const items = encrypted
       class="toc-content"
       id={contentId}
     >
-      {!encrypted && items.length > 0 && (
+      {!encrypted && totalItems > 0 && (
         <>
-          {items.map((item) => (
+          {renderGroups.map((group) => (
+            <div
+              class="toc-group"
+              data-book-id={group.id || undefined}
+              hidden={group.id ? group.id !== activeGroup : undefined}
+            >
+              {group.items.map((item) => (
             <a
               href={item.href}
               class={`toc-item toc-level-${item.depthLevel ?? 2}${item.isActive ? " toc-item-active" : ""}`}
@@ -108,11 +133,13 @@ const items = encrypted
                 {item.text}
               </div>
             </a>
+              ))}
+            </div>
           ))}
           <div id="sidebar-active-indicator" class="toc-active-indicator" style="opacity: 0;"></div>
         </>
       )}
-      {!encrypted && items.length === 0 && (
+      {!encrypted && totalItems === 0 && (
         <div class="text-center py-8 text-gray-500 dark:text-gray-400">
           <p>{i18n(I18nKey.tocEmpty)}</p>
         </div>
@@ -124,6 +151,10 @@ const items = encrypted
 )}
 
 <style lang="stylus">
+/* 多组目录里非当前书的那几组用 hidden 收起；兜底防被 display 规则覆盖 */
+:global(.toc-group[hidden])
+	display none !important
+
 /* SidebarTOC 特定样式 */
 .toc-scroll-container
 	/* 目录最高能到哪里：与右栏「相关文章」大致齐平。
