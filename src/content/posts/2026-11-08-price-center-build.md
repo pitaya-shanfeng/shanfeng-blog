@@ -15,6 +15,8 @@ comment: false
 hideSidebar: true
 # 合集里第 4 篇
 order: 4
+# 内嵌三个原型：非零售 1.0 12 页 + 2.0 17 页 + 竞品价格监控 8 页
+prototypePages: 37
 ---
 
 ## 一、产品架构

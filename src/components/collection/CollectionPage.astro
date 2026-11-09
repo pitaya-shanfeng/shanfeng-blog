@@ -126,14 +126,15 @@ const pagePosts: CollectionPost[] = page ? (page.data as CollectionPost[]) : pos
  * 否则盘口的总字数会和每张卡上的数字对不上。
  */
 async function statsOf(post: (typeof posts)[number]) {
-	// 原型文章：字数没有意义，按页数折算时长（一页 5 分钟）
+	// 原型类文章：字数没有意义，按页数折算时长（一页 3 分钟）。
+	// 有些文章没有 prototypeDir（原型是内嵌的 iframe），只写了 prototypePages，
+	// 这种情况同样按页数算。
 	const prototypeDir =
 		(post.data as { prototypeDir?: string }).prototypeDir ?? "";
-	if (prototypeDir) {
-		const pages = countPrototypePages(
-			prototypeDir,
-			(post.data as { prototypePages?: number }).prototypePages,
-		);
+	const overridePages = (post.data as { prototypePages?: number })
+		.prototypePages;
+	if (prototypeDir || (overridePages ?? 0) > 0) {
+		const pages = countPrototypePages(prototypeDir, overridePages);
 		if (pages > 0) {
 			return {
 				words: 0,
