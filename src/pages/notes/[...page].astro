@@ -31,8 +31,8 @@ export const getStaticPaths = (() => {
 
 const { page } = Astro.props;
 
-/** 盘口的篇数、字数按全量算 */
-const posts = await getCollectionPosts(CATEGORY);
+/** 盘口的篇数、字数按全量算；学习这一栏按正序读（老的在上面，新文章接在最后） */
+const posts = await getCollectionPosts(CATEGORY, "asc");
 ---
 
 <CollectionPage
