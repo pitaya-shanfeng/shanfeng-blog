@@ -89,31 +89,36 @@ interface ContentGroupConfig {
 }
 
 const CONTENT_GROUPS: ContentGroupConfig[] = [
+	// 2026-11-09 定：不再做二级分类，六个内容入口全部平铺。
+	// 导航文字用两字，落点仍是各栏目自己的页面；「见山 / 增长」进书页。
 	{
-		name: "书籍写作",
-		// 两本书：一本已成书，一本在写。
-		topics: [
-			{ name: "见山", book: "见山" },
-			{ name: "增长黑客", book: "增长黑客" },
-		],
+		name: "见山",
+		single: true,
+		topics: [{ name: "见山", book: "见山" }],
 	},
 	{
-		name: "方法沉淀",
-		// 单级：一级项直接指向合集页，没有下拉。靠 tag 做细分，不再开二级。
+		name: "增长",
+		single: true,
+		topics: [{ name: "增长黑客", book: "增长黑客" }],
+	},
+	{
+		name: "方法",
 		single: true,
 		topics: [{ name: "方法沉淀", category: "方法沉淀", url: "/topics/fangfa-chendian/" }],
 	},
 	{
-		name: "落地实战",
-		topics: [
-			{ name: "调研分析", category: "落地实战/调研分析", url: "/topics/diaoyan-fenxi/" },
-			{ name: "产品设计", category: "落地实战/产品设计", url: "/topics/chanpin-sheji/" },
-			{ name: "项目复盘", category: "落地实战/项目复盘", url: "/topics/xiangmu-fupan/" },
-		],
+		name: "调研",
+		single: true,
+		topics: [{ name: "调研分析", category: "调研分析", url: "/topics/diaoyan-fenxi/" }],
 	},
 	{
-		name: "学习思考",
-		// 单级：学习笔记与转载精选合并，靠 tag 区分。
+		// 原「落地实战 · 产品设计」，项目复盘并进来，页面标题也改叫「实战」
+		name: "实战",
+		single: true,
+		topics: [{ name: "实战", category: "实战", url: "/topics/chanpin-sheji/" }],
+	},
+	{
+		name: "学习",
 		single: true,
 		topics: [{ name: "学习思考", category: "学习思考", url: "/notes/" }],
 	},
@@ -186,7 +191,7 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		// 主页
 		LinkPresets.Home,
 
-		// 四个内容入口（书籍写作 / 方法沉淀 / 落地实战 / 学习思考）
+		// 六个内容入口（见山 / 增长 / 方法 / 调研 / 实战 / 学习），全部平铺无二级
 		...CONTENT_GROUPS.map(buildContentGroup),
 	];
 
