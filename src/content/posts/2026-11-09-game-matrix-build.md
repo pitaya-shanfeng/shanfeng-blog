@@ -15,6 +15,8 @@ comment: false
 hideSidebar: true
 # 合集里第 7 篇
 order: 7
+# 内嵌任务中心1.0 原型（22 页）
+prototypePages: 22
 ---
 
 
@@ -43,4 +45,12 @@ order: 7
 <img src="/assets/library/notes/play-matrix/pages/page-14.webp" alt="玩法矩阵战役第 14 页" loading="lazy" decoding="async" draggable="false" />
 <img src="/assets/library/notes/play-matrix/pages/page-15.webp" alt="玩法矩阵战役第 15 页" loading="lazy" decoding="async" draggable="false" />
 <img src="/assets/library/notes/play-matrix/pages/page-16.webp" alt="玩法矩阵战役第 16 页" loading="lazy" decoding="async" draggable="false" />
+</div>
+
+<div class="block-divider"></div>
+
+## 三、相关原型
+
+<div class="proto-embed">
+<iframe src="/proto/task-center/entry.html" title="任务中心1.0：任务列表、任务编辑，签到 / 浏览 / 分享 / 下单 / 邀请六类任务与落地页" loading="lazy" allowfullscreen></iframe>
 </div>
