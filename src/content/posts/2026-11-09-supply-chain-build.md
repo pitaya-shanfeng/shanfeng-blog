@@ -756,4 +756,24 @@ order: 9
 .leyecha-doc .doc { max-width: 100%; }
 .leyecha-doc [hidden] { display: none !important; }
 
+
+/* 原文档里 .figure 是 text-align:center + 图片 inline，站点全局把 img 改成 block，
+   结果图贴左。这里把居中还回来（比 .custom-md img 多一层，压得住）。 */
+.leyecha-doc .figure,
+.leyecha-doc figure {
+  text-align: center;
+}
+.leyecha-doc .figure img,
+.leyecha-doc figure img,
+.leyecha-doc img {
+  display: inline-block;
+  margin: 0 auto;
+  vertical-align: middle;
+}
+.leyecha-doc .figure.tall img {
+  max-width: 62%;
+}
+.leyecha-doc .figure .cap {
+  text-align: center;
+}
 </style>
