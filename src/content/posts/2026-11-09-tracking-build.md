@@ -14,6 +14,8 @@ comment: false
 hideSidebar: true
 # 合集里第 10 篇
 order: 10
+# 内嵌埋点系统 1.0 原型（8 页）
+prototypePages: 8
 published: 2026-11-09T19:40:00+08:00
 ---
 
@@ -168,3 +170,11 @@ published: 2026-11-09T19:40:00+08:00
     document.addEventListener("astro:page-load", boot);
   })();
 </script>
+
+<div class="block-divider"></div>
+
+## 二、相关原型
+
+<div class="proto-embed">
+<iframe src="/proto/tracking-system/entry.html" title="埋点系统 1.0：埋点需求、事件与属性、埋点校验与报表" loading="lazy" allowfullscreen></iframe>
+</div>
