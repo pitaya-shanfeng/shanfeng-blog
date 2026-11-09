@@ -15,6 +15,8 @@ comment: false
 hideSidebar: true
 # 两个原型合计 18 + 25 页
 prototypePages: 43
+# 活动类文章固定在建设系列（1–10）之后
+order: 13
 ---
 
 ## 一、1.0 原型

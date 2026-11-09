@@ -15,6 +15,8 @@ comment: false
 hideSidebar: true
 prototypeDir: jika
 prototypePages: 45
+# 活动类文章固定在建设系列（1–10）之后
+order: 11
 ---
 
 <div class="block-divider"></div>
