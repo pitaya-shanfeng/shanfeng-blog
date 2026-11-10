@@ -43,6 +43,18 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 	// specificConfig 组件专属配置
 	leftComponents: [
 		{
+			// 组件类型：侧边栏目录组件（文章页左侧）
+			type: "sidebarToc",
+			// 是否启用该组件
+			enable: true,
+			// 组件位置：top = 左栏第一块，进页面就能看到
+			position: "top",
+			// 是否在文章详情页显示
+			showOnPostPage: true,
+			// 是否在非文章详情页隐藏
+			hideOnNonPostPage: true,
+		},
+		{
 			// 组件类型：用户资料组件
 			type: "profile",
 			// 是否启用该组件
@@ -167,18 +179,6 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			position: "sticky",
 			// 只在书籍合集页（/books/…）显示
 			hideOnNonBookPage: true,
-		},
-		{
-			// 组件类型：侧边栏目录组件（文章页左侧）
-			type: "sidebarToc",
-			// 是否启用该组件
-			enable: true,
-			// 组件位置：sticky = 页面下滑时吸顶
-			position: "sticky",
-			// 是否在文章详情页显示
-			showOnPostPage: true,
-			// 是否在非文章详情页隐藏
-			hideOnNonPostPage: true,
 		},
 		{
 			// 组件类型：相关文章组件（与文章目录同栏，排在目录之后；数据由文章页计算后透传）
