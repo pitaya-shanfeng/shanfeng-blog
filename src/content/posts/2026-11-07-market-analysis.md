@@ -1088,7 +1088,8 @@ PESTEL分析模型又称大环境分析，是分析宏观环境的有效工具�
   .mkt-doc h5 { margin: 18px 0 8px; font-size: .96em; font-weight: 700; color: #46524b; }
   .mkt-doc p { margin: 10px 0; line-height: 1.85; }
   .mkt-doc img { display: block; margin: 14px auto; border-radius: 8px; }
-  .mkt-doc table { display: block; width: 100%; overflow-x: auto; }
+  .mkt-doc table { width: 100%; min-width: 100%; table-layout: auto; }
+  .mkt-doc table th, .mkt-doc table td { word-break: break-word; }
   .mkt-doc .mkt-fig {
     margin: -4px 0 18px; text-align: center;
     color: #93a29a; font-size: 12.5px;
