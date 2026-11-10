@@ -127,6 +127,10 @@ comment: false
 
 <div class="block-divider"></div>
 
+<div class="block-divider"></div>
+
+<div class="block-divider"></div>
+
 ## 二、六张脑图
 
 <div class="map-viewer" data-map-viewer>
@@ -139,13 +143,18 @@ comment: false
     <button type="button" class="map-tab" data-map="biz-research">业务调研</button>
   </div>
   <div class="map-stage">
-    <img class="map-img" data-map-img src="/assets/library/notes/need-discovery-v2/maps/biz-product.webp" alt="需求挖掘全景脑图" loading="lazy" decoding="async" />
+    <div class="map-panel is-active" data-panel="biz-product"><img src="/assets/library/notes/need-discovery-v2/maps/biz-product.webp" alt="需求挖掘全景脑图" loading="lazy" decoding="async" /></div>
+    <div class="map-panel" data-panel="user-profile"><img src="/assets/library/notes/need-discovery-v2/maps/user-profile.webp" alt="用户特征分析脑图" loading="lazy" decoding="async" /></div>
+    <div class="map-panel" data-panel="user-feedback"><img src="/assets/library/notes/need-discovery-v2/maps/user-feedback.webp" alt="用户反馈脑图" loading="lazy" decoding="async" /></div>
+    <div class="map-panel" data-panel="internal-feedback"><img src="/assets/library/notes/need-discovery-v2/maps/internal-feedback.webp" alt="企业内部反馈脑图" loading="lazy" decoding="async" /></div>
+    <div class="map-panel" data-panel="user-research"><img src="/assets/library/notes/need-discovery-v2/maps/user-research.webp" alt="用户调研脑图" loading="lazy" decoding="async" /></div>
+    <div class="map-panel" data-panel="biz-research"><img src="/assets/library/notes/need-discovery-v2/maps/biz-research.webp" alt="业务调研脑图" loading="lazy" decoding="async" /></div>
   </div>
-  <p class="map-hint" data-map-hint>点标签切换脑图；点图片可看原尺寸</p>
+  <p class="map-hint">点标签切换脑图；点图片看原尺寸</p>
 </div>
 
 <style>
-  /* 本文专用：脑图切换（一屏一张，高的图在框内滚动） */
+  /* 本文专用：脑图切换（一张图完整展示，高的图在框内滚动） */
   .map-viewer {
     border: 1px solid #e3ebe6; border-radius: 12px; background: #fff;
     padding: 14px; margin: 10px 0 22px;
@@ -158,8 +167,10 @@ comment: false
   }
   .map-tab:hover { border-color: #9ec3b1; }
   .map-tab.is-active { background: #2e7d53; border-color: #2e7d53; color: #fff; }
-  .map-stage { max-height: 74vh; overflow: auto; background: #fff; border-radius: 8px; }
-  .map-stage .map-img { display: block; width: 100%; height: auto; margin: 0; border: 0; border-radius: 0; }
+  .map-stage { max-height: 74vh; overflow: auto; }
+  .map-panel { display: none; }
+  .map-panel.is-active { display: block; }
+  .map-panel img { display: block; width: 100%; height: auto; margin: 0; border: 0; border-radius: 8px; }
   .map-hint { margin: 8px 2px 0; font-size: 12px; color: #93a29a; }
 </style>
 
@@ -168,20 +179,16 @@ comment: false
     if (window.__needMapInit) return;
     window.__needMapInit = true;
 
-    var BASE = "/assets/library/notes/need-discovery-v2/maps";
-    var TITLES = {'biz-product': '需求挖掘全景', 'user-profile': '用户特征分析', 'user-feedback': '用户反馈', 'internal-feedback': '企业内部反馈', 'user-research': '用户调研', 'biz-research': '业务调研'};
-
     function setup(viewer) {
       var tabs = [].slice.call(viewer.querySelectorAll("[data-map]"));
-      var img = viewer.querySelector("[data-map-img]");
-      var hint = viewer.querySelector("[data-map-hint]");
-
+      var stage = viewer.querySelector(".map-stage");
       tabs.forEach(function (t) {
         t.addEventListener("click", function () {
           tabs.forEach(function (x) { x.classList.toggle("is-active", x === t); });
-          img.src = BASE + "/" + t.dataset.map + ".webp";
-          img.alt = TITLES[t.dataset.map] + "脑图";
-          viewer.querySelector(".map-stage").scrollTop = 0;
+          [].forEach.call(viewer.querySelectorAll("[data-panel]"), function (p) {
+            p.classList.toggle("is-active", p.dataset.panel === t.dataset.map);
+          });
+          stage.scrollTop = 0;
         });
       });
     }
