@@ -20,7 +20,6 @@ deckPages: 92
 
 ## 一、从增长模型到增长实验
 
-<p class="deck-lead">必买增长实战（38 页）：先把增长拆成模型，再把它拆成可以跑的实验。</p>
 
 <div class="deck-viewer" data-deck-viewer tabindex="0"
      data-deck-base="/assets/library/notes/growth-hacking/decks/bimai"
