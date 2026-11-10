@@ -9,7 +9,7 @@ tags:
   - 流程
   - 方法论
 # 方法合集第十篇（排在《BRD 与 MRD》之后）
-order: 10
+order: 11
 deckPages: 37
 image: /assets/library/notes/feature-flow/cover.webp
 banner: /assets/library/notes/feature-flow/banner.webp

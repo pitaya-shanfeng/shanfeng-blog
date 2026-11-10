@@ -9,7 +9,7 @@ tags:
   - 方法论
   - 产品
 # 方法合集第八篇（排在《如何做体验调研》之后）
-order: 8
+order: 9
 deckPages: 39
 image: /assets/library/notes/req-analysis/cover.webp
 banner: /assets/library/notes/req-analysis/banner.webp

@@ -9,7 +9,7 @@ tags:
   - 方法论
   - 产品
 # 方法合集第六篇（排在《如何做竞品分析》之后）
-order: 6
+order: 7
 image: /assets/library/notes/user-research/cover.webp
 banner: /assets/library/notes/user-research/banner.webp
 draft: false
