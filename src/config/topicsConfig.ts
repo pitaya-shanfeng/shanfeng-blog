@@ -46,6 +46,8 @@ export const topicPages: TopicPageConfig[] = [
 		desc: "需求、设计、增长、分析工具，写的是「下次还能照着做」的那一层：边界在哪、代价是什么、什么时候不该用。",
 		emptyHint: "陆续整理中：先把已经跑通的几套方法写出来。",
 		banner: "/assets/images/topics/fangfa-chendian-banner.webp",
+		// 方法按发布正序排：最早写的《PRD 的那些事》排第一，读起来像一条成长线
+		sort: "asc",
 		icon: "material-symbols:menu-book-rounded",
 	},
 	{
