@@ -18,7 +18,7 @@ comment: false
 ---
 
 <style>
-  /* 本文专用：幻灯片逐页平铺 + 脑图 */
+  /* 本文专用：幻灯片逐页平铺 + 脑图切换 */
   .deck-flat { margin: 6px 0 26px; }
   .deck-flat img {
     display: block; width: 100%; height: auto;
@@ -26,8 +26,22 @@ comment: false
     border: 1px solid #e9efeb; background: #fff;
   }
   .deck-flat img:last-child { margin-bottom: 0; }
-  .map-stage { max-height: 74vh; overflow: auto; border: 1px solid #e3ebe6; border-radius: 12px; padding: 10px; background: #fff; }
-  .map-stage img { display: block; width: 100%; height: auto; margin: 0; border-radius: 8px; }
+  .map-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .map-tab {
+    border: 1px solid #d7e2db; background: #fff; color: #2f4a3e;
+    font-size: 13px; line-height: 1; padding: 9px 13px;
+    border-radius: 999px; cursor: pointer;
+  }
+  .map-tab:hover { border-color: #9ec3b1; }
+  .map-tab.is-active { background: #2e7d53; border-color: #2e7d53; color: #fff; }
+  .map-stage {
+    max-height: 74vh; overflow: auto; background: #fff;
+    border: 1px solid #e3ebe6; border-radius: 12px; padding: 10px;
+  }
+  .map-panel { display: none; }
+  .map-panel.is-active { display: block; }
+  .map-panel img { display: block; width: 100%; height: auto; margin: 0; border-radius: 8px; }
+  .map-hint { margin: 8px 2px 0; font-size: 12px; color: #93a29a; }
   @media (max-width: 767px) {
     .deck-flat img { margin-bottom: 10px; border-radius: 8px; }
   }
@@ -101,6 +115,52 @@ comment: false
 
 ## 二、脑图：数据分析体系
 
-<div class="map-stage">
-  <img src="/assets/library/notes/data-analysis-system/maps/map.webp" alt="数据分析体系脑图" loading="lazy" decoding="async" />
+<div class="map-viewer" data-map-viewer>
+  <div class="map-tabs">
+    <button type="button" class="map-tab is-active" data-map="sheet0">数据分析体系</button>
+    <button type="button" class="map-tab" data-map="sheet1">指标建模</button>
+    <button type="button" class="map-tab" data-map="sheet2">数据分析方法</button>
+    <button type="button" class="map-tab" data-map="sheet3">数据展现（可视化）</button>
+  </div>
+  <div class="map-stage">
+    <div class="map-panel is-active" data-panel="sheet0"><img src="/assets/library/notes/data-analysis-system/maps/sheet0.webp" alt="数据分析体系脑图" loading="lazy" decoding="async" /></div>
+    <div class="map-panel" data-panel="sheet1"><img src="/assets/library/notes/data-analysis-system/maps/sheet1.webp" alt="指标建模脑图" loading="lazy" decoding="async" /></div>
+    <div class="map-panel" data-panel="sheet2"><img src="/assets/library/notes/data-analysis-system/maps/sheet2.webp" alt="数据分析方法脑图" loading="lazy" decoding="async" /></div>
+    <div class="map-panel" data-panel="sheet3"><img src="/assets/library/notes/data-analysis-system/maps/sheet3.webp" alt="数据展现（可视化）脑图" loading="lazy" decoding="async" /></div>
+  </div>
+  <p class="map-hint">四张画布对应原脑图的四个 sheet，点标签切换；点图片看原尺寸</p>
 </div>
+
+<script>
+  (function () {
+    if (window.__dasMapInit) return;
+    window.__dasMapInit = true;
+    function setup(viewer) {
+      var tabs = [].slice.call(viewer.querySelectorAll("[data-map]"));
+      var stage = viewer.querySelector(".map-stage");
+      tabs.forEach(function (t) {
+        t.addEventListener("click", function () {
+          tabs.forEach(function (x) { x.classList.toggle("is-active", x === t); });
+          [].forEach.call(viewer.querySelectorAll("[data-panel]"), function (pnl) {
+            pnl.classList.toggle("is-active", pnl.dataset.panel === t.dataset.map);
+          });
+          stage.scrollTop = 0;
+        });
+      });
+    }
+    function boot() {
+      [].forEach.call(document.querySelectorAll("[data-map-viewer]"), function (v) {
+        if (v.dataset.ready) return;
+        v.dataset.ready = "1";
+        setup(v);
+      });
+    }
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", boot);
+    } else {
+      boot();
+    }
+    document.addEventListener("swup:contentReplaced", boot);
+    document.addEventListener("astro:page-load", boot);
+  })();
+</script>
