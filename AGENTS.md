@@ -75,3 +75,14 @@ Cloudflare Pages 只是**备案期间的临时预览通道**，不是最终形�
 | 方法沉淀 | `sort: "asc"` | 写了 `order` 的排最前，其余按发布时间从早到晚 |
 | 调研分析 | 默认 `desc`（新的在前） | — |
 | 学习思考 | 正序（`asc`） | — |
+
+### 文章页左侧栏内容
+
+| 合集 | 头像 | 音乐 | 目录 | 相关文章 |
+|---|---|---|---|---|
+| 方法沉淀 | ✓ | ✓ | ✓ | ✗（`relatedPosts.excludeCategories` 里排除了） |
+| 调研分析 / 学习思考 | ✓ | ✓ | ✓ | ✓ |
+| 实战 | 不显示侧栏 | | | |
+
+- 方法沉淀的文章页，左栏最后一块是**目录**，不要接「相关文章」（推荐阅读是首页/合集页的事）
+- 想调整：`src/config/sidebarConfig.ts` → `relatedPosts.specificConfig.relatedPosts.excludeCategories`
