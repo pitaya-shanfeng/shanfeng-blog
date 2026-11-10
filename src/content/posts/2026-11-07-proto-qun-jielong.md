@@ -15,20 +15,33 @@ comment: false
 hideSidebar: true
 prototypePages: 11
 order: 18
-deckPages: 11
+deckPages: 45
 ---
+## 一、SCRM 私域建设与经营
 
-## 一、可交互原型
-
-<div class="proto-embed">
-<iframe src="/proto/qun-jielong/entry.html" title="SCRM 私域建设 · 11 页可交互原型：社群接龙、任务与积分、会员与标签" loading="lazy" allowfullscreen></iframe>
+<div class="deck-viewer" data-deck-viewer tabindex="0"
+     data-deck-base="/assets/library/notes/proto-qun-jielong/decks/methodology"
+     data-deck-pages='["01.webp","02.webp","03.webp","04.webp","05.webp","06.webp","07.webp","08.webp","09.webp","10.webp","11.webp","12.webp","13.webp","14.webp","15.webp","16.webp","17.webp","18.webp","19.webp","20.webp","21.webp","22.webp","23.webp","24.webp","25.webp","26.webp","27.webp","28.webp","29.webp","30.webp","31.webp","32.webp","33.webp","34.webp"]'
+     aria-label="SCRM 私域建设与经营 · 行业通用方法论 幻灯片切换器">
+  <div class="deck-stage">
+    <img class="deck-slide" data-deck-img src="/assets/library/notes/proto-qun-jielong/decks/methodology/01.webp" alt="SCRM 私域建设与经营 · 行业通用方法论 第 1 页" loading="lazy" decoding="async" />
+  </div>
+  <div class="deck-bar">
+    <button type="button" class="deck-nav" data-deck-prev aria-label="上一页">‹</button>
+    <span class="deck-count" data-deck-count>1 / 34</span>
+    <button type="button" class="deck-nav" data-deck-next aria-label="下一页">›</button>
+    <span class="deck-title">SCRM 私域建设与经营 · 行业通用方法论 · 34 页</span>
+  </div>
+  <p class="deck-hint">点画面左右两侧、或用下面箭头 / 键盘 ← → 翻页</p>
 </div>
 
 <div class="block-divider"></div>
 
 ## 二、用户运营体系建设规划
 
-<div class="userops-doc not-prose">
+<div class="oneid-doc not-prose">
+<main class="page">
+<div class="userops-doc">
 <!-- HERO -->
 <div class="hero">
 <span class="hero-badge">青年优品 · 产品团队</span>
@@ -1261,6 +1274,8 @@ OneID稳定运行（数据准确率&gt;95%）· 用户360视图（基础+标签+
 <p>运营和产品交替驱动——运营跑出数据验证方向，产品建能力放大效果，运营用新能力设计新SOP，产品根据运营需求迭代能力。每一步确保"能落地、可度量、可迭代"。</p>
 </div>
 </div>
+</main>
+</div>
 
 <style>
 .userops-doc *, .userops-doc *::before, .userops-doc *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -1433,15 +1448,21 @@ OneID稳定运行（数据准确率&gt;95%）· 用户360视图（基础+标签+
   <div class="deck-stage">
     <img class="deck-slide" data-deck-img src="/assets/library/notes/wecom-tools/pages/page-01.webp" alt="企微工具规划 第 1 页" loading="lazy" decoding="async" />
   </div>
-
   <div class="deck-bar">
     <button type="button" class="deck-nav" data-deck-prev aria-label="上一页">‹</button>
     <span class="deck-count" data-deck-count>1 / 11</span>
     <button type="button" class="deck-nav" data-deck-next aria-label="下一页">›</button>
     <span class="deck-title">企微工具规划 · 11 页</span>
   </div>
-
   <p class="deck-hint">点画面左右两侧、或用下面箭头 / 键盘 ← → 翻页</p>
+</div>
+
+<div class="block-divider"></div>
+
+## 四、可交互原型
+
+<div class="proto-embed">
+<iframe src="/proto/qun-jielong/entry.html" title="SCRM 私域建设 · 11 页可交互原型：社群接龙、任务与积分、会员与标签" loading="lazy" allowfullscreen></iframe>
 </div>
 
 <style>
