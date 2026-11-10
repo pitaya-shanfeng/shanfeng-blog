@@ -272,21 +272,6 @@ const visibleTags =
   }
 
   {
-    showWords &&
-      !(typeof pages === "number" && pages > 0) &&
-      !(typeof words === "number" && words > 0) &&
-      typeof images === "number" &&
-      images > 0 && (
-        <div class="flex items-center">
-          <div class="meta-icon">
-            <Icon name="material-symbols:image-outline-rounded" class="text-xl" />
-          </div>
-          <span class="text-50 text-sm font-medium">{images} 张图</span>
-        </div>
-      )
-  }
-
-  {
     showWords && typeof words === "number" && words > 0 && (
       <div class="flex items-center">
         <div class="meta-icon">

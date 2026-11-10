@@ -147,7 +147,8 @@ const stats = computePageStats(words ?? 0, images ?? 0, {
 	deckWords: (entry.data as { deckWords?: number }).deckWords,
 });
 const cardPages = stats.pages || undefined;
-const cardWords = stats.words || undefined;
+// 有页数的文章只显示页数，没有页数才显示字数——两个指标不同时出现
+const cardWords = cardPages ? undefined : stats.words || undefined;
 const cardMinutes = stats.minutes;
 ---
 
@@ -207,7 +208,6 @@ const cardMinutes = stats.minutes;
       category={category || undefined}
       pinned={pinned}
       words={cardWords}
-      images={images}
       pages={cardPages}
       minutes={cardMinutes}
       showWords={metaShowWords}
@@ -290,7 +290,6 @@ const cardMinutes = stats.minutes;
       <PostStats
         published={published}
         words={cardWords}
-        images={images}
         pages={cardPages}
         minutes={cardMinutes}
         showPublished={statsShowPublished}
