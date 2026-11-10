@@ -144,11 +144,11 @@ deckPages: 36
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225155112906.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-1  2011年，诺基亚市场份额</center>
+<div class="mkt-fig">图 1 2011年，诺基亚市场份额</div>
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225155318354.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-2  2013年后，智能手机市场份额</center>
+<div class="mkt-fig">图 2 2013年后，智能手机市场份额</div>
 
 在诺基亚整个企业的发展历史中，总体上都能准确把握形势，并完成一次次的颠覆，例如：2006 年，在电信设备市场遇冷之前，它能有预见性地将电信设备分离出去，合并成诺基亚西门子公司；本世纪初，随着移动技术的成熟，电话越变越时尚，人们开始注重对性能和外观设计的追求。诺基亚准确地把握了市场需求及消费者意愿，不断开发出个性化产品，成为移动通信的全球领先者。
 
@@ -160,7 +160,7 @@ deckPages: 36
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225155524665.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-3  20年来，相机行业的变迁</center>
+<div class="mkt-fig">图 3 20年来，相机行业的变迁</div>
 
 在胶卷相机时代，柯达是绝对的王者，直到今天，依然很多摄影爱好者在坚持使用柯达早就停产的胶卷。21 世纪初，数码相机开始取代传统的胶卷相机，柯达也随之没落，其实世界第一台数码相机就诞生于柯达，那时候才 1975 年。由于柯达高层担心数码相机的出现会影响自己本身的胶片业务，这台数码相机一直被束之高阁。
 
@@ -359,7 +359,7 @@ $$
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225161644583.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-4  分解行业阶段</center>
+<div class="mkt-fig">图 4 分解行业阶段</div>
 
 **（2）阶段分析与分类**
 
@@ -367,7 +367,7 @@ $$
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225161824791.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-5  阶段分析与分类</center>
+<div class="mkt-fig">图 5 阶段分析与分类</div>
 
 **（3）细分类的市场规模**
 
@@ -375,7 +375,7 @@ $$
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225162021474.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-6  细分类的市场规模</center>
+<div class="mkt-fig">图 6 细分类的市场规模</div>
 
 **（4）产业链玩家分析**
 
@@ -383,7 +383,7 @@ $$
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225162316348.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-7  产业链玩家分析</center>
+<div class="mkt-fig">图 7 产业链玩家分析</div>
 
 #### 4、典型产品分析
 
@@ -407,11 +407,11 @@ $$
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225164820527.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-8  产品画布</center>
+<div class="mkt-fig">图 8 产品画布</div>
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225164904529.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-9  某商业场地短租平台产品画布</center>
+<div class="mkt-fig">图 9 某商业场地短租平台产品画布</div>
 
 **（2）核心驱动力**
 
@@ -459,7 +459,7 @@ $$
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225165544719.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-10  麦肯锡用户细分八法</center>
+<div class="mkt-fig">图 10 麦肯锡用户细分八法</div>
 
 ### 三、市场分析的常见模型
 
@@ -477,7 +477,7 @@ $$
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225165756144.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-11  波特五力模型</center>
+<div class="mkt-fig">图 11 波特五力模型</div>
 
 ##### （2）分析思路
 
@@ -540,7 +540,7 @@ $$
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225170453563.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-12  奶茶店的波特五力模型</center>
+<div class="mkt-fig">图 12 奶茶店的波特五力模型</div>
 
 #### 2、SWOT模型
 
@@ -550,7 +550,7 @@ SWOT 分析即基于内外部竞争环境和竞争条件下的态势分析，将
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225172207504.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-13  SWOT分析</center>
+<div class="mkt-fig">图 13 SWOT分析</div>
 
 ##### （2）分析思路
 
@@ -590,7 +590,7 @@ SWOT 分析即基于内外部竞争环境和竞争条件下的态势分析，将
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225172611248.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-14  SWOT分析模型</center>
+<div class="mkt-fig">图 14 SWOT分析模型</div>
 
 排序原则：
 
@@ -612,7 +612,7 @@ SWOT 分析即基于内外部竞争环境和竞争条件下的态势分析，将
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225173217231.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-15  培训机构的SW分析、OT分析</center>
+<div class="mkt-fig">图 15 培训机构的SW分析、OT分析</div>
 
 在分析了企业内外部环境因素后，通过四种不同的组合，结合不同的因素，制定相对应的战略：
 
@@ -625,7 +625,7 @@ SWOT 分析即基于内外部竞争环境和竞争条件下的态势分析，将
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225174206582.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-16  培训机构的SO\WO\ST\WT分析</center>
+<div class="mkt-fig">图 16 培训机构的SO\WO\ST\WT分析</div>
 
 #### 3、SPACE模型
 
@@ -653,7 +653,7 @@ SPACE 矩阵要按照被研究企业的情况而制定，并要依据尽可能�
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225175126946.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-17  SPACE模型</center>
+<div class="mkt-fig">图 17 SPACE模型</div>
 
 ##### （2）分析思路
 
@@ -741,7 +741,7 @@ SPACE 矩阵要按照被研究企业的情况而制定，并要依据尽可能�
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225180540425.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-18  培训机构的SPACE分析</center>
+<div class="mkt-fig">图 18 培训机构的SPACE分析</div>
 
 **（6）战略分析**
 
@@ -766,7 +766,7 @@ SPACE 矩阵要按照被研究企业的情况而制定，并要依据尽可能�
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225180903713.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-19  波士顿分析矩阵</center>
+<div class="mkt-fig">图 19 波士顿分析矩阵</div>
 
 波士顿矩阵对于企业产品所处的四个象限具有不同的定义和相应的战略对策：
 
@@ -827,7 +827,7 @@ GE 行业吸引力矩阵是针对波士顿分析矩阵所存在的问题，扩�
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225182039936.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-20  GE行业吸引力矩阵</center>
+<div class="mkt-fig">图 20 GE行业吸引力矩阵</div>
 
 ##### （2）分析思路
 
@@ -885,7 +885,7 @@ $$
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225215558999.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-21  建立GE矩阵</center>
+<div class="mkt-fig">图 21 建立GE矩阵</div>
 
 **（5）分析矩阵**
 
@@ -893,7 +893,7 @@ $$
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225215803329.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-22  GE矩阵分析思路</center>
+<div class="mkt-fig">图 22 GE矩阵分析思路</div>
 
 #### 6、PESTLE分析模型
 
@@ -961,7 +961,7 @@ PESTEL分析模型又称大环境分析，是分析宏观环境的有效工具�
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225220334387.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-23  市场规模、趋势与环境分析</center>
+<div class="mkt-fig">图 23 市场规模、趋势与环境分析</div>
 
 #### 2、竞争格式和上下游情况分析
 
@@ -969,7 +969,7 @@ PESTEL分析模型又称大环境分析，是分析宏观环境的有效工具�
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225220534297.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-24  竞争格局和上下游情况分析</center>
+<div class="mkt-fig">图 24 竞争格局和上下游情况分析</div>
 
 #### 3、进入市场时机分析
 
@@ -977,7 +977,7 @@ PESTEL分析模型又称大环境分析，是分析宏观环境的有效工具�
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225220704562.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-25  进入市场时机分析</center>
+<div class="mkt-fig">图 25 进入市场时机分析</div>
 
 #### 4、用户人群分析
 
@@ -985,7 +985,7 @@ PESTEL分析模型又称大环境分析，是分析宏观环境的有效工具�
 
 ![](/assets/library/notes/market-analysis/doc/image-20210225220815924.webp)
 
-<center style="color:#C0C0C0;font-size:12px">图6-26  用户人群分析</center>
+<div class="mkt-fig">图 26 用户人群分析</div>
 
 #### 5、市场成本结构和回报周期分析
 
@@ -1088,5 +1088,9 @@ PESTEL分析模型又称大环境分析，是分析宏观环境的有效工具�
   .mkt-doc h5 { margin: 18px 0 8px; font-size: .96em; font-weight: 700; color: #46524b; }
   .mkt-doc p { margin: 10px 0; line-height: 1.85; }
   .mkt-doc img { display: block; margin: 14px auto; border-radius: 8px; }
-  .mkt-doc table { display: block; overflow-x: auto; }
+  .mkt-doc table { display: block; width: 100%; overflow-x: auto; }
+  .mkt-doc .mkt-fig {
+    margin: -4px 0 18px; text-align: center;
+    color: #93a29a; font-size: 12.5px;
+  }
 </style>
