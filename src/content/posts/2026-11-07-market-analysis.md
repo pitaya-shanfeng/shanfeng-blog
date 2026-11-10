@@ -1090,8 +1090,20 @@ PESTEL分析模型又称大环境分析，是分析宏观环境的有效工具�
   .mkt-doc img { display: block; margin: 14px auto; border-radius: 8px; }
   .mkt-doc table { width: 100%; min-width: 100%; table-layout: auto; }
   .mkt-doc table th, .mkt-doc table td { word-break: break-word; }
+  .mkt-map { display: block; margin: 8px 0 6px; }
+  .mkt-map img { display: block; width: 100%; height: auto; border: 1px solid #e3ebe6; border-radius: 10px; background: #fff; }
   .mkt-doc .mkt-fig {
     margin: -4px 0 18px; text-align: center;
     color: #93a29a; font-size: 12.5px;
   }
 </style>
+
+<div class="block-divider"></div>
+
+## 三、市场分析脑图
+
+<a class="mkt-map" href="/assets/library/notes/market-analysis/mindmap.webp" target="_blank" rel="noopener" title="点击查看原图">
+  <img src="/assets/library/notes/market-analysis/mindmap.webp" alt="市场分析脑图：市场与行业的区别、市场分析的原因、市场分析的方法与流程" loading="lazy" decoding="async" />
+</a>
+
+<div class="mkt-fig">图 27 市场分析脑图（点击图片放大查看）</div>
