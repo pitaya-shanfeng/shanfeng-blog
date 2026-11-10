@@ -163,7 +163,6 @@ deckPages: 74
 
 ## 三、经营与规划
 
-<p class="shop-lead">小店三个月的数据、Q1 规划、增长实验报告，点标签切换。</p>
 
 <div class="shop-viewer" data-shop-viewer tabindex="0" aria-label="小店资料阅读器">
   <div class="shop-tabs">
