@@ -15,7 +15,7 @@ comment: false
 hideSidebar: true
 order: 16
 # 内嵌 PPT：必买增长实战 38 页
-deckPages: 92
+deckPages: 108
 ---
 
 ## 一、从增长模型到增长实验
@@ -345,6 +345,85 @@ deckPages: 92
       for (var i = 0; i < all.length; i++) {
         if (all[i].dataset.pvReady) continue;
         all[i].dataset.pvReady = "1";
+        setup(all[i]);
+      }
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", boot);
+    } else {
+      boot();
+    }
+    document.addEventListener("swup:contentReplaced", boot);
+    document.addEventListener("astro:page-load", boot);
+  })();
+</script>
+
+<div class="block-divider"></div>
+
+## 三、项目汇报
+
+<div class="pv-viewer" data-pv2-viewer tabindex="0" aria-label="必买项目汇报 幻灯片切换器">
+  <div class="pv-stage">
+    <img class="pv-page" data-pv2-img src="/assets/library/notes/growth-hacking/decks/report/01.webp" alt="必买项目汇报 第 1 页" loading="lazy" decoding="async" />
+  </div>
+
+  <div class="pv-bar">
+    <button type="button" class="pv-nav" data-pv2-prev aria-label="上一页">‹</button>
+    <span class="pv-count" data-pv2-count>1 / 16</span>
+    <button type="button" class="pv-nav" data-pv2-next aria-label="下一页">›</button>
+    <span class="pv-title">必买项目汇报 · 16 页</span>
+  </div>
+
+  <p class="pv-hint">点画面左右两侧、或用下面箭头 / 键盘 ← → 翻页</p>
+</div>
+
+<script>
+  (function () {
+    if (window.__growthReportInit) return;
+    window.__growthReportInit = true;
+
+    var BASE = "/assets/library/notes/growth-hacking/decks/report";
+    var TOTAL = 16;
+
+    function setup(viewer) {
+      var img = viewer.querySelector("[data-pv2-img]");
+      var countEl = viewer.querySelector("[data-pv2-count]");
+      var prev = viewer.querySelector("[data-pv2-prev]");
+      var next = viewer.querySelector("[data-pv2-next]");
+      var page = 0;
+
+      function src(i) { return BASE + "/" + String(i + 1).padStart(2, "0") + ".webp"; }
+
+      function render() {
+        img.src = src(page);
+        countEl.textContent = (page + 1) + " / " + TOTAL;
+        prev.disabled = page === 0;
+        next.disabled = page === TOTAL - 1;
+        if (page + 1 < TOTAL) { var pre = new Image(); pre.src = src(page + 1); }
+      }
+
+      prev.addEventListener("click", function () { if (page > 0) { page--; render(); } });
+      next.addEventListener("click", function () { if (page < TOTAL - 1) { page++; render(); } });
+      img.addEventListener("click", function (e) {
+        var r = img.getBoundingClientRect();
+        var right = e.clientX - r.left > r.width / 2;
+        if (right && page < TOTAL - 1) { page++; render(); }
+        else if (!right && page > 0) { page--; render(); }
+      });
+      viewer.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowLeft" && page > 0) { page--; render(); e.preventDefault(); }
+        if (e.key === "ArrowRight" && page < TOTAL - 1) { page++; render(); e.preventDefault(); }
+      });
+
+      render();
+    }
+
+    function boot() {
+      var all = document.querySelectorAll("[data-pv2-viewer]");
+      for (var i = 0; i < all.length; i++) {
+        if (all[i].dataset.pv2Ready) continue;
+        all[i].dataset.pv2Ready = "1";
         setup(all[i]);
       }
     }
