@@ -1127,4 +1127,4 @@ PESTEL分析模型又称大环境分析，是分析宏观环境的有效工具�
 
 <div class="mkt-fig">图 30 分支三：市场分析的方法与流程</div>
 
-<p class="mkt-note">想看完整层级（含三级以下的方法与算法），可打开 <a href="/assets/library/notes/market-analysis/mindmap.webp" target="_blank" rel="noopener">完整树状图</a>。</p>
+<p class="mkt-note">想看完整层级（含三级以下的方法与算法），可打开 <a href="/assets/library/notes/market-analysis/mindmap/full.webp" target="_blank" rel="noopener">完整树状图</a>。</p>
