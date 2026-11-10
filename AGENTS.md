@@ -86,3 +86,20 @@ Cloudflare Pages 只是**备案期间的临时预览通道**，不是最终形�
 
 - 方法沉淀的文章页，左栏最后一块是**目录**，不要接「相关文章」（推荐阅读是首页/合集页的事）
 - 想调整：`src/config/sidebarConfig.ts` → `relatedPosts.specificConfig.relatedPosts.excludeCategories`
+
+### PPT / PDF 转图（有 SVG 时要先处理）
+
+有些 PPT 的图是 **SVG-only**（`<a:blip>` 里只有 `asvg:svgBlip`，没有 PNG 兜底），
+Keynote 导入会**整张图丢掉**——导出的 PDF 里那页只剩文字，看着像「图缺失」。
+
+处理办法（实测有效）：
+
+1. 解压 pptx，把 `ppt/slides/media/` 里的资源拷到 `ppt/media/`，
+   并把 `ppt/slides/_rels/*.rels` 里的 `Target="media/…"` 改成 `Target="../media/…"`
+2. 用 Chrome 把每个 `.svg` 栅格化成 2 倍 PNG（保持原 viewBox 比例）
+3. 把 slide xml 里 `<a:blip><a:extLst>…svgBlip…</a:extLst></a:blip>`
+   换成 `<a:blip r:embed="同 id"/>`，并把 rels 目标从 `.svg` 改成 `.png`
+4. 重新打包成 pptx，再用 Keynote 导出 PDF
+
+另外：替换已上线图片时换一个目录（如 `decks/main` → `decks/main2`），
+不要覆盖同名文件——COS 的 7 天缓存不会立刻失效。
