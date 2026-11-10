@@ -13,16 +13,13 @@ banner: /assets/library/notes/proto-yunji-shop/banner.webp
 draft: false
 comment: false
 hideSidebar: true
-prototypeDir: yunji-shop
 prototypePages: 20
 order: 17
 # 内嵌「内容方向研究」56 页
 deckPages: 56
 ---
 
-<div class="block-divider"></div>
-
-## 二、内容方向研究
+## 一、内容方向研究
 
 <div class="deck-viewer" data-deck-viewer tabindex="0"
      data-deck-base="/assets/library/notes/content-direction/pages"
@@ -153,3 +150,11 @@ deckPages: 56
     document.addEventListener("astro:page-load", boot);
   })();
 </script>
+
+<div class="block-divider"></div>
+
+## 二、可交互原型
+
+<div class="proto-embed">
+<iframe src="/proto/yunji-shop/entry.html" title="内容导购探索 · 20 页可交互原型：C 端主页、四种店铺页、精选与跟卖、三种分享落地页" loading="lazy" allowfullscreen></iframe>
+</div>
