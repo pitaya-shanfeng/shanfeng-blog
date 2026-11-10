@@ -170,7 +170,6 @@ deckPages: 108
 
 ## 二、增长模型与实验报告
 
-<p class="pv-lead">必买增长的原始材料：一份增长模型、六份 Q2 实验报告、一份种草方案。点标签切换文档，用 ‹ › 翻页。</p>
 
 <div class="pv-viewer" data-pv-viewer tabindex="0" aria-label="增长材料阅读器">
   <div class="pv-tabs">
