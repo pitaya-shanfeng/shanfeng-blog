@@ -14,7 +14,6 @@ image: /assets/library/notes/business-model/cover.webp
 banner: /assets/library/notes/business-model/banner.webp
 draft: false
 comment: false
-hideSidebar: true
 ---
 
 <div class="bm-doc">
