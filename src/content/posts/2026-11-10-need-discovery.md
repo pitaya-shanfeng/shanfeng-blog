@@ -124,3 +124,83 @@ comment: false
     document.addEventListener("astro:page-load", boot);
   })();
 </script>
+
+<div class="block-divider"></div>
+
+## 二、六张脑图
+
+<div class="map-viewer" data-map-viewer>
+  <div class="map-tabs">
+    <button type="button" class="map-tab is-active" data-map="biz-product">需求挖掘全景</button>
+    <button type="button" class="map-tab" data-map="user-profile">用户特征分析</button>
+    <button type="button" class="map-tab" data-map="user-feedback">用户反馈</button>
+    <button type="button" class="map-tab" data-map="internal-feedback">企业内部反馈</button>
+    <button type="button" class="map-tab" data-map="user-research">用户调研</button>
+    <button type="button" class="map-tab" data-map="biz-research">业务调研</button>
+  </div>
+  <div class="map-stage">
+    <img class="map-img" data-map-img src="/assets/library/notes/need-discovery-v2/maps/biz-product.webp" alt="需求挖掘全景脑图" loading="lazy" decoding="async" />
+  </div>
+  <p class="map-hint" data-map-hint>点标签切换脑图；点图片可看原尺寸</p>
+</div>
+
+<style>
+  /* 本文专用：脑图切换（一屏一张，高的图在框内滚动） */
+  .map-viewer {
+    border: 1px solid #e3ebe6; border-radius: 12px; background: #fff;
+    padding: 14px; margin: 10px 0 22px;
+  }
+  .map-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .map-tab {
+    border: 1px solid #d7e2db; background: #fff; color: #2f4a3e;
+    font-size: 13px; line-height: 1; padding: 9px 13px;
+    border-radius: 999px; cursor: pointer;
+  }
+  .map-tab:hover { border-color: #9ec3b1; }
+  .map-tab.is-active { background: #2e7d53; border-color: #2e7d53; color: #fff; }
+  .map-stage { max-height: 74vh; overflow: auto; background: #fff; border-radius: 8px; }
+  .map-stage .map-img { display: block; width: 100%; height: auto; margin: 0; border: 0; border-radius: 0; }
+  .map-hint { margin: 8px 2px 0; font-size: 12px; color: #93a29a; }
+</style>
+
+<script>
+  (function () {
+    if (window.__needMapInit) return;
+    window.__needMapInit = true;
+
+    var BASE = "/assets/library/notes/need-discovery-v2/maps";
+    var TITLES = {'biz-product': '需求挖掘全景', 'user-profile': '用户特征分析', 'user-feedback': '用户反馈', 'internal-feedback': '企业内部反馈', 'user-research': '用户调研', 'biz-research': '业务调研'};
+
+    function setup(viewer) {
+      var tabs = [].slice.call(viewer.querySelectorAll("[data-map]"));
+      var img = viewer.querySelector("[data-map-img]");
+      var hint = viewer.querySelector("[data-map-hint]");
+
+      tabs.forEach(function (t) {
+        t.addEventListener("click", function () {
+          tabs.forEach(function (x) { x.classList.toggle("is-active", x === t); });
+          img.src = BASE + "/" + t.dataset.map + ".webp";
+          img.alt = TITLES[t.dataset.map] + "脑图";
+          viewer.querySelector(".map-stage").scrollTop = 0;
+        });
+      });
+    }
+
+    function boot() {
+      var all = document.querySelectorAll("[data-map-viewer]");
+      for (var i = 0; i < all.length; i++) {
+        if (all[i].dataset.mapReady) continue;
+        all[i].dataset.mapReady = "1";
+        setup(all[i]);
+      }
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", boot);
+    } else {
+      boot();
+    }
+    document.addEventListener("swup:contentReplaced", boot);
+    document.addEventListener("astro:page-load", boot);
+  })();
+</script>
