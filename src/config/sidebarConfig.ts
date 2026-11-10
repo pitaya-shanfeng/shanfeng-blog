@@ -43,18 +43,6 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 	// specificConfig 组件专属配置
 	leftComponents: [
 		{
-			// 组件类型：侧边栏目录组件（文章页左侧）
-			type: "sidebarToc",
-			// 是否启用该组件
-			enable: true,
-			// 组件位置：sticky = 页面下滑时吸顶
-			position: "sticky",
-			// 是否在文章详情页显示
-			showOnPostPage: true,
-			// 是否在非文章详情页隐藏
-			hideOnNonPostPage: true,
-		},
-		{
 			// 组件类型：用户资料组件
 			type: "profile",
 			// 是否启用该组件
@@ -181,10 +169,24 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			hideOnNonBookPage: true,
 		},
 		{
+			// 组件类型：侧边栏目录组件（文章页左侧）
+			type: "sidebarToc",
+			// 是否启用该组件
+			enable: true,
+			// 组件位置：sticky = 页面下滑时吸顶
+			position: "sticky",
+			// 是否在文章详情页显示
+			showOnPostPage: true,
+			// 是否在非文章详情页隐藏
+			hideOnNonPostPage: true,
+		},
+		{
 			// 组件类型：相关文章组件（与文章目录同栏，排在目录之后；数据由文章页计算后透传）
 			type: "relatedPosts",
 			// 是否启用该组件
-			enable: true,
+			// 2026-11-10：文章详情页不放「推荐阅读/相关文章」——左栏应该只有目录。
+			// 想放回来把 enable 改 true，并从 excludeCategories 里去掉要恢复的分类即可。
+			enable: false,
 			// 组件位置：sticky = 页面下滑时吸顶
 			position: "sticky",
 			// 是否在文章详情页显示
@@ -199,7 +201,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 					// 这些分类的文章详情页不放「相关文章」。
 					// 行业动态是每日一期的事，串成推荐列表会把「最新」这件事稀释掉；
 					// 以后想放回来，把这个分类从数组里删掉即可，不用改组件。
-					excludeCategories: ["行业动态", "方法沉淀"],
+					excludeCategories: ["行业动态"],
 				},
 			},
 		},
