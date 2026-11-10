@@ -18,7 +18,9 @@ export const expressiveCodeConfig: ExpressiveCodeConfig = {
 
 	// 代码块折叠插件配置
 	pluginCollapsible: {
-		enable: true, // 启用折叠功能
+		// 2026-11-10：关掉折叠——文章里的代码块直接完整展开，
+		// 不再显示「展开 / 收起」按钮（读者看代码要的是能一路读下去）。
+		enable: false, // 启用折叠功能
 		lineThreshold: 15, // 当代码行数超过15行时显示折叠按钮
 		previewLines: 8, // 折叠时显示前8行
 		defaultCollapsed: true, // 默认折叠长代码块
