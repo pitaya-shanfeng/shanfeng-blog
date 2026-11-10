@@ -16,12 +16,12 @@ hideSidebar: true
 prototypePages: 78
 ---
 
-## 一、C 端小程序 1.0（导购）
+## 一、C 端小程序（导购）
 
 <p class="proto-lead">从内容导购到下单的第一版小程序：专题、严选、个人信息等 35 页。</p>
 
 <div class="proto-embed">
-<iframe src="/proto/mini-guide/entry.html" title="C 端小程序 1.0（导购） · 可交互原型" loading="lazy" allowfullscreen></iframe>
+<iframe src="/proto/mini-guide/entry.html" title="C 端小程序（导购） · 可交互原型" loading="lazy" allowfullscreen></iframe>
 </div>
 
 <div class="block-divider"></div>
@@ -36,22 +36,22 @@ prototypePages: 78
 
 <div class="block-divider"></div>
 
-## 三、C 端小程序 1.3（逆向）
+## 三、C 端小程序（逆向）
 
 <p class="proto-lead">从售后与逆向流程反推链路断点：功能说明、售后列表等 13 页。</p>
 
 <div class="proto-embed">
-<iframe src="/proto/mini-reverse/entry.html" title="C 端小程序 1.3（逆向） · 可交互原型" loading="lazy" allowfullscreen></iframe>
+<iframe src="/proto/mini-reverse/entry.html" title="C 端小程序（逆向） · 可交互原型" loading="lazy" allowfullscreen></iframe>
 </div>
 
 <div class="block-divider"></div>
 
-## 四、交易链路体验优化 1.0
+## 四、交易链路体验优化
 
 <p class="proto-lead">针对断点做的体验优化稿：优化说明、分类与交易各环节，20 页。</p>
 
 <div class="proto-embed">
-<iframe src="/proto/trade-optimize/entry.html" title="交易链路体验优化 1.0 · 可交互原型" loading="lazy" allowfullscreen></iframe>
+<iframe src="/proto/trade-optimize/entry.html" title="交易链路体验优化 · 可交互原型" loading="lazy" allowfullscreen></iframe>
 </div>
 
 <style>
