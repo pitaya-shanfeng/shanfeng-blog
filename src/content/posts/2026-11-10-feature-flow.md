@@ -11,6 +11,7 @@ tags:
 # 方法合集第十篇（排在《BRD 与 MRD》之后）
 order: 11
 deckPages: 37
+deckWords: 8850
 image: /assets/library/notes/feature-flow/cover.webp
 banner: /assets/library/notes/feature-flow/banner.webp
 draft: false

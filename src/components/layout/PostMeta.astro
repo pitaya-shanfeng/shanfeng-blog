@@ -287,7 +287,7 @@ const visibleTags =
   }
 
   {
-    showWords && !(typeof pages === "number" && pages > 0) && typeof words === "number" && words > 0 && (
+    showWords && typeof words === "number" && words > 0 && (
       <div class="flex items-center">
         <div class="meta-icon">
           <Icon name="material-symbols:notes-rounded" class="text-xl" />

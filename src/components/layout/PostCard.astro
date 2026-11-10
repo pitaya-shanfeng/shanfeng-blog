@@ -8,10 +8,7 @@ import PostStats from "@/components/layout/PostStats.astro";
 import { siteConfig } from "@/config";
 import { getApiUrlList, processCoverImageSync } from "@/utils/image-utils";
 import { getCategoryUrl, getFileDirFromPath, getTagUrl } from "@/utils/url-utils";
-import {
-	countContentPages,
-	MINUTES_PER_PROTOTYPE_PAGE,
-} from "@/utils/prototype-pages";
+import { computePageStats } from "@/utils/word-stats";
 
 interface Props {
 	class?: string;
@@ -140,19 +137,18 @@ const descriptionText = description || remarkPluginFrontmatter.excerpt || "";
 // HTML 文章没有 markdown 渲染流程，字数/时长由 loader 写在 data 上
 const words = entry.data.words ?? remarkPluginFrontmatter.words;
 const images = entry.data.images ?? remarkPluginFrontmatter.images;
-const minutes = entry.data.minutes ?? remarkPluginFrontmatter.minutes;
 
-// 含原型 / 内嵌 PPT 的文章：字数没意义，改报「页内容」，
-// 时长按「页数 × 每页分钟」算，与详情页、合集页三处口径一致。
-const prototypePages = countContentPages({
-	dir: (entry.data as { prototypeDir?: string }).prototypeDir ?? "",
+// 统一口径（2026-11-10）：字数 = 正文 + 内嵌 HTML/PPT/PDF 文字；
+// 时长 = 字数/150 + 页数×2 + 正文图片×2。卡片、详情页、合集页三处一致。
+const stats = computePageStats(words ?? 0, images ?? 0, {
+	prototypeDir: (entry.data as { prototypeDir?: string }).prototypeDir ?? "",
 	prototypePages: (entry.data as { prototypePages?: number }).prototypePages,
 	deckPages: (entry.data as { deckPages?: number }).deckPages,
-}).total;
-const cardPages = prototypePages || undefined;
-const cardMinutes = prototypePages
-	? prototypePages * MINUTES_PER_PROTOTYPE_PAGE
-	: minutes;
+	deckWords: (entry.data as { deckWords?: number }).deckWords,
+});
+const cardPages = stats.pages || undefined;
+const cardWords = stats.words || undefined;
+const cardMinutes = stats.minutes;
 ---
 
 <div
@@ -210,7 +206,7 @@ const cardMinutes = prototypePages
       hideUpdateDate={true}
       category={category || undefined}
       pinned={pinned}
-      words={words}
+      words={cardWords}
       images={images}
       pages={cardPages}
       minutes={cardMinutes}
@@ -293,7 +289,7 @@ const cardMinutes = prototypePages
     {!showTagsAtBottom && (
       <PostStats
         published={published}
-        words={words}
+        words={cardWords}
         images={images}
         pages={cardPages}
         minutes={cardMinutes}

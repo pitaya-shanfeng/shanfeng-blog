@@ -85,6 +85,8 @@ const postSchema = z.object({
 	prototypePages: z.number().optional(),
 	/** 内嵌 PPT / 长图切换器的总页数（和原型页数一起算「页内容」） */
 	deckPages: z.number().optional(),
+	/** 从 PPT / PDF 里抽出来的字数（导入时写入，只用于「字数」，不额外计时） */
+	deckWords: z.number().optional(),
 	/** 正文里的内容图张数（只放一张图的文章用它代替字数） */
 	images: z.number().optional(),
 	/**

@@ -11,6 +11,7 @@ tags:
 # 方法合集第十六篇（排在《Python 入门到掌握》之后）
 order: 16
 deckPages: 59
+deckWords: 13140
 image: /assets/library/notes/data-analysis-system/cover.webp
 banner: /assets/library/notes/data-analysis-system/banner.webp
 draft: false

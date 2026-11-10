@@ -12,6 +12,7 @@ tags:
 order: 1
 # 36 页 PPT 平铺，按页计算阅读成本
 deckPages: 36
+deckWords: 8472
 image: /assets/library/notes/pm-cognition/cover.webp
 banner: /assets/library/notes/pm-cognition/banner.webp
 draft: false

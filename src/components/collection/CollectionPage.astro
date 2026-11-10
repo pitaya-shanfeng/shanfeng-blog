@@ -39,10 +39,7 @@ import MainGridLayout from "@/layouts/MainGridLayout.astro";
 import { type CollectionPost, getCollectionPosts } from "@/utils/collection-posts";
 import { getPostUrlBySlug } from "@/utils/url-utils";
 import type { BannerQuote } from "@/utils/banner-quotes-data";
-import {
-	countContentPages,
-	MINUTES_PER_PROTOTYPE_PAGE,
-} from "@/utils/prototype-pages";
+import { computePageStats } from "@/utils/word-stats";
 // 霞鹜文楷按 unicode-range 切成 97 片，浏览器只会拉当前文案命中的那几片。
 // 只在这个组件里 import，字体 CSS 就只进合集页的样式表，首页不受影响。
 import "@/styles/lxgw-wenkai.css";
@@ -126,39 +123,26 @@ const pagePosts: CollectionPost[] = page ? (page.data as CollectionPost[]) : pos
  * 否则盘口的总字数会和每张卡上的数字对不上。
  */
 async function statsOf(post: (typeof posts)[number]) {
-	// 原型类文章：字数没有意义，按页数折算时长（一页 3 分钟）。
-	// 有些文章没有 prototypeDir（原型是内嵌的 iframe），只写了 prototypePages，
-	// 这种情况同样按页数算。
-	const prototypeDir =
-		(post.data as { prototypeDir?: string }).prototypeDir ?? "";
-	const overridePages = (post.data as { prototypePages?: number })
-		.prototypePages;
-	const deckPages = (post.data as { deckPages?: number }).deckPages ?? 0;
-	if (prototypeDir || (overridePages ?? 0) > 0 || deckPages > 0) {
-		const pages = countContentPages({
-			dir: prototypeDir,
-			prototypePages: overridePages,
-			deckPages,
-		}).total;
-		if (pages > 0) {
-			return {
-				words: 0,
-				minutes: pages * MINUTES_PER_PROTOTYPE_PAGE,
-				pages,
-			};
+	// 统一口径（2026-11-10）：字数 = 正文 + 内嵌 HTML/PPT/PDF 文字；
+	// 时长 = 字数/150 + 页数×2 + 正文图片×2。
+	let words = post.data.words ?? 0;
+	let images = post.data.images ?? 0;
+	if (!words) {
+		try {
+			const { remarkPluginFrontmatter } = await render(post as never);
+			words = remarkPluginFrontmatter.words ?? 0;
+			images = images || (remarkPluginFrontmatter.images ?? 0);
+		} catch {
+			/* HTML 文章没有 markdown 渲染流程，保持 data 里的值 */
 		}
 	}
-	let words = post.data.words ?? 0;
-	let minutes = post.data.minutes ?? 0;
-	if (words > 0) return { words, minutes, pages: 0 };
-	try {
-		const { remarkPluginFrontmatter } = await render(post as never);
-		words = remarkPluginFrontmatter.words ?? 0;
-		minutes = remarkPluginFrontmatter.minutes ?? 0;
-	} catch {
-		/* HTML 文章没有 markdown 渲染流程，保持 data 里的值 */
-	}
-	return { words, minutes, pages: 0 };
+	const stats = computePageStats(words, images, {
+		prototypeDir: (post.data as { prototypeDir?: string }).prototypeDir ?? "",
+		prototypePages: (post.data as { prototypePages?: number }).prototypePages,
+		deckPages: (post.data as { deckPages?: number }).deckPages,
+		deckWords: (post.data as { deckWords?: number }).deckWords,
+	});
+	return { words: stats.words, minutes: stats.minutes, pages: stats.pages };
 }
 
 let totalWords = 0;

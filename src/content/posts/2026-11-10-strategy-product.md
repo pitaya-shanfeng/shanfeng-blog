@@ -11,6 +11,7 @@ tags:
 # 方法合集第十三篇（排在《PRD 的那些事》之后）
 order: 13
 deckPages: 38
+deckWords: 6367
 image: /assets/library/notes/strategy-product/cover.webp
 banner: /assets/library/notes/strategy-product/banner.webp
 draft: false
