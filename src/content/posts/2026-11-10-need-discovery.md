@@ -125,12 +125,6 @@ comment: false
   })();
 </script>
 
-<div class="block-divider"></div>
-
-<div class="block-divider"></div>
-
-<div class="block-divider"></div>
-
 ## 二、六张脑图
 
 <div class="map-viewer" data-map-viewer>
