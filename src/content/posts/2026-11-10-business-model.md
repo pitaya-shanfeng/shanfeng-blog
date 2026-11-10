@@ -9,7 +9,7 @@ tags:
   - 方法论
   - 产品
 # 方法合集第二篇
-order: 2
+order: 3
 image: /assets/library/notes/business-model/cover.webp
 banner: /assets/library/notes/business-model/banner.webp
 draft: false

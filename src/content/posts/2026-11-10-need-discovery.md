@@ -9,7 +9,7 @@ tags:
   - 方法论
   - 产品
 # 方法合集第三篇
-order: 3
+order: 4
 deckPages: 47
 image: /assets/library/notes/need-discovery-v2/cover.webp
 banner: /assets/library/notes/need-discovery-v2/banner.webp

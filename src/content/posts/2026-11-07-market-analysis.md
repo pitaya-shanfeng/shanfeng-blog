@@ -2,7 +2,7 @@
 title: 市场分析方法
 published: 2026-11-07T14:30:00+08:00
 # 方法合集第一篇
-order: 1
+order: 2
 description: 市场分析要回答的其实只有两个问题：这个盘子值不值得进，进去之后凭什么赢。36 页课件从「市场」和「行业」的区别讲起，走过五大推算方法与六大经典模型，最后落到七步实操流程、三张成本表和六类风险对策。
 quote: 市场 = 人口 + 购买力 + 购买欲望。先算清盘子，再谈要不要进。
 image: /assets/library/notes/market-analysis/cover.webp
