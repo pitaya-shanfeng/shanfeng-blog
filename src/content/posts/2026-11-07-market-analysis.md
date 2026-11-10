@@ -1103,28 +1103,10 @@ PESTEL分析模型又称大环境分析，是分析宏观环境的有效工具�
 
 ## 三、市场分析脑图
 
-<a class="mkt-map" href="/assets/library/notes/market-analysis/mindmap/overview.webp" target="_blank" rel="noopener" title="点击查看原图">
-  <img src="/assets/library/notes/market-analysis/mindmap/overview.webp" alt="市场分析脑图总览：三个一级分支与各自要点" loading="lazy" decoding="async" />
+<a class="mkt-map" href="/assets/library/notes/market-analysis/mindmap/all3.webp" target="_blank" rel="noopener" title="点击查看原图">
+  <img src="/assets/library/notes/market-analysis/mindmap/all3.webp" alt="市场分析脑图：市场与行业的区别、市场分析的原因、市场分析的方法与流程" loading="lazy" decoding="async" />
 </a>
 
-<div class="mkt-fig">图 27 市场分析脑图 · 总览（点击看原图）</div>
+<div class="mkt-fig">图 27 市场分析脑图（点击放大看细节）</div>
 
-<a class="mkt-map" href="/assets/library/notes/market-analysis/mindmap/branch-1.webp" target="_blank" rel="noopener" title="点击查看原图">
-  <img src="/assets/library/notes/market-analysis/mindmap/branch-1.webp" alt="分支一：市场与行业的区别" loading="lazy" decoding="async" />
-</a>
-
-<div class="mkt-fig">图 28 分支一：市场与行业的区别</div>
-
-<a class="mkt-map" href="/assets/library/notes/market-analysis/mindmap/branch-2.webp" target="_blank" rel="noopener" title="点击查看原图">
-  <img src="/assets/library/notes/market-analysis/mindmap/branch-2.webp" alt="分支二：市场分析的原因" loading="lazy" decoding="async" />
-</a>
-
-<div class="mkt-fig">图 29 分支二：市场分析的原因</div>
-
-<a class="mkt-map" href="/assets/library/notes/market-analysis/mindmap/branch-3.webp" target="_blank" rel="noopener" title="点击查看原图">
-  <img src="/assets/library/notes/market-analysis/mindmap/branch-3.webp" alt="分支三：市场分析的方法与流程" loading="lazy" decoding="async" />
-</a>
-
-<div class="mkt-fig">图 30 分支三：市场分析的方法与流程</div>
-
-<p class="mkt-note">想看完整层级（含三级以下的方法与算法），可打开 <a href="/assets/library/notes/market-analysis/mindmap/full.webp" target="_blank" rel="noopener">完整树状图</a>。</p>
+<p class="mkt-note">这张图到第三层；想看更细的（如市场规模的六种算法、增长趋势的关键因素），可打开 <a href="/assets/library/notes/market-analysis/mindmap/full.webp" target="_blank" rel="noopener">完整树状图</a>。</p>
