@@ -1103,5 +1103,3 @@ PESTEL分析模型又称大环境分析，是分析宏观环境的有效工具�
 ## 三、市场分析脑图
 
 <img class="mkt-map-img" src="/assets/library/notes/market-analysis/mindmap/full.webp" alt="市场分析脑图：市场与行业的区别、市场分析的原因、市场分析的方法与流程" loading="lazy" decoding="async" />
-
-<div class="mkt-fig">图 27 市场分析脑图</div>
