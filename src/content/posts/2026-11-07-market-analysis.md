@@ -1090,8 +1090,7 @@ PESTEL分析模型又称大环境分析，是分析宏观环境的有效工具�
   .mkt-doc img { display: block; margin: 14px auto; border-radius: 8px; }
   .mkt-doc table { width: 100%; min-width: 100%; table-layout: auto; }
   .mkt-doc table th, .mkt-doc table td { word-break: break-word; }
-  .mkt-map { display: block; margin: 8px 0 6px; }
-  .mkt-note { margin: 6px 0 0; font-size: 13px; color: #93a29a; }
+  .mkt-map-img { display: block; width: 100%; height: auto; margin: 8px 0 6px; border: 1px solid #e3ebe6; border-radius: 10px; background: #fff; }
   .mkt-map img { display: block; width: 100%; height: auto; border: 1px solid #e3ebe6; border-radius: 10px; background: #fff; }
   .mkt-doc .mkt-fig {
     margin: -4px 0 18px; text-align: center;
@@ -1103,10 +1102,6 @@ PESTEL分析模型又称大环境分析，是分析宏观环境的有效工具�
 
 ## 三、市场分析脑图
 
-<a class="mkt-map" href="/assets/library/notes/market-analysis/mindmap/all3.webp" target="_blank" rel="noopener" title="点击查看原图">
-  <img src="/assets/library/notes/market-analysis/mindmap/all3.webp" alt="市场分析脑图：市场与行业的区别、市场分析的原因、市场分析的方法与流程" loading="lazy" decoding="async" />
-</a>
+<img class="mkt-map-img" src="/assets/library/notes/market-analysis/mindmap/full.webp" alt="市场分析脑图：市场与行业的区别、市场分析的原因、市场分析的方法与流程" loading="lazy" decoding="async" />
 
-<div class="mkt-fig">图 27 市场分析脑图（点击放大看细节）</div>
-
-<p class="mkt-note">这张图到第三层；想看更细的（如市场规模的六种算法、增长趋势的关键因素），可打开 <a href="/assets/library/notes/market-analysis/mindmap/full.webp" target="_blank" rel="noopener">完整树状图</a>。</p>
+<div class="mkt-fig">图 27 市场分析脑图</div>
