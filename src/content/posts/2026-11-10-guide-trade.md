@@ -30,9 +30,7 @@ deckPages: 32
     <button type="button" class="deck-nav" data-deck-prev aria-label="上一页">‹</button>
     <span class="deck-count" data-deck-count>1 / 32</span>
     <button type="button" class="deck-nav" data-deck-next aria-label="下一页">›</button>
-    <span class="deck-title">行业通用方法论 · 32 页</span>
   </div>
-  <p class="deck-hint">点画面左右两侧、或用下面箭头 / 键盘 ← → 翻页</p>
 </div>
 
 <div class="block-divider"></div>
@@ -92,7 +90,17 @@ deckPages: 32
     display: flex; align-items: center; justify-content: center; cursor: pointer;
   }
   .deck-stage .deck-slide { display: block; width: 100%; max-height: 72vh; object-fit: contain; height: auto; margin: 0; border: 0; border-radius: 0; }
-  .deck-bar { display: flex; align-items: center; gap: 10px; padding: 10px 2px 2px; }
+  .deck-bar {
+    display: flex; align-items: center; gap: 10px; padding: 10px 2px 2px;
+  }
+  /* 翻页按钮 + 页码居中，全屏按钮靠右 */
+  .deck-bar::before { content: ""; flex: none; width: 74px; }
+  .deck-bar .deck-nav:first-of-type { margin-left: auto; }
+  .deck-bar .deck-nav[data-deck-next] { margin-right: auto; }
+  /* 翻页按钮 + 页码居中，全屏按钮靠右 */
+  .deck-bar::before { content: ""; flex: none; width: 74px; }
+  .deck-bar .deck-nav:first-of-type { margin-left: auto; }
+  .deck-bar .deck-nav[data-deck-next] { margin-right: auto; }
   .deck-nav {
     width: 32px; height: 32px; border-radius: 8px;
     border: 1px solid #d7e2db; background: #fff; color: #2e7d53;
@@ -101,11 +109,8 @@ deckPages: 32
   .deck-nav:hover:not(:disabled) { background: #eef6f1; }
   .deck-nav:disabled { opacity: .35; cursor: default; }
   .deck-count { font-variant-numeric: tabular-nums; font-size: 13px; color: #456052; min-width: 62px; }
-  .deck-title { font-size: 13px; color: #6b7a72; }
-  .deck-hint { margin: 6px 2px 0; font-size: 12px; color: #93a29a; }
   @media (max-width: 767px) {
     .deck-viewer { padding: 10px 10px 8px; }
-    .deck-title { display: none; }
   }
 </style>
 

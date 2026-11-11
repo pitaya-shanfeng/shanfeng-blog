@@ -17,9 +17,12 @@
 	.deck-fullscreen-btn {
 		display: inline-flex;
 		align-items: center;
+		justify-content: center;
 		gap: 6px;
 		height: 32px;
-		padding: 0 12px;
+		width: 74px;
+		flex: none;
+		padding: 0;
 		border-radius: 8px;
 		border: 1px solid #d7e2db;
 		background: #fff;
@@ -339,34 +342,41 @@
 			}
 		}, true);
 
+		/** 读切换器当前的数据（多 PPT 的文章会在切标签时改写这两个属性） */
+		function readDeck(viewer: HTMLElement): Deck | null {
+			const base = viewer.dataset.deckBase;
+			const pagesRaw = viewer.dataset.deckPages;
+			if (!base || !pagesRaw) return null;
+			let pages: string[] = [];
+			try {
+				pages = JSON.parse(pagesRaw);
+			} catch {
+				return null;
+			}
+			if (!Array.isArray(pages) || pages.length === 0) return null;
+			// 标题从 aria-label 里取（正文里已经不再显示「xx · N 页」这类文案）
+			const label = (viewer.getAttribute("aria-label") ?? "")
+				.replace(/\s*幻灯片切换器\s*$/, "")
+				.trim();
+			return { base, pages, title: label || "演示文稿" };
+		}
+
 		/** 给每个切换器挂一个「全屏」按钮 */
 		function enhance(viewer: HTMLElement) {
 			if (viewer.dataset.fsReady) return;
 			viewer.dataset.fsReady = "1";
 
-			const base = viewer.dataset.deckBase;
-			const pagesRaw = viewer.dataset.deckPages;
-			if (!base || !pagesRaw) return;
-
-			let pages: string[] = [];
-			try {
-				pages = JSON.parse(pagesRaw);
-			} catch {
-				return;
-			}
-			if (!Array.isArray(pages) || pages.length === 0) return;
-
-			const titleNode = viewer.querySelector(".deck-title");
-			const deckTitle = (titleNode?.textContent ?? "演示文稿").replace(/·.*$/, "").trim();
-
 			const bar = viewer.querySelector(".deck-bar");
 			const btn = el("button", "deck-fullscreen-btn", "⛶ 全屏") as HTMLButtonElement;
 			btn.type = "button";
 			btn.addEventListener("click", () => {
+				// 点击时再读：有的文章是「一个切换器装多份 PPT」，页集会变
+				const deckNow = readDeck(viewer);
+				if (!deckNow) return;
 				const countNode = viewer.querySelector("[data-deck-count]");
 				const current = countNode?.textContent?.trim() ?? "1";
 				const cur = Number.parseInt(current, 10) - 1;
-				openFs({ base, pages, title: deckTitle }, Number.isFinite(cur) ? cur : 0);
+				openFs(deckNow, Number.isFinite(cur) ? cur : 0);
 			});
 			if (bar) bar.appendChild(btn);
 			else viewer.appendChild(btn);
