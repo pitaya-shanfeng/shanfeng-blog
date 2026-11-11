@@ -25,7 +25,7 @@ import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
 import PostCard from "@/components/layout/PostCard.astro";
-import { bannerQuotes } from "@/utils/banner-quotes-data";
+import { shanfengQuotes } from "@/utils/banner-quotes-data";
 import { getSeriesPostsOf } from "@/utils/content-utils";
 import { getPostUrlBySlug } from "@/utils/url-utils";
 
@@ -166,7 +166,7 @@ const heroSubtitle = (() => {
  * （src/data/banner-quotes.md，构建期解析成 bannerQuotes）。
  * 每次进页面由全局脚本抽一条、打字机打出来。
  */
-const heroQuotes = bannerQuotes;
+const heroQuotes = shanfengQuotes;
 
 /**
  * 刊头那颗主按钮：有序言进序，没有序言直接进第 1 章（文案同步换掉）。

@@ -13,7 +13,7 @@ import type { GetStaticPaths } from "astro";
 import CollectionPage from "@/components/collection/CollectionPage.astro";
 import { topicPages } from "@/config/topicsConfig";
 import { getCollectionPosts } from "@/utils/collection-posts";
-import { bannerQuotes } from "@/utils/banner-quotes-data";
+import { shanfengQuotes } from "@/utils/banner-quotes-data";
 
 export const getStaticPaths = (() =>
 	topicPages.map((topic) => ({
@@ -36,6 +36,6 @@ const posts = await getCollectionPosts(topic.category, topic.sort ?? "desc");
 	emptyHint={topic.emptyHint}
 	icon={topic.icon}
 	unit={topic.unit ?? "篇"}
-	quotes={bannerQuotes}
+	quotes={shanfengQuotes}
 	posts={posts}
 />

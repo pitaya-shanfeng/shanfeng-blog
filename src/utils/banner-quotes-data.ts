@@ -44,3 +44,13 @@ function parseQuotes(raw: string): BannerQuote[] {
 }
 
 export const bannerQuotes: BannerQuote[] = parseQuotes(rawQuotes);
+
+/**
+ * 只保留山风自己的金句。
+ *
+ * 合集页（思路 / 调研 / 案例 / 笔记 / 书页）用这一份——
+ * 那是站长的自述，不该轮到别人替他说；行业动态页仍用全量（另行处理）。
+ */
+export const shanfengQuotes: BannerQuote[] = bannerQuotes.filter(
+	(q) => q.author === "山风",
+);
