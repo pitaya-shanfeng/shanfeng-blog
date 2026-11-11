@@ -45,17 +45,16 @@ import "@/styles/home-hero.css";
 		dawn: "/assets/images/home-hero-dawn.webp",
 		day: "/assets/images/home-hero-day.webp",
 		dusk: "/assets/images/home-hero-dusk.webp",
-		night: "/assets/images/home-hero-night.webp",
 	},
 }}>
-	// 按访问时刻换刊头图：清晨雾桥 / 白天桥与天际线 / 黄昏江景 / 夜晚高架
+	// 按访问时刻换刊头图：清晨雾桥 / 白天桥与天际线 / 黄昏江景
 	(() => {
 		const pick = () => {
 			const img = document.querySelector("[data-home-hero-img]");
 			if (!img) return;
 			const h = new Date().getHours();
-			const key =
-				h >= 5 && h < 9 ? "dawn" : h >= 9 && h < 17 ? "day" : h >= 17 && h < 20 ? "dusk" : "night";
+			// 只三张：清晨雾桥 / 白天长桥 / 黄昏江景（黄昏这张从 17 点一直用到次日 5 点）
+			const key = h >= 5 && h < 9 ? "dawn" : h >= 9 && h < 17 ? "day" : "dusk";
 			if (img.getAttribute("data-time") === key) return;
 			img.setAttribute("data-time", key);
 			img.src = heroMap[key];
