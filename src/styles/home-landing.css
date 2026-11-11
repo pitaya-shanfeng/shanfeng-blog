@@ -798,103 +798,105 @@ html:has(.home-landing) #main-grid {
 	grid-template-columns: 1fr !important;
 }
 
-/* ── 四维能力矩阵：压在刊头下沿的一条能力带 ───────────────
-   参考站的做法是一张白卡，四点等分；这里只做展示，不做可点击卡片。 */
+/* ── 四维能力矩阵：一条能力带 ───────────────────────────
+   参考站的做法：白卡、四点等分、图标带浅色渐变底、标题粗 + 一行小字说明。
+   不画分隔线——用留白分栏，比竖线干净。 */
 
 .hl-caps {
-	margin-top: -3rem;
+	margin-top: -2.75rem;
 	position: relative;
 	z-index: 4;
-	padding: 1.15rem 1.75rem;
+	padding: 1.6rem 2rem;
 	background: var(--card-bg);
-	border-radius: var(--radius-large);
-	box-shadow: 0 2px 6px rgb(0 0 0 / 0.05), 0 18px 40px rgb(0 0 0 / 0.08);
+	border-radius: var(--radius-2xl);
+	box-shadow:
+		0 1px 2px rgb(0 0 0 / 0.04),
+		0 12px 32px -8px rgb(0 0 0 / 0.12);
 }
 
 .hl-caps-grid {
 	display: grid;
 	grid-template-columns: 1fr;
-	gap: 1.25rem;
+	gap: 1.25rem 2rem;
 }
 
 @media (min-width: 640px) {
 	.hl-caps-grid {
 		grid-template-columns: 1fr 1fr;
-		gap: 1.5rem 2rem;
 	}
 }
 
 @media (min-width: 1100px) {
 	.hl-caps-grid {
 		grid-template-columns: repeat(4, 1fr);
-		gap: 0;
+		gap: 2rem;
 	}
 }
 
 .hl-cap {
 	display: flex;
 	align-items: center;
-	gap: 0.85rem;
+	gap: 0.9rem;
+	min-width: 0;
 }
 
-@media (min-width: 1100px) {
-	.hl-cap {
-		padding: 0 1.5rem;
-	}
-
-	.hl-cap + .hl-cap {
-		border-left: 1px solid var(--line-divider);
-	}
-
-	.hl-cap:first-child {
-		padding-left: 0;
-	}
-
-	.hl-cap:last-child {
-		padding-right: 0;
-	}
-}
-
+/* 图标底：浅色渐变方块，比纯色块更有质感 */
 .hl-cap-icon {
 	flex: 0 0 auto;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 2.5rem;
-	height: 2.5rem;
-	border-radius: var(--radius-lg);
-	background: var(--btn-regular-bg);
-	color: var(--btn-content);
-	font-size: 1.05rem;
+	width: 2.9rem;
+	height: 2.9rem;
+	border-radius: var(--radius-xl);
+	background: linear-gradient(
+		160deg,
+		color-mix(in oklab, var(--primary) 12%, white),
+		color-mix(in oklab, var(--primary) 4%, white)
+	);
+	box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.5);
+}
+
+.hl-cap-icon img {
+	display: block;
+	width: 1.65rem;
+	height: 1.65rem;
+	object-fit: contain;
 }
 
 .hl-cap-body {
 	min-width: 0;
 }
 
-.hl-cap-kicker {
-	margin: 0;
-	font-size: var(--fs-label);
-	letter-spacing: 0.08em;
-	color: var(--btn-content);
-}
-
 .hl-cap-title {
-	margin: 0.25rem 0 0;
-	font-size: var(--fs-body);
+	margin: 0;
+	font-size: var(--fs-ui);
 	font-weight: 700;
-	line-height: 1.4;
+	line-height: 1.35;
+	letter-spacing: 0.01em;
 }
 
-/* 能力图标：豆包生成的线描图（透明底），暗色下反相成浅线 */
-.hl-cap-icon img {
-	display: block;
-	width: 1.5rem;
-	height: 1.5rem;
-	object-fit: contain;
+.hl-cap-tag {
+	margin: 0.25rem 0 0;
+	font-size: var(--fs-meta);
+	line-height: 1.5;
+	color: var(--content-meta);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* 暗色 */
+.dark .hl-cap-icon {
+	background: linear-gradient(
+		160deg,
+		color-mix(in oklab, var(--primary) 22%, #1a1f1c),
+		color-mix(in oklab, var(--primary) 10%, #1a1f1c)
+	);
+	box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.06);
 }
 
 .dark .hl-cap-icon img {
-	filter: invert(1) brightness(0.92);
-	opacity: 0.9;
+	filter: invert(1) brightness(0.95);
+	opacity: 0.8;
 }

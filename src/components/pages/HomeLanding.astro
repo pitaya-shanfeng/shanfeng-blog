@@ -25,23 +25,23 @@ import "@/styles/home-landing.css";
 const capabilities = [
 	{
 		icon: "/assets/images/capabilities/domain.png",
-		kicker: "行业积淀",
 		title: "深耕电商与金融生态",
+		tag: "传统零售 · 新零售 · 消费金融",
 	},
 	{
 		icon: "/assets/images/capabilities/architecture.png",
-		kicker: "产品架构",
 		title: "全链路产品架构设计",
+		tag: "前台 · 中台 · 平台",
 	},
 	{
 		icon: "/assets/images/capabilities/growth.png",
-		kicker: "增长引擎",
 		title: "以数据驱动的增长黑客",
+		tag: "从 0 到 1 · 数据策略",
 	},
 	{
 		icon: "/assets/images/capabilities/team.png",
-		kicker: "团队与项目",
 		title: "复杂项目的定海神针",
+		tag: "带团队 · 跨部门交付",
 	},
 ];
 
@@ -147,8 +147,8 @@ const heroDomains = ["零售", "社交电商", "平台与中台", "增长"];
 						<img src={c.icon} alt="" loading="lazy" />
 					</span>
 					<div class="hl-cap-body">
-						<p class="hl-cap-kicker">{c.kicker}</p>
 						<h3 class="hl-cap-title">{c.title}</h3>
+						<p class="hl-cap-tag">{c.tag}</p>
 					</div>
 				</div>
 			))}
