@@ -13,7 +13,7 @@
 
 import type { GetStaticPaths } from "astro";
 import CollectionPage from "@/components/collection/CollectionPage.astro";
-import { shanfengQuotes } from "@/utils/banner-quotes-data";
+import { bannerQuotes } from "@/utils/banner-quotes-data";
 import { getCollectionPosts } from "@/utils/collection-posts";
 
 const CATEGORY = "笔记";
@@ -50,7 +50,7 @@ const posts = await getCollectionPosts(CATEGORY, "asc");
 		"/assets/images/topics/notes-banner-04.webp",
 		"/assets/images/topics/notes-banner-05.webp",
 	]}
-	quotes={shanfengQuotes}
+	quotes={bannerQuotes}
 	emptyHint={EMPTY_HINT}
 	icon="material-symbols:edit-note-rounded"
 	unit="篇"
