@@ -4,7 +4,7 @@ published: 2026-11-05T16:30:00+08:00
 description: 微吼、目睹、百家云三家的横向对比：各自擅长什么场景、核心功能差在哪、成熟案例怎么用，最后一张功能对照表。
 quote: 三家都在做企业直播，差别在课堂与互动能力的深浅。
 image: /assets/library/notes/live-stream/cover.webp
-banner: /assets/library/notes/live-stream/banner.webp
+banner: /assets/images/research/2026-11-05-live-stream.webp
 category: 调研
 tags:
   - 产品

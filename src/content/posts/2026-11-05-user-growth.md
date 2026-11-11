@@ -4,7 +4,7 @@ published: 2026-11-05T16:30:00+08:00
 description: 经销商在平台里怎么长大：从加入、订货、晋升到带团队，8 位经验与数据都不错的经销商逐段复盘，最后落到云创该给新经销商补哪几课。
 quote: 更短时间拿到更多收益，每个阶段该解决的需求并不一样。
 image: /assets/library/notes/user-growth/cover.webp
-banner: /assets/library/notes/user-growth/banner.webp
+banner: /assets/images/research/2026-11-05-user-growth.webp
 category: 调研
 tags:
   - 产品

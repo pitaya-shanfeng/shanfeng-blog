@@ -5,7 +5,7 @@ updated: 2026-11-06T09:10:00+08:00
 description: 两个都靠人卖货，路子完全不同：TST 用创始人直播 + 社群造势把货推出去，芬香用小程序把京东的货分给小 b。22 页拆完会员分级、奖金制度、直播数据与社群运营。
 quote: 同样是社交电商，一个卖的是人设，一个卖的是货盘。
 image: /assets/library/notes/tst-fenxiang/cover.webp
-banner: /assets/library/notes/tst-fenxiang/banner.webp
+banner: /assets/images/research/2026-11-06-tst-fenxiang.webp
 category: 调研
 tags:
   - 产品

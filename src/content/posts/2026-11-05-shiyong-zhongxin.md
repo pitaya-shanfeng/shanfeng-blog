@@ -4,7 +4,7 @@ published: 2026-11-05T16:20:00+08:00
 description: 早团想给优质用户做免费试用，于是把淘宝、贝店、掌上生活三家的试用中心拆了一遍：入口怎么放、怎么申请、怎么领取、怎么评价，最后落到早团该抄哪一段、避哪一段。
 quote: 试用中心不生成商品订单，避免干扰原分佣与补货逻辑。
 image: /assets/library/notes/shiyong-zhongxin/cover.webp
-banner: /assets/library/notes/shiyong-zhongxin/banner.webp
+banner: /assets/images/research/2026-11-05-shiyong-zhongxin.webp
 category: 调研
 tags:
   - 产品

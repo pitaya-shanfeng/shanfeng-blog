@@ -4,7 +4,7 @@ published: 2026-11-05T16:30:00+08:00
 description: 把微商在用的工具盘了一遍：软文、图片海报、视频、数据与社群管理，各自的适用场景、成本与替代关系。
 quote: 工具解决的是效率，不是模式。
 image: /assets/library/notes/weishang-tools/cover.webp
-banner: /assets/library/notes/weishang-tools/banner.webp
+banner: /assets/images/research/2026-11-05-weishang-tools.webp
 category: 调研
 tags:
   - 产品

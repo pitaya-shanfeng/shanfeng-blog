@@ -4,7 +4,7 @@ published: 2026-11-06T10:20:00+08:00
 description: 一个从大山里的水果做起、用代理分销做到年 GMV 约 50 亿的生鲜品牌。报告拆它的社群层级、代理画像、供应链与履约，以及这两年往抖音和线下门店走的动作。
 quote: 卖的不是水果，是城里人对「产地」的信任。
 image: /assets/library/notes/chenyi-wuyu/cover.webp
-banner: /assets/library/notes/chenyi-wuyu/banner.webp
+banner: /assets/images/research/2026-11-06-chenyi-wuyu.webp
 category: 调研
 tags:
   - 产品

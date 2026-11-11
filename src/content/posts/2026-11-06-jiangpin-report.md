@@ -4,7 +4,7 @@ published: 2026-11-06T10:50:00+08:00
 description: 一家从青岛线下服饰批发起家、2017 年转做社交电商的公司，走的是供应链 ODM 工厂代工路线。4 页讲清它的历程、制度与供应链。
 quote: 服饰批发的老底子，成了做 ODM 的底气。
 image: /assets/library/notes/jiangpin-report/cover.webp
-banner: /assets/library/notes/jiangpin-report/banner.webp
+banner: /assets/images/research/2026-11-06-jiangpin-report.webp
 category: 调研
 tags:
   - 产品

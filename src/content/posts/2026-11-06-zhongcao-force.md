@@ -4,7 +4,7 @@ published: 2026-11-06T12:50:00+08:00
 description: 克劳锐 2020 年的百页报告：把种草的三种角色（明星、KOL、品牌、KOC）、三种平台（微博、小红书、B站）与五个品类的玩法拆开，再回答一个更实际的问题——被种草之后，人是怎么走到下单的。
 quote: 种草不是让人知道，是让人想去评论里找答案。
 image: /assets/library/notes/zhongcao-force/cover.webp
-banner: /assets/library/notes/zhongcao-force/banner.webp
+banner: /assets/images/research/2026-11-06-zhongcao-force.webp
 category: 调研
 tags:
   - 转载精选

@@ -4,7 +4,7 @@ published: 2026-11-06T11:00:00+08:00
 description: 国货护肤品牌怎么做社群生意：分销机制、企业微信双端（to C / to B）、工具矩阵与客诉流程，最后和云集对照一遍。
 quote: 护肤品的复购，靠的不是广告，是那个一直回消息的人。
 image: /assets/library/notes/xiyun-report/cover.webp
-banner: /assets/library/notes/xiyun-report/banner.webp
+banner: /assets/images/research/2026-11-06-xiyun-report.webp
 category: 调研
 tags:
   - 产品

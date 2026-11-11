@@ -4,7 +4,7 @@ published: 2026-11-06T11:45:00+08:00
 description: 云集想做地标美食，先看行业趋势、再跑一轮 2.4 万份问卷，然后落到供应链与项目方案：30 个地标单品、超级内容、美食打卡中国行。
 quote: 食品是万亿级市场，也是云集过去两年第二大行业。
 image: /assets/library/notes/food-direction/cover.webp
-banner: /assets/library/notes/food-direction/banner.webp
+banner: /assets/images/research/2026-11-06-food-direction.webp
 category: 调研
 tags:
   - 增长

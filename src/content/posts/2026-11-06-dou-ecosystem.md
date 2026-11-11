@@ -4,7 +4,7 @@ published: 2026-11-06T09:20:00+08:00
 description: 抖音生态里有一类中间商：团长和抖客。这份 25 页的调研拆了两个样本——做分发 SAAS 的热度星选、做直播加私域的新私域，看它们分别靠什么赚钱、又卡在哪。
 quote: 团长赚的是信息差，抖客赚的是流量差。
 image: /assets/library/notes/dou-ecosystem/cover.webp
-banner: /assets/library/notes/dou-ecosystem/banner.webp
+banner: /assets/images/research/2026-11-06-dou-ecosystem.webp
 category: 调研
 tags:
   - 产品

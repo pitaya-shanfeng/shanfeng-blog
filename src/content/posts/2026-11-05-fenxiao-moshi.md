@@ -4,7 +4,7 @@ published: 2026-11-05T16:30:00+08:00
 description: 把达令家、云集等八套社交电商分销体系拆成同一套结构对照：层级怎么设、升级要什么条件、每级拿多少佣金、团队奖励怎么算。
 quote: 层级的设计，最终决定谁能赚到钱。
 image: /assets/library/notes/fenxiao-moshi/cover.webp
-banner: /assets/library/notes/fenxiao-moshi/banner.webp
+banner: /assets/images/research/2026-11-05-fenxiao-moshi.webp
 category: 调研
 tags:
   - 产品

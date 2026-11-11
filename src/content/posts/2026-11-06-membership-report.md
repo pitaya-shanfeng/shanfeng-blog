@@ -4,7 +4,7 @@ published: 2026-11-06T11:30:00+08:00
 description: 仓储会员、付费权益、会员分销，三种会员制一次摸清：人群分布、权益来源与使用率、会员场的转化效率，最后落到云集该往“会员精选”走还是留在分销。
 quote: 会员权益种类多不等于有价值，用得上才叫权益。
 image: /assets/library/notes/membership-report/cover.webp
-banner: /assets/library/notes/membership-report/banner.webp
+banner: /assets/images/research/2026-11-06-membership-report.webp
 category: 调研
 tags:
   - 增长

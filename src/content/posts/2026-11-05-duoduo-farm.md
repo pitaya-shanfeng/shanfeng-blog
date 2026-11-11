@@ -4,7 +4,7 @@ published: 2026-11-05T17:30:00+08:00
 description: 云鸡农场要跟多多果园比一比：一条主线任务怎么把人留下来，水滴与化肥两种权益怎么发，任务中心的四条设计原则又为什么能让用户天天回来浇水。
 quote: 种树不是目的，让人每天回来点一下才是。
 image: /assets/library/notes/duoduo-farm/cover.webp
-banner: /assets/library/notes/duoduo-farm/banner.webp
+banner: /assets/images/research/2026-11-05-duoduo-farm.webp
 category: 调研
 tags:
   - 产品

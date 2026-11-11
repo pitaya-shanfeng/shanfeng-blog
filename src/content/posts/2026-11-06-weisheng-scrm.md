@@ -4,7 +4,7 @@ published: 2026-11-06T12:35:00+08:00
 description: 微盛是怎么把企微做成一套运营工具的：素材体系（普通素材 / 轨迹素材 / 素材统计）、客户管理与动态、任务系统与新客激活，逐项对照消息中台的功能缺口。
 quote: 素材能不能追踪，决定了它是不是“资产”。
 image: /assets/library/notes/weisheng-scrm/cover.webp
-banner: /assets/library/notes/weisheng-scrm/banner.webp
+banner: /assets/images/research/2026-11-06-weisheng-scrm.webp
 category: 调研
 tags:
   - 产品

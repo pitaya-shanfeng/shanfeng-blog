@@ -4,7 +4,7 @@ published: 2026-11-06T10:35:00+08:00
 description: 安利这套体系跑了六十多年：靠一款清洁剂起步，用"公平、超越、保障、世袭"的奖金制度留住人，再靠一场场家庭分享会成交。14 页拆它的定位、奖金制度与数字化改造。
 quote: 没有会议就没有安利——成交发生在客厅，不在货架。
 image: /assets/library/notes/amway-report/cover.webp
-banner: /assets/library/notes/amway-report/banner.webp
+banner: /assets/images/research/2026-11-06-amway-report.webp
 category: 调研
 tags:
   - 产品

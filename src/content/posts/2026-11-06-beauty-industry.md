@@ -4,7 +4,7 @@ published: 2026-11-06T11:55:00+08:00
 description: 一份写给直男产品经理的美妆课：先测基础知识，再讲清化妆品的定义与分类，然后是 2020 年的市场、人群、渠道与营销变化，最后看云集该怎么做。
 quote: 护肤品占了半壁江山，真正的增量在小众彩妆和下沉市场。
 image: /assets/library/notes/beauty-industry/cover.webp
-banner: /assets/library/notes/beauty-industry/banner.webp
+banner: /assets/images/research/2026-11-06-beauty-industry.webp
 category: 调研
 tags:
   - 增长

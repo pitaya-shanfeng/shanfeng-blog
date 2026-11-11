@@ -4,7 +4,7 @@ published: 2026-11-05T17:35:00+08:00
 description: 扫福字、换福卡、送手写福：把春节的社交习惯做成一套 31 页可拆的玩法。看懂它怎么用稀缺感、社交压力和兑换奖励把一次活动做成连续多年的年俗。
 quote: 五福真正稀缺的不是卡，是「还差一张」的那点执念。
 image: /assets/library/notes/alipay-wufu/cover.webp
-banner: /assets/library/notes/alipay-wufu/banner.webp
+banner: /assets/images/research/2026-11-05-alipay-wufu.webp
 category: 调研
 tags:
   - 产品

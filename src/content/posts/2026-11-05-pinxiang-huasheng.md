@@ -4,7 +4,7 @@ published: 2026-11-05T16:05:00+08:00
 description: 两款导购返利型社交电商的对照调研：先看社交电商的规模与产业地图，再分别拆粉象生活与花生日记的定位、用户体系、业务流程与迭代数据，最后横向比较运营路径。
 quote: 会员制社交电商的分销机制，正在变。
 image: /assets/library/notes/pinxiang-huasheng/cover.webp
-banner: /assets/library/notes/pinxiang-huasheng/banner.webp
+banner: /assets/images/research/2026-11-05-pinxiang-huasheng.webp
 category: 调研
 tags:
   - 产品

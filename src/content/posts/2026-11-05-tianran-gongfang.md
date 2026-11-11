@@ -4,7 +4,7 @@ published: 2026-11-05T16:30:00+08:00
 description: 一个靠竹妃单点打穿的环保健康平台：会员与佣金体系怎么设计，业务形态和关键流程怎么跑，运营节奏有何特点。
 quote: 单款爆品撑起千万粉丝，模式简单到值得拆一遍。
 image: /assets/library/notes/tianran-gongfang/cover.webp
-banner: /assets/library/notes/tianran-gongfang/banner.webp
+banner: /assets/images/research/2026-11-05-tianran-gongfang.webp
 category: 调研
 tags:
   - 产品
