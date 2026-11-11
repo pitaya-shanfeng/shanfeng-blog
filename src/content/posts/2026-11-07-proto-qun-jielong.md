@@ -9,7 +9,7 @@ tags:
   - 接龙
   - 社群
 image: /assets/library/notes/proto-qun-jielong/cover.webp
-banner: /assets/library/notes/proto-qun-jielong/banner.webp
+banner: /assets/images/case/2026-11-07-proto-qun-jielong.webp
 draft: false
 comment: false
 hideSidebar: true

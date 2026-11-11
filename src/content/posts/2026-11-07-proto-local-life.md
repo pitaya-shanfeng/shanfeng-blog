@@ -9,7 +9,7 @@ tags:
   - 本地生活
   - 团购
 image: /assets/library/notes/proto-local-life/cover.webp
-banner: /assets/library/notes/proto-local-life/banner.webp
+banner: /assets/images/case/2026-11-07-proto-local-life.webp
 draft: false
 comment: false
 hideSidebar: true

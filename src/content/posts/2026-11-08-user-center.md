@@ -9,7 +9,7 @@ tags:
   - 标签体系
   - OneID
 image: /assets/library/notes/user-center/cover.webp
-banner: /assets/library/notes/user-center/banner.webp
+banner: /assets/images/case/2026-11-08-user-center.webp
 draft: false
 comment: false
 hideSidebar: true

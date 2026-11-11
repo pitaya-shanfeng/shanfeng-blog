@@ -9,7 +9,7 @@ tags:
   - 架构
   - 定价
 image: /assets/library/notes/price-center-build/cover.webp
-banner: /assets/library/notes/price-center-build/banner.webp
+banner: /assets/images/case/2026-11-08-price-center-build.webp
 draft: false
 comment: false
 hideSidebar: true

@@ -9,7 +9,7 @@ tags:
   - 营销
   - 增长
 image: /assets/library/notes/game-matrix-build/cover.webp
-banner: /assets/library/notes/game-matrix-build/banner.webp
+banner: /assets/images/case/2026-11-09-game-matrix-build.webp
 draft: false
 comment: false
 hideSidebar: true

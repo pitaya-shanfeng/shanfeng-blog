@@ -9,7 +9,7 @@ tags:
   - 活动
   - 玩法
 image: /assets/library/notes/proto-xiaoyunji-games/cover.webp
-banner: /assets/library/notes/proto-xiaoyunji-games/banner.webp
+banner: /assets/images/case/2026-11-07-proto-xiaoyunji-games.webp
 draft: false
 comment: false
 hideSidebar: true

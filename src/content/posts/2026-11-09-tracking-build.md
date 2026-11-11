@@ -8,7 +8,7 @@ tags:
   - 数据
   - 中台
 image: /assets/library/notes/tracking-build/cover.webp
-banner: /assets/library/notes/tracking-build/banner.webp
+banner: /assets/images/case/2026-11-09-tracking-build.webp
 draft: false
 comment: false
 hideSidebar: true

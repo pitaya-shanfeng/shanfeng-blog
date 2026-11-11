@@ -9,7 +9,7 @@ tags:
   - 架构
   - 增长
 image: /assets/library/notes/marketing-center-build/cover.webp
-banner: /assets/library/notes/marketing-center-build/banner.webp
+banner: /assets/images/case/2026-11-09-marketing-center-build.webp
 draft: false
 comment: false
 hideSidebar: true

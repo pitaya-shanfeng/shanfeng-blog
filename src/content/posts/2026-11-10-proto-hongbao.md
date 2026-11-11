@@ -9,7 +9,7 @@ tags:
   - 红包
   - 活动运营
 image: /assets/library/notes/proto-hongbao/cover.webp
-banner: /assets/library/notes/proto-hongbao/banner.webp
+banner: /assets/images/case/2026-11-10-proto-hongbao.webp
 draft: false
 comment: false
 hideSidebar: true

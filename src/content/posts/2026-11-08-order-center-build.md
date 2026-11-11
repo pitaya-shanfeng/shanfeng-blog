@@ -9,7 +9,7 @@ tags:
   - 架构
   - 中台
 image: /assets/library/notes/order-center-build/cover.webp
-banner: /assets/library/notes/order-center-build/banner.webp
+banner: /assets/images/case/2026-11-08-order-center-build.webp
 draft: false
 comment: false
 hideSidebar: true

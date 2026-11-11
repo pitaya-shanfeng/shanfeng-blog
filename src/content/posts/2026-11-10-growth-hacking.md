@@ -9,7 +9,7 @@ tags:
   - 增长黑客
   - 方法论
 image: /assets/library/notes/growth-hacking/cover.webp
-banner: /assets/library/notes/growth-hacking/banner.webp
+banner: /assets/images/case/2026-11-10-growth-hacking.webp
 draft: false
 comment: false
 hideSidebar: true

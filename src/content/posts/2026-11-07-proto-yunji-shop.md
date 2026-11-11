@@ -9,7 +9,7 @@ tags:
   - 小店
   - 分销
 image: /assets/library/notes/proto-yunji-shop/cover.webp
-banner: /assets/library/notes/proto-yunji-shop/banner.webp
+banner: /assets/images/case/2026-11-07-proto-yunji-shop.webp
 draft: false
 comment: false
 hideSidebar: true

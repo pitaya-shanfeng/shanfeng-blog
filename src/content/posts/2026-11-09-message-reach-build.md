@@ -9,7 +9,7 @@ tags:
   - 营销
   - 增长
 image: /assets/library/notes/message-reach-build/cover.webp
-banner: /assets/library/notes/message-reach-build/banner.webp
+banner: /assets/images/case/2026-11-09-message-reach-build.webp
 draft: false
 comment: false
 hideSidebar: true

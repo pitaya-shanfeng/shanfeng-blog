@@ -9,7 +9,7 @@ tags:
   - 预约
   - 新品
 image: /assets/library/notes/proto-new-arrival/cover.webp
-banner: /assets/library/notes/proto-new-arrival/banner.webp
+banner: /assets/images/case/2026-11-07-proto-new-arrival.webp
 draft: false
 comment: false
 hideSidebar: true

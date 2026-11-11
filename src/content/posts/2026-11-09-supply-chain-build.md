@@ -9,7 +9,7 @@ tags:
   - 开放平台
   - 中台
 image: /assets/library/notes/supply-chain-build/cover.webp
-banner: /assets/library/notes/supply-chain-build/banner.webp
+banner: /assets/images/case/2026-11-09-supply-chain-build.webp
 draft: false
 comment: false
 hideSidebar: true

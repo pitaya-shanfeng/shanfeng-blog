@@ -9,7 +9,7 @@ tags:
   - 架构
   - 类目
 image: /assets/library/notes/goods-center-build/cover.webp
-banner: /assets/library/notes/goods-center-build/banner.webp
+banner: /assets/images/case/2026-11-08-goods-center-build.webp
 draft: false
 comment: false
 hideSidebar: true

@@ -9,7 +9,7 @@ tags:
   - 集卡
   - 活动运营
 image: /assets/library/notes/proto-jika/cover.webp
-banner: /assets/library/notes/proto-jika/banner.webp
+banner: /assets/images/case/2026-11-07-proto-jika.webp
 draft: false
 comment: false
 hideSidebar: true

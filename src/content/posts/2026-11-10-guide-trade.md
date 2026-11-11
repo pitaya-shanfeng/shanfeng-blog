@@ -9,7 +9,7 @@ tags:
   - 导购
   - 链路
 image: /assets/library/notes/guide-trade/cover.webp
-banner: /assets/library/notes/guide-trade/banner.webp
+banner: /assets/images/case/2026-11-10-guide-trade.webp
 draft: false
 comment: false
 hideSidebar: true
