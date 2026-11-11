@@ -3,7 +3,7 @@ title: 产品传播力
 published: 2026-11-05T16:55:00+08:00
 description: 为什么有些东西就是会流行？这份 34 页的分享把传播拆成四段：让人愿意开口、持续谈论、影响他人、深入人心，每段都给了可动手的方法和做错的例子。
 quote: 用户愿意开口，不是因为产品好，是因为有谈资。
-image: /assets/library/notes/chanpin-chuanboli/cover-v2.webp
+image: /assets/library/notes/chanpin-chuanboli/cover-v3.webp
 category: 思路
 tags:
   - 增长

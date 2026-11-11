@@ -3,7 +3,7 @@ title: 七人双轨排行拼团
 published: 2026-11-05T16:45:00+08:00
 description: 一个用户买完指定商品就自动开团，团长下面只挂两条位，按「先上下、后左右」填满七人成团。拆它的排位规则、直推与间推奖金，以及三种能力组合下谁带飞谁。
 quote: 先上下，后左右：排位顺序决定了谁能借到谁的力。
-image: /assets/library/notes/qiren-shuangqui/cover-v2.webp
+image: /assets/library/notes/qiren-shuangqui/cover-v3.webp
 category: 思路
 tags:
   - 增长
