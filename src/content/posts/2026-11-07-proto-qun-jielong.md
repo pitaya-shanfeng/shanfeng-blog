@@ -1477,14 +1477,6 @@ OneID稳定运行（数据准确率&gt;95%）· 用户360视图（基础+标签+
   .deck-bar {
     display: flex; align-items: center; gap: 10px; padding: 10px 2px 2px;
   }
-  /* 翻页按钮 + 页码居中，全屏按钮靠右 */
-  .deck-bar::before { content: ""; flex: none; width: 74px; }
-  .deck-bar .deck-nav:first-of-type { margin-left: auto; }
-  .deck-bar .deck-nav[data-deck-next] { margin-right: auto; }
-  /* 翻页按钮 + 页码居中，全屏按钮靠右 */
-  .deck-bar::before { content: ""; flex: none; width: 74px; }
-  .deck-bar .deck-nav:first-of-type { margin-left: auto; }
-  .deck-bar .deck-nav[data-deck-next] { margin-right: auto; }
   .deck-nav {
     width: 32px; height: 32px; border-radius: 8px;
     border: 1px solid #d7e2db; background: #fff; color: #2e7d53;

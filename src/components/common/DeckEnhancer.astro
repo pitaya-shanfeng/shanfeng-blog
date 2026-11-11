@@ -14,6 +14,27 @@
 ---
 
 <style is:global>
+	/* 翻页工具条：‹ 页 › 靠左，全屏按钮贴右；页码跟按钮等距 */
+	.deck-viewer .deck-bar {
+		justify-content: flex-start;
+	}
+	.deck-viewer .deck-bar::before {
+		display: none;
+	}
+	.deck-viewer .deck-bar .deck-nav:first-of-type {
+		margin-left: 0;
+	}
+	.deck-viewer .deck-bar .deck-nav[data-deck-next] {
+		margin-right: 0;
+	}
+	.deck-viewer .deck-count {
+		min-width: 0;
+		text-align: center;
+	}
+	.deck-viewer .deck-bar .deck-fullscreen-btn {
+		margin-left: auto;
+	}
+
 	.deck-fullscreen-btn {
 		display: inline-flex;
 		align-items: center;
