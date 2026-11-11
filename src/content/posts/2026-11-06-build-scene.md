@@ -3,7 +3,7 @@ title: 如何搭一个牛逼的场
 published: 2026-11-06T09:35:00+08:00
 description: 62 页讲清一件事：场是空间，场景是情景。从场景模型、关键角色到行为公式，再按黄金圈的 WHY/HOW 拆出四步搭场法，最后落到情绪设计与复盘。
 quote: 场是空间，场景是情景——差的不是那块地，是那一刻。
-image: /assets/library/notes/build-scene/cover.webp
+image: /assets/library/notes/build-scene/cover-v2.webp
 banner: /assets/library/notes/build-scene/banner.webp
 category: 思路
 tags:
