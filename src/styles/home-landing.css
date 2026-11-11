@@ -781,3 +781,19 @@ html[data-wallpaper-mode] body:has(.home-landing) .content-panel {
 .hl-side-article .hl-more {
 	margin-top: auto;
 }
+
+
+/* ── 首页不要侧栏 ─────────────────────────────────────
+   不能用 hideSidebar 属性：它改的是 #main-grid 的列几何，而 #main-grid 在 swup
+   容器之外，切到别的页面时列定义还是首页那份，侧栏就再也出不来了。
+   这里用 :has() 挂在 .home-landing 上——DOM 一换，规则自动失效。 */
+
+html:has(.home-landing) #left-sidebar-wrapper,
+html:has(.home-landing) #right-sidebar-static,
+html:has(.home-landing) #mobile-bottom-sidebar {
+	display: none !important;
+}
+
+html:has(.home-landing) #main-grid {
+	grid-template-columns: 1fr !important;
+}
