@@ -141,6 +141,7 @@ async function statsOf(post: (typeof posts)[number]) {
 		prototypePages: (post.data as { prototypePages?: number }).prototypePages,
 		deckPages: (post.data as { deckPages?: number }).deckPages,
 		deckWords: (post.data as { deckWords?: number }).deckWords,
+		documentPages: (post.data as { documentPages?: number }).documentPages,
 	});
 	return { words: stats.words, minutes: stats.minutes, pages: stats.pages };
 }

@@ -145,6 +145,7 @@ const stats = computePageStats(words ?? 0, images ?? 0, {
 	prototypePages: (entry.data as { prototypePages?: number }).prototypePages,
 	deckPages: (entry.data as { deckPages?: number }).deckPages,
 	deckWords: (entry.data as { deckWords?: number }).deckWords,
+	documentPages: (entry.data as { documentPages?: number }).documentPages,
 });
 const cardPages = stats.pages || undefined;
 // 有页数的文章只显示页数，没有页数才显示字数——两个指标不同时出现

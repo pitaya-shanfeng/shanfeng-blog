@@ -121,6 +121,7 @@ export function computePageStats(
 		prototypePages?: number;
 		deckPages?: number;
 		deckWords?: number;
+		documentPages?: number;
 	} = {},
 ): PageStats {
 	const protoPages =
@@ -128,7 +129,9 @@ export function computePageStats(
 			? options.prototypePages
 			: countPrototypePagesFromDir(options.prototypeDir ?? "");
 	const deckPages = options.deckPages && options.deckPages > 0 ? options.deckPages : 0;
-	const pages = protoPages + deckPages;
+	// 文档类文章（PDF / 图片页流）用 documentPages 记页数
+	const docPages = options.documentPages && options.documentPages > 0 ? options.documentPages : 0;
+	const pages = protoPages + deckPages + docPages;
 
 	const protoWords = countPrototypeWords(options.prototypeDir ?? "");
 	const embedWords = protoWords + (options.deckWords ?? 0);
@@ -136,7 +139,7 @@ export function computePageStats(
 
 	// 平铺的 PPT 页在正文里就是 N 张 <img>，已经按「页数×2」算过一遍；
 	// 再当图片算一次会翻倍，所以先把这部分图从图片里扣掉。
-	const deckImages = Math.min(images || 0, deckPages);
+	const deckImages = Math.min(images || 0, deckPages + docPages);
 	const otherImages = Math.max(0, (images || 0) - deckImages);
 
 	const minutes = Math.max(
