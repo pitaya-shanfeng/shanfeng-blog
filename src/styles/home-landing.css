@@ -860,8 +860,8 @@ html:has(.home-landing) #main-grid {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 2.2rem;
-	height: 2.2rem;
+	width: 2.5rem;
+	height: 2.5rem;
 	border-radius: var(--radius-lg);
 	background: var(--btn-regular-bg);
 	color: var(--btn-content);
@@ -891,4 +891,17 @@ html:has(.home-landing) #main-grid {
 	font-size: var(--fs-sub);
 	line-height: 1.7;
 	color: var(--content-meta);
+}
+
+/* 能力图标：豆包生成的线描图（透明底），暗色下反相成浅线 */
+.hl-cap-icon img {
+	display: block;
+	width: 1.5rem;
+	height: 1.5rem;
+	object-fit: contain;
+}
+
+.dark .hl-cap-icon img {
+	filter: invert(1) brightness(0.92);
+	opacity: 0.9;
 }
