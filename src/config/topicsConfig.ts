@@ -67,7 +67,14 @@ export const topicPages: TopicPageConfig[] = [
 		lead: "结论之前，先把事实摆全。",
 		desc: "每次调研留一份可复核的记录：问了谁、怎么问、哪些答案互相矛盾。结论可以变，过程要能追溯。",
 		emptyHint: "还在做第一份。等数据齐了再落笔。",
-		banner: "/assets/images/topics/research-banner.webp",
+		banners: [
+			"/assets/images/topics/research-banner-01.webp",
+			"/assets/images/topics/research-banner-02.webp",
+			"/assets/images/topics/research-banner-03.webp",
+			"/assets/images/topics/research-banner-04.webp",
+			"/assets/images/topics/research-banner-05.webp",
+		],
+		banner: "/assets/images/topics/research-banner-01.webp",
 		icon: "material-symbols:description-rounded",
 	},
 	{
