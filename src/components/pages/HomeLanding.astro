@@ -113,39 +113,6 @@ const heroDomains = ["零售", "社交电商", "平台与中台", "增长"];
 ---
 
 <div class="home-landing">
-	{/* ── 1. Hero ─────────────────────────────────── */}
-	<section class="hl-hero" aria-labelledby="hl-hero-title">
-		<div class="hl-hero-copy">
-			<p class="hl-eyebrow">PRODUCT THINKING · FIELD NOTES</p>
-			<h1 id="hl-hero-title" class="hl-hero-title">
-				做个靠谱的<br />产品经理。
-			</h1>
-			<p class="hl-hero-lead">在复杂之后，重新看见问题本身。</p>
-			<p class="hl-hero-desc">
-				我是{profileConfig.name}，有十二年产品工作经历。<br />
-				在这里记录产品判断、业务设计与实践中的取舍。
-			</p>
-			<div class="hl-hero-actions">
-				<a class="hl-btn hl-btn-primary" href="#daily">
-					开始阅读
-					<Icon name="material-symbols:arrow-outward-rounded" class="text-sm" />
-				</a>
-				<a class="hl-btn hl-btn-ghost" href={url("/about/")}>
-					认识山风
-					<Icon name="material-symbols:arrow-forward-rounded" class="text-sm" />
-				</a>
-			</div>
-			<p class="hl-hero-domains">{heroDomains.join(" / ")}</p>
-		</div>
-		<div class="hl-hero-art">
-			<img src="/assets/images/home-hero.webp" alt="云雾间层层展开的山峦" fetchpriority="high" />
-			<div class="hl-hero-caption">
-				<span>见山是山，见山不是山，见山还是山。</span>
-				<span class="hl-seal" aria-hidden="true">山<br />风</span>
-			</div>
-		</div>
-	</section>
-
 	{/* ── 2. 行业动态 ──────────────────────────────── */}
 	{
 		hot && (
