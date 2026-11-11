@@ -6,7 +6,7 @@
  */
 
 .home-hero {
-	--home-banner-h: max(70vh, 600px);
+	--home-banner-h: max(62vh, 540px);
 	position: relative;
 	display: flex;
 	flex-direction: column;
@@ -47,12 +47,13 @@
 	/* 与内容区同一版心：内容卡片左右边距对齐刊头文字 */
 	max-width: min(92vw, var(--page-width, 100rem));
 	margin-inline: auto;
-	padding: 9rem 0 5rem;
+	/* 顶部让出固定导航；内容变短后整体垂直居中，不再一味贴顶 */
+	padding: 8rem 0 6rem;
 }
 
 @media (min-width: 1024px) {
 	.home-hero-inner {
-		padding: 10.5rem 0 5.5rem;
+		padding: 9rem 0 6.5rem;
 	}
 }
 
@@ -60,14 +61,6 @@
 	max-width: 40rem;
 }
 
-.home-hero-eyebrow {
-	margin: 0 0 1.1rem;
-	font-size: var(--fs-meta);
-	font-weight: 600;
-	letter-spacing: 0.16em;
-	color: rgb(255 255 255 / 0.86);
-	text-shadow: 0 1px 14px rgb(0 0 0 / 0.4);
-}
 
 .home-hero-title {
 	margin: 0;
@@ -79,24 +72,18 @@
 }
 
 .home-hero-lead {
-	margin: 1.25rem 0 0;
+	margin: 1.35rem 0 0;
 	font-size: var(--fs-h3);
 	line-height: 1.55;
 	color: rgb(255 255 255 / 0.94);
 }
 
-.home-hero-desc {
-	margin: 0.9rem 0 0;
-	font-size: var(--fs-body);
-	line-height: 1.8;
-	color: rgb(255 255 255 / 0.76);
-}
 
 .home-hero-actions {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 0.6rem;
-	margin-top: 1.75rem;
+	gap: 0.65rem;
+	margin-top: 2.1rem;
 }
 
 .home-hero-cta {
@@ -121,39 +108,9 @@
 }
 
 .home-hero-domains {
-	margin: 1.75rem 0 0;
+	margin: 2.1rem 0 0;
 	font-size: var(--fs-sub);
 	color: rgb(255 255 255 / 0.66);
-}
-
-/* 金句：右下角，与合集页同一个位置 */
-.home-hero-quote-wrap {
-	position: absolute;
-	inset: 0;
-	z-index: 2;
-	display: flex;
-	align-items: flex-end;
-	justify-content: flex-end;
-	padding: 0 0 9rem;
-	max-width: min(92vw, var(--page-width, 100rem));
-	margin-inline: auto;
-	pointer-events: none;
-}
-
-.home-hero-quote {
-	margin: 0;
-	padding: 0.7rem 1rem;
-	border-radius: var(--radius-xl);
-	background: rgb(12 22 18 / 0.42);
-	backdrop-filter: blur(10px);
-	color: rgb(255 255 255 / 0.92);
-	font-size: var(--fs-sub);
-}
-
-@media (max-width: 767px) {
-	.home-hero-quote-wrap {
-		display: none;
-	}
 }
 
 /* 刊头在文档流里占满自己的高度（不像书页那样绝对定位），

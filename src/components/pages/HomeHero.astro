@@ -7,7 +7,6 @@
  * 高度与内容面板偏移（--book-banner-h），首页尺寸不一样，套用会互相打架。
  */
 import { Icon } from "astro-icon/components";
-import { profileConfig } from "@/config";
 import { url } from "@/utils/url-utils";
 import "@/styles/home-hero.css";
 
@@ -20,13 +19,8 @@ const domains = ["零售", "社交电商", "平台与中台", "增长"];
 	</div>
 
 	<div class="home-hero-inner">
-		<p class="home-hero-eyebrow">PRODUCT THINKING · FIELD NOTES</p>
 		<h1 class="home-hero-title">做个靠谱的<br />产品经理。</h1>
 		<p class="home-hero-lead">在复杂之后，重新看见问题本身。</p>
-		<p class="home-hero-desc">
-			我是{profileConfig.name}，有十二年产品工作经历。<br />
-			在这里记录产品判断、业务设计与实践中的取舍。
-		</p>
 		<div class="home-hero-actions">
 			<a class="home-hero-cta" href="#daily">
 				开始阅读
@@ -38,9 +32,5 @@ const domains = ["零售", "社交电商", "平台与中台", "增长"];
 			</a>
 		</div>
 		<p class="home-hero-domains">{domains.join(" / ")}</p>
-	</div>
-
-	<div class="home-hero-quote-wrap" aria-hidden="true">
-		<p class="home-hero-quote">见山是山，见山不是山，见山还是山。</p>
 	</div>
 </header>
