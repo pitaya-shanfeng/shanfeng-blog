@@ -21,6 +21,35 @@ import "@/styles/home-landing.css";
 
 /* ---------------- 数据 ---------------- */
 
+/** 四维能力矩阵：只展示，不跳转 */
+const capabilities = [
+	{
+		icon: "material-symbols:public-rounded",
+		kicker: "行业积淀",
+		title: "深耕电商与金融生态",
+		desc: "穿越传统零售、新零售、社交电商与消费金融的周期，具备深厚的行业洞察与业务解构能力。",
+	},
+	{
+		icon: "material-symbols:layers-outline-rounded",
+		kicker: "产品架构",
+		title: "全链路产品架构设计",
+		desc: "深度掌握前台、中台与平台架构，熟悉供应链与数据策略，能打通从业务端到底层支撑的闭环。",
+	},
+	{
+		icon: "material-symbols:show-chart-rounded",
+		kicker: "增长引擎",
+		title: "以数据驱动的增长黑客",
+		desc: "擅长将产品力转化为增长力，从 0 到 1 搭建增长模型，用数据策略赋能消费金融与电商业务。",
+	},
+	{
+		icon: "material-symbols:group-outline-rounded",
+		kicker: "团队与项目",
+		title: "复杂项目的定海神针",
+		desc: "常年带团队与带项目，具备跨部门协同与落地交付能力，让靠谱的决策最终转化为业务结果。",
+	},
+];
+
+
 const all = await getSortedPosts();
 /** 含丛书的全量列表：书的篇数要算上见山/增长黑客的章节 */
 const allWithBooks = await getSortedPostsList(true);
@@ -113,6 +142,25 @@ const heroDomains = ["零售", "社交电商", "平台与中台", "增长"];
 ---
 
 <div class="home-landing">
+	{/* ── 0. 四维能力矩阵（不可点击） ───────────────── */}
+	<section class="hl-caps" aria-label="四维能力矩阵">
+		<h2 class="hl-caps-title">四维能力矩阵</h2>
+		<div class="hl-caps-grid">
+			{capabilities.map((c) => (
+				<div class="hl-cap">
+					<span class="hl-cap-icon" aria-hidden="true">
+						<Icon name={c.icon} />
+					</span>
+					<div class="hl-cap-body">
+						<p class="hl-cap-kicker">{c.kicker}</p>
+						<h3 class="hl-cap-title">{c.title}</h3>
+						<p class="hl-cap-desc">{c.desc}</p>
+					</div>
+				</div>
+			))}
+		</div>
+	</section>
+
 	{/* ── 2. 行业动态 ──────────────────────────────── */}
 	{
 		hot && (

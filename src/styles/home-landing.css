@@ -797,3 +797,107 @@ html:has(.home-landing) #mobile-bottom-sidebar {
 html:has(.home-landing) #main-grid {
 	grid-template-columns: 1fr !important;
 }
+
+/* ── 四维能力矩阵：压在刊头下沿的一条能力带 ───────────────
+   参考站的做法是一张白卡，四点等分；这里只做展示，不做可点击卡片。 */
+
+.hl-caps {
+	margin-top: -4.5rem;
+	position: relative;
+	z-index: 4;
+	padding: 1.5rem 1.75rem 1.75rem;
+	background: var(--card-bg);
+	border-radius: var(--radius-large);
+	box-shadow: 0 2px 6px rgb(0 0 0 / 0.05), 0 18px 40px rgb(0 0 0 / 0.08);
+}
+
+.hl-caps-title {
+	margin: 0 0 1.25rem;
+	font-size: var(--fs-meta);
+	font-weight: 600;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--content-meta);
+}
+
+.hl-caps-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+	.hl-caps-grid {
+		grid-template-columns: 1fr 1fr;
+		gap: 1.5rem 2rem;
+	}
+}
+
+@media (min-width: 1100px) {
+	.hl-caps-grid {
+		grid-template-columns: repeat(4, 1fr);
+		gap: 0;
+	}
+}
+
+.hl-cap {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.85rem;
+}
+
+@media (min-width: 1100px) {
+	.hl-cap {
+		padding: 0 1.5rem;
+	}
+
+	.hl-cap + .hl-cap {
+		border-left: 1px solid var(--line-divider);
+	}
+
+	.hl-cap:first-child {
+		padding-left: 0;
+	}
+
+	.hl-cap:last-child {
+		padding-right: 0;
+	}
+}
+
+.hl-cap-icon {
+	flex: 0 0 auto;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.2rem;
+	height: 2.2rem;
+	border-radius: var(--radius-lg);
+	background: var(--btn-regular-bg);
+	color: var(--btn-content);
+	font-size: 1.05rem;
+}
+
+.hl-cap-body {
+	min-width: 0;
+}
+
+.hl-cap-kicker {
+	margin: 0;
+	font-size: var(--fs-label);
+	letter-spacing: 0.08em;
+	color: var(--btn-content);
+}
+
+.hl-cap-title {
+	margin: 0.25rem 0 0;
+	font-size: var(--fs-body);
+	font-weight: 700;
+	line-height: 1.4;
+}
+
+.hl-cap-desc {
+	margin: 0.45rem 0 0;
+	font-size: var(--fs-sub);
+	line-height: 1.7;
+	color: var(--content-meta);
+}
