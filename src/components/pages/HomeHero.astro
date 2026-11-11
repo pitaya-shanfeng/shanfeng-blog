@@ -14,7 +14,12 @@ import "@/styles/home-hero.css";
 
 <header class="home-hero">
 	<div class="home-hero-media" aria-hidden="true">
-		<img src="/assets/images/home-hero.webp" alt="" fetchpriority="high" />
+		<img
+			src="/assets/images/home-hero-day.webp"
+			alt=""
+			fetchpriority="high"
+			data-home-hero-img
+		/>
 	</div>
 
 	<div class="home-hero-inner">
@@ -34,3 +39,34 @@ import "@/styles/home-hero.css";
 		</div>
 	</div>
 </header>
+
+<script is:inline define:vars={{
+	heroMap: {
+		dawn: "/assets/images/home-hero-dawn.webp",
+		day: "/assets/images/home-hero-day.webp",
+		dusk: "/assets/images/home-hero-dusk.webp",
+		night: "/assets/images/home-hero-night.webp",
+	},
+}}>
+	// 按访问时刻换刊头图：清晨雾桥 / 白天桥与天际线 / 黄昏江景 / 夜晚高架
+	(() => {
+		const pick = () => {
+			const img = document.querySelector("[data-home-hero-img]");
+			if (!img) return;
+			const h = new Date().getHours();
+			const key =
+				h >= 5 && h < 9 ? "dawn" : h >= 9 && h < 17 ? "day" : h >= 17 && h < 20 ? "dusk" : "night";
+			if (img.getAttribute("data-time") === key) return;
+			img.setAttribute("data-time", key);
+			img.src = heroMap[key];
+			const hero = img.closest(".home-hero");
+			if (hero) hero.setAttribute("data-hero-time", key);
+		};
+		window.__homeHeroPick = pick;
+		pick();
+		// 打开页面跨过时段边界时，切回来也能自动更新
+		setInterval(pick, 5 * 60 * 1000);
+		document.addEventListener("swup:contentReplaced", pick);
+		document.addEventListener("astro:page-load", pick);
+	})();
+</script>

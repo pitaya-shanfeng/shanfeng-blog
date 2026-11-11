@@ -118,3 +118,16 @@ html:has(.home-hero) #content-panel {
 	margin-top: -3.5rem;
 	min-height: 0;
 }
+
+/* 夜晚那张更暗，压暗层可以轻一点；清晨那张雾重，适当加深保证白字 */
+.home-hero[data-hero-time="night"]::after {
+	background:
+		linear-gradient(180deg, rgb(6 12 18 / 0.5) 0%, rgb(6 12 18 / 0.18) 42%, rgb(6 12 18 / 0.7) 100%),
+		linear-gradient(90deg, rgb(6 12 18 / 0.5) 0%, rgb(6 12 18 / 0.12) 52%, rgb(6 12 18 / 0) 70%);
+}
+
+.home-hero[data-hero-time="dawn"]::after {
+	background:
+		linear-gradient(180deg, rgb(6 14 16 / 0.56) 0%, rgb(6 14 16 / 0.24) 42%, rgb(6 14 16 / 0.7) 100%),
+		linear-gradient(90deg, rgb(6 14 16 / 0.52) 0%, rgb(6 14 16 / 0.14) 52%, rgb(6 14 16 / 0) 70%);
+}
