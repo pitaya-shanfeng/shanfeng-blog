@@ -72,10 +72,13 @@
 }
 
 .home-hero-lead {
-	margin: 1.35rem 0 0;
-	font-size: var(--fs-h3);
-	line-height: 1.55;
-	color: rgb(255 255 255 / 0.94);
+	margin: 1.5rem 0 0;
+	/* 副标题是一句话说明，比标题低两档：用正文字号 + 放宽行高，读起来像引言 */
+	font-size: var(--fs-item);
+	line-height: 1.75;
+	letter-spacing: 0.01em;
+	color: rgb(255 255 255 / 0.9);
+	max-width: 46rem;
 }
 
 
