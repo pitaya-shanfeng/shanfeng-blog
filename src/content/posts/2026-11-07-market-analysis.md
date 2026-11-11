@@ -7,7 +7,7 @@ description: 市场分析要回答的其实只有两个问题：这个盘子值�
 quote: 市场 = 人口 + 购买力 + 购买欲望。先算清盘子，再谈要不要进。
 image: /assets/library/notes/market-analysis/cover.webp
 banner: /assets/library/notes/market-analysis/banner.webp
-category: 方法沉淀
+category: 思路
 tags:
   - 产品
   - 方法论
@@ -15,7 +15,6 @@ tags:
 draft: false
 comment: false
 documentPages: 36
-deckPages: 36
 ---
 
 <style>

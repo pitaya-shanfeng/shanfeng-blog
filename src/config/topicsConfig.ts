@@ -1,5 +1,5 @@
 /**
- * 「方法 / 实战」两栏的二级合集页配置
+ * 「思路 / 调研 / 案例」三栏的合集页配置
  *
  * 这两栏原来没有页面，二级菜单直接落归档筛选（/archive/?category=…）。
  * 现在统一走和见山、拾遗同源的合集页（CollectionPage.astro）：
@@ -39,9 +39,9 @@ export interface TopicPageConfig {
 export const topicPages: TopicPageConfig[] = [
 	{
 		slug: "fangfa-chendian",
-		name: "方法沉淀",
+		name: "思路",
 		group: "",
-		category: "方法沉淀",
+		category: "思路",
 		lead: "把想清楚的落成能复用的做法。",
 		desc: "需求、设计、增长、分析工具，写的是「下次还能照着做」的那一层：边界在哪、代价是什么、什么时候不该用。",
 		emptyHint: "陆续整理中：先把已经跑通的几套方法写出来。",
@@ -52,9 +52,9 @@ export const topicPages: TopicPageConfig[] = [
 	},
 	{
 		slug: "diaoyan-fenxi",
-		name: "调研分析",
+		name: "调研",
 		group: "",
-		category: "调研分析",
+		category: "调研",
 		lead: "结论之前，先把事实摆全。",
 		desc: "每次调研留一份可复核的记录：问了谁、怎么问、哪些答案互相矛盾。结论可以变，过程要能追溯。",
 		emptyHint: "还在做第一份。等数据齐了再落笔。",
@@ -63,9 +63,9 @@ export const topicPages: TopicPageConfig[] = [
 	},
 	{
 		slug: "chanpin-sheji",
-		name: "实战",
+		name: "案例",
 		group: "",
-		category: "实战",
+		category: "案例",
 		lead: "把判断落成能跑起来的东西。",
 		desc: "从结构、流程到交互，讲一个产品怎么从「想清楚了」变成「用起来顺手」；项目收尾后再回头找那条回头路——哪些判断对、哪些只是运气、下次该在哪个节点停下来。不堆方法论，只写每次取舍的代价。",
 		emptyHint: "第一篇大概会从一次结构重写开始：为什么推倒，重写后哪些问题消失了。",

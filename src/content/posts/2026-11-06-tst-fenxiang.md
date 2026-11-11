@@ -6,7 +6,7 @@ description: 两个都靠人卖货，路子完全不同：TST 用创始人直播
 quote: 同样是社交电商，一个卖的是人设，一个卖的是货盘。
 image: /assets/library/notes/tst-fenxiang/cover.webp
 banner: /assets/library/notes/tst-fenxiang/banner.webp
-category: 调研分析
+category: 调研
 tags:
   - 产品
   - 调研

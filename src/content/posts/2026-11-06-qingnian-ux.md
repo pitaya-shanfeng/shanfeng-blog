@@ -5,7 +5,7 @@ description: 让员工以租赁用户的身份，把优品的业务真实走一�
 quote: 与其在上层猜用户怎么想，不如让做产品的人自己走一遍。
 image: /assets/library/notes/qingnian-ux/cover.webp
 banner: /assets/library/notes/qingnian-ux/banner.webp
-category: 方法沉淀
+category: 思路
 tags:
   - 用户研究
   - 产品

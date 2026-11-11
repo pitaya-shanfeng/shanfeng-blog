@@ -3,7 +3,7 @@ title: Python 入门到掌握
 published: 2026-11-10T20:15:00+08:00
 description: 从 Python 的历史与优点讲起，过一遍基础语法、数据容器、自定义函数与面向对象，再进到办公自动化、Matplotlib / NumPy / Pandas 三件套，最后用一个电影数据分析的完整案例收尾。
 quote: 入门靠语法，掌握靠把一件真事从头写到尾。
-category: 方法沉淀
+category: 思路
 tags:
   - Python
   - 数据分析

@@ -49,7 +49,7 @@ export function getTagUrl(_tag: string): string {
 	return "";
 }
 
-/** 分类 → 对应的合集页；没有对应合集页时回落到「学习思考」列表 */
+/** 分类 → 对应的合集页；没有对应合集页时回落到「笔记」列表 */
 export function getCategoryUrl(category: string | null): string {
 	const name = (category ?? "").trim();
 	if (

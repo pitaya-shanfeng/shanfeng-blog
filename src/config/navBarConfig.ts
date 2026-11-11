@@ -16,20 +16,20 @@ import { booksConfig } from "./booksConfig";
 //   主页
 //   ├── 写作 → 见山 / 增长黑客
 //   ├── 方法 → 需求洞察 / 产品设计 / 商业增长
-//   ├── 实战 → 调研报告 / 方案设计 / 项目复盘
+//   ├── 案例 → 调研报告 / 方案设计 / 项目复盘
 //   ├── 拾遗 → 学习笔记 / 行业动态 / 转载精选
 //   └── 关于 → 个人介绍 / 版权声明 / 书签导航 / 联系合作
 //
 // 二级项的落点有三种，取决于这一栏的内容形态：
 //   1. 成书的（写作）→ 直接进书页 /books/<id>/
 //   2. 已在做合集页的（拾遗两栏）→ 进自建页 /hotnews/ /notes/
-//   3. 还没做页面的（方法 / 实战）→ 先用归档页的分类筛选兜住：
+//   3. 还没做页面的（思路 / 案例）→ 先用归档页的分类筛选兜住：
 //        /archive/?category=方法/需求洞察
 //      归档页的 category 筛选是**精确匹配**，所以文章的 category 必须
 //      逐字写成「一级/二级」两级，导航才对得上。
 //
 // 发文约定（2026-10-29 定）：**每一个二级菜单就是一个分类**，
-// category 一律两级写法 —— `方法/需求洞察`、`实战/项目复盘`、`拾遗/学习笔记`。
+// category 一律两级写法 —— `思路/需求洞察`、`案例/项目复盘`、`笔记/学习笔记`。
 // 卡片上的「写作/见山」「拾遗 / 学习笔记」就是这同一个东西拼出来的，
 // 没有第二套分类概念。
 //
@@ -42,7 +42,7 @@ import { booksConfig } from "./booksConfig";
  *   首页
  *   ├── 写作   → 见山 / 增长黑客            我写的书
  *   ├── 方法   → 需求洞察 / 产品设计 / …     可复用的做法
- *   ├── 实战   → 调研报告 / 方案设计 / …     做过的项目
+ *   ├── 案例   → 调研报告 / 方案设计 / …     做过的项目
  *   ├── 拾遗   → 学习笔记 / 行业动态 / …     外部的输入
  *   └── 关于   → 个人介绍 / 版权声明 / …      我是谁
  *
@@ -58,7 +58,7 @@ import { booksConfig } from "./booksConfig";
 const archiveByTag = (tag: string): string =>
 	`/archive/?${new URLSearchParams({ tag }).toString()}`;
 
-/** 归档页按分类筛选（方法 / 实战两栏在做出合集页之前用它兜底） */
+/** 归档页按分类筛选（思路 / 案例两栏在做出合集页之前用它兜底） */
 const archiveByCategory = (category: string): string =>
 	`/archive/?${new URLSearchParams({ category }).toString()}`;
 
@@ -80,7 +80,7 @@ interface TopicRef {
 }
 
 interface ContentGroupConfig {
-	/** 单级栏目：一级项直接指向页面，不出下拉（如「方法沉淀」「学习思考」） */
+	/** 单级栏目：一级项直接指向页面，不出下拉（如「思路」「笔记」） */
 	single?: boolean;
 	name: string;
 	/** 一级项图标：块状语汇里不用图标，留空即可 */
@@ -90,37 +90,37 @@ interface ContentGroupConfig {
 
 const CONTENT_GROUPS: ContentGroupConfig[] = [
 	// 2026-11-09 定：不再做二级分类，六个内容入口全部平铺。
-	// 导航文字用两字，落点仍是各栏目自己的页面；「见山 / 增长」进书页。
+	// 导航文字尽量短，落点仍是各栏目自己的页面；「书·见山 / 书·增长」进书页。
 	{
-		name: "见山",
+		name: "书·见山",
 		single: true,
-		topics: [{ name: "见山", book: "见山" }],
+		topics: [{ name: "书·见山", book: "见山" }],
 	},
 	{
-		name: "增长",
+		name: "书·增长",
 		single: true,
-		topics: [{ name: "增长黑客", book: "增长黑客" }],
+		topics: [{ name: "书·增长", book: "增长黑客" }],
 	},
 	{
-		name: "方法",
+		name: "思路",
 		single: true,
-		topics: [{ name: "方法沉淀", category: "方法沉淀", url: "/topics/fangfa-chendian/" }],
+		topics: [{ name: "思路", category: "思路", url: "/topics/fangfa-chendian/" }],
 	},
 	{
 		name: "调研",
 		single: true,
-		topics: [{ name: "调研分析", category: "调研分析", url: "/topics/diaoyan-fenxi/" }],
+		topics: [{ name: "调研", category: "调研", url: "/topics/diaoyan-fenxi/" }],
 	},
 	{
-		// 原「落地实战 · 产品设计」，项目复盘并进来，页面标题也改叫「实战」
-		name: "实战",
+		// 原「落地实战 · 产品设计」，项目复盘并进来；2026-11-11 改名「案例」
+		name: "案例",
 		single: true,
-		topics: [{ name: "实战", category: "实战", url: "/topics/chanpin-sheji/" }],
+		topics: [{ name: "案例", category: "案例", url: "/topics/chanpin-sheji/" }],
 	},
 	{
-		name: "学习",
+		name: "笔记",
 		single: true,
-		topics: [{ name: "学习思考", category: "学习思考", url: "/notes/" }],
+		topics: [{ name: "笔记", category: "笔记", url: "/notes/" }],
 	},
 ];
 
@@ -191,7 +191,7 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		// 主页
 		LinkPresets.Home,
 
-		// 六个内容入口（见山 / 增长 / 方法 / 调研 / 实战 / 学习），全部平铺无二级
+		// 六个内容入口（书·见山 / 书·增长 / 思路 / 调研 / 案例 / 笔记），全部平铺无二级
 		...CONTENT_GROUPS.map(buildContentGroup),
 	];
 

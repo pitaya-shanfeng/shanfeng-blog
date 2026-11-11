@@ -5,7 +5,7 @@ description: 微吼、目睹、百家云三家的横向对比：各自擅长什�
 quote: 三家都在做企业直播，差别在课堂与互动能力的深浅。
 image: /assets/library/notes/live-stream/cover.webp
 banner: /assets/library/notes/live-stream/banner.webp
-category: 调研分析
+category: 调研
 tags:
   - 产品
   - 调研
