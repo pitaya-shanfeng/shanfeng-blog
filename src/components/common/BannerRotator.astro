@@ -11,20 +11,31 @@
 <script>
 	(() => {
 		const pick = () => {
-			document
-				.querySelectorAll<HTMLImageElement>("[data-book-banners]")
-				.forEach((img) => {
-					const raw = img.getAttribute("data-book-banners");
-					if (!raw) return;
-					try {
-						const list = JSON.parse(raw) as string[];
-						if (list.length > 1) {
-							img.src = list[Math.floor(Math.random() * list.length)];
-						}
-					} catch {
-						/* 属性坏了就不动 */
+			// 同一次加载用同一张：先定下来，再同时应用到手写 hero 图和壁纸层
+			let chosen = "";
+			document.querySelectorAll<HTMLImageElement>("[data-book-banners]").forEach((img) => {
+				const raw = img.getAttribute("data-book-banners");
+				if (!raw) return;
+				try {
+					const list = JSON.parse(raw) as string[];
+					if (list.length < 2) return;
+					if (!chosen) chosen = list[Math.floor(Math.random() * list.length)];
+					img.src = chosen;
+
+					// 页面上真正可见的是壁纸层那张图，一起换掉
+					const wall = document.getElementById("wallpaper-wrapper");
+					if (wall) {
+						wall.querySelectorAll<HTMLImageElement>("img").forEach((w) => {
+							const path = new URL(w.src, window.location.origin).pathname;
+							if (list.some((item) => path.endsWith(item))) {
+								w.src = chosen;
+							}
+						});
 					}
-				});
+				} catch {
+					/* 属性坏了就不动 */
+				}
+			});
 		};
 
 		if (document.readyState === "loading") {
