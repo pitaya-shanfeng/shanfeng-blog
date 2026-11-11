@@ -87,7 +87,7 @@ export const booksConfig: BookConfig[] = [
 			"这本书讲的是产品经理的判断力——在信息不完整、目标还在变化的时候，怎么把问题看清楚，又怎么把判断变成可复用的方法。二十一章从认知、需求、用户，走到架构、商业、增长与组织，拆的是判断的各个面向。",
 		// 出版稿 PDF 首页（雪山封面），已按 3:4 裁切；放 public 才能直接当 src 用
 		cover: "/assets/images/jianshan-cover.webp",
-		banner: "/assets/images/jianshan-collection-banner-display.webp",
+		banner: "/assets/images/jianshan-collection-banner-display-v2.webp",
 		preface: {
 			order: 0,
 			label: "序",
