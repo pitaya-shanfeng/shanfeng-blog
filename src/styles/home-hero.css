@@ -6,7 +6,7 @@
  */
 
 .home-hero {
-	--home-banner-h: max(62vh, 540px);
+	--home-banner-h: max(56vh, 480px);
 	position: relative;
 	display: flex;
 	flex-direction: column;
@@ -48,12 +48,12 @@
 	max-width: min(92vw, var(--page-width, 100rem));
 	margin-inline: auto;
 	/* 顶部让出固定导航；内容变短后整体垂直居中，不再一味贴顶 */
-	padding: 8rem 0 6rem;
+	padding: 7rem 0 6.5rem;
 }
 
 @media (min-width: 1024px) {
 	.home-hero-inner {
-		padding: 9rem 0 6.5rem;
+		padding: 8rem 0 7rem;
 	}
 }
 
@@ -108,12 +108,6 @@
 
 .home-hero-cta:hover {
 	background: rgb(255 255 255 / 0.22);
-}
-
-.home-hero-domains {
-	margin: 2.1rem 0 0;
-	font-size: var(--fs-sub);
-	color: rgb(255 255 255 / 0.66);
 }
 
 /* 刊头在文档流里占满自己的高度（不像书页那样绝对定位），
