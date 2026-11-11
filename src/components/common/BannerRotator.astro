@@ -1,0 +1,38 @@
+---
+/**
+ * 多图刊头轮换
+ *
+ * 书页（booksConfig.banners）给了多张刊头时，每次进页面 / 刷新随机取一张。
+ * 桌面端的壁纸由 WallpaperSection 负责（它本身会在多张里抽首张）；
+ * 这里补的是书页 hero 里那张 <img data-book-banners>（窄屏用，桌面也常驻 DOM）。
+ */
+---
+
+<script>
+	(() => {
+		const pick = () => {
+			document
+				.querySelectorAll<HTMLImageElement>("[data-book-banners]")
+				.forEach((img) => {
+					const raw = img.getAttribute("data-book-banners");
+					if (!raw) return;
+					try {
+						const list = JSON.parse(raw) as string[];
+						if (list.length > 1) {
+							img.src = list[Math.floor(Math.random() * list.length)];
+						}
+					} catch {
+						/* 属性坏了就不动 */
+					}
+				});
+		};
+
+		if (document.readyState === "loading") {
+			document.addEventListener("DOMContentLoaded", pick);
+		} else {
+			pick();
+		}
+		document.addEventListener("swup:contentReplaced", pick);
+		document.addEventListener("astro:page-load", pick);
+	})();
+</script>

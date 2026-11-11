@@ -16,11 +16,13 @@ const toArray = (src: string | string[] | undefined): string[] => {
 // 背景图片处理工具函数
 // 返回所有配置的图片（用于构建时渲染所有图片）
 export const getBackgroundImages = (
-	override?: string | null,
+	override?: string | string[] | null,
 ): BackgroundImages => {
-	// 文章级 banner：frontmatter 里给了 banner 就用它，覆盖全局壁纸
+	// 文章 / 书页级 banner：给了就覆盖全局壁纸。
+	// 支持数组——多张时壁纸组件会在每次加载随机取一张当首屏。
 	if (override) {
-		return { desktop: [override], mobile: [override], isMultiple: false };
+		const list = toArray(override);
+		return { desktop: list, mobile: list, isMultiple: list.length > 1 };
 	}
 	const bgSrc = backgroundWallpaper.src;
 

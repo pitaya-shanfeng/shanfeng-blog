@@ -24,6 +24,7 @@ import { sponsorConfig } from "@/config/sponsorConfig";
 import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import BannerRotator from "@/components/common/BannerRotator.astro";
 import PostCard from "@/components/layout/PostCard.astro";
 import { shanfengQuotes } from "@/utils/banner-quotes-data";
 import { getSeriesPostsOf } from "@/utils/content-utils";
@@ -189,7 +190,7 @@ const readingStartLabel = prefacePost ? "从序言开始" : "从第 1 章开始"
 <MainGridLayout
   title={book.title}
   description={book.description}
-  postBanner={book.banner}
+  postBanner={book.banners ?? book.banner}
   hideBannerTitle
   customHero
 >
@@ -207,7 +208,13 @@ const readingStartLabel = prefacePost ? "从序言开始" : "从第 1 章开始"
       {
         book.banner && (
           <div class="book-hero-media" aria-hidden="true">
-            <img src={book.banner} alt="" loading="eager" fetchpriority="high" />
+            <img
+              src={(book.banners ?? [book.banner])[0]}
+              alt=""
+              loading="eager"
+              fetchpriority="high"
+              data-book-banners={book.banners?.length ? JSON.stringify(book.banners) : undefined}
+            />
           </div>
         )
       }
@@ -482,5 +489,6 @@ const readingStartLabel = prefacePost ? "从序言开始" : "从第 1 章开始"
     }
   </div>
   {showSponsorButton && <SponsorModal />}
+  <BannerRotator />
 </MainGridLayout>
 
