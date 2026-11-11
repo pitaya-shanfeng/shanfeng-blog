@@ -13,7 +13,7 @@ order: 11
 deckPages: 37
 deckWords: 8850
 image: /assets/library/notes/feature-flow/cover.webp
-banner: /assets/library/notes/feature-flow/banner.webp
+banner: /assets/images/idea-banner-11.webp
 draft: false
 comment: false
 ---

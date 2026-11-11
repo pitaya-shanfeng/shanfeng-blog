@@ -11,7 +11,7 @@ tags:
 # 方法合集第二篇
 order: 4
 image: /assets/library/notes/business-model/cover.webp
-banner: /assets/library/notes/business-model/banner.webp
+banner: /assets/images/idea-banner-04.webp
 draft: false
 comment: false
 ---

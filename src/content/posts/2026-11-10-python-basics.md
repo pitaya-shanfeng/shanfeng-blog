@@ -11,7 +11,7 @@ tags:
 # 方法合集第十五篇（排在《SQL 入门到掌握》之后）
 order: 15
 image: /assets/library/notes/python-basics/cover.webp
-banner: /assets/library/notes/python-basics/banner.webp
+banner: /assets/images/idea-banner-15.webp
 draft: false
 comment: false
 ---

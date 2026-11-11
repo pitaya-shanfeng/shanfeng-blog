@@ -13,7 +13,7 @@ order: 9
 deckPages: 39
 deckWords: 9347
 image: /assets/library/notes/req-analysis/cover.webp
-banner: /assets/library/notes/req-analysis/banner.webp
+banner: /assets/images/idea-banner-09.webp
 draft: false
 comment: false
 ---

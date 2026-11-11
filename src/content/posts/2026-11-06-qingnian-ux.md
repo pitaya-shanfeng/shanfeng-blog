@@ -4,7 +4,7 @@ published: 2026-11-06T15:30:00+08:00
 description: 让员工以租赁用户的身份，把优品的业务真实走一遍：调研流程、用户画像、奖励机制和问卷初稿，目的是从一线体感里找出产品与流程的改进点。
 quote: 与其在上层猜用户怎么想，不如让做产品的人自己走一遍。
 image: /assets/library/notes/qingnian-ux/cover.webp
-banner: /assets/library/notes/qingnian-ux/banner.webp
+banner: /assets/images/idea-banner-08.webp
 category: 思路
 tags:
   - 用户研究

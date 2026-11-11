@@ -4,7 +4,7 @@ published: 2026-11-06T12:20:00+08:00
 description: 竞品分析最容易停在“看得见的功能”，这份 19 页的方法论往下挖了三层：六个步骤、十个可直接套用的工具，最后收在一张竞品分析策略板上。
 quote: 竞品分析切忌停留在看得见的功能、界面、交互层面。
 image: /assets/library/notes/competitive-analysis/cover.webp
-banner: /assets/library/notes/competitive-analysis/banner.webp
+banner: /assets/images/idea-banner-06.webp
 category: 思路
 tags:
   - 产品

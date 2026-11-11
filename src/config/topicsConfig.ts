@@ -25,6 +25,8 @@ export interface TopicPageConfig {
 	emptyHint: string;
 	/** 刊头图；不传则回落全局壁纸 */
 	banner?: string;
+	/** 多张刊头：每次进页面随机取一张 */
+	banners?: string[];
 	/** 图标（astro-icon 名） */
 	icon: string;
 	/** 盘口单位 */
@@ -45,7 +47,14 @@ export const topicPages: TopicPageConfig[] = [
 		lead: "把想清楚的落成能复用的做法。",
 		desc: "需求、设计、增长、分析工具，写的是「下次还能照着做」的那一层：边界在哪、代价是什么、什么时候不该用。",
 		emptyHint: "陆续整理中：先把已经跑通的几套方法写出来。",
-		banner: "/assets/images/topics/fangfa-chendian-banner.webp",
+		banners: [
+			"/assets/images/topics/idea-banner-01.webp",
+			"/assets/images/topics/idea-banner-02.webp",
+			"/assets/images/topics/idea-banner-03.webp",
+			"/assets/images/topics/idea-banner-04.webp",
+			"/assets/images/topics/idea-banner-05.webp",
+		],
+		banner: "/assets/images/topics/idea-banner-01.webp",
 		// 方法按发布正序排：最早写的《PRD 的那些事》排第一，读起来像一条成长线
 		sort: "asc",
 		icon: "material-symbols:menu-book-rounded",

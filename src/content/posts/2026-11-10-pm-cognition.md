@@ -14,7 +14,7 @@ order: 1
 deckPages: 36
 deckWords: 8472
 image: /assets/library/notes/pm-cognition/cover.webp
-banner: /assets/library/notes/pm-cognition/banner.webp
+banner: /assets/images/idea-banner-01.webp
 draft: false
 comment: false
 ---

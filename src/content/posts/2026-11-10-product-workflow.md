@@ -11,7 +11,7 @@ tags:
 # 方法合集第二篇（排在《产品认知和素养》之后）
 order: 2
 image: /assets/library/notes/product-workflow/cover.webp
-banner: /assets/library/notes/product-workflow/banner.webp
+banner: /assets/images/idea-banner-02.webp
 draft: false
 comment: false
 ---

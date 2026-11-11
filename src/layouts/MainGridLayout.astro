@@ -231,3 +231,35 @@ const {
 
 
 </Layout>
+<script>
+	// 多图刊头随机：书页 / 合集页给了多张 banner 时，每次加载随机取一张
+	(() => {
+		const pick = () => {
+			let chosen = "";
+			document.querySelectorAll<HTMLImageElement>("[data-book-banners]").forEach((img) => {
+				const raw = img.getAttribute("data-book-banners");
+				if (!raw) return;
+				try {
+					const list = JSON.parse(raw) as string[];
+					if (list.length < 2) return;
+					if (!chosen) chosen = list[Math.floor(Math.random() * list.length)];
+					img.src = chosen;
+					const wall = document.getElementById("wallpaper-wrapper");
+					if (wall) {
+						wall.querySelectorAll<HTMLImageElement>("img").forEach((w) => {
+							const path = new URL(w.src, window.location.origin).pathname;
+							if (list.some((item) => path.endsWith(item))) w.src = chosen;
+						});
+					}
+				} catch {
+					/* 属性坏了就不动 */
+				}
+			});
+		};
+		if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", pick);
+		else pick();
+		document.addEventListener("swup:contentReplaced", pick);
+		document.addEventListener("astro:page-load", pick);
+	})();
+</script>
+

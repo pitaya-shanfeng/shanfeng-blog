@@ -13,7 +13,7 @@ order: 16
 deckPages: 59
 deckWords: 13140
 image: /assets/library/notes/data-analysis-system/cover.webp
-banner: /assets/library/notes/data-analysis-system/banner.webp
+banner: /assets/images/idea-banner-16.webp
 draft: false
 comment: false
 ---

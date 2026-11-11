@@ -11,7 +11,7 @@ tags:
 # 方法合集第六篇（排在《如何做竞品分析》之后）
 order: 7
 image: /assets/library/notes/user-research/cover.webp
-banner: /assets/library/notes/user-research/banner.webp
+banner: /assets/images/idea-banner-07.webp
 draft: false
 comment: false
 ---

@@ -63,6 +63,8 @@ interface Props {
 	icon?: string;
 	/** 盘口计数单位：份 / 篇 */
 	unit?: string;
+	/** 多张刊头：传了就在每次加载随机取一张（见 BookBannerRotator） */
+	banners?: string[];
 	/** banner 上逐字打出的金句；不传则文字层不出现 */
 	quotes?: BannerQuote[];
 	/** 完整文章列表（分页时由页面层传入，用于盘口统计与翻页） */
@@ -77,6 +79,7 @@ const {
 	lead: LEAD,
 	desc: DESC,
 	banner: BANNER,
+	banners: BANNERS,
 	emptyTitle,
 	emptyHint,
 	/** 栏目名：导航里没登记的栏目（/topics/…）由调用方直接给 */
@@ -195,7 +198,7 @@ const shareDate = latest ? latest.data.published.toISOString().slice(0, 10) : ""
 <MainGridLayout
     title={CATEGORY}
     description={DESC}
-    postBanner={BANNER || undefined}
+    postBanner={BANNERS?.length ? BANNERS : BANNER || undefined}
     heading={`${CATEGORY}合集`}
     customHero
     hideBannerTitle
@@ -210,7 +213,13 @@ const shareDate = latest ? latest.data.published.toISOString().slice(0, 10) : ""
             {
                 BANNER && (
                     <div class="book-hero-media" aria-hidden="true">
-                        <img src={BANNER} alt="" loading="eager" fetchpriority="high" />
+                        <img
+                            src={BANNER}
+                            alt=""
+                            loading="eager"
+                            fetchpriority="high"
+                            data-book-banners={BANNERS?.length ? JSON.stringify(BANNERS) : undefined}
+                        />
                     </div>
                 )
             }

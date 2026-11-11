@@ -12,7 +12,7 @@ tags:
 order: 5
 deckPages: 47
 image: /assets/library/notes/need-discovery-v2/cover.webp
-banner: /assets/library/notes/need-discovery-v2/banner.webp
+banner: /assets/images/idea-banner-05.webp
 draft: false
 comment: false
 ---

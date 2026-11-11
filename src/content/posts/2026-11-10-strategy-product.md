@@ -13,7 +13,7 @@ order: 13
 deckPages: 38
 deckWords: 6367
 image: /assets/library/notes/strategy-product/cover.webp
-banner: /assets/library/notes/strategy-product/banner.webp
+banner: /assets/images/idea-banner-13.webp
 draft: false
 comment: false
 ---

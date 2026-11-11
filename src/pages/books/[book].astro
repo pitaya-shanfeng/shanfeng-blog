@@ -24,7 +24,6 @@ import { sponsorConfig } from "@/config/sponsorConfig";
 import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
-import BannerRotator from "@/components/common/BannerRotator.astro";
 import PostCard from "@/components/layout/PostCard.astro";
 import { shanfengQuotes } from "@/utils/banner-quotes-data";
 import { getSeriesPostsOf } from "@/utils/content-utils";
@@ -489,6 +488,5 @@ const readingStartLabel = prefacePost ? "从序言开始" : "从第 1 章开始"
     }
   </div>
   {showSponsorButton && <SponsorModal />}
-  <BannerRotator />
 </MainGridLayout>
 
