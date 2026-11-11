@@ -302,7 +302,7 @@ export const booksConfig: BookConfig[] = [
 		posterFocus: 0,
 		// 书卷页顶部横幅：墨绿的纸。原先没有这张图，页面回落的是全局动漫壁纸，
 		// 白字压上去既不像一本书，也没法沿用合集页那套 banner 金句
-		banner: "/assets/images/zengzhang-banner.webp",
+		banner: "/assets/images/zengzhang-banner-v2.webp",
 		parts: [
 			{
 				name: "第一篇",
