@@ -125,3 +125,24 @@ html:has(.home-hero) #content-panel {
 		linear-gradient(180deg, rgb(6 14 16 / 0.56) 0%, rgb(6 14 16 / 0.24) 42%, rgb(6 14 16 / 0.7) 100%),
 		linear-gradient(90deg, rgb(6 14 16 / 0.52) 0%, rgb(6 14 16 / 0.14) 52%, rgb(6 14 16 / 0) 70%);
 }
+
+/* 金句：右下角，与合集页同一个位置；脚本会把内容填进来 */
+.home-hero-quote-wrap {
+	position: absolute;
+	inset: 0;
+	z-index: 3;
+	display: flex;
+	align-items: flex-end;
+	justify-content: flex-end;
+	/* 能力带压在刊头下沿约 6rem，金句要落在它上方 */
+	padding: 0 0 8rem;
+	max-width: min(92vw, var(--page-width, 100rem));
+	margin-inline: auto;
+	pointer-events: none;
+}
+
+@media (max-width: 767px) {
+	.home-hero-quote-wrap {
+		display: none;
+	}
+}

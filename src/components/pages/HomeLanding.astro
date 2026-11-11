@@ -17,6 +17,7 @@ import { topicPages } from "@/config/topicsConfig";
 import { getSortedPosts, getSortedPostsList } from "@/utils/content-utils";
 import { getPostUrlBySlug } from "@/utils/url-utils";
 import { url } from "@/utils/url-utils";
+import { bannerQuotes } from "@/utils/banner-quotes-data";
 import "@/styles/home-landing.css";
 
 /* ---------------- 数据 ---------------- */
@@ -137,7 +138,7 @@ const dateLine = hotDate
 const heroDomains = ["零售", "社交电商", "平台与中台", "增长"];
 ---
 
-<div class="home-landing">
+<div class="home-landing" data-quotes={bannerQuotes.length ? JSON.stringify(bannerQuotes) : undefined}>
 	{/* ── 0. 四维能力矩阵（不可点击） ───────────────── */}
 	<section class="hl-caps" aria-label="四维能力矩阵">
 		<div class="hl-caps-grid">
