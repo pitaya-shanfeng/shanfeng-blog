@@ -8,6 +8,7 @@ import KatexManager from "@components/features/KatexManager.astro";
 import License from "@components/misc/License.astro";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
+import DeckEnhancer from "@/components/common/DeckEnhancer.astro";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
 import "@/styles/banner-post.css";
 import {
@@ -889,4 +890,7 @@ const postBanner =
 
   <!-- 打赏弹窗（由文章内「打赏」按钮打开） -->
   {showSponsorButton && <SponsorModal />}
+
+  <!-- PPT / PDF 切换器的全屏浏览（不影响正文里的切换器本身） -->
+  <DeckEnhancer />
 </MainGridLayout>

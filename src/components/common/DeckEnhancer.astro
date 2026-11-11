@@ -1,0 +1,387 @@
+---
+/**
+ * PPT / PDF 切换器的全屏增强
+ *
+ * 正文里的切换器是文章自带的（.deck-viewer[data-deck-viewer] + data-deck-base /
+ * data-deck-pages），这里不重写它们，只在运行时挂一个「全屏」按钮：
+ *
+ * - 全屏后可以单页翻（← → / 点左右半屏 / 底部箭头）
+ * - 也可以切成「平铺」，从第一页滚到最后一页
+ * - Esc 或点右上角关闭
+ *
+ * 这样已经发布的文章不用一篇篇改，新增的切换器也自动生效。
+ */
+---
+
+<style is:global>
+	.deck-fullscreen-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		height: 32px;
+		padding: 0 12px;
+		border-radius: 8px;
+		border: 1px solid #d7e2db;
+		background: #fff;
+		color: #2e7d53;
+		font-size: 13px;
+		line-height: 1;
+		cursor: pointer;
+	}
+	.deck-fullscreen-btn:hover {
+		background: #eef6f1;
+	}
+
+	.deck-fs {
+		position: fixed;
+		inset: 0;
+		z-index: 9999;
+		display: flex;
+		flex-direction: column;
+		background: #0f1512;
+	}
+	.deck-fs[hidden] {
+		display: none;
+	}
+	.deck-fs-bar {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 10px 16px;
+		color: #d8e4dc;
+		font-size: 13px;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+		flex: none;
+	}
+	.deck-fs-title {
+		flex: 1;
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.deck-fs-modes {
+		display: flex;
+		gap: 6px;
+	}
+	.deck-fs-mode {
+		height: 30px;
+		padding: 0 12px;
+		border-radius: 8px;
+		border: 1px solid rgba(255, 255, 255, 0.18);
+		background: transparent;
+		color: #cfdcd4;
+		font-size: 13px;
+		cursor: pointer;
+	}
+	.deck-fs-mode.is-active {
+		background: #2e7d53;
+		border-color: #2e7d53;
+		color: #fff;
+	}
+	.deck-fs-close {
+		width: 30px;
+		height: 30px;
+		border-radius: 8px;
+		border: 1px solid rgba(255, 255, 255, 0.18);
+		background: transparent;
+		color: #cfdcd4;
+		font-size: 16px;
+		line-height: 1;
+		cursor: pointer;
+	}
+
+	.deck-fs-body {
+		flex: 1;
+		min-height: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 14px 56px;
+		overflow: auto;
+	}
+	.deck-fs-body.is-flat {
+		display: block;
+		padding: 14px 0;
+	}
+	.deck-fs-img {
+		max-width: 100%;
+		max-height: 100%;
+		object-fit: contain;
+		border-radius: 6px;
+		background: #fff;
+		cursor: pointer;
+	}
+	.deck-fs-nav {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 44px;
+		height: 64px;
+		border: 0;
+		border-radius: 10px;
+		background: rgba(255, 255, 255, 0.12);
+		color: #fff;
+		font-size: 26px;
+		line-height: 1;
+		cursor: pointer;
+	}
+	.deck-fs-nav:hover {
+		background: rgba(255, 255, 255, 0.22);
+	}
+	.deck-fs-prev {
+		left: 8px;
+	}
+	.deck-fs-next {
+		right: 8px;
+	}
+	.deck-fs-flat-item {
+		display: block;
+		width: min(1100px, 92vw);
+		margin: 0 auto 14px;
+		border-radius: 6px;
+		background: #fff;
+	}
+	.deck-fs-foot {
+		flex: none;
+		text-align: center;
+		padding: 8px 16px 12px;
+		color: #93a29a;
+		font-size: 12px;
+	}
+
+	@media (max-width: 767px) {
+		.deck-fs-body {
+			padding: 8px 12px;
+		}
+		.deck-fs-nav {
+			width: 34px;
+			height: 48px;
+			font-size: 20px;
+		}
+	}
+</style>
+
+<script>
+	(() => {
+		type Deck = {
+			base: string;
+			pages: string[];
+			title: string;
+		};
+
+		let root: HTMLElement | null = null;
+		let overlay: HTMLElement | null = null;
+		let deck: Deck | null = null;
+		let index = 0;
+		let flatMode = false;
+		let flatRendered = false;
+
+		const el = (tag: string, cls?: string, text?: string) => {
+			const n = document.createElement(tag);
+			if (cls) n.className = cls;
+			if (text) n.textContent = text;
+			return n;
+		};
+
+		const src = (i: number) => (deck ? `${deck.base}/${deck.pages[i]}` : "");
+
+		function buildOverlay() {
+			// 必须挂到 body：文章容器里有 transform / backdrop-filter，
+			// 会自己变成 fixed 的包含块，放里面的话全屏只有半屏
+			root = root ?? document.body;
+			if (!root || overlay) return;
+
+			overlay = el("div", "deck-fs");
+			overlay.hidden = true;
+			overlay.setAttribute("role", "dialog");
+			overlay.setAttribute("aria-modal", "true");
+
+			const bar = el("div", "deck-fs-bar");
+			const title = el("div", "deck-fs-title");
+			title.dataset.deckFsTitle = "1";
+			const modes = el("div", "deck-fs-modes");
+			const mSingle = el("button", "deck-fs-mode is-active", "单页") as HTMLButtonElement;
+			const mFlat = el("button", "deck-fs-mode", "平铺") as HTMLButtonElement;
+			mSingle.dataset.mode = "single";
+			mFlat.dataset.mode = "flat";
+			modes.append(mSingle, mFlat);
+			const close = el("button", "deck-fs-close", "✕") as HTMLButtonElement;
+			close.setAttribute("aria-label", "关闭全屏");
+			bar.append(title, modes, close);
+
+			const body = el("div", "deck-fs-body");
+			body.dataset.deckFsBody = "1";
+
+			const foot = el("div", "deck-fs-foot");
+			foot.dataset.deckFsFoot = "1";
+
+			overlay.append(bar, body, foot);
+			root.appendChild(overlay);
+
+			close.addEventListener("click", closeFs);
+			mSingle.addEventListener("click", () => setMode(false));
+			mFlat.addEventListener("click", () => setMode(true));
+			overlay.addEventListener("click", (e) => {
+				if (e.target === overlay) closeFs();
+			});
+		}
+
+		function setMode(flat: boolean) {
+			flatMode = flat;
+			if (!overlay) return;
+			const modes = overlay.querySelectorAll<HTMLButtonElement>(".deck-fs-mode");
+			modes.forEach((b) => b.classList.toggle("is-active", (b.dataset.mode === "flat") === flat));
+			const body = overlay.querySelector<HTMLElement>("[data-deck-fs-body]");
+			if (!body) return;
+			body.classList.toggle("is-flat", flat);
+			if (flat) renderFlat();
+			else renderSingle();
+		}
+
+		function renderSingle() {
+			if (!overlay || !deck) return;
+			const body = overlay.querySelector<HTMLElement>("[data-deck-fs-body]");
+			const foot = overlay.querySelector<HTMLElement>("[data-deck-fs-foot]");
+			const title = overlay.querySelector<HTMLElement>("[data-deck-fs-title]");
+			if (!body || !foot || !title) return;
+
+			body.innerHTML = "";
+			const img = el("img", "deck-fs-img") as HTMLImageElement;
+			img.src = src(index);
+			img.alt = `${deck.title} 第 ${index + 1} 页`;
+			body.appendChild(img);
+
+			const prev = el("button", "deck-fs-nav deck-fs-prev", "‹") as HTMLButtonElement;
+			const next = el("button", "deck-fs-nav deck-fs-next", "›") as HTMLButtonElement;
+			prev.setAttribute("aria-label", "上一页");
+			next.setAttribute("aria-label", "下一页");
+			prev.disabled = index === 0;
+			next.disabled = index === deck.pages.length - 1;
+			prev.style.display = index === 0 ? "none" : "";
+			next.style.display = index === deck.pages.length - 1 ? "none" : "";
+			prev.addEventListener("click", (e) => {
+				e.stopPropagation();
+				go(index - 1);
+			});
+			next.addEventListener("click", (e) => {
+				e.stopPropagation();
+				go(index + 1);
+			});
+			img.addEventListener("click", (e) => {
+				const r = img.getBoundingClientRect();
+				const right = e.clientX - r.left > r.width / 2;
+				go(right ? index + 1 : index - 1);
+			});
+			body.append(prev, next);
+			title.textContent = `${deck.title} · ${index + 1} / ${deck.pages.length}`;
+			foot.textContent = "← → 翻页 · 点画面左右两侧也可以 · Esc 退出";
+		}
+
+		function renderFlat() {
+			if (!overlay || !deck) return;
+			const body = overlay.querySelector<HTMLElement>("[data-deck-fs-body]");
+			const foot = overlay.querySelector<HTMLElement>("[data-deck-fs-foot]");
+			if (!body || !foot) return;
+			if (flatRendered) return;
+			body.innerHTML = "";
+			deck.pages.forEach((_, i) => {
+				const img = el("img", "deck-fs-flat-item") as HTMLImageElement;
+				img.src = src(i);
+				img.alt = `${deck.title} 第 ${i + 1} 页`;
+				img.loading = i < 2 ? "eager" : "lazy";
+				body.appendChild(img);
+			});
+			foot.textContent = `全部 ${deck.pages.length} 页 · 往下滚看完全部 · Esc 退出`;
+			flatRendered = true;
+		}
+
+		function go(next: number) {
+			if (!deck) return;
+			if (next < 0 || next > deck.pages.length - 1) return;
+			index = next;
+			renderSingle();
+		}
+
+		function openFs(d: Deck, startIndex: number) {
+			buildOverlay();
+			if (!overlay) return;
+			deck = d;
+			index = Math.max(0, Math.min(startIndex, d.pages.length - 1));
+			flatMode = false;
+			flatRendered = false;
+			overlay.hidden = false;
+			document.documentElement.style.overflow = "hidden";
+			setMode(false);
+			overlay.focus?.();
+		}
+
+		function closeFs() {
+			if (!overlay) return;
+			overlay.hidden = true;
+			document.documentElement.style.overflow = "";
+			deck = null;
+		}
+
+		// 用捕获阶段挂在 window 上：站点自己也有方向键快捷键，
+		// 挂在 document 的冒泡阶段会被它们先处理掉
+		window.addEventListener("keydown", (e) => {
+			if (!overlay || overlay.hidden) return;
+			if (e.key === "Escape") {
+				e.preventDefault();
+				closeFs();
+			} else if (!flatMode && e.key === "ArrowLeft") {
+				e.preventDefault();
+				go(index - 1);
+			} else if (!flatMode && e.key === "ArrowRight") {
+				e.preventDefault();
+				go(index + 1);
+			}
+		}, true);
+
+		/** 给每个切换器挂一个「全屏」按钮 */
+		function enhance(viewer: HTMLElement) {
+			if (viewer.dataset.fsReady) return;
+			viewer.dataset.fsReady = "1";
+
+			const base = viewer.dataset.deckBase;
+			const pagesRaw = viewer.dataset.deckPages;
+			if (!base || !pagesRaw) return;
+
+			let pages: string[] = [];
+			try {
+				pages = JSON.parse(pagesRaw);
+			} catch {
+				return;
+			}
+			if (!Array.isArray(pages) || pages.length === 0) return;
+
+			const titleNode = viewer.querySelector(".deck-title");
+			const deckTitle = (titleNode?.textContent ?? "演示文稿").replace(/·.*$/, "").trim();
+
+			const bar = viewer.querySelector(".deck-bar");
+			const btn = el("button", "deck-fullscreen-btn", "⛶ 全屏") as HTMLButtonElement;
+			btn.type = "button";
+			btn.addEventListener("click", () => {
+				const countNode = viewer.querySelector("[data-deck-count]");
+				const current = countNode?.textContent?.trim() ?? "1";
+				const cur = Number.parseInt(current, 10) - 1;
+				openFs({ base, pages, title: deckTitle }, Number.isFinite(cur) ? cur : 0);
+			});
+			if (bar) bar.appendChild(btn);
+			else viewer.appendChild(btn);
+		}
+
+		function boot() {
+			document.querySelectorAll<HTMLElement>("[data-deck-viewer]").forEach(enhance);
+		}
+
+		if (document.readyState === "loading") {
+			document.addEventListener("DOMContentLoaded", boot);
+		} else {
+			boot();
+		}
+		document.addEventListener("swup:contentReplaced", boot);
+		document.addEventListener("astro:page-load", boot);
+	})();
+</script>
