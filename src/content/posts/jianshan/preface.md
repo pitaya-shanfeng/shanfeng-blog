@@ -8,7 +8,7 @@ category: 书·见山
 series: 见山
 seriesOrder: 0
 slug: jianshan-preface
-image: /assets/images/jianshan-preface-cover.webp
+image: /assets/images/jianshan-preface-cover-v6.webp
 banner: /assets/images/jianshan-preface-banner-display.webp
 ---
 
