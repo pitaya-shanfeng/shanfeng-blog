@@ -30,6 +30,7 @@ const posts = await getCollectionPosts(topic.category, topic.sort ?? "desc");
 	category={topic.category}
 	kickerName={topic.name}
 	kickerGroup={topic.group}
+	subtitle={topic.subtitle}
 	lead={topic.lead}
 	desc={topic.desc}
 	banner={topic.banners?.[0] ?? topic.banner}

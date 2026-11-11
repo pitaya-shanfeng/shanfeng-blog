@@ -18,7 +18,8 @@ import { getCollectionPosts } from "@/utils/collection-posts";
 
 const CATEGORY = "笔记";
 
-const LEAD = "把「学会了」拆成能回看的每一步。";
+const SUBTITLE = "学习现场";
+const LEAD = "从论文到能跑起来，中间那几步都留着。";
 const DESC =
 	"学的时候记，不等到学会再写——所以会有卡住的地方、试错的做法、被推翻的判断。每条只回答三件事：它到底是什么，我在什么场景下用过，它替我省下了什么。不整理成知识图谱，也不假装成体系。";
 const EMPTY_HINT =
@@ -38,6 +39,7 @@ const posts = await getCollectionPosts(CATEGORY, "asc");
 <CollectionPage
 	path="/notes/"
 	category={CATEGORY}
+	subtitle={SUBTITLE}
 	lead={LEAD}
 	desc={DESC}
 	banner="/assets/images/topics/notes-banner-01.webp"

@@ -17,6 +17,8 @@ export interface TopicPageConfig {
 	group: string;
 	/** 取数用的分类，两级写法 */
 	category: string;
+	/** 副题：标题下面那行短标签（层级感，如「方法沉淀」） */
+	subtitle?: string;
 	/** 一句话定位 */
 	lead: string;
 	/** 说明段：只讲这一页能替读者做什么 */
@@ -44,7 +46,8 @@ export const topicPages: TopicPageConfig[] = [
 		name: "思路",
 		group: "",
 		category: "思路",
-		lead: "把想清楚的落成能复用的做法。",
+		subtitle: "方法沉淀",
+		lead: "一次做对之后，想办法让下次也做对。",
 		desc: "需求、设计、增长、分析工具，写的是「下次还能照着做」的那一层：边界在哪、代价是什么、什么时候不该用。",
 		emptyHint: "陆续整理中：先把已经跑通的几套方法写出来。",
 		banners: [
@@ -64,7 +67,8 @@ export const topicPages: TopicPageConfig[] = [
 		name: "调研",
 		group: "",
 		category: "调研",
-		lead: "结论之前，先把事实摆全。",
+		subtitle: "事实与证据",
+		lead: "在相信一个结论之前，先看看它是怎么来的。",
 		desc: "每次调研留一份可复核的记录：问了谁、怎么问、哪些答案互相矛盾。结论可以变，过程要能追溯。",
 		emptyHint: "还在做第一份。等数据齐了再落笔。",
 		banners: [
@@ -82,7 +86,8 @@ export const topicPages: TopicPageConfig[] = [
 		name: "案例",
 		group: "",
 		category: "案例",
-		lead: "把判断落成能跑起来的东西。",
+		subtitle: "工程与落地",
+		lead: "项目结束之后，才看得清当初该停在哪儿。",
 		desc: "从结构、流程到交互，讲一个产品怎么从「想清楚了」变成「用起来顺手」；项目收尾后再回头找那条回头路——哪些判断对、哪些只是运气、下次该在哪个节点停下来。不堆方法论，只写每次取舍的代价。",
 		emptyHint: "第一篇大概会从一次结构重写开始：为什么推倒，重写后哪些问题消失了。",
 		banners: [
