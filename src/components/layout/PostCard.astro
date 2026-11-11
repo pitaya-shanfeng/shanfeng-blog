@@ -122,7 +122,6 @@ const hiddenTags = tagList.slice(bottomTags.length);
 const hiddenTagCount = hiddenTags.length;
 
 // 书籍合集页的「分类/系列」胶囊：分类 + 系列（如「著书立说/见山」）
-const seriesLabel = (entry.data as { series?: string }).series;
 
 // 分类挪到底部后，meta 行可能什么都不剩 —— 那就整行不渲染，别留一条空行
 const hasOtherMeta =
@@ -252,7 +251,6 @@ const cardMinutes = stats.minutes;
           >
             <Icon name="material-symbols:folder-rounded" class="text-xs" />
             {categoryLabel ?? category}
-            {seriesLabel ? `/${seriesLabel}` : ""}
           </a>
         )}
         {bottomTags.map((tag) => {

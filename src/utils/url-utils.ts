@@ -49,7 +49,15 @@ export function getTagUrl(_tag: string): string {
 	return "";
 }
 
-/** 分类 → 对应的合集页；没有对应合集页时回落到「笔记」列表 */
+/**
+ * 分类 → 对应的页面。
+ * 书类分类（书·见山 / 书·增长）直接进书页；其余走 topicsConfig 的合集页；
+ * 都没有就回落到「笔记」列表。
+ */
+const BOOK_CATEGORY_URLS: Record<string, string> = {
+	"书·见山": "/books/jianshan/",
+	"书·增长": "/books/zengzhang/",
+};
 export function getCategoryUrl(category: string | null): string {
 	const name = (category ?? "").trim();
 	if (
@@ -57,6 +65,8 @@ export function getCategoryUrl(category: string | null): string {
 		name.toLowerCase() === i18n(I18nKey.uncategorized).toLowerCase()
 	)
 		return url("/notes/");
+	const bookUrl = BOOK_CATEGORY_URLS[name];
+	if (bookUrl) return url(bookUrl);
 	for (const page of topicPages) {
 		if (page.category.trim() === name) return url(`/topics/${page.slug}/`);
 	}
