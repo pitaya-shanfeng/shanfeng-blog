@@ -4,6 +4,7 @@ published: 2026-11-04T17:15:00+08:00
 description: 模型是千里马，Harness 是套在它身上的缰绳、鞍鞯与马车。文章拆出三大支柱（可读性、防御机制、反馈回路），再给五步搭建法与真实工程的几条启示，落点是 AI Agent = Model + Harness。
 quote: AI Agent = Model + Harness：模型是千里马，Harness 是缰绳与马车。
 image: /assets/library/notes/harness-engineering/cover.webp
+banner: /assets/images/notes/2026-11-04-harness-engineering.webp
 category: 笔记
 tags:
   - Agent

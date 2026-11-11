@@ -40,7 +40,14 @@ const posts = await getCollectionPosts(CATEGORY, "asc");
 	category={CATEGORY}
 	lead={LEAD}
 	desc={DESC}
-	banner="/assets/images/notes-banner.webp"
+	banner="/assets/images/topics/notes-banner-01.webp"
+	banners={[
+		"/assets/images/topics/notes-banner-01.webp",
+		"/assets/images/topics/notes-banner-02.webp",
+		"/assets/images/topics/notes-banner-03.webp",
+		"/assets/images/topics/notes-banner-04.webp",
+		"/assets/images/topics/notes-banner-05.webp",
+	]}
 	quotes={shanfengQuotes}
 	emptyHint={EMPTY_HINT}
 	icon="material-symbols:edit-note-rounded"

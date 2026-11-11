@@ -4,6 +4,7 @@ published: 2025-12-02T20:00:00+08:00
 description: 拿「国王他有个女儿」走一遍完整链路。分词、词嵌入叠位置编码凑成 4×512 矩阵，QKV 和八头注意力各看一个视角，编码器靠残差与 FFN 稳住，解码器逐词生成。
 quote: 词向量本身不带位置信息，「他打了我」和「我打了他」的向量一样。
 image: /assets/library/notes/transformer-architecture/cover.webp
+banner: /assets/images/notes/2026-11-03-transformer-architecture.webp
 category: 笔记
 tags:
   - 大模型

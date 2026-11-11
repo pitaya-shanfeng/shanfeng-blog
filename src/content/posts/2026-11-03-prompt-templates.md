@@ -4,6 +4,7 @@ published: 2026-11-03T11:45:00+08:00
 description: 一套能直接抄的提示词骨架。通用结构分七块，从角色到限制；另有问答模板、智能体工具调用、任务执行三步流程，后面还跟着四个完整范例。
 quote: 骨架七块：角色、技能、要求、任务、工作流、示例、限制。
 image: /assets/library/notes/prompt-templates/cover.webp
+banner: /assets/images/notes/2026-11-03-prompt-templates.webp
 category: 笔记
 tags:
   - 提示词

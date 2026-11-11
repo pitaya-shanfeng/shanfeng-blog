@@ -4,6 +4,7 @@ published: 2025-12-01
 description: 课程资料。从 AI、机器学习、深度学习一路讲到大模型，再收到 RAG、Agent 与微调三条落地路径，适合当整组课程的第一篇来读。
 quote: 从 AI、机器学习、深度学习讲到大模型，再到 RAG、Agent 与微调。
 image: /assets/library/notes/llm-cognition-basics/cover.webp
+banner: /assets/images/notes/2025-12-01-llm-cognition-basics.webp
 category: 笔记
 tags:
   - 大模型
