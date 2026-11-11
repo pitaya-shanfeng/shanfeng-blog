@@ -1,0 +1,60 @@
+---
+import { Icon } from "astro-icon/components";
+import { siteConfig } from "@/config";
+import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import { getSortedPostsList } from "@/utils/content-utils";
+import { getPostUrlBySlug } from "@/utils/url-utils";
+import "@/styles/archive-page.css";
+
+/**
+ * 全站索引：按年月倒序，只列「日期 + 标题」。
+ *
+ * 首页改成门户页之后，这里是读者「想看全部」时的兜底入口。
+ * 不做卡片、不做分页、不做筛选——需要时再长。
+ */
+// 索引页要能查到全部内容，丛书也算进来
+const posts = await getSortedPostsList(true);
+
+type MonthGroup = { key: string; year: string; month: string; posts: typeof posts };
+const groups: MonthGroup[] = [];
+for (const p of posts) {
+	const d = p.data.published;
+	const year = String(d.getFullYear());
+	const month = String(d.getMonth() + 1).padStart(2, "0");
+	const key = `${year}-${month}`;
+	const last = groups[groups.length - 1];
+	const item = { ...p, _url: getPostUrlBySlug(p.data.slug ?? p.id) };
+	if (last && last.key === key) last.posts.push(item as never);
+	else groups.push({ key, year, month, posts: [item] as never });
+}
+---
+
+<MainGridLayout title={`全部文章 · ${siteConfig.title}`} heading="全部文章">
+  <div class="archive-page">
+    <header class="archive-head">
+      <h1 class="archive-title">全部文章</h1>
+      <p class="archive-sub">共 {posts.length} 篇，按时间倒序。</p>
+    </header>
+
+    {groups.map((g) => (
+      <section class="archive-group" aria-label={`${g.year} 年 ${g.month} 月`}>
+        <h2 class="archive-month">
+          <span class="archive-month-num">{g.year}.{g.month}</span>
+          <span class="archive-month-count">{g.posts.length} 篇</span>
+        </h2>
+        <ul class="archive-list">
+          {g.posts.map((p: any) => (
+            <li>
+              <a href={p._url}>
+                <span class="archive-date">{p.data.published.toISOString().slice(5, 10)}</span>
+                <span class="archive-post-title">{p.data.title}</span>
+                <span class="archive-cat">{p.data.category}</span>
+                <Icon name="material-symbols:arrow-forward-rounded" class="archive-arrow text-sm" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</MainGridLayout>

@@ -1,0 +1,15 @@
+---
+import HomeLanding from "@/components/pages/HomeLanding.astro";
+import { siteConfig } from "@/config";
+import MainGridLayout from "@/layouts/MainGridLayout.astro";
+
+/**
+ * 首页 = 门户页（Hero / 日报 / 精选 / 两本书 / 四栏索引 / 学习记录 / 作者卡）
+ *
+ * 原来的「全站文章列表 + 分页」取消，改成独立的 /archive/ 索引页。
+ */
+---
+
+<MainGridLayout title={siteConfig.title} heading={siteConfig.title} hideSidebar>
+  <HomeLanding />
+</MainGridLayout>

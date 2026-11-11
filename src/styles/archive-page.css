@@ -1,0 +1,132 @@
+/* 全站索引页：只做「日期 + 标题」，与合集页共用字阶变量 */
+
+.archive-page {
+	width: 100%;
+	max-width: var(--page-width, 100rem);
+	margin: 0 auto;
+	padding: 1.25rem 1rem 2.5rem;
+	--hl-ink: var(--deep-text);
+	color: var(--hl-ink);
+}
+
+.dark .archive-page {
+	--hl-ink: oklch(0.93 0.012 var(--hue));
+}
+
+@media (min-width: 1024px) {
+	.archive-page {
+		padding: 1.75rem 2rem 3rem;
+	}
+}
+
+.archive-head {
+	padding: 1.5rem;
+	margin-bottom: 1rem;
+	background: var(--card-bg);
+	border-radius: var(--radius-large);
+}
+
+.archive-title {
+	margin: 0;
+	font-size: var(--fs-h2);
+	font-weight: 700;
+}
+
+.archive-sub {
+	margin: 0.4rem 0 0;
+	font-size: var(--fs-sub);
+	color: var(--content-meta);
+}
+
+.archive-group {
+	padding: 1.25rem 1.5rem;
+	margin-bottom: 0.75rem;
+	background: var(--card-bg);
+	border-radius: var(--radius-large);
+}
+
+.archive-month {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	margin: 0 0 0.5rem;
+	font-size: var(--fs-item);
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
+}
+
+.archive-month-count {
+	font-size: var(--fs-meta);
+	font-weight: 400;
+	color: var(--content-meta);
+}
+
+.archive-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.archive-list li + li {
+	border-top: 1px solid var(--line-divider);
+}
+
+.archive-list a {
+	display: grid;
+	grid-template-columns: 3.2rem 1fr auto auto;
+	align-items: center;
+	gap: 0.75rem;
+	padding: 0.6rem 0;
+	font-size: var(--fs-body);
+	transition: color 0.2s ease;
+}
+
+.archive-list a:hover {
+	color: var(--btn-content);
+}
+
+.archive-date {
+	font-size: var(--fs-meta);
+	color: var(--content-meta);
+	font-variant-numeric: tabular-nums;
+}
+
+.archive-post-title {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.archive-cat {
+	font-size: var(--fs-label);
+	color: var(--content-meta);
+}
+
+.archive-arrow {
+	color: var(--content-meta);
+}
+
+@media (max-width: 640px) {
+	.archive-list a {
+		grid-template-columns: 2.8rem 1fr;
+	}
+
+	.archive-cat,
+	.archive-arrow {
+		display: none;
+	}
+}
+
+/* 索引页不要壁纸 banner：整页就是一列标题 */
+html[data-wallpaper-mode] body:has(.archive-page) #wallpaper-wrapper {
+	display: none !important;
+}
+
+html[data-wallpaper-mode] body:has(.archive-page) .content-panel {
+	--content-top: 5.5rem;
+	position: relative;
+	top: 0;
+	margin-top: 5.5rem;
+	min-height: calc(100vh - 5.5rem);
+}
