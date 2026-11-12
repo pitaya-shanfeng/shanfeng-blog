@@ -26,7 +26,9 @@
 
 @media (min-width: 1024px) {
 	.home-landing {
-		padding: 2rem 2.5rem 4rem;
+		/* #main-grid 自己有 px-2 md:px-4（约 1rem），这里再让 1rem，
+		   合计与导航文字边界对齐 */
+		padding: 2rem 1rem 4rem;
 		gap: 3.5rem;
 	}
 }

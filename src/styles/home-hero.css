@@ -47,13 +47,14 @@
 	/* 与内容区同一版心：内容卡片左右边距对齐刊头文字 */
 	max-width: min(92vw, var(--page-width, 100rem));
 	margin-inline: auto;
-	/* 顶部让出固定导航；内容变短后整体垂直居中，不再一味贴顶 */
-	padding: 7rem 0 6.5rem;
+	/* 左右各让 2rem：导航栏是「top-row 的 px + 内层 px-4」双重内边距，
+	   这里对齐它的文字边界，标题与卡片都不越过导航 */
+	padding: 7rem 2rem 6.5rem;
 }
 
 @media (min-width: 1024px) {
 	.home-hero-inner {
-		padding: 8rem 0 7rem;
+		padding: 8rem 2rem 7rem;
 	}
 }
 
@@ -131,11 +132,11 @@ html:has(.home-hero) #content-panel {
 
 .home-hero-brief {
 	position: absolute;
-	right: 0;
+	/* 右边界与导航栏一致：版心居中的留白 + 导航那 1rem 内边距 */
+	right: calc((100vw - min(92vw, var(--page-width, 100rem))) / 2 + 2rem);
 	bottom: 7.5rem;
 	z-index: 3;
 	width: min(24rem, 34vw);
-	margin-right: max(calc((100vw - min(92vw, var(--page-width, 100rem))) / 2), 1.5rem);
 	padding: 1.15rem 1.25rem 1rem;
 	border-radius: var(--radius-2xl);
 	border: 1px solid rgb(255 255 255 / 0.16);
