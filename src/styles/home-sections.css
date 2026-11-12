@@ -321,6 +321,7 @@
 @media (min-width: 700px) {
 	.path-steps {
 		grid-template-columns: repeat(4, 1fr);
+		gap: 2rem;
 	}
 }
 
@@ -830,13 +831,13 @@
 	.path-steps li:not(:last-child)::after {
 		content: "→";
 		position: absolute;
-		right: -0.62rem;
+		right: -1.35rem;
 		top: 50%;
 		transform: translateY(-50%);
-		font-size: var(--fs-sub);
+		font-size: var(--fs-body);
 		line-height: 1;
 		color: var(--content-meta);
-		opacity: 0.6;
+		opacity: 0.55;
 		z-index: 2;
 	}
 }
