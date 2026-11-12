@@ -45,12 +45,85 @@
 /* ── 两本书 ─────────────────────────────────── */
 
 .band-books {
-	/* 跟其它板块同一套：浅灰底 + 白卡，和下面的白底区块穿插开 */
-	background: #f4f7fb;
+	/* 设计稿那种：近白浅底 + 薄荷／淡紫两片柔光，再压几枚几何形 */
+	position: relative;
+	overflow: hidden;
+	background:
+		radial-gradient(46rem 24rem at 6% 0%, #dff3ec 0%, transparent 62%),
+		radial-gradient(42rem 22rem at 96% 24%, #e6e3fc 0%, transparent 64%),
+		linear-gradient(180deg, #f8fbfd 0%, #f4f7fd 55%, #f7fafc 100%);
+}
+
+.band-books > .band-inner {
+	position: relative;
+	z-index: 2;
+}
+
+.deco {
+	position: absolute;
+	z-index: 1;
+	pointer-events: none;
+}
+
+.deco-square {
+	left: 5%;
+	top: 12%;
+	width: 5.5rem;
+	height: 4rem;
+	border-radius: 0.9rem;
+	background: linear-gradient(150deg, #cfeee2, #e7f7f1);
+}
+
+.deco-bar {
+	right: 4%;
+	top: 8%;
+	width: 1.6rem;
+	height: 7.5rem;
+	border-radius: 0.8rem;
+	background: linear-gradient(180deg, #ded8fb, #ece9fe);
+}
+
+.deco-ring {
+	right: 12%;
+	top: 46%;
+	width: 3.4rem;
+	height: 3.4rem;
+	border-radius: 50%;
+	border: 2px solid #34c19a;
+	opacity: 0.55;
+}
+
+.deco-blob {
+	left: 14%;
+	bottom: -2.5rem;
+	width: 7rem;
+	height: 5rem;
+	border-radius: 2rem;
+	background: linear-gradient(140deg, #d7d3fb, #e9e7fe);
+	opacity: 0.85;
+}
+
+@media (max-width: 900px) {
+	.deco-ring,
+	.deco-bar {
+		display: none;
+	}
 }
 
 .dark .band-books {
-	background: rgb(255 255 255 / 0.02);
+	background:
+		radial-gradient(46rem 24rem at 6% 0%, rgb(23 185 141 / 0.10) 0%, transparent 62%),
+		radial-gradient(42rem 22rem at 96% 24%, rgb(99 102 241 / 0.12) 0%, transparent 64%),
+		rgb(255 255 255 / 0.02);
+}
+
+.dark .deco-square,
+.dark .deco-blob {
+	opacity: 0.18;
+}
+
+.dark .deco-bar {
+	opacity: 0.2;
 }
 
 /* 浅底上文字换成深色 */
