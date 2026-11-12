@@ -58,13 +58,27 @@ const research = [
 		: null;
 }).filter((r): r is NonNullable<typeof r> => Boolean(r));
 
-/* 案例：四张 */
+/* 案例：六篇（两行三列），按正文字数与内嵌页数挑最厚的 */
 const cases = [
 	{ tag: "交易", id: "2026-11-10-guide-trade" },
 	{ tag: "数据", id: "2026-11-09-tracking-build" },
-	{ tag: "增长", id: "2026-11-09-game-matrix-build" },
-	{ tag: "中台", id: "2026-11-09-marketing-center-build" },
-].map((c) => ({ tag: c.tag, post: pick(c.id) })).filter((c) => c.post);
+	{ tag: "增长", id: "2026-11-10-growth-hacking" },
+	{ tag: "内容", id: "2026-11-07-proto-yunji-shop" },
+	{ tag: "供应链", id: "2026-11-09-supply-chain-build" },
+	{ tag: "私域", id: "2026-11-07-proto-qun-jielong" },
+].map((c) => {
+	const p = byId.get(c.id);
+	return p
+		? {
+				tag: c.tag,
+				title: p.data.title,
+				desc: p.data.quote ?? p.data.description ?? "",
+				href: getPostUrlBySlug(p.data.slug ?? p.id),
+				cover: p.data.image,
+				pages: (p.data as { deckPages?: number }).deckPages ?? 0,
+			}
+		: null;
+}).filter((c): c is NonNullable<typeof c> => Boolean(c));
 
 /* 笔记：学习主线 + 两张精选 */
 const learnPath = [
@@ -74,9 +88,22 @@ const learnPath = [
 	{ no: "04", title: "Agent 开发", sub: "Coze / Dify / OpenClaw" },
 ];
 const notes = [
+	{ date: "11·01", star: false, id: "2025-12-01-llm-cognition-basics" },
+	{ date: "11·03", star: true, id: "2026-11-03-rag-not-to-fail" },
 	{ date: "11·04", star: true, id: "2026-11-04-rag-data-pipeline" },
-	{ date: "11·04", star: true, id: "2026-11-04-openclaw" },
-].map((n) => ({ ...n, post: pick(n.id) })).filter((n) => n.post);
+	{ date: "11·04", star: false, id: "2026-11-04-openclaw" },
+].map((n) => {
+	const p = byId.get(n.id);
+	return p
+		? {
+				...n,
+				title: p.data.title,
+				desc: p.data.quote ?? p.data.description ?? "",
+				href: getPostUrlBySlug(p.data.slug ?? p.id),
+				cover: p.data.image,
+			}
+		: null;
+}).filter((n): n is NonNullable<typeof n> => Boolean(n));
 
 const ideaCount = countOf("思路");
 const researchCount = countOf("调研");
@@ -179,13 +206,22 @@ const noteCount = countOf("笔记");
 			</a>
 		</header>
 
-		<div class="cards cards-4">
+		<div class="cards cards-3">
 			{cases.map((c) => (
-				<a class="card" href={c.post!.href}>
+				<a class="card rcard" href={c.href}>
+					{c.cover && (
+						<span class="rcard-cover">
+							<img src={c.cover} alt="" loading="lazy" />
+						</span>
+					)}
 					<span class="card-tag tag-amber">{c.tag}</span>
-					<h3 class="card-title">{c.post!.title}</h3>
-					<p class="card-desc">{c.post!.desc}</p>
-					<span class="card-more">阅读案例 <Icon name="material-symbols:arrow-forward-rounded" class="text-sm" /></span>
+					<h3 class="card-title">{c.title}</h3>
+					<p class="card-desc">{c.desc}</p>
+					<span class="card-more">
+						{c.pages > 0 && <span class="rcard-pages">{c.pages} 页</span>}
+						阅读案例
+						<Icon name="material-symbols:arrow-forward-rounded" class="text-sm" />
+					</span>
 				</a>
 			))}
 		</div>
@@ -193,7 +229,11 @@ const noteCount = countOf("笔记");
 </section>
 
 {/* ── 笔记 ───────────────────────────────────── */}
-<section class="sec sec-tint" aria-labelledby="sec-notes-title">
+<section class="sec sec-tint sec-notes" aria-labelledby="sec-notes-title">
+	<span class="deco deco-square" aria-hidden="true"></span>
+	<span class="deco deco-bar" aria-hidden="true"></span>
+	<span class="deco deco-ring" aria-hidden="true"></span>
+	<span class="deco deco-blob" aria-hidden="true"></span>
 	<div class="sec-inner">
 		<header class="sec-head">
 			<div>
@@ -223,15 +263,20 @@ const noteCount = countOf("笔记");
 			</ol>
 		</div>
 
-		<div class="cards cards-2">
+		<div class="cards cards-4">
 			{notes.map((n) => (
-				<a class="card" href={n.post!.href}>
-					<div class="card-top">
+				<a class="card rcard ncard" href={n.href}>
+					{n.cover && (
+						<span class="rcard-cover">
+							<img src={n.cover} alt="" loading="lazy" />
+						</span>
+					)}
+					<div class="card-top ncard-top">
 						<span class="card-date">{n.date}</span>
 						{n.star && <span class="card-star">精选</span>}
 					</div>
-					<h3 class="card-title">{n.post!.title}</h3>
-					<p class="card-desc">{n.post!.desc}</p>
+					<h3 class="card-title">{n.title}</h3>
+					<p class="card-desc">{n.desc}</p>
 				</a>
 			))}
 		</div>

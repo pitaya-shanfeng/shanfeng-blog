@@ -631,3 +631,101 @@
 .dark .step-item-desc {
 	color: rgb(226 234 244 / 0.6);
 }
+
+/* ── 笔记：背景氛围（与写作/调研同一套做法） ─────────── */
+
+.sec-notes {
+	position: relative;
+	overflow: hidden;
+	background:
+		radial-gradient(42rem 22rem at 90% 0%, #e8f4ee 0%, transparent 62%),
+		radial-gradient(38rem 20rem at 6% 100%, #e6eefc 0%, transparent 64%),
+		linear-gradient(180deg, #f7fafb 0%, #f2f7f9 60%, #f7fafc 100%);
+}
+
+.dark .sec-notes {
+	background:
+		radial-gradient(42rem 22rem at 90% 0%, rgb(24 163 122 / 0.12) 0%, transparent 62%),
+		radial-gradient(38rem 20rem at 6% 100%, rgb(56 130 246 / 0.12) 0%, transparent 64%),
+		rgb(255 255 255 / 0.02);
+}
+
+.sec-notes > .sec-inner {
+	position: relative;
+	z-index: 2;
+}
+
+.sec-notes .deco {
+	position: absolute;
+	z-index: 1;
+	pointer-events: none;
+}
+
+.sec-notes .deco-square {
+	left: 3%;
+	top: 8%;
+	width: 4rem;
+	height: 3rem;
+	border-radius: 0.8rem;
+	background: color-mix(in oklab, var(--primary) 20%, #fff);
+}
+
+.sec-notes .deco-bar {
+	right: 3%;
+	top: 6%;
+	width: 1.3rem;
+	height: 6rem;
+	border-radius: 0.65rem;
+	background: color-mix(in oklab, var(--primary) 12%, #fff);
+}
+
+.sec-notes .deco-ring {
+	right: 12%;
+	bottom: 10%;
+	width: 2.8rem;
+	height: 2.8rem;
+	border-radius: 50%;
+	border: 2px solid var(--primary);
+	opacity: 0.35;
+}
+
+.sec-notes .deco-blob {
+	left: 8%;
+	bottom: -1.8rem;
+	width: 5.5rem;
+	height: 4rem;
+	border-radius: 1.6rem;
+	background: color-mix(in oklab, var(--primary) 14%, #fff);
+	opacity: 0.7;
+}
+
+.dark .sec-notes .deco-square,
+.dark .sec-notes .deco-bar,
+.dark .sec-notes .deco-blob {
+	opacity: 0.16;
+}
+
+/* 笔记卡片：内容区留白与调研卡一致 */
+.ncard .ncard-top {
+	margin: 0.9rem 1.25rem 0;
+}
+
+.ncard .card-title {
+	margin: 0.4rem 1.25rem 0;
+}
+
+.ncard .card-desc {
+	margin: 0.35rem 1.25rem 1.1rem;
+}
+
+/* 案例/笔记卡在四列时的封面比例更扁一点，避免太高 */
+@media (min-width: 1100px) {
+	.cards-4 .rcard-cover img {
+		aspect-ratio: 16 / 10;
+	}
+}
+
+/* 暗色下深色封面容易糊进卡片，加一条发丝线 */
+.dark .rcard-cover {
+	box-shadow: inset 0 -1px 0 rgb(255 255 255 / 0.08);
+}
