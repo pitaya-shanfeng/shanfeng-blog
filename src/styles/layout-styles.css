@@ -663,3 +663,9 @@ html[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="classic"] #wallpa
     }
 }
 
+
+/* 文章页：个人卡头像收一号，让「文章目录」不至于掉到首屏之外 */
+#left-sidebar-wrapper:has(#sidebar-toc) .card-base > a.group.block.relative {
+	max-width: 9.5rem;
+	margin-inline: 0;
+}
