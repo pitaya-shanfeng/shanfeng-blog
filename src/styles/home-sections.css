@@ -152,7 +152,7 @@
 }
 
 .step-list a:hover {
-	color: #2563d4;
+	color: var(--btn-content);
 }
 
 /* ── 卡片组 ─────────────────────────────────── */
@@ -214,7 +214,7 @@
 
 .tag-blue {
 	background: #e8f1ff;
-	color: #2563d4;
+	color: var(--btn-content);
 }
 
 .tag-amber {
@@ -273,7 +273,7 @@
 	margin-top: auto;
 	padding-top: 0.5rem;
 	font-size: var(--fs-label);
-	color: #2563d4;
+	color: var(--btn-content);
 }
 
 /* ── 学习主线 ───────────────────────────────── */
