@@ -1,79 +1,103 @@
 ---
 /**
- * 首页 Hero（按 2026-11-12 设计稿）
+ * 首页通栏刊头
  *
- * 浅色渐变底 + 左文右卡：左侧标题、说明、两个入口、三个数字；
- * 右侧一叠悬浮卡（今日晨报 / BOOK 01 见山）。
+ * 和合集页的视觉一致（整幅出血照片 + 压暗 + 白字 + 右下金句），
+ * 但**不复用** .book-hero 类名：那一套在 book-page.css 里带死了自己的
+ * 高度与内容面板偏移（--book-banner-h），首页尺寸不一样，套用会互相打架。
  */
 import { Icon } from "astro-icon/components";
-import { booksConfig } from "@/config/booksConfig";
 import { getDailyBrief } from "@/utils/daily-brief";
 import { url } from "@/utils/url-utils";
 import "@/styles/home-hero.css";
 
 const brief = await getDailyBrief();
-const jianshan = booksConfig.find((b) => b.id === "jianshan");
 
+/** 日历卡上的日期用「今天」，内容用最新一期；两者不一致时标一下那一期 */
 const now = new Date();
 const today = {
 	day: `${String(now.getMonth() + 1).padStart(2, "0")}.${String(now.getDate()).padStart(2, "0")}`,
-	line: `周${"日一二三四五六"[now.getDay()]}`,
+	line: `${now.getFullYear()} · 周${"日一二三四五六"[now.getDay()]}`,
 };
 ---
 
-<section class="hero">
-	<div class="hero-inner">
-		<div class="hero-copy">
-			<p class="hero-chip">
-				<span class="dot" aria-hidden="true"></span>
-				知识仓库 · 日常行业洞察
-			</p>
+<header class="home-hero">
+	<div class="home-hero-media" aria-hidden="true">
+		<img
+			src="/assets/images/home-hero-day.webp"
+			alt=""
+			fetchpriority="high"
+			data-home-hero-img
+		/>
+	</div>
 
-			<h1 class="hero-title">
-				做个靠谱的<br />
-				<span class="accent">产品经理</span>
-			</h1>
+	
 
-			<p class="hero-lead">
-				不堆黑话，聊聊产品判断力：在噪音中看清本质，在取舍之间守住方向，让每一次决策都经得起推敲！
-			</p>
-
-			<div class="hero-actions">
-				<a class="btn btn-primary" href={url("/archive/")}>
-					开始阅读
-					<Icon name="material-symbols:arrow-forward-rounded" class="text-sm" />
-				</a>
-				<a class="btn btn-ghost" href={url("/about/")}>
-					认识山风
-					<Icon name="material-symbols:arrow-forward-rounded" class="text-sm" />
-				</a>
+	<div class="home-hero-inner">
+	<a
+				class="home-hero-brief"
+			href={brief?.href ?? url("/hotnews/")}
+			aria-labelledby="hero-brief-title"
+		>
+			<div class="hb-head">
+				<span class="hb-day">{today.day}</span>
+				<span class="hb-date">{today.line}</span>
+				<span class="hb-go">
+					每日行业动态
+					<Icon name="material-symbols:arrow-outward-rounded" class="text-sm" />
+				</span>
 			</div>
-
-			<dl class="hero-stats">
-				<div><dt>12 年+</dt><dd>产品经验</dd></div>
-				<div><dt>100+</dt><dd>篇记录</dd></div>
-				<div><dt>2 本</dt><dd>连载中的书</dd></div>
-			</dl>
-		</div>
-
-		<div class="hero-cards">
-			<a class="hcard hcard-brief" href={brief?.href ?? url("/hotnews/")}>
-				<div class="hcard-head">
-					<span class="hcard-label">今日晨报</span>
-					<span class="hcard-date">{today.day} · {today.line}</span>
-				</div>
-				<p class="hcard-title">{brief?.headline ?? "今日行业动态"}</p>
-				<p class="hcard-desc">{brief?.summary}</p>
-				<span class="hcard-more">查看完整版 <Icon name="material-symbols:arrow-outward-rounded" class="text-sm" /></span>
+			<p class="hb-title" id="hero-brief-title">{brief?.headline ?? brief?.title ?? "行业动态"}</p>
+			<p class="hb-summary">{brief?.summary ?? brief?.description}</p>
+			<ul class="hb-list">
+				{(brief?.points ?? []).map((t) => (
+					<li>{t}</li>
+				))}
+			</ul>
+		</a>
+		<h1 class="home-hero-title">做个靠谱的<br />产品经理</h1>
+		<p class="home-hero-lead">
+			不堆黑话，聊聊产品判断力：在噪音中看清本质，在取舍之间守住方向，让每一次决策都经得起推敲！
+		</p>
+		<div class="home-hero-actions">
+			<a class="home-hero-cta" href="#reading">
+				开始阅读
+				<Icon name="material-symbols:arrow-outward-rounded" class="text-sm" />
 			</a>
-
-			{jianshan && (
-				<a class="hcard hcard-book" href={url("/books/jianshan/")}>
-					<span class="hcard-label">BOOK 01 · 连载中</span>
-					<p class="hcard-book-title">《见山》产品判断</p>
-					<span class="hcard-more">24 篇 · 从第一篇开始读 <Icon name="material-symbols:arrow-forward-rounded" class="text-sm" /></span>
-				</a>
-			)}
+			<a class="home-hero-cta" href={url("/about/")}>
+				认识山风
+				<Icon name="material-symbols:arrow-forward-rounded" class="text-sm" />
+			</a>
 		</div>
 	</div>
-</section>
+</header>
+
+<script is:inline define:vars={{
+	heroMap: {
+		dawn: "/assets/images/home-hero-dawn.webp",
+		day: "/assets/images/home-hero-day.webp",
+		dusk: "/assets/images/home-hero-dusk.webp",
+	},
+}}>
+	// 按访问时刻换刊头图：清晨雾桥 / 白天桥与天际线 / 黄昏江景
+	(() => {
+		const pick = () => {
+			const img = document.querySelector("[data-home-hero-img]");
+			if (!img) return;
+			const h = new Date().getHours();
+			// 只三张：清晨雾桥 / 白天长桥 / 黄昏江景（黄昏这张从 17 点一直用到次日 5 点）
+			const key = h >= 5 && h < 9 ? "dawn" : h >= 9 && h < 17 ? "day" : "dusk";
+			if (img.getAttribute("data-time") === key) return;
+			img.setAttribute("data-time", key);
+			img.src = heroMap[key];
+			const hero = img.closest(".home-hero");
+			if (hero) hero.setAttribute("data-hero-time", key);
+		};
+		window.__homeHeroPick = pick;
+		pick();
+		// 打开页面跨过时段边界时，切回来也能自动更新
+		setInterval(pick, 5 * 60 * 1000);
+		document.addEventListener("swup:contentReplaced", pick);
+		document.addEventListener("astro:page-load", pick);
+	})();
+</script>

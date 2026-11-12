@@ -7,15 +7,21 @@ import { siteConfig } from "@/config";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
 
 /**
- * 首页（2026-11-12 设计稿）
+ * 首页
  *
- * Hero 在正文流里，不再走 customHero / 壁纸 banner；
- * 壁纸隐藏与内容偏移见 home-landing.css。
+ * 刊头沿用「通栏照片 banner」（customHero + #hero 插槽）；
+ * banner 之下的栏目按 2026-11-12 设计稿组织：能力带 → 每日行业动态 → 两本书 → 各栏目 → CTA。
  */
 ---
 
-<MainGridLayout title={siteConfig.title} heading={siteConfig.title}>
-  <HomeHero />
+<MainGridLayout
+  title={siteConfig.title}
+  heading={siteConfig.title}
+  customHero
+>
+  <Fragment slot="hero">
+    <HomeHero />
+  </Fragment>
   <HomeLanding />
   <HomeBands />
   <HomeSections />
