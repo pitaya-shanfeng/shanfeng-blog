@@ -293,3 +293,50 @@ html:has(.home-hero) #mobile-bottom-sidebar {
 html:has(.home-hero) #main-grid {
 	grid-template-columns: 1fr !important;
 }
+
+/* 整卡是「今天的日报」，右上角入口单独去行业动态合集 */
+.hb-main {
+	display: block;
+	color: inherit;
+}
+
+.hb-go {
+	position: absolute;
+	right: 1.35rem;
+	top: 1.2rem;
+	z-index: 2;
+	margin-left: 0;
+	padding: 0.15rem 0.35rem;
+	border-radius: 6px;
+}
+
+.hb-go:hover {
+	background: rgb(255 255 255 / 0.12);
+}
+
+/* 整卡进「今天那篇日报」，右上角入口单独进「行业动态」合集 */
+.hb-main {
+	display: block;
+	color: inherit;
+}
+
+.hb-go {
+	position: absolute;
+	right: 1.2rem;
+	top: 1.05rem;
+	z-index: 2;
+	margin-left: 0;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	padding: 0.15rem 0.4rem;
+	border-radius: 6px;
+	font-size: var(--fs-label);
+	color: rgb(255 255 255 / 0.62);
+	transition: color 0.2s ease, background 0.2s ease;
+}
+
+.hb-go:hover {
+	color: #fff;
+	background: rgb(255 255 255 / 0.14);
+}

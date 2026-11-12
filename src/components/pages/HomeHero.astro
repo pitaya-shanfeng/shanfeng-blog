@@ -34,18 +34,11 @@ const today = {
 	
 
 	<div class="home-hero-inner">
-	<a
-				class="home-hero-brief"
-			href={brief?.href ?? url("/hotnews/")}
-			aria-labelledby="hero-brief-title"
-		>
+	<div class="home-hero-brief">
+			<a class="hb-main" href={brief?.href ?? url("/hotnews/")} aria-labelledby="hero-brief-title">
 			<div class="hb-head">
 				<span class="hb-day">{today.day}</span>
 				<span class="hb-date">{today.line}</span>
-				<span class="hb-go">
-					每日行业动态
-					<Icon name="material-symbols:arrow-outward-rounded" class="text-sm" />
-				</span>
 			</div>
 			<p class="hb-title" id="hero-brief-title">{brief?.headline ?? brief?.title ?? "行业动态"}</p>
 			<p class="hb-summary">{brief?.summary ?? brief?.description}</p>
@@ -54,13 +47,18 @@ const today = {
 					<li>{t}</li>
 				))}
 			</ul>
-		</a>
+			</a>
+			<a class="hb-go" href={url("/hotnews/")}>
+				每日行业动态
+				<Icon name="material-symbols:arrow-outward-rounded" class="text-sm" />
+			</a>
+		</div>
 		<h1 class="home-hero-title">做个靠谱的<br />产品经理</h1>
 		<p class="home-hero-lead">
 			不堆黑话，聊聊产品判断力：在噪音中看清本质，在取舍之间守住方向，让每一次决策都经得起推敲！
 		</p>
 		<div class="home-hero-actions">
-			<a class="home-hero-cta" href="#reading">
+			<a class="home-hero-cta" href={url("/archive/")}>
 				开始阅读
 				<Icon name="material-symbols:arrow-outward-rounded" class="text-sm" />
 			</a>
