@@ -820,3 +820,27 @@
 .ncard .card-title {
 	margin-top: 1rem;
 }
+
+/* 学习主线：步与步之间加箭头，读起来是「一条线」而不是四个格子 */
+.path-steps li {
+	position: relative;
+}
+
+@media (min-width: 700px) {
+	.path-steps li:not(:last-child)::after {
+		content: "→";
+		position: absolute;
+		right: -0.62rem;
+		top: 50%;
+		transform: translateY(-50%);
+		font-size: var(--fs-sub);
+		line-height: 1;
+		color: var(--content-meta);
+		opacity: 0.6;
+		z-index: 2;
+	}
+}
+
+.dark .path-steps li:not(:last-child)::after {
+	border-color: rgb(226 234 244 / 0.35);
+}
