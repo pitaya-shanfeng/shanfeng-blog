@@ -279,3 +279,21 @@ html:has(.home-hero) #content-panel {
 		display: none;
 	}
 }
+
+
+/* 首页不要壁纸 banner：刊头自己整幅出血 */
+html[data-wallpaper-mode] body:has(.home-hero) #wallpaper-wrapper {
+	display: none !important;
+}
+
+/* 首页不要侧栏：用 :has 挂在刊头上，切页后 DOM 一换规则自动失效
+   （不能用 hideSidebar 属性——它改的是 #main-grid 的列几何，swup 切页不会还原） */
+html:has(.home-hero) #left-sidebar-wrapper,
+html:has(.home-hero) #right-sidebar-static,
+html:has(.home-hero) #mobile-bottom-sidebar {
+	display: none !important;
+}
+
+html:has(.home-hero) #main-grid {
+	grid-template-columns: 1fr !important;
+}

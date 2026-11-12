@@ -1,7 +1,6 @@
 ---
 import HomeHero from "@/components/pages/HomeHero.astro";
 import HomeBands from "@/components/pages/HomeBands.astro";
-import HomeLanding from "@/components/pages/HomeLanding.astro";
 import HomeSections from "@/components/pages/HomeSections.astro";
 import { siteConfig } from "@/config";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
@@ -10,7 +9,7 @@ import MainGridLayout from "@/layouts/MainGridLayout.astro";
  * 首页
  *
  * 刊头沿用「通栏照片 banner」（customHero + #hero 插槽）；
- * banner 之下的栏目按 2026-11-12 设计稿组织：能力带 → 每日行业动态 → 两本书 → 各栏目 → CTA。
+ * banner 之下：两本书 → 思路 / 调研 / 案例 / 笔记。
  */
 ---
 
@@ -22,7 +21,6 @@ import MainGridLayout from "@/layouts/MainGridLayout.astro";
   <Fragment slot="hero">
     <HomeHero />
   </Fragment>
-  <HomeLanding />
   <HomeBands />
   <HomeSections />
 </MainGridLayout>
