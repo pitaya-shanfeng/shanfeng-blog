@@ -5,8 +5,7 @@
  * 设计要点：
  * - 用 .card-base（与文章卡、侧栏卡同一套圆角与底色），不用深色收底
  *   —— 深色带和这个浅色、圆角的页面风格不搭。
- * - 顶栏：左品牌（站名 + 一句话定位），右上三枚胶囊：
- *   书签导航 / RSS / 留言板。书签导航的开关放在右上角。
+ * - 顶栏：左品牌（站名 + 一句话定位），右上「书签导航」胶囊（RSS / 留言板先撤下，暂时用不到）。
  * - 书签抽屉默认收起，点开后从左到右铺开分组链接（宽屏 6 列）。
  * - 版权压成一行，CC BY-NC-SA 4.0 走低对比徽章。
  *
@@ -126,48 +125,7 @@ const SITE_COUNT = RESOURCE_GROUPS.reduce(
 					</svg>
 				</button>
 
-				<a
-					class="footer-pill inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs"
-					href={url("rss.xml")}
-					target="_blank"
-					rel="noopener"
-				>
-					<svg
-						class="h-3.5 w-3.5 opacity-70"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="1.9"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						aria-hidden="true"
-					>
-						<path
-							d="M5 19a1 1 0 100-2 1 1 0 000 2zM5 12a7 7 0 017 7M5 5a14 14 0 0114 14"
-						></path>
-					</svg>
-					RSS
-				</a>
 
-				<a
-					class="footer-pill inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs"
-					href={url("guestbook/")}
-				>
-					<svg
-						class="h-3.5 w-3.5 opacity-70"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="1.9"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						aria-hidden="true"
-					>
-						<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"
-						></path>
-					</svg>
-					留言板
-				</a>
 			</div>
 		</div>
 
@@ -242,36 +200,6 @@ const SITE_COUNT = RESOURCE_GROUPS.reduce(
 			<div
 				class="transition text-50 flex flex-wrap items-center gap-x-2 gap-y-1"
 			>
-				<!-- 开源署名勿删 -->
-				<span>Powered by</span>
-				<a
-					class="transition link text-(--primary)"
-					target="_blank"
-					rel="noopener"
-					href="https://astro.build">Astro</a
-				>
-				<span aria-hidden="true">&amp;</span>
-				<a
-					class="transition link text-(--primary)"
-					target="_blank"
-					rel="noopener"
-					href="https://github.com/CuteLeaf/Firefly">Firefly</a
-				>
-				<span aria-hidden="true">·</span>
-				<a
-					class="transition link text-(--primary)"
-					target="_blank"
-					rel="noopener"
-					href={url("atom.xml")}>Atom</a
-				>
-				<span aria-hidden="true">·</span>
-				<a
-					class="transition link text-(--primary)"
-					target="_blank"
-					rel="noopener"
-					href={url("sitemap-index.xml")}>Sitemap</a
-				>
-				<span aria-hidden="true">·</span>
 				<button
 					type="button"
 					id="footer-back-to-top"
