@@ -274,12 +274,9 @@ const noteCount = countOf("笔记");
 					{n.cover && (
 						<span class="rcard-cover">
 							<img src={n.cover} alt="" loading="lazy" />
+							{n.star && <span class="rcard-star">精选</span>}
 						</span>
 					)}
-					<div class="card-top ncard-top">
-						<span class="card-date">{n.date}</span>
-						{n.star && <span class="card-star">精选</span>}
-					</div>
 					<h3 class="card-title">{n.title}</h3>
 					<p class="card-desc">{n.desc}</p>
 				</a>

@@ -791,3 +791,31 @@
 	padding: 0;
 	border-left: 0;
 }
+
+/* 精选：做成封面左上角的小角标，避免各卡首行高度不一致 */
+.rcard-cover {
+	position: relative;
+}
+
+.rcard-star {
+	position: absolute;
+	left: 0.75rem;
+	top: 0.75rem;
+	padding: 0.15rem 0.5rem;
+	border-radius: var(--radius-md);
+	background: rgb(255 255 255 / 0.92);
+	color: #c2410c;
+	font-size: var(--fs-label);
+	font-weight: 600;
+	backdrop-filter: blur(6px);
+}
+
+.dark .rcard-star {
+	background: rgb(20 26 32 / 0.72);
+	color: #f0a07a;
+}
+
+/* 卡片标题与封面之间留一点距离 */
+.ncard .card-title {
+	margin-top: 1rem;
+}
