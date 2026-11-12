@@ -28,11 +28,11 @@ const countOf = (cat: string) => all.filter((p) => (p.data.category ?? "").inclu
 
 /* 思路：把设计稿的五步对到具体文章 */
 const steps = [
-	{ no: "STEP 01", label: "看市场", ids: ["2026-11-07-market-analysis", "2026-11-06-competitive-analysis"] },
-	{ no: "STEP 02", label: "摸体验", ids: ["2026-11-06-qingnian-ux", "2026-11-06-build-scene"] },
-	{ no: "STEP 03", label: "定方案", ids: ["2026-10-29-prd-writing", "2026-11-05-qiren-shuangqui"] },
+	{ no: "STEP 01", label: "看市场", ids: ["2026-11-07-market-analysis", "2026-11-10-business-model"] },
+	{ no: "STEP 02", label: "摸体验", ids: ["2026-11-10-user-research", "2026-11-06-build-scene"] },
+	{ no: "STEP 03", label: "定方案", ids: ["2026-11-10-need-discovery", "2026-11-10-req-analysis"] },
 	{ no: "STEP 04", label: "验数据", ids: ["2026-11-10-data-analysis-system", "2026-11-10-data-viz"] },
-	{ no: "STEP 05", label: "沉方法", ids: ["2026-11-05-chanpin-chuanboli", "2026-11-10-python-basics"] },
+	{ no: "STEP 05", label: "沉方法", ids: ["2026-11-10-strategy-product", "2026-11-10-python-basics"] },
 ].map((s) => ({ ...s, items: list(s.ids) }));
 
 /* 调研：四张，带细分标签 */
@@ -79,7 +79,7 @@ const noteCount = countOf("笔记");
 				<p class="sec-sub">方法不列清单，串在工作流里：从看市场到沉淀复用，每一步都有对应的思考。</p>
 			</div>
 			<a class="sec-more" href={url("/topics/fangfa-chendian/")}>
-				全部 {ideaCount} 篇
+				查看全部文章
 				<Icon name="material-symbols:arrow-outward-rounded" class="text-sm" />
 			</a>
 		</header>
@@ -110,7 +110,7 @@ const noteCount = countOf("笔记");
 				<p class="sec-sub">行业、竞品、体验三条线，挑几篇值得花时间读的。</p>
 			</div>
 			<a class="sec-more" href={url("/topics/diaoyan-fenxi/")}>
-				全部 {researchCount} 篇
+				查看全部文章
 				<Icon name="material-symbols:arrow-outward-rounded" class="text-sm" />
 			</a>
 		</header>
@@ -138,7 +138,7 @@ const noteCount = countOf("笔记");
 				<p class="sec-sub">不写通用的方法论，只写真正落地、跑过业务的系统。</p>
 			</div>
 			<a class="sec-more" href={url("/topics/chanpin-sheji/")}>
-				全部 {caseCount} 篇
+				查看全部文章
 				<Icon name="material-symbols:arrow-outward-rounded" class="text-sm" />
 			</a>
 		</header>
@@ -166,7 +166,7 @@ const noteCount = countOf("笔记");
 				<p class="sec-sub">从大模型认知到 Agent 开发，一条主线往前推。</p>
 			</div>
 			<a class="sec-more" href={url("/notes/")}>
-				全部 {noteCount} 篇
+				查看全部文章
 				<Icon name="material-symbols:arrow-outward-rounded" class="text-sm" />
 			</a>
 		</header>

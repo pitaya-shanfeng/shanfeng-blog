@@ -76,7 +76,8 @@
 	align-items: center;
 	gap: 0.3rem;
 	font-size: var(--fs-sub);
-	color: #2563d4;
+	/* 主题绿（暗色下会自动变浅） */
+	color: var(--btn-content);
 	white-space: nowrap;
 }
 
