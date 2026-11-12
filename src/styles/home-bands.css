@@ -45,10 +45,11 @@
 /* ── 两本书 ─────────────────────────────────── */
 
 .band-books {
+	/* 与站点主色（hue 165 薄荷绿）同一族：深墨绿底 + 主色光晕 + 一点黄铜暖边 */
 	background:
-		radial-gradient(44rem 26rem at 12% 0%, rgb(139 92 246 / 0.28) 0%, transparent 62%),
-		radial-gradient(44rem 26rem at 88% 100%, rgb(56 130 246 / 0.3) 0%, transparent 62%),
-		linear-gradient(180deg, #141033 0%, #171b4a 50%, #131a3f 100%);
+		radial-gradient(46rem 24rem at 12% 0%, rgb(23 185 141 / 0.3) 0%, transparent 62%),
+		radial-gradient(38rem 22rem at 88% 100%, rgb(216 174 104 / 0.16) 0%, transparent 62%),
+		linear-gradient(160deg, #0c211c 0%, #123028 55%, #0a1a16 100%);
 }
 
 .books-grid {
