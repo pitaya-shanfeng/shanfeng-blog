@@ -294,7 +294,7 @@
 .path-head {
 	display: flex;
 	align-items: baseline;
-	gap: 0.6rem;
+	gap: 0.55rem;
 }
 
 .path-label {
@@ -592,7 +592,7 @@
 
 .step-list {
 	margin: 0.85rem 0 0;
-	gap: 0.6rem;
+	gap: 0.55rem;
 }
 
 .step-list a {
@@ -728,4 +728,66 @@
 /* 暗色下深色封面容易糊进卡片，加一条发丝线 */
 .dark .rcard-cover {
 	box-shadow: inset 0 -1px 0 rgb(255 255 255 / 0.08);
+}
+
+/* ── 思路：每条文章做成迷你卡（封面 + 标题） ─────────── */
+
+.mini-card {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	border-radius: var(--radius-lg);
+	background: var(--card-bg);
+	box-shadow: 0 1px 2px rgb(16 32 64 / 0.05), 0 8px 20px -16px rgb(16 32 64 / 0.4);
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dark .mini-card {
+	background: rgb(255 255 255 / 0.06);
+	box-shadow: none;
+}
+
+.mini-card:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 2px 6px rgb(16 32 64 / 0.06), 0 14px 26px -16px rgb(16 32 64 / 0.45);
+}
+
+.mini-cover {
+	display: block;
+	overflow: hidden;
+	background: var(--page-bg);
+}
+
+.mini-cover img {
+	display: block;
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
+	transition: transform 0.35s ease;
+}
+
+.mini-card:hover .mini-cover img {
+	transform: scale(1.04);
+}
+
+.mini-title {
+	padding: 0.55rem 0.65rem 0.7rem;
+	font-size: var(--fs-label);
+	font-weight: 600;
+	line-height: 1.45;
+	color: #14203a;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.dark .mini-title {
+	color: #eef3f8;
+}
+
+/* 原来的左侧竖线样式不再需要 */
+.step-list a {
+	padding: 0;
+	border-left: 0;
 }

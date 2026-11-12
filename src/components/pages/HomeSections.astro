@@ -20,7 +20,8 @@ const pick = (id: string) => {
 		title: p.data.title,
 		desc: p.data.quote ?? p.data.description ?? "",
 		href: getPostUrlBySlug(p.data.slug ?? p.id),
-		cover: p.data.image,
+		// 迷你卡用小尺寸更干净的无字 banner（封面带标题排版，会与卡片标题重复）
+		cover: p.data.banner ?? p.data.image,
 	};
 };
 const list = (ids: string[]) => ids.map(pick).filter((x): x is NonNullable<typeof x> => Boolean(x));
@@ -136,9 +137,13 @@ const noteCount = countOf("笔记");
 					<ul class="step-list">
 						{s.items.map((it) => (
 							<li>
-								<a href={it.href}>
-									<span class="step-item-title">{it.title}</span>
-									<span class="step-item-desc">{it.desc}</span>
+								<a class="mini-card" href={it.href}>
+									{it.cover && (
+										<span class="mini-cover">
+											<img src={it.cover} alt="" loading="lazy" />
+										</span>
+									)}
+									<span class="mini-title">{it.title}</span>
 								</a>
 							</li>
 						))}
