@@ -35,13 +35,27 @@ const steps = [
 	{ no: "STEP 05", label: "沉方法", ids: ["2026-11-10-strategy-product", "2026-11-10-python-basics"] },
 ].map((s) => ({ ...s, items: list(s.ids) }));
 
-/* 调研：四张，带细分标签 */
+/* 调研：六篇（两行三列），按内嵌页数挑最厚的几份 */
 const research = [
-	{ tag: "行业研究", id: "2026-11-06-zhongcao-force" },
+	{ tag: "行业研究", id: "2026-11-06-beauty-industry" },
+	{ tag: "体验调研", id: "2026-11-05-weishang-tools" },
+	{ tag: "内容研究", id: "2026-11-06-zhongcao-force" },
 	{ tag: "模式研究", id: "2026-11-06-membership-report" },
 	{ tag: "品牌调研", id: "2026-11-06-sams-club" },
 	{ tag: "体验调研", id: "2026-11-05-alipay-wufu" },
-].map((r) => ({ tag: r.tag, post: pick(r.id) })).filter((r) => r.post);
+].map((r) => {
+	const p = byId.get(r.id);
+	return p
+		? {
+				tag: r.tag,
+				title: p.data.title,
+				desc: p.data.quote ?? p.data.description ?? "",
+				href: getPostUrlBySlug(p.data.slug ?? p.id),
+				cover: p.data.image,
+				pages: (p.data as { documentPages?: number }).documentPages ?? 0,
+			}
+		: null;
+}).filter((r): r is NonNullable<typeof r> => Boolean(r));
 
 /* 案例：四张 */
 const cases = [
@@ -101,7 +115,12 @@ const noteCount = countOf("笔记");
 </section>
 
 {/* ── 调研 ───────────────────────────────────── */}
-<section class="sec sec-tint" aria-labelledby="sec-research-title">
+<section class="sec sec-tint sec-research" aria-labelledby="sec-research-title">
+	{/* 氛围装饰 */}
+	<span class="deco deco-square" aria-hidden="true"></span>
+	<span class="deco deco-bar" aria-hidden="true"></span>
+	<span class="deco deco-ring" aria-hidden="true"></span>
+	<span class="deco deco-blob" aria-hidden="true"></span>
 	<div class="sec-inner">
 		<header class="sec-head">
 			<div>
@@ -115,13 +134,22 @@ const noteCount = countOf("笔记");
 			</a>
 		</header>
 
-		<div class="cards cards-4">
+		<div class="cards cards-3">
 			{research.map((r) => (
-				<a class="card" href={r.post!.href}>
+				<a class="card rcard" href={r.href}>
+					{r.cover && (
+						<span class="rcard-cover">
+							<img src={r.cover} alt="" loading="lazy" />
+						</span>
+					)}
 					<span class="card-tag tag-blue">{r.tag}</span>
-					<h3 class="card-title">{r.post!.title}</h3>
-					<p class="card-desc">{r.post!.desc}</p>
-					<span class="card-more">阅读全文 <Icon name="material-symbols:arrow-forward-rounded" class="text-sm" /></span>
+					<h3 class="card-title">{r.title}</h3>
+					<p class="card-desc">{r.desc}</p>
+					<span class="card-more">
+						{r.pages > 0 && <span class="rcard-pages">{r.pages} 页</span>}
+						阅读全文
+						<Icon name="material-symbols:arrow-forward-rounded" class="text-sm" />
+					</span>
 				</a>
 			))}
 		</div>

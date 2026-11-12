@@ -401,3 +401,144 @@
 .dark .step-list a {
 	color: rgb(226 234 244 / 0.72);
 }
+
+/* ── 调研：三列两行 + 封面卡 + 氛围底 ───────────────── */
+
+.sec-research {
+	position: relative;
+	overflow: hidden;
+	background:
+		radial-gradient(42rem 22rem at 8% 0%, #e4eefc 0%, transparent 62%),
+		radial-gradient(38rem 20rem at 92% 100%, #eae6fd 0%, transparent 64%),
+		linear-gradient(180deg, #f8fafd 0%, #f4f7fb 60%, #f7fafc 100%);
+}
+
+.dark .sec-research {
+	background:
+		radial-gradient(42rem 22rem at 8% 0%, rgb(37 99 212 / 0.12) 0%, transparent 62%),
+		radial-gradient(38rem 20rem at 92% 100%, rgb(139 92 246 / 0.12) 0%, transparent 64%),
+		rgb(255 255 255 / 0.02);
+}
+
+.sec-research > .sec-inner {
+	position: relative;
+	z-index: 2;
+}
+
+.sec-research .deco {
+	position: absolute;
+	z-index: 1;
+	pointer-events: none;
+}
+
+.sec-research .deco-square {
+	left: 4%;
+	top: 10%;
+	width: 4.5rem;
+	height: 3.4rem;
+	border-radius: 0.8rem;
+	background: linear-gradient(150deg, #dbe9fb, #edf4fe);
+}
+
+.sec-research .deco-bar {
+	right: 4%;
+	top: 6%;
+	width: 1.4rem;
+	height: 6.5rem;
+	border-radius: 0.7rem;
+	background: linear-gradient(180deg, #e3ddfb, #efecfe);
+}
+
+.sec-research .deco-ring {
+	right: 13%;
+	bottom: 8%;
+	width: 3rem;
+	height: 3rem;
+	border-radius: 50%;
+	border: 2px solid #8fb6e8;
+	opacity: 0.5;
+}
+
+.sec-research .deco-blob {
+	left: 10%;
+	bottom: -2rem;
+	width: 6rem;
+	height: 4.2rem;
+	border-radius: 1.8rem;
+	background: linear-gradient(140deg, #dbe4fb, #ece9fe);
+	opacity: 0.8;
+}
+
+.dark .sec-research .deco-square,
+.dark .sec-research .deco-bar,
+.dark .sec-research .deco-blob {
+	opacity: 0.16;
+}
+
+.cards-3 {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 1.1rem;
+}
+
+@media (min-width: 700px) {
+	.cards-3 {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+@media (min-width: 1100px) {
+	.cards-3 {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+/* 带封面的调研卡：图片顶到卡片上沿 */
+.rcard {
+	padding: 0;
+	overflow: hidden;
+}
+
+.rcard-cover {
+	display: block;
+	overflow: hidden;
+	background: var(--page-bg);
+}
+
+.rcard-cover img {
+	display: block;
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
+	transition: transform 0.35s ease;
+}
+
+.rcard:hover .rcard-cover img {
+	transform: scale(1.03);
+}
+
+.rcard .card-tag {
+	margin: 1rem 1.25rem 0;
+	align-self: flex-start;
+}
+
+.rcard .card-title {
+	margin: 0.5rem 1.25rem 0;
+}
+
+.rcard .card-desc {
+	margin: 0.4rem 1.25rem 0;
+}
+
+.rcard .card-more {
+	margin: 0.7rem 1.25rem 1.15rem;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+}
+
+.rcard-pages {
+	padding: 0 0.4rem;
+	border-right: 1px solid var(--line-color);
+	font-variant-numeric: tabular-nums;
+}
