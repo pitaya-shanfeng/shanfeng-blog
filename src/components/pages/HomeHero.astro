@@ -36,9 +36,10 @@ const today = {
 			<span class="hb-day">{today.day}</span>
 			<span class="hb-date">{today.line}</span>
 		</div>
-		<p class="hb-title" id="hero-brief-title">{brief?.points[0] ?? brief?.title ?? "行业动态"}</p>
+		<p class="hb-title" id="hero-brief-title">{brief?.headline ?? brief?.title ?? "行业动态"}</p>
+		<p class="hb-summary">{brief?.summary ?? brief?.description}</p>
 		<ul class="hb-list">
-			{(brief?.points ?? []).slice(1).map((t) => (
+			{(brief?.points ?? []).map((t) => (
 				<li>{t}</li>
 			))}
 		</ul>

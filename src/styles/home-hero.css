@@ -134,10 +134,10 @@ html:has(.home-hero) #content-panel {
 	position: absolute;
 	/* 右边界与导航栏一致：版心居中的留白 + 导航那 1rem 内边距 */
 	right: calc((100vw - min(92vw, var(--page-width, 100rem))) / 2 + 2rem);
-	bottom: 7.5rem;
+	bottom: 6rem;
 	z-index: 3;
-	width: min(24rem, 34vw);
-	padding: 1.15rem 1.25rem 1rem;
+	width: min(26rem, 36vw);
+	padding: 1.2rem 1.35rem 1.05rem;
 	border-radius: var(--radius-2xl);
 	border: 1px solid rgb(255 255 255 / 0.16);
 	background: rgb(10 20 16 / 0.56);
@@ -167,14 +167,25 @@ html:has(.home-hero) #content-panel {
 }
 
 .hb-title {
-	margin: 0.7rem 0 0;
-	font-size: var(--fs-ui);
-	font-weight: 600;
-	line-height: 1.5;
+	margin: 0.8rem 0 0;
+	font-size: var(--fs-body);
+	font-weight: 700;
+	line-height: 1.45;
+}
+
+.hb-summary {
+	margin: 0.45rem 0 0;
+	font-size: var(--fs-meta);
+	line-height: 1.65;
+	color: rgb(255 255 255 / 0.72);
+	display: -webkit-box;
+	-webkit-line-clamp: 4;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
 }
 
 .hb-list {
-	margin: 0.6rem 0 0;
+	margin: 0.75rem 0 0;
 	padding: 0;
 	list-style: none;
 	display: flex;
@@ -218,7 +229,7 @@ html:has(.home-hero) #content-panel {
 	color: #fff;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1279px) {
 	.home-hero-brief {
 		display: none;
 	}
