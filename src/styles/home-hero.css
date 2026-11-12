@@ -47,6 +47,7 @@
 	/* 与内容区同一版心：内容卡片左右边距对齐刊头文字 */
 	max-width: min(92vw, var(--page-width, 100rem));
 	margin-inline: auto;
+	position: relative;
 	/* 左右各让 2rem：导航栏是「top-row 的 px + 内层 px-4」双重内边距，
 	   这里对齐它的文字边界，标题与卡片都不越过导航 */
 	padding: 7rem 2rem 6.5rem;
@@ -132,17 +133,17 @@ html:has(.home-hero) #content-panel {
 
 .home-hero-brief {
 	position: absolute;
-	/* 右边界与导航栏一致：版心居中的留白 + 导航那 1rem 内边距 */
-	right: calc((100vw - min(92vw, var(--page-width, 100rem))) / 2 + 2rem);
-	bottom: 6rem;
+	/* 顶边与左侧标题对齐（inner 的 padding-top），右边界与版心一致 */
+	top: 8rem;
+	right: 2rem;
 	z-index: 3;
 	width: min(26rem, 36vw);
 	padding: 1.2rem 1.35rem 1.05rem;
 	border-radius: var(--radius-2xl);
 	border: 1px solid rgb(255 255 255 / 0.16);
-	background: rgb(10 20 16 / 0.56);
-	backdrop-filter: blur(10px) saturate(1.05);
-	-webkit-backdrop-filter: blur(10px) saturate(1.05);
+	background: rgb(10 20 16 / 0.38);
+	backdrop-filter: blur(12px) saturate(1.1);
+	-webkit-backdrop-filter: blur(12px) saturate(1.1);
 	box-shadow: 0 12px 32px -12px rgb(0 0 0 / 0.45);
 	color: #fff;
 	display: block;
@@ -150,7 +151,7 @@ html:has(.home-hero) #content-panel {
 }
 
 .home-hero-brief:hover {
-	background: rgb(10 20 16 / 0.68);
+	background: rgb(10 20 16 / 0.52);
 	transform: translateY(-2px);
 	box-shadow: 0 18px 40px -14px rgb(0 0 0 / 0.55);
 }
