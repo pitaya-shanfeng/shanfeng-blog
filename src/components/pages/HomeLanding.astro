@@ -52,25 +52,7 @@ const allWithBooks = await getSortedPostsList(true);
 
 const postUrl = (p: (typeof all)[number]) => getPostUrlBySlug(p.data.slug ?? p.id);
 
-/** 行业动态：最新一期，并从「## 今日总览」里抽前三条加粗导语 */
-const hotPosts = all
-	.filter((p) => (p.data.category ?? "").includes("行业动态"))
-	.sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
-const hot = hotPosts[0];
 
-type Point = { label: string; text: string };
-const hotPoints: Point[] = (() => {
-	const body = hot?.body ?? "";
-	const section = body.split(/^##\s+今日总览/m)[1]?.split(/^##\s+/m)[0] ?? "";
-	const labels = ["电商", "经营", "金融", "消费", "动作"];
-	const items = [...section.matchAll(/\*\*(.+?)[：:]\*\*\s*([\s\S]*?)(?=\n\*\*|\n---|\n*$)/g)]
-		.map((m) => ({ head: m[1].trim(), text: m[2].replace(/\s+/g, " ").trim() }))
-		.filter((x) => x.head && x.text);
-	return items.slice(0, 3).map((x, i) => ({
-		label: labels[i] ?? "其他",
-		text: x.head,
-	}));
-})();
 
 /** 精选：各合集里最新、且带 quote 的三篇 */
 const FEATURED_CATS = ["案例", "调研", "思路", "笔记"];
@@ -125,16 +107,6 @@ const columns = [...topicColumns, noteColumn];
 /** 学习记录：笔记最新 4 条 */
 const learning = notePosts.slice(0, 4);
 
-/** 日报日期拆成「大数字 + 年月」 */
-const hotDate = hot?.data.published;
-const dayLabel = hotDate
-	? `${String(hotDate.getMonth() + 1).padStart(2, "0")}.${String(hotDate.getDate()).padStart(2, "0")}`
-	: "";
-const dateLine = hotDate
-	? `${hotDate.getFullYear()} · ${"日一二三四五六"[hotDate.getDay()]}`
-	: "";
-
-const heroDomains = ["零售", "社交电商", "平台与中台", "增长"];
 ---
 
 <div class="home-landing">
@@ -155,49 +127,11 @@ const heroDomains = ["零售", "社交电商", "平台与中台", "增长"];
 		</div>
 	</section>
 
-	{/* ── 2. 行业动态 ──────────────────────────────── */}
-	{
-		hot && (
-			<section class="hl-daily hl-card" id="daily" aria-labelledby="hl-daily-title">
-				<div class="hl-daily-date">
-					<p class="hl-kicker">DAILY BRIEF</p>
-					<p class="hl-daily-day">{dayLabel}</p>
-					<p class="hl-daily-meta">{dateLine}</p>
-					<p class="hl-daily-tags">AI · 电商 · 金融</p>
-				</div>
-				<div class="hl-daily-body">
-					<div class="hl-daily-head">
-						<div>
-							<h2 id="hl-daily-title" class="hl-section-title">行业动态</h2>
-							<p class="hl-section-sub">一天一份，只留判断和动作。</p>
-						</div>
-						<a class="hl-more" href={url("/hotnews/")}>
-							查看往期
-							<Icon name="material-symbols:arrow-outward-rounded" class="text-sm" />
-						</a>
-					</div>
-					<a class="hl-daily-post" href={postUrl(hot)}>
-						<h3 class="hl-daily-title">{hot.data.title}</h3>
-						<p class="hl-daily-desc">{hot.data.description}</p>
-					</a>
-					<ul class="hl-daily-list">
-						{hotPoints.map((p) => (
-							<li>
-								<span class="hl-daily-label">{p.label}</span>
-								<span class="hl-daily-text">{p.text}</span>
-							</li>
-						))}
-					</ul>
-				</div>
-			</section>
-		)
-	}
-
 	{/* ── 3. 精选 ─────────────────────────────────── */}
-	<section class="hl-featured" aria-labelledby="hl-featured-title">
+	<section class="hl-featured" id="reading" aria-labelledby="hl-featured-title">
 		<div class="hl-featured-head">
 			<div>
-				<p class="hl-kicker">03 / 精选阅读</p>
+				<p class="hl-kicker">01 / 精选阅读</p>
 				<h2 id="hl-featured-title" class="hl-section-title">回到现场，看判断如何发生。</h2>
 			</div>
 			<a class="hl-more" href={url("/archive/")}>
@@ -238,7 +172,7 @@ const heroDomains = ["零售", "社交电商", "平台与中台", "增长"];
 	{/* ── 4. 两本书 ───────────────────────────────── */}
 	<section class="hl-books" aria-labelledby="hl-books-title">
 		<div class="hl-books-head">
-			<p class="hl-kicker">04 / 体系</p>
+			<p class="hl-kicker">02 / 体系</p>
 			<h2 id="hl-books-title" class="hl-section-title">把零散的经验，写成体系。</h2>
 			<p class="hl-section-sub">两本书，一本讲判断，一本讲增长。</p>
 		</div>
@@ -262,7 +196,7 @@ const heroDomains = ["零售", "社交电商", "平台与中台", "增长"];
 	{/* ── 5. 四栏索引 ─────────────────────────────── */}
 	<section class="hl-columns" aria-labelledby="hl-columns-title">
 		<div class="hl-columns-head">
-			<p class="hl-kicker">05 / 索引</p>
+			<p class="hl-kicker">03 / 索引</p>
 			<h2 id="hl-columns-title" class="hl-section-title">沿着问题，找到思路。</h2>
 			<p class="hl-section-sub">方法、事实、实践、输入，四条线各自往下走。</p>
 		</div>
@@ -296,7 +230,7 @@ const heroDomains = ["零售", "社交电商", "平台与中台", "增长"];
 	<section class="hl-learning hl-card" aria-labelledby="hl-learning-title">
 		<div class="hl-learning-head">
 			<div>
-				<p class="hl-kicker">06 / 记录</p>
+				<p class="hl-kicker">04 / 记录</p>
 				<h2 id="hl-learning-title" class="hl-section-title">还在学习，也继续记录。</h2>
 				<p class="hl-section-sub">大模型、RAG、Agent 的笔记，边学边写。</p>
 			</div>
