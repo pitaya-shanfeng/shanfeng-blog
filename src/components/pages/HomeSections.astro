@@ -20,8 +20,8 @@ const pick = (id: string) => {
 		title: p.data.title,
 		desc: p.data.quote ?? p.data.description ?? "",
 		href: getPostUrlBySlug(p.data.slug ?? p.id),
-		// 迷你卡用小尺寸更干净的无字 banner（封面带标题排版，会与卡片标题重复）
-		cover: p.data.banner ?? p.data.image,
+		// 用设计好的封面（本身带标题排版），与调研/案例的卡片同一种观感
+		cover: p.data.image,
 	};
 };
 const list = (ids: string[]) => ids.map(pick).filter((x): x is NonNullable<typeof x> => Boolean(x));

@@ -764,8 +764,6 @@
 	width: 100%;
 	aspect-ratio: 16 / 9;
 	object-fit: cover;
-	/* 思路的 banner 是 2.84:1 的宽幅，主体在右侧；裁成 16:9 时要往右取景 */
-	object-position: 82% center;
 	transition: transform 0.35s ease;
 }
 
