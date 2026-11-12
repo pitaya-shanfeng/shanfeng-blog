@@ -45,11 +45,33 @@
 /* ── 两本书 ─────────────────────────────────── */
 
 .band-books {
-	/* 与站点主色（hue 165 薄荷绿）同一族：深墨绿底 + 主色光晕 + 一点黄铜暖边 */
-	background:
-		radial-gradient(46rem 24rem at 12% 0%, rgb(23 185 141 / 0.3) 0%, transparent 62%),
-		radial-gradient(38rem 22rem at 88% 100%, rgb(216 174 104 / 0.16) 0%, transparent 62%),
-		linear-gradient(160deg, #0c211c 0%, #123028 55%, #0a1a16 100%);
+	/* 跟其它板块同一套：浅灰底 + 白卡，和下面的白底区块穿插开 */
+	background: #f4f7fb;
+}
+
+.dark .band-books {
+	background: rgb(255 255 255 / 0.02);
+}
+
+/* 浅底上文字换成深色 */
+.band-books .band-kicker {
+	color: #8a93a8;
+}
+
+.band-books .band-title {
+	color: #14203a;
+}
+
+.band-books .band-sub {
+	color: #6b7488;
+}
+
+.dark .band-books .band-title {
+	color: #eef3f8;
+}
+
+.dark .band-books .band-sub {
+	color: rgb(226 234 244 / 0.62);
 }
 
 .books-grid {
@@ -74,13 +96,14 @@
 	border-radius: var(--radius-2xl);
 	background: #fff;
 	color: #14203a;
-	box-shadow: 0 24px 48px -28px rgb(0 0 0 / 0.55);
+	border: 1px solid rgb(16 32 64 / 0.05);
+	box-shadow: 0 1px 2px rgb(16 32 64 / 0.04), 0 12px 28px -20px rgb(16 32 64 / 0.45);
 	transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .book-card:hover {
 	transform: translateY(-3px);
-	box-shadow: 0 30px 56px -28px rgb(0 0 0 / 0.6);
+	box-shadow: 0 2px 6px rgb(16 32 64 / 0.06), 0 18px 34px -20px rgb(16 32 64 / 0.5);
 }
 
 .book-no {
