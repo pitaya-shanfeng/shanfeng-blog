@@ -54,14 +54,6 @@ import { booksConfig } from "./booksConfig";
  * 所以每个一级项**至少要有两个子项**，否则一级名根本显示不出来。
  */
 
-/** 归档页按标签筛选（只给 tag，避开 category 的交集） */
-const archiveByTag = (tag: string): string =>
-	`/archive/?${new URLSearchParams({ tag }).toString()}`;
-
-/** 归档页按分类筛选（思路 / 案例两栏在做出合集页之前用它兜底） */
-const archiveByCategory = (category: string): string =>
-	`/archive/?${new URLSearchParams({ category }).toString()}`;
-
 /** 二级项：书名走书页，主题走标签筛选 */
 interface TopicRef {
 	name: string;
@@ -125,7 +117,7 @@ const CONTENT_GROUPS: ContentGroupConfig[] = [
 ];
 
 /**
- * 二级项落点解析：书 → 书页；给了自建页面 → 直接用；否则退回归档筛选。
+ * 二级项落点解析：书 → 书页；给了自建页面 → 直接用；都没有则回首页。
  * 导航菜单与分类栏共用这一处，避免两边算出不同的地址。
  */
 const resolveTopicUrl = (topic: TopicRef): string => {
@@ -135,8 +127,8 @@ const resolveTopicUrl = (topic: TopicRef): string => {
 		: undefined;
 	if (topic.url) return topic.url;
 	if (book) return `/books/${book.id}/`;
-	if (topic.category) return archiveByCategory(topic.category);
-	return archiveByTag(topic.tag ?? topic.name);
+	// 归档页已下线：没配书、也没配自建页的栏目，先回首页，别给出死链
+	return "/";
 };
 
 /**
@@ -225,11 +217,6 @@ export const LinkPresets: Record<string, NavBarLink> = {
 	Home: {
 		name: "首页",
 		url: "/",
-	},
-	Archive: {
-		name: "归档",
-		url: "/archive/",
-		icon: "material-symbols:archive",
 	},
 	Categories: {
 		name: "分类",
