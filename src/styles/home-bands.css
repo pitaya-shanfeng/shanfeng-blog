@@ -121,3 +121,8 @@
 	width: 100vw;
 	margin-left: calc((100% - 100vw) / 2);
 }
+
+/* 内容列默认 overflow: clip，会把通栏底色裁回版心；首页这里放开 */
+html:has(.band-books) #content-column {
+	overflow: visible;
+}
