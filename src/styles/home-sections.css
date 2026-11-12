@@ -640,7 +640,8 @@
 	background:
 		radial-gradient(42rem 22rem at 90% 0%, #e8f4ee 0%, transparent 62%),
 		radial-gradient(38rem 20rem at 6% 100%, #e6eefc 0%, transparent 64%),
-		linear-gradient(180deg, #f7fafb 0%, #f2f7f9 60%, #f7fafc 100%);
+		/* 最后一段落到页面底色，和页脚顺接，不留分隔线 */
+		linear-gradient(180deg, #f7fafb 0%, #f2f7f9 62%, var(--page-bg) 100%);
 }
 
 .dark .sec-notes {
