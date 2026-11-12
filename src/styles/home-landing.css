@@ -14,7 +14,11 @@
 	width: 100%;
 	max-width: var(--page-width, 100rem);
 	margin: 0 auto;
-	padding: 1.25rem 1rem 2rem;
+	/* 只做能力带的定位壳：高度为 0，色带从这里开始紧贴 banner */
+	position: relative;
+	z-index: 5;
+	height: 0;
+	padding: 0 1rem;
 	/* 正文色走局部变量：暗色下面 --deep-text 不会自动变浅 */
 	--hl-ink: var(--deep-text);
 	color: var(--hl-ink);
@@ -28,7 +32,7 @@
 	.home-landing {
 		/* #main-grid 自己有 px-2 md:px-4（约 1rem），这里再让 1rem，
 		   合计与导航文字边界对齐 */
-		padding: 2rem 1rem 4rem;
+		padding: 0 1rem;
 		gap: 3.5rem;
 	}
 }
@@ -689,7 +693,7 @@ html:has(.home-landing) #main-grid {
    不画分隔线——用留白分栏，比竖线干净。 */
 
 .hl-caps {
-	margin-top: -2.75rem;
+	margin-top: -3rem;
 	position: relative;
 	z-index: 4;
 	padding: 1.6rem 2rem;
