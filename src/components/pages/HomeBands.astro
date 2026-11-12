@@ -47,12 +47,15 @@ const books = booksConfig
 					<div class="book-body">
 					<p class="book-no">{b.no}</p>
 					<h3 class="book-name">{b.title}</h3>
+					<p class="book-kicker">{b.kicker}</p>
 					<p class="book-lead">{b.lead}</p>
 					<span class="book-meta">
 						{b.count} 篇 · 从第一篇开始读
-						<Icon name="material-symbols:arrow-forward-rounded" class="text-sm" />
 					</span>
 					</div>
+					<span class="book-go" aria-hidden="true">
+						<Icon name="material-symbols:arrow-forward-rounded" />
+					</span>
 				</a>
 			))}
 		</div>

@@ -164,8 +164,8 @@
 .book-card {
 	display: flex;
 	align-items: center;
-	gap: 1.35rem;
-	padding: 1.5rem 1.75rem;
+	gap: 1.5rem;
+	padding: 1.6rem 1.9rem;
 	border-radius: var(--radius-2xl);
 	background: #fff;
 	color: #14203a;
@@ -181,7 +181,7 @@
 
 .book-cover {
 	flex: 0 0 auto;
-	width: 7rem;
+	width: 7.5rem;
 	aspect-ratio: 3 / 4;
 	object-fit: cover;
 	border-radius: 0.55rem;
@@ -238,4 +238,39 @@
 /* 内容列默认 overflow: clip，会把通栏底色裁回版心；首页这里放开 */
 html:has(.band-books) #content-column {
 	overflow: visible;
+}
+
+/* 写作卡片：副题（产品判断力 / 道 · 法 · 术） */
+.book-kicker {
+	margin: 0.2rem 0 0;
+	font-size: var(--fs-label);
+	letter-spacing: var(--ls-wide);
+	color: var(--btn-content);
+}
+
+/* 右侧圆形箭头：让书卡有个明确的“进入”指示 */
+.book-card {
+	position: relative;
+	padding-right: 4.5rem;
+}
+
+.book-go {
+	position: absolute;
+	right: 1.6rem;
+	top: 50%;
+	transform: translateY(-50%);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.4rem;
+	height: 2.4rem;
+	border-radius: 50%;
+	background: color-mix(in oklab, var(--btn-content) 12%, #fff);
+	color: var(--btn-content);
+	transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.book-card:hover .book-go {
+	background: color-mix(in oklab, var(--btn-content) 22%, #fff);
+	transform: translateY(-50%) translateX(2px);
 }

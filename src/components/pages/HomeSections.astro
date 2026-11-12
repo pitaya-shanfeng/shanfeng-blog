@@ -20,6 +20,7 @@ const pick = (id: string) => {
 		title: p.data.title,
 		desc: p.data.quote ?? p.data.description ?? "",
 		href: getPostUrlBySlug(p.data.slug ?? p.id),
+		cover: p.data.image,
 	};
 };
 const list = (ids: string[]) => ids.map(pick).filter((x): x is NonNullable<typeof x> => Boolean(x));
@@ -101,11 +102,18 @@ const noteCount = countOf("笔记");
 		<ol class="steps">
 			{steps.map((s) => (
 				<li class="step">
-					<p class="step-no">{s.no}</p>
-					<h3 class="step-title">{s.label}</h3>
+					<div class="step-head">
+						<span class="step-badge">{s.no.replace("STEP ", "")}</span>
+						<h3 class="step-title">{s.label}</h3>
+					</div>
 					<ul class="step-list">
 						{s.items.map((it) => (
-							<li><a href={it.href}>{it.title}</a></li>
+							<li>
+								<a href={it.href}>
+									<span class="step-item-title">{it.title}</span>
+									<span class="step-item-desc">{it.desc}</span>
+								</a>
+							</li>
 						))}
 					</ul>
 				</li>

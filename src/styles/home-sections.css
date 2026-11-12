@@ -542,3 +542,92 @@
 	border-right: 1px solid var(--line-color);
 	font-variant-numeric: tabular-nums;
 }
+
+/* ── 思路：序号徽标 + 每条一句话 ─────────────────────── */
+
+.step {
+	padding: 1.15rem 1.2rem 1.3rem;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.step:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 2px 6px rgb(16 32 64 / 0.05), 0 14px 28px -18px rgb(16 32 64 / 0.4);
+}
+
+.step-head {
+	display: flex;
+	align-items: center;
+	gap: 0.55rem;
+}
+
+.step-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 1.55rem;
+	height: 1.55rem;
+	border-radius: 50%;
+	background: rgb(255 255 255 / 0.85);
+	color: var(--btn-content);
+	font-size: var(--fs-label);
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
+}
+
+.dark .step-badge {
+	background: rgb(255 255 255 / 0.12);
+}
+
+.step-title {
+	margin: 0;
+	font-size: var(--fs-item);
+	font-weight: 700;
+	color: #14203a;
+}
+
+.dark .step-title {
+	color: #eef3f8;
+}
+
+.step-list {
+	margin: 0.85rem 0 0;
+	gap: 0.6rem;
+}
+
+.step-list a {
+	display: flex;
+	flex-direction: column;
+	gap: 0.15rem;
+	padding: 0.45rem 0 0.45rem 0.6rem;
+	border-left: 2px solid rgb(16 32 64 / 0.06);
+	transition: border-color 0.2s ease;
+}
+
+.step-list a:hover {
+	border-color: var(--btn-content);
+}
+
+.step-item-title {
+	font-size: var(--fs-sub);
+	font-weight: 600;
+	color: #14203a;
+}
+
+.dark .step-item-title {
+	color: #eef3f8;
+}
+
+.step-item-desc {
+	font-size: var(--fs-label);
+	line-height: 1.55;
+	color: #6b7488;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.dark .step-item-desc {
+	color: rgb(226 234 244 / 0.6);
+}
