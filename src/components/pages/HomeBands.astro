@@ -2,23 +2,13 @@
 /**
  * 首页两条通栏色带（设计稿第 2、3 屏）
  *
- * 1) 每日行业动态：深蓝渐变，左侧当天要点，右侧快讯列表
- * 2) 两本书：蓝紫渐变，两张白卡
+ * 两本书：蓝紫渐变，两张白卡（每日行业动态已撤，banner 右上已有晨报卡）
  */
 import { Icon } from "astro-icon/components";
 import { booksConfig } from "@/config/booksConfig";
-import { getDailyBrief } from "@/utils/daily-brief";
 import { getSortedPostsList } from "@/utils/content-utils";
 import { url } from "@/utils/url-utils";
 import "@/styles/home-bands.css";
-
-const brief = await getDailyBrief();
-
-const now = new Date();
-const today = {
-	day: `${String(now.getMonth() + 1).padStart(2, "0")}.${String(now.getDate()).padStart(2, "0")}`,
-	line: `周${"日一二三四五六"[now.getDay()]}`,
-};
 
 const allWithBooks = await getSortedPostsList(true);
 const countOf = (cat: string) =>
@@ -35,40 +25,6 @@ const books = booksConfig
 		href: `/books/${b.id}/`,
 	}));
 ---
-
-{/* ── 每日行业动态 ───────────────────────────── */}
-{
-	brief && (
-		<section class="band band-daily" aria-labelledby="band-daily-title">
-			<div class="band-inner">
-				<p class="band-kicker">DAILY BRIEF · 每日行业动态</p>
-				<h2 id="band-daily-title" class="band-title">每天早上，一份行业晨报</h2>
-				<p class="band-sub">电商、金融、AI 三条线，只记事实和动作，不堆观点。</p>
-
-				<div class="daily-grid">
-					<div class="daily-main">
-						<p class="daily-chip">
-							<span class="daily-chip-day">{today.day}</span>
-							<span class="daily-chip-week">{today.line}</span>
-						</p>
-						<h3 class="daily-title">{brief.headline}</h3>
-						<p class="daily-summary">{brief.summary}</p>
-						<a class="daily-more" href={brief.href}>
-							查看完整版
-							<Icon name="material-symbols:arrow-forward-rounded" class="text-sm" />
-						</a>
-					</div>
-
-					<ul class="daily-flashes">
-						{brief.flashes.map((f) => (
-							<li>{f}</li>
-						))}
-					</ul>
-				</div>
-			</div>
-		</section>
-	)
-}
 
 {/* ── 两本书 ─────────────────────────────────── */}
 <section class="band band-books" aria-labelledby="band-books-title">
