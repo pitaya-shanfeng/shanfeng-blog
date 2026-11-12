@@ -33,7 +33,9 @@ const { class: className, style, widgetConfig } = Astro.props;
  */
 const FIXED_ROUTES: Record<string, string> = {
 	"/notes": "笔记",
-	"/hotnews": "行业动态",
+	// 行业动态不列（用户指定）：一天一期，推荐 10 篇会把「最新一期」挤出视线，
+	// 左栏只保留往期目录。要恢复就把下面这行加回来：
+	// "/hotnews": "行业动态",
 };
 const TOPIC_MAP: Record<string, string> = {};
 for (const page of topicPages) {
