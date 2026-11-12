@@ -64,15 +64,16 @@
 	font-size: clamp(var(--fs-h1), 4.6vw, var(--fs-display));
 	font-weight: 700;
 	line-height: 1.12;
-	letter-spacing: var(--ls-tight);
+	letter-spacing: 0.01em;
 	text-shadow: 0 2px 34px rgb(0 0 0 / 0.35);
 }
 
 .home-hero-lead {
 	margin: 1.5rem 0 0;
 	/* 副标题是一句话说明，比标题低两档：用正文字号 + 放宽行高，读起来像引言 */
-	font-size: var(--fs-h3);
-	line-height: var(--lh-ui);
+	font-size: var(--fs-item);
+	line-height: 1.75;
+	letter-spacing: 0.01em;
 	color: rgb(255 255 255 / 0.9);
 	max-width: 46rem;
 }
@@ -173,10 +174,10 @@ html:has(.home-hero) #content-panel {
 }
 
 .hb-day {
-	font-size: var(--fs-h1);
+	font-size: 2.25rem;
 	font-weight: 700;
 	line-height: 1;
-	letter-spacing: var(--ls-tight);
+	letter-spacing: -0.01em;
 	font-variant-numeric: tabular-nums;
 }
 

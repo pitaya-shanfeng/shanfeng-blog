@@ -1,14 +1,3 @@
-/* 正文色：--deep-text 在暗色下不会自动变浅，这里补一个可切换的别名 */
-.sec,
-.band {
-	--hl-ink: var(--deep-text);
-}
-
-.dark .sec,
-.dark .band {
-	--hl-ink: oklch(0.93 0.012 var(--hue));
-}
-
 /**
  * 首页两条通栏色带：每日行业动态（深蓝）、两本书（蓝紫）
  */
@@ -34,16 +23,16 @@
 	margin: 0;
 	text-align: center;
 	font-size: var(--fs-label);
-	letter-spacing: var(--ls-wide);
+	letter-spacing: 0.24em;
 	color: rgb(255 255 255 / 0.5);
 }
 
 .band-title {
 	margin: 0.9rem 0 0;
 	text-align: center;
-	font-size: var(--fs-h2);
+	font-size: clamp(1.5rem, 2.4vw, 2rem);
 	font-weight: 700;
-	letter-spacing: var(--ls-snug);
+	letter-spacing: 0.01em;
 }
 
 .band-sub {
@@ -60,9 +49,9 @@
 	position: relative;
 	overflow: hidden;
 	background:
-		radial-gradient(46rem 24rem at 6% 0%, color-mix(in oklab, var(--primary) 18%, transparent) 0%, transparent 62%),
-		radial-gradient(42rem 22rem at 96% 24%, color-mix(in oklab, var(--primary) 10%, transparent) 0%, transparent 64%),
-		var(--page-bg);
+		radial-gradient(46rem 24rem at 6% 0%, #dff3ec 0%, transparent 62%),
+		radial-gradient(42rem 22rem at 96% 24%, #e6e3fc 0%, transparent 64%),
+		linear-gradient(180deg, #f8fbfd 0%, #f4f7fd 55%, #f7fafc 100%);
 }
 
 .band-books > .band-inner {
@@ -82,7 +71,7 @@
 	width: 5.5rem;
 	height: 4rem;
 	border-radius: 0.9rem;
-	background: color-mix(in oklab, var(--primary) 22%, var(--card-bg));
+	background: linear-gradient(150deg, #cfeee2, #e7f7f1);
 }
 
 .deco-bar {
@@ -91,7 +80,7 @@
 	width: 1.6rem;
 	height: 7.5rem;
 	border-radius: 0.8rem;
-	background: color-mix(in oklab, var(--primary) 14%, var(--card-bg));
+	background: linear-gradient(180deg, #ded8fb, #ece9fe);
 }
 
 .deco-ring {
@@ -100,7 +89,7 @@
 	width: 3.4rem;
 	height: 3.4rem;
 	border-radius: 50%;
-	border: 2px solid var(--primary);
+	border: 2px solid #34c19a;
 	opacity: 0.55;
 }
 
@@ -110,7 +99,7 @@
 	width: 7rem;
 	height: 5rem;
 	border-radius: 2rem;
-	background: color-mix(in oklab, var(--primary) 18%, var(--card-bg));
+	background: linear-gradient(140deg, #d7d3fb, #e9e7fe);
 	opacity: 0.85;
 }
 
@@ -139,19 +128,19 @@
 
 /* 浅底上文字换成深色 */
 .band-books .band-kicker {
-	color: var(--content-meta);
+	color: #8a93a8;
 }
 
 .band-books .band-title {
-	color: var(--hl-ink);
+	color: #14203a;
 }
 
 .band-books .band-sub {
-	color: var(--content-meta);
+	color: #6b7488;
 }
 
 .dark .band-books .band-title {
-	color: var(--hl-ink);
+	color: #eef3f8;
 }
 
 .dark .band-books .band-sub {
@@ -179,10 +168,7 @@
 	padding: 1.75rem 1.9rem;
 	border-radius: var(--radius-2xl);
 	background: #fff;
-	/* 白卡固定用深色字，不跟暗色主题走：把两个次级色就地覆盖 */
 	color: #14203a;
-	--content-meta: rgba(0, 0, 0, 0.6);
-	--btn-content: oklch(0.55 0.12 var(--hue));
 	border: 1px solid rgb(16 32 64 / 0.05);
 	box-shadow: 0 1px 2px rgb(16 32 64 / 0.04), 0 12px 28px -20px rgb(16 32 64 / 0.45);
 	transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -196,22 +182,22 @@
 .book-no {
 	margin: 0;
 	font-size: var(--fs-label);
-	letter-spacing: var(--ls-wide);
-	color: var(--content-meta);
+	letter-spacing: 0.16em;
+	color: #7b84a0;
 }
 
 .book-name {
 	margin: 0.3rem 0 0;
-	font-size: var(--fs-h2);
-	font-weight: 700;
-	letter-spacing: 0;
+	font-size: clamp(1.5rem, 2.2vw, 2rem);
+	font-weight: 800;
+	letter-spacing: 0.02em;
 }
 
 .book-lead {
 	margin: 0.4rem 0 0;
 	font-size: var(--fs-sub);
 	line-height: 1.75;
-	color: var(--content-meta);
+	color: #5b6478;
 	display: -webkit-box;
 	-webkit-line-clamp: 2;
 	-webkit-box-orient: vertical;
@@ -224,7 +210,7 @@
 	gap: 0.3rem;
 	margin-top: 0.9rem;
 	font-size: var(--fs-label);
-	color: var(--btn-content);
+	color: #12a37a;
 }
 
 /* 通栏铺满：色带与分区背景都要顶到视口两端 */
