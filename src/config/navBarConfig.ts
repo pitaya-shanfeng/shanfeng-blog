@@ -233,18 +233,6 @@ export const LinkPresets: Record<string, NavBarLink> = {
 		url: "/series/",
 		icon: "material-symbols:layers",
 	},
-	Friends: {
-		name: "友链",
-		url: "/friends/",
-		icon: "material-symbols:link-2-rounded",
-		pageKey: "friends",
-	},
-	Guestbook: {
-		name: "留言",
-		url: "/guestbook/",
-		icon: "material-symbols:chat",
-		pageKey: "guestbook",
-	},
 	Dynamic: {
 		name: "动态",
 		url: "/dynamic/",
