@@ -355,3 +355,48 @@
 	width: 100vw;
 	margin-left: calc((100% - 100vw) / 2);
 }
+
+/* ── 暗色：只把亮色块压深，配色本身不动 ─────────────── */
+.dark .step {
+	background: rgb(255 255 255 / 0.06);
+}
+
+.dark .path-steps li {
+	background: rgb(255 255 255 / 0.05);
+}
+
+.dark .card-date {
+	background: rgb(255 255 255 / 0.08);
+	color: rgb(226 234 244 / 0.7);
+}
+
+.dark .tag-blue {
+	background: rgb(37 99 212 / 0.22);
+	color: #9dc0f5;
+}
+
+.dark .tag-amber {
+	background: rgb(183 121 31 / 0.22);
+	color: #e8b877;
+}
+
+.dark .card-star {
+	color: #f0a07a;
+}
+
+.dark .step-title,
+.dark .path-title,
+.dark .path-label {
+	color: #eef3f8;
+}
+
+.dark .step-no,
+.dark .path-no,
+.dark .path-en,
+.dark .path-sub {
+	color: rgb(226 234 244 / 0.6);
+}
+
+.dark .step-list a {
+	color: rgb(226 234 244 / 0.72);
+}
