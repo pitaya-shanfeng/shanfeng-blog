@@ -1,25 +1,11 @@
 ---
 /**
- * 首页落地页
+ * 首页正文（banner 之下）
  *
- * 结构与文案参考 outputs/shanfeng-firefly-design/home.html：
- *   Hero → 行业动态 → 精选 → 两本书 → 四栏索引 → 学习记录 → 作者卡
- *
- * 字号全部用全站字阶变量（--fs-*），与合集页 / 书页保持同一套规范；
- * 颜色只用主题变量，暗色模式跟着现有的 dark 体系走。
+ * 目前只保留「四维能力矩阵」一条能力带；精选、两本书、索引、学习记录、作者卡
+ * 先撤下，等新的版式定稿再逐块加回来。
  */
-import { getCollection } from "astro:content";
-import { Icon } from "astro-icon/components";
-import ImageWrapper from "@/components/common/ImageWrapper.astro";
-import { profileConfig, siteConfig } from "@/config";
-import { booksConfig } from "@/config/booksConfig";
-import { topicPages } from "@/config/topicsConfig";
-import { getSortedPosts, getSortedPostsList } from "@/utils/content-utils";
-import { getPostUrlBySlug } from "@/utils/url-utils";
-import { url } from "@/utils/url-utils";
 import "@/styles/home-landing.css";
-
-/* ---------------- 数据 ---------------- */
 
 /** 四维能力矩阵：只展示，不跳转 */
 const capabilities = [
@@ -44,73 +30,10 @@ const capabilities = [
 		tag: "带团队 · 跨部门交付",
 	},
 ];
-
-
-const all = await getSortedPosts();
-/** 含丛书的全量列表：书的篇数要算上见山/增长黑客的章节 */
-const allWithBooks = await getSortedPostsList(true);
-
-const postUrl = (p: (typeof all)[number]) => getPostUrlBySlug(p.data.slug ?? p.id);
-
-
-
-/** 精选：各合集里最新、且带 quote 的三篇 */
-const FEATURED_CATS = ["案例", "调研", "思路", "笔记"];
-const featured = FEATURED_CATS.map((cat) =>
-	all.find(
-		(p) =>
-			!p.data.draft &&
-			p.data.quote &&
-			(p.data.category ?? "").includes(cat),
-	),
-).filter((p): p is NonNullable<typeof p> => Boolean(p)).slice(0, 3);
-
-/** 两本书：篇数按 series 统计 */
-const categoryCount = (cat: string) =>
-	allWithBooks.filter((p) => (p.data.category ?? "").includes(cat)).length;
-const books = booksConfig
-	.filter((b) => b.id === "jianshan" || b.id === "zengzhang")
-	.map((b) => ({
-		id: b.id,
-		title: b.title,
-		kicker: b.kicker ?? "",
-		lead: b.lead,
-		cover: b.cover,
-		count: categoryCount(b.id === "jianshan" ? "书·见山" : "书·增长"),
-		href: `/books/${b.id}/`,
-	}));
-
-/** 四栏索引：思路 / 调研 / 案例（topicsConfig）+ 笔记 */
-const topicColumns = ["fangfa-chendian", "diaoyan-fenxi", "chanpin-sheji"]
-	.map((slug) => topicPages.find((t) => t.slug === slug))
-	.filter((t): t is NonNullable<typeof t> => Boolean(t))
-	.map((t) => {
-		const posts = all.filter((p) => (p.data.category ?? "").includes(t.category));
-		return {
-			name: t.name,
-			subtitle: t.subtitle ?? "",
-			count: posts.length,
-			href: `/topics/${t.slug}/`,
-			recent: posts.slice(0, 2).map((p) => ({ title: p.data.title, href: postUrl(p) })),
-		};
-	});
-const notePosts = all.filter((p) => (p.data.category ?? "").includes("笔记"));
-const noteColumn = {
-	name: "笔记",
-	subtitle: "学习现场",
-	count: notePosts.length,
-	href: "/notes/",
-	recent: notePosts.slice(0, 2).map((p) => ({ title: p.data.title, href: postUrl(p) })),
-};
-const columns = [...topicColumns, noteColumn];
-
-/** 学习记录：笔记最新 4 条 */
-const learning = notePosts.slice(0, 4);
-
 ---
 
 <div class="home-landing">
-	{/* ── 0. 四维能力矩阵（不可点击） ───────────────── */}
+	{/* 四维能力矩阵（不可点击） */}
 	<section class="hl-caps" aria-label="四维能力矩阵">
 		<div class="hl-caps-grid">
 			{capabilities.map((c) => (
@@ -124,153 +47,6 @@ const learning = notePosts.slice(0, 4);
 					</div>
 				</div>
 			))}
-		</div>
-	</section>
-
-	{/* ── 3. 精选 ─────────────────────────────────── */}
-	<section class="hl-featured" id="reading" aria-labelledby="hl-featured-title">
-		<div class="hl-featured-head">
-			<div>
-				<p class="hl-kicker">01 / 精选阅读</p>
-				<h2 id="hl-featured-title" class="hl-section-title">回到现场，看判断如何发生。</h2>
-			</div>
-			<a class="hl-more" href={url("/archive/")}>
-				全部文章
-				<Icon name="material-symbols:arrow-outward-rounded" class="text-sm" />
-			</a>
-		</div>
-		<div class="hl-featured-grid">
-			{featured[0] && (
-				<a class="hl-featured-main" href={postUrl(featured[0])}>
-					<p class="hl-kicker">{featured[0].data.category}</p>
-					<h3 class="hl-featured-title">{featured[0].data.title}</h3>
-					<p class="hl-featured-quote">{featured[0].data.quote}</p>
-					{featured[0].data.image && (
-						<span class="hl-featured-photo">
-							<img src={featured[0].data.image} alt="" loading="lazy" />
-						</span>
-					)}
-					<span class="hl-featured-foot">
-						<span class="hl-featured-tags">{(featured[0].data.tags ?? []).slice(0, 3).join(" · ")}</span>
-						<span class="hl-more">阅读案例<Icon name="material-symbols:arrow-forward-rounded" class="text-sm" /></span>
-					</span>
-				</a>
-			)}
-			<div class="hl-featured-side">
-				{featured.slice(1).map((p) => (
-					<a class="hl-side-article" href={postUrl(p)}>
-						<p class="hl-kicker">{p.data.category}</p>
-						<h3 class="hl-side-title">{p.data.title}</h3>
-						<p class="hl-side-text">{p.data.quote ?? p.data.description}</p>
-						<span class="hl-more">阅读全文<Icon name="material-symbols:arrow-forward-rounded" class="text-sm" /></span>
-					</a>
-				))}
-			</div>
-		</div>
-	</section>
-
-	{/* ── 4. 两本书 ───────────────────────────────── */}
-	<section class="hl-books" aria-labelledby="hl-books-title">
-		<div class="hl-books-head">
-			<p class="hl-kicker">02 / 体系</p>
-			<h2 id="hl-books-title" class="hl-section-title">把零散的经验，写成体系。</h2>
-			<p class="hl-section-sub">两本书，一本讲判断，一本讲增长。</p>
-		</div>
-		<div class="hl-books-grid">
-			{
-				books.map((b) => (
-					<a class="hl-book hl-card" href={url(b.href)}>
-						<img class="hl-book-cover" src={b.cover} alt={`${b.title} 封面`} loading="lazy" />
-						<div class="hl-book-body">
-							<h3 class="hl-book-title">{b.title}</h3>
-							<p class="hl-book-kicker">{b.kicker}</p>
-							<p class="hl-book-lead">{b.lead}</p>
-							<p class="hl-book-meta">{b.count} 篇 · 从第一篇开始读</p>
-						</div>
-					</a>
-				))
-			}
-		</div>
-	</section>
-
-	{/* ── 5. 四栏索引 ─────────────────────────────── */}
-	<section class="hl-columns" aria-labelledby="hl-columns-title">
-		<div class="hl-columns-head">
-			<p class="hl-kicker">03 / 索引</p>
-			<h2 id="hl-columns-title" class="hl-section-title">沿着问题，找到思路。</h2>
-			<p class="hl-section-sub">方法、事实、实践、输入，四条线各自往下走。</p>
-		</div>
-		<div class="hl-columns-grid">
-			{
-				columns.map((c) => (
-					<div class="hl-column">
-						<div class="hl-column-head">
-							<h3 class="hl-column-title">{c.name}</h3>
-							<span class="hl-column-count">{c.count} 篇</span>
-						</div>
-						<p class="hl-column-sub">{c.subtitle}</p>
-						<ul class="hl-column-list">
-							{c.recent.map((r) => (
-								<li>
-									<a href={r.href}>{r.title}</a>
-								</li>
-							))}
-						</ul>
-						<a class="hl-more" href={url(c.href)}>
-							进入合集
-							<Icon name="material-symbols:arrow-forward-rounded" class="text-sm" />
-						</a>
-					</div>
-				))
-			}
-		</div>
-	</section>
-
-	{/* ── 6. 学习记录 ─────────────────────────────── */}
-	<section class="hl-learning hl-card" aria-labelledby="hl-learning-title">
-		<div class="hl-learning-head">
-			<div>
-				<p class="hl-kicker">04 / 记录</p>
-				<h2 id="hl-learning-title" class="hl-section-title">还在学习，也继续记录。</h2>
-				<p class="hl-section-sub">大模型、RAG、Agent 的笔记，边学边写。</p>
-			</div>
-			<a class="hl-more" href={url("/notes/")}>
-				全部笔记
-				<Icon name="material-symbols:arrow-outward-rounded" class="text-sm" />
-			</a>
-		</div>
-		<ul class="hl-learning-list">
-			{
-				learning.map((p) => (
-					<li>
-						<a href={postUrl(p)}>
-							<span class="hl-learning-title">{p.data.title}</span>
-							<span class="hl-learning-desc">{p.data.description}</span>
-							<span class="hl-learning-date">{p.data.published.toISOString().slice(0, 10)}</span>
-						</a>
-					</li>
-				))
-			}
-		</ul>
-	</section>
-
-	{/* ── 7. 作者卡 ───────────────────────────────── */}
-	<section class="hl-author hl-card">
-		<ImageWrapper
-			src={profileConfig.avatar || ""}
-			alt={`${profileConfig.name} 的头像`}
-			class="hl-author-avatar"
-			widths={[128]}
-			sizes="64px"
-		/>
-		<div class="hl-author-body">
-			<h2 class="hl-author-name">{profileConfig.name}</h2>
-			<p class="hl-author-bio">{profileConfig.bio}</p>
-			<div class="hl-author-links">
-				<a class="hl-btn hl-btn-ghost" href={url("/about/")}>关于</a>
-				<a class="hl-btn hl-btn-ghost" href={url("/guestbook/")}>留言</a>
-				<a class="hl-btn hl-btn-ghost" href={url("/archive/")}>全部文章</a>
-			</div>
 		</div>
 	</section>
 </div>
