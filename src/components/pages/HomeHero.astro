@@ -7,9 +7,18 @@
  * 高度与内容面板偏移（--book-banner-h），首页尺寸不一样，套用会互相打架。
  */
 import { Icon } from "astro-icon/components";
+import { getDailyBrief } from "@/utils/daily-brief";
 import { url } from "@/utils/url-utils";
 import "@/styles/home-hero.css";
 
+const brief = await getDailyBrief();
+
+/** 日历卡上的日期用「今天」，内容用最新一期；两者不一致时标一下那一期 */
+const now = new Date();
+const today = {
+	day: `${String(now.getMonth() + 1).padStart(2, "0")}.${String(now.getDate()).padStart(2, "0")}`,
+	line: `${now.getFullYear()} · 周${"日一二三四五六"[now.getDay()]}`,
+};
 ---
 
 <header class="home-hero">
@@ -22,7 +31,24 @@ import "@/styles/home-hero.css";
 		/>
 	</div>
 
-	<div class="home-hero-quote-wrap" data-quote-host aria-hidden="true"></div>
+	<aside class="home-hero-brief" aria-labelledby="hero-brief-title">
+		<p class="hb-kicker">DAILY BRIEF</p>
+		<div class="hb-head">
+			<span class="hb-day">{today.day}</span>
+			<span class="hb-date">{today.line}</span>
+		</div>
+		<p class="hb-title" id="hero-brief-title">{brief?.points[0] ?? brief?.title ?? "行业动态"}</p>
+		{brief && brief.issue !== today.day && <p class="hb-issue">最新一期 · {brief.issue}</p>}
+		<ul class="hb-list">
+			{(brief?.points ?? []).slice(1).map((t) => (
+				<li>{t}</li>
+			))}
+		</ul>
+		<a class="hb-more" href={url("/hotnews/")}>
+			每日行业动态
+			<Icon name="material-symbols:arrow-outward-rounded" class="text-sm" />
+		</a>
+	</aside>
 
 	<div class="home-hero-inner">
 		<h1 class="home-hero-title">做个靠谱的<br />产品经理</h1>

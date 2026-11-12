@@ -126,6 +126,128 @@ html:has(.home-hero) #content-panel {
 		linear-gradient(90deg, rgb(6 14 16 / 0.52) 0%, rgb(6 14 16 / 0.14) 52%, rgb(6 14 16 / 0) 70%);
 }
 
+/* ── 刊头右侧的「每日行业动态」悬浮卡 ───────────────
+   半透明玻璃感，压在照片上；内容来自最新一期行业动态。 */
+
+.home-hero-brief {
+	position: absolute;
+	right: 0;
+	bottom: 7.5rem;
+	z-index: 3;
+	width: min(24rem, 34vw);
+	margin-right: max(calc((100vw - min(92vw, var(--page-width, 100rem))) / 2), 1.5rem);
+	padding: 1.15rem 1.25rem 1rem;
+	border-radius: var(--radius-2xl);
+	border: 1px solid rgb(255 255 255 / 0.16);
+	background: rgb(10 20 16 / 0.56);
+	backdrop-filter: blur(10px) saturate(1.05);
+	-webkit-backdrop-filter: blur(10px) saturate(1.05);
+	box-shadow: 0 12px 32px -12px rgb(0 0 0 / 0.45);
+	color: #fff;
+}
+
+.hb-kicker {
+	margin: 0;
+	font-size: var(--fs-label);
+	font-weight: 600;
+	letter-spacing: 0.16em;
+	color: rgb(255 255 255 / 0.62);
+}
+
+.hb-head {
+	display: flex;
+	align-items: baseline;
+	gap: 0.6rem;
+	margin-top: 0.35rem;
+}
+
+.hb-day {
+	font-size: 2.25rem;
+	font-weight: 700;
+	line-height: 1;
+	letter-spacing: -0.01em;
+	font-variant-numeric: tabular-nums;
+}
+
+.hb-date {
+	font-size: var(--fs-label);
+	color: rgb(255 255 255 / 0.6);
+}
+
+.hb-title {
+	margin: 0.7rem 0 0;
+	font-size: var(--fs-ui);
+	font-weight: 600;
+	line-height: 1.5;
+}
+
+.hb-list {
+	margin: 0.6rem 0 0;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+}
+
+.hb-list li {
+	position: relative;
+	padding-left: 0.85rem;
+	font-size: var(--fs-meta);
+	line-height: 1.6;
+	color: rgb(255 255 255 / 0.74);
+}
+
+.hb-list li::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0.55em;
+	width: 0.3rem;
+	height: 0.3rem;
+	border-radius: 50%;
+	background: var(--primary);
+}
+
+.hb-more {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.3rem;
+	margin-top: 0.9rem;
+	padding-top: 0.75rem;
+	border-top: 1px solid rgb(255 255 255 / 0.14);
+	width: 100%;
+	font-size: var(--fs-meta);
+	color: rgb(255 255 255 / 0.8);
+	transition: color 0.2s ease;
+}
+
+.hb-more:hover {
+	color: #fff;
+}
+
+@media (max-width: 1100px) {
+	.home-hero-brief {
+		display: none;
+	}
+}
+
+/* 刊头在文档流里占满自己的高度（不像书页那样绝对定位），
+   所以内容面板只需要往回压 3.5rem，与合集页的视觉节奏一致 */
+html:has(.home-hero) #content-panel {
+	position: relative;
+	top: 0;
+	margin-top: -3.5rem;
+	min-height: 0;
+}
+
+/* 清晨那张雾重，压暗层加深一点，保证白字可读 */
+.home-hero[data-hero-time="dawn"]::after {
+	background:
+		linear-gradient(180deg, rgb(6 14 16 / 0.56) 0%, rgb(6 14 16 / 0.24) 42%, rgb(6 14 16 / 0.7) 100%),
+		linear-gradient(90deg, rgb(6 14 16 / 0.52) 0%, rgb(6 14 16 / 0.14) 52%, rgb(6 14 16 / 0) 70%);
+}
+
 /* 金句：右下角，与合集页同一个位置；脚本会把内容填进来 */
 .home-hero-quote-wrap {
 	position: absolute;
@@ -145,4 +267,10 @@ html:has(.home-hero) #content-panel {
 	.home-hero-quote-wrap {
 		display: none;
 	}
+}
+
+.hb-issue {
+	margin: 0.3rem 0 0;
+	font-size: var(--fs-label);
+	color: rgb(255 255 255 / 0.5);
 }
