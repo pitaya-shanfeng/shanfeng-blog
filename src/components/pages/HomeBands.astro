@@ -18,6 +18,7 @@ const books = booksConfig
 	.filter((b) => b.id === "jianshan" || b.id === "zengzhang")
 	.map((b, i) => ({
 		no: `BOOK 0${i + 1}`,
+		cover: b.cover,
 		title: b.title,
 		kicker: b.kicker ?? "",
 		lead: b.lead,
@@ -37,18 +38,21 @@ const books = booksConfig
 	<div class="band-inner">
 		<p class="band-kicker">BOOKS · 写作</p>
 		<h2 id="band-books-title" class="band-title">两本书，把想清楚的写完整</h2>
-		<p class="band-sub">一本讲产品判断，一本讲增长方法，都在连载更新。</p>
+		<p class="band-sub">一本讲产品判断，一本讲增长方法，都已经写完。</p>
 
 		<div class="books-grid">
 			{books.map((b) => (
 				<a class="book-card" href={url(b.href)}>
-					<p class="book-no">{b.no} · 连载中</p>
+					<img class="book-cover" src={b.cover} alt={`${b.title} 封面`} loading="lazy" />
+					<div class="book-body">
+					<p class="book-no">{b.no}</p>
 					<h3 class="book-name">{b.title}</h3>
 					<p class="book-lead">{b.lead}</p>
 					<span class="book-meta">
 						{b.count} 篇 · 从第一篇开始读
 						<Icon name="material-symbols:arrow-forward-rounded" class="text-sm" />
 					</span>
+					</div>
 				</a>
 			))}
 		</div>
