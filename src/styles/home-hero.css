@@ -6,7 +6,7 @@
  */
 
 .home-hero {
-	--home-banner-h: max(56vh, 480px);
+	--home-banner-h: max(50vh, 430px);
 	position: relative;
 	display: flex;
 	flex-direction: column;
@@ -39,24 +39,19 @@
 	pointer-events: none;
 }
 
-/* 文字压在导航之下、水平对齐到版心 */
+/* 文字：与合集页同一套——绝对定位在 hero 中线上，靠 hero 高度居中 */
 .home-hero-inner {
-	position: relative;
-	z-index: 2;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 50%;
+	/* +1rem：让标题顶线落到与合集页一致的位置 */
+	transform: translateY(calc(-50% + 1rem));
+	z-index: 3;
 	width: 100%;
-	/* 与内容区同一版心：内容卡片左右边距对齐刊头文字 */
 	max-width: min(92vw, var(--page-width, 100rem));
 	margin-inline: auto;
-	position: relative;
-	/* 左右各让 2rem：导航栏是「top-row 的 px + 内层 px-4」双重内边距，
-	   这里对齐它的文字边界，标题与卡片都不越过导航 */
-	padding: 7rem 2rem 6.5rem;
-}
-
-@media (min-width: 1024px) {
-	.home-hero-inner {
-		padding: 8rem 2rem 7rem;
-	}
+	padding: 1.5rem 1.5rem 4.5rem;
 }
 
 .home-hero-inner > * {
@@ -133,9 +128,10 @@ html:has(.home-hero) #content-panel {
 
 .home-hero-brief {
 	position: absolute;
-	/* 顶边与左侧标题对齐（inner 的 padding-top），右边界与版心一致 */
-	top: 8rem;
-	right: 2rem;
+	/* 跟着文字块一起居中，顶边基本与标题齐平 */
+	top: 50%;
+	transform: translateY(-50%);
+	right: 1.5rem;
 	z-index: 3;
 	width: min(26rem, 36vw);
 	padding: 1.2rem 1.35rem 1.05rem;
@@ -152,7 +148,7 @@ html:has(.home-hero) #content-panel {
 
 .home-hero-brief:hover {
 	background: rgb(10 20 16 / 0.52);
-	transform: translateY(-2px);
+	transform: translateY(calc(-50% - 2px));
 	box-shadow: 0 18px 40px -14px rgb(0 0 0 / 0.55);
 }
 
