@@ -84,15 +84,15 @@ const renderGroups: { id: string; items: typeof items }[] = groups?.length
 const totalItems = renderGroups.reduce((n, g) => n + g.items.length, 0);
 ---
 
-{/* 没有标题又没有加密的页面（例如正文只有一段内嵌原型的文章）整张卡不渲染，
-    否则会留一个只有标题、里面写着「当前页面没有目录」的空壳。
-    注意不能用 class 控制：SideBar 会把自己的 class 传进来，会把 hidden 覆盖掉。 */}
-{(!encrypted && totalItems === 0) ? null : (
+{/* 目录为空（首页、只有原型的文章）也要渲染这张卡：
+    左栏是 swup 的静态容器，整卡不渲染的话，从首页点进文章就永远长不出目录。
+    空卡先挂 .toc-card-empty 隐藏，客户端切页后由 initSidebarTOC 重建并摘掉这个类。 */}
+{(
 <WidgetLayout
   name={title ?? i18n(I18nKey.tableOfContents)}
   showTitle={showTitle}
   id={cardId ?? "sidebar-toc"}
-  class={className}
+  class={`${className ?? ""}${totalItems === 0 ? " toc-card-empty" : ""}`.trim()}
   style={style}
 >
   <div class="toc-scroll-container custom-scrollbar" data-toc-mode={mode}>
@@ -205,6 +205,13 @@ const totalItems = renderGroups.reduce((n, g) => n + g.items.length, 0);
       });
 
       window.SidebarTOC.manager.attach();
+
+      // 重建完成后按「有没有条目」决定这张卡显不显示
+      const card = tocContent.closest("widget-layout");
+      if (card) {
+        const hasItems = tocContent.querySelectorAll(".toc-item").length > 0;
+        card.classList.toggle("toc-card-empty", !hasItems);
+      }
     } catch (error) {
       console.error("Failed to load TOCManager for SidebarTOC:", error);
     }

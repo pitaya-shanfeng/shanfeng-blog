@@ -669,3 +669,8 @@ html[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="classic"] #wallpa
 	max-width: 9.5rem;
 	margin-inline: 0;
 }
+
+/* 目录为空时先藏起来，客户端重建后再显示（见 SidebarTOC 的脚本） */
+.toc-card-empty {
+	display: none !important;
+}
