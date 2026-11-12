@@ -45,8 +45,8 @@
 	left: 0;
 	right: 0;
 	top: 50%;
-	/* +1rem：让标题顶线落到与合集页一致的位置 */
-	transform: translateY(calc(-50% + 1rem));
+	/* +2rem：与合集页的标题顶线对齐（合集页内容更高，居中后略偏下） */
+	transform: translateY(calc(-50% + 2rem));
 	z-index: 3;
 	width: 100%;
 	max-width: min(92vw, var(--page-width, 100rem));
