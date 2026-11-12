@@ -1,0 +1,214 @@
+---
+/**
+ * 首页下半部分（设计稿第 4–8 屏）
+ *
+ * 思路（工作流 5 步）→ 调研（4 张）→ 案例（4 张）→ 笔记（学习主线 + 2 张精选）→ CTA
+ */
+import { Icon } from "astro-icon/components";
+import { getSortedPostsList } from "@/utils/content-utils";
+import { getPostUrlBySlug } from "@/utils/url-utils";
+import { url } from "@/utils/url-utils";
+import "@/styles/home-sections.css";
+
+const all = await getSortedPostsList(true);
+const byId = new Map(all.map((p) => [p.id.replace(/\.(md|html)$/, ""), p]));
+
+const pick = (id: string) => {
+	const p = byId.get(id);
+	if (!p) return null;
+	return {
+		title: p.data.title,
+		desc: p.data.quote ?? p.data.description ?? "",
+		href: getPostUrlBySlug(p.data.slug ?? p.id),
+	};
+};
+const list = (ids: string[]) => ids.map(pick).filter((x): x is NonNullable<typeof x> => Boolean(x));
+
+const countOf = (cat: string) => all.filter((p) => (p.data.category ?? "").includes(cat)).length;
+
+/* 思路：把设计稿的五步对到具体文章 */
+const steps = [
+	{ no: "STEP 01", label: "看市场", ids: ["2026-11-07-market-analysis", "2026-11-06-competitive-analysis"] },
+	{ no: "STEP 02", label: "摸体验", ids: ["2026-11-06-qingnian-ux", "2026-11-06-build-scene"] },
+	{ no: "STEP 03", label: "定方案", ids: ["2026-10-29-prd-writing", "2026-11-05-qiren-shuangqui"] },
+	{ no: "STEP 04", label: "验数据", ids: ["2026-11-10-data-analysis-system", "2026-11-10-data-viz"] },
+	{ no: "STEP 05", label: "沉方法", ids: ["2026-11-05-chanpin-chuanboli", "2026-11-10-python-basics"] },
+].map((s) => ({ ...s, items: list(s.ids) }));
+
+/* 调研：四张，带细分标签 */
+const research = [
+	{ tag: "行业研究", id: "2026-11-06-zhongcao-force" },
+	{ tag: "模式研究", id: "2026-11-06-membership-report" },
+	{ tag: "品牌调研", id: "2026-11-06-sams-club" },
+	{ tag: "体验调研", id: "2026-11-05-alipay-wufu" },
+].map((r) => ({ tag: r.tag, post: pick(r.id) })).filter((r) => r.post);
+
+/* 案例：四张 */
+const cases = [
+	{ tag: "交易", id: "2026-11-10-guide-trade" },
+	{ tag: "数据", id: "2026-11-09-tracking-build" },
+	{ tag: "增长", id: "2026-11-09-game-matrix-build" },
+	{ tag: "中台", id: "2026-11-09-marketing-center-build" },
+].map((c) => ({ tag: c.tag, post: pick(c.id) })).filter((c) => c.post);
+
+/* 笔记：学习主线 + 两张精选 */
+const learnPath = [
+	{ no: "01", title: "认知基础", sub: "大模型认知基础 · 核心原理" },
+	{ no: "02", title: "Prompt 工程", sub: "提示词工程与调优技巧" },
+	{ no: "03", title: "RAG 进阶", sub: "Naive / Advanced / 评估" },
+	{ no: "04", title: "Agent 开发", sub: "Coze / Dify / OpenClaw" },
+];
+const notes = [
+	{ date: "11·04", star: true, id: "2026-11-04-rag-data-pipeline" },
+	{ date: "11·04", star: true, id: "2026-11-04-openclaw" },
+].map((n) => ({ ...n, post: pick(n.id) })).filter((n) => n.post);
+
+const ideaCount = countOf("思路");
+const researchCount = countOf("调研");
+const caseCount = countOf("案例");
+const noteCount = countOf("笔记");
+---
+
+{/* ── 思路 ───────────────────────────────────── */}
+<section class="sec sec-plain" id="ideas" aria-labelledby="sec-ideas-title">
+	<div class="sec-inner">
+		<header class="sec-head">
+			<div>
+				<p class="sec-kicker">IDEAS · 思路</p>
+				<h2 id="sec-ideas-title" class="sec-title">沿着产品工作流，把思路串起来</h2>
+				<p class="sec-sub">方法不列清单，串在工作流里：从看市场到沉淀复用，每一步都有对应的思考。</p>
+			</div>
+			<a class="sec-more" href={url("/topics/fangfa-chendian/")}>
+				全部 {ideaCount} 篇
+				<Icon name="material-symbols:arrow-outward-rounded" class="text-sm" />
+			</a>
+		</header>
+
+		<ol class="steps">
+			{steps.map((s) => (
+				<li class="step">
+					<p class="step-no">{s.no}</p>
+					<h3 class="step-title">{s.label}</h3>
+					<ul class="step-list">
+						{s.items.map((it) => (
+							<li><a href={it.href}>{it.title}</a></li>
+						))}
+					</ul>
+				</li>
+			))}
+		</ol>
+	</div>
+</section>
+
+{/* ── 调研 ───────────────────────────────────── */}
+<section class="sec sec-tint" aria-labelledby="sec-research-title">
+	<div class="sec-inner">
+		<header class="sec-head">
+			<div>
+				<p class="sec-kicker">RESEARCH · 调研</p>
+				<h2 id="sec-research-title" class="sec-title">调研里挑出来的硬货</h2>
+				<p class="sec-sub">行业、竞品、体验三条线，挑几篇值得花时间读的。</p>
+			</div>
+			<a class="sec-more" href={url("/topics/diaoyan-fenxi/")}>
+				全部 {researchCount} 篇
+				<Icon name="material-symbols:arrow-outward-rounded" class="text-sm" />
+			</a>
+		</header>
+
+		<div class="cards cards-4">
+			{research.map((r) => (
+				<a class="card" href={r.post!.href}>
+					<span class="card-tag tag-blue">{r.tag}</span>
+					<h3 class="card-title">{r.post!.title}</h3>
+					<p class="card-desc">{r.post!.desc}</p>
+					<span class="card-more">阅读全文 <Icon name="material-symbols:arrow-forward-rounded" class="text-sm" /></span>
+				</a>
+			))}
+		</div>
+	</div>
+</section>
+
+{/* ── 案例 ───────────────────────────────────── */}
+<section class="sec sec-plain" aria-labelledby="sec-case-title">
+	<div class="sec-inner">
+		<header class="sec-head">
+			<div>
+				<p class="sec-kicker">CASES · 案例</p>
+				<h2 id="sec-case-title" class="sec-title">真实上过线的系统建设</h2>
+				<p class="sec-sub">不写通用的方法论，只写真正落地、跑过业务的系统。</p>
+			</div>
+			<a class="sec-more" href={url("/topics/chanpin-sheji/")}>
+				全部 {caseCount} 篇
+				<Icon name="material-symbols:arrow-outward-rounded" class="text-sm" />
+			</a>
+		</header>
+
+		<div class="cards cards-4">
+			{cases.map((c) => (
+				<a class="card" href={c.post!.href}>
+					<span class="card-tag tag-amber">{c.tag}</span>
+					<h3 class="card-title">{c.post!.title}</h3>
+					<p class="card-desc">{c.post!.desc}</p>
+					<span class="card-more">阅读案例 <Icon name="material-symbols:arrow-forward-rounded" class="text-sm" /></span>
+				</a>
+			))}
+		</div>
+	</div>
+</section>
+
+{/* ── 笔记 ───────────────────────────────────── */}
+<section class="sec sec-tint" aria-labelledby="sec-notes-title">
+	<div class="sec-inner">
+		<header class="sec-head">
+			<div>
+				<p class="sec-kicker">NOTES · 笔记</p>
+				<h2 id="sec-notes-title" class="sec-title">AI 学习主线，边学边写</h2>
+				<p class="sec-sub">从大模型认知到 Agent 开发，一条主线往前推。</p>
+			</div>
+			<a class="sec-more" href={url("/notes/")}>
+				全部 {noteCount} 篇
+				<Icon name="material-symbols:arrow-outward-rounded" class="text-sm" />
+			</a>
+		</header>
+
+		<div class="path">
+			<div class="path-head">
+				<span class="path-label">学习主线</span>
+				<span class="path-en">LEARNING PATH</span>
+			</div>
+			<ol class="path-steps">
+				{learnPath.map((s) => (
+					<li>
+						<p class="path-no">{s.no}</p>
+						<p class="path-title">{s.title}</p>
+						<p class="path-sub">{s.sub}</p>
+					</li>
+				))}
+			</ol>
+		</div>
+
+		<div class="cards cards-2">
+			{notes.map((n) => (
+				<a class="card" href={n.post!.href}>
+					<div class="card-top">
+						<span class="card-date">{n.date}</span>
+						{n.star && <span class="card-star">精选</span>}
+					</div>
+					<h3 class="card-title">{n.post!.title}</h3>
+					<p class="card-desc">{n.post!.desc}</p>
+				</a>
+			))}
+		</div>
+	</div>
+</section>
+
+{/* ── CTA ────────────────────────────────────── */}
+<section class="cta">
+	<div class="cta-inner">
+		<p class="cta-line">把想清楚的写下来，把做过的留个底。</p>
+		<a class="cta-btn" href={url("/rss.xml")}>
+			订阅 RSS · 每日晨报
+			<Icon name="material-symbols:arrow-outward-rounded" class="text-sm" />
+		</a>
+	</div>
+</section>

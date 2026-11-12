@@ -1,24 +1,22 @@
 ---
 import HomeHero from "@/components/pages/HomeHero.astro";
+import HomeBands from "@/components/pages/HomeBands.astro";
 import HomeLanding from "@/components/pages/HomeLanding.astro";
+import HomeSections from "@/components/pages/HomeSections.astro";
 import { siteConfig } from "@/config";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
 
 /**
- * 首页 = 通栏刊头 + 门户内容
+ * 首页（2026-11-12 设计稿）
  *
- * 刊头与合集页同一套（.book-hero）：整幅出血照片 + 压暗 + 白字 + 右下金句，
- * 所以用 customHero 走 #hero 插槽，页面自带整幅 hero。
+ * Hero 在正文流里，不再走 customHero / 壁纸 banner；
+ * 壁纸隐藏与内容偏移见 home-landing.css。
  */
 ---
 
-<MainGridLayout
-  title={siteConfig.title}
-  heading={siteConfig.title}
-  customHero
->
-  <Fragment slot="hero">
-    <HomeHero />
-  </Fragment>
+<MainGridLayout title={siteConfig.title} heading={siteConfig.title}>
+  <HomeHero />
   <HomeLanding />
+  <HomeBands />
+  <HomeSections />
 </MainGridLayout>

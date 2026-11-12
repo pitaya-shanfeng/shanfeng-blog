@@ -23,6 +23,8 @@ export type DailyBrief = {
 	summary: string;
 	/** 今日总览其余条目的标题，最多 3 条 */
 	points: string[];
+	/** 正文小节标题（去掉编号），当作当天快讯，最多 6 条 */
+	flashes: string[];
 };
 
 type Item = { head: string; text: string };
@@ -55,5 +57,9 @@ export async function getDailyBrief(): Promise<DailyBrief | null> {
 		headline: items[0]?.head ?? hot.data.title,
 		summary: items[0]?.text ?? hot.data.description,
 		points: items.slice(1, 4).map((x) => x.head),
+		flashes: [...(hot.body ?? "").matchAll(/^###\s*\d+\.\d+\s*(.+)$/gm)]
+			.map((m) => m[1].trim())
+			.filter(Boolean)
+			.slice(0, 6),
 	};
 }
