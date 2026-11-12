@@ -32,13 +32,11 @@ const today = {
 	</div>
 
 	<aside class="home-hero-brief" aria-labelledby="hero-brief-title">
-		<p class="hb-kicker">DAILY BRIEF</p>
 		<div class="hb-head">
 			<span class="hb-day">{today.day}</span>
 			<span class="hb-date">{today.line}</span>
 		</div>
 		<p class="hb-title" id="hero-brief-title">{brief?.points[0] ?? brief?.title ?? "行业动态"}</p>
-		{brief && brief.issue !== today.day && <p class="hb-issue">最新一期 · {brief.issue}</p>}
 		<ul class="hb-list">
 			{(brief?.points ?? []).slice(1).map((t) => (
 				<li>{t}</li>

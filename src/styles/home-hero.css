@@ -147,19 +147,10 @@ html:has(.home-hero) #content-panel {
 	color: #fff;
 }
 
-.hb-kicker {
-	margin: 0;
-	font-size: var(--fs-label);
-	font-weight: 600;
-	letter-spacing: 0.16em;
-	color: rgb(255 255 255 / 0.62);
-}
-
 .hb-head {
 	display: flex;
 	align-items: baseline;
 	gap: 0.6rem;
-	margin-top: 0.35rem;
 }
 
 .hb-day {
@@ -268,10 +259,4 @@ html:has(.home-hero) #content-panel {
 	.home-hero-quote-wrap {
 		display: none;
 	}
-}
-
-.hb-issue {
-	margin: 0.3rem 0 0;
-	font-size: var(--fs-label);
-	color: rgb(255 255 255 / 0.5);
 }
