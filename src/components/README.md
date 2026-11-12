@@ -25,7 +25,6 @@ Firefly 项目中所有可复用组件的集中管理。组件按照功能和职
 - `NavMenuPanel.astro` - 导航菜单面板
 - `PostCard.astro` - 文章卡片组件
 - `PostMeta.astro` - 文章元数据组件
-- `PostPage.astro` - 文章页面布局组件
 - `SideBar.astro` - 侧边栏组件
 
 ### 🎮 controls/ - 导航和交互控件
@@ -39,7 +38,6 @@ Firefly 项目中所有可复用组件的集中管理。组件按照功能和职
 - `FloatingControls.astro` - 右下角悬浮控件容器
 - `FloatingTOC.astro` - 浮动目录组件
 - `ScrollDownIndicator.astro` - 向下滚动指示器
-- `ArchivePanel.astro` - 归档面板组件（服务端渲染 + 客户端筛选/折叠）
 
 **交互组件**
 - `DisplaySettings.svelte` - 显示设置组件
@@ -126,8 +124,6 @@ Firefly 项目中所有可复用组件的集中管理。组件按照功能和职
 - `Card.svelte` - 番组卡片组件
 
 **pages/gallery/** - 相册页面组件
-- `AlbumCard.astro` - 相册卡片组件
-- `PhotoCard.astro` - 照片卡片组件
 
 ### 💬 comment/ - 评论系统组件
 
