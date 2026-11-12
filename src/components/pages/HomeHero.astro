@@ -31,10 +31,18 @@ const today = {
 		/>
 	</div>
 
-	<aside class="home-hero-brief" aria-labelledby="hero-brief-title">
+	<a
+		class="home-hero-brief"
+		href={brief?.href ?? url("/hotnews/")}
+		aria-labelledby="hero-brief-title"
+	>
 		<div class="hb-head">
 			<span class="hb-day">{today.day}</span>
 			<span class="hb-date">{today.line}</span>
+			<span class="hb-go">
+				每日行业动态
+				<Icon name="material-symbols:arrow-outward-rounded" class="text-sm" />
+			</span>
 		</div>
 		<p class="hb-title" id="hero-brief-title">{brief?.headline ?? brief?.title ?? "行业动态"}</p>
 		<p class="hb-summary">{brief?.summary ?? brief?.description}</p>
@@ -43,11 +51,7 @@ const today = {
 				<li>{t}</li>
 			))}
 		</ul>
-		<a class="hb-more" href={url("/hotnews/")}>
-			每日行业动态
-			<Icon name="material-symbols:arrow-outward-rounded" class="text-sm" />
-		</a>
-	</aside>
+	</a>
 
 	<div class="home-hero-inner">
 		<h1 class="home-hero-title">做个靠谱的<br />产品经理</h1>

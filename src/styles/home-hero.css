@@ -145,12 +145,35 @@ html:has(.home-hero) #content-panel {
 	-webkit-backdrop-filter: blur(10px) saturate(1.05);
 	box-shadow: 0 12px 32px -12px rgb(0 0 0 / 0.45);
 	color: #fff;
+	display: block;
+	transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.home-hero-brief:hover {
+	background: rgb(10 20 16 / 0.68);
+	transform: translateY(-2px);
+	box-shadow: 0 18px 40px -14px rgb(0 0 0 / 0.55);
 }
 
 .hb-head {
 	display: flex;
 	align-items: baseline;
 	gap: 0.6rem;
+}
+
+/* 入口放右上，整张卡可点，直接进当天那篇日报 */
+.hb-go {
+	margin-left: auto;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	font-size: var(--fs-label);
+	color: rgb(255 255 255 / 0.62);
+	transition: color 0.2s ease;
+}
+
+.home-hero-brief:hover .hb-go {
+	color: #fff;
 }
 
 .hb-day {
@@ -212,22 +235,6 @@ html:has(.home-hero) #content-panel {
 	background: var(--primary);
 }
 
-.hb-more {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.3rem;
-	margin-top: 0.9rem;
-	padding-top: 0.75rem;
-	border-top: 1px solid rgb(255 255 255 / 0.14);
-	width: 100%;
-	font-size: var(--fs-meta);
-	color: rgb(255 255 255 / 0.8);
-	transition: color 0.2s ease;
-}
-
-.hb-more:hover {
-	color: #fff;
-}
 
 @media (max-width: 1279px) {
 	.home-hero-brief {
