@@ -674,3 +674,16 @@ html[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="classic"] #wallpa
 .toc-card-empty {
 	display: none !important;
 }
+
+/* 关于页不需要左栏（头像 / 音乐）：正文本身够长，左栏只会挤窄阅读宽度。
+   用 :has 挂在页面标记上，离开关于页规则自动失效（不碰 #main-grid 的属性写法，
+   避免 swup 切页后列几何残留） */
+html:has([data-about-page]) #left-sidebar-wrapper,
+html:has([data-about-page]) #right-sidebar-static,
+html:has([data-about-page]) #mobile-bottom-sidebar {
+	display: none !important;
+}
+
+html:has([data-about-page]) #main-grid {
+	grid-template-columns: 1fr !important;
+}
