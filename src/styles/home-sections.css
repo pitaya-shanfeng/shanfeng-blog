@@ -349,3 +349,9 @@
 	line-height: 1.55;
 	color: #6b7488;
 }
+
+/* 通栏铺满：各分区底色要顶到视口两端（删 CTA 时这段被一起删过，补回来） */
+.sec {
+	width: 100vw;
+	margin-left: calc((100% - 100vw) / 2);
+}
