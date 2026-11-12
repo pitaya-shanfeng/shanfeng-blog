@@ -437,3 +437,10 @@
 .dark .card-star {
 	color: #f0a07a;
 }
+
+/* 通栏铺满：各分区的底色一样要顶到视口两端 */
+.sec,
+.cta {
+	width: 100vw;
+	margin-left: calc((100% - 100vw) / 2);
+}

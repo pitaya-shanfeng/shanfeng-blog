@@ -115,3 +115,9 @@
 	font-size: var(--fs-label);
 	color: #12a37a;
 }
+
+/* 通栏铺满：色带与分区背景都要顶到视口两端 */
+.band {
+	width: 100vw;
+	margin-left: calc((100% - 100vw) / 2);
+}
