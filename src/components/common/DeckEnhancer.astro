@@ -3,11 +3,11 @@
  * PPT / PDF 切换器的全屏增强
  *
  * 正文里的切换器是文章自带的（.deck-viewer[data-deck-viewer] + data-deck-base /
- * data-deck-pages），这里不重写它们，只在运行时挂一个「全屏」按钮：
+ * data-deck-pages），这里不改文章，只在运行时做两件事：
  *
- * - 全屏后可以单页翻（← → / 点左右半屏 / 底部箭头）
- * - 也可以切成「平铺」，从第一页滚到最后一页
- * - Esc 或点右上角关闭
+ * 1. 把「单页翻」换成「整份往下滚」——阅读 PPT 想要的是连续翻看，不是一页页点
+ *    （有 data-deck-base/pages 的切换器才会被转换；切标签时按新数据重建）
+ * 2. 挂一个「全屏」按钮：全屏默认也是平铺滚动，可切回单页；Esc 关闭
  *
  * 这样已经发布的文章不用一篇篇改，新增的切换器也自动生效。
  */
@@ -33,6 +33,36 @@
 	}
 	.deck-viewer .deck-bar .deck-fullscreen-btn {
 		margin-left: auto;
+	}
+
+	/* 正文里的滚动模式：整份页面竖向排列 */
+	.deck-viewer.is-scroll .deck-stage,
+	.deck-viewer.is-scroll .deck-bar {
+		display: none;
+	}
+	.deck-scroll {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+	.deck-scroll img {
+		display: block;
+		width: 100%;
+		height: auto;
+		border: 1px solid #e3ebe6;
+		border-radius: 10px;
+		background: #fff;
+	}
+	.deck-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+		margin: 0 0 10px;
+	}
+	.deck-head-note {
+		font-size: 12.5px;
+		color: #6b7d73;
 	}
 
 	.deck-fullscreen-btn {
@@ -332,11 +362,12 @@
 			if (!overlay) return;
 			deck = d;
 			index = Math.max(0, Math.min(startIndex, d.pages.length - 1));
-			flatMode = false;
+			flatMode = true;
 			flatRendered = false;
 			overlay.hidden = false;
 			document.documentElement.style.overflow = "hidden";
-			setMode(false);
+			// 全屏默认也是「整份滚」，想看单页再点顶上的按钮
+			setMode(true);
 			overlay.focus?.();
 		}
 
@@ -365,8 +396,29 @@
 
 		/** 读切换器当前的数据（多 PPT 的文章会在切标签时改写这两个属性） */
 		function readDeck(viewer: HTMLElement): Deck | null {
-			const base = viewer.dataset.deckBase;
-			const pagesRaw = viewer.dataset.deckPages;
+			let base = viewer.dataset.deckBase ?? "";
+			let pagesRaw = viewer.dataset.deckPages ?? "";
+
+			// 有些老文章的切换器只写了首图 + 「1 / 24」，没有 base/pages。
+			// 按 page-01.webp 这个规律把整份页集推出来，让它们也能滚动查看。
+			if (!pagesRaw) {
+				const img = viewer.querySelector<HTMLImageElement>("[data-deck-img]");
+				const countEl = viewer.querySelector<HTMLElement>("[data-deck-count]");
+				const m = /(\d+)\s*\/\s*(\d+)/.exec(countEl?.textContent ?? "");
+				const src = img?.getAttribute("src") ?? "";
+				const pm = /^(.*\/)([\w-]*?)(\d+)\.(webp|png|jpe?g)$/i.exec(src);
+				if (m && pm) {
+					const total = Number(m[2]);
+					const pad = pm[3].length;
+					base = pm[1].replace(/\/$/, "");
+					const list: string[] = [];
+					for (let i = 1; i <= total; i += 1) {
+						list.push(`${pm[2]}${String(i).padStart(pad, "0")}.${pm[4]}`);
+					}
+					pagesRaw = JSON.stringify(list);
+				}
+			}
+
 			if (!base || !pagesRaw) return null;
 			let pages: string[] = [];
 			try {
@@ -382,25 +434,64 @@
 			return { base, pages, title: label || "演示文稿" };
 		}
 
-		/** 给每个切换器挂一个「全屏」按钮 */
+		/** 把「单页翻」换成整份滚动：有 data-deck-base/pages 才做 */
+		function renderScroll(viewer: HTMLElement) {
+			const d = readDeck(viewer);
+			if (!d) return;
+			viewer.classList.add("is-scroll");
+			let head = viewer.querySelector<HTMLElement>(".deck-head");
+			let box = viewer.querySelector<HTMLElement>(".deck-scroll");
+			if (!box) {
+				head = el("div", "deck-head");
+				head.appendChild(el("span", "deck-head-note", ""));
+				box = el("div", "deck-scroll");
+				viewer.insertBefore(box, viewer.firstChild);
+				viewer.insertBefore(head, box);
+			}
+			const note = head?.querySelector<HTMLElement>(".deck-head-note");
+			if (note) note.textContent = `${d.title} · 共 ${d.pages.length} 页，向下滚动查看`;
+
+			// 全屏按钮可能比 head 先创建（enhance 时属性还没写好），这里兜一次
+			const fsBtn = viewer.querySelector<HTMLElement>(".deck-fullscreen-btn");
+			if (fsBtn && head && fsBtn.parentElement !== head) head.appendChild(fsBtn);
+			// 同一份就跳过，避免切标签时白重建
+			const stamp = `${d.base}|${d.pages.length}|${d.pages[0]}`;
+			if (box.dataset.stamp === stamp) return;
+			box.dataset.stamp = stamp;
+			box.innerHTML = "";
+			d.pages.forEach((_, i) => {
+				const img = el("img") as HTMLImageElement;
+				img.src = `${d.base}/${d.pages[i]}`;
+				img.alt = `${d.title} 第 ${i + 1} 页`;
+				img.loading = i < 2 ? "eager" : "lazy";
+				img.decoding = "async";
+				box!.appendChild(img);
+			});
+		}
+
+		/** 给每个切换器挂「整份滚动」+「全屏」按钮 */
 		function enhance(viewer: HTMLElement) {
 			if (viewer.dataset.fsReady) return;
 			viewer.dataset.fsReady = "1";
 
-			const bar = viewer.querySelector(".deck-bar");
+			renderScroll(viewer);
+
 			const btn = el("button", "deck-fullscreen-btn", "⛶ 全屏") as HTMLButtonElement;
 			btn.type = "button";
 			btn.addEventListener("click", () => {
 				// 点击时再读：有的文章是「一个切换器装多份 PPT」，页集会变
 				const deckNow = readDeck(viewer);
 				if (!deckNow) return;
-				const countNode = viewer.querySelector("[data-deck-count]");
-				const current = countNode?.textContent?.trim() ?? "1";
-				const cur = Number.parseInt(current, 10) - 1;
-				openFs(deckNow, Number.isFinite(cur) ? cur : 0);
+				openFs(deckNow, 0);
 			});
-			if (bar) bar.appendChild(btn);
-			else viewer.appendChild(btn);
+			const head = viewer.querySelector<HTMLElement>(".deck-head");
+			(head ?? viewer).appendChild(btn);
+
+			// 切 PPT 标签时文章会改写 data-deck-base / data-deck-pages，跟着重建
+			new MutationObserver(() => renderScroll(viewer)).observe(viewer, {
+				attributes: true,
+				attributeFilter: ["data-deck-base", "data-deck-pages"],
+			});
 		}
 
 		function boot() {
