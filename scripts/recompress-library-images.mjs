@@ -5,8 +5,13 @@
  * 这些图当年是按「3200px 宽 + 接近无损」导出的，平均 317KB/张，全量 849MB；
  * 正文里实际展示宽度不到 700px，用 1600px + q80 完全够，肉眼无差。
  *
+ * ⚠️ 2026-11-13 撤回默认参数：压到 1600px + q80 在长文表格上肉眼发糊，
+ * 已用 _originals/library 全量还原。现在默认「不缩宽、q90」，只做轻微瘦身；
+ * 真要压到 1600 再传 --small，但请先抽查含小字的页面。
+ *
  * 用法：
- *   node scripts/recompress-library-images.mjs           # 就地压缩（原图备份到 _originals/）
+ *   node scripts/recompress-library-images.mjs           # 保守压缩（不缩宽 / q90，原图备份到 _originals/）
+ *   node scripts/recompress-library-images.mjs --small   # 激进压缩（1600px / q80，会损失清晰度）
  *   node scripts/recompress-library-images.mjs --dry-run # 只统计
  *
  * 压完记得重新上传 COS：
@@ -19,8 +24,9 @@ import sharp from "sharp";
 
 const SRC = "public/assets/library";
 const BAK = "_originals/library";
-const MAX_W = 1600;
-const QUALITY = 80;
+const SMALL = process.argv.includes("--small");
+const MAX_W = SMALL ? 1600 : 4096; // 默认不缩宽（仅兜住超大图）
+const QUALITY = SMALL ? 80 : 90;
 const DRY = process.argv.includes("--dry-run");
 
 function walk(dir, out = []) {
