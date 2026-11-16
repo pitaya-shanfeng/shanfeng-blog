@@ -47,6 +47,7 @@ unset NODE_OPTIONS
 export NODE_EXTRA_CERTS=/etc/ssl/cert.pem
 export NODE_EXTRA_CA_CERTS=/etc/ssl/cert.pem
 ./node_modules/.bin/astro build
+npx tsx scripts/run-pagefind.ts
 node scripts/rewrite-assets-cdn.mjs
 
 echo "部署到腾讯云"
