@@ -1,54 +1,49 @@
 # HTTPS 证书：签发与自动续期
 
-## 现状（2026-11-16）
+## 现状（2026-11-16 备案通过后更新）
 
-- 证书：Let's Encrypt，`CN=shanfengpm.com` + SAN `www.shanfengpm.com`
-- 到期：**2027-02-14**（90 天，certbot 会在到期前 30 天自动续）
-- 验证方式：**DNS-01**（80 端口当时被备案拦截，HTTP-01 走不通）
-- 自动续期：**已配好**，靠阿里云 DNS API 自动增删 TXT，不需要人工
+| 证书 | 域名 | 验证方式 | 到期 |
+|---|---|---|---|
+| `shanfengpm.com` | `shanfengpm.com` + `www` | **HTTP-01（nginx）** | 2027-02-14 |
+| `umami.shanfengpm.com` | 子域 | **HTTP-01（nginx）** | 2027-02-14 |
 
-## 组件
+- 全部通过 `certbot renew` 自动续期，**不需要人工介入**
+- `certbot renew --dry-run` 已通过
 
-| 文件 | 作用 |
-|---|---|
-| `/etc/letsencrypt/aliyun.env` | 阿里云 RAM 子账号 AccessKey（600，root only） |
-| `/usr/local/bin/acme-aliyun.py` | 调阿里云 DNS API 增/删 `_acme-challenge` TXT |
-| `/usr/local/bin/acme-aliyun-add.sh` | certbot auth-hook：写入 TXT 后轮询权威 DNS 直到生效 |
-| `/usr/local/bin/acme-aliyun-del.sh` | certbot cleanup-hook：验证完删除 TXT |
-| `/etc/letsencrypt/renewal/shanfengpm.com.conf` | 已记录两个 hook，`certbot renew` 直接用 |
+## 备案通过后做的两件事
+
+1. **80 端口解除拦截**：腾讯云不再返回 `dnspod webblock`，HTTP 正常 301 到 HTTPS
+2. **续期方式从 DNS-01 换成 HTTP-01**：不再依赖阿里云 API，`renewal/*.conf` 里
+   `authenticator = nginx`
+
+## 阿里云 AccessKey 相关文件（现在已不需要）
+
+备案期间 80 端口被拦，只能用 DNS-01，因此配过：
+
+| 文件 | 用途 | 现在 |
+|---|---|---|
+| `/etc/letsencrypt/aliyun.env` | RAM 子账号 AccessKey | 可删 |
+| `/usr/local/bin/acme-aliyun.py` | 增删 TXT | 可删 |
+| `/usr/local/bin/acme-aliyun-{add,del}.sh` | certbot hooks | 可删 |
+
+确认两个证书都切换到 nginx 验证后，这些文件可以删掉；RAM 里的那个子账号也建议禁用。
 
 ## 常用命令
 
 ```bash
-# 看证书包含哪些域名、什么时候到期
+# 看证书覆盖哪些域名、何时到期
 sudo openssl x509 -in /etc/letsencrypt/live/shanfengpm.com/cert.pem -noout -dates -ext subjectAltName
 
-# 演练续期（不消耗 Let's Encrypt 额度）
-sudo certbot renew --dry-run --cert-name shanfengpm.com
+# 演练（不消耗额度）
+sudo certbot renew --dry-run
 
-# 真的续期（会调用 DNS 钩子，约 40 秒）
-sudo certbot renew --cert-name shanfengpm.com
+# 手动续（一般不用，systemd timer 会自动跑）
+sudo certbot renew
 ```
 
-## 换 AccessKey 时
+## 新增子域时
 
 ```bash
-sudo nano /etc/letsencrypt/aliyun.env   # 改 ID / Secret
-sudo certbot renew --dry-run --cert-name shanfengpm.com  # 验证可用
+# 先给子域加 A 记录，再签
+sudo certbot --nginx -d new.shanfengpm.com
 ```
-
-## 如果改回 HTTP-01
-
-80 端口备案解除后，可以换成全自动的 HTTP 验证（不再依赖阿里云 API）：
-
-```bash
-sudo certbot certonly --nginx -d shanfengpm.com -d www.shanfengpm.com \
-  --cert-name shanfengpm.com --force-renewal
-```
-
-换完后 renewal 配置里的 authenticator 会变成 nginx，DNS 钩子就不再需要。
-
-## 注意
-
-- AccessKey 只授了 `AliyunDNSFullAccess`，泄了最多被人改解析；出问题在 RAM 里禁用该用户即可
-- `/etc/letsencrypt/aliyun.env` **不要进任何仓库**
