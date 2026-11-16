@@ -16,8 +16,9 @@ import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 
-const SRC_DIR = join(homedir(), "Desktop", "知识沉淀", "行业日报");
-const DST_DIR = "src/content/posts/hotnews";
+// 可用 HOTNEWS_SRC / HOTNEWS_DST 覆盖，方便本地演练（正式运行用默认值）
+const SRC_DIR = process.env.HOTNEWS_SRC ?? join(homedir(), "Desktop", "知识沉淀", "行业日报");
+const DST_DIR = process.env.HOTNEWS_DST ?? "src/content/posts/hotnews";
 const BANNER = "/assets/images/hotnews-banner.webp";
 const DRY = process.argv.includes("--dry-run");
 const FORCE = process.argv.includes("--force");
