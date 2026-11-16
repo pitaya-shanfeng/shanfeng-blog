@@ -51,7 +51,7 @@ npx tsx scripts/run-pagefind.ts
 node scripts/rewrite-assets-cdn.mjs
 
 echo "部署到腾讯云"
-rsync -az --delete -e "ssh -i ${DEPLOY_KEY:-$HOME/Downloads/root.pem} -o StrictHostKeyChecking=no" \
+rsync -az --delete --exclude=proto/ -e "ssh -i ${DEPLOY_KEY:-$HOME/Downloads/root.pem} -o StrictHostKeyChecking=no" \
 	dist/ "${DEPLOY_USER:-ubuntu}@${DEPLOY_HOST:?缺少 DEPLOY_HOST}:${DEPLOY_PATH:-/var/www/shanfeng}/"
 
 echo "推送仓库"

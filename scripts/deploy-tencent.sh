@@ -37,7 +37,7 @@ fi
 
 # 素材已走 CDN，产物只有 HTML/CSS/JS 与 og 图，几十 MB
 echo "== 同步 dist 到 $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH =="
-rsync -az --delete --human-readable \
+rsync -az --delete --exclude=proto/ --human-readable \
 	-e "ssh -o StrictHostKeyChecking=accept-new" \
 	dist/ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/"
 

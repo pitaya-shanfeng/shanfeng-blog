@@ -41,16 +41,16 @@ const RULES = [
 	[/(\ssrcset=")([^"]*)/g, null], // srcset 单独处理
 	[/(url\()\/assets\//g, `$1${base}/assets/`],
 	[/(\sdata-src=")\/assets\//g, `$1${base}/assets/`],
-	// 可交互原型（500MB+）同样走 CDN，产物里不再带副本
-	[/(\s[\w-]*(?:src|href)=")\/proto\//g, `$1${base}/proto/`],
-	[/(url\()\/proto\//g, `$1${base}/proto/`],
+	// 可交互原型**不要**指向 COS：腾讯云 COS 默认域名对 html 强制下载
+	// （Content-Disposition: attachment），iframe 会变空白。
+	// 原型改由本站同源提供（/proto/ 由 nginx 从磁盘发，或反代回 COS）。
 ];
 
 function rewriteSrcset(html) {
 	return html.replace(/(\ssrcset=")([^"]*)"/g, (_m, head, value) => {
 		const next = value
 			.replace(/(^|,\s*)\/assets\//g, (_x, sep) => `${sep}${base}/assets/`)
-			.replace(/(^|,\s*)\/proto\//g, (_x, sep) => `${sep}${base}/proto/`);
+			;
 		return `${head}${next}"`;
 	});
 }
@@ -74,7 +74,7 @@ function rewriteLeftovers(text) {
 	);
 	const replaced = withMarks
 		.replace(/\/assets\//g, `${base}/assets/`)
-		.replace(/\/proto\//g, `${base}/proto/`);
+		;
 	const restored = replaced.replace(
 		/\u0000(\d+)\u0000/g,
 		(_m, i) => store[Number(i)],
