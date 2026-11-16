@@ -59,7 +59,19 @@ onMount(() => {
 	}
 });
 
-function loadImage(src: string): Promise<HTMLImageElement | null> {
+/**
+ * 图片现在托管在 COS（跨域），canvas 绘制要求响应带 CORS 头。
+ * 浏览器里可能缓存了「CORS 头还没配好之前」的版本，复用缓存会导致
+ * crossOrigin 加载失败、海报缺图（线上只出现过一次，就是这么来的）。
+ * 加个一次性参数强制走网络，拿到带 CORS 头的响应。
+ */
+function withCacheBust(src: string): string {
+	if (!/^https?:\/\//.test(src) || /[?&]cb=/.test(src)) return src;
+	return `${src}${src.includes("?") ? "&" : "?"}cb=${Date.now()}`;
+}
+
+function loadImage(rawSrc: string): Promise<HTMLImageElement | null> {
+	const src = withCacheBust(rawSrc);
 	return new Promise((resolve) => {
 		const img = new Image();
 		img.crossOrigin = "anonymous";
