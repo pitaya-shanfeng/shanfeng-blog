@@ -54,6 +54,11 @@ echo "部署到腾讯云"
 rsync -az --delete --exclude=proto/ -e "ssh -i ${DEPLOY_KEY:-$HOME/Downloads/root.pem} -o StrictHostKeyChecking=no" \
 	dist/ "${DEPLOY_USER:-ubuntu}@${DEPLOY_HOST:?缺少 DEPLOY_HOST}:${DEPLOY_PATH:-/var/www/shanfeng}/"
 
+echo "修正原型目录权限"
+ssh -i "${DEPLOY_KEY:-$HOME/Downloads/root.pem}" -o StrictHostKeyChecking=no \
+	"${DEPLOY_USER:-ubuntu}@${DEPLOY_HOST}" \
+	"sudo chmod -R a+rX ${DEPLOY_PATH:-/var/www/shanfeng}/proto 2>/dev/null || true" || true
+
 echo "推送仓库"
 git push origin master:main || echo "推送失败（不影响线上）"
 

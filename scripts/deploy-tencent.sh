@@ -41,6 +41,11 @@ rsync -az --delete --exclude=proto/ --human-readable \
 	-e "ssh -o StrictHostKeyChecking=accept-new" \
 	dist/ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/"
 
+echo "== 修正原型目录权限 =="
+# rsync -a 会保留本地权限，600/700 的文件 nginx 读不到，会出现 403
+ssh -o StrictHostKeyChecking=accept-new "$DEPLOY_USER@$DEPLOY_HOST" \
+	"sudo chmod -R a+rX $DEPLOY_PATH/proto 2>/dev/null || true"
+
 echo "== 重载 nginx =="
 ssh -o StrictHostKeyChecking=accept-new "$DEPLOY_USER@$DEPLOY_HOST" \
 	"sudo nginx -t && sudo systemctl reload nginx"
