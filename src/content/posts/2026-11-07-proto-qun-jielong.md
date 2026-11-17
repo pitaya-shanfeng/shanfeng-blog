@@ -20,7 +20,7 @@ deckPages: 45
 ## 一、SCRM 私域建设与经营
 
 <div class="deck-viewer" data-deck-viewer tabindex="0"
-     data-deck-base="/assets/library/notes/proto-qun-jielong/decks/methodology"
+     data-deck-base="/assets/library/notes/proto-qun-jielong/decks/methodology-v2"
      data-deck-pages='["01.webp","02.webp","03.webp","04.webp","05.webp","06.webp","07.webp","08.webp","09.webp","10.webp","11.webp","12.webp","13.webp","14.webp","15.webp","16.webp","17.webp","18.webp","19.webp","20.webp","21.webp","22.webp","23.webp","24.webp","25.webp","26.webp","27.webp","28.webp","29.webp","30.webp","31.webp","32.webp","33.webp","34.webp"]'
      aria-label="SCRM 私域建设与经营 · 行业通用方法论 幻灯片切换器">
   <div class="deck-stage">
