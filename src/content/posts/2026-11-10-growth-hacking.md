@@ -15,7 +15,7 @@ comment: false
 hideSidebar: true
 order: 16
 # 内嵌 PPT：必买增长实战 38 页
-deckPages: 108
+deckPages: 109
 ---
 
 ## 一、从增长模型到增长实验
@@ -169,7 +169,7 @@ deckPages: 108
     <button type="button" class="pv-tab" data-pv-tab="2">实验 Q2-2<span class="pv-tab-sub">7 页</span></button>
     <button type="button" class="pv-tab" data-pv-tab="3">实验 Q2-3<span class="pv-tab-sub">7 页</span></button>
     <button type="button" class="pv-tab" data-pv-tab="4">实验 Q2-4<span class="pv-tab-sub">7 页</span></button>
-    <button type="button" class="pv-tab" data-pv-tab="5">实验 Q2-5<span class="pv-tab-sub">6 页</span></button>
+    <button type="button" class="pv-tab" data-pv-tab="5">实验 Q2-5<span class="pv-tab-sub">7 页</span></button>
     <button type="button" class="pv-tab" data-pv-tab="6">实验 Q2-6<span class="pv-tab-sub">4 页</span></button>
     <button type="button" class="pv-tab" data-pv-tab="7">种草方案<span class="pv-tab-sub">1 页</span></button>
   </div>
@@ -188,7 +188,7 @@ deckPages: 108
   <p class="pv-hint">点画面左右两侧、或用下面箭头 / 键盘 ← → 翻页</p>
 </div>
 
-<script type="application/json" data-pv-docs>[{"id":"model","title":"增长模型","sub":"必买增长模型","n":12},{"id":"exp1","title":"实验 Q2-1","sub":"增长实验报告","n":10},{"id":"exp2","title":"实验 Q2-2","sub":"增长实验报告","n":7},{"id":"exp3","title":"实验 Q2-3","sub":"增长实验报告","n":7},{"id":"exp4","title":"实验 Q2-4","sub":"增长实验报告","n":7},{"id":"exp5","title":"实验 Q2-5","sub":"增长实验报告","n":6},{"id":"exp6","title":"实验 Q2-6","sub":"增长实验报告","n":4},{"id":"seeding","title":"种草方案","sub":"内容种草","n":1}]</script>
+<script type="application/json" data-pv-docs>[{"id":"model","title":"增长模型","sub":"必买增长模型","n":12},{"id":"exp1","title":"实验 Q2-1","sub":"增长实验报告","n":10},{"id":"exp2","title":"实验 Q2-2","sub":"增长实验报告","n":7},{"id":"exp3","title":"实验 Q2-3","sub":"增长实验报告","n":7},{"id":"exp4","title":"实验 Q2-4","sub":"增长实验报告","n":7},{"id":"exp5-v2","title":"实验 Q2-5","sub":"增长实验报告","n":7},{"id":"exp6","title":"实验 Q2-6","sub":"增长实验报告","n":4},{"id":"seeding","title":"种草方案","sub":"内容种草","n":1}]</script>
 
 <style>
   /* 本文专用：PDF / 多文档切换器 */
