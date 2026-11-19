@@ -9,6 +9,10 @@
 # 建议交给 launchd / cron 每天 10:40 跑一次（见 docs/deploy/daily-publish.md）
 set -euo pipefail
 
+# launchd 启动时 PATH 很干净，node/npx 不在里面；这里显式补上
+export NODE22="/opt/homebrew/opt/node@22/bin"
+export PATH="$NODE22:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
